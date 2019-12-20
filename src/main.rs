@@ -30,14 +30,14 @@ fn main() -> GameResult {
 
     let (mut context, mut event_loop) =
         ContextBuilder::new("vndf", "Hanno Braun")
-            .window_setup(WindowSetup {
-                title: "Von Neumann Defense Force".into(),
-                .. Default::default()
-            })
-            .window_mode(WindowMode {
-                fullscreen_type: FullscreenType::Desktop,
-                .. Default::default()
-            })
+            .window_setup(
+                WindowSetup::default()
+                    .title("Von Neumann Defense Force")
+            )
+            .window_mode(
+                WindowMode::default()
+                    .fullscreen_type(FullscreenType::Desktop),
+            )
             .build()?;
 
     let mut game = Game::new(&mut context)?;
