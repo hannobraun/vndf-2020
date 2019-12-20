@@ -4,6 +4,7 @@ use ggez::{
     Context,
     ContextBuilder,
     GameResult,
+    conf::WindowSetup,
     event::{
         EventHandler,
         run,
@@ -18,6 +19,10 @@ fn main() -> GameResult {
 
     let (mut context, mut event_loop) =
         ContextBuilder::new("vndf", "Hanno Braun")
+            .window_setup(WindowSetup {
+                title: "Von Neumann Defense Force".into(),
+                .. Default::default()
+            })
             .build()?;
 
     let mut game = Game;
