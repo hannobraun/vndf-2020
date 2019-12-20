@@ -87,9 +87,9 @@ impl EventHandler for Game {
             context,
             DrawMode::fill(),
             &[
-                [ 100.0,    0.0],
-                [-100.0,  100.0],
-                [-100.0, -100.0],
+                [ 0.5,  0.0],
+                [-0.5,  0.5],
+                [-0.5, -0.5],
             ],
             [1.0, 1.0, 0.0, 1.0].into(),
         )?;
@@ -97,7 +97,8 @@ impl EventHandler for Game {
             context,
             &ship,
             DrawParam::new()
-                .dest([0.0, 0.0]),
+                .dest([0.0, 0.0])
+                .scale([200.0, 200.0]),
         )?;
 
         graphics::present(context)?;
