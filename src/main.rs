@@ -9,6 +9,7 @@ use ggez::{
         EventHandler,
         run,
     },
+    graphics,
 };
 
 
@@ -38,7 +39,9 @@ impl EventHandler for Game {
         Ok(())
     }
 
-    fn draw(&mut self, _: &mut Context) -> GameResult {
+    fn draw(&mut self, context: &mut Context) -> GameResult {
+        graphics::clear(context, [0.0, 0.0, 0.1, 1.0].into());
+        graphics::present(context)?;
         Ok(())
     }
 }
