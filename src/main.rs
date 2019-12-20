@@ -4,7 +4,11 @@ use ggez::{
     Context,
     ContextBuilder,
     GameResult,
-    conf::WindowSetup,
+    conf::{
+        FullscreenType,
+        WindowMode,
+        WindowSetup,
+    },
     event::{
         EventHandler,
         run,
@@ -22,6 +26,10 @@ fn main() -> GameResult {
         ContextBuilder::new("vndf", "Hanno Braun")
             .window_setup(WindowSetup {
                 title: "Von Neumann Defense Force".into(),
+                .. Default::default()
+            })
+            .window_mode(WindowMode {
+                fullscreen_type: FullscreenType::Desktop,
                 .. Default::default()
             })
             .build()?;
