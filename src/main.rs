@@ -13,7 +13,12 @@ use ggez::{
         EventHandler,
         run,
     },
-    graphics,
+    graphics::{
+        self,
+        DrawMode,
+        DrawParam,
+        Mesh,
+    },
 };
 
 
@@ -49,6 +54,24 @@ impl EventHandler for Game {
 
     fn draw(&mut self, context: &mut Context) -> GameResult {
         graphics::clear(context, [0.0, 0.0, 0.1, 1.0].into());
+
+        let ship = Mesh::new_polygon(
+            context,
+            DrawMode::fill(),
+            &[
+                [ 100.0,    0.0],
+                [-100.0,  100.0],
+                [-100.0, -100.0],
+            ],
+            [1.0, 1.0, 0.0, 1.0].into(),
+        )?;
+        graphics::draw(
+            context,
+            &ship,
+            DrawParam::new()
+                .dest([300.0, 300.0]),
+        )?;
+
         graphics::present(context)?;
         Ok(())
     }
