@@ -18,6 +18,7 @@ use ggez::{
         DrawMode,
         DrawParam,
         Mesh,
+        Rect,
     },
 };
 
@@ -39,13 +40,42 @@ fn main() -> GameResult {
             })
             .build()?;
 
-    let mut game = Game;
+    let mut game = Game::new(&mut context)?;
 
     run(&mut context, &mut event_loop, &mut game)
 }
 
 
 pub struct Game;
+
+impl Game {
+    pub fn new(context: &mut Context) -> GameResult<Self> {
+        let (width, height) = graphics::drawable_size(context);
+        let aspect_ratio = width / height;
+
+        let min_size = 1000.0;
+
+        let size = if aspect_ratio >= 1.0 {
+            [min_size * aspect_ratio, min_size]
+        }
+        else {
+            [min_size, min_size / aspect_ratio]
+        };
+
+        let screen_coordinates = Rect {
+            x: -size[0] / 2.0,
+            y: -size[1] / 2.0,
+            w: size[0],
+            h: size[1],
+        };
+
+        print!("{:?}\n", screen_coordinates);
+
+        graphics::set_screen_coordinates(context, screen_coordinates)?;
+
+        Ok(Game)
+    }
+}
 
 impl EventHandler for Game {
     fn update(&mut self, _: &mut Context) -> GameResult {
