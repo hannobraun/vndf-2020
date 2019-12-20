@@ -69,8 +69,6 @@ impl Game {
             h: size[1],
         };
 
-        print!("{:?}\n", screen_coordinates);
-
         graphics::set_screen_coordinates(context, screen_coordinates)?;
 
         Ok(Game)
