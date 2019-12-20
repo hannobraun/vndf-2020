@@ -99,7 +99,7 @@ impl EventHandler for Game {
             context,
             &ship,
             DrawParam::new()
-                .dest([300.0, 300.0]),
+                .dest([0.0, 0.0]),
         )?;
 
         graphics::present(context)?;
