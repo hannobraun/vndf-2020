@@ -11,7 +11,9 @@ use ggez::{
 };
 
 
-pub struct Graphics;
+pub struct Graphics {
+    ship: Mesh,
+}
 
 impl Graphics {
     pub fn new(context: &mut Context) -> GameResult<Self> {
@@ -36,12 +38,6 @@ impl Graphics {
 
         graphics::set_screen_coordinates(context, screen_coordinates)?;
 
-        Ok(Graphics)
-    }
-
-    pub fn draw(&mut self, context: &mut Context) -> GameResult {
-        graphics::clear(context, [0.0, 0.0, 0.1, 1.0].into());
-
         let ship = Mesh::new_polygon(
             context,
             DrawMode::fill(),
@@ -53,9 +49,20 @@ impl Graphics {
             ],
             [1.0, 1.0, 0.0, 1.0].into(),
         )?;
+
+        Ok(
+            Graphics {
+                ship,
+            }
+        )
+    }
+
+    pub fn draw(&mut self, context: &mut Context) -> GameResult {
+        graphics::clear(context, [0.0, 0.0, 0.1, 1.0].into());
+
         graphics::draw(
             context,
-            &ship,
+            &self.ship,
             DrawParam::new()
                 .dest([0.0, 0.0])
                 .scale([50.0, 50.0]),
