@@ -10,6 +10,8 @@ use ggez::{
     },
 };
 
+use crate::world::World;
+
 
 pub struct Graphics {
     ship: Mesh,
@@ -38,14 +40,14 @@ impl Graphics {
         )
     }
 
-    pub fn draw(&mut self, context: &mut Context) -> GameResult {
+    pub fn draw(&mut self, context: &mut Context, world: &World) -> GameResult {
         graphics::clear(context, [0.0, 0.0, 0.1, 1.0].into());
 
         graphics::draw(
             context,
             &self.ship,
             DrawParam::new()
-                .dest([0.0, 0.0])
+                .dest(world.position)
                 .scale([50.0, 50.0]),
         )?;
 

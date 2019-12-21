@@ -1,4 +1,5 @@
 mod graphics;
+mod world;
 
 
 use std::env;
@@ -19,7 +20,10 @@ use ggez::{
     },
 };
 
-use self::graphics::Graphics;
+use self::{
+    graphics::Graphics,
+    world::World,
+};
 
 
 fn main() -> GameResult {
@@ -47,6 +51,7 @@ fn main() -> GameResult {
 
 pub struct Game {
     graphics: Graphics,
+    world:    World,
 }
 
 impl Game {
@@ -54,6 +59,7 @@ impl Game {
         Ok(
             Game {
                 graphics: Graphics::new(context)?,
+                world:    World::new(),
             }
         )
     }
@@ -65,6 +71,6 @@ impl EventHandler for Game {
     }
 
     fn draw(&mut self, context: &mut Context) -> GameResult {
-        self.graphics.draw(context)
+        self.graphics.draw(context, &self.world)
     }
 }
