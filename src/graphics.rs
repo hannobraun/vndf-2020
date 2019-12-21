@@ -49,9 +49,7 @@ impl Graphics {
         Ok(())
     }
 
-    pub fn draw_ship(&self, context: &mut Context, world: &World)
-        -> GameResult
-    {
+    fn draw_ship(&self, context: &mut Context, world: &World) -> GameResult {
         graphics::draw(
             context,
             &self.ship,
