@@ -6,9 +6,9 @@ use ggez::{
         DrawMode,
         DrawParam,
         Mesh,
-        Rect,
     },
 };
+use nalgebra::Matrix4;
 
 use crate::world::World;
 
@@ -74,14 +74,17 @@ fn set_coordinate_system(context: &mut Context) -> GameResult {
         [min_size, min_size / aspect_ratio]
     };
 
-    let screen_coordinates = Rect {
-        x: -min_size / 2.0,
-        y: -min_size / 2.0,
-        w: size[0],
-        h: size[1],
-    };
+    let transform = Matrix4::new_orthographic(
+        -min_size / 2.0,
+        -min_size / 2.0 + size[0],
+        -min_size / 2.0 + size[1],
+        -min_size / 2.0,
+        -1.0,
+        1.0,
+    );
 
-    graphics::set_screen_coordinates(context, screen_coordinates)?;
+    graphics::set_projection(context, transform);
+    graphics::apply_transformations(context)?;
 
     Ok(())
 }
