@@ -40,7 +40,7 @@ impl Graphics {
         )
     }
 
-    pub fn draw(&mut self, context: &mut Context, world: &World) -> GameResult {
+    pub fn draw(&self, context: &mut Context, world: &World) -> GameResult {
         graphics::clear(context, [0.0, 0.0, 0.1, 1.0].into());
 
         graphics::draw(
