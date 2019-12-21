@@ -75,8 +75,8 @@ fn set_coordinate_system(context: &mut Context) -> GameResult {
     };
 
     let screen_coordinates = Rect {
-        x: -size[0] / 2.0,
-        y: -size[1] / 2.0,
+        x: -min_size / 2.0,
+        y: -min_size / 2.0,
         w: size[0],
         h: size[1],
     };
