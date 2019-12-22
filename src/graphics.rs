@@ -46,7 +46,9 @@ impl Graphics {
     pub fn draw(&self, context: &mut Context, state: &State) -> GameResult {
         graphics::clear(context, [0.0, 0.0, 0.1, 1.0].into());
 
-        self.draw_ship(context, state.position)?;
+        for (_, (&position,)) in &mut state.world.query::<(&Pnt2,)>() {
+            self.draw_ship(context, position)?;
+        }
 
         graphics::present(context)?;
         Ok(())
