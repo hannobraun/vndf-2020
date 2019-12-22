@@ -63,6 +63,7 @@ impl Graphics {
             &self.ship,
             DrawParam::new()
                 .dest(body.pos)
+                .rotation(body.dir.0)
                 .scale([50.0, 50.0]),
         )
     }

@@ -1,6 +1,10 @@
+use cgmath::prelude::*;
 use hecs::World;
 
-use crate::math::Pnt2;
+use crate::math::{
+    Pnt2,
+    Rad,
+};
 
 
 pub struct State {
@@ -22,12 +26,14 @@ impl State {
 
 pub struct Body {
     pub pos: Pnt2,
+    pub dir: Rad,
 }
 
 impl Body {
     pub fn new() -> Self {
         Self {
             pos: Pnt2::new(0.0, 0.0),
+            dir: Rad::zero(),
         }
     }
 }
