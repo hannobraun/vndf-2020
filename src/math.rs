@@ -1,4 +1,4 @@
-use cgmath::Point2;
+use cgmath;
 
 
-pub type Pnt2 = Point2<f32>;
+pub type Pnt2 = cgmath::Point2<f32>;
