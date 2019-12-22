@@ -10,7 +10,10 @@ use ggez::{
 };
 use nalgebra::Matrix4;
 
-use crate::state::State;
+use crate::{
+    math::Pnt2,
+    state::State,
+};
 
 
 pub struct Graphics {
@@ -43,18 +46,18 @@ impl Graphics {
     pub fn draw(&self, context: &mut Context, state: &State) -> GameResult {
         graphics::clear(context, [0.0, 0.0, 0.1, 1.0].into());
 
-        self.draw_ship(context, state)?;
+        self.draw_ship(context, state.position)?;
 
         graphics::present(context)?;
         Ok(())
     }
 
-    fn draw_ship(&self, context: &mut Context, state: &State) -> GameResult {
+    fn draw_ship(&self, context: &mut Context, pos: Pnt2) -> GameResult {
         graphics::draw(
             context,
             &self.ship,
             DrawParam::new()
-                .dest(state.position)
+                .dest(pos)
                 .scale([50.0, 50.0]),
         )
     }
