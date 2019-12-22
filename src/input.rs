@@ -7,6 +7,19 @@ use ggez::{
 };
 
 
+pub struct Input {
+    pub rotation: Rotation,
+}
+
+impl Input {
+    pub fn read(context: &mut Context) -> Self {
+        Self {
+            rotation: rotation(context),
+        }
+    }
+}
+
+
 pub fn rotation(context: &mut Context) -> Rotation {
     let left  = is_key_pressed(context, KeyCode::Left);
     let right = is_key_pressed(context, KeyCode::Right);
