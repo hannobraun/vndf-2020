@@ -52,6 +52,7 @@ fn main() -> GameResult {
 
 
 const TARGET_FPS: u32 = 60;
+const FRAME_TIME: f32 = 1.0 / TARGET_FPS as f32;
 
 
 pub struct Game {
@@ -73,7 +74,7 @@ impl Game {
 impl EventHandler for Game {
     fn update(&mut self, context: &mut Context) -> GameResult {
         while timer::check_update_time(context, TARGET_FPS) {
-            self.state.update();
+            self.state.update(FRAME_TIME);
         }
 
         Ok(())

@@ -22,9 +22,9 @@ impl State {
         }
     }
 
-    pub fn update(&mut self) {
+    pub fn update(&mut self, frame_time: f32) {
         for (_, (body,)) in &mut self.world.query::<(&mut Body,)>() {
-            body.dir += Rad::full_turn() * 0.01;
+            body.dir += Rad::turn_div_2() * frame_time;
         }
     }
 }
