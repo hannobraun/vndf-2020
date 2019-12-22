@@ -1,3 +1,7 @@
+use cgmath::{
+    Matrix4,
+    Ortho,
+};
 use ggez::{
     Context,
     GameResult,
@@ -8,7 +12,6 @@ use ggez::{
         Mesh,
     },
 };
-use nalgebra::Matrix4;
 
 use crate::{
     math::Pnt2,
@@ -82,14 +85,15 @@ fn set_coordinate_system(context: &mut Context) -> GameResult {
         [min_size, min_size / aspect_ratio]
     };
 
-    let transform = Matrix4::new_orthographic(
-        -min_size / 2.0,
-        -min_size / 2.0 + size[0],
-        -min_size / 2.0 + size[1],
-        -min_size / 2.0,
-        -1.0,
-        1.0,
-    );
+    let transform = Ortho {
+        left:   -min_size / 2.0,
+        right:  -min_size / 2.0 + size[0],
+        bottom: -min_size / 2.0 + size[1],
+        top:    -min_size / 2.0,
+        near:   -1.0,
+        far:    1.0,
+    };
+    let transform: Matrix4<_> = transform.into();
 
     graphics::set_projection(context, transform);
     graphics::apply_transformations(context)?;
