@@ -1,5 +1,5 @@
 mod graphics;
-mod world;
+mod state;
 
 
 use std::env;
@@ -22,7 +22,7 @@ use ggez::{
 
 use self::{
     graphics::Graphics,
-    world::World,
+    state::State,
 };
 
 
@@ -51,7 +51,7 @@ fn main() -> GameResult {
 
 pub struct Game {
     graphics: Graphics,
-    world:    World,
+    world:    State,
 }
 
 impl Game {
@@ -59,7 +59,7 @@ impl Game {
         Ok(
             Game {
                 graphics: Graphics::new(context)?,
-                world:    World::new(),
+                world:    State::new(),
             }
         )
     }
