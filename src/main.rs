@@ -51,7 +51,7 @@ fn main() -> GameResult {
 
 pub struct Game {
     graphics: Graphics,
-    world:    State,
+    state:    State,
 }
 
 impl Game {
@@ -59,7 +59,7 @@ impl Game {
         Ok(
             Game {
                 graphics: Graphics::new(context)?,
-                world:    State::new(),
+                state:    State::new(),
             }
         )
     }
@@ -71,6 +71,6 @@ impl EventHandler for Game {
     }
 
     fn draw(&mut self, context: &mut Context) -> GameResult {
-        self.graphics.draw(context, &self.world)
+        self.graphics.draw(context, &self.state)
     }
 }
