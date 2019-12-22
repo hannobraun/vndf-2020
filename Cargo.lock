@@ -6,6 +6,11 @@ version = "1.0.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
+name = "ahash"
+version = "0.2.18"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
 name = "aho-corasick"
 version = "0.7.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -781,6 +786,23 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "rusttype 0.8.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "xi-unicode 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "hashbrown"
+version = "0.6.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "ahash 0.2.18 (registry+https://github.com/rust-lang/crates.io-index)",
+ "autocfg 0.1.7 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "hecs"
+version = "0.2.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "hashbrown 0.6.3 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -1899,6 +1921,7 @@ name = "vndf"
 version = "0.1.0"
 dependencies = [
  "ggez 0.5.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "hecs 0.2.4 (registry+https://github.com/rust-lang/crates.io-index)",
  "nalgebra 0.18.1 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
@@ -2114,6 +2137,7 @@ dependencies = [
 
 [metadata]
 "checksum adler32 1.0.4 (registry+https://github.com/rust-lang/crates.io-index)" = "5d2e7343e7fc9de883d1b0341e0b13970f764c14101234857d2ddafa1cb1cac2"
+"checksum ahash 0.2.18 (registry+https://github.com/rust-lang/crates.io-index)" = "6f33b5018f120946c1dcf279194f238a9f146725593ead1c08fa47ff22b0b5d3"
 "checksum aho-corasick 0.7.6 (registry+https://github.com/rust-lang/crates.io-index)" = "58fb5e95d83b38284460a5fda7d6470aa0b8844d283a0b614b8535e880800d2d"
 "checksum alga 0.9.2 (registry+https://github.com/rust-lang/crates.io-index)" = "658f9468113d34781f6ca9d014d174c74b73de870f1e0e3ad32079bbab253b19"
 "checksum alsa-sys 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)" = "b0edcbbf9ef68f15ae1b620f722180b82a98b6f0628d30baa6b8d2a5abc87d58"
@@ -2201,6 +2225,8 @@ dependencies = [
 "checksum glyph_brush 0.5.4 (registry+https://github.com/rust-lang/crates.io-index)" = "131d7d6f3e7ea0988a707da50ae876f8a9c4c7eb397ccfac9fe9309d4ebe8726"
 "checksum glyph_brush 0.6.1 (registry+https://github.com/rust-lang/crates.io-index)" = "6ec4a0787fffc6692ec1ccef9fe09a8e02df1b7fc8fadd5af96662dc979473f9"
 "checksum glyph_brush_layout 0.1.8 (registry+https://github.com/rust-lang/crates.io-index)" = "62b6d460a62dc8a2d3402689b02824ca03d40ec6f1673b9d2016d1f30ce5cb62"
+"checksum hashbrown 0.6.3 (registry+https://github.com/rust-lang/crates.io-index)" = "8e6073d0ca812575946eb5f35ff68dbe519907b25c42530389ff946dc84c6ead"
+"checksum hecs 0.2.4 (registry+https://github.com/rust-lang/crates.io-index)" = "98b82c8b0acb6883235536b0dbb1ee9694d623f524c2104e99153c2091132679"
 "checksum hermit-abi 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)" = "f629dc602392d3ec14bfc8a09b5e644d7ffd725102b48b81e59f90f2633621d7"
 "checksum hound 3.4.0 (registry+https://github.com/rust-lang/crates.io-index)" = "8a164bb2ceaeff4f42542bdb847c41517c78a60f5649671b2a07312b6e117549"
 "checksum image 0.22.3 (registry+https://github.com/rust-lang/crates.io-index)" = "7b4be8aaefbe7545dc42ae925afb55a0098f226a3fe5ef721872806f44f57826"
