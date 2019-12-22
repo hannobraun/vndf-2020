@@ -1,9 +1,12 @@
 use cgmath::prelude::*;
 use hecs::World;
 
-use crate::math::{
-    Pnt2,
-    Rad,
+use crate::{
+    input::Rotation,
+    math::{
+        Pnt2,
+        Rad,
+    },
 };
 
 
@@ -22,9 +25,11 @@ impl State {
         }
     }
 
-    pub fn update(&mut self, frame_time: f32) {
+    pub fn update(&mut self, frame_time: f32, rotation: Rotation) {
+        let rotation = rotation as i32 as f32;
+
         for (_, (body,)) in &mut self.world.query::<(&mut Body,)>() {
-            body.dir += Rad::turn_div_2() * frame_time;
+            body.dir += Rad::turn_div_2() * rotation * frame_time;
         }
     }
 }

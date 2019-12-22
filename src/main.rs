@@ -1,4 +1,5 @@
 mod graphics;
+mod input;
 mod math;
 mod state;
 
@@ -73,8 +74,10 @@ impl Game {
 
 impl EventHandler for Game {
     fn update(&mut self, context: &mut Context) -> GameResult {
+        let rotation = input::rotation(context);
+
         while timer::check_update_time(context, TARGET_FPS) {
-            self.state.update(FRAME_TIME);
+            self.state.update(FRAME_TIME, rotation);
         }
 
         Ok(())
