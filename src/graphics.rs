@@ -40,21 +40,21 @@ impl Graphics {
         )
     }
 
-    pub fn draw(&self, context: &mut Context, world: &State) -> GameResult {
+    pub fn draw(&self, context: &mut Context, state: &State) -> GameResult {
         graphics::clear(context, [0.0, 0.0, 0.1, 1.0].into());
 
-        self.draw_ship(context, world)?;
+        self.draw_ship(context, state)?;
 
         graphics::present(context)?;
         Ok(())
     }
 
-    fn draw_ship(&self, context: &mut Context, world: &State) -> GameResult {
+    fn draw_ship(&self, context: &mut Context, state: &State) -> GameResult {
         graphics::draw(
             context,
             &self.ship,
             DrawParam::new()
-                .dest(world.position)
+                .dest(state.position)
                 .scale([50.0, 50.0]),
         )
     }
