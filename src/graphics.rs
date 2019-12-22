@@ -13,12 +13,9 @@ use ggez::{
     },
 };
 
-use crate::{
-    math::Pnt2,
-    state::{
-        Body,
-        State,
-    },
+use crate::state::{
+    Body,
+    State,
 };
 
 
@@ -53,19 +50,19 @@ impl Graphics {
         graphics::clear(context, [0.0, 0.0, 0.1, 1.0].into());
 
         for (_, (body,)) in &mut state.world.query::<(&Body,)>() {
-            self.draw_ship(context, body.pos)?;
+            self.draw_ship(context, body)?;
         }
 
         graphics::present(context)?;
         Ok(())
     }
 
-    fn draw_ship(&self, context: &mut Context, pos: Pnt2) -> GameResult {
+    fn draw_ship(&self, context: &mut Context, body: &Body) -> GameResult {
         graphics::draw(
             context,
             &self.ship,
             DrawParam::new()
-                .dest(pos)
+                .dest(body.pos)
                 .scale([50.0, 50.0]),
         )
     }
