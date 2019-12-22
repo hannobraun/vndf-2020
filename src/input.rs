@@ -9,12 +9,14 @@ use ggez::{
 
 pub struct Input {
     pub rotation: Rotation,
+    pub thrust:   bool,
 }
 
 impl Input {
     pub fn read(context: &mut Context) -> Self {
         Self {
             rotation: Rotation::read(context),
+            thrust:   is_key_pressed(context, KeyCode::Up),
         }
     }
 }

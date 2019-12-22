@@ -6,6 +6,8 @@ use crate::{
     math::{
         Pnt2,
         Rad,
+        Vec2,
+        rotate,
     },
 };
 
@@ -30,6 +32,11 @@ impl State {
 
         for (_, (body,)) in &mut self.world.query::<(&mut Body,)>() {
             body.dir += Rad::turn_div_2() * rotation * frame_time;
+
+            if input.thrust {
+                let vel = rotate(Vec2::unit_x(), body.dir) * 300.0;
+                body.pos += vel * frame_time;
+            }
         }
     }
 }
