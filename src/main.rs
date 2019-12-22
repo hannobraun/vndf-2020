@@ -19,6 +19,7 @@ use ggez::{
         EventHandler,
         run,
     },
+    timer,
 };
 
 use self::{
@@ -67,8 +68,11 @@ impl Game {
 }
 
 impl EventHandler for Game {
-    fn update(&mut self, _: &mut Context) -> GameResult {
-        self.state.update();
+    fn update(&mut self, context: &mut Context) -> GameResult {
+        while timer::check_update_time(context, 60) {
+            self.state.update();
+        }
+
         Ok(())
     }
 
