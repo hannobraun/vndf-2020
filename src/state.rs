@@ -11,10 +11,23 @@ impl State {
     pub fn new() -> Self {
         let mut world = World::new();
 
-        world.spawn((Pnt2::new(0.0, 0.0),));
+        world.spawn((Body::new(),));
 
         Self {
             world,
+        }
+    }
+}
+
+
+pub struct Body {
+    pub pos: Pnt2,
+}
+
+impl Body {
+    pub fn new() -> Self {
+        Self {
+            pos: Pnt2::new(0.0, 0.0),
         }
     }
 }

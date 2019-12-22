@@ -12,7 +12,10 @@ use nalgebra::Matrix4;
 
 use crate::{
     math::Pnt2,
-    state::State,
+    state::{
+        Body,
+        State,
+    },
 };
 
 
@@ -46,8 +49,8 @@ impl Graphics {
     pub fn draw(&self, context: &mut Context, state: &State) -> GameResult {
         graphics::clear(context, [0.0, 0.0, 0.1, 1.0].into());
 
-        for (_, (&position,)) in &mut state.world.query::<(&Pnt2,)>() {
-            self.draw_ship(context, position)?;
+        for (_, (body,)) in &mut state.world.query::<(&Body,)>() {
+            self.draw_ship(context, body.pos)?;
         }
 
         graphics::present(context)?;
