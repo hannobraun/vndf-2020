@@ -1,8 +1,8 @@
-use ggez::mint::Point2;
+use crate::math::Pnt2;
 
 
 pub struct State {
-    pub position: Point2<f32>,
+    pub position: Pnt2,
 }
 
 impl State {
