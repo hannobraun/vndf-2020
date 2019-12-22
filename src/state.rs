@@ -21,6 +21,12 @@ impl State {
             world,
         }
     }
+
+    pub fn update(&mut self) {
+        for (_, (body,)) in &mut self.world.query::<(&mut Body,)>() {
+            body.dir += Rad::full_turn() * 0.01;
+        }
+    }
 }
 
 

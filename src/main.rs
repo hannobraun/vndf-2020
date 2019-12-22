@@ -68,6 +68,7 @@ impl Game {
 
 impl EventHandler for Game {
     fn update(&mut self, _: &mut Context) -> GameResult {
+        self.state.update();
         Ok(())
     }
 
