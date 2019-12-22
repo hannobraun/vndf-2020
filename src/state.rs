@@ -11,7 +11,7 @@ impl State {
     pub fn new() -> Self {
         let mut world = World::new();
 
-        world.spawn((Pnt2 { x: 0.0, y: 0.0 },));
+        world.spawn((Pnt2::new(0.0, 0.0),));
 
         Self {
             world,
