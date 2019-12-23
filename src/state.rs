@@ -34,9 +34,11 @@ impl State {
             body.dir += Rad::turn_div_2() * rotation * frame_time;
 
             if input.thrust {
-                let vel = rotate(Vec2::unit_x(), body.dir) * 300.0;
-                body.pos += vel * frame_time;
+                let acc = rotate(Vec2::unit_x(), body.dir) * 300.0;
+                body.vel += acc * frame_time;
             }
+
+            body.pos += body.vel * frame_time;
         }
     }
 }
@@ -44,6 +46,7 @@ impl State {
 
 pub struct Body {
     pub pos: Pnt2,
+    pub vel: Vec2,
     pub dir: Rad,
 }
 
@@ -51,6 +54,7 @@ impl Body {
     pub fn new() -> Self {
         Self {
             pos: Pnt2::new(0.0, 0.0),
+            vel: Vec2::zero(),
             dir: Rad::zero(),
         }
     }
