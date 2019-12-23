@@ -1,7 +1,3 @@
-use cgmath::{
-    Matrix4,
-    Ortho,
-};
 use ggez::{
     Context,
     GameResult,
@@ -10,6 +6,7 @@ use ggez::{
         DrawMode,
         DrawParam,
         Mesh,
+        Rect,
     },
 };
 
@@ -83,18 +80,15 @@ fn set_coordinate_system(context: &mut Context) -> GameResult {
         [min_size, min_size / aspect_ratio]
     };
 
-    let transform = Ortho {
-        left:   -size[0] / 2.0,
-        right:   size[0] / 2.0,
-        bottom:  size[1] / 2.0,
-        top:    -size[1] / 2.0,
-        near:   -1.0,
-        far:    1.0,
-    };
-    let transform: Matrix4<_> = transform.into();
-
-    graphics::set_projection(context, transform);
-    graphics::apply_transformations(context)?;
+    graphics::set_screen_coordinates(
+        context,
+        Rect {
+            x: -size[0] / 2.0,
+            y: -size[1] / 2.0,
+            w: size[0],
+            h: size[1],
+        },
+    )?;
 
     Ok(())
 }
