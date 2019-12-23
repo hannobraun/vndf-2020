@@ -84,10 +84,10 @@ fn set_coordinate_system(context: &mut Context) -> GameResult {
     };
 
     let transform = Ortho {
-        left:   -min_size / 2.0,
-        right:  -min_size / 2.0 + size[0],
-        bottom: -min_size / 2.0 + size[1],
-        top:    -min_size / 2.0,
+        left:   -size[0] / 2.0,
+        right:   size[0] / 2.0,
+        bottom:  size[1] / 2.0,
+        top:    -size[1] / 2.0,
         near:   -1.0,
         far:    1.0,
     };
