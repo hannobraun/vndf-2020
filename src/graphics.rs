@@ -18,13 +18,25 @@ use crate::state::{
 
 
 pub struct Graphics {
-    ship: Mesh,
+    boundary: Mesh,
+    ship:     Mesh,
 }
 
 impl Graphics {
     pub fn new(context: &mut Context) -> GameResult<Self> {
         set_coordinate_system(context)?;
 
+        let boundary = Mesh::new_polygon(
+            context,
+            DrawMode::stroke(3.0 / WORLD_SIZE),
+            &[
+                [ 0.5,  0.5],
+                [ 0.5, -0.5],
+                [-0.5, -0.5],
+                [-0.5,  0.5],
+            ],
+            [1.0, 1.0, 1.0, 1.0].into(),
+        )?;
         let ship = Mesh::new_polygon(
             context,
             DrawMode::fill(),
@@ -39,6 +51,7 @@ impl Graphics {
 
         Ok(
             Graphics {
+                boundary,
                 ship,
             }
         )
@@ -47,12 +60,23 @@ impl Graphics {
     pub fn draw(&self, context: &mut Context, state: &State) -> GameResult {
         graphics::clear(context, [0.0, 0.0, 0.1, 1.0].into());
 
+        self.draw_boundary(context)?;
+
         for (_, (body,)) in &mut state.world.query::<(&Body,)>() {
             self.draw_ship(context, body)?;
         }
 
         graphics::present(context)?;
         Ok(())
+    }
+
+    fn draw_boundary(&self, context: &mut Context) -> GameResult {
+        graphics::draw(
+            context,
+            &self.boundary,
+            DrawParam::new()
+                .scale([WORLD_SIZE, WORLD_SIZE])
+        )
     }
 
     fn draw_ship(&self, context: &mut Context, body: &Body) -> GameResult {
