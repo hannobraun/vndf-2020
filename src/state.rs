@@ -12,6 +12,9 @@ use crate::{
 };
 
 
+pub const WORLD_SIZE: f32 = 1000.0;
+
+
 pub struct State {
     pub world: World,
 }

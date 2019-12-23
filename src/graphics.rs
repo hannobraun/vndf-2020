@@ -11,6 +11,7 @@ use ggez::{
 };
 
 use crate::state::{
+    WORLD_SIZE,
     Body,
     State,
 };
@@ -71,13 +72,11 @@ fn set_coordinate_system(context: &mut Context) -> GameResult {
     let (width, height) = graphics::drawable_size(context);
     let aspect_ratio = width / height;
 
-    let min_size = 1000.0;
-
     let size = if aspect_ratio >= 1.0 {
-        [min_size * aspect_ratio, min_size]
+        [WORLD_SIZE * aspect_ratio, WORLD_SIZE]
     }
     else {
-        [min_size, min_size / aspect_ratio]
+        [WORLD_SIZE, WORLD_SIZE / aspect_ratio]
     };
 
     graphics::set_screen_coordinates(
