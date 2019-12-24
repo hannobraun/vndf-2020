@@ -14,6 +14,13 @@ pub struct Input {
 }
 
 impl Input {
+    pub fn none() -> Self {
+        Self {
+            rotation: Rotation::None,
+            thrust:   false,
+        }
+    }
+
     pub fn read(context: &mut Context) -> Self {
         Self {
             rotation: Rotation::read(context),

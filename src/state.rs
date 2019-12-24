@@ -23,7 +23,7 @@ impl State {
     pub fn new() -> Self {
         let mut world = World::new();
 
-        world.spawn((Body::new(),));
+        world.spawn((Player::new(), Body::new()));
 
         Self {
             world,
@@ -31,19 +31,42 @@ impl State {
     }
 
     pub fn update(&mut self, frame_time: f32, input: &Input) {
-        for (_, (body,)) in &mut self.world.query::<(&mut Body,)>() {
-            let rotation = input.rotation as i32 as f32;
-            body.rot = Rad::turn_div_2() * rotation;
-
-            body.acc = if input.thrust {
-                rotate(Vec2::unit_x(), body.dir) * 300.0
+        {
+            let query = &mut self.world.query::<(&mut Player, &mut Body)>();
+            for (_, (player, body)) in query {
+                player.input = *input;
+                player.apply_input(body);
             }
-            else {
-                Vec2::zero()
-            };
+        }
 
+        for (_, (body,)) in &mut self.world.query::<(&mut Body,)>() {
             body.update(frame_time);
         }
+    }
+}
+
+
+pub struct Player {
+    pub input: Input,
+}
+
+impl Player {
+    pub fn new() -> Self {
+        Self {
+            input: Input::none(),
+        }
+    }
+
+    pub fn apply_input(&self, body: &mut Body) {
+        let rotation = self.input.rotation as i32 as f32;
+        body.rot = Rad::turn_div_2() * rotation;
+
+        body.acc = if self.input.thrust {
+            rotate(Vec2::unit_x(), body.dir) * 300.0
+        }
+        else {
+            Vec2::zero()
+        };
     }
 }
 
