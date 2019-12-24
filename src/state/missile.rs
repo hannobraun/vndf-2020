@@ -15,6 +15,6 @@ impl Missile {
     }
 
     pub fn update(&self, body: &mut Body) {
-        body.acc = rotate(Vec2::unit_x(), body.dir) * 800.0;
+        body.acc = rotate(Vec2::unit_x(), body.dir) * 50.0;
     }
 }
