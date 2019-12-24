@@ -3,7 +3,10 @@ use cgmath::prelude::*;
 use crate::{
     input::Rotation,
     math::Rad,
-    state::components::Body,
+    state::{
+        components::Body,
+        entities as e,
+    },
 };
 
 
@@ -16,6 +19,10 @@ impl Ship {
         Self {
             rotation: Rotation::None,
         }
+    }
+
+    pub fn launch_missile(&mut self, body: &Body) -> Option<e::Missile> {
+        Some(e::missile(body))
     }
 
     pub fn update(&self, body: &mut Body) {

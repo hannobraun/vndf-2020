@@ -2,13 +2,10 @@ use hecs::World;
 
 use crate::{
     input::Rotation,
-    state::{
-        components::{
-            Body,
-            Engine,
-            Ship,
-        },
-        entities,
+    state::components::{
+        Body,
+        Engine,
+        Ship,
     },
 };
 
@@ -28,8 +25,10 @@ pub fn handle_thrust(world: &mut World, thrust: bool) {
 pub fn handle_launch(world: &mut World) {
     let mut missiles = Vec::new();
     {
-        for (_, (_, body)) in &mut world.query::<(&Ship, &Body)>() {
-            missiles.push(entities::missile(body));
+        for (_, (ship, body)) in &mut world.query::<(&mut Ship, &Body)>() {
+            if let Some(missile) = ship.launch_missile(body) {
+                missiles.push(missile);
+            }
         }
     }
 
