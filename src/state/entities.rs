@@ -6,7 +6,12 @@ use crate::{
 };
 
 
-pub fn explosion(exploding: &c::Body) -> (c::Explosion, c::Body) {
+pub type Explosion = (c::Explosion, c::Body);
+pub type Missile   = (c::Missile, c::Body, c::Engine);
+pub type Ship      = (c::Ship, c::Body, c::Engine);
+
+
+pub fn explosion(exploding: &c::Body) -> Explosion {
     let body = c::Body {
         pos: exploding.pos,
         vel: exploding.vel * 0.1,
@@ -16,7 +21,7 @@ pub fn explosion(exploding: &c::Body) -> (c::Explosion, c::Body) {
     (c::Explosion::new(), body)
 }
 
-pub fn missile(launcher: &c::Body) -> (c::Missile, c::Body, c::Engine) {
+pub fn missile(launcher: &c::Body) -> Missile {
     let body = c::Body {
         rot: Rad::zero(),
         .. *launcher
@@ -30,7 +35,7 @@ pub fn missile(launcher: &c::Body) -> (c::Missile, c::Body, c::Engine) {
     (c::Missile::new(), body, engine)
 }
 
-pub fn ship() -> (c::Ship, c::Body, c::Engine) {
+pub fn ship() -> Ship {
     let engine = c::Engine {
         enabled: false,
         thrust:  20.0,

@@ -2,9 +2,8 @@ use crate::state::{
     components::{
         Body,
         Engine,
-        Explosion,
     },
-    entities,
+    entities as e,
 };
 
 
@@ -15,11 +14,9 @@ impl Missile {
         Self
     }
 
-    pub fn update(&self, body: &Body, engine: &Engine)
-        -> Option<(Explosion, Body)>
-    {
+    pub fn update(&self, body: &Body, engine: &Engine) -> Option<e::Explosion> {
         if engine.fuel <= 0.0 {
-            Some(entities::explosion(body))
+            Some(e::explosion(body))
         }
         else {
             None
