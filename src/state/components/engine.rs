@@ -5,7 +5,7 @@ use crate::{
         Vec2,
         rotate,
     },
-    state::Body,
+    state::components::Body,
 };
 
 
