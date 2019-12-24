@@ -44,5 +44,6 @@ impl State {
         systems::update::update_ships(&mut self.world);
         systems::update::update_engines(&mut self.world, dt);
         systems::update::update_bodies(&mut self.world, WORLD_SIZE, dt);
+        systems::update::update_missiles(&mut self.world);
     }
 }
