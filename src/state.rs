@@ -12,7 +12,10 @@ pub use self::{
 
 use hecs::World;
 
-use crate::input::Input;
+use crate::input::{
+    Event,
+    Input,
+};
 
 
 pub const WORLD_SIZE: f32 = 1000.0;
@@ -31,6 +34,16 @@ impl State {
 
         Self {
             world,
+        }
+    }
+
+    pub fn handle_input(&mut self, event: Event) {
+        match event {
+            Event::Thrust(thrust) => {
+                for (_, (ship,)) in &mut self.world.query::<(&mut Ship,)>() {
+                    ship.thrust = thrust;
+                }
+            }
         }
     }
 

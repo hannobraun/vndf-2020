@@ -12,13 +12,15 @@ use crate::{
 
 
 pub struct Ship {
-    pub input: Input,
+    pub input:  Input,
+    pub thrust: bool,
 }
 
 impl Ship {
     pub fn new() -> Self {
         Self {
-            input: Input::none(),
+            input:  Input::none(),
+            thrust: false,
         }
     }
 
@@ -26,7 +28,7 @@ impl Ship {
         let rotation = self.input.rotation as i32 as f32;
         body.rot = Rad::full_turn() * 0.4 * rotation;
 
-        body.acc = if self.input.thrust {
+        body.acc = if self.thrust {
             rotate(Vec2::unit_x(), body.dir) * 20.0
         }
         else {

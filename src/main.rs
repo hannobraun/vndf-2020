@@ -88,6 +88,20 @@ impl EventHandler for Game {
         if key_code == KeyCode::Escape {
             quit(context);
         }
+
+        if let Some(event) = input::Event::key_down(key_code) {
+            self.state.handle_input(event);
+        }
+    }
+
+    fn key_up_event(&mut self,
+        _:        &mut Context,
+        key_code: KeyCode,
+        _:        KeyMods,
+    ) {
+        if let Some(event) = input::Event::key_up(key_code) {
+            self.state.handle_input(event);
+        }
     }
 
     fn update(&mut self, context: &mut Context) -> GameResult {

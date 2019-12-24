@@ -7,24 +7,42 @@ use ggez::{
 };
 
 
+pub enum Event {
+    Thrust(bool),
+}
+
+impl Event {
+    pub fn key_down(key_code: KeyCode) -> Option<Self> {
+        match key_code {
+            KeyCode::Up => Some(Self::Thrust(true)),
+            _           => None,
+        }
+    }
+
+    pub fn key_up(key_code: KeyCode) -> Option<Self> {
+        match key_code {
+            KeyCode::Up => Some(Self::Thrust(false)),
+            _           => None,
+        }
+    }
+}
+
+
 #[derive(Clone, Copy)]
 pub struct Input {
     pub rotation: Rotation,
-    pub thrust:   bool,
 }
 
 impl Input {
     pub fn none() -> Self {
         Self {
             rotation: Rotation::None,
-            thrust:   false,
         }
     }
 
     pub fn read(context: &mut Context) -> Self {
         Self {
             rotation: Rotation::read(context),
-            thrust:   is_key_pressed(context, KeyCode::Up),
         }
     }
 }
