@@ -18,6 +18,7 @@ pub fn missile(launcher: &Body) -> (Missile, Body, Engine) {
     };
     let engine = Engine {
         enabled: true,
+        thrust:  50.0,
     };
 
     (Missile::new(), body, engine)
@@ -26,6 +27,7 @@ pub fn missile(launcher: &Body) -> (Missile, Body, Engine) {
 pub fn ship() -> (Ship, Body, Engine) {
     let engine = Engine {
         enabled: false,
+        thrust:  20.0,
     };
 
     (Ship::new(), Body::new(), engine)

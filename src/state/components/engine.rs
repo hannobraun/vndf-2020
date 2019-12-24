@@ -11,12 +11,13 @@ use crate::{
 
 pub struct Engine {
     pub enabled: bool,
+    pub thrust:  f32,
 }
 
 impl Engine {
     pub fn update(&self, body: &mut Body) {
         body.acc = if self.enabled {
-            rotate(Vec2::unit_x(), body.dir) * 20.0
+            rotate(Vec2::unit_x(), body.dir) * self.thrust
         }
         else {
             Vec2::zero()
