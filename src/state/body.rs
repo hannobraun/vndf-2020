@@ -29,11 +29,11 @@ impl Body {
         }
     }
 
-    pub fn update(&mut self, frame_time: f32) {
-        self.dir += self.rot * frame_time;
+    pub fn update(&mut self, dt: f32) {
+        self.dir += self.rot * dt;
 
-        self.vel += self.acc * frame_time;
-        self.pos += self.vel * frame_time;
+        self.vel += self.acc * dt;
+        self.pos += self.vel * dt;
     }
 
     pub fn enforce_boundary(&mut self, world_size: f32) {

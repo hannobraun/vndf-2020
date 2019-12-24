@@ -65,10 +65,10 @@ impl State {
         }
     }
 
-    pub fn update(&mut self, frame_time: f32) {
+    pub fn update(&mut self, dt: f32) {
         self.update_ships();
         self.update_engines();
-        self.update_bodies(frame_time);
+        self.update_bodies(dt);
     }
 
     fn update_ships(&mut self) {
@@ -87,9 +87,9 @@ impl State {
         }
     }
 
-    fn update_bodies(&mut self, frame_time: f32) {
+    fn update_bodies(&mut self, dt: f32) {
         for (_, (body,)) in &mut self.world.query::<(&mut Body,)>() {
-            body.update(frame_time);
+            body.update(dt);
             body.enforce_boundary(WORLD_SIZE);
         }
     }
