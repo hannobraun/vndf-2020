@@ -23,6 +23,7 @@ impl Body {
             pos: Pnt2::new(0.0, 0.0),
             vel: Vec2::zero(),
             acc: Vec2::zero(),
+
             dir: Rad::zero(),
             rot: Rad::zero(),
         }
