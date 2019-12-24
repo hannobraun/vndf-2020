@@ -19,7 +19,7 @@ pub fn missile(launcher: &Body) -> (Missile, Body, Engine) {
     let engine = Engine {
         enabled: true,
         thrust:  50.0,
-        fuel:    1000.0
+        fuel:    500.0
     };
 
     (Missile::new(), body, engine)
