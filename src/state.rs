@@ -32,7 +32,17 @@ impl State {
 
     pub fn update(&mut self, frame_time: f32, input: &Input) {
         for (_, (body,)) in &mut self.world.query::<(&mut Body,)>() {
-            body.update(frame_time, input);
+            let rotation = input.rotation as i32 as f32;
+            body.dir += Rad::turn_div_2() * rotation * frame_time;
+
+            body.acc = if input.thrust {
+                rotate(Vec2::unit_x(), body.dir) * 300.0
+            }
+            else {
+                Vec2::zero()
+            };
+
+            body.update(frame_time);
         }
     }
 }
@@ -55,17 +65,7 @@ impl Body {
         }
     }
 
-    pub fn update(&mut self, frame_time: f32, input: &Input) {
-        let rotation = input.rotation as i32 as f32;
-        self.dir += Rad::turn_div_2() * rotation * frame_time;
-
-        self.acc = if input.thrust {
-            rotate(Vec2::unit_x(), self.dir) * 300.0
-        }
-        else {
-            Vec2::zero()
-        };
-
+    pub fn update(&mut self, frame_time: f32) {
         self.vel += self.acc * frame_time;
         self.pos += self.vel * frame_time;
     }
