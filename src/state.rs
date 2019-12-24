@@ -59,11 +59,14 @@ impl Body {
         let rotation = input.rotation as i32 as f32;
         self.dir += Rad::turn_div_2() * rotation * frame_time;
 
-        if input.thrust {
-            self.acc = rotate(Vec2::unit_x(), self.dir) * 300.0;
-            self.vel += self.acc * frame_time;
+        self.acc = if input.thrust {
+            rotate(Vec2::unit_x(), self.dir) * 300.0
         }
+        else {
+            Vec2::zero()
+        };
 
+        self.vel += self.acc * frame_time;
         self.pos += self.vel * frame_time;
     }
 }
