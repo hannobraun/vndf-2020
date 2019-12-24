@@ -5,11 +5,22 @@ use crate::{
     state::components::{
         Body,
         Engine,
+        Explosion,
         Missile,
         Ship,
     },
 };
 
+
+pub fn explosion(exploding: &Body) -> (Explosion, Body) {
+    let body = Body {
+        pos: exploding.pos,
+        vel: exploding.vel * 0.1,
+        .. Body::new()
+    };
+
+    (Explosion::new(), body)
+}
 
 pub fn missile(launcher: &Body) -> (Missile, Body, Engine) {
     let body = Body {

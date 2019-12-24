@@ -17,6 +17,7 @@ use crate::state::{
     components::{
         Body,
         Engine,
+        Explosion,
         Missile,
         Ship,
     },
@@ -24,9 +25,10 @@ use crate::state::{
 
 
 pub struct Graphics {
-    boundary: Mesh,
-    missile:  Mesh,
-    ship:     Mesh,
+    boundary:  Mesh,
+    explosion: Mesh,
+    missile:   Mesh,
+    ship:      Mesh,
 }
 
 impl Graphics {
@@ -40,6 +42,14 @@ impl Graphics {
                 [-0.5, -0.5],
                 [-0.5,  0.5],
             ],
+            [1.0, 1.0, 1.0, 1.0].into(),
+        )?;
+        let explosion = Mesh::new_circle(
+            context,
+            DrawMode::fill(),
+            [0.0, 0.0],
+            1.0,
+            0.01,
             [1.0, 1.0, 1.0, 1.0].into(),
         )?;
         let missile = Mesh::new_polygon(
@@ -68,6 +78,7 @@ impl Graphics {
         Ok(
             Graphics {
                 boundary,
+                explosion,
                 missile,
                 ship,
             }
@@ -92,8 +103,14 @@ impl Graphics {
         for (_, (_, body)) in &mut state.world.query::<(&Ship, &Body)>() {
             self.draw_ship(context, body)?;
         }
+
         for (_, (_, body)) in &mut state.world.query::<(&Missile, &Body)>() {
             self.draw_missile(context, body)?;
+        }
+
+        let query = &mut state.world.query::<(&Explosion, &Body)>();
+        for (_, (explosion, body)) in query {
+            self.draw_explosion(context, explosion, body)?;
         }
 
         Ok(())
@@ -126,6 +143,25 @@ impl Graphics {
             DrawParam::new()
                 .dest(body.pos)
                 .scale([4.0, 4.0])
+        )
+    }
+
+    fn draw_explosion(&self,
+        context:   &mut Context,
+        explosion: &Explosion,
+        body:      &Body,
+    )
+        -> GameResult
+    {
+        let alpha = explosion.time_left / explosion.time_total;
+
+        graphics::draw(
+            context,
+            &self.explosion,
+            DrawParam::new()
+                .dest(body.pos)
+                .scale([6.0, 6.0])
+                .color([1.0, 1.0, 1.0, alpha].into())
         )
     }
 

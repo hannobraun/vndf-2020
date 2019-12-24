@@ -1,4 +1,11 @@
-use crate::state::components::Engine;
+use crate::state::{
+    components::{
+        Body,
+        Engine,
+        Explosion,
+    },
+    entities,
+};
 
 
 pub struct Missile;
@@ -8,7 +15,14 @@ impl Missile {
         Self
     }
 
-    pub fn update(&self, engine: &Engine) -> bool {
-        engine.fuel <= 0.0
+    pub fn update(&self, body: &Body, engine: &Engine)
+        -> Option<(Explosion, Body)>
+    {
+        if engine.fuel <= 0.0 {
+            Some(entities::explosion(body))
+        }
+        else {
+            None
+        }
     }
 }
