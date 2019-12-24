@@ -35,12 +35,12 @@ impl State {
     }
 
     pub fn update(&mut self, frame_time: f32, input: Input) {
-        self.update_players(input);
+        self.update_ships(input);
         self.update_missiles();
         self.update_bodies(frame_time);
     }
 
-    fn update_players(&mut self, input: Input) {
+    fn update_ships(&mut self, input: Input) {
         let query = &mut self.world.query::<(&mut Ship, &mut Body)>();
 
         for (_, (player, body)) in query {
