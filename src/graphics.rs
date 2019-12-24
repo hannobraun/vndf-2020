@@ -13,12 +13,15 @@ use ggez::{
 use crate::state::{
     WORLD_SIZE,
     Body,
+    Missile,
+    Ship,
     State,
 };
 
 
 pub struct Graphics {
     boundary: Mesh,
+    missile:  Mesh,
     ship:     Mesh,
 }
 
@@ -29,6 +32,17 @@ impl Graphics {
         let boundary = Mesh::new_polygon(
             context,
             DrawMode::stroke(3.0 / WORLD_SIZE),
+            &[
+                [ 0.5,  0.5],
+                [ 0.5, -0.5],
+                [-0.5, -0.5],
+                [-0.5,  0.5],
+            ],
+            [1.0, 1.0, 1.0, 1.0].into(),
+        )?;
+        let missile = Mesh::new_polygon(
+            context,
+            DrawMode::fill(),
             &[
                 [ 0.5,  0.5],
                 [ 0.5, -0.5],
@@ -52,6 +66,7 @@ impl Graphics {
         Ok(
             Graphics {
                 boundary,
+                missile,
                 ship,
             }
         )
@@ -62,8 +77,11 @@ impl Graphics {
 
         self.draw_boundary(context)?;
 
-        for (_, (body,)) in &mut state.world.query::<(&Body,)>() {
+        for (_, (body, _)) in &mut state.world.query::<(&Body, &Ship)>() {
             self.draw_ship(context, body)?;
+        }
+        for (_, (body, _)) in &mut state.world.query::<(&Body, &Missile)>() {
+            self.draw_missile(context, body)?;
         }
 
         graphics::present(context)?;
@@ -87,6 +105,16 @@ impl Graphics {
                 .dest(body.pos)
                 .rotation(body.dir.0)
                 .scale([50.0, 50.0]),
+        )
+    }
+
+    fn draw_missile(&self, context: &mut Context, body: &Body) -> GameResult {
+        graphics::draw(
+            context,
+            &self.missile,
+            DrawParam::new()
+                .dest(body.pos)
+                .scale([4.0, 4.0])
         )
     }
 }
