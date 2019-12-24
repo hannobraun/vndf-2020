@@ -7,6 +7,7 @@ use crate::math::{
 };
 
 
+#[derive(Clone, Copy)]
 pub struct Body {
     pub pos: Pnt2,
     pub vel: Vec2,
