@@ -24,10 +24,10 @@ impl Ship {
 
     pub fn apply_input(&self, body: &mut Body) {
         let rotation = self.input.rotation as i32 as f32;
-        body.rot = Rad::turn_div_2() * rotation;
+        body.rot = Rad::full_turn() * 0.4 * rotation;
 
         body.acc = if self.input.thrust {
-            rotate(Vec2::unit_x(), body.dir) * 300.0
+            rotate(Vec2::unit_x(), body.dir) * 20.0
         }
         else {
             Vec2::zero()
