@@ -13,9 +13,9 @@ pub fn update_ships(world: &mut World) {
     }
 }
 
-pub fn update_engines(world: &mut World) {
-    for (_, (engine, body)) in &mut world.query::<(&Engine, &mut Body)>() {
-        engine.update(body)
+pub fn update_engines(world: &mut World, dt: f32) {
+    for (_, (engine, body)) in &mut world.query::<(&mut Engine, &mut Body)>() {
+        engine.update(body, dt)
     }
 }
 
