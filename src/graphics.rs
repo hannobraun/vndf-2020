@@ -12,10 +12,12 @@ use ggez::{
 
 use crate::state::{
     WORLD_SIZE,
-    Body,
-    Missile,
-    Ship,
     State,
+    components::{
+        Body,
+        Missile,
+        Ship,
+    },
 };
 
 

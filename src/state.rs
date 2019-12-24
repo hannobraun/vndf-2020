@@ -1,20 +1,16 @@
-pub mod body;
-pub mod engine;
-pub mod missile;
-pub mod ship;
-
-
-pub use self::{
-    body::Body,
-    engine::Engine,
-    missile::Missile,
-    ship::Ship,
-};
+pub mod components;
 
 
 use hecs::World;
 
-use crate::input::Event;
+use crate::{
+    input::Event,
+    state::components::{
+        Body,
+        Engine,
+        Ship,
+    },
+};
 
 
 pub const WORLD_SIZE: f32 = 1000.0;
