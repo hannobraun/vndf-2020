@@ -104,7 +104,7 @@ impl Graphics {
             DrawParam::new()
                 .dest(body.pos)
                 .rotation(body.dir.0)
-                .scale([50.0, 50.0]),
+                .scale([30.0, 30.0]),
         )
     }
 
