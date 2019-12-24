@@ -28,7 +28,11 @@ impl Ship {
     }
 
     pub fn launch_missile(&self, body: &Body) -> (Body, Missile) {
-        (*body, Missile::new())
+        let body = Body {
+            rot: Rad::zero(),
+            .. *body
+        };
+        (body, Missile::new())
     }
 
     pub fn apply_input(&self, body: &mut Body) {
