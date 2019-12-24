@@ -11,11 +11,11 @@ use crate::{
 };
 
 
-pub struct Player {
+pub struct Ship {
     pub input: Input,
 }
 
-impl Player {
+impl Ship {
     pub fn new() -> Self {
         Self {
             input: Input::none(),

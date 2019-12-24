@@ -1,12 +1,12 @@
 pub mod body;
 pub mod missile;
-pub mod player;
+pub mod ship;
 
 
 pub use self::{
     body::Body,
     missile::Missile,
-    player::Player,
+    ship::Ship,
 };
 
 
@@ -26,7 +26,7 @@ impl State {
     pub fn new() -> Self {
         let mut world = World::new();
 
-        world.spawn((Body::new(), Player::new()));
+        world.spawn((Body::new(), Ship::new()));
         world.spawn((Body::new(), Missile::new()));
 
         Self {
@@ -41,7 +41,7 @@ impl State {
     }
 
     fn update_players(&mut self, input: Input) {
-        let query = &mut self.world.query::<(&mut Player, &mut Body)>();
+        let query = &mut self.world.query::<(&mut Ship, &mut Body)>();
 
         for (_, (player, body)) in query {
             player.input = input;
