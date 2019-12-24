@@ -29,8 +29,6 @@ pub struct Graphics {
 
 impl Graphics {
     pub fn new(context: &mut Context) -> GameResult<Self> {
-        activate_world_coordinate_system(context)?;
-
         let boundary = Mesh::new_polygon(
             context,
             DrawMode::stroke(3.0 / WORLD_SIZE),
@@ -84,6 +82,8 @@ impl Graphics {
     }
 
     fn draw_world(&self, context: &mut Context, state: &State) -> GameResult {
+        activate_world_coordinate_system(context)?;
+
         self.draw_boundary(context)?;
 
         for (_, (body, _)) in &mut state.world.query::<(&Body, &Ship)>() {
