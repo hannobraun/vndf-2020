@@ -1,7 +1,7 @@
 use cgmath::prelude::*;
 
 use crate::{
-    input::Input,
+    input::Rotation,
     math::{
         Rad,
         Vec2,
@@ -12,20 +12,20 @@ use crate::{
 
 
 pub struct Ship {
-    pub input:  Input,
-    pub thrust: bool,
+    pub rotation: Rotation,
+    pub thrust:   bool,
 }
 
 impl Ship {
     pub fn new() -> Self {
         Self {
-            input:  Input::none(),
-            thrust: false,
+            rotation: Rotation::None,
+            thrust:   false,
         }
     }
 
     pub fn apply_input(&self, body: &mut Body) {
-        let rotation = self.input.rotation as i32 as f32;
+        let rotation = self.rotation as i32 as f32;
         body.rot = Rad::full_turn() * 0.4 * rotation;
 
         body.acc = if self.thrust {

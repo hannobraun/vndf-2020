@@ -30,7 +30,6 @@ use ggez::{
 
 use self::{
     graphics::Graphics,
-    input::Input,
     state::State,
 };
 
@@ -105,10 +104,8 @@ impl EventHandler for Game {
     }
 
     fn update(&mut self, context: &mut Context) -> GameResult {
-        let input = Input::read(context);
-
         while timer::check_update_time(context, TARGET_FPS) {
-            self.state.update(FRAME_TIME, input);
+            self.state.update(FRAME_TIME);
         }
 
         Ok(())

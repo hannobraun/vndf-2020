@@ -12,10 +12,7 @@ pub use self::{
 
 use hecs::World;
 
-use crate::input::{
-    Event,
-    Input,
-};
+use crate::input::Event;
 
 
 pub const WORLD_SIZE: f32 = 1000.0;
@@ -39,6 +36,11 @@ impl State {
 
     pub fn handle_input(&mut self, event: Event) {
         match event {
+            Event::Rotate(rotation) => {
+                for (_, (ship,)) in &mut self.world.query::<(&mut Ship,)>() {
+                    ship.rotation = rotation;
+                }
+            }
             Event::Thrust(thrust) => {
                 for (_, (ship,)) in &mut self.world.query::<(&mut Ship,)>() {
                     ship.thrust = thrust;
@@ -47,17 +49,16 @@ impl State {
         }
     }
 
-    pub fn update(&mut self, frame_time: f32, input: Input) {
-        self.update_ships(input);
+    pub fn update(&mut self, frame_time: f32) {
+        self.update_ships();
         self.update_missiles();
         self.update_bodies(frame_time);
     }
 
-    fn update_ships(&mut self, input: Input) {
+    fn update_ships(&mut self) {
         let query = &mut self.world.query::<(&mut Ship, &mut Body)>();
 
         for (_, (player, body)) in query {
-            player.input = input;
             player.apply_input(body);
         }
     }
