@@ -1,15 +1,16 @@
-use cgmath::prelude::*;
+pub mod body;
+pub mod player;
+
+
+pub use self::{
+    body::Body,
+    player::Player,
+};
+
+
 use hecs::World;
 
-use crate::{
-    input::Input,
-    math::{
-        Pnt2,
-        Rad,
-        Vec2,
-        rotate,
-    },
-};
+use crate::input::Input;
 
 
 pub const WORLD_SIZE: f32 = 1000.0;
@@ -48,77 +49,6 @@ impl State {
         for (_, (body,)) in &mut self.world.query::<(&mut Body,)>() {
             body.update(frame_time);
             body.enforce_boundary();
-        }
-    }
-}
-
-
-pub struct Player {
-    pub input: Input,
-}
-
-impl Player {
-    pub fn new() -> Self {
-        Self {
-            input: Input::none(),
-        }
-    }
-
-    pub fn apply_input(&self, body: &mut Body) {
-        let rotation = self.input.rotation as i32 as f32;
-        body.rot = Rad::turn_div_2() * rotation;
-
-        body.acc = if self.input.thrust {
-            rotate(Vec2::unit_x(), body.dir) * 300.0
-        }
-        else {
-            Vec2::zero()
-        };
-    }
-}
-
-
-pub struct Body {
-    pub pos: Pnt2,
-    pub vel: Vec2,
-    pub acc: Vec2,
-
-    pub dir: Rad,
-    pub rot: Rad,
-}
-
-impl Body {
-    pub fn new() -> Self {
-        Self {
-            pos: Pnt2::new(0.0, 0.0),
-            vel: Vec2::zero(),
-            acc: Vec2::zero(),
-            dir: Rad::zero(),
-            rot: Rad::zero(),
-        }
-    }
-
-    pub fn update(&mut self, frame_time: f32) {
-        self.dir += self.rot * frame_time;
-
-        self.vel += self.acc * frame_time;
-        self.pos += self.vel * frame_time;
-    }
-
-    pub fn enforce_boundary(&mut self) {
-        let boundary = WORLD_SIZE / 2.0;
-
-        if self.pos.x >= boundary && self.vel.x > 0.0 {
-            self.vel.x *= -1.0;
-        }
-        if self.pos.x <= -boundary && self.vel.x < 0.0 {
-            self.vel.x *= -1.0;
-        }
-        if self.pos.y >= boundary && self.vel.y > 0.0 {
-            self.vel.y *= -1.0;
-        }
-        if self.pos.y <= -boundary && self.vel.y < 0.0 {
-            self.vel.y *= -1.0;
         }
     }
 }
