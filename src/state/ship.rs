@@ -21,12 +21,12 @@ impl Ship {
         }
     }
 
-    pub fn launch_missile(&self, body: &Body) -> (Body, Missile) {
+    pub fn launch_missile(&self, body: &Body) -> (Missile, Body) {
         let body = Body {
             rot: Rad::zero(),
             .. *body
         };
-        (body, Missile::new())
+        (Missile::new(), body)
     }
 
     pub fn update(&self, body: &mut Body) {
