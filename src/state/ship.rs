@@ -7,7 +7,10 @@ use crate::{
         Vec2,
         rotate,
     },
-    state::Body,
+    state::{
+        Body,
+        Missile,
+    },
 };
 
 
@@ -22,6 +25,10 @@ impl Ship {
             rotation: Rotation::None,
             thrust:   false,
         }
+    }
+
+    pub fn launch_missile(&self, body: &Body) -> (Body, Missile) {
+        (*body, Missile::new())
     }
 
     pub fn apply_input(&self, body: &mut Body) {

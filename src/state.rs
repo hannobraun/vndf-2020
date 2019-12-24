@@ -46,6 +46,20 @@ impl State {
                     ship.thrust = thrust;
                 }
             }
+            Event::LaunchMissile => {
+                let mut missiles = Vec::new();
+                {
+                    let query = &mut self.world.query::<(&Ship, &Body)>();
+                    for (_, (ship, body)) in query {
+                        let missile = ship.launch_missile(body);
+                        missiles.push(missile);
+                    }
+                }
+
+                for missile in missiles {
+                    self.world.spawn(missile);
+                }
+            }
         }
     }
 
