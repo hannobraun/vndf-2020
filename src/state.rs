@@ -48,7 +48,7 @@ impl State {
     fn update_bodies(&mut self, frame_time: f32) {
         for (_, (body,)) in &mut self.world.query::<(&mut Body,)>() {
             body.update(frame_time);
-            body.enforce_boundary();
+            body.enforce_boundary(WORLD_SIZE);
         }
     }
 }

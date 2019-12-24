@@ -1,12 +1,9 @@
 use cgmath::prelude::*;
 
-use crate::{
-    math::{
-        Pnt2,
-        Rad,
-        Vec2,
-    },
-    state::WORLD_SIZE,
+use crate::math::{
+    Pnt2,
+    Rad,
+    Vec2,
 };
 
 
@@ -37,8 +34,8 @@ impl Body {
         self.pos += self.vel * frame_time;
     }
 
-    pub fn enforce_boundary(&mut self) {
-        let boundary = WORLD_SIZE / 2.0;
+    pub fn enforce_boundary(&mut self, world_size: f32) {
+        let boundary = world_size / 2.0;
 
         if self.pos.x >= boundary && self.vel.x > 0.0 {
             self.vel.x *= -1.0;
