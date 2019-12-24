@@ -47,6 +47,7 @@ impl State {
     fn update_bodies(&mut self, frame_time: f32) {
         for (_, (body,)) in &mut self.world.query::<(&mut Body,)>() {
             body.update(frame_time);
+            body.enforce_boundary();
         }
     }
 }
@@ -102,5 +103,22 @@ impl Body {
 
         self.vel += self.acc * frame_time;
         self.pos += self.vel * frame_time;
+    }
+
+    pub fn enforce_boundary(&mut self) {
+        let boundary = WORLD_SIZE / 2.0;
+
+        if self.pos.x >= boundary && self.vel.x > 0.0 {
+            self.vel.x *= -1.0;
+        }
+        if self.pos.x <= -boundary && self.vel.x < 0.0 {
+            self.vel.x *= -1.0;
+        }
+        if self.pos.y >= boundary && self.vel.y > 0.0 {
+            self.vel.y *= -1.0;
+        }
+        if self.pos.y <= -boundary && self.vel.y < 0.0 {
+            self.vel.y *= -1.0;
+        }
     }
 }
