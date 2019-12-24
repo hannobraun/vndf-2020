@@ -31,14 +31,20 @@ impl State {
     }
 
     pub fn update(&mut self, frame_time: f32, input: &Input) {
-        {
-            let query = &mut self.world.query::<(&mut Player, &mut Body)>();
-            for (_, (player, body)) in query {
-                player.input = *input;
-                player.apply_input(body);
-            }
-        }
+        self.update_players(input);
+        self.update_bodies(frame_time);
+    }
 
+    fn update_players(&mut self, input: &Input) {
+        let query = &mut self.world.query::<(&mut Player, &mut Body)>();
+
+        for (_, (player, body)) in query {
+            player.input = *input;
+            player.apply_input(body);
+        }
+    }
+
+    fn update_bodies(&mut self, frame_time: f32) {
         for (_, (body,)) in &mut self.world.query::<(&mut Body,)>() {
             body.update(frame_time);
         }
