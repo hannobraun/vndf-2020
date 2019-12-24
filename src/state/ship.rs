@@ -29,7 +29,7 @@ impl Ship {
         (body, Missile::new())
     }
 
-    pub fn apply_input(&self, body: &mut Body) {
+    pub fn update(&self, body: &mut Body) {
         let rotation = self.rotation as i32 as f32;
         body.rot = Rad::full_turn() * 0.4 * rotation;
     }
