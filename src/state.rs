@@ -1,4 +1,5 @@
 pub mod components;
+pub mod entities;
 
 
 use hecs::World;
@@ -24,7 +25,7 @@ impl State {
     pub fn new() -> Self {
         let mut world = World::new();
 
-        world.spawn((Ship::new(), Engine::new(), Body::new()));
+        world.spawn(entities::ship());
 
         Self {
             world,
