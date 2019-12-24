@@ -24,5 +24,9 @@ pub fn missile(launcher: &Body) -> (Missile, Body, Engine) {
 }
 
 pub fn ship() -> (Ship, Body, Engine) {
-    (Ship::new(), Body::new(), Engine::new())
+    let engine = Engine {
+        enabled: false,
+    };
+
+    (Ship::new(), Body::new(), engine)
 }

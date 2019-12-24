@@ -14,12 +14,6 @@ pub struct Engine {
 }
 
 impl Engine {
-    pub fn new() -> Self {
-        Self {
-            enabled: false,
-        }
-    }
-
     pub fn update(&self, body: &mut Body) {
         body.acc = if self.enabled {
             rotate(Vec2::unit_x(), body.dir) * 20.0
