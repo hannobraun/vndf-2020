@@ -180,7 +180,7 @@ impl Graphics {
             )?;
             graphics::draw(
                 context,
-                &Text::new(format!("Missile: {}", ship.missiles)),
+                &Text::new(format!("Heavy Missile: {}", ship.missiles)),
                 DrawParam::new()
                     .dest([width - 200.0, 50.0])
             )?;
