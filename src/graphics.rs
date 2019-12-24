@@ -86,10 +86,10 @@ impl Graphics {
 
         self.draw_boundary(context)?;
 
-        for (_, (body, _)) in &mut state.world.query::<(&Body, &Ship)>() {
+        for (_, (_, body)) in &mut state.world.query::<(&Ship, &Body)>() {
             self.draw_ship(context, body)?;
         }
-        for (_, (body, _)) in &mut state.world.query::<(&Body, &Missile)>() {
+        for (_, (_, body)) in &mut state.world.query::<(&Missile, &Body)>() {
             self.draw_missile(context, body)?;
         }
 
