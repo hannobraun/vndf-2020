@@ -2,46 +2,40 @@ use cgmath::prelude::*;
 
 use crate::{
     math::Rad,
-    state::components::{
-        Body,
-        Engine,
-        Explosion,
-        Missile,
-        Ship,
-    },
+    state::components as c,
 };
 
 
-pub fn explosion(exploding: &Body) -> (Explosion, Body) {
-    let body = Body {
+pub fn explosion(exploding: &c::Body) -> (c::Explosion, c::Body) {
+    let body = c::Body {
         pos: exploding.pos,
         vel: exploding.vel * 0.1,
-        .. Body::new()
+        .. c::Body::new()
     };
 
-    (Explosion::new(), body)
+    (c::Explosion::new(), body)
 }
 
-pub fn missile(launcher: &Body) -> (Missile, Body, Engine) {
-    let body = Body {
+pub fn missile(launcher: &c::Body) -> (c::Missile, c::Body, c::Engine) {
+    let body = c::Body {
         rot: Rad::zero(),
         .. *launcher
     };
-    let engine = Engine {
+    let engine = c::Engine {
         enabled: true,
         thrust:  50.0,
         fuel:    500.0
     };
 
-    (Missile::new(), body, engine)
+    (c::Missile::new(), body, engine)
 }
 
-pub fn ship() -> (Ship, Body, Engine) {
-    let engine = Engine {
+pub fn ship() -> (c::Ship, c::Body, c::Engine) {
+    let engine = c::Engine {
         enabled: false,
         thrust:  20.0,
         fuel:    7200.0,
     };
 
-    (Ship::new(), Body::new(), engine)
+    (c::Ship::new(), c::Body::new(), engine)
 }
