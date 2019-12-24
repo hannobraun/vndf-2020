@@ -168,7 +168,8 @@ impl Graphics {
     fn draw_ui(&self, context: &mut Context, state: &State) -> GameResult {
         activate_ui_coordinate_system(context)?;
 
-        for (_, (_, engine)) in &mut state.world.query::<(&Ship, &Engine)>() {
+        let query = &mut state.world.query::<(&Ship, &Engine)>();
+        for (_, (ship, engine)) in query {
             let (width, _) = graphics::drawable_size(context);
 
             graphics::draw(
@@ -176,6 +177,12 @@ impl Graphics {
                 &Text::new(format!("Fuel: {:.2}", engine.fuel)),
                 DrawParam::new()
                     .dest([width - 200.0, 20.0])
+            )?;
+            graphics::draw(
+                context,
+                &Text::new(format!("Missile: {}", ship.missiles)),
+                DrawParam::new()
+                    .dest([width - 200.0, 50.0])
             )?;
 
             // There should only be one ship, so let's quit.
