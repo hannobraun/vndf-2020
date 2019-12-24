@@ -29,7 +29,7 @@ pub struct Graphics {
 
 impl Graphics {
     pub fn new(context: &mut Context) -> GameResult<Self> {
-        set_coordinate_system(context)?;
+        activate_world_coordinate_system(context)?;
 
         let boundary = Mesh::new_polygon(
             context,
@@ -122,7 +122,7 @@ impl Graphics {
 }
 
 
-fn set_coordinate_system(context: &mut Context) -> GameResult {
+fn activate_world_coordinate_system(context: &mut Context) -> GameResult {
     let (width, height) = graphics::drawable_size(context);
     let aspect_ratio = width / height;
 
