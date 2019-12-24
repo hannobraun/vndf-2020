@@ -1,10 +1,12 @@
 pub mod body;
+pub mod engine;
 pub mod missile;
 pub mod ship;
 
 
 pub use self::{
     body::Body,
+    engine::Engine,
     missile::Missile,
     ship::Ship,
 };
@@ -26,7 +28,7 @@ impl State {
     pub fn new() -> Self {
         let mut world = World::new();
 
-        world.spawn((Ship::new(), Body::new()));
+        world.spawn((Ship::new(), Engine::new(), Body::new()));
 
         Self {
             world,
@@ -41,8 +43,9 @@ impl State {
                 }
             }
             Event::Thrust(thrust) => {
-                for (_, (ship,)) in &mut self.world.query::<(&mut Ship,)>() {
-                    ship.thrust = thrust;
+                let query = &mut self.world.query::<(&Ship, &mut Engine)>();
+                for (_, (_, engine)) in query {
+                    engine.enabled = thrust;
                 }
             }
             Event::LaunchMissile => {
@@ -65,6 +68,7 @@ impl State {
     pub fn update(&mut self, frame_time: f32) {
         self.update_ships();
         self.update_missiles();
+        self.update_engines();
         self.update_bodies(frame_time);
     }
 
@@ -81,6 +85,14 @@ impl State {
 
         for (_, (missile, body)) in query {
             missile.update(body);
+        }
+    }
+
+    fn update_engines(&mut self) {
+        let query = &mut self.world.query::<(&Engine, &mut Body)>();
+
+        for (_, (engine, body)) in query {
+            engine.update(body)
         }
     }
 
