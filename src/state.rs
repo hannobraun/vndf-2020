@@ -75,8 +75,8 @@ impl State {
     fn update_ships(&mut self) {
         let query = &mut self.world.query::<(&mut Ship, &mut Body)>();
 
-        for (_, (player, body)) in query {
-            player.update(body);
+        for (_, (ship, body)) in query {
+            ship.update(body);
         }
     }
 
