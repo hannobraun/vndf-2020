@@ -5,6 +5,7 @@ use crate::{
     math::Rad,
     state::{
         Body,
+        Engine,
         Missile,
     },
 };
@@ -21,12 +22,16 @@ impl Ship {
         }
     }
 
-    pub fn launch_missile(&self, body: &Body) -> (Missile, Body) {
+    pub fn launch_missile(&self, body: &Body) -> (Missile, Body, Engine) {
         let body = Body {
             rot: Rad::zero(),
             .. *body
         };
-        (Missile::new(), body)
+        let engine = Engine {
+            enabled: true,
+        };
+
+        (Missile::new(), body, engine)
     }
 
     pub fn update(&self, body: &mut Body) {

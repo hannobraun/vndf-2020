@@ -67,7 +67,6 @@ impl State {
 
     pub fn update(&mut self, frame_time: f32) {
         self.update_ships();
-        self.update_missiles();
         self.update_engines();
         self.update_bodies(frame_time);
     }
@@ -77,14 +76,6 @@ impl State {
 
         for (_, (ship, body)) in query {
             ship.update(body);
-        }
-    }
-
-    fn update_missiles(&mut self) {
-        let query = &mut self.world.query::<(&mut Missile, &mut Body)>();
-
-        for (_, (missile, body)) in query {
-            missile.update(body);
         }
     }
 
