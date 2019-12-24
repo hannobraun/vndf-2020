@@ -27,7 +27,6 @@ impl State {
         let mut world = World::new();
 
         world.spawn((Body::new(), Ship::new()));
-        world.spawn((Body::new(), Missile::new()));
 
         Self {
             world,
