@@ -18,7 +18,12 @@ use ggez::{
     },
     event::{
         EventHandler,
+        quit,
         run,
+    },
+    input::keyboard::{
+        KeyCode,
+        KeyMods,
     },
     timer,
 };
@@ -74,6 +79,17 @@ impl Game {
 }
 
 impl EventHandler for Game {
+    fn key_down_event(&mut self,
+        context:  &mut Context,
+        key_code: KeyCode,
+        _:        KeyMods,
+        _:        bool,
+    ) {
+        if key_code == KeyCode::Escape {
+            quit(context);
+        }
+    }
+
     fn update(&mut self, context: &mut Context) -> GameResult {
         let input = Input::read(context);
 
