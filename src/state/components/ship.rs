@@ -3,11 +3,7 @@ use cgmath::prelude::*;
 use crate::{
     input::Rotation,
     math::Rad,
-    state::components::{
-        Body,
-        Engine,
-        Missile,
-    },
+    state::components::Body,
 };
 
 
@@ -20,18 +16,6 @@ impl Ship {
         Self {
             rotation: Rotation::None,
         }
-    }
-
-    pub fn launch_missile(&self, body: &Body) -> (Missile, Body, Engine) {
-        let body = Body {
-            rot: Rad::zero(),
-            .. *body
-        };
-        let engine = Engine {
-            enabled: true,
-        };
-
-        (Missile::new(), body, engine)
     }
 
     pub fn update(&self, body: &mut Body) {

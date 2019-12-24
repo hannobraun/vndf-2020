@@ -49,9 +49,8 @@ impl State {
                 let mut missiles = Vec::new();
                 {
                     let query = &mut self.world.query::<(&Ship, &Body)>();
-                    for (_, (ship, body)) in query {
-                        let missile = ship.launch_missile(body);
-                        missiles.push(missile);
+                    for (_, (_, body)) in query {
+                        missiles.push(entities::missile(body));
                     }
                 }
 
