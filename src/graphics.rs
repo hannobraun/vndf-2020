@@ -77,6 +77,13 @@ impl Graphics {
     pub fn draw(&self, context: &mut Context, state: &State) -> GameResult {
         graphics::clear(context, [0.0, 0.0, 0.1, 1.0].into());
 
+        self.draw_world(context, state)?;
+
+        graphics::present(context)?;
+        Ok(())
+    }
+
+    fn draw_world(&self, context: &mut Context, state: &State) -> GameResult {
         self.draw_boundary(context)?;
 
         for (_, (body, _)) in &mut state.world.query::<(&Body, &Ship)>() {
@@ -86,7 +93,6 @@ impl Graphics {
             self.draw_missile(context, body)?;
         }
 
-        graphics::present(context)?;
         Ok(())
     }
 
