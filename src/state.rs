@@ -23,7 +23,7 @@ impl State {
     pub fn new() -> Self {
         let mut world = World::new();
 
-        world.spawn((Player::new(), Body::new()));
+        world.spawn((Body::new(), Player::new()));
 
         Self {
             world,
