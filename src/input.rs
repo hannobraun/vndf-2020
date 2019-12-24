@@ -7,6 +7,7 @@ use ggez::{
 };
 
 
+#[derive(Clone, Copy)]
 pub struct Input {
     pub rotation: Rotation,
     pub thrust:   bool,
