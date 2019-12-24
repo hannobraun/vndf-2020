@@ -30,16 +30,16 @@ impl State {
         }
     }
 
-    pub fn update(&mut self, frame_time: f32, input: &Input) {
+    pub fn update(&mut self, frame_time: f32, input: Input) {
         self.update_players(input);
         self.update_bodies(frame_time);
     }
 
-    fn update_players(&mut self, input: &Input) {
+    fn update_players(&mut self, input: Input) {
         let query = &mut self.world.query::<(&mut Player, &mut Body)>();
 
         for (_, (player, body)) in query {
-            player.input = *input;
+            player.input = input;
             player.apply_input(body);
         }
     }

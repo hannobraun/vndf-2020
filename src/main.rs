@@ -78,7 +78,7 @@ impl EventHandler for Game {
         let input = Input::read(context);
 
         while timer::check_update_time(context, TARGET_FPS) {
-            self.state.update(FRAME_TIME, &input);
+            self.state.update(FRAME_TIME, input);
         }
 
         Ok(())
