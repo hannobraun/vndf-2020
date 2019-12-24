@@ -7,6 +7,7 @@ use ggez::{
         DrawParam,
         Mesh,
         Rect,
+        Text,
     },
 };
 
@@ -15,6 +16,7 @@ use crate::state::{
     State,
     components::{
         Body,
+        Engine,
         Missile,
         Ship,
     },
@@ -76,6 +78,7 @@ impl Graphics {
         graphics::clear(context, [0.0, 0.0, 0.1, 1.0].into());
 
         self.draw_world(context, state)?;
+        self.draw_ui(context, state)?;
 
         graphics::present(context)?;
         Ok(())
@@ -125,6 +128,26 @@ impl Graphics {
                 .scale([4.0, 4.0])
         )
     }
+
+    fn draw_ui(&self, context: &mut Context, state: &State) -> GameResult {
+        activate_ui_coordinate_system(context)?;
+
+        for (_, (_, engine)) in &mut state.world.query::<(&Ship, &Engine)>() {
+            let (width, _) = graphics::drawable_size(context);
+
+            graphics::draw(
+                context,
+                &Text::new(format!("Fuel: {:.2}", engine.fuel)),
+                DrawParam::new()
+                    .dest([width - 200.0, 20.0])
+            )?;
+
+            // There should only be one ship, so let's quit.
+            return Ok(());
+        }
+
+        Ok(())
+    }
 }
 
 
@@ -146,6 +169,22 @@ fn activate_world_coordinate_system(context: &mut Context) -> GameResult {
             y: -size[1] / 2.0,
             w: size[0],
             h: size[1],
+        },
+    )?;
+
+    Ok(())
+}
+
+fn activate_ui_coordinate_system(context: &mut Context) -> GameResult {
+    let (width, height) = graphics::drawable_size(context);
+
+    graphics::set_screen_coordinates(
+        context,
+        Rect {
+            x: 0.0,
+            y: 0.0,
+            w: width,
+            h: height,
         },
     )?;
 
