@@ -1,6 +1,7 @@
 mod graphics;
 mod input;
 mod math;
+mod net;
 mod state;
 
 
@@ -28,13 +29,19 @@ use ggez::{
     timer,
 };
 
+use vndf_shared::net::Server;
+
 use self::{
     graphics::Graphics,
+    net::Conn,
     state::State,
 };
 
 
 fn main() -> GameResult {
+    let _server = Server::start()?;
+    let _conn   = Conn::connect()?;
+
     // Force X11 backend to prevent panic.
     // See https://github.com/ggez/ggez/issues/579
     env::set_var("WINIT_UNIX_BACKEND", "x11");
