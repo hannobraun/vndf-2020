@@ -48,7 +48,7 @@ fn listen(listener: TcpListener) {
                         continue;
                     }
                 };
-                info!("Connect: {}", addr);
+                info!("Connected: {}", addr);
             }
             Err(err) => {
                 error!("Error accepting connection: {:?}", err);
