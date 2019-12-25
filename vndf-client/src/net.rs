@@ -59,15 +59,17 @@ impl Conn {
         )
     }
 
-    pub fn messages<'r>(&'r mut self) -> impl Iterator<Item=Message> + 'r {
+    pub fn messages<'r>(&'r mut self)
+        -> impl Iterator<Item=Result<Message, ReceiveError>> + 'r
+    {
         iter::from_fn(move || {
             match self.rx_receiver.try_recv() {
                 Ok(message) =>
-                    Some(message),
+                    Some(Ok(message)),
                 Err(TryRecvError::Empty) =>
                     None,
                 Err(TryRecvError::Disconnected) =>
-                    panic!("Receive channel disconnected"),
+                    Some(Err(ReceiveError)),
             }
         })
     }
@@ -96,6 +98,9 @@ fn receive(mut stream: TcpStream, sender: Sender<Message>)
         }
     }
 }
+
+
+pub struct ReceiveError;
 
 
 #[derive(Debug)]

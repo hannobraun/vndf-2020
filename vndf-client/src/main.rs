@@ -33,7 +33,10 @@ use vndf_shared::net::Server;
 
 use self::{
     graphics::Graphics,
-    net::Conn,
+    net::{
+        Conn,
+        ReceiveError,
+    },
     state::State,
 };
 
@@ -119,7 +122,17 @@ impl EventHandler for Game {
 
     fn update(&mut self, context: &mut Context) -> GameResult {
         for message in self.conn.messages() {
-            print!("Message: {:?}\n", message);
+            match message {
+                Ok(message) => {
+                    print!("Message: {:?}\n", message)
+                }
+                Err(ReceiveError) => {
+                    // Error message has already been logged by the receiver
+                    // thread.
+                    quit(context);
+                    return Ok(());
+                }
+            }
         }
 
         while timer::check_update_time(context, TARGET_FPS) {
