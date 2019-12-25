@@ -45,7 +45,7 @@ fn main() -> GameResult {
     );
 
     let _server = Server::start()?;
-    let _conn   = Conn::connect()?;
+    let conn    = Conn::connect()?;
 
     // Force X11 backend to prevent panic.
     // See https://github.com/ggez/ggez/issues/579
@@ -63,7 +63,7 @@ fn main() -> GameResult {
             )
             .build()?;
 
-    let mut game = Game::new(&mut context)?;
+    let mut game = Game::new(conn, &mut context)?;
 
     run(&mut context, &mut event_loop, &mut game)
 }
@@ -74,14 +74,16 @@ const FRAME_TIME: f32 = 1.0 / TARGET_FPS as f32;
 
 
 pub struct Game {
+    conn:     Conn,
     graphics: Graphics,
     state:    State,
 }
 
 impl Game {
-    pub fn new(context: &mut Context) -> GameResult<Self> {
+    pub fn new(conn: Conn, context: &mut Context) -> GameResult<Self> {
         Ok(
             Game {
+                conn,
                 graphics: Graphics::new(context)?,
                 state:    State::new(),
             }
@@ -116,6 +118,10 @@ impl EventHandler for Game {
     }
 
     fn update(&mut self, context: &mut Context) -> GameResult {
+        for message in self.conn.messages() {
+            print!("Message: {:?}\n", message);
+        }
+
         while timer::check_update_time(context, TARGET_FPS) {
             self.state.update(FRAME_TIME);
         }

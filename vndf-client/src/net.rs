@@ -1,21 +1,107 @@
 use std::{
-    io,
+    io::{
+        self,
+        prelude::*,
+    },
+    iter,
     net::{
         Ipv6Addr,
         SocketAddr,
         TcpStream,
     },
+    sync::mpsc::{
+        Receiver,
+        Sender,
+        TryRecvError,
+        channel,
+    },
+    thread,
 };
 
-use vndf_shared::net::PORT;
+use log::{
+    debug,
+    trace,
+};
+
+use vndf_shared::net::{
+    PORT,
+    Message,
+    message,
+};
 
 
-pub struct Conn;
+pub struct Conn {
+    rx_receiver: Receiver<Message>,
+}
 
 impl Conn {
     pub fn connect() -> io::Result<Self> {
         let address = SocketAddr::new(Ipv6Addr::LOCALHOST.into(), PORT);
-        let _stream = TcpStream::connect(address)?;
-        Ok(Self)
+        let stream  = TcpStream::connect(address)?;
+
+        let (rx_sender, rx_receiver) = channel();
+
+        thread::spawn(|| receive(stream, rx_sender));
+
+        Ok(
+            Self {
+                rx_receiver,
+            }
+        )
+    }
+
+    pub fn messages<'r>(&'r mut self) -> impl Iterator<Item=Message> + 'r {
+        iter::from_fn(move || {
+            match self.rx_receiver.try_recv() {
+                Ok(message) =>
+                    Some(message),
+                Err(TryRecvError::Empty) =>
+                    None,
+                Err(TryRecvError::Disconnected) =>
+                    panic!("Receive channel disconnected"),
+            }
+        })
+    }
+}
+
+
+fn receive(mut stream: TcpStream, sender: Sender<Message>)
+    -> Result<(), Error>
+{
+    let mut buf = Vec::new();
+
+    loop {
+        trace!("Receiving. Buffer: {:?}", buf);
+
+        let mut tmp = [0; 1024];
+
+        let read = stream.read(&mut tmp)?;
+        let read = &tmp[..read];
+        buf.extend(read);
+
+        while let Some(message) = Message::deserialize(&mut buf)? {
+            debug!("Message received: {:?}", message);
+
+            sender.send(message)
+                .expect("Receiving end is disconnected");
+        }
+    }
+}
+
+
+pub enum Error {
+    Io(io::Error),
+    Message(message::Error),
+}
+
+impl From<io::Error> for Error {
+    fn from(err: io::Error) -> Self {
+        Self::Io(err)
+    }
+}
+
+impl From<message::Error> for Error {
+    fn from(err: message::Error) -> Self {
+        Self::Message(err)
     }
 }
