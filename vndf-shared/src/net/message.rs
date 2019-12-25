@@ -23,8 +23,12 @@ impl Message {
         Ok(())
     }
 
-    pub fn deserialize(buf: &mut Vec<u8>) -> Result<Self, Error> {
-        let (message, rest) = postcard::take_from_bytes(&buf)?;
+    pub fn deserialize(buf: &mut Vec<u8>) -> Result<Option<Self>, Error> {
+        let (message, rest) = match postcard::take_from_bytes(&buf) {
+            Ok((message, rest))                  => (Some(message), rest),
+            Err(Error::DeserializeUnexpectedEnd) => (None, buf.as_ref()),
+            Err(err)                             => return Err(err),
+        };
 
         let bytes_taken = buf.len() - rest.len();
         buf.drain(..bytes_taken);
@@ -56,8 +60,16 @@ mod tests {
         let deserialized_2 = Message::deserialize(&mut buf)
             .expect("Failed to deserialize message");
 
-        assert_eq!(original_1, deserialized_1);
-        assert_eq!(original_2, deserialized_2);
+        assert_eq!(deserialized_1, Some(original_1));
+        assert_eq!(deserialized_2, Some(original_2));
         assert_eq!(buf.len(), 0)
+    }
+
+    #[test]
+    fn it_should_return_none_if_buffer_is_empty() {
+        let mut buf = Vec::new();
+        let deserialized = Message::deserialize(&mut buf)
+            .expect("Failed to deserialize message");
+        assert_eq!(deserialized, None);
     }
 }
