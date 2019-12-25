@@ -70,3 +70,22 @@ fn listen(listener: TcpListener) {
         }
     }
 }
+
+
+#[derive(Debug)]
+pub enum Error {
+    Io(io::Error),
+    Message(message::Error),
+}
+
+impl From<io::Error> for Error {
+    fn from(err: io::Error) -> Self {
+        Self::Io(err)
+    }
+}
+
+impl From<message::Error> for Error {
+    fn from(err: message::Error) -> Self {
+        Self::Message(err)
+    }
+}

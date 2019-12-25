@@ -26,8 +26,8 @@ use log::{
 
 use vndf_shared::net::{
     PORT,
+    Error,
     Message,
-    message,
 };
 
 
@@ -101,22 +101,3 @@ fn receive(mut stream: TcpStream, sender: Sender<Message>)
 
 
 pub struct ReceiveError;
-
-
-#[derive(Debug)]
-pub enum Error {
-    Io(io::Error),
-    Message(message::Error),
-}
-
-impl From<io::Error> for Error {
-    fn from(err: io::Error) -> Self {
-        Self::Io(err)
-    }
-}
-
-impl From<message::Error> for Error {
-    fn from(err: message::Error) -> Self {
-        Self::Message(err)
-    }
-}
