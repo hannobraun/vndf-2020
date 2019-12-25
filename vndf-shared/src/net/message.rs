@@ -1,7 +1,4 @@
-use postcard::{
-    self,
-    Error,
-};
+use postcard;
 use serde::{
     Deserialize,
     Serialize,
@@ -36,6 +33,9 @@ impl Message {
         Ok(message)
     }
 }
+
+
+pub type Error = postcard::Error;
 
 
 #[cfg(test)]
