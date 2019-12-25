@@ -89,6 +89,7 @@ fn receive(mut stream: TcpStream, sender: Sender<Message>)
 }
 
 
+#[derive(Debug)]
 pub enum Error {
     Io(io::Error),
     Message(message::Error),
