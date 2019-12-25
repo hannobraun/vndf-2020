@@ -37,8 +37,13 @@ pub struct Conn {
 
 impl Conn {
     pub fn connect() -> io::Result<Self> {
-        let address = SocketAddr::new(Ipv6Addr::LOCALHOST.into(), PORT);
-        let stream  = TcpStream::connect(address)?;
+        let     address = SocketAddr::new(Ipv6Addr::LOCALHOST.into(), PORT);
+        let mut stream  = TcpStream::connect(address)?;
+
+        let mut buf = Vec::new();
+        Message::Ping(0).serialize(&mut buf)
+            .expect("Failed to serialize message");
+        stream.write_all(&buf)?;
 
         let (rx_sender, rx_receiver) = channel();
 

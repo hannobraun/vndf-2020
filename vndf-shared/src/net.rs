@@ -1,3 +1,4 @@
+pub mod client;
 pub mod message;
 
 
@@ -5,10 +6,7 @@ pub use self::message::Message;
 
 
 use std::{
-    io::{
-        self,
-        prelude::*,
-    },
+    io,
     net::{
         Ipv6Addr,
         SocketAddr,
@@ -22,6 +20,8 @@ use log::{
     error,
     info,
 };
+
+use self::client::Client;
 
 
 pub const PORT: u16 = 34480;
@@ -49,19 +49,13 @@ fn listen(listener: TcpListener) {
     }
 }
 
-fn handle_client(stream: io::Result<TcpStream>) -> Result<(), Error> {
-    let mut stream = stream?;
+fn handle_client(stream: io::Result<TcpStream>) -> Result<Client, Error> {
+    let stream = stream?;
 
     let addr = stream.peer_addr()?;
     info!("Connected: {}", addr);
 
-    let mut buf = Vec::new();
-    Message::Ping(0).serialize(&mut buf)?;
-
-    stream.write_all(&buf)?;
-    stream.flush()?;
-
-    Ok(())
+    Ok(Client::new(stream))
 }
 
 
