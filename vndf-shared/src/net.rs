@@ -5,7 +5,10 @@ pub use self::message::Message;
 
 
 use std::{
-    io,
+    io::{
+        self,
+        prelude::*,
+    },
     net::{
         Ipv6Addr,
         SocketAddr,
@@ -40,7 +43,7 @@ impl Server {
 fn listen(listener: TcpListener) {
     for stream in listener.incoming() {
         match stream {
-            Ok(stream) => {
+            Ok(mut stream) => {
                 let addr = match stream.peer_addr() {
                     Ok(address) => address,
                     Err(err) => {
@@ -48,7 +51,17 @@ fn listen(listener: TcpListener) {
                         continue;
                     }
                 };
+
                 info!("Connected: {}", addr);
+
+                let mut buf = Vec::new();
+                Message::Ping(0).serialize(&mut buf)
+                    .expect("Failed to serialize message");
+
+                stream.write_all(&buf)
+                    .expect("Failed to write ping");
+                stream.flush()
+                    .expect("Failed to flush ping");
             }
             Err(err) => {
                 error!("Error accepting connection: {:?}", err);
