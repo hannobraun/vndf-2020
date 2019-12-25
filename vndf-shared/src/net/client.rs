@@ -1,10 +1,16 @@
 use std::{
-    io::prelude::*,
+    io::{
+        self,
+        prelude::*,
+    },
     net::TcpStream,
     thread,
 };
 
-use log::error;
+use log::{
+    error,
+    info,
+};
 
 use crate::net::{
     Error,
@@ -15,14 +21,19 @@ use crate::net::{
 pub struct Client;
 
 impl Client {
-    pub fn new(stream: TcpStream) -> Self {
+    pub fn new(stream: io::Result<TcpStream>) -> io::Result<Self> {
+        let stream = stream?;
+
+        let addr = stream.peer_addr()?;
+        info!("Connected: {}", addr);
+
         thread::spawn(|| {
             if let Err(err) = receive(stream) {
                 error!("Receive error: {:?}", err);
             }
         });
 
-        Self
+        Ok(Self)
     }
 }
 

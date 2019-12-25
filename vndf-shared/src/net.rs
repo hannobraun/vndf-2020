@@ -11,15 +11,11 @@ use std::{
         Ipv6Addr,
         SocketAddr,
         TcpListener,
-        TcpStream,
     },
     thread,
 };
 
-use log::{
-    error,
-    info,
-};
+use log::error;
 
 use self::client::Client;
 
@@ -43,19 +39,10 @@ impl Server {
 
 fn listen(listener: TcpListener) {
     for stream in listener.incoming() {
-        if let Err(err) = handle_client(stream) {
+        if let Err(err) = Client::new(stream) {
             error!("Error accepting connection: {:?}", err);
         }
     }
-}
-
-fn handle_client(stream: io::Result<TcpStream>) -> Result<Client, Error> {
-    let stream = stream?;
-
-    let addr = stream.peer_addr()?;
-    info!("Connected: {}", addr);
-
-    Ok(Client::new(stream))
 }
 
 
