@@ -1937,6 +1937,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "vndf-server"
+version = "0.1.0"
+
+[[package]]
 name = "void"
 version = "1.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"

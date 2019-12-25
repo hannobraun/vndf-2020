@@ -1,4 +1,5 @@
 [workspace]
 members = [
-    "vndf-client"
+    "vndf-client",
+    "vndf-server",
 ]
