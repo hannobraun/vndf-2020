@@ -2,5 +2,9 @@
 members = [
     "vndf-client",
     "vndf-server",
+    "vndf-shared",
 ]
-default-members = ["vndf-client"]
+default-members = [
+    "vndf-client",
+    "vndf-shared",
+]
