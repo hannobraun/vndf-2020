@@ -8,6 +8,11 @@ use std::{
     thread,
 };
 
+use log::{
+    error,
+    info,
+};
+
 
 pub const PORT: u16 = 34480;
 
@@ -33,14 +38,14 @@ fn listen(listener: TcpListener) {
                 let addr = match stream.peer_addr() {
                     Ok(address) => address,
                     Err(err) => {
-                        print!("Error retrieving peer address: {:?}\n", err);
+                        error!("Error retrieving peer address: {:?}", err);
                         continue;
                     }
                 };
-                print!("Connect: {}\n", addr);
+                info!("Connect: {}", addr);
             }
             Err(err) => {
-                print!("Error accepting connection: {:?}\n", err);
+                error!("Error accepting connection: {:?}", err);
                 continue;
             }
         }

@@ -39,6 +39,11 @@ use self::{
 
 
 fn main() -> GameResult {
+    env_logger::builder()
+        .filter_module("vndf_shared", log::LevelFilter::Info)
+        .filter_module("vndf_client", log::LevelFilter::Info)
+        .init();
+
     let _server = Server::start()?;
     let _conn   = Conn::connect()?;
 
