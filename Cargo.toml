@@ -3,3 +3,4 @@ members = [
     "vndf-client",
     "vndf-server",
 ]
+default-members = ["vndf-client"]
