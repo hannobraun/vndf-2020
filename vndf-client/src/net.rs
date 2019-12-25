@@ -20,6 +20,7 @@ use std::{
 
 use log::{
     debug,
+    error,
     trace,
 };
 
@@ -41,7 +42,15 @@ impl Conn {
 
         let (rx_sender, rx_receiver) = channel();
 
-        thread::spawn(|| receive(stream, rx_sender));
+        thread::spawn(|| {
+            if let Err(err) = receive(stream, rx_sender) {
+                error!("Error receiving data: {:?}", err);
+            }
+
+            // If we reach this point, `receive` has failed. The world outside
+            // this thread will notice this, because `rx_sender` has been
+            // dropped.
+        });
 
         Ok(
             Self {
