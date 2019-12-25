@@ -1934,10 +1934,18 @@ dependencies = [
  "cgmath 0.17.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "ggez 0.5.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "hecs 0.2.5 (registry+https://github.com/rust-lang/crates.io-index)",
+ "vndf-shared 0.1.0",
 ]
 
 [[package]]
 name = "vndf-server"
+version = "0.1.0"
+dependencies = [
+ "vndf-shared 0.1.0",
+]
+
+[[package]]
+name = "vndf-shared"
 version = "0.1.0"
 
 [[package]]

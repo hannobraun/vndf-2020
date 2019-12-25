@@ -8,3 +8,6 @@ edition = "2018"
 cgmath = { version = "*", features = ["mint"] }
 ggez   = "*"
 hecs   = "*"
+
+[dependencies.vndf-shared]
+path = "../vndf-shared"
