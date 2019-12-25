@@ -13,6 +13,7 @@ use std::{
         Ipv6Addr,
         SocketAddr,
         TcpListener,
+        TcpStream,
     },
     thread,
 };
@@ -42,33 +43,25 @@ impl Server {
 
 fn listen(listener: TcpListener) {
     for stream in listener.incoming() {
-        match stream {
-            Ok(mut stream) => {
-                let addr = match stream.peer_addr() {
-                    Ok(address) => address,
-                    Err(err) => {
-                        error!("Error retrieving peer address: {:?}", err);
-                        continue;
-                    }
-                };
-
-                info!("Connected: {}", addr);
-
-                let mut buf = Vec::new();
-                Message::Ping(0).serialize(&mut buf)
-                    .expect("Failed to serialize message");
-
-                stream.write_all(&buf)
-                    .expect("Failed to write ping");
-                stream.flush()
-                    .expect("Failed to flush ping");
-            }
-            Err(err) => {
-                error!("Error accepting connection: {:?}", err);
-                continue;
-            }
+        if let Err(err) = handle_client(stream) {
+            error!("Error accepting connection: {:?}", err);
         }
     }
+}
+
+fn handle_client(stream: io::Result<TcpStream>) -> Result<(), Error> {
+    let mut stream = stream?;
+
+    let addr = stream.peer_addr()?;
+    info!("Connected: {}", addr);
+
+    let mut buf = Vec::new();
+    Message::Ping(0).serialize(&mut buf)?;
+
+    stream.write_all(&buf)?;
+    stream.flush()?;
+
+    Ok(())
 }
 
 
