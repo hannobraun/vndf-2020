@@ -1,15 +1,14 @@
 pub mod conn;
-// TASK: Rename
-pub mod error;
 pub mod msg;
+pub mod result;
 pub mod server;
 
 pub use self::{
     conn::Conn,
-    error::{
+    msg::Message,
+    result::{
         Error,
         Result,
     },
-    msg::Message,
     server::Server,
 };
