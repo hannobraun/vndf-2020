@@ -80,7 +80,6 @@ impl Server {
                     return Some(Ok(Event::Message(message)));
                 }
                 Err(TryRecvError::Empty) => {
-                    // Nothing to do. We'll try to return an accept event below.
                     ()
                 }
                 Err(TryRecvError::Disconnected) => {
@@ -93,18 +92,21 @@ impl Server {
                     let id = conn::Id(self.next_id);
                     self.next_id += 1;
 
-                    Some(Ok(Event::Connect(id)))
+                    return Some(Ok(Event::Connect(id)));
                 }
                 Err(TryRecvError::Empty) => {
-                    None
+                    ()
                 }
                 Err(TryRecvError::Disconnected) => {
                     unreachable!(
                         "`accept` thread does not end while receiver exists"
                     );
-
                 }
             }
+
+            // If we returned nothing by thing point, there's nothing to be
+            // returned.
+            None
         })
     }
 }
