@@ -8,6 +8,12 @@ use std::{
         SocketAddr,
         TcpStream,
     },
+    sync::mpsc::{
+        Receiver,
+        RecvError,
+        Sender,
+        channel,
+    },
     thread,
 };
 
@@ -19,17 +25,20 @@ use log::{
 
 use crate::net::{
     self,
-    Message as _,
+    Message,
     msg,
 };
 
 
 pub struct Conn<In, Out> {
-    _in:  PhantomData<In>,
-    _out: PhantomData<Out>,
+    _in: PhantomData<In>,
+    out: Sender<Out>,
 }
 
-impl<In, Out> Conn<In, Out> {
+impl<In, Out> Conn<In, Out>
+    where
+        Out: Message + 'static,
+{
     pub fn accept(stream: io::Result<TcpStream>) -> io::Result<Self> {
         let stream = stream?;
 
@@ -46,21 +55,59 @@ impl<In, Out> Conn<In, Out> {
     }
 
     fn new(stream: TcpStream) -> io::Result<Self> {
+        let (out_tx, out_rx) = channel();
+
+        let stream_send    = stream.try_clone()?;
+        let stream_receive = stream;
+
+        thread::spawn(||
+            if let Err(err) = send(stream_send, out_rx) {
+                error!("Send error: {:?}", err);
+            }
+        );
+
         thread::spawn(|| {
-            if let Err(err) = receive(stream) {
+            if let Err(err) = receive(stream_receive) {
                 error!("Receive error: {:?}", err);
             }
         });
 
         Ok(
             Self {
-                _in:  PhantomData,
-                _out: PhantomData,
+                _in: PhantomData,
+                out: out_tx,
             }
         )
     }
+
+    pub fn send(&mut self, message: Out) -> net::Result {
+        self.out.send(message)?;
+        Ok(())
+    }
 }
 
+
+fn send<T>(mut stream: TcpStream, out: Receiver<T>) -> net::Result
+    where T: Message
+{
+    let mut buf = Vec::new();
+
+    loop {
+        stream.write_all(&buf)?;
+        buf.clear();
+
+        match out.recv() {
+            Ok(message) => {
+                message.write(&mut buf)?;
+            }
+            Err(RecvError) => {
+                // This means the other end has hung up. No need to continue
+                // here.
+                return Ok(());
+            }
+        }
+    }
+}
 
 fn receive(mut stream: TcpStream) -> net::Result {
     let mut buf = Vec::new();
