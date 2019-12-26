@@ -7,5 +7,6 @@ pub mod server;
 pub use self::{
     conn::Conn,
     error::Error,
+    msg::Message,
     server::Server,
 };

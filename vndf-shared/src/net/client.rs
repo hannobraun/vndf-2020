@@ -17,11 +17,8 @@ use crate::{
     input,
     net::{
         Error,
-        msg::{
-            self,
-            deserialize,
-            serialize,
-        },
+        Message as _,
+        msg,
     },
 };
 
@@ -57,11 +54,11 @@ fn receive(mut stream: TcpStream) -> Result<(), Error> {
 
         buf.extend(read);
 
-        while let Some(message) = deserialize::<input::Event>(&mut buf)? {
+        while let Some(message) = input::Event::deserialize(&mut buf)? {
             debug!("Received: {:?}", message);
 
             let mut buf = Vec::new();
-            serialize(msg::FromServer::Welcome, &mut buf)?;
+            msg::FromServer::Welcome.serialize(&mut buf)?;
 
             stream.write_all(&buf)?;
             stream.flush()?;

@@ -28,11 +28,8 @@ use vndf_shared::{
     input,
     net::{
         Error,
-        msg::{
-            self,
-            deserialize,
-            serialize,
-        },
+        Message as _,
+        msg,
         server,
     },
 };
@@ -51,7 +48,7 @@ impl Conn {
         let mut stream  = TcpStream::connect(address)?;
 
         let mut buf = Vec::new();
-        serialize(input::Event::LaunchMissile, &mut buf)
+        input::Event::LaunchMissile.serialize(&mut buf)
             .expect("Failed to serialize message");
         stream.write_all(&buf)?;
 
@@ -105,7 +102,7 @@ fn receive(mut stream: TcpStream, sender: Sender<msg::FromServer>)
         let read = &tmp[..read];
         buf.extend(read);
 
-        while let Some(message) = deserialize::<msg::FromServer>(&mut buf)? {
+        while let Some(message) = msg::FromServer::deserialize(&mut buf)? {
             debug!("Message received: {:?}", message);
 
             sender.send(message)
