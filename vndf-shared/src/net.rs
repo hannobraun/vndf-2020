@@ -27,8 +27,11 @@ pub struct Server;
 
 impl Server {
     pub fn start_default() -> io::Result<Self> {
-        let address  = SocketAddr::new(Ipv6Addr::UNSPECIFIED.into(), PORT);
-        let listener = TcpListener::bind(address)?;
+        Self::start(SocketAddr::new(Ipv6Addr::UNSPECIFIED.into(), PORT))
+    }
+
+    pub fn start(addr: SocketAddr) -> io::Result<Self> {
+        let listener = TcpListener::bind(addr)?;
 
         thread::spawn(|| listen(listener));
 
