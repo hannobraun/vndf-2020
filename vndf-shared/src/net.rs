@@ -1,9 +1,13 @@
 pub mod client;
 pub mod comm;
+pub mod conn;
 pub mod error;
 pub mod server;
 
-pub use self::error::Error;
+pub use self::{
+    conn::Conn,
+    error::Error,
+};
 
 
 use std::{
@@ -13,7 +17,6 @@ use std::{
         Ipv6Addr,
         SocketAddr,
         TcpListener,
-        TcpStream,
     },
     sync::mpsc::{
         Receiver,
@@ -78,7 +81,7 @@ impl Server {
         iter::from_fn(move || {
             match self.accept.try_recv() {
                 Ok(_conn) => {
-                    let id = Id(self.next_id);
+                    let id = conn::Id(self.next_id);
                     self.next_id += 1;
 
                     Some(Ok(Event::Connect(id)))
@@ -116,20 +119,5 @@ impl Server {
 
 #[derive(Debug, Eq, PartialEq)]
 pub enum Event {
-    Connect(Id),
-}
-
-
-#[derive(Debug, Eq, PartialEq)]
-pub struct Id(pub u64);
-
-
-pub struct Conn;
-
-impl Conn {
-    pub fn connect(addr: SocketAddr) -> io::Result<Self> {
-        TcpStream::connect(addr)?;
-
-        Ok(Self)
-    }
+    Connect(conn::Id),
 }
