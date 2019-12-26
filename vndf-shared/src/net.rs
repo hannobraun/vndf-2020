@@ -1,7 +1,7 @@
 pub mod client;
-pub mod comm;
 pub mod conn;
 pub mod error;
+pub mod msg;
 pub mod server;
 
 pub use self::{

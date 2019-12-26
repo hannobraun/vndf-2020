@@ -28,7 +28,7 @@ use vndf_shared::{
     input,
     net::{
         Error,
-        comm::{
+        msg::{
             deserialize,
             serialize,
         },

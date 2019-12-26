@@ -17,7 +17,7 @@ use crate::{
     input,
     net::{
         Error,
-        comm::{
+        msg::{
             deserialize,
             serialize,
         },
