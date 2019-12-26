@@ -150,7 +150,3 @@ fn receive<T>(mut stream: TcpStream, in_chan: Sender<T>) -> net::Result
         }
     }
 }
-
-
-#[derive(Debug, Eq, PartialEq, Hash)]
-pub struct Id(pub u64);

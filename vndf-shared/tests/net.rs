@@ -2,9 +2,11 @@ use vndf_shared::net::{
     self,
     Server,
     client::Conn,
-    conn,
     msg,
-    server,
+    server::{
+        self,
+        ConnId,
+    },
 };
 
 
@@ -23,8 +25,8 @@ fn server_should_emit_connect_events() -> net::Result {
         }
     }
 
-    assert!(events.contains(&Ok(server::Event::Connect(conn::Id(0)))));
-    assert!(events.contains(&Ok(server::Event::Connect(conn::Id(1)))));
+    assert!(events.contains(&Ok(server::Event::Connect(ConnId(0)))));
+    assert!(events.contains(&Ok(server::Event::Connect(ConnId(1)))));
 
     Ok(())
 }

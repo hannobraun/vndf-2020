@@ -20,7 +20,6 @@ use log::error;
 
 use crate::net::{
     self,
-    conn,
     msg,
 };
 
@@ -89,7 +88,7 @@ impl Server {
 
             match self.accept.try_recv() {
                 Ok(_conn) => {
-                    let id = conn::Id(self.next_id);
+                    let id = ConnId(self.next_id);
                     self.next_id += 1;
 
                     return Some(Ok(Event::Connect(id)));
@@ -133,9 +132,13 @@ fn accept(
 }
 
 
+#[derive(Debug, Eq, PartialEq, Hash)]
+pub struct ConnId(pub u64);
+
+
 #[derive(Debug, Eq, PartialEq)]
 pub enum Event {
-    Connect(conn::Id),
+    Connect(ConnId),
     Message(msg::FromClient),
 }
 
