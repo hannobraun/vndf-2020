@@ -33,14 +33,14 @@ impl Server {
     pub fn start(addr: SocketAddr) -> io::Result<Self> {
         let listener = TcpListener::bind(addr)?;
 
-        thread::spawn(|| listen(listener));
+        thread::spawn(|| accept(listener));
 
         Ok(Self)
     }
 }
 
 
-fn listen(listener: TcpListener) {
+fn accept(listener: TcpListener) {
     for stream in listener.incoming() {
         if let Err(err) = Client::new(stream) {
             error!("Error accepting connection: {:?}", err);
