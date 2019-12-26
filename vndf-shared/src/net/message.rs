@@ -6,12 +6,6 @@ use serde::{
 };
 
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Deserialize, Serialize)]
-pub enum Message {
-    Ping(u64),
-}
-
-
 pub fn serialize<T>(message: T, buf: &mut Vec<u8>) -> Result<(), Error>
     where T: Serialize
 {

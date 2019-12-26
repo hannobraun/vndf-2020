@@ -2,9 +2,6 @@ pub mod client;
 pub mod message;
 
 
-pub use self::message::Message;
-
-
 use std::{
     io,
     net::{
@@ -16,6 +13,10 @@ use std::{
 };
 
 use log::error;
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use self::client::Client;
 
@@ -47,6 +48,12 @@ impl Server {
 
         unreachable!("`listener.incoming()` does never yield `None`");
     }
+}
+
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Deserialize, Serialize)]
+pub enum Message {
+    Ping(u64),
 }
 
 
