@@ -8,6 +8,7 @@ use std::{
 };
 
 use log::{
+    debug,
     error,
     info,
 };
@@ -50,6 +51,8 @@ fn receive(mut stream: TcpStream) -> Result<(), Error> {
         buf.extend(read);
 
         while let Some(message) = Message::deserialize(&mut buf)? {
+            debug!("Received: {:?}", message);
+
             let mut buf = Vec::new();
             message.serialize(&mut buf)?;
 
