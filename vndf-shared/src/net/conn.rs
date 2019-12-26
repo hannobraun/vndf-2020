@@ -62,10 +62,6 @@ impl<In, Out> Conn<In, Out> {
 }
 
 
-#[derive(Debug, Eq, PartialEq)]
-pub struct Id(pub u64);
-
-
 fn receive(mut stream: TcpStream) -> net::Result {
     let mut buf = Vec::new();
 
@@ -88,3 +84,7 @@ fn receive(mut stream: TcpStream) -> net::Result {
         }
     }
 }
+
+
+#[derive(Debug, Eq, PartialEq)]
+pub struct Id(pub u64);
