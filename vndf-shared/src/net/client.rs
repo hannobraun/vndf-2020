@@ -17,11 +17,11 @@ use crate::{
     input,
     net::{
         Error,
+        Message,
         comm::{
             deserialize,
             serialize,
         },
-        Message,
     },
 };
 
