@@ -31,8 +31,8 @@ use crate::net::{
 
 
 pub struct Conn<In, Out> {
-    _in: PhantomData<In>,
-    out: Sender<Out>,
+    _in:      PhantomData<In>,
+    out_chan: Sender<Out>,
 }
 
 impl<In, Out> Conn<In, Out>
@@ -76,14 +76,14 @@ impl<In, Out> Conn<In, Out>
 
         Ok(
             Self {
-                _in: PhantomData,
-                out: out_tx,
+                _in:      PhantomData,
+                out_chan: out_tx,
             }
         )
     }
 
     pub fn send(&mut self, message: Out) -> net::Result {
-        self.out.send(message)?;
+        self.out_chan.send(message)?;
         Ok(())
     }
 }
