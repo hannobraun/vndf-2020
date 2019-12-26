@@ -132,7 +132,7 @@ fn accept(
 }
 
 
-#[derive(Debug, Eq, PartialEq, Hash)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
 pub struct ConnId(pub u64);
 
 
