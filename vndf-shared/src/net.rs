@@ -59,8 +59,8 @@ pub enum Message {
 
 #[derive(Debug)]
 pub enum Error {
-    Io(io::Error),
     Comm(comm::Error),
+    Io(io::Error),
 }
 
 impl Eq for Error {}
@@ -75,14 +75,14 @@ impl PartialEq for Error {
     }
 }
 
-impl From<io::Error> for Error {
-    fn from(err: io::Error) -> Self {
-        Self::Io(err)
-    }
-}
-
 impl From<comm::Error> for Error {
     fn from(err: comm::Error) -> Self {
         Self::Comm(err)
+    }
+}
+
+impl From<io::Error> for Error {
+    fn from(err: io::Error) -> Self {
+        Self::Io(err)
     }
 }
