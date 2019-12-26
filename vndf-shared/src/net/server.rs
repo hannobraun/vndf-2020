@@ -46,8 +46,9 @@ impl Server {
     pub fn start(addr: SocketAddr) -> io::Result<Self> {
         let listener = TcpListener::bind(addr)?;
 
-        // Can't just use `addr`, as that could have a port number of zero, for
-        // example, which won't be the actual port number.
+        // We can't just use `addr`, as that could have a port number of `0`,
+        // for example, which won't be the actual port number we're listening
+        // on.
         let addr = listener.local_addr()?;
 
         let (accept_tx, accept_rx) = channel();
