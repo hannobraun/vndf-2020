@@ -55,6 +55,18 @@ pub enum Error {
     Message(message::Error),
 }
 
+impl Eq for Error {}
+
+impl PartialEq for Error {
+    fn eq(&self, rhs: &Self) -> bool {
+        match (self, rhs) {
+            (Error::Io(s), Error::Io(o))           => s.kind() == o.kind(),
+            (Error::Message(s), Error::Message(o)) => s == o,
+            _                                      => false,
+        }
+    }
+}
+
 impl From<io::Error> for Error {
     fn from(err: io::Error) -> Self {
         Self::Io(err)
