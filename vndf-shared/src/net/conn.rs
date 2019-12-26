@@ -55,20 +55,22 @@ impl<In, Out> Conn<In, Out>
     }
 
     fn new(stream: TcpStream) -> io::Result<Self> {
+        let addr = stream.peer_addr()?;
+
         let (out_tx, out_rx) = channel();
 
         let stream_send    = stream.try_clone()?;
         let stream_receive = stream;
 
-        thread::spawn(||
+        thread::spawn(move ||
             if let Err(err) = send(stream_send, out_rx) {
-                error!("Send error: {:?}", err);
+                error!("Send error ({}): {:?}", addr, err);
             }
         );
 
-        thread::spawn(|| {
+        thread::spawn(move || {
             if let Err(err) = receive(stream_receive) {
-                error!("Receive error: {:?}", err);
+                error!("Receive error ({}) : {:?}", addr, err);
             }
         });
 
