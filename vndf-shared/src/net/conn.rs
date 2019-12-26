@@ -22,6 +22,7 @@ use log::{
     debug,
     error,
     info,
+    trace,
 };
 
 use crate::net::{
@@ -108,11 +109,14 @@ fn send<T>(mut stream: TcpStream, out_chan: Receiver<T>) -> net::Result
     let mut buf = Vec::new();
 
     loop {
+        trace!("Starting send loop: {:?}", buf);
+
         stream.write_all(&buf)?;
         buf.clear();
 
         match out_chan.recv() {
             Ok(message) => {
+                debug!("Writing message: {:?}", message);
                 message.write(&mut buf)?;
             }
             Err(RecvError) => {
