@@ -37,6 +37,7 @@ pub struct Conn<In, Out> {
 
 impl<In, Out> Conn<In, Out>
     where
+        In:  Message + 'static,
         Out: Message + 'static,
 {
     pub fn accept(stream: io::Result<TcpStream>) -> io::Result<Self> {
@@ -69,7 +70,7 @@ impl<In, Out> Conn<In, Out>
         );
 
         thread::spawn(move || {
-            if let Err(err) = receive(stream_receive) {
+            if let Err(err) = receive::<In>(stream_receive) {
                 error!("Receive error ({}) : {:?}", addr, err);
             }
         });
@@ -111,7 +112,7 @@ fn send<T>(mut stream: TcpStream, out: Receiver<T>) -> net::Result
     }
 }
 
-fn receive(mut stream: TcpStream) -> net::Result {
+fn receive<T>(mut stream: TcpStream) -> net::Result where T: Message {
     let mut buf = Vec::new();
 
     loop {
@@ -122,7 +123,7 @@ fn receive(mut stream: TcpStream) -> net::Result {
 
         buf.extend(read);
 
-        while let Some(message) = msg::FromClient::read(&mut buf)? {
+        while let Some(message) = T::read(&mut buf)? {
             debug!("Received: {:?}", message);
 
             let mut buf = Vec::new();
