@@ -54,7 +54,7 @@ fn receive(mut stream: TcpStream) -> Result<(), Error> {
             debug!("Received: {:?}", message);
 
             let mut buf = Vec::new();
-            message.serialize(&mut buf)?;
+            Message::Ping(1).serialize(&mut buf)?;
 
             stream.write_all(&buf)?;
             stream.flush()?;
