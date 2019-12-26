@@ -33,6 +33,12 @@ impl<T> Message for T where T: DeserializeOwned + Serialize {}
 
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Deserialize, Serialize)]
+pub enum FromClient {
+    Hello,
+}
+
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Deserialize, Serialize)]
 pub enum FromServer {
     Welcome,
 }

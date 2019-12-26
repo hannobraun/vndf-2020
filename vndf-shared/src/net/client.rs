@@ -13,13 +13,10 @@ use log::{
     info,
 };
 
-use crate::{
-    input,
-    net::{
-        Error,
-        Message as _,
-        msg,
-    },
+use crate::net::{
+    Error,
+    Message as _,
+    msg,
 };
 
 
@@ -54,7 +51,7 @@ fn receive(mut stream: TcpStream) -> Result<(), Error> {
 
         buf.extend(read);
 
-        while let Some(message) = input::Event::read(&mut buf)? {
+        while let Some(message) = msg::FromClient::read(&mut buf)? {
             debug!("Received: {:?}", message);
 
             let mut buf = Vec::new();

@@ -24,14 +24,11 @@ use log::{
     trace,
 };
 
-use vndf_shared::{
-    input,
-    net::{
-        Error,
-        Message as _,
-        msg,
-        server,
-    },
+use vndf_shared::net::{
+    Error,
+    Message as _,
+    msg,
+    server,
 };
 
 
@@ -48,7 +45,7 @@ impl Conn {
         let mut stream  = TcpStream::connect(address)?;
 
         let mut buf = Vec::new();
-        input::Event::LaunchMissile.write(&mut buf)
+        msg::FromClient::Hello.write(&mut buf)
             .expect("Failed to serialize message");
         stream.write_all(&buf)?;
 
