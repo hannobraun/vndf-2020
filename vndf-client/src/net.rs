@@ -27,7 +27,6 @@ use log::{
 use vndf_shared::{
     input,
     net::{
-        PORT,
         Error,
         comm::{
             deserialize,
@@ -44,7 +43,10 @@ pub struct Conn {
 
 impl Conn {
     pub fn connect() -> io::Result<Self> {
-        let     address = SocketAddr::new(Ipv6Addr::LOCALHOST.into(), PORT);
+        let address = SocketAddr::new(
+            Ipv6Addr::LOCALHOST.into(),
+            server::PORT,
+        );
         let mut stream  = TcpStream::connect(address)?;
 
         let mut buf = Vec::new();
