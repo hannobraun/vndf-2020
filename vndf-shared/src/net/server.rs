@@ -17,10 +17,6 @@ use std::{
 };
 
 use log::error;
-use serde::{
-    Deserialize,
-    Serialize,
-};
 
 use crate::net::{
     Error,
@@ -116,10 +112,4 @@ impl Server {
 #[derive(Debug, Eq, PartialEq)]
 pub enum Event {
     Connect(conn::Id),
-}
-
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Deserialize, Serialize)]
-pub enum Message {
-    Welcome,
 }

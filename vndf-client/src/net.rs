@@ -29,6 +29,7 @@ use vndf_shared::{
     net::{
         Error,
         msg::{
+            self,
             deserialize,
             serialize,
         },
@@ -38,7 +39,7 @@ use vndf_shared::{
 
 
 pub struct Conn {
-    rx_receiver: Receiver<server::Message>,
+    rx_receiver: Receiver<msg::FromServer>,
 }
 
 impl Conn {
@@ -74,7 +75,7 @@ impl Conn {
     }
 
     pub fn messages<'r>(&'r mut self)
-        -> impl Iterator<Item=Result<server::Message, ReceiveError>> + 'r
+        -> impl Iterator<Item=Result<msg::FromServer, ReceiveError>> + 'r
     {
         iter::from_fn(move || {
             match self.rx_receiver.try_recv() {
@@ -90,7 +91,7 @@ impl Conn {
 }
 
 
-fn receive(mut stream: TcpStream, sender: Sender<server::Message>)
+fn receive(mut stream: TcpStream, sender: Sender<msg::FromServer>)
     -> Result<(), Error>
 {
     let mut buf = Vec::new();
@@ -104,7 +105,7 @@ fn receive(mut stream: TcpStream, sender: Sender<server::Message>)
         let read = &tmp[..read];
         buf.extend(read);
 
-        while let Some(message) = deserialize::<server::Message>(&mut buf)? {
+        while let Some(message) = deserialize::<msg::FromServer>(&mut buf)? {
             debug!("Message received: {:?}", message);
 
             sender.send(message)

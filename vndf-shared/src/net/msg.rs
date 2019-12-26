@@ -6,6 +6,12 @@ use serde::{
 };
 
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Deserialize, Serialize)]
+pub enum FromServer {
+    Welcome,
+}
+
+
 pub fn serialize<T>(message: T, buf: &mut Vec<u8>) -> Result<(), Error>
     where T: Serialize
 {

@@ -18,10 +18,10 @@ use crate::{
     net::{
         Error,
         msg::{
+            self,
             deserialize,
             serialize,
         },
-        server,
     },
 };
 
@@ -61,7 +61,7 @@ fn receive(mut stream: TcpStream) -> Result<(), Error> {
             debug!("Received: {:?}", message);
 
             let mut buf = Vec::new();
-            serialize(server::Message::Welcome, &mut buf)?;
+            serialize(msg::FromServer::Welcome, &mut buf)?;
 
             stream.write_all(&buf)?;
             stream.flush()?;
