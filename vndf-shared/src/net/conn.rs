@@ -28,7 +28,6 @@ use log::{
 use crate::net::{
     self,
     Message,
-    msg,
 };
 
 
@@ -148,12 +147,6 @@ fn receive<T>(mut stream: TcpStream, in_chan: Sender<T>) -> net::Result
                 // Other end has hung up. No need to keep this up.
                 return Ok(())
             }
-
-            let mut buf = Vec::new();
-            msg::FromServer::Welcome.write(&mut buf)?;
-
-            stream.write_all(&buf)?;
-            stream.flush()?;
         }
     }
 }
