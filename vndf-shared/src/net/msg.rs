@@ -17,13 +17,13 @@ pub trait Message : DeserializeOwned + Serialize {
     }
 
     fn read(buf: &mut Vec<u8>) -> Result<Option<Self>, Error> {
-        let (message, bytes_taken) = match take_from_bytes(&buf) {
-            Ok((message, bytes_taken))           => (Some(message), bytes_taken),
+        let (message, num_bytes) = match take_from_bytes(&buf) {
+            Ok((message, num_bytes))             => (Some(message), num_bytes),
             Err(Error::DeserializeUnexpectedEnd) => (None, 0),
             Err(err)                             => return Err(err),
         };
 
-        buf.drain(..bytes_taken);
+        buf.drain(..num_bytes);
 
         Ok(message)
     }
