@@ -32,17 +32,21 @@ impl Conn {
         let addr = stream.peer_addr()?;
         info!("Connected: {}", addr);
 
+        Self::new(stream)
+    }
+
+    pub fn connect(addr: SocketAddr) -> io::Result<Self> {
+        let stream = TcpStream::connect(addr)?;
+
+        Self::new(stream)
+    }
+
+    fn new(stream: TcpStream) -> io::Result<Self> {
         thread::spawn(|| {
             if let Err(err) = Self::receive(stream) {
                 error!("Receive error: {:?}", err);
             }
         });
-
-        Ok(Self)
-    }
-
-    pub fn connect(addr: SocketAddr) -> io::Result<Self> {
-        TcpStream::connect(addr)?;
 
         Ok(Self)
     }
