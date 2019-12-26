@@ -6,7 +6,7 @@ use serde::{
 };
 
 
-pub trait Message : DeserializeOwned + Serialize {
+pub trait Message : Send + DeserializeOwned + Serialize {
     fn write(&self, buf: &mut Vec<u8>) -> Result<(), Error> {
         let mut buf2 = [0; 1024];
 
@@ -29,7 +29,7 @@ pub trait Message : DeserializeOwned + Serialize {
     }
 }
 
-impl<T> Message for T where T: DeserializeOwned + Serialize {}
+impl<T> Message for T where T: Send + DeserializeOwned + Serialize {}
 
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Deserialize, Serialize)]
