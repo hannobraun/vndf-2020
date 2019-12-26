@@ -3,7 +3,7 @@ use std::{
         prelude::*,
         self,
     },
-    marker::PhantomData,
+    iter,
     net::{
         SocketAddr,
         TcpStream,
@@ -13,6 +13,7 @@ use std::{
         RecvError,
         Sender,
         SendError,
+        TryRecvError,
         channel,
     },
     thread,
@@ -32,7 +33,7 @@ use crate::net::{
 
 
 pub struct Conn<In, Out> {
-    _in:      PhantomData<In>,
+    in_chan:  Option<Receiver<In>>,
     out_chan: Sender<Out>,
 }
 
@@ -61,7 +62,7 @@ impl<In, Out> Conn<In, Out>
     fn new(stream: TcpStream, in_chan: Option<Sender<In>>) -> io::Result<Self> {
         let addr = stream.peer_addr()?;
 
-        let (in_tx, _) = match in_chan {
+        let (in_tx, in_rx) = match in_chan {
             Some(in_chan) => {
                 (in_chan, None)
             }
@@ -89,7 +90,7 @@ impl<In, Out> Conn<In, Out>
 
         Ok(
             Self {
-                _in:      PhantomData,
+                in_chan:  in_rx,
                 out_chan: out_tx,
             }
         )
@@ -98,6 +99,29 @@ impl<In, Out> Conn<In, Out>
     pub fn send(&mut self, message: Out) -> net::Result {
         self.out_chan.send(message)?;
         Ok(())
+    }
+
+    pub fn events<'s>(&'s mut self)
+        -> impl Iterator<Item=net::Result<Event<In>>> + 's
+    {
+        iter::from_fn(move || {
+            let in_chan = match &mut self.in_chan {
+                Some(in_chan) => in_chan,
+                None          => return None,
+            };
+
+            match in_chan.try_recv() {
+                Ok(message) => {
+                    Some(Ok(Event::Message(message)))
+                }
+                Err(TryRecvError::Empty) => {
+                    None
+                }
+                Err(TryRecvError::Disconnected) => {
+                    Some(Err(net::Error::ThreadFailed))
+                }
+            }
+        })
     }
 }
 
@@ -149,4 +173,9 @@ fn receive<T>(mut stream: TcpStream, in_chan: Sender<T>) -> net::Result
             }
         }
     }
+}
+
+
+pub enum Event<M> {
+    Message(M)
 }
