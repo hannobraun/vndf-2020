@@ -7,7 +7,7 @@ use serde::{
 
 
 pub trait Message : DeserializeOwned + Serialize {
-    fn serialize(&self, buf: &mut Vec<u8>) -> Result<(), Error> {
+    fn write(&self, buf: &mut Vec<u8>) -> Result<(), Error> {
         let mut buf2 = [0; 1024];
 
         let serialized = postcard::to_slice(self, &mut buf2)?;
@@ -16,7 +16,7 @@ pub trait Message : DeserializeOwned + Serialize {
         Ok(())
     }
 
-    fn deserialize(buf: &mut Vec<u8>) -> Result<Option<Self>, Error> {
+    fn read(buf: &mut Vec<u8>) -> Result<Option<Self>, Error> {
         let (message, bytes_taken) = match take_from_bytes(&buf) {
             Ok((message, bytes_taken))           => (Some(message), bytes_taken),
             Err(Error::DeserializeUnexpectedEnd) => (None, 0),
@@ -51,19 +51,15 @@ pub type Error = postcard::Error;
 
 #[cfg(test)]
 mod tests {
+    use serde::{
+        Deserialize,
+        Serialize,
+    };
+
     use super::Message as _;
 
-
-    mod ping {
-        use serde::{
-            Deserialize,
-            Serialize,
-        };
-
-        #[derive(Clone, Copy, Debug, Deserialize, Serialize, Eq, PartialEq)]
-        pub struct Ping(pub u64);
-    }
-    use self::ping::Ping;
+    #[derive(Clone, Copy, Debug, Deserialize, Serialize, Eq, PartialEq)]
+    pub struct Ping(u64);
 
 
     #[test]
@@ -73,14 +69,14 @@ mod tests {
         let original_1 = Ping(1);
         let original_2 = Ping(2);
 
-        original_1.serialize(&mut buf)
+        original_1.write(&mut buf)
             .expect("Failed to serialize message");
-        original_2.serialize(&mut buf)
+        original_2.write(&mut buf)
             .expect("Failed to serialize message");
 
-        let deserialized_1 = Ping::deserialize(&mut buf)
+        let deserialized_1 = Ping::read(&mut buf)
             .expect("Failed to deserialize message");
-        let deserialized_2 = Ping::deserialize(&mut buf)
+        let deserialized_2 = Ping::read(&mut buf)
             .expect("Failed to deserialize message");
 
         assert_eq!(deserialized_1, Some(original_1));
@@ -91,7 +87,7 @@ mod tests {
     #[test]
     fn it_should_return_none_if_buffer_is_empty() {
         let mut buf = Vec::new();
-        let deserialized = Ping::deserialize(&mut buf)
+        let deserialized = Ping::read(&mut buf)
             .expect("Failed to deserialize message");
         assert_eq!(deserialized, None);
     }

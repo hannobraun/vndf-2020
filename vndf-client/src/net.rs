@@ -48,7 +48,7 @@ impl Conn {
         let mut stream  = TcpStream::connect(address)?;
 
         let mut buf = Vec::new();
-        input::Event::LaunchMissile.serialize(&mut buf)
+        input::Event::LaunchMissile.write(&mut buf)
             .expect("Failed to serialize message");
         stream.write_all(&buf)?;
 
@@ -102,7 +102,7 @@ fn receive(mut stream: TcpStream, sender: Sender<msg::FromServer>)
         let read = &tmp[..read];
         buf.extend(read);
 
-        while let Some(message) = msg::FromServer::deserialize(&mut buf)? {
+        while let Some(message) = msg::FromServer::read(&mut buf)? {
             debug!("Message received: {:?}", message);
 
             sender.send(message)

@@ -54,11 +54,11 @@ fn receive(mut stream: TcpStream) -> Result<(), Error> {
 
         buf.extend(read);
 
-        while let Some(message) = input::Event::deserialize(&mut buf)? {
+        while let Some(message) = input::Event::read(&mut buf)? {
             debug!("Received: {:?}", message);
 
             let mut buf = Vec::new();
-            msg::FromServer::Welcome.serialize(&mut buf)?;
+            msg::FromServer::Welcome.write(&mut buf)?;
 
             stream.write_all(&buf)?;
             stream.flush()?;
