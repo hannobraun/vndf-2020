@@ -1,7 +1,7 @@
 use vndf_shared::net::{
     self,
-    Conn,
     Server,
+    client::Conn,
     conn,
     server,
 };

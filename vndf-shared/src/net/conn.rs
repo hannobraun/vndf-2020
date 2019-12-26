@@ -3,6 +3,7 @@ use std::{
         prelude::*,
         self,
     },
+    marker::PhantomData,
     net::{
         SocketAddr,
         TcpStream,
@@ -23,9 +24,12 @@ use crate::net::{
 };
 
 
-pub struct Conn;
+pub struct Conn<In, Out> {
+    _in:  PhantomData<In>,
+    _out: PhantomData<Out>,
+}
 
-impl Conn {
+impl<In, Out> Conn<In, Out> {
     pub fn accept(stream: io::Result<TcpStream>) -> io::Result<Self> {
         let stream = stream?;
 
@@ -48,7 +52,12 @@ impl Conn {
             }
         });
 
-        Ok(Self)
+        Ok(
+            Self {
+                _in:  PhantomData,
+                _out: PhantomData,
+            }
+        )
     }
 }
 

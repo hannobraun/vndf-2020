@@ -20,8 +20,8 @@ use log::error;
 
 use crate::net::{
     self,
-    Conn,
     conn,
+    msg,
 };
 
 
@@ -115,3 +115,6 @@ fn accept(listener: TcpListener, accept: Sender<()>) {
 pub enum Event {
     Connect(conn::Id),
 }
+
+
+pub type Conn = net::Conn<msg::FromClient, msg::FromServer>;
