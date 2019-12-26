@@ -60,7 +60,7 @@ pub enum Message {
 #[derive(Debug)]
 pub enum Error {
     Io(io::Error),
-    Message(comm::Error),
+    Comm(comm::Error),
 }
 
 impl Eq for Error {}
@@ -68,9 +68,9 @@ impl Eq for Error {}
 impl PartialEq for Error {
     fn eq(&self, rhs: &Self) -> bool {
         match (self, rhs) {
-            (Error::Io(s), Error::Io(o))           => s.kind() == o.kind(),
-            (Error::Message(s), Error::Message(o)) => s == o,
-            _                                      => false,
+            (Error::Io(s), Error::Io(o))     => s.kind() == o.kind(),
+            (Error::Comm(s), Error::Comm(o)) => s == o,
+            _                                => false,
         }
     }
 }
@@ -83,6 +83,6 @@ impl From<io::Error> for Error {
 
 impl From<comm::Error> for Error {
     fn from(err: comm::Error) -> Self {
-        Self::Message(err)
+        Self::Comm(err)
     }
 }
