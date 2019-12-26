@@ -50,28 +50,36 @@ pub type Error = postcard::Error;
 
 #[cfg(test)]
 mod tests {
+    use serde::{
+        Deserialize,
+        Serialize,
+    };
+
     use super::{
-        Message,
         deserialize,
         serialize,
     };
+
+
+    #[derive(Clone, Copy, Debug, Deserialize, Serialize, Eq, PartialEq)]
+    pub struct Ping(u64);
 
 
     #[test]
     fn it_should_serialize_to_and_from_a_buffer() {
         let mut buf = Vec::new();
 
-        let original_1 = Message::Ping(1);
-        let original_2 = Message::Ping(2);
+        let original_1 = Ping(1);
+        let original_2 = Ping(2);
 
         serialize(original_1, &mut buf)
             .expect("Failed to serialize message");
         serialize(original_2, &mut buf)
             .expect("Failed to serialize message");
 
-        let deserialized_1 = deserialize::<Message>(&mut buf)
+        let deserialized_1 = deserialize::<Ping>(&mut buf)
             .expect("Failed to deserialize message");
-        let deserialized_2 = deserialize::<Message>(&mut buf)
+        let deserialized_2 = deserialize::<Ping>(&mut buf)
             .expect("Failed to deserialize message");
 
         assert_eq!(deserialized_1, Some(original_1));
@@ -82,7 +90,7 @@ mod tests {
     #[test]
     fn it_should_return_none_if_buffer_is_empty() {
         let mut buf = Vec::new();
-        let deserialized = deserialize::<Message>(&mut buf)
+        let deserialized = deserialize::<Ping>(&mut buf)
             .expect("Failed to deserialize message");
         assert_eq!(deserialized, None);
     }
