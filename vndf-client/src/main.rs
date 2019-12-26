@@ -105,7 +105,7 @@ impl EventHandler for Game {
             quit(context);
         }
 
-        if let Some(event) = input::Event::key_down(key_code) {
+        if let Some(event) = input::key_down(key_code) {
             self.state.handle_input(event);
         }
     }
@@ -115,7 +115,7 @@ impl EventHandler for Game {
         key_code: KeyCode,
         _:        KeyMods,
     ) {
-        if let Some(event) = input::Event::key_up(key_code) {
+        if let Some(event) = input::key_up(key_code) {
             self.state.handle_input(event);
         }
     }
