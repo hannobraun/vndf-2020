@@ -1,5 +1,5 @@
 pub mod client;
-pub mod message;
+pub mod comm;
 
 
 use std::{
@@ -60,7 +60,7 @@ pub enum Message {
 #[derive(Debug)]
 pub enum Error {
     Io(io::Error),
-    Message(message::Error),
+    Message(comm::Error),
 }
 
 impl Eq for Error {}
@@ -81,8 +81,8 @@ impl From<io::Error> for Error {
     }
 }
 
-impl From<message::Error> for Error {
-    fn from(err: message::Error) -> Self {
+impl From<comm::Error> for Error {
+    fn from(err: comm::Error) -> Self {
         Self::Message(err)
     }
 }

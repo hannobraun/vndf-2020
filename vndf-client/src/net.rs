@@ -30,7 +30,7 @@ use vndf_shared::{
         PORT,
         Error,
         Message,
-        message::{
+        comm::{
             deserialize,
             serialize,
         },
