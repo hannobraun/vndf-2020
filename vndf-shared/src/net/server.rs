@@ -52,7 +52,7 @@ impl Server {
 
         let (accept_tx, accept_rx) = channel();
 
-        thread::spawn(|| Self::accept(listener, accept_tx));
+        thread::spawn(|| accept(listener, accept_tx));
 
         Ok(
             Self {
@@ -90,26 +90,27 @@ impl Server {
             }
         })
     }
-
-    fn accept(listener: TcpListener, accept: Sender<()>) {
-        for stream in listener.incoming() {
-            if let Err(err) = Conn::accept(stream) {
-                error!("Error accepting connection: {:?}", err);
-            }
-
-            if let Err(SendError(_)) = accept.send(()) {
-                // Channel disconnected. This means the receiver has been
-                // dropped, and we have no reason to keep this up.
-                return;
-            }
-        }
-
-        unreachable!("`listener.incoming()` does never yield `None`");
-    }
 }
 
 
 #[derive(Debug, Eq, PartialEq)]
 pub enum Event {
     Connect(conn::Id),
+}
+
+
+fn accept(listener: TcpListener, accept: Sender<()>) {
+    for stream in listener.incoming() {
+        if let Err(err) = Conn::accept(stream) {
+            error!("Error accepting connection: {:?}", err);
+        }
+
+        if let Err(SendError(_)) = accept.send(()) {
+            // Channel disconnected. This means the receiver has been dropped,
+            // and we have no reason to keep this up.
+            return;
+        }
+    }
+
+    unreachable!("`listener.incoming()` does never yield `None`");
 }
