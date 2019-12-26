@@ -2,6 +2,7 @@ use vndf_shared::net::{
     self,
     Server,
     client::Conn,
+    conn,
     msg,
     server::{
         self,
@@ -46,6 +47,41 @@ fn server_should_emit_receive_events() -> net::Result {
             if let server::Event::Message(message) = event? {
                 messages.push(message);
             }
+        }
+    }
+
+    assert!(messages.contains(&message));
+
+    Ok(())
+}
+
+#[test]
+fn clients_should_emit_receive_events() -> Result<(), server::Error> {
+    let mut server = Server::start_local()?;
+    let mut client = Conn::connect(server.addr())?;
+
+    let message = msg::FromServer::Welcome;
+
+    let mut client_id = None;
+    while client_id.is_none() {
+        for event in server.events() {
+            if let server::Event::Connect(id) = event? {
+                client_id = Some(id);
+            }
+        }
+    }
+
+    if let Some(id) = client_id {
+        // This is going to happen, otherwise the previous loop wouldn't have
+        // finished.
+        server.send(id, message)?;
+    }
+
+    let mut messages = Vec::new();
+    while messages.len() < 1 {
+        for event in client.events() {
+            let conn::Event::Message(message) = event?;
+            messages.push(message);
         }
     }
 

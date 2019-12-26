@@ -1,4 +1,5 @@
 use std::{
+    collections::HashMap,
     io,
     iter,
     net::{
@@ -29,9 +30,10 @@ pub const PORT: u16 = 34480;
 
 pub struct Server {
     addr:    SocketAddr,
-    accept:  Receiver<()>,
+    accept:  Receiver<Conn>,
     receive: Receiver<msg::FromClient>,
     next_id: u64,
+    conns:   HashMap<ConnId, Conn>,
 }
 
 impl Server {
@@ -62,12 +64,26 @@ impl Server {
                 accept:  accept_rx,
                 receive: receive_rx,
                 next_id: 0,
+                conns:   HashMap::new(),
             }
         )
     }
 
     pub fn addr(&self) -> SocketAddr {
         self.addr
+    }
+
+    pub fn send(&mut self, id: ConnId, message: msg::FromServer)
+        -> Result<(), Error>
+    {
+        let conn = match self.conns.get_mut(&id) {
+            Some(conn) => conn,
+            None       => return Err(Error::NoSuchClient(id)),
+        };
+
+        conn.send(message)?;
+
+        Ok(())
     }
 
     pub fn events<'s>(&'s mut self)
@@ -87,9 +103,11 @@ impl Server {
             }
 
             match self.accept.try_recv() {
-                Ok(_conn) => {
+                Ok(conn) => {
                     let id = ConnId(self.next_id);
                     self.next_id += 1;
+
+                    self.conns.insert(id, conn);
 
                     return Some(Ok(Event::Connect(id)));
                 }
@@ -113,15 +131,21 @@ impl Server {
 
 fn accept(
     listener: TcpListener,
-    accept:   Sender<()>,
+    accept:   Sender<Conn>,
     receive:  Sender<msg::FromClient>,
 ) {
     for stream in listener.incoming() {
-        if let Err(err) = Conn::accept(stream, receive.clone()) {
-            error!("Error accepting connection: {:?}", err);
-        }
+        let conn = match Conn::accept(stream, receive.clone()) {
+            Ok(conn) => {
+                conn
+            }
+            Err(err) => {
+                error!("Error accepting connection: {:?}", err);
+                continue;
+            }
+        };
 
-        if let Err(SendError(_)) = accept.send(()) {
+        if let Err(SendError(_)) = accept.send(conn) {
             // Channel disconnected. This means the receiver has been dropped,
             // and we have no reason to keep this up.
             return;
@@ -144,3 +168,23 @@ pub enum Event {
 
 
 pub type Conn = net::Conn<msg::FromClient, msg::FromServer>;
+
+
+#[derive(Debug)]
+pub enum Error {
+    Io(io::Error),
+    Net(net::Error),
+    NoSuchClient(ConnId),
+}
+
+impl From<io::Error> for Error {
+    fn from(err: io::Error) -> Self {
+        Self::Io(err)
+    }
+}
+
+impl From<net::Error> for Error {
+    fn from(err: net::Error) -> Self {
+        Self::Net(err)
+    }
+}
