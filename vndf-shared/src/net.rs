@@ -40,12 +40,14 @@ impl Server {
 }
 
 
-fn accept(listener: TcpListener) {
+fn accept(listener: TcpListener) -> ! {
     for stream in listener.incoming() {
         if let Err(err) = Client::new(stream) {
             error!("Error accepting connection: {:?}", err);
         }
     }
+
+    unreachable!("`listener.incoming()` does never yield `None`");
 }
 
 
