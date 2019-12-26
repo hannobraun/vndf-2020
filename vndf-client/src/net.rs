@@ -24,13 +24,16 @@ use log::{
     trace,
 };
 
-use vndf_shared::net::{
-    PORT,
-    Error,
-    Message,
-    message::{
-        deserialize,
-        serialize,
+use vndf_shared::{
+    input,
+    net::{
+        PORT,
+        Error,
+        Message,
+        message::{
+            deserialize,
+            serialize,
+        },
     },
 };
 
@@ -45,7 +48,7 @@ impl Conn {
         let mut stream  = TcpStream::connect(address)?;
 
         let mut buf = Vec::new();
-        serialize(Message::Ping(0), &mut buf)
+        serialize(input::Event::LaunchMissile, &mut buf)
             .expect("Failed to serialize message");
         stream.write_all(&buf)?;
 

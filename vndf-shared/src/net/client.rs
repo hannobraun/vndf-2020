@@ -13,13 +13,16 @@ use log::{
     info,
 };
 
-use crate::net::{
-    Error,
-    message::{
-        deserialize,
-        serialize,
+use crate::{
+    input,
+    net::{
+        Error,
+        message::{
+            deserialize,
+            serialize,
+        },
+        Message,
     },
-    Message,
 };
 
 
@@ -54,7 +57,7 @@ fn receive(mut stream: TcpStream) -> Result<(), Error> {
 
         buf.extend(read);
 
-        while let Some(message) = deserialize::<Message>(&mut buf)? {
+        while let Some(message) = deserialize::<input::Event>(&mut buf)? {
             debug!("Received: {:?}", message);
 
             let mut buf = Vec::new();
