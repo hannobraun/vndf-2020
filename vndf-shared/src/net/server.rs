@@ -94,12 +94,6 @@ impl Server {
 }
 
 
-#[derive(Debug, Eq, PartialEq)]
-pub enum Event {
-    Connect(conn::Id),
-}
-
-
 fn accept(listener: TcpListener, accept: Sender<()>) {
     for stream in listener.incoming() {
         if let Err(err) = Conn::accept(stream) {
@@ -114,4 +108,10 @@ fn accept(listener: TcpListener, accept: Sender<()>) {
     }
 
     unreachable!("`listener.incoming()` does never yield `None`");
+}
+
+
+#[derive(Debug, Eq, PartialEq)]
+pub enum Event {
+    Connect(conn::Id),
 }
