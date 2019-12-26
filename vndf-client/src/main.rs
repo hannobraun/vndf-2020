@@ -1,7 +1,6 @@
 mod graphics;
 mod input;
 mod math;
-mod net;
 mod state;
 
 
@@ -28,15 +27,16 @@ use ggez::{
     },
     timer,
 };
+use log::error;
 
-use vndf_shared::net::Server;
+use vndf_shared::net::{
+    Server,
+    client::Conn,
+    conn,
+};
 
 use self::{
     graphics::Graphics,
-    net::{
-        Conn,
-        ReceiveError,
-    },
     state::State,
 };
 
@@ -47,8 +47,8 @@ fn main() -> GameResult {
             .default_filter_or("vndf_shared=info,vndf_client=info")
     );
 
-    let _server = Server::start_default()?;
-    let conn    = Conn::connect()?;
+    let server = Server::start_default()?;
+    let conn   = Conn::connect(server.addr())?;
 
     // Force X11 backend to prevent panic.
     // See https://github.com/ggez/ggez/issues/579
@@ -121,14 +121,13 @@ impl EventHandler for Game {
     }
 
     fn update(&mut self, context: &mut Context) -> GameResult {
-        for message in self.conn.messages() {
+        for message in self.conn.events() {
             match message {
-                Ok(message) => {
+                Ok(conn::Event::Message(message)) => {
                     print!("Message: {:?}\n", message)
                 }
-                Err(ReceiveError) => {
-                    // Error message has already been logged by the receiver
-                    // thread.
+                Err(err) => {
+                    error!("Connection error: {:?}", err);
                     quit(context);
                     return Ok(());
                 }
