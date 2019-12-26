@@ -12,6 +12,7 @@ use std::{
         Receiver,
         RecvError,
         Sender,
+        SendError,
         channel,
     },
     thread,
@@ -40,24 +41,35 @@ impl<In, Out> Conn<In, Out>
         In:  Message + 'static,
         Out: Message + 'static,
 {
-    pub fn accept(stream: io::Result<TcpStream>) -> io::Result<Self> {
+    pub fn accept(stream: io::Result<TcpStream>, in_chan: Sender<In>)
+        -> io::Result<Self>
+    {
         let stream = stream?;
 
         let addr = stream.peer_addr()?;
         info!("Connected: {}", addr);
 
-        Self::new(stream)
+        Self::new(stream, Some(in_chan))
     }
 
     pub fn connect(addr: SocketAddr) -> io::Result<Self> {
         let stream = TcpStream::connect(addr)?;
 
-        Self::new(stream)
+        Self::new(stream, None)
     }
 
-    fn new(stream: TcpStream) -> io::Result<Self> {
+    fn new(stream: TcpStream, in_chan: Option<Sender<In>>) -> io::Result<Self> {
         let addr = stream.peer_addr()?;
 
+        let (in_tx, _) = match in_chan {
+            Some(in_chan) => {
+                (in_chan, None)
+            }
+            None => {
+                let (in_tx, in_rx) = channel();
+                (in_tx, Some(in_rx))
+            }
+        };
         let (out_tx, out_rx) = channel();
 
         let stream_send    = stream.try_clone()?;
@@ -70,7 +82,7 @@ impl<In, Out> Conn<In, Out>
         );
 
         thread::spawn(move || {
-            if let Err(err) = receive::<In>(stream_receive) {
+            if let Err(err) = receive(stream_receive, in_tx) {
                 error!("Receive error ({}) : {:?}", addr, err);
             }
         });
@@ -112,7 +124,9 @@ fn send<T>(mut stream: TcpStream, out: Receiver<T>) -> net::Result
     }
 }
 
-fn receive<T>(mut stream: TcpStream) -> net::Result where T: Message {
+fn receive<T>(mut stream: TcpStream, in_chan: Sender<T>) -> net::Result
+    where T: Message
+{
     let mut buf = Vec::new();
 
     loop {
@@ -125,6 +139,11 @@ fn receive<T>(mut stream: TcpStream) -> net::Result where T: Message {
 
         while let Some(message) = T::read(&mut buf)? {
             debug!("Received: {:?}", message);
+
+            if let Err(SendError(_)) = in_chan.send(message) {
+                // Other end has hung up. No need to keep this up.
+                return Ok(())
+            }
 
             let mut buf = Vec::new();
             msg::FromServer::Welcome.write(&mut buf)?;

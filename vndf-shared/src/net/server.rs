@@ -31,6 +31,7 @@ pub const PORT: u16 = 34480;
 pub struct Server {
     addr:    SocketAddr,
     accept:  Receiver<()>,
+    receive: Receiver<msg::FromClient>,
     next_id: u64,
 }
 
@@ -51,14 +52,16 @@ impl Server {
         // on.
         let addr = listener.local_addr()?;
 
-        let (accept_tx, accept_rx) = channel();
+        let (accept_tx, accept_rx)   = channel();
+        let (receive_tx, receive_rx) = channel();
 
-        thread::spawn(|| accept(listener, accept_tx));
+        thread::spawn(|| accept(listener, accept_tx, receive_tx));
 
         Ok(
             Self {
                 addr,
                 accept:  accept_rx,
+                receive: receive_rx,
                 next_id: 0,
             }
         )
@@ -72,6 +75,19 @@ impl Server {
         -> impl Iterator<Item=net::Result<Event>> + 's
     {
         iter::from_fn(move || {
+            match self.receive.try_recv() {
+                Ok(message) => {
+                    return Some(Ok(Event::Message(message)));
+                }
+                Err(TryRecvError::Empty) => {
+                    // Nothing to do. We'll try to return an accept event below.
+                    ()
+                }
+                Err(TryRecvError::Disconnected) => {
+                    return Some(Err(net::Error::ThreadFailed));
+                }
+            }
+
             match self.accept.try_recv() {
                 Ok(_conn) => {
                     let id = conn::Id(self.next_id);
@@ -94,9 +110,13 @@ impl Server {
 }
 
 
-fn accept(listener: TcpListener, accept: Sender<()>) {
+fn accept(
+    listener: TcpListener,
+    accept:   Sender<()>,
+    receive:  Sender<msg::FromClient>,
+) {
     for stream in listener.incoming() {
-        if let Err(err) = Conn::accept(stream) {
+        if let Err(err) = Conn::accept(stream, receive.clone()) {
             error!("Error accepting connection: {:?}", err);
         }
 
@@ -114,6 +134,7 @@ fn accept(listener: TcpListener, accept: Sender<()>) {
 #[derive(Debug, Eq, PartialEq)]
 pub enum Event {
     Connect(conn::Id),
+    Message(msg::FromClient),
 }
 
 
