@@ -1,5 +1,6 @@
 pub mod client;
 pub mod comm;
+pub mod server;
 
 
 use std::{
@@ -22,10 +23,6 @@ use std::{
 };
 
 use log::error;
-use serde::{
-    Deserialize,
-    Serialize,
-};
 
 use self::client::Client;
 
@@ -132,12 +129,6 @@ impl Conn {
 
         Ok(Self)
     }
-}
-
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Deserialize, Serialize)]
-pub enum Message {
-    Welcome,
 }
 
 
