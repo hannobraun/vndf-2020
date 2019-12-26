@@ -1,12 +1,11 @@
 use hecs::World;
 
-use crate::{
-    input::Rotation,
-    state::components::{
-        Body,
-        Engine,
-        Ship,
-    },
+use vndf_shared::input::Rotation;
+
+use crate::state::components::{
+    Body,
+    Engine,
+    Ship,
 };
 
 

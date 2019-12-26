@@ -1,18 +1,9 @@
 use ggez::input::keyboard::KeyCode;
 
-
-pub enum Event {
-    Rotate(Rotation),
-    Thrust(bool),
-    LaunchMissile,
-}
-
-#[derive(Clone, Copy)]
-pub enum Rotation {
-    Left  = -1,
-    Right = 1,
-    None  = 0,
-}
+use vndf_shared::input::{
+    Event,
+    Rotation,
+};
 
 
 pub fn key_down(key_code: KeyCode) -> Option<Event> {

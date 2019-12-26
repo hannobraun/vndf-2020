@@ -1,7 +1,8 @@
 use cgmath::prelude::*;
 
+use vndf_shared::input::Rotation;
+
 use crate::{
-    input::Rotation,
     math::Rad,
     state::{
         components::Body,
