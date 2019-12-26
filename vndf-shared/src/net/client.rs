@@ -15,6 +15,10 @@ use log::{
 
 use crate::net::{
     Error,
+    message::{
+        deserialize,
+        serialize,
+    },
     Message,
 };
 
@@ -50,11 +54,11 @@ fn receive(mut stream: TcpStream) -> Result<(), Error> {
 
         buf.extend(read);
 
-        while let Some(message) = Message::deserialize(&mut buf)? {
+        while let Some(message) = deserialize::<Message>(&mut buf)? {
             debug!("Received: {:?}", message);
 
             let mut buf = Vec::new();
-            Message::Ping(1).serialize(&mut buf)?;
+            serialize(Message::Ping(1), &mut buf)?;
 
             stream.write_all(&buf)?;
             stream.flush()?;
