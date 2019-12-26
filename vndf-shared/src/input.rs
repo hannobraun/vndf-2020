@@ -4,14 +4,14 @@ use serde::{
 };
 
 
-#[derive(Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub enum Event {
     Rotate(Rotation),
     Thrust(bool),
     LaunchMissile,
 }
 
-#[derive(Clone, Copy, Deserialize, Serialize)]
+#[derive(Clone, Copy, Debug, Deserialize, Serialize)]
 pub enum Rotation {
     Left  = -1,
     Right = 1,
