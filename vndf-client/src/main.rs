@@ -47,7 +47,7 @@ fn main() -> GameResult {
             .default_filter_or("vndf_shared=info,vndf_client=info")
     );
 
-    let server = Server::start_default()?;
+    let server = Server::start_local()?;
     let conn   = Conn::connect(server.addr())?;
 
     // Force X11 backend to prevent panic.
