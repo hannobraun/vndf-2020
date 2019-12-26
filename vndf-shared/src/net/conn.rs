@@ -17,7 +17,7 @@ use log::{
 };
 
 use crate::net::{
-    Error,
+    self,
     Message as _,
     msg,
 };
@@ -47,7 +47,7 @@ impl Conn {
         Ok(Self)
     }
 
-    fn receive(mut stream: TcpStream) -> Result<(), Error> {
+    fn receive(mut stream: TcpStream) -> net::Result {
         let mut buf = Vec::new();
 
         loop {

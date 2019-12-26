@@ -19,8 +19,8 @@ use std::{
 use log::error;
 
 use crate::net::{
+    self,
     Conn,
-    Error,
     conn,
 };
 
@@ -68,7 +68,7 @@ impl Server {
     }
 
     pub fn events<'s>(&'s mut self)
-        -> impl Iterator<Item=Result<Event, Error>> + 's
+        -> impl Iterator<Item=net::Result<Event>> + 's
     {
         iter::from_fn(move || {
             match self.accept.try_recv() {

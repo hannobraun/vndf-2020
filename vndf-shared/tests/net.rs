@@ -1,6 +1,6 @@
 use vndf_shared::net::{
+    self,
     Conn,
-    Error,
     Server,
     conn,
     server,
@@ -8,7 +8,7 @@ use vndf_shared::net::{
 
 
 #[test]
-fn server_should_emit_connect_events() -> Result<(), Error> {
+fn server_should_emit_connect_events() -> net::Result {
     let mut server = Server::start_local()?;
 
     Conn::connect(server.addr())?;

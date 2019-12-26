@@ -3,6 +3,9 @@ use std::io;
 use crate::net::msg;
 
 
+pub type Result<T = ()> = std::result::Result<T, Error>;
+
+
 #[derive(Debug)]
 pub enum Error {
     Io(io::Error),
