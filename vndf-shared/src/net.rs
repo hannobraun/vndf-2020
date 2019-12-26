@@ -53,7 +53,7 @@ impl Server {
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Deserialize, Serialize)]
 pub enum Message {
-    Ping(u64),
+    Welcome,
 }
 
 
