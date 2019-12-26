@@ -102,7 +102,7 @@ impl<In, Out> Conn<In, Out>
 }
 
 
-fn send<T>(mut stream: TcpStream, out: Receiver<T>) -> net::Result
+fn send<T>(mut stream: TcpStream, out_chan: Receiver<T>) -> net::Result
     where T: Message
 {
     let mut buf = Vec::new();
@@ -111,7 +111,7 @@ fn send<T>(mut stream: TcpStream, out: Receiver<T>) -> net::Result
         stream.write_all(&buf)?;
         buf.clear();
 
-        match out.recv() {
+        match out_chan.recv() {
             Ok(message) => {
                 message.write(&mut buf)?;
             }
