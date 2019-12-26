@@ -26,7 +26,7 @@ pub const PORT: u16 = 34480;
 pub struct Server;
 
 impl Server {
-    pub fn start() -> io::Result<Self> {
+    pub fn start_default() -> io::Result<Self> {
         let address  = SocketAddr::new(Ipv6Addr::UNSPECIFIED.into(), PORT);
         let listener = TcpListener::bind(address)?;
 
