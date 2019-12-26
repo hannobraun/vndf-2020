@@ -19,8 +19,8 @@ use std::{
 use log::error;
 
 use crate::net::{
+    Conn,
     Error,
-    client::Client,
     conn,
 };
 
@@ -93,7 +93,7 @@ impl Server {
 
     fn accept(listener: TcpListener, accept: Sender<()>) {
         for stream in listener.incoming() {
-            if let Err(err) = Client::new(stream) {
+            if let Err(err) = Conn::accept(stream) {
                 error!("Error accepting connection: {:?}", err);
             }
 
