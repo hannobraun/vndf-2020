@@ -86,13 +86,11 @@ impl Server {
         Ok(())
     }
 
-    pub fn events<'s>(&'s mut self)
-        -> impl Iterator<Item=net::Result<Event>> + 's
-    {
+    pub fn events<'s>(&'s mut self) -> impl Iterator<Item=Event> + 's {
         iter::from_fn(move || {
             match self.receive.try_recv() {
                 Ok(message) => {
-                    return Some(Ok(Event::Message(message)));
+                    return Some(Event::Message(message));
                 }
                 Err(TryRecvError::Empty) => {
                     ()
@@ -114,7 +112,7 @@ impl Server {
 
                     self.conns.insert(id, conn);
 
-                    return Some(Ok(Event::Connect(id)));
+                    return Some(Event::Connect(id));
                 }
                 Err(TryRecvError::Empty) => {
                     ()

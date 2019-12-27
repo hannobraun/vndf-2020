@@ -26,8 +26,8 @@ fn server_should_emit_connect_events() -> net::Result {
         }
     }
 
-    assert!(events.contains(&Ok(server::Event::Connect(ConnId(0)))));
-    assert!(events.contains(&Ok(server::Event::Connect(ConnId(1)))));
+    assert!(events.contains(&server::Event::Connect(ConnId(0))));
+    assert!(events.contains(&server::Event::Connect(ConnId(1))));
 
     Ok(())
 }
@@ -44,7 +44,7 @@ fn server_should_emit_receive_events() -> net::Result {
 
     while messages.len() < 1 {
         for event in server.events() {
-            if let server::Event::Message(message) = event? {
+            if let server::Event::Message(message) = event {
                 messages.push(message);
             }
         }
@@ -65,7 +65,7 @@ fn clients_should_emit_receive_events() -> Result<(), server::Error> {
     let mut client_id = None;
     while client_id.is_none() {
         for event in server.events() {
-            if let server::Event::Connect(id) = event? {
+            if let server::Event::Connect(id) = event {
                 client_id = Some(id);
             }
         }
