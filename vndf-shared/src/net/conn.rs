@@ -33,7 +33,7 @@ use crate::net::{
 
 
 pub struct Conn<In, Out> {
-    in_chan:  Option<Receiver<In>>,
+    in_chan:  Option<Receiver<Event<In>>>,
     out_chan: Sender<Out>,
 }
 
@@ -42,7 +42,7 @@ impl<In, Out> Conn<In, Out>
         In:  Message + 'static,
         Out: Message + 'static,
 {
-    pub fn accept(stream: io::Result<TcpStream>, in_chan: Sender<In>)
+    pub fn accept(stream: io::Result<TcpStream>, in_chan: Sender<Event<In>>)
         -> io::Result<Self>
     {
         let stream = stream?;
@@ -59,7 +59,9 @@ impl<In, Out> Conn<In, Out>
         Self::new(stream, None)
     }
 
-    fn new(stream: TcpStream, in_chan: Option<Sender<In>>) -> io::Result<Self> {
+    fn new(stream: TcpStream, in_chan: Option<Sender<Event<In>>>)
+        -> io::Result<Self>
+    {
         let addr = stream.peer_addr()?;
 
         let (in_tx, in_rx) = match in_chan {
@@ -111,8 +113,8 @@ impl<In, Out> Conn<In, Out>
             };
 
             match in_chan.try_recv() {
-                Ok(message) => {
-                    Some(Ok(Event::Message(message)))
+                Ok(event) => {
+                    Some(Ok(event))
                 }
                 Err(TryRecvError::Empty) => {
                     None
@@ -151,7 +153,7 @@ fn send<T>(mut stream: TcpStream, out_chan: Receiver<T>) -> net::Result
     }
 }
 
-fn receive<T>(mut stream: TcpStream, in_chan: Sender<T>) -> net::Result
+fn receive<T>(mut stream: TcpStream, in_chan: Sender<Event<T>>) -> net::Result
     where T: Message
 {
     let mut buf = Vec::new();
@@ -167,7 +169,7 @@ fn receive<T>(mut stream: TcpStream, in_chan: Sender<T>) -> net::Result
         while let Some(message) = T::read(&mut buf)? {
             debug!("Received: {:?}", message);
 
-            if let Err(SendError(_)) = in_chan.send(message) {
+            if let Err(SendError(_)) = in_chan.send(Event::Message(message)) {
                 // Other end has hung up. No need to keep this up.
                 return Ok(())
             }
