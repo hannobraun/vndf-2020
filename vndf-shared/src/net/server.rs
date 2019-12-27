@@ -139,7 +139,10 @@ fn accept(
     let mut next_id = 0;
 
     for stream in listener.incoming() {
-        let conn = match ConnAdapter::accept(stream, receive.clone()) {
+        let id = ConnId(next_id);
+        next_id += 1;
+
+        let conn = match ConnAdapter::accept(id, stream, receive.clone()) {
             Ok(conn) => {
                 conn
             }
@@ -148,9 +151,6 @@ fn accept(
                 continue;
             }
         };
-
-        let id = ConnId(next_id);
-        next_id += 1;
 
         if let Err(SendError(_)) = accept.send((id, conn)) {
             // Channel disconnected. This means the receiver has been dropped,
@@ -167,6 +167,7 @@ struct ConnAdapter(conn::Tx<msg::FromServer>);
 
 impl ConnAdapter {
     pub fn accept(
+        id:      ConnId,
         stream:  io::Result<TcpStream>,
         receive: Sender<Event>,
     )
@@ -195,7 +196,7 @@ impl ConnAdapter {
                         }
                     };
 
-                    let event = Event::Message(message);
+                    let event = Event::Message(id, message);
 
                     if let Err(SendError(_)) = receive.send(event) {
                         // Other hand has hung up. No need to keep this up.
@@ -217,7 +218,7 @@ pub struct ConnId(pub u64);
 #[derive(Debug, Eq, PartialEq)]
 pub enum Event {
     Connect(ConnId),
-    Message(msg::FromClient),
+    Message(ConnId, msg::FromClient),
 }
 
 

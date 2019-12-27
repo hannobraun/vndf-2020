@@ -35,21 +35,25 @@ fn server_should_emit_connect_events() -> net::Result {
 fn server_should_emit_receive_events() -> net::Result {
     let mut server = Server::start_local()?;
 
-    let message = msg::FromClient::Hello;
+    let sent = msg::FromClient::Hello;
     Conn::connect(server.addr())?
-        .send(message)?;
+        .send(sent)?;
 
-    let mut messages = Vec::new();
+    let mut client_id = None;
+    let mut received  = None;
 
-    while messages.len() < 1 {
+    while client_id.is_none() || received.is_none() {
         for event in server.events() {
-            if let server::Event::Message(message) = event {
-                messages.push(message);
+            if let server::Event::Connect(id) = event {
+                client_id = Some(id);
+            }
+            if let server::Event::Message(id, message) = event {
+                received = Some((id, message));
             }
         }
     }
 
-    assert!(messages.contains(&message));
+    assert_eq!(received, Some((client_id.unwrap(), sent)));
 
     Ok(())
 }
