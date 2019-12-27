@@ -98,14 +98,14 @@ impl<In, Out> Conn<In, Out>
         )
     }
 
-    pub fn send(&mut self, message: Out) -> net::Result {
-        self.tx.send(message)
-    }
-
     pub fn incoming<'s>(&'s mut self)
         -> impl Iterator<Item=net::Result<In>> + 's
     {
         self.rx.incoming()
+    }
+
+    pub fn send(&mut self, message: Out) -> net::Result {
+        self.tx.send(message)
     }
 
     pub fn disconnect(self) {
