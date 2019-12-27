@@ -33,8 +33,8 @@ use crate::net::{
 
 
 pub struct Conn<In, Out> {
-    in_chan:  Option<Receiver<In>>,
-    out_chan: Sender<Out>,
+    pub rx: Rx<In>,
+    pub tx: Tx<Out>,
 }
 
 impl<In, Out> Conn<In, Out>
@@ -92,38 +92,20 @@ impl<In, Out> Conn<In, Out>
 
         Ok(
             Self {
-                in_chan:  in_rx,
-                out_chan: out_tx,
+                rx: Rx(in_rx),
+                tx: Tx(out_tx),
             }
         )
     }
 
     pub fn send(&mut self, message: Out) -> net::Result {
-        self.out_chan.send(message)?;
-        Ok(())
+        self.tx.send(message)
     }
 
     pub fn incoming<'s>(&'s mut self)
         -> impl Iterator<Item=net::Result<In>> + 's
     {
-        iter::from_fn(move || {
-            let in_chan = match &mut self.in_chan {
-                Some(in_chan) => in_chan,
-                None          => return None,
-            };
-
-            match in_chan.try_recv() {
-                Ok(event) => {
-                    Some(Ok(event))
-                }
-                Err(TryRecvError::Empty) => {
-                    None
-                }
-                Err(TryRecvError::Disconnected) => {
-                    Some(Err(net::Error::ThreadFailed))
-                }
-            }
-        })
+        self.rx.incoming()
     }
 
     pub fn disconnect(self) {
@@ -180,5 +162,42 @@ fn receive<T>(mut stream: TcpStream, in_chan: Sender<T>) -> net::Result
                 return Ok(())
             }
         }
+    }
+}
+
+
+pub struct Rx<T>(Option<Receiver<T>>);
+
+impl<T> Rx<T> {
+    pub fn incoming<'s>(&'s mut self)
+        -> impl Iterator<Item=net::Result<T>> + 's
+    {
+        iter::from_fn(move || {
+            let in_chan = match &mut self.0 {
+                Some(in_chan) => in_chan,
+                None          => return None,
+            };
+
+            match in_chan.try_recv() {
+                Ok(event) => {
+                    Some(Ok(event))
+                }
+                Err(TryRecvError::Empty) => {
+                    None
+                }
+                Err(TryRecvError::Disconnected) => {
+                    Some(Err(net::Error::ThreadFailed))
+                }
+            }
+        })
+    }
+}
+
+pub struct Tx<T>(Sender<T>);
+
+impl<T> Tx<T> {
+    pub fn send(&mut self, message: T) -> net::Result {
+        self.0.send(message)?;
+        Ok(())
     }
 }
