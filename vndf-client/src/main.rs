@@ -32,7 +32,6 @@ use log::error;
 use vndf_shared::net::{
     Server,
     client::Conn,
-    conn,
 };
 
 use self::{
@@ -123,7 +122,7 @@ impl EventHandler for Game {
     fn update(&mut self, context: &mut Context) -> GameResult {
         for message in self.conn.events() {
             match message {
-                Ok(conn::Event::Message(message)) => {
+                Ok(message) => {
                     print!("Message: {:?}\n", message)
                 }
                 Err(err) => {

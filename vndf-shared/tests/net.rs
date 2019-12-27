@@ -2,7 +2,6 @@ use vndf_shared::net::{
     self,
     Server,
     client::Conn,
-    conn,
     msg,
     server::{
         self,
@@ -79,9 +78,8 @@ fn clients_should_emit_receive_events() -> Result<(), server::Error> {
 
     let mut messages = Vec::new();
     while messages.len() < 1 {
-        for event in client.events() {
-            let conn::Event::Message(message) = event?;
-            messages.push(message);
+        for message in client.events() {
+            messages.push(message?);
         }
     }
 

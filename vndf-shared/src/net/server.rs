@@ -21,7 +21,6 @@ use log::error;
 
 use crate::net::{
     self,
-    conn,
     msg,
 };
 
@@ -32,7 +31,7 @@ pub const PORT: u16 = 34480;
 pub struct Server {
     addr:    SocketAddr,
     accept:  Receiver<Conn>,
-    receive: Receiver<conn::Event<msg::FromClient>>,
+    receive: Receiver<msg::FromClient>,
     next_id: u64,
     conns:   HashMap<ConnId, Conn>,
 }
@@ -90,8 +89,7 @@ impl Server {
     pub fn events<'s>(&'s mut self) -> impl Iterator<Item=Event> + 's {
         iter::from_fn(move || {
             match self.receive.try_recv() {
-                Ok(event) => {
-                    let conn::Event::Message(message) = event;
+                Ok(message) => {
                     return Some(Event::Message(message));
                 }
                 Err(TryRecvError::Empty) => {
@@ -137,7 +135,7 @@ impl Server {
 fn accept(
     listener: TcpListener,
     accept:   Sender<Conn>,
-    receive:  Sender<conn::Event<msg::FromClient>>,
+    receive:  Sender<msg::FromClient>,
 ) {
     for stream in listener.incoming() {
         let conn = match Conn::accept(stream, receive.clone()) {
