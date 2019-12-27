@@ -125,6 +125,12 @@ impl<In, Out> Conn<In, Out>
             }
         })
     }
+
+    pub fn disconnect(self) {
+        // Nothing to do. The threads will end once our ends of the channels are
+        // dropped. When the threads end, the streams will be dropped and the
+        // connection will be closed.
+    }
 }
 
 
