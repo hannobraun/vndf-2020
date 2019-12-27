@@ -35,9 +35,8 @@ pub const PORT: u16 = 34480;
 
 pub struct Server {
     addr:    SocketAddr,
-    accept:  Receiver<ConnAdapter>,
+    accept:  Receiver<(ConnId, ConnAdapter)>,
     receive: Receiver<Event>,
-    next_id: u64,
     conns:   HashMap<ConnId, ConnAdapter>,
 }
 
@@ -68,7 +67,6 @@ impl Server {
                 addr,
                 accept:  accept_rx,
                 receive: receive_rx,
-                next_id: 0,
                 conns:   HashMap::new(),
             }
         )
@@ -111,12 +109,8 @@ impl Server {
             }
 
             match self.accept.try_recv() {
-                Ok(conn) => {
-                    let id = ConnId(self.next_id);
-                    self.next_id += 1;
-
+                Ok((id, conn)) => {
                     self.conns.insert(id, conn);
-
                     return Some(Event::Connect(id));
                 }
                 Err(TryRecvError::Empty) => {
@@ -139,9 +133,11 @@ impl Server {
 
 fn accept(
     listener: TcpListener,
-    accept:   Sender<ConnAdapter>,
+    accept:   Sender<(ConnId, ConnAdapter)>,
     receive:  Sender<Event>,
 ) {
+    let mut next_id = 0;
+
     for stream in listener.incoming() {
         let conn = match ConnAdapter::accept(stream, receive.clone()) {
             Ok(conn) => {
@@ -153,7 +149,10 @@ fn accept(
             }
         };
 
-        if let Err(SendError(_)) = accept.send(conn) {
+        let id = ConnId(next_id);
+        next_id += 1;
+
+        if let Err(SendError(_)) = accept.send((id, conn)) {
             // Channel disconnected. This means the receiver has been dropped,
             // and we have no reason to keep this up.
             return;
