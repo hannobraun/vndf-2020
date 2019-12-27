@@ -124,7 +124,7 @@ impl Server {
                 }
             }
 
-            // If we returned nothing by thing point, there's nothing to be
+            // If we returned nothing by this point, there's nothing to be
             // returned.
             None
         })
