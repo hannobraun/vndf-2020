@@ -22,7 +22,6 @@ use std::{
 use log::{
     debug,
     error,
-    info,
     trace,
 };
 
@@ -42,37 +41,16 @@ impl<In, Out> Conn<In, Out>
         In:  Message + 'static,
         Out: Message + 'static,
 {
-    pub fn accept(stream: io::Result<TcpStream>, in_chan: Sender<In>)
-        -> io::Result<Self>
-    {
-        let stream = stream?;
-
-        let addr = stream.peer_addr()?;
-        info!("Connected: {}", addr);
-
-        Self::new(stream, Some(in_chan))
-    }
-
     pub fn connect(addr: SocketAddr) -> io::Result<Self> {
         let stream = TcpStream::connect(addr)?;
 
-        Self::new(stream, None)
+        Self::from_stream(stream)
     }
 
-    fn new(stream: TcpStream, in_chan: Option<Sender<In>>)
-        -> io::Result<Self>
-    {
+    pub fn from_stream(stream: TcpStream) -> io::Result<Self> {
         let addr = stream.peer_addr()?;
 
-        let (in_tx, in_rx) = match in_chan {
-            Some(in_chan) => {
-                (in_chan, None)
-            }
-            None => {
-                let (in_tx, in_rx) = channel();
-                (in_tx, Some(in_rx))
-            }
-        };
+        let (in_tx,  in_rx)  = channel();
         let (out_tx, out_rx) = channel();
 
         let stream_send    = stream.try_clone()?;
@@ -166,19 +144,14 @@ fn receive<T>(mut stream: TcpStream, in_chan: Sender<T>) -> net::Result
 }
 
 
-pub struct Rx<T>(Option<Receiver<T>>);
+pub struct Rx<T>(Receiver<T>);
 
 impl<T> Rx<T> {
     pub fn incoming<'s>(&'s mut self)
         -> impl Iterator<Item=net::Result<T>> + 's
     {
         iter::from_fn(move || {
-            let in_chan = match &mut self.0 {
-                Some(in_chan) => in_chan,
-                None          => return None,
-            };
-
-            match in_chan.try_recv() {
+            match self.0.try_recv() {
                 Ok(event) => {
                     Some(Ok(event))
                 }

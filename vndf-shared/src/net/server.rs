@@ -6,6 +6,7 @@ use std::{
         Ipv6Addr,
         SocketAddr,
         TcpListener,
+        TcpStream,
     },
     sync::mpsc::{
         Receiver,
@@ -17,10 +18,14 @@ use std::{
     thread,
 };
 
-use log::error;
+use log::{
+    error,
+    info,
+};
 
 use crate::net::{
     self,
+    conn,
     msg,
 };
 
@@ -30,10 +35,10 @@ pub const PORT: u16 = 34480;
 
 pub struct Server {
     addr:    SocketAddr,
-    accept:  Receiver<Conn>,
+    accept:  Receiver<ConnAdapter>,
     receive: Receiver<msg::FromClient>,
     next_id: u64,
-    conns:   HashMap<ConnId, Conn>,
+    conns:   HashMap<ConnId, ConnAdapter>,
 }
 
 impl Server {
@@ -81,7 +86,7 @@ impl Server {
             None       => return Err(Error::NoSuchClient(id)),
         };
 
-        conn.send(message)?;
+        conn.0.send(message)?;
 
         Ok(())
     }
@@ -134,11 +139,11 @@ impl Server {
 
 fn accept(
     listener: TcpListener,
-    accept:   Sender<Conn>,
+    accept:   Sender<ConnAdapter>,
     receive:  Sender<msg::FromClient>,
 ) {
     for stream in listener.incoming() {
-        let conn = match Conn::accept(stream, receive.clone()) {
+        let conn = match ConnAdapter::accept(stream, receive.clone()) {
             Ok(conn) => {
                 conn
             }
@@ -156,6 +161,51 @@ fn accept(
     }
 
     unreachable!("`listener.incoming()` does never yield `None`");
+}
+
+
+struct ConnAdapter(conn::Tx<msg::FromServer>);
+
+impl ConnAdapter {
+    pub fn accept(
+        stream:  io::Result<TcpStream>,
+        receive: Sender<msg::FromClient>,
+    )
+        -> io::Result<Self>
+    {
+        let stream = stream?;
+
+        let addr = stream.peer_addr()?;
+        info!("Connected: {}", addr);
+
+        let conn = Conn::from_stream(stream)?;
+
+        let mut rx = conn.rx;
+        let     tx = conn.tx;
+
+        thread::spawn(move || {
+            loop {
+                for message in rx.incoming() {
+                    let message = match message {
+                        Ok(message) => {
+                            message
+                        }
+                        Err(err) => {
+                            error!("Error receiving message: {:?}", err);
+                            break;
+                        }
+                    };
+
+                    if let Err(SendError(_)) = receive.send(message) {
+                        // Other hand has hung up. No need to keep this up.
+                        break;
+                    }
+                }
+            }
+        });
+
+        Ok(Self(tx))
+    }
 }
 
 
