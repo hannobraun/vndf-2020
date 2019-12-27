@@ -178,7 +178,7 @@ impl ConnAdapter {
         let addr = stream.peer_addr()?;
         info!("Connected: {}", addr);
 
-        let conn = Conn::from_stream(stream)?;
+        let conn = conn::Conn::from_stream(stream)?;
 
         let mut rx = conn.rx;
         let     tx = conn.tx;
@@ -218,9 +218,6 @@ pub enum Event {
     Connect(ConnId),
     Message(msg::FromClient),
 }
-
-
-pub type Conn = net::Conn<msg::FromClient, msg::FromServer>;
 
 
 #[derive(Debug)]
