@@ -34,12 +34,12 @@ use ggez::{
 use log::error;
 
 use vndf_shared::{
+    Server,
     net::{
         self,
         client::Conn,
         msg,
     },
-    server::Server,
 };
 
 use self::{
