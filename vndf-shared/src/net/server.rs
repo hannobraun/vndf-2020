@@ -36,7 +36,7 @@ pub const PORT: u16 = 34480;
 pub struct Server {
     addr:    SocketAddr,
     accept:  Receiver<ConnAdapter>,
-    receive: Receiver<msg::FromClient>,
+    receive: Receiver<Event>,
     next_id: u64,
     conns:   HashMap<ConnId, ConnAdapter>,
 }
@@ -94,8 +94,8 @@ impl Server {
     pub fn events<'s>(&'s mut self) -> impl Iterator<Item=Event> + 's {
         iter::from_fn(move || {
             match self.receive.try_recv() {
-                Ok(message) => {
-                    return Some(Event::Message(message));
+                Ok(event) => {
+                    return Some(event);
                 }
                 Err(TryRecvError::Empty) => {
                     ()
@@ -140,7 +140,7 @@ impl Server {
 fn accept(
     listener: TcpListener,
     accept:   Sender<ConnAdapter>,
-    receive:  Sender<msg::FromClient>,
+    receive:  Sender<Event>,
 ) {
     for stream in listener.incoming() {
         let conn = match ConnAdapter::accept(stream, receive.clone()) {
@@ -169,7 +169,7 @@ struct ConnAdapter(conn::Tx<msg::FromServer>);
 impl ConnAdapter {
     pub fn accept(
         stream:  io::Result<TcpStream>,
-        receive: Sender<msg::FromClient>,
+        receive: Sender<Event>,
     )
         -> io::Result<Self>
     {
@@ -196,7 +196,9 @@ impl ConnAdapter {
                         }
                     };
 
-                    if let Err(SendError(_)) = receive.send(message) {
+                    let event = Event::Message(message);
+
+                    if let Err(SendError(_)) = receive.send(event) {
                         // Other hand has hung up. No need to keep this up.
                         break;
                     }
