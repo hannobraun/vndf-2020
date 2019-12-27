@@ -1,5 +1,8 @@
 use std::{
-    collections::HashMap,
+    collections::{
+        HashMap,
+        VecDeque,
+    },
     io,
     iter,
     net::{
@@ -38,6 +41,7 @@ pub struct Server {
     accept:  Receiver<(ConnId, ConnAdapter)>,
     receive: Receiver<Event>,
     conns:   HashMap<ConnId, ConnAdapter>,
+    remove:  VecDeque<ConnId>,
 }
 
 impl Server {
@@ -68,6 +72,7 @@ impl Server {
                 accept:  accept_rx,
                 receive: receive_rx,
                 conns:   HashMap::new(),
+                remove:  VecDeque::new(),
             }
         )
     }
@@ -84,13 +89,21 @@ impl Server {
             None       => return Err(Error::NoSuchClient(id)),
         };
 
-        conn.0.send(message)?;
+        if let Err(err) = conn.0.send(message) {
+            self.remove.push_back(id);
+            return Err(err.into());
+        }
 
         Ok(())
     }
 
     pub fn events<'s>(&'s mut self) -> impl Iterator<Item=Event> + 's {
         iter::from_fn(move || {
+            if let Some(id) = self.remove.pop_front() {
+                self.conns.remove(&id);
+                return Some(Event::Disconnect(id, None));
+            }
+
             match self.receive.try_recv() {
                 Ok(event) => {
                     return Some(event);

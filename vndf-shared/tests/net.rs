@@ -59,6 +59,44 @@ fn server_should_emit_receive_events() -> net::Result {
 }
 
 #[test]
+fn server_should_remove_clients_that_cause_errors() -> net::Result {
+    let mut server = Server::start_local()?;
+    let     client = Conn::connect(server.addr())?;
+
+    let mut connect_id = None;
+    while connect_id.is_none() {
+        for event in server.events() {
+            if let server::Event::Connect(id) = event {
+                connect_id = Some(id);
+            }
+        }
+    }
+
+    client.disconnect();
+
+    // Wait until the disappearance of the client causes a send error.
+    loop {
+        let message = msg::FromServer::Welcome;
+        if let Err(_) = server.send(connect_id.unwrap(), message) {
+            break;
+        }
+    }
+
+    let mut disconnect_id = None;
+    while disconnect_id.is_none() {
+        for event in server.events() {
+            if let server::Event::Disconnect(id, _error) = event {
+                disconnect_id = Some(id);
+            }
+        }
+    }
+
+    assert_eq!(connect_id, disconnect_id);
+
+    Ok(())
+}
+
+#[test]
 fn clients_should_emit_receive_events() -> Result<(), server::Error> {
     let mut server = Server::start_local()?;
     let mut client = Conn::connect(server.addr())?;
