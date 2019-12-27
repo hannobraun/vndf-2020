@@ -4,12 +4,16 @@ mod math;
 mod state;
 
 
-use std::env;
+use std::{
+    env,
+    io,
+};
 
 use ggez::{
     self,
     Context,
     ContextBuilder,
+    GameError,
     GameResult,
     conf::{
         FullscreenType,
@@ -40,7 +44,7 @@ use self::{
 };
 
 
-fn main() -> GameResult {
+fn main() -> Result<(), Error> {
     env_logger::init_from_env(
         env_logger::Env::new()
             .default_filter_or("vndf_shared=info,vndf_client=info")
@@ -67,7 +71,8 @@ fn main() -> GameResult {
 
     let mut game = Game::new(conn, &mut context)?;
 
-    run(&mut context, &mut event_loop, &mut game)
+    run(&mut context, &mut event_loop, &mut game)?;
+    Ok(())
 }
 
 
@@ -142,5 +147,24 @@ impl EventHandler for Game {
 
     fn draw(&mut self, context: &mut Context) -> GameResult {
         self.graphics.draw(context, &self.state)
+    }
+}
+
+
+#[derive(Debug)]
+pub enum Error {
+    Ggez(GameError),
+    Io(io::Error),
+}
+
+impl From<GameError> for Error {
+    fn from(err: GameError) -> Self {
+        Self::Ggez(err)
+    }
+}
+
+impl From<io::Error> for Error {
+    fn from(err: io::Error) -> Self {
+        Self::Io(err)
     }
 }
