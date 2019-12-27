@@ -192,6 +192,11 @@ impl ConnAdapter {
                         }
                         Err(err) => {
                             error!("Error receiving message: {:?}", err);
+
+                            // We can ignore any channel errors here. The thread
+                            // is ending anyway.
+                            let _ = receive.send(Event::Disconnect(id, err));
+
                             break;
                         }
                     };
@@ -218,6 +223,7 @@ pub struct ConnId(pub u64);
 #[derive(Debug, Eq, PartialEq)]
 pub enum Event {
     Connect(ConnId),
+    Disconnect(ConnId, net::Error),
     Message(ConnId, msg::FromClient),
 }
 
