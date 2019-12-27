@@ -98,7 +98,12 @@ impl Server {
                     ()
                 }
                 Err(TryRecvError::Disconnected) => {
-                    return Some(Err(net::Error::ThreadFailed));
+                    // Can only happen if we have no connection threads _and_
+                    // the accept thread ended, since that one has its own clone
+                    // of the sender.
+                    unreachable!(
+                        "`accept` thread does not end while receiver exists"
+                    );
                 }
             }
 
