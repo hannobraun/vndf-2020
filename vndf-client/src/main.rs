@@ -120,7 +120,7 @@ impl EventHandler for Game {
     }
 
     fn update(&mut self, context: &mut Context) -> GameResult {
-        for message in self.conn.events() {
+        for message in self.conn.incoming() {
             match message {
                 Ok(message) => {
                     print!("Message: {:?}\n", message)

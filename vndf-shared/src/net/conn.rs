@@ -103,7 +103,7 @@ impl<In, Out> Conn<In, Out>
         Ok(())
     }
 
-    pub fn events<'s>(&'s mut self)
+    pub fn incoming<'s>(&'s mut self)
         -> impl Iterator<Item=net::Result<In>> + 's
     {
         iter::from_fn(move || {

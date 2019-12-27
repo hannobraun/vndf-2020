@@ -78,7 +78,7 @@ fn clients_should_emit_receive_events() -> Result<(), server::Error> {
 
     let mut messages = Vec::new();
     while messages.len() < 1 {
-        for message in client.events() {
+        for message in client.incoming() {
             messages.push(message?);
         }
     }
