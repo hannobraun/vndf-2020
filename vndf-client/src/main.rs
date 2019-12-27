@@ -33,9 +33,13 @@ use ggez::{
 };
 use log::error;
 
-use vndf_shared::net::{
-    Server,
-    client::Conn,
+use vndf_shared::{
+    net::{
+        self,
+        client::Conn,
+        msg,
+    },
+    server::Server,
 };
 
 use self::{
@@ -69,7 +73,7 @@ fn main() -> Result<(), Error> {
             )
             .build()?;
 
-    let mut game = Game::new(conn, &mut context)?;
+    let mut game = Game::new(server, conn, &mut context)?;
 
     run(&mut context, &mut event_loop, &mut game)?;
     Ok(())
@@ -81,15 +85,24 @@ const FRAME_TIME: f32 = 1.0 / TARGET_FPS as f32;
 
 
 pub struct Game {
+    server:   Server,
     conn:     Conn,
     graphics: Graphics,
     state:    State,
 }
 
 impl Game {
-    pub fn new(conn: Conn, context: &mut Context) -> GameResult<Self> {
+    pub fn new(
+        server:  Server,
+        conn:    Conn,
+        context: &mut Context,
+    ) -> Result<Self, Error> {
+        let mut conn = conn;
+        conn.send(msg::FromClient::Hello)?;
+
         Ok(
             Game {
+                server,
                 conn,
                 graphics: Graphics::new(context)?,
                 state:    State::new(),
@@ -125,6 +138,8 @@ impl EventHandler for Game {
     }
 
     fn update(&mut self, context: &mut Context) -> GameResult {
+        self.server.update();
+
         for message in self.conn.incoming() {
             match message {
                 Ok(message) => {
@@ -155,6 +170,7 @@ impl EventHandler for Game {
 pub enum Error {
     Ggez(GameError),
     Io(io::Error),
+    Net(net::Error),
 }
 
 impl From<GameError> for Error {
@@ -166,5 +182,11 @@ impl From<GameError> for Error {
 impl From<io::Error> for Error {
     fn from(err: io::Error) -> Self {
         Self::Io(err)
+    }
+}
+
+impl From<net::Error> for Error {
+    fn from(err: net::Error) -> Self {
+        Self::Net(err)
     }
 }
