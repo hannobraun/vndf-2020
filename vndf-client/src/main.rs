@@ -96,7 +96,9 @@ impl Game {
         server:  Server,
         conn:    Conn,
         context: &mut Context,
-    ) -> Result<Self, Error> {
+    )
+        -> Result<Self, Error>
+    {
         let mut conn = conn;
         conn.send(msg::FromClient::Hello)?;
 
