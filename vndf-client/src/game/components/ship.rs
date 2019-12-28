@@ -1,13 +1,14 @@
-use crate::shared::input::Rotation;
-
 use crate::{
     game::{
         components::Body,
         entities as e,
     },
-    shared::math::{
-        prelude::*,
-        Rad,
+    shared::{
+        input::Rotation,
+        math::{
+            prelude::*,
+            Rad,
+        },
     },
 };
 
