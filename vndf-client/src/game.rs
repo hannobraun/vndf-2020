@@ -10,6 +10,9 @@ use vndf_shared::input::Event;
 
 pub const WORLD_SIZE: f32 = 1000.0;
 
+pub const TARGET_FPS: u32 = 60;
+pub const FRAME_TIME: f32 = 1.0 / TARGET_FPS as f32;
+
 
 pub struct State {
     pub world: World,

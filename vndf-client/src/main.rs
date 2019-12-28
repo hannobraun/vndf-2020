@@ -44,7 +44,11 @@ use vndf_shared::{
 
 use self::{
     graphics::Graphics,
-    game::State,
+    game::{
+        FRAME_TIME,
+        TARGET_FPS,
+        State,
+    },
 };
 
 
@@ -78,10 +82,6 @@ fn main() -> Result<(), Error> {
     run(&mut context, &mut event_loop, &mut game)?;
     Ok(())
 }
-
-
-const TARGET_FPS: u32 = 60;
-const FRAME_TIME: f32 = 1.0 / TARGET_FPS as f32;
 
 
 pub struct Game {
