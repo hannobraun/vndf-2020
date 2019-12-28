@@ -1,4 +1,7 @@
-use vndf_shared::{
+pub use vndf_shared as shared;
+
+
+use self::shared::{
     Server,
     net,
 };

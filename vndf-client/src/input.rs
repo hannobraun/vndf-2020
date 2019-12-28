@@ -1,6 +1,6 @@
 use ggez::input::keyboard::KeyCode;
 
-use vndf_shared::input::{
+use crate::shared::input::{
     Event,
     Rotation,
 };

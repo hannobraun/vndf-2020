@@ -1,6 +1,6 @@
 use cgmath::prelude::*;
 
-use vndf_shared::input::Rotation;
+use crate::shared::input::Rotation;
 
 use crate::{
     game::{

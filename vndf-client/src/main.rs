@@ -4,6 +4,9 @@ mod input;
 mod math;
 
 
+pub use vndf_shared as shared;
+
+
 use std::{
     env,
     io,
@@ -33,15 +36,6 @@ use ggez::{
 };
 use log::error;
 
-use vndf_shared::{
-    Server,
-    net::{
-        self,
-        client::Conn,
-        msg,
-    },
-};
-
 use self::{
     graphics::Graphics,
     game::{
@@ -49,6 +43,14 @@ use self::{
         TARGET_FPS,
         State,
     },
+    shared::{
+        Server,
+        net::{
+            self,
+            client::Conn,
+            msg,
+        },
+    }
 };
 
 
