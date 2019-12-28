@@ -5,7 +5,6 @@ authors = ["Hanno Braun <hb@hannobraun.de>"]
 edition = "2018"
 
 [dependencies]
-cgmath     = { version = "*", features = ["mint"] }
 env_logger = "*"
 ggez       = "*"
 hecs       = "*"

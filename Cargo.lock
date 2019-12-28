@@ -2034,7 +2034,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 name = "vndf-client"
 version = "0.1.0"
 dependencies = [
- "cgmath 0.17.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "env_logger 0.7.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "ggez 0.5.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "hecs 0.2.5 (registry+https://github.com/rust-lang/crates.io-index)",
