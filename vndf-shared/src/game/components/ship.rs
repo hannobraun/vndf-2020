@@ -3,12 +3,10 @@ use crate::{
         components::Body,
         entities as e,
     },
-    shared::{
-        input::Rotation,
-        math::{
-            prelude::*,
-            Rad,
-        },
+    input::Rotation,
+    math::{
+        prelude::*,
+        Rad,
     },
 };
 

@@ -1,6 +1,6 @@
 use crate::{
     game::components::Body,
-    shared::math::{
+    math::{
         prelude::*,
         Vec2,
         rotate,

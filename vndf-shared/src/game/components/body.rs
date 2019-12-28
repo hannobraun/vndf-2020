@@ -1,4 +1,4 @@
-use crate::shared::math::{
+use crate::math::{
     prelude::*,
     Pnt2,
     Rad,

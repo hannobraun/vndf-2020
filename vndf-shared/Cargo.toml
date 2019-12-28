@@ -6,6 +6,7 @@ edition = "2018"
 
 [dependencies]
 cgmath   = { version = "*", features = ["mint"] }
+hecs     = "*"
 log      = "*"
 postcard = "*"
 serde    = "*"

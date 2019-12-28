@@ -5,7 +5,7 @@ pub mod systems;
 
 use hecs::World;
 
-use crate::shared::input::Event;
+use crate::input::Event;
 
 
 pub const WORLD_SIZE: f32 = 1000.0;

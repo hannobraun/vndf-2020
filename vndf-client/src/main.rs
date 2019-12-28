@@ -1,4 +1,3 @@
-mod game;
 mod graphics;
 mod input;
 
@@ -37,13 +36,13 @@ use log::error;
 
 use self::{
     graphics::Graphics,
-    game::{
-        FRAME_TIME,
-        TARGET_FPS,
-        State,
-    },
     shared::{
         Server,
+        game::{
+            FRAME_TIME,
+            TARGET_FPS,
+            State,
+        },
         net::{
             self,
             client::Conn,

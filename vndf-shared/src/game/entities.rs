@@ -1,6 +1,6 @@
 use crate::{
     game::components as c,
-    shared::math::{
+    math::{
         prelude::*,
         Rad,
     },

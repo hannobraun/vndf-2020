@@ -11,7 +11,7 @@ use ggez::{
     },
 };
 
-use crate::game::{
+use crate::shared::game::{
     WORLD_SIZE,
     State,
     components::{

@@ -1,6 +1,6 @@
 use hecs::World;
 
-use crate::shared::input::Rotation;
+use crate::input::Rotation;
 
 use crate::game::components::{
     Body,
