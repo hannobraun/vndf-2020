@@ -7,7 +7,7 @@ use crate::{
         components::Body,
         entities as e,
     },
-    math::Rad,
+    shared::math::Rad,
 };
 
 

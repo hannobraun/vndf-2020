@@ -1,7 +1,6 @@
 mod game;
 mod graphics;
 mod input;
-mod math;
 
 
 pub use vndf_shared as shared;

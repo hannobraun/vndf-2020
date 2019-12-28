@@ -2,7 +2,7 @@ use cgmath::prelude::*;
 
 use crate::{
     game::components::Body,
-    math::{
+    shared::math::{
         Vec2,
         rotate,
     },

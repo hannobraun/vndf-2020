@@ -2,7 +2,7 @@ use cgmath::prelude::*;
 
 use crate::{
     game::components as c,
-    math::Rad,
+    shared::math::Rad,
 };
 
 
