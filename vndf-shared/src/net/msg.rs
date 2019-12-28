@@ -7,6 +7,8 @@ use serde::{
     de::DeserializeOwned,
 };
 
+use crate::input;
+
 
 pub trait Message : Send + Debug + DeserializeOwned + Serialize {
     fn write(&self, buf: &mut Vec<u8>) -> Result<(), Error> {
@@ -37,12 +39,14 @@ impl<T> Message for T where T: Send + Debug + DeserializeOwned + Serialize {}
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Deserialize, Serialize)]
 pub enum FromClient {
     Hello,
+    Input(input::Event),
 }
 
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Deserialize, Serialize)]
 pub enum FromServer {
     Welcome,
+    Input(input::Event),
 }
 
 
