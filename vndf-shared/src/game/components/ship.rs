@@ -11,6 +11,7 @@ use crate::{
 };
 
 
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Ship {
     pub rotation: Rotation,
     pub missiles: u64,

@@ -1,3 +1,4 @@
+#[derive(Clone, Copy)]
 pub struct Explosion {
     pub time_total: f32,
     pub time_left:  f32,

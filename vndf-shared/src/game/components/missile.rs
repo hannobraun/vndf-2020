@@ -7,6 +7,7 @@ use crate::game::{
 };
 
 
+#[derive(Clone, Copy)]
 pub struct Missile;
 
 impl Missile {

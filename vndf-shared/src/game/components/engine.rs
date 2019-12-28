@@ -8,6 +8,7 @@ use crate::{
 };
 
 
+#[derive(Clone, Copy)]
 pub struct Engine {
     pub enabled: bool,
     pub thrust:  f32,
