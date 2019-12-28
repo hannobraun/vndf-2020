@@ -3,11 +3,11 @@ use cgmath::prelude::*;
 use vndf_shared::input::Rotation;
 
 use crate::{
-    math::Rad,
-    state::{
+    game::{
         components::Body,
         entities as e,
     },
+    math::Rad,
 };
 
 

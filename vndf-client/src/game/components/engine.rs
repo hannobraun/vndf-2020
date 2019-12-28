@@ -1,11 +1,11 @@
 use cgmath::prelude::*;
 
 use crate::{
+    game::components::Body,
     math::{
         Vec2,
         rotate,
     },
-    state::components::Body,
 };
 
 

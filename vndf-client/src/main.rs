@@ -1,7 +1,7 @@
+mod game;
 mod graphics;
 mod input;
 mod math;
-mod state;
 
 
 use std::{
@@ -44,7 +44,7 @@ use vndf_shared::{
 
 use self::{
     graphics::Graphics,
-    state::State,
+    game::State,
 };
 
 

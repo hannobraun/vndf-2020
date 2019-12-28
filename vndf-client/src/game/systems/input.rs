@@ -2,7 +2,7 @@ use hecs::World;
 
 use vndf_shared::input::Rotation;
 
-use crate::state::components::{
+use crate::game::components::{
     Body,
     Engine,
     Ship,

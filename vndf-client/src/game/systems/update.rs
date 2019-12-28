@@ -1,6 +1,6 @@
 use hecs::World;
 
-use crate::state::components::{
+use crate::game::components::{
     Body,
     Engine,
     Explosion,
