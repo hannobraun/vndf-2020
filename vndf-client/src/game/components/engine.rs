@@ -1,8 +1,7 @@
-use cgmath::prelude::*;
-
 use crate::{
     game::components::Body,
     shared::math::{
+        prelude::*,
         Vec2,
         rotate,
     },

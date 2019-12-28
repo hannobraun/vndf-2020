@@ -1,5 +1,3 @@
-use cgmath::prelude::*;
-
 use crate::shared::input::Rotation;
 
 use crate::{
@@ -7,7 +5,10 @@ use crate::{
         components::Body,
         entities as e,
     },
-    shared::math::Rad,
+    shared::math::{
+        prelude::*,
+        Rad,
+    },
 };
 
 

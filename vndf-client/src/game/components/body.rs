@@ -1,6 +1,5 @@
-use cgmath::prelude::*;
-
 use crate::shared::math::{
+    prelude::*,
     Pnt2,
     Rad,
     Vec2,

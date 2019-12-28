@@ -4,6 +4,11 @@ use cgmath::{
 };
 
 
+pub mod prelude {
+    pub use cgmath::prelude::*;
+}
+
+
 pub type Pnt2 = cgmath::Point2<f32>;
 pub type Vec2 = cgmath::Vector2<f32>;
 
