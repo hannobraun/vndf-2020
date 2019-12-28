@@ -45,6 +45,11 @@ impl Server {
                     // automatically, in case of errors.
                     let _ = self.server.send(id, msg::FromServer::Welcome);
                 }
+                server::Event::Message(id, msg::FromClient::Input(input)) => {
+                    // Ignore error. The client will be disconnected
+                    // automatically, in case of errors.
+                    let _ = self.server.send(id, msg::FromServer::Input(input));
+                }
                 _ => (),
             }
         }

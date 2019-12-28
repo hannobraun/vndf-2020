@@ -123,7 +123,8 @@ impl EventHandler for Game {
         }
 
         if let Some(event) = input::key_down(key_code) {
-            self.state.handle_input(event);
+            self.conn.send(msg::FromClient::Input(event))
+                .expect("Failed to send input event");
         }
     }
 
@@ -133,7 +134,8 @@ impl EventHandler for Game {
         _:        KeyMods,
     ) {
         if let Some(event) = input::key_up(key_code) {
-            self.state.handle_input(event);
+            self.conn.send(msg::FromClient::Input(event))
+                .expect("Failed to send input event");
         }
     }
 
@@ -142,6 +144,9 @@ impl EventHandler for Game {
 
         for message in self.conn.incoming() {
             match message {
+                Ok(msg::FromServer::Input(event)) => {
+                    self.state.handle_input(event);
+                }
                 Ok(message) => {
                     print!("Message: {:?}\n", message)
                 }
