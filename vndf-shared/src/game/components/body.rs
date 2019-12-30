@@ -1,3 +1,8 @@
+use serde::{
+    Deserialize,
+    Serialize,
+};
+
 use crate::math::{
     prelude::*,
     Pnt2,
@@ -6,7 +11,7 @@ use crate::math::{
 };
 
 
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Body {
     pub pos: Pnt2,
     pub vel: Vec2,

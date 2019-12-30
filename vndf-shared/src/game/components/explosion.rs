@@ -1,4 +1,10 @@
-#[derive(Clone, Copy)]
+use serde::{
+    Deserialize,
+    Serialize,
+};
+
+
+#[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Explosion {
     pub time_total: f32,
     pub time_left:  f32,

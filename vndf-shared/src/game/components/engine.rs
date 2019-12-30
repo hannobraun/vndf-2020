@@ -1,3 +1,8 @@
+use serde::{
+    Deserialize,
+    Serialize,
+};
+
 use crate::{
     game::components::Body,
     math::{
@@ -8,7 +13,7 @@ use crate::{
 };
 
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Engine {
     pub enabled: bool,
     pub thrust:  f32,

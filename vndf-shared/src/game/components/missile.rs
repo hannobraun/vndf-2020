@@ -1,3 +1,8 @@
+use serde::{
+    Deserialize,
+    Serialize,
+};
+
 use crate::game::{
     components::{
         Body,
@@ -7,7 +12,7 @@ use crate::game::{
 };
 
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Missile;
 
 impl Missile {

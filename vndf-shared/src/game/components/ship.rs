@@ -1,3 +1,8 @@
+use serde::{
+    Deserialize,
+    Serialize,
+};
+
 use crate::{
     game::{
         components::Body,
@@ -11,7 +16,7 @@ use crate::{
 };
 
 
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Ship {
     pub rotation: Rotation,
     pub missiles: u64,
