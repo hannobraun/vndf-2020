@@ -234,7 +234,7 @@ impl ConnAdapter {
 pub struct ConnId(pub u64);
 
 
-#[derive(Debug, Eq, PartialEq)]
+#[derive(Debug, PartialEq)]
 pub enum Event {
     Connect(ConnId),
     Disconnect(ConnId, Option<net::Error>),

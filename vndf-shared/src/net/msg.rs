@@ -36,14 +36,14 @@ pub trait Message : Send + Debug + DeserializeOwned + Serialize {
 impl<T> Message for T where T: Send + Debug + DeserializeOwned + Serialize {}
 
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub enum FromClient {
     Hello,
     Input(input::Event),
 }
 
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub enum FromServer {
     Welcome,
     Input(input::Event),
