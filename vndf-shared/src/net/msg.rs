@@ -7,7 +7,13 @@ use serde::{
     de::DeserializeOwned,
 };
 
-use crate::input;
+use crate::{
+    input,
+    net::game::{
+        Entity,
+        Id,
+    },
+};
 
 
 pub trait Message : Send + Debug + DeserializeOwned + Serialize {
@@ -47,6 +53,9 @@ pub enum FromClient {
 pub enum FromServer {
     Welcome,
     Input(input::Event),
+    AddEntity(Entity),
+    UpdateEntity(Entity),
+    RemoveEntity(Id),
 }
 
 
