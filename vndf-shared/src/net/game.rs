@@ -3,6 +3,10 @@ use hecs::{
     NoSuchEntity,
     World,
 };
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 
 macro_rules! entity {
@@ -11,6 +15,7 @@ macro_rules! entity {
             $($ty,)*
         };
 
+        #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
         pub struct Entity {
             pub id: Id,
             $(pub $name: Option<$ty>,)*
@@ -81,6 +86,7 @@ macro_rules! entity {
 }
 
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Deserialize, Serialize)]
 pub struct Id(pub u64);
 
 
