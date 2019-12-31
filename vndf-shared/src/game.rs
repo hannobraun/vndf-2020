@@ -2,6 +2,9 @@ pub mod components;
 pub mod entities;
 pub mod systems;
 
+
+use hecs::World;
+
 use crate::{
     input::Event,
     world,
@@ -15,12 +18,12 @@ pub const FRAME_TIME: f32 = 1.0 / TARGET_FPS as f32;
 
 
 pub struct State {
-    pub world: hecs::World,
+    pub world: World,
 }
 
 impl State {
     pub fn new() -> Self {
-        let mut world = hecs::World::new();
+        let mut world = World::new();
 
         world.spawn(entities::ship());
 
