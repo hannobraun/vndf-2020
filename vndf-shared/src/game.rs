@@ -15,12 +15,12 @@ pub const FRAME_TIME: f32 = 1.0 / TARGET_FPS as f32;
 
 
 pub struct State {
-    pub world: World,
+    pub world: hecs::World,
 }
 
 impl State {
     pub fn new() -> Self {
-        let mut world = World::new();
+        let mut world = hecs::World::new();
 
         world.spawn(entities::ship());
 
@@ -30,24 +30,28 @@ impl State {
     }
 
     pub fn handle_input(&mut self, event: Event) {
+        let mut world = World::new(&mut self.world);
+
         match event {
             Event::Rotate(rotation) => {
-                systems::input::handle_rotate(&mut self.world, rotation);
+                systems::input::handle_rotate(&mut world, rotation);
             }
             Event::Thrust(thrust) => {
-                systems::input::handle_thrust(&mut self.world, thrust);
+                systems::input::handle_thrust(&mut world, thrust);
             }
             Event::LaunchMissile => {
-                systems::input::handle_launch(&mut self.world);
+                systems::input::handle_launch(&mut world);
             }
         }
     }
 
     pub fn update(&mut self, dt: f32) {
-        systems::update::update_ships(&mut self.world);
-        systems::update::update_engines(&mut self.world, dt);
-        systems::update::update_bodies(&mut self.world, WORLD_SIZE, dt);
-        systems::update::update_missiles(&mut self.world);
-        systems::update::update_explosions(&mut self.world, dt);
+        let mut world = World::new(&mut self.world);
+
+        systems::update::update_ships(&mut world);
+        systems::update::update_engines(&mut world, dt);
+        systems::update::update_bodies(&mut world, WORLD_SIZE, dt);
+        systems::update::update_missiles(&mut world);
+        systems::update::update_explosions(&mut world, dt);
     }
 }

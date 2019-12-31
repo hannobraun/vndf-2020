@@ -7,11 +7,11 @@ use hecs::{
 };
 
 
-pub struct World(hecs::World);
+pub struct World<'r>(&'r mut hecs::World);
 
-impl World {
-    pub fn new() -> Self {
-        Self(hecs::World::new())
+impl<'r> World<'r> {
+    pub fn new(inner: &'r mut hecs::World) -> Self {
+        Self(inner)
     }
 
     pub fn spawn(&mut self, components: impl DynamicBundle) -> Entity {
