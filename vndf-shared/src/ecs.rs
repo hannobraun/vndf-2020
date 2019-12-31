@@ -1,7 +1,6 @@
 use hecs::{
     self,
     DynamicBundle,
-    Entity,
     NoSuchEntity,
     Query,
     QueryBorrow,
@@ -31,3 +30,6 @@ impl World {
         self.inner.query()
     }
 }
+
+
+pub type Entity = hecs::Entity;
