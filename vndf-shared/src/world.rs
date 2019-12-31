@@ -2,14 +2,13 @@ use hecs::{
     self,
     DynamicBundle,
     NoSuchEntity,
-    Query,
     QueryBorrow,
 };
 
 
-pub struct World<'r>(&'r mut hecs::World);
+pub struct Query<'r>(&'r mut hecs::World);
 
-impl<'r> World<'r> {
+impl<'r> Query<'r> {
     pub fn new(inner: &'r mut hecs::World) -> Self {
         Self(inner)
     }
@@ -22,7 +21,7 @@ impl<'r> World<'r> {
         self.0.despawn(entity)
     }
 
-    pub fn query<Q: Query>(&self) -> QueryBorrow<Q> {
+    pub fn query<Q: hecs::Query>(&self) -> QueryBorrow<Q> {
         self.0.query()
     }
 }

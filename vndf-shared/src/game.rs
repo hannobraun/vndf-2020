@@ -4,7 +4,7 @@ pub mod systems;
 
 use crate::{
     input::Event,
-    world::World,
+    world,
 };
 
 
@@ -30,7 +30,7 @@ impl State {
     }
 
     pub fn handle_input(&mut self, event: Event) {
-        let mut world = World::new(&mut self.world);
+        let mut world = world::Query::new(&mut self.world);
 
         match event {
             Event::Rotate(rotation) => {
@@ -46,7 +46,7 @@ impl State {
     }
 
     pub fn update(&mut self, dt: f32) {
-        let mut world = World::new(&mut self.world);
+        let mut world = world::Query::new(&mut self.world);
 
         systems::update::update_ships(&mut world);
         systems::update::update_engines(&mut world, dt);

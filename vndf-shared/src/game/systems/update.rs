@@ -6,30 +6,30 @@ use crate::{
         Missile,
         Ship,
     },
-    world::World,
+    world,
 };
 
 
-pub fn update_ships(world: &mut World) {
+pub fn update_ships(world: &mut world::Query) {
     for (_, (ship, body)) in &mut world.query::<(&mut Ship, &mut Body)>() {
         ship.update(body);
     }
 }
 
-pub fn update_engines(world: &mut World, dt: f32) {
+pub fn update_engines(world: &mut world::Query, dt: f32) {
     for (_, (engine, body)) in &mut world.query::<(&mut Engine, &mut Body)>() {
         engine.update(body, dt)
     }
 }
 
-pub fn update_bodies(world: &mut World, world_size: f32, dt: f32) {
+pub fn update_bodies(world: &mut world::Query, world_size: f32, dt: f32) {
     for (_, (body,)) in &mut world.query::<(&mut Body,)>() {
         body.update(dt);
         body.enforce_boundary(world_size);
     }
 }
 
-pub fn update_missiles(world: &mut World) {
+pub fn update_missiles(world: &mut world::Query) {
     let mut explode = Vec::new();
 
     {
@@ -48,7 +48,7 @@ pub fn update_missiles(world: &mut World) {
     }
 }
 
-pub fn update_explosions(world: &mut World, dt: f32) {
+pub fn update_explosions(world: &mut world::Query, dt: f32) {
     let mut destroy = Vec::new();
 
     {
