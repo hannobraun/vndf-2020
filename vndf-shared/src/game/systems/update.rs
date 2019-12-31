@@ -1,5 +1,4 @@
 use crate::{
-    ecs::World,
     game::components::{
         Body,
         Engine,
@@ -7,6 +6,7 @@ use crate::{
         Missile,
         Ship,
     },
+    world::World,
 };
 
 

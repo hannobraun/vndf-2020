@@ -1,11 +1,11 @@
 use crate::{
-    ecs::World,
     game::components::{
         Body,
         Engine,
         Ship,
     },
     input::Rotation,
+    world::World,
 };
 
 

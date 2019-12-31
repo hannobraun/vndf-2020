@@ -3,8 +3,8 @@ pub mod entities;
 pub mod systems;
 
 use crate::{
-    ecs::World,
     input::Event,
+    world::World,
 };
 
 
