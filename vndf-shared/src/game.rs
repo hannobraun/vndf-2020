@@ -1,5 +1,6 @@
 pub mod components;
 pub mod entities;
+pub mod events;
 pub mod systems;
 
 
@@ -10,6 +11,11 @@ use crate::{
     world,
 };
 
+use self::events::{
+    Event,
+    Events,
+};
+
 
 pub const WORLD_SIZE: f32 = 1000.0;
 
@@ -18,7 +24,8 @@ pub const FRAME_TIME: f32 = 1.0 / TARGET_FPS as f32;
 
 
 pub struct State {
-    pub world: World,
+    pub world:  World,
+    pub events: Events,
 }
 
 impl State {
@@ -29,6 +36,7 @@ impl State {
 
         Self {
             world,
+            events: Events::new(),
         }
     }
 
@@ -43,7 +51,7 @@ impl State {
                 systems::input::handle_thrust(&mut world, thrust);
             }
             input::Event::LaunchMissile => {
-                systems::input::handle_launch(&mut world);
+                systems::input::handle_launch(&mut world, &mut self.events);
             }
         }
     }
@@ -56,5 +64,13 @@ impl State {
         systems::update::update_bodies(&mut world, WORLD_SIZE, dt);
         systems::update::update_missiles(&mut world);
         systems::update::update_explosions(&mut world, dt);
+
+        for event in self.events.drain() {
+            match event {
+                Event::LaunchMissile(missile) => {
+                    self.world.spawn(missile);
+                }
+            }
+        }
     }
 }

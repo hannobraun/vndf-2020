@@ -1,8 +1,14 @@
 use crate::{
-    game::components::{
-        Body,
-        Engine,
-        Ship,
+    game::{
+        components::{
+            Body,
+            Engine,
+            Ship,
+        },
+        events::{
+            Event,
+            Events,
+        },
     },
     input::Rotation,
     world,
@@ -21,17 +27,10 @@ pub fn handle_thrust(world: &mut world::Query, thrust: bool) {
     }
 }
 
-pub fn handle_launch(world: &mut world::Query) {
-    let mut missiles = Vec::new();
-    {
-        for (_, (ship, body)) in &mut world.query::<(&mut Ship, &Body)>() {
-            if let Some(missile) = ship.launch_missile(body) {
-                missiles.push(missile);
-            }
+pub fn handle_launch(world: &mut world::Query, events: &mut Events) {
+    for (_, (ship, body)) in &mut world.query::<(&mut Ship, &Body)>() {
+        if let Some(missile) = ship.launch_missile(body) {
+            events.push(Event::LaunchMissile(missile));
         }
-    }
-
-    for missile in missiles {
-        world.spawn(missile);
     }
 }
