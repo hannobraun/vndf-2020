@@ -7,27 +7,23 @@ use hecs::{
 };
 
 
-pub struct World {
-    inner: hecs::World,
-}
+pub struct World(hecs::World);
 
 impl World {
     pub fn new() -> Self {
-        Self {
-            inner: hecs::World::new(),
-        }
+        Self(hecs::World::new())
     }
 
     pub fn spawn(&mut self, components: impl DynamicBundle) -> Entity {
-        self.inner.spawn(components)
+        self.0.spawn(components)
     }
 
     pub fn despawn(&mut self, entity: Entity) -> Result<(), NoSuchEntity> {
-        self.inner.despawn(entity)
+        self.0.despawn(entity)
     }
 
     pub fn query<Q: Query>(&self) -> QueryBorrow<Q> {
-        self.inner.query()
+        self.0.query()
     }
 }
 
