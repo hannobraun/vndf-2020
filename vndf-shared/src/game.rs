@@ -6,7 +6,7 @@ pub mod systems;
 use hecs::World;
 
 use crate::{
-    input::Event,
+    input,
     world,
 };
 
@@ -32,17 +32,17 @@ impl State {
         }
     }
 
-    pub fn handle_input(&mut self, event: Event) {
+    pub fn handle_input(&mut self, event: input::Event) {
         let mut world = world::Query::new(&mut self.world);
 
         match event {
-            Event::Rotate(rotation) => {
+            input::Event::Rotate(rotation) => {
                 systems::input::handle_rotate(&mut world, rotation);
             }
-            Event::Thrust(thrust) => {
+            input::Event::Thrust(thrust) => {
                 systems::input::handle_thrust(&mut world, thrust);
             }
-            Event::LaunchMissile => {
+            input::Event::LaunchMissile => {
                 systems::input::handle_launch(&mut world);
             }
         }
