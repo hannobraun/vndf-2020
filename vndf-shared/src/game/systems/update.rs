@@ -47,19 +47,14 @@ pub fn update_missiles(world: &mut world::Query, events: &mut Events) {
     }
 }
 
-pub fn update_explosions(world: &mut world::Query, dt: f32) {
-    let mut destroy = Vec::new();
-
-    {
-        for (id, (explosion,)) in &mut world.query::<(&mut Explosion,)>() {
-            if explosion.update(dt) {
-                destroy.push(id);
-            }
+pub fn update_explosions(
+    world:  &mut world::Query,
+    dt:     f32,
+    events: &mut Events,
+) {
+    for (id, (explosion,)) in &mut world.query::<(&mut Explosion,)>() {
+        if explosion.update(dt) {
+            events.push(Event::RemoveExplosion(id));
         }
-    }
-
-    for id in destroy {
-        world.despawn(id)
-            .expect("Explosion should exist");
     }
 }

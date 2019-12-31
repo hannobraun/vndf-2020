@@ -30,5 +30,6 @@ pub enum Event {
     ExplodeMissile {
         missile:   Entity,
         explosion: Explosion,
-    }
+    },
+    RemoveExplosion(Entity),
 }

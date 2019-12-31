@@ -63,7 +63,7 @@ impl State {
         systems::update::update_engines(&mut world, dt);
         systems::update::update_bodies(&mut world, WORLD_SIZE, dt);
         systems::update::update_missiles(&mut world, &mut self.events);
-        systems::update::update_explosions(&mut world, dt);
+        systems::update::update_explosions(&mut world, dt, &mut self.events);
 
         for event in self.events.drain() {
             match event {
@@ -74,6 +74,10 @@ impl State {
                     self.world.despawn(missile)
                         .expect("Missile should exist");
                     self.world.spawn(explosion);
+                }
+                Event::RemoveExplosion(explosion) => {
+                    self.world.despawn(explosion)
+                        .expect("Explosion should exist");
                 }
             }
         }
