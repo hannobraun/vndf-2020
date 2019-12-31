@@ -1,3 +1,4 @@
+pub mod ecs;
 pub mod game;
 pub mod input;
 pub mod math;

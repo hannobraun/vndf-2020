@@ -2,10 +2,10 @@ pub mod components;
 pub mod entities;
 pub mod systems;
 
-
-use hecs::World;
-
-use crate::input::Event;
+use crate::{
+    ecs::World,
+    input::Event,
+};
 
 
 pub const WORLD_SIZE: f32 = 1000.0;

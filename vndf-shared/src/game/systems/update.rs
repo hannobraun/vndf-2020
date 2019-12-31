@@ -1,11 +1,12 @@
-use hecs::World;
-
-use crate::game::components::{
-    Body,
-    Engine,
-    Explosion,
-    Missile,
-    Ship,
+use crate::{
+    ecs::World,
+    game::components::{
+        Body,
+        Engine,
+        Explosion,
+        Missile,
+        Ship,
+    },
 };
 
 
