@@ -1,10 +1,16 @@
 use crate::{
-    game::components::{
-        Body,
-        Engine,
-        Explosion,
-        Missile,
-        Ship,
+    game::{
+        components::{
+            Body,
+            Engine,
+            Explosion,
+            Missile,
+            Ship,
+        },
+        events::{
+            Event,
+            Events,
+        },
     },
     world,
 };
@@ -29,22 +35,15 @@ pub fn update_bodies(world: &mut world::Query, world_size: f32, dt: f32) {
     }
 }
 
-pub fn update_missiles(world: &mut world::Query) {
-    let mut explode = Vec::new();
-
-    {
-        let query = &mut world.query::<(&Missile, &Body, &Engine)>();
-        for (id, (missile, body, engine)) in query {
-            if let Some(explosion) = missile.update(body, engine) {
-                explode.push((id, explosion));
-            }
+pub fn update_missiles(world: &mut world::Query, events: &mut Events) {
+    let query = &mut world.query::<(&Missile, &Body, &Engine)>();
+    for (id, (missile, body, engine)) in query {
+        if let Some(explosion) = missile.update(body, engine) {
+            events.push(Event::ExplodeMissile {
+                missile: id,
+                explosion,
+            });
         }
-    }
-
-    for (id, explosion) in explode {
-        world.despawn(id)
-            .expect("Missile should exist");
-        world.spawn(explosion);
     }
 }
 

@@ -1,6 +1,11 @@
 use std::collections::VecDeque;
 
-use crate::game::entities::Missile;
+use hecs::Entity;
+
+use crate::game::entities::{
+    Explosion,
+    Missile,
+};
 
 
 pub struct Events(VecDeque<Event>);
@@ -22,4 +27,8 @@ impl Events {
 
 pub enum Event {
     LaunchMissile(Missile),
+    ExplodeMissile {
+        missile:   Entity,
+        explosion: Explosion,
+    }
 }

@@ -62,13 +62,18 @@ impl State {
         systems::update::update_ships(&mut world);
         systems::update::update_engines(&mut world, dt);
         systems::update::update_bodies(&mut world, WORLD_SIZE, dt);
-        systems::update::update_missiles(&mut world);
+        systems::update::update_missiles(&mut world, &mut self.events);
         systems::update::update_explosions(&mut world, dt);
 
         for event in self.events.drain() {
             match event {
                 Event::LaunchMissile(missile) => {
                     self.world.spawn(missile);
+                }
+                Event::ExplodeMissile { missile, explosion } => {
+                    self.world.despawn(missile)
+                        .expect("Missile should exist");
+                    self.world.spawn(explosion);
                 }
             }
         }
