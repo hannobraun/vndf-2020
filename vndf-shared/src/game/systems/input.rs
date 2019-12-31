@@ -1,11 +1,12 @@
 use hecs::World;
 
-use crate::input::Rotation;
-
-use crate::game::components::{
-    Body,
-    Engine,
-    Ship,
+use crate::{
+    game::components::{
+        Body,
+        Engine,
+        Ship,
+    },
+    input::Rotation,
 };
 
 
