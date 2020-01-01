@@ -81,12 +81,23 @@ impl Server {
         self.addr
     }
 
-    pub fn send(&mut self, addr: SocketAddr, message: msg::FromServer)
-        -> Result<(), Error>
-    {
+    pub fn send(&mut self, addr: SocketAddr, message: msg::FromServer) {
         let conn = match self.conns.get_mut(&addr) {
             Some(conn) => conn,
-            None       => return Err(Error::NoSuchClient(addr)),
+
+            // Just return, if this client doesn't exist. We could return an
+            // error here, of course, but I don't think that is an error that
+            // could actually be handled in a sensible way.
+            //
+            // If the client doesn't exist because of a bug in the program, then
+            // we'd like to have a panic. The caller can't just `unwrap though
+            // as the client could also have just been removed, before the
+            // caller had a chance to handle that event.
+            //
+            // So there's really nothing the caller could do with this error,
+            // except ignore it. Let's save the caller that bit of trouble and
+            // just make this a no-op.
+            None => return,
         };
 
         if let Err(err) = conn.0.send(message) {
@@ -94,8 +105,6 @@ impl Server {
             // No need to return the error. The user will get it via the
             // disconnect event.
         }
-
-        Ok(())
     }
 
     pub fn events<'s>(&'s mut self) -> impl Iterator<Item=Event> + 's {

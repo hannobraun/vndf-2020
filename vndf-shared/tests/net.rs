@@ -74,8 +74,7 @@ fn server_should_remove_clients_that_cause_errors() -> net::Result {
     let mut disconnect_id = None;
     while disconnect_id.is_none() {
         // Attempt to send, to trigger an error.
-        server.send(connect_id.unwrap(), msg::FromServer::Welcome)
-            .expect("Client should exist");
+        server.send(connect_id.unwrap(), msg::FromServer::Welcome);
 
         for event in server.events() {
             if let server::Event::Disconnect(id, _error) = event {
@@ -108,7 +107,7 @@ fn clients_should_emit_receive_events() -> Result<(), server::Error> {
     if let Some(id) = client_id {
         // This is going to happen, otherwise the previous loop wouldn't have
         // finished.
-        server.send(id, message)?;
+        server.send(id, message);
     }
 
     let mut messages = Vec::new();

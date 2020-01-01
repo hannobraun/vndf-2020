@@ -41,16 +41,10 @@ impl Server {
         for event in self.events.drain(..) {
             match event {
                 server::Event::Message(id, msg::FromClient::Hello) => {
-                    // Ignore error. The client will be disconnected
-                    // automatically, in case of errors.
-                    self.server.send(id, msg::FromServer::Welcome)
-                        .expect("Client should exist");
+                    self.server.send(id, msg::FromServer::Welcome);
                 }
                 server::Event::Message(id, msg::FromClient::Input(input)) => {
-                    // Ignore error. The client will be disconnected
-                    // automatically, in case of errors.
-                    self.server.send(id, msg::FromServer::Input(input))
-                        .expect("Client should exist");
+                    self.server.send(id, msg::FromServer::Input(input));
                 }
                 _ => (),
             }
