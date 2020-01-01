@@ -74,16 +74,11 @@ fn server_should_remove_clients_that_cause_errors() -> net::Result {
 
     client.disconnect();
 
-    // Wait until the disappearance of the client causes a send error.
-    loop {
-        let message = msg::FromServer::Welcome;
-        if let Err(_) = server.send(connect_id.unwrap(), message) {
-            break;
-        }
-    }
-
     let mut disconnect_id = None;
     while disconnect_id.is_none() {
+        // Attempt to send, to trigger an error.
+        let _ = server.send(connect_id.unwrap(), msg::FromServer::Welcome);
+
         for event in server.events() {
             if let server::Event::Disconnect(id, _error) = event {
                 disconnect_id = Some(id);
