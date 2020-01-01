@@ -30,14 +30,14 @@ pub struct State {
 
 impl State {
     pub fn new() -> Self {
-        let mut world = World::new();
-
-        world.spawn(entities::ship());
-
-        Self {
-            world,
+        let mut state = Self {
+            world:  World::new(),
             events: Events::new(),
-        }
+        };
+
+        state.world.spawn(entities::ship());
+
+        state
     }
 
     pub fn handle_input(&mut self, event: input::Event) {
