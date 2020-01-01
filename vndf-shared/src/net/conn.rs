@@ -32,9 +32,11 @@ use crate::net::{
 
 
 pub struct Conn<In, Out> {
-    pub rx:   Rx<In>,
-    pub tx:   Tx<Out>,
-    pub addr: SocketAddr,
+    pub rx: Rx<In>,
+    pub tx: Tx<Out>,
+
+    pub local_addr: SocketAddr,
+    pub peer_addr:  SocketAddr,
 }
 
 impl<In, Out> Conn<In, Out>
@@ -49,7 +51,8 @@ impl<In, Out> Conn<In, Out>
     }
 
     pub fn from_stream(stream: TcpStream) -> io::Result<Self> {
-        let addr = stream.peer_addr()?;
+        let local_addr = stream.local_addr()?;
+        let peer_addr  = stream.peer_addr()?;
 
         let (in_tx,  in_rx)  = channel();
         let (out_tx, out_rx) = channel();
@@ -59,13 +62,13 @@ impl<In, Out> Conn<In, Out>
 
         thread::spawn(move ||
             if let Err(err) = send(stream_send, out_rx) {
-                error!("Send error ({}): {:?}", addr, err);
+                error!("Send error ({}): {:?}", peer_addr, err);
             }
         );
 
         thread::spawn(move || {
             if let Err(err) = receive(stream_receive, in_tx) {
-                error!("Receive error ({}) : {:?}", addr, err);
+                error!("Receive error ({}) : {:?}", peer_addr, err);
             }
         });
 
@@ -73,7 +76,8 @@ impl<In, Out> Conn<In, Out>
             Self {
                 rx: Rx(in_rx),
                 tx: Tx(out_tx),
-                addr,
+                local_addr,
+                peer_addr,
             }
         )
     }
