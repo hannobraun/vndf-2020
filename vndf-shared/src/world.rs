@@ -4,13 +4,14 @@ use hecs::{
     Entity,
     NoSuchEntity,
     QueryBorrow,
+    World,
 };
 
 
-pub struct Query<'r>(&'r mut hecs::World);
+pub struct Query<'r>(&'r mut World);
 
 impl<'r> Query<'r> {
-    pub fn new(inner: &'r mut hecs::World) -> Self {
+    pub fn new(inner: &'r mut World) -> Self {
         Self(inner)
     }
 
@@ -20,10 +21,10 @@ impl<'r> Query<'r> {
 }
 
 
-pub struct Spawn<'r>(&'r mut hecs::World);
+pub struct Spawn<'r>(&'r mut World);
 
 impl<'r> Spawn<'r> {
-    pub fn new(inner: &'r mut hecs::World) -> Self {
+    pub fn new(inner: &'r mut World) -> Self {
         Self(inner)
     }
 
