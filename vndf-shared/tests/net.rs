@@ -3,10 +3,7 @@ use vndf_shared::net::{
     Server,
     client::Conn,
     msg,
-    server::{
-        self,
-        ConnId,
-    },
+    server,
 };
 
 
@@ -14,8 +11,8 @@ use vndf_shared::net::{
 fn server_should_emit_connect_events() -> net::Result {
     let mut server = Server::start_local()?;
 
-    Conn::connect(server.addr())?;
-    Conn::connect(server.addr())?;
+    let conn_1 = Conn::connect(server.addr())?;
+    let conn_2 = Conn::connect(server.addr())?;
 
     let mut events = Vec::new();
 
@@ -25,8 +22,8 @@ fn server_should_emit_connect_events() -> net::Result {
         }
     }
 
-    assert!(events.contains(&server::Event::Connect(ConnId(0))));
-    assert!(events.contains(&server::Event::Connect(ConnId(1))));
+    assert!(events.contains(&server::Event::Connect(conn_1.local_addr)));
+    assert!(events.contains(&server::Event::Connect(conn_2.local_addr)));
 
     Ok(())
 }

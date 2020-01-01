@@ -38,10 +38,10 @@ pub const PORT: u16 = 34480;
 
 pub struct Server {
     addr:    SocketAddr,
-    accept:  Receiver<(ConnId, ConnAdapter)>,
+    accept:  Receiver<(SocketAddr, ConnAdapter)>,
     receive: Receiver<Event>,
-    conns:   HashMap<ConnId, ConnAdapter>,
-    remove:  VecDeque<(ConnId, net::Error)>,
+    conns:   HashMap<SocketAddr, ConnAdapter>,
+    remove:  VecDeque<(SocketAddr, net::Error)>,
 }
 
 impl Server {
@@ -81,16 +81,16 @@ impl Server {
         self.addr
     }
 
-    pub fn send(&mut self, id: ConnId, message: msg::FromServer)
+    pub fn send(&mut self, addr: SocketAddr, message: msg::FromServer)
         -> Result<(), Error>
     {
-        let conn = match self.conns.get_mut(&id) {
+        let conn = match self.conns.get_mut(&addr) {
             Some(conn) => conn,
-            None       => return Err(Error::NoSuchClient(id)),
+            None       => return Err(Error::NoSuchClient(addr)),
         };
 
         if let Err(err) = conn.0.send(message) {
-            self.remove.push_back((id, err));
+            self.remove.push_back((addr, err));
             // No need to return the error. The user will get it via the
             // disconnect event.
         }
@@ -147,18 +147,13 @@ impl Server {
 
 fn accept(
     listener: TcpListener,
-    accept:   Sender<(ConnId, ConnAdapter)>,
+    accept:   Sender<(SocketAddr, ConnAdapter)>,
     receive:  Sender<Event>,
 ) {
-    let mut next_id = 0;
-
     for stream in listener.incoming() {
-        let id = ConnId(next_id);
-        next_id += 1;
-
-        let conn = match ConnAdapter::accept(id, stream, receive.clone()) {
-            Ok(conn) => {
-                conn
+        let (conn, addr) = match ConnAdapter::accept(stream, receive.clone()) {
+            Ok((conn, addr)) => {
+                (conn, addr)
             }
             Err(err) => {
                 error!("Error accepting connection: {:?}", err);
@@ -166,7 +161,7 @@ fn accept(
             }
         };
 
-        if let Err(SendError(_)) = accept.send((id, conn)) {
+        if let Err(SendError(_)) = accept.send((addr, conn)) {
             // Channel disconnected. This means the receiver has been dropped,
             // and we have no reason to keep this up.
             return;
@@ -180,20 +175,17 @@ fn accept(
 struct ConnAdapter(conn::Tx<msg::FromServer>);
 
 impl ConnAdapter {
-    pub fn accept(
-        id:      ConnId,
-        stream:  io::Result<TcpStream>,
-        receive: Sender<Event>,
-    )
-        -> io::Result<Self>
+    pub fn accept(stream: io::Result<TcpStream>, receive: Sender<Event>)
+        -> io::Result<(Self, SocketAddr)>
     {
         let stream = stream?;
 
         let conn = conn::Conn::from_stream(stream)?;
         info!("Connected: {}", conn.peer_addr);
 
-        let mut rx = conn.rx;
-        let     tx = conn.tx;
+        let mut rx   = conn.rx;
+        let     tx   = conn.tx;
+        let     addr = conn.peer_addr;
 
         thread::spawn(move || {
             loop {
@@ -207,14 +199,14 @@ impl ConnAdapter {
 
                             // We can ignore any channel errors here. The thread
                             // is ending anyway.
-                            let event = Event::Disconnect(id, err);
+                            let event = Event::Disconnect(addr, err);
                             let _ = receive.send(event);
 
                             break;
                         }
                     };
 
-                    let event = Event::Message(id, message);
+                    let event = Event::Message(addr, message);
 
                     if let Err(SendError(_)) = receive.send(event) {
                         // Other hand has hung up. No need to keep this up.
@@ -224,20 +216,16 @@ impl ConnAdapter {
             }
         });
 
-        Ok(Self(tx))
+        Ok((Self(tx), addr))
     }
 }
 
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
-pub struct ConnId(pub u64);
-
-
 #[derive(Debug, PartialEq)]
 pub enum Event {
-    Connect(ConnId),
-    Disconnect(ConnId, net::Error),
-    Message(ConnId, msg::FromClient),
+    Connect(SocketAddr),
+    Disconnect(SocketAddr, net::Error),
+    Message(SocketAddr, msg::FromClient),
 }
 
 
@@ -245,7 +233,7 @@ pub enum Event {
 pub enum Error {
     Io(io::Error),
     Net(net::Error),
-    NoSuchClient(ConnId),
+    NoSuchClient(SocketAddr),
 }
 
 impl From<io::Error> for Error {
