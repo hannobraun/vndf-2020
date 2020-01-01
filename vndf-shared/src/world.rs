@@ -1,6 +1,7 @@
 use hecs::{
     self,
     DynamicBundle,
+    Entity,
     NoSuchEntity,
     QueryBorrow,
 };
@@ -34,6 +35,3 @@ impl<'r> Spawn<'r> {
         self.0.despawn(entity)
     }
 }
-
-
-pub type Entity = hecs::Entity;
