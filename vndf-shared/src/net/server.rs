@@ -41,7 +41,7 @@ pub struct Server {
     accept:  Receiver<(ConnId, ConnAdapter)>,
     receive: Receiver<Event>,
     conns:   HashMap<ConnId, ConnAdapter>,
-    remove:  VecDeque<ConnId>,
+    remove:  VecDeque<(ConnId, net::Error)>,
 }
 
 impl Server {
@@ -90,8 +90,9 @@ impl Server {
         };
 
         if let Err(err) = conn.0.send(message) {
-            self.remove.push_back(id);
-            return Err(err.into());
+            self.remove.push_back((id, err));
+            // No need to return the error. The user will get it via the
+            // disconnect event.
         }
 
         Ok(())
@@ -99,9 +100,9 @@ impl Server {
 
     pub fn events<'s>(&'s mut self) -> impl Iterator<Item=Event> + 's {
         iter::from_fn(move || {
-            if let Some(id) = self.remove.pop_front() {
+            if let Some((id, err)) = self.remove.pop_front() {
                 self.conns.remove(&id);
-                return Some(Event::Disconnect(id, None));
+                return Some(Event::Disconnect(id, Some(err)));
             }
 
             match self.receive.try_recv() {
