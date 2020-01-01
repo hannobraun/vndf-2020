@@ -189,10 +189,8 @@ impl ConnAdapter {
     {
         let stream = stream?;
 
-        let addr = stream.peer_addr()?;
-        info!("Connected: {}", addr);
-
         let conn = conn::Conn::from_stream(stream)?;
+        info!("Connected: {}", conn.addr);
 
         let mut rx = conn.rx;
         let     tx = conn.tx;

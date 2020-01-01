@@ -32,8 +32,9 @@ use crate::net::{
 
 
 pub struct Conn<In, Out> {
-    pub rx: Rx<In>,
-    pub tx: Tx<Out>,
+    pub rx:   Rx<In>,
+    pub tx:   Tx<Out>,
+    pub addr: SocketAddr,
 }
 
 impl<In, Out> Conn<In, Out>
@@ -72,6 +73,7 @@ impl<In, Out> Conn<In, Out>
             Self {
                 rx: Rx(in_rx),
                 tx: Tx(out_tx),
+                addr,
             }
         )
     }
