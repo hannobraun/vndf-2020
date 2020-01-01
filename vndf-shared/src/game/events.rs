@@ -2,9 +2,13 @@ use std::collections::VecDeque;
 
 use hecs::Entity;
 
-use crate::game::entities::{
-    Explosion,
-    Missile,
+use crate::{
+    game::entities::{
+        self,
+        Explosion,
+        Missile,
+    },
+    world,
 };
 
 
@@ -33,4 +37,26 @@ pub enum Event {
         explosion: Explosion,
     },
     RemoveExplosion(Entity),
+}
+
+impl Event {
+    pub fn handle(self, world: &mut world::Spawn) {
+        match self {
+            Self::SpawnShip => {
+                world.spawn(entities::ship());
+            }
+            Self::LaunchMissile(missile) => {
+                world.spawn(missile);
+            }
+            Self::ExplodeMissile { missile, explosion } => {
+                world.despawn(missile)
+                    .expect("Missile should exist");
+                world.spawn(explosion);
+            }
+            Self::RemoveExplosion(explosion) => {
+                world.despawn(explosion)
+                    .expect("Explosion should exist");
+            }
+        }
+    }
 }

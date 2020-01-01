@@ -68,23 +68,7 @@ impl State {
         let mut world = world::Spawn::new(&mut self.world);
 
         for event in self.events.drain() {
-            match event {
-                Event::SpawnShip => {
-                    world.spawn(entities::ship());
-                }
-                Event::LaunchMissile(missile) => {
-                    world.spawn(missile);
-                }
-                Event::ExplodeMissile { missile, explosion } => {
-                    world.despawn(missile)
-                        .expect("Missile should exist");
-                    world.spawn(explosion);
-                }
-                Event::RemoveExplosion(explosion) => {
-                    world.despawn(explosion)
-                        .expect("Explosion should exist");
-                }
-            }
+            event.handle(&mut world);
         }
     }
 }
