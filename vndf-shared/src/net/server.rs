@@ -102,7 +102,7 @@ impl Server {
         iter::from_fn(move || {
             if let Some((id, err)) = self.remove.pop_front() {
                 self.conns.remove(&id);
-                return Some(Event::Disconnect(id, Some(err)));
+                return Some(Event::Disconnect(id, err));
             }
 
             match self.receive.try_recv() {
@@ -209,7 +209,7 @@ impl ConnAdapter {
 
                             // We can ignore any channel errors here. The thread
                             // is ending anyway.
-                            let event = Event::Disconnect(id, Some(err));
+                            let event = Event::Disconnect(id, err);
                             let _ = receive.send(event);
 
                             break;
@@ -238,7 +238,7 @@ pub struct ConnId(pub u64);
 #[derive(Debug, PartialEq)]
 pub enum Event {
     Connect(ConnId),
-    Disconnect(ConnId, Option<net::Error>),
+    Disconnect(ConnId, net::Error),
     Message(ConnId, msg::FromClient),
 }
 
