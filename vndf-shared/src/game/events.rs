@@ -26,6 +26,7 @@ impl Events {
 
 
 pub enum Event {
+    SpawnShip,
     LaunchMissile(Missile),
     ExplodeMissile {
         missile:   Entity,

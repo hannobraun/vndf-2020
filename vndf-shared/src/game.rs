@@ -35,7 +35,7 @@ impl State {
             events: Events::new(),
         };
 
-        state.world.spawn(entities::ship());
+        state.events.push(Event::SpawnShip);
 
         state
     }
@@ -67,6 +67,9 @@ impl State {
 
         for event in self.events.drain() {
             match event {
+                Event::SpawnShip => {
+                    self.world.spawn(entities::ship());
+                }
                 Event::LaunchMissile(missile) => {
                     self.world.spawn(missile);
                 }
