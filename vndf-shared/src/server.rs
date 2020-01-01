@@ -14,21 +14,18 @@ pub struct Server {
 
 impl Server {
     pub fn start_default() -> net::Result<Self> {
-        Ok(
-            Self {
-                server: net::Server::start_default()?,
-                events: Vec::new(),
-            }
-        )
+        Ok(Self::new(net::Server::start_default()?))
     }
 
     pub fn start_local() -> net::Result<Self> {
-        Ok(
-            Self {
-                server: net::Server::start_local()?,
-                events: Vec::new(),
-            }
-        )
+        Ok(Self::new(net::Server::start_local()?))
+    }
+
+    fn new(server: net::Server) -> Self {
+        Self {
+            server,
+            events: Vec::new(),
+        }
     }
 
     pub fn addr(&self) -> SocketAddr {
