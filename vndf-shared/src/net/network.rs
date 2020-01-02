@@ -36,7 +36,7 @@ use crate::net::{
 pub const PORT: u16 = 34480;
 
 
-pub struct Server {
+pub struct Network {
     addr:    SocketAddr,
     accept:  Receiver<(SocketAddr, ConnAdapter)>,
     receive: Receiver<Event>,
@@ -44,7 +44,7 @@ pub struct Server {
     remove:  VecDeque<(SocketAddr, net::Error)>,
 }
 
-impl Server {
+impl Network {
     pub fn start_default() -> io::Result<Self> {
         Self::start(SocketAddr::new(Ipv6Addr::UNSPECIFIED.into(), PORT))
     }

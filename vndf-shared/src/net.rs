@@ -2,16 +2,16 @@ pub mod client;
 pub mod conn;
 pub mod game;
 pub mod msg;
+pub mod network;
 pub mod result;
-pub mod server;
 
 
 pub use self::{
     conn::Conn,
     msg::Message,
+    network::Network,
     result::{
         Error,
         Result,
     },
-    server::Server,
 };

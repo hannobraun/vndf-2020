@@ -13,30 +13,31 @@ use crate::{
     },
     net::{
         self,
+        Network,
         game::Entity,
         msg,
-        server,
+        network,
     },
 };
 
 
 pub struct Server {
-    server:      net::Server,
-    events:      Vec<server::Event>,
+    server:      Network,
+    events:      Vec<network::Event>,
     state:       game::State,
     last_update: Instant,
 }
 
 impl Server {
     pub fn start_default() -> net::Result<Self> {
-        Ok(Self::new(net::Server::start_default()?))
+        Ok(Self::new(Network::start_default()?))
     }
 
     pub fn start_local() -> net::Result<Self> {
-        Ok(Self::new(net::Server::start_local()?))
+        Ok(Self::new(Network::start_local()?))
     }
 
-    fn new(server: net::Server) -> Self {
+    fn new(server: Network) -> Self {
         Self {
             server,
             events:      Vec::new(),
@@ -54,10 +55,10 @@ impl Server {
 
         for event in self.events.drain(..) {
             match event {
-                server::Event::Message(id, msg::FromClient::Hello) => {
+                network::Event::Message(id, msg::FromClient::Hello) => {
                     self.server.send(id, msg::FromServer::Welcome);
                 }
-                server::Event::Message(id, msg::FromClient::Input(input)) => {
+                network::Event::Message(id, msg::FromClient::Input(input)) => {
                     self.state.handle_input(input);
                     self.server.send(id, msg::FromServer::Input(input));
                 }

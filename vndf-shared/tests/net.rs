@@ -1,15 +1,15 @@
 use vndf_shared::net::{
     self,
-    Server,
+    Network,
     client::Conn,
     msg,
-    server,
+    network,
 };
 
 
 #[test]
 fn server_should_emit_connect_events() -> net::Result {
-    let mut server = Server::start_local()?;
+    let mut server = Network::start_local()?;
 
     let conn_1 = Conn::connect(server.addr())?;
     let conn_2 = Conn::connect(server.addr())?;
@@ -22,15 +22,15 @@ fn server_should_emit_connect_events() -> net::Result {
         }
     }
 
-    assert!(events.contains(&server::Event::Connect(conn_1.local_addr)));
-    assert!(events.contains(&server::Event::Connect(conn_2.local_addr)));
+    assert!(events.contains(&network::Event::Connect(conn_1.local_addr)));
+    assert!(events.contains(&network::Event::Connect(conn_2.local_addr)));
 
     Ok(())
 }
 
 #[test]
 fn server_should_emit_receive_events() -> net::Result {
-    let mut server = Server::start_local()?;
+    let mut server = Network::start_local()?;
 
     let sent = msg::FromClient::Hello;
     Conn::connect(server.addr())?
@@ -41,10 +41,10 @@ fn server_should_emit_receive_events() -> net::Result {
 
     while client_id.is_none() || received.is_none() {
         for event in server.events() {
-            if let server::Event::Connect(id) = event {
+            if let network::Event::Connect(id) = event {
                 client_id = Some(id);
             }
-            if let server::Event::Message(id, message) = event {
+            if let network::Event::Message(id, message) = event {
                 received = Some((id, message));
             }
         }
@@ -57,13 +57,13 @@ fn server_should_emit_receive_events() -> net::Result {
 
 #[test]
 fn server_should_remove_clients_that_cause_errors() -> net::Result {
-    let mut server = Server::start_local()?;
+    let mut server = Network::start_local()?;
     let     client = Conn::connect(server.addr())?;
 
     let mut connect_id = None;
     while connect_id.is_none() {
         for event in server.events() {
-            if let server::Event::Connect(id) = event {
+            if let network::Event::Connect(id) = event {
                 connect_id = Some(id);
             }
         }
@@ -77,7 +77,7 @@ fn server_should_remove_clients_that_cause_errors() -> net::Result {
         server.send(connect_id.unwrap(), msg::FromServer::Welcome);
 
         for event in server.events() {
-            if let server::Event::Disconnect(id, _error) = event {
+            if let network::Event::Disconnect(id, _error) = event {
                 disconnect_id = Some(id);
             }
         }
@@ -89,8 +89,8 @@ fn server_should_remove_clients_that_cause_errors() -> net::Result {
 }
 
 #[test]
-fn clients_should_emit_receive_events() -> Result<(), server::Error> {
-    let mut server = Server::start_local()?;
+fn clients_should_emit_receive_events() -> Result<(), network::Error> {
+    let mut server = Network::start_local()?;
     let mut client = Conn::connect(server.addr())?;
 
     let message = msg::FromServer::Welcome;
@@ -98,7 +98,7 @@ fn clients_should_emit_receive_events() -> Result<(), server::Error> {
     let mut client_id = None;
     while client_id.is_none() {
         for event in server.events() {
-            if let server::Event::Connect(id) = event {
+            if let network::Event::Connect(id) = event {
                 client_id = Some(id);
             }
         }
