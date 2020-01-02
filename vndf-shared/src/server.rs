@@ -22,7 +22,7 @@ use crate::{
 
 
 pub struct Server {
-    server:      Network,
+    network:     Network,
     events:      Vec<network::Event>,
     state:       game::State,
     last_update: Instant,
@@ -37,9 +37,9 @@ impl Server {
         Ok(Self::new(Network::start_local()?))
     }
 
-    fn new(server: Network) -> Self {
+    fn new(network: Network) -> Self {
         Self {
-            server,
+            network,
             events:      Vec::new(),
             state:       game::State::new(),
             last_update: Instant::now(),
@@ -47,20 +47,20 @@ impl Server {
     }
 
     pub fn addr(&self) -> SocketAddr {
-        self.server.addr()
+        self.network.addr()
     }
 
     pub fn update(&mut self) {
-        self.events.extend(self.server.events());
+        self.events.extend(self.network.events());
 
         for event in self.events.drain(..) {
             match event {
                 network::Event::Message(id, msg::FromClient::Hello) => {
-                    self.server.send(id, msg::FromServer::Welcome);
+                    self.network.send(id, msg::FromServer::Welcome);
                 }
                 network::Event::Message(id, msg::FromClient::Input(input)) => {
                     self.state.handle_input(input);
-                    self.server.send(id, msg::FromServer::Input(input));
+                    self.network.send(id, msg::FromServer::Input(input));
                 }
                 _ => (),
             }
@@ -79,10 +79,10 @@ impl Server {
             entities.push(Entity::from_world(entity, &self.state.world));
         }
 
-        let clients: Vec<SocketAddr> = self.server.clients().collect();
+        let clients: Vec<SocketAddr> = self.network.clients().collect();
         for client in clients {
             for entity in &entities {
-                self.server.send(
+                self.network.send(
                     client,
                     msg::FromServer::UpdateEntity(entity.clone()),
                 );
