@@ -40,7 +40,7 @@ pub struct Server {
     addr:    SocketAddr,
     accept:  Receiver<(SocketAddr, ConnAdapter)>,
     receive: Receiver<Event>,
-    conns:   HashMap<SocketAddr, ConnAdapter>,
+    clients: HashMap<SocketAddr, ConnAdapter>,
     remove:  VecDeque<(SocketAddr, net::Error)>,
 }
 
@@ -71,7 +71,7 @@ impl Server {
                 addr,
                 accept:  accept_rx,
                 receive: receive_rx,
-                conns:   HashMap::new(),
+                clients: HashMap::new(),
                 remove:  VecDeque::new(),
             }
         )
@@ -82,12 +82,12 @@ impl Server {
     }
 
     pub fn clients(&self) -> impl Iterator<Item=SocketAddr> + '_ {
-        self.conns.keys()
+        self.clients.keys()
             .map(|&addr| addr)
     }
 
     pub fn send(&mut self, addr: SocketAddr, message: msg::FromServer) {
-        let conn = match self.conns.get_mut(&addr) {
+        let conn = match self.clients.get_mut(&addr) {
             Some(conn) => conn,
 
             // Just return, if this client doesn't exist. We could return an
@@ -115,7 +115,7 @@ impl Server {
     pub fn events<'s>(&'s mut self) -> impl Iterator<Item=Event> + 's {
         iter::from_fn(move || {
             if let Some((id, err)) = self.remove.pop_front() {
-                self.conns.remove(&id);
+                self.clients.remove(&id);
                 return Some(Event::Disconnect(id, err));
             }
 
@@ -138,7 +138,7 @@ impl Server {
 
             match self.accept.try_recv() {
                 Ok((id, conn)) => {
-                    self.conns.insert(id, conn);
+                    self.clients.insert(id, conn);
                     return Some(Event::Connect(id));
                 }
                 Err(TryRecvError::Empty) => {
