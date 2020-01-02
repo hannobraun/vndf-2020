@@ -1,15 +1,30 @@
-use std::net::SocketAddr;
+use std::{
+    net::SocketAddr,
+    time::{
+        Duration,
+        Instant,
+    },
+};
 
-use crate::net::{
-    self,
-    msg,
-    server,
+use crate::{
+    game::{
+        self,
+        FRAME_TIME,
+    },
+    net::{
+        self,
+        game::Entity,
+        msg,
+        server,
+    },
 };
 
 
 pub struct Server {
-    server: net::Server,
-    events: Vec<server::Event>,
+    server:      net::Server,
+    events:      Vec<server::Event>,
+    state:       game::State,
+    last_update: Instant,
 }
 
 impl Server {
@@ -24,7 +39,9 @@ impl Server {
     fn new(server: net::Server) -> Self {
         Self {
             server,
-            events: Vec::new(),
+            events:      Vec::new(),
+            state:       game::State::new(),
+            last_update: Instant::now(),
         }
     }
 
@@ -41,9 +58,33 @@ impl Server {
                     self.server.send(id, msg::FromServer::Welcome);
                 }
                 server::Event::Message(id, msg::FromClient::Input(input)) => {
+                    self.state.handle_input(input);
                     self.server.send(id, msg::FromServer::Input(input));
                 }
                 _ => (),
+            }
+        }
+
+        let now        = Instant::now();
+        let frame_time = Duration::from_millis((FRAME_TIME * 1000.0) as u64);
+
+        while now.duration_since(self.last_update) > frame_time {
+            self.state.update(FRAME_TIME);
+            self.last_update += frame_time;
+        }
+
+        let mut entities = Vec::new();
+        for (entity, _) in self.state.world.iter() {
+            entities.push(Entity::from_world(entity, &self.state.world));
+        }
+
+        let clients: Vec<SocketAddr> = self.server.clients().collect();
+        for client in clients {
+            for entity in &entities {
+                self.server.send(
+                    client,
+                    msg::FromServer::UpdateEntity(entity.clone()),
+                );
             }
         }
     }
