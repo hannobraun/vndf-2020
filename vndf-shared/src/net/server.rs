@@ -81,6 +81,11 @@ impl Server {
         self.addr
     }
 
+    pub fn clients(&self) -> impl Iterator<Item=SocketAddr> + '_ {
+        self.conns.keys()
+            .map(|&addr| addr)
+    }
+
     pub fn send(&mut self, addr: SocketAddr, message: msg::FromServer) {
         let conn = match self.conns.get_mut(&addr) {
             Some(conn) => conn,
