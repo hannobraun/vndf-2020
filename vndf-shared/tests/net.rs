@@ -8,7 +8,7 @@ use vndf_shared::net::{
 
 
 #[test]
-fn server_should_emit_connect_events() -> net::Result {
+fn network_should_emit_connect_events() -> net::Result {
     let mut server = Network::start_local()?;
 
     let conn_1 = Conn::connect(server.addr())?;
@@ -29,7 +29,7 @@ fn server_should_emit_connect_events() -> net::Result {
 }
 
 #[test]
-fn server_should_emit_receive_events() -> net::Result {
+fn network_should_emit_receive_events() -> net::Result {
     let mut server = Network::start_local()?;
 
     let sent = msg::FromClient::Hello;
@@ -56,7 +56,7 @@ fn server_should_emit_receive_events() -> net::Result {
 }
 
 #[test]
-fn server_should_remove_clients_that_cause_errors() -> net::Result {
+fn network_should_remove_clients_that_cause_errors() -> net::Result {
     let mut server = Network::start_local()?;
     let     client = Conn::connect(server.addr())?;
 
