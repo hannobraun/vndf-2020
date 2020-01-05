@@ -21,18 +21,22 @@ impl<'r> Query<'r> {
 }
 
 
-pub struct Spawn<'r>(&'r mut World);
+pub struct Spawn<'r> {
+    world: &'r mut World,
+}
 
 impl<'r> Spawn<'r> {
     pub fn new(world: &'r mut World) -> Self {
-        Self(world)
+        Self {
+            world,
+        }
     }
 
     pub fn spawn(&mut self, components: impl DynamicBundle) -> Entity {
-        self.0.spawn(components)
+        self.world.spawn(components)
     }
 
     pub fn despawn(&mut self, entity: Entity) -> Result<(), NoSuchEntity> {
-        self.0.despawn(entity)
+        self.world.despawn(entity)
     }
 }
