@@ -4,7 +4,10 @@ pub mod events;
 pub mod systems;
 
 
-use hecs::World;
+use hecs::{
+    Entity,
+    World,
+};
 
 use crate::{
     input,
@@ -26,13 +29,16 @@ pub const FRAME_TIME: f32 = 1.0 / TARGET_FPS as f32;
 pub struct State {
     pub world:  World,
     pub events: Events,
+
+    spawned: Vec<Entity>,
 }
 
 impl State {
     pub fn new() -> Self {
         let mut state = Self {
-            world:  World::new(),
-            events: Events::new(),
+            world:   World::new(),
+            events:  Events::new(),
+            spawned: Vec::new(),
         };
 
         state.events.push(Event::SpawnShip);
@@ -70,11 +76,16 @@ impl State {
         systems::update::update_explosions(&mut world, dt, &mut self.events);
 
         let mut world = world::Spawn {
-            world: &mut self.world,
+            world:   &mut self.world,
+            spawned: &mut self.spawned,
         };
 
         for event in self.events.drain() {
             event.handle(&mut world);
         }
+    }
+
+    pub fn spawned(&mut self) -> impl Iterator<Item=Entity> + '_ {
+        self.spawned.drain(..)
     }
 }

@@ -20,12 +20,15 @@ impl<'r> Query<'r> {
 
 
 pub struct Spawn<'r> {
-    pub world: &'r mut World,
+    pub world:   &'r mut World,
+    pub spawned: &'r mut Vec<Entity>,
 }
 
 impl<'r> Spawn<'r> {
     pub fn spawn(&mut self, components: impl DynamicBundle) -> Entity {
-        self.world.spawn(components)
+        let entity = self.world.spawn(components);
+        self.spawned.push(entity);
+        entity
     }
 
     pub fn despawn(&mut self, entity: Entity) -> Result<(), NoSuchEntity> {
