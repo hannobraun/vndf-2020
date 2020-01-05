@@ -8,15 +8,19 @@ use hecs::{
 };
 
 
-pub struct Query<'r>(&'r mut World);
+pub struct Query<'r> {
+    world: &'r mut World,
+}
 
 impl<'r> Query<'r> {
     pub fn new(world: &'r mut World) -> Self {
-        Self(world)
+        Self {
+            world,
+        }
     }
 
     pub fn query<Q: hecs::Query>(&self) -> QueryBorrow<Q> {
-        self.0.query()
+        self.world.query()
     }
 }
 
