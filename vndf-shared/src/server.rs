@@ -61,9 +61,8 @@ impl Server {
                 network::Event::Message(id, msg::FromClient::Hello) => {
                     self.network.send(id, msg::FromServer::Welcome);
                 }
-                network::Event::Message(id, msg::FromClient::Input(input)) => {
+                network::Event::Message(_id, msg::FromClient::Input(input)) => {
                     self.state.handle_input(input);
-                    self.network.send(id, msg::FromServer::Input(input));
                 }
                 _ => (),
             }
