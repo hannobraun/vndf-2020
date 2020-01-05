@@ -24,8 +24,8 @@ impl<'r> Query<'r> {
 pub struct Spawn<'r>(&'r mut World);
 
 impl<'r> Spawn<'r> {
-    pub fn new(inner: &'r mut World) -> Self {
-        Self(inner)
+    pub fn new(world: &'r mut World) -> Self {
+        Self(world)
     }
 
     pub fn spawn(&mut self, components: impl DynamicBundle) -> Entity {
