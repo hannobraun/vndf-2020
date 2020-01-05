@@ -1,5 +1,6 @@
 mod graphics;
 mod input;
+mod state;
 
 
 pub use vndf_shared as shared;
@@ -30,7 +31,6 @@ use ggez::{
         KeyCode,
         KeyMods,
     },
-    timer,
 };
 use log::error;
 
@@ -38,17 +38,13 @@ use self::{
     graphics::Graphics,
     shared::{
         Server,
-        game::{
-            FRAME_TIME,
-            TARGET_FPS,
-            State,
-        },
         net::{
             self,
             client::Conn,
             msg,
         },
-    }
+    },
+    state::State,
 };
 
 
@@ -146,8 +142,14 @@ impl EventHandler for Game {
 
         for message in self.conn.incoming() {
             match message {
-                Ok(msg::FromServer::Input(event)) => {
-                    self.state.handle_input(event);
+                Ok(msg::FromServer::AddEntity(entity)) => {
+                    self.state.add_entity(entity);
+                }
+                Ok(msg::FromServer::RemoveEntity(id)) => {
+                    self.state.remove_entity(id);
+                }
+                Ok(msg::FromServer::UpdateEntity(entity)) => {
+                    self.state.update_entity(entity);
                 }
                 Ok(message) => {
                     print!("Message: {:?}\n", message)
@@ -158,10 +160,6 @@ impl EventHandler for Game {
                     return Ok(());
                 }
             }
-        }
-
-        while timer::check_update_time(context, TARGET_FPS) {
-            self.state.update(FRAME_TIME);
         }
 
         Ok(())

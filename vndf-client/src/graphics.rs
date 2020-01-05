@@ -11,16 +11,18 @@ use ggez::{
     },
 };
 
-use crate::shared::game::{
-    WORLD_SIZE,
-    State,
-    components::{
-        Body,
-        Engine,
-        Explosion,
-        Missile,
-        Ship,
+use crate::{
+    shared::game::{
+        WORLD_SIZE,
+        components::{
+            Body,
+            Engine,
+            Explosion,
+            Missile,
+            Ship,
+        },
     },
+    state::State,
 };
 
 
