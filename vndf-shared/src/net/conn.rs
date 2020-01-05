@@ -7,6 +7,7 @@ use std::{
     net::{
         SocketAddr,
         TcpStream,
+        ToSocketAddrs,
     },
     sync::mpsc::{
         Receiver,
@@ -44,7 +45,7 @@ impl<In, Out> Conn<In, Out>
         In:  Message + 'static,
         Out: Message + 'static,
 {
-    pub fn connect(addr: SocketAddr) -> io::Result<Self> {
+    pub fn connect<A: ToSocketAddrs>(addr: A) -> io::Result<Self> {
         let stream = TcpStream::connect(addr)?;
 
         Self::from_stream(stream)
