@@ -52,8 +52,8 @@ pub enum FromClient {
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub enum FromServer {
     Welcome,
-    RemoveEntity(Id),
     UpdateEntity(Entity),
+    RemoveEntity(Id),
 }
 
 
