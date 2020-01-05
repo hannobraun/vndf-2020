@@ -59,6 +59,7 @@ fn network_should_emit_receive_events() -> net::Result {
 fn network_should_remove_clients_that_cause_errors() -> net::Result {
     let mut server = Network::start_local()?;
     let     client = Conn::connect(server.addr())?;
+    let     addr   = client.local_addr;
 
     let mut connect_id = None;
     while connect_id.is_none() {
@@ -74,7 +75,7 @@ fn network_should_remove_clients_that_cause_errors() -> net::Result {
     let mut disconnect_id = None;
     while disconnect_id.is_none() {
         // Attempt to send, to trigger an error.
-        server.send(connect_id.unwrap(), msg::FromServer::Welcome);
+        server.send(connect_id.unwrap(), msg::FromServer::Welcome(addr));
 
         for event in server.events() {
             if let network::Event::Disconnect(id, _error) = event {
@@ -93,7 +94,7 @@ fn clients_should_emit_receive_events() -> Result<(), network::Error> {
     let mut server = Network::start_local()?;
     let mut client = Conn::connect(server.addr())?;
 
-    let message = msg::FromServer::Welcome;
+    let message = msg::FromServer::Welcome(client.peer_addr);
 
     let mut client_id = None;
     while client_id.is_none() {

@@ -59,7 +59,7 @@ impl Server {
         for event in self.events.drain(..) {
             match event {
                 network::Event::Message(id, msg::FromClient::Hello) => {
-                    self.network.send(id, msg::FromServer::Welcome);
+                    self.network.send(id, msg::FromServer::Welcome(id));
                     self.state.spawn_ship(id);
                 }
                 network::Event::Message(id, msg::FromClient::Input(input)) => {
