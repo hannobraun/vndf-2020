@@ -36,13 +36,10 @@ use log::error;
 
 use self::{
     graphics::Graphics,
-    shared::{
-        Server,
-        net::{
-            self,
-            client::Conn,
-            msg,
-        },
+    shared::net::{
+        self,
+        client::Conn,
+        msg,
     },
     state::State,
 };
@@ -54,8 +51,19 @@ fn main() -> Result<(), Error> {
             .default_filter_or("vndf_shared=info,vndf_client=info")
     );
 
-    let server = Server::start_local()?;
-    let conn   = Conn::connect(server.addr())?;
+    #[cfg(feature="production")]
+    let (server, conn) = {
+        let server = DummyServer;
+        let conn   = Conn::connect(("reineke.hannobraun.de", 34480))?;
+        (server, conn)
+    };
+
+    #[cfg(not(feature = "production"))]
+    let (server, conn) = {
+        let server = Server::start_local()?;
+        let conn   = Conn::connect(server.addr())?;
+        (server, conn)
+    };
 
     // Force X11 backend to prevent panic.
     // See https://github.com/ggez/ggez/issues/579
@@ -165,6 +173,22 @@ impl EventHandler for Game {
     fn draw(&mut self, context: &mut Context) -> GameResult {
         self.graphics.draw(context, &self.state)
     }
+}
+
+
+#[cfg(feature = "production")]
+type Server = DummyServer;
+
+#[cfg(not(feature = "production"))]
+type Server = crate::shared::Server;
+
+
+#[cfg(feature = "production")]
+pub struct DummyServer;
+
+#[cfg(feature = "production")]
+impl DummyServer {
+    pub fn update(&mut self) {}
 }
 
 

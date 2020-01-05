@@ -4,6 +4,7 @@ version = "0.1.0"
 authors = ["Hanno Braun <hb@hannobraun.de>"]
 edition = "2018"
 
+
 [dependencies]
 env_logger = "*"
 ggez       = "*"
@@ -12,3 +13,7 @@ log        = "*"
 
 [dependencies.vndf-shared]
 path = "../vndf-shared"
+
+
+[features]
+production = []
