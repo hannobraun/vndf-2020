@@ -54,8 +54,8 @@ pub enum FromServer {
     Welcome,
     Input(input::Event),
     AddEntity(Entity),
-    UpdateEntity(Entity),
     RemoveEntity(Id),
+    UpdateEntity(Entity),
 }
 
 
