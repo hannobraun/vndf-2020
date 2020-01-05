@@ -76,12 +76,6 @@ impl Server {
             self.last_update += frame_time;
         }
 
-        let spawned_id: Vec<_> = self.state.spawned().collect();
-        let mut spawned = Vec::new();
-        for entity in spawned_id {
-            spawned.push(Entity::from_world(entity, &self.state.world));
-        }
-
         let despawned: Vec<_> = self.state.despawned().collect();
 
         let mut updated = Vec::new();
@@ -91,12 +85,6 @@ impl Server {
 
         let clients: Vec<SocketAddr> = self.network.clients().collect();
         for client in clients {
-            for entity in &spawned {
-                self.network.send(
-                    client,
-                    msg::FromServer::AddEntity(entity.clone()),
-                );
-            }
             for entity in &despawned {
                 self.network.send(
                     client,

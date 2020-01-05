@@ -142,9 +142,6 @@ impl EventHandler for Game {
 
         for message in self.conn.incoming() {
             match message {
-                Ok(msg::FromServer::AddEntity(entity)) => {
-                    self.state.add_entity(entity);
-                }
                 Ok(msg::FromServer::RemoveEntity(id)) => {
                     self.state.remove_entity(id);
                 }

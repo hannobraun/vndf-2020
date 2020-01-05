@@ -22,15 +22,15 @@ impl State {
         }
     }
 
-    pub fn add_entity(&mut self, entity: Entity) {
-        let hecs_entity = entity.spawn(&mut self.world);
-        self.ids.insert(entity.id, hecs_entity);
-    }
-
     pub fn update_entity(&mut self, entity: Entity) {
-        let hecs_entity = self.ids.get(&entity.id)
-            .expect("Server sent update for unknown entity");
-        entity.update(*hecs_entity, &mut self.world)
+        let hecs_entity: hecs::Entity = self.ids.get(&entity.id)
+            .map(|hecs_entity| *hecs_entity)
+            .unwrap_or_else(|| {
+                let hecs_entity = entity.spawn(&mut self.world);
+                self.ids.insert(entity.id, hecs_entity);
+                hecs_entity
+            });
+        entity.update(hecs_entity, &mut self.world)
             .expect("Entity did not exist, but id was being tracked");
     }
 
