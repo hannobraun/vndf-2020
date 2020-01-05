@@ -11,8 +11,8 @@ use hecs::{
 pub struct Query<'r>(&'r mut World);
 
 impl<'r> Query<'r> {
-    pub fn new(inner: &'r mut World) -> Self {
-        Self(inner)
+    pub fn new(world: &'r mut World) -> Self {
+        Self(world)
     }
 
     pub fn query<Q: hecs::Query>(&self) -> QueryBorrow<Q> {
