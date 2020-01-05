@@ -1,3 +1,5 @@
+use std::net::SocketAddr;
+
 use crate::{
     game::components as c,
     math::{
@@ -36,12 +38,12 @@ pub fn missile(launcher: &c::Body) -> Missile {
     (c::Missile::new(), body, engine)
 }
 
-pub fn ship() -> Ship {
+pub fn ship(player: SocketAddr) -> Ship {
     let engine = c::Engine {
         enabled: false,
         thrust:  5.0,
         fuel:    300.0,
     };
 
-    (c::Ship::new(), c::Body::new(), engine)
+    (c::Ship::new(player), c::Body::new(), engine)
 }

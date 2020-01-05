@@ -60,6 +60,7 @@ impl Server {
             match event {
                 network::Event::Message(id, msg::FromClient::Hello) => {
                     self.network.send(id, msg::FromServer::Welcome);
+                    self.state.spawn_ship(id);
                 }
                 network::Event::Message(_id, msg::FromClient::Input(input)) => {
                     self.state.handle_input(input);

@@ -4,6 +4,8 @@ pub mod events;
 pub mod systems;
 
 
+use std::net::SocketAddr;
+
 use hecs::{
     Entity,
     World,
@@ -36,16 +38,16 @@ pub struct State {
 
 impl State {
     pub fn new() -> Self {
-        let mut state = Self {
+        Self {
             world:     World::new(),
             events:    Events::new(),
             spawned:   Vec::new(),
             despawned: Vec::new(),
-        };
+        }
+    }
 
-        state.events.push(Event::SpawnShip);
-
-        state
+    pub fn spawn_ship(&mut self, player: SocketAddr) {
+        self.events.push(Event::SpawnShip { player });
     }
 
     pub fn handle_input(&mut self, event: input::Event) {

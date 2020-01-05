@@ -1,4 +1,7 @@
-use std::collections::VecDeque;
+use std::{
+    collections::VecDeque,
+    net::SocketAddr,
+};
 
 use hecs::Entity;
 
@@ -30,7 +33,9 @@ impl Events {
 
 
 pub enum Event {
-    SpawnShip,
+    SpawnShip {
+        player: SocketAddr,
+    },
     LaunchMissile(Missile),
     ExplodeMissile {
         missile:   Entity,
@@ -42,8 +47,8 @@ pub enum Event {
 impl Event {
     pub fn handle(self, world: &mut world::Spawn) {
         match self {
-            Self::SpawnShip => {
-                world.spawn(entities::ship());
+            Self::SpawnShip { player } => {
+                world.spawn(entities::ship(player));
             }
             Self::LaunchMissile(missile) => {
                 world.spawn(missile);
