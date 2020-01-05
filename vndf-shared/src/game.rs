@@ -50,20 +50,32 @@ impl State {
         self.events.push(Event::SpawnShip { player });
     }
 
-    pub fn handle_input(&mut self, event: input::Event) {
+    pub fn handle_input(&mut self, player: SocketAddr, event: input::Event) {
         let mut world = world::Query {
             world: &mut self.world,
         };
 
         match event {
             input::Event::Rotate(rotation) => {
-                systems::input::handle_rotate(&mut world, rotation);
+                systems::input::handle_rotate(
+                    &mut world,
+                    player,
+                    rotation,
+                );
             }
             input::Event::Thrust(thrust) => {
-                systems::input::handle_thrust(&mut world, thrust);
+                systems::input::handle_thrust(
+                    &mut world,
+                    player,
+                    thrust,
+                );
             }
             input::Event::LaunchMissile => {
-                systems::input::handle_launch(&mut world, &mut self.events);
+                systems::input::handle_launch(
+                    &mut world,
+                    player,
+                    &mut self.events,
+                );
             }
         }
     }
