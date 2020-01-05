@@ -22,6 +22,7 @@ use std::{
 };
 
 use log::{
+    debug,
     error,
     info,
 };
@@ -209,7 +210,7 @@ impl ConnAdapter {
                             message
                         }
                         Err(err) => {
-                            error!("Error receiving message: {:?}", err);
+                            debug!("Error receiving message: {:?}", err);
 
                             // We can ignore any channel errors here. The thread
                             // is ending anyway.
