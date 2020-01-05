@@ -10,11 +10,7 @@ use serde::{
 
 
 macro_rules! entity {
-    ($($name:ident, $ty:ident;)*) => {
-        use crate::game::components::{
-            $($ty,)*
-        };
-
+    ($($name:ident, $ty:ty;)*) => {
         #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
         pub struct Entity {
             pub id: Id,
@@ -96,6 +92,7 @@ impl Id {
 }
 
 
+use crate::game::components::*;
 entity!(
     body,      Body;
     engine,    Engine;
