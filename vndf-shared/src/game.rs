@@ -65,7 +65,9 @@ impl State {
         systems::update::update_missiles(&mut world, &mut self.events);
         systems::update::update_explosions(&mut world, dt, &mut self.events);
 
-        let mut world = world::Spawn::new(&mut self.world);
+        let mut world = world::Spawn {
+            world: &mut self.world,
+        };
 
         for event in self.events.drain() {
             event.handle(&mut world);

@@ -22,16 +22,10 @@ impl<'r> Query<'r> {
 
 
 pub struct Spawn<'r> {
-    world: &'r mut World,
+    pub world: &'r mut World,
 }
 
 impl<'r> Spawn<'r> {
-    pub fn new(world: &'r mut World) -> Self {
-        Self {
-            world,
-        }
-    }
-
     pub fn spawn(&mut self, components: impl DynamicBundle) -> Entity {
         self.world.spawn(components)
     }
