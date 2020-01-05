@@ -9,16 +9,10 @@ use hecs::{
 
 
 pub struct Query<'r> {
-    world: &'r mut World,
+    pub world: &'r mut World,
 }
 
 impl<'r> Query<'r> {
-    pub fn new(world: &'r mut World) -> Self {
-        Self {
-            world,
-        }
-    }
-
     pub fn query<Q: hecs::Query>(&self) -> QueryBorrow<Q> {
         self.world.query()
     }

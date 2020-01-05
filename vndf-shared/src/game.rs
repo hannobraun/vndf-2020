@@ -41,7 +41,9 @@ impl State {
     }
 
     pub fn handle_input(&mut self, event: input::Event) {
-        let mut world = world::Query::new(&mut self.world);
+        let mut world = world::Query {
+            world: &mut self.world,
+        };
 
         match event {
             input::Event::Rotate(rotation) => {
@@ -57,7 +59,9 @@ impl State {
     }
 
     pub fn update(&mut self, dt: f32) {
-        let mut world = world::Query::new(&mut self.world);
+        let mut world = world::Query {
+            world: &mut self.world,
+        };
 
         systems::update::update_ships(&mut world);
         systems::update::update_engines(&mut world, dt);
