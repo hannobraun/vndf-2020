@@ -74,14 +74,14 @@ impl Server {
             self.last_update += frame_time;
         }
 
-        let mut entities = Vec::new();
+        let mut updated = Vec::new();
         for (entity, _) in self.state.world.iter() {
-            entities.push(Entity::from_world(entity, &self.state.world));
+            updated.push(Entity::from_world(entity, &self.state.world));
         }
 
         let clients: Vec<SocketAddr> = self.network.clients().collect();
         for client in clients {
-            for entity in &entities {
+            for entity in &updated {
                 self.network.send(
                     client,
                     msg::FromServer::UpdateEntity(entity.clone()),
