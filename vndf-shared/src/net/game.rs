@@ -86,7 +86,7 @@ macro_rules! entity {
 }
 
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Deserialize, Serialize, Hash)]
 pub struct Id(pub u64);
 
 impl Id {
