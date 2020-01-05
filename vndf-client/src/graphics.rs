@@ -172,6 +172,10 @@ impl Graphics {
 
         let query = &mut state.world.query::<(&Ship, &Engine)>();
         for (_, (ship, engine)) in query {
+            if state.own_id != Some(ship.player) {
+                continue;
+            }
+
             let (width, _) = graphics::drawable_size(context);
 
             graphics::draw(

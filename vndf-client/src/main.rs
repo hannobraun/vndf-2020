@@ -150,14 +150,14 @@ impl EventHandler for Game {
 
         for message in self.conn.incoming() {
             match message {
+                Ok(msg::FromServer::Welcome(id)) => {
+                    self.state.own_id = Some(id);
+                }
                 Ok(msg::FromServer::UpdateEntity(entity)) => {
                     self.state.update_entity(entity);
                 }
                 Ok(msg::FromServer::RemoveEntity(id)) => {
                     self.state.remove_entity(id);
-                }
-                Ok(message) => {
-                    print!("Message: {:?}\n", message)
                 }
                 Err(err) => {
                     error!("Connection error: {:?}", err);

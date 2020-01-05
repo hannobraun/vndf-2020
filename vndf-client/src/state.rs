@@ -1,4 +1,7 @@
-use std::collections::HashMap;
+use std::{
+    collections::HashMap,
+    net::SocketAddr,
+};
 
 use hecs::World;
 
@@ -9,7 +12,8 @@ use crate::shared::net::game::{
 
 
 pub struct State {
-    pub world: World,
+    pub world:  World,
+    pub own_id: Option<SocketAddr>,
 
     ids: HashMap<Id, hecs::Entity>,
 }
@@ -17,8 +21,9 @@ pub struct State {
 impl State {
     pub fn new() -> Self {
         Self {
-            world: World::new(),
-            ids:   HashMap::new(),
+            world:  World::new(),
+            own_id: None,
+            ids:    HashMap::new(),
         }
     }
 
