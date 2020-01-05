@@ -216,7 +216,7 @@ impl ConnAdapter {
                             let event = Event::Disconnect(addr, err);
                             let _ = receive.send(event);
 
-                            break;
+                            return;
                         }
                     };
 
