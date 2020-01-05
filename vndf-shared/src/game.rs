@@ -30,15 +30,17 @@ pub struct State {
     pub world:  World,
     pub events: Events,
 
-    spawned: Vec<Entity>,
+    spawned:   Vec<Entity>,
+    despawned: Vec<Entity>,
 }
 
 impl State {
     pub fn new() -> Self {
         let mut state = Self {
-            world:   World::new(),
-            events:  Events::new(),
-            spawned: Vec::new(),
+            world:     World::new(),
+            events:    Events::new(),
+            spawned:   Vec::new(),
+            despawned: Vec::new(),
         };
 
         state.events.push(Event::SpawnShip);
@@ -76,8 +78,9 @@ impl State {
         systems::update::update_explosions(&mut world, dt, &mut self.events);
 
         let mut world = world::Spawn {
-            world:   &mut self.world,
-            spawned: &mut self.spawned,
+            world:     &mut self.world,
+            spawned:   &mut self.spawned,
+            despawned: &mut self.despawned,
         };
 
         for event in self.events.drain() {
@@ -87,5 +90,9 @@ impl State {
 
     pub fn spawned(&mut self) -> impl Iterator<Item=Entity> + '_ {
         self.spawned.drain(..)
+    }
+
+    pub fn despawned(&mut self) -> impl Iterator<Item=Entity> + '_ {
+        self.despawned.drain(..)
     }
 }

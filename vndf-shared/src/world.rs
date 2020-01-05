@@ -20,8 +20,9 @@ impl<'r> Query<'r> {
 
 
 pub struct Spawn<'r> {
-    pub world:   &'r mut World,
-    pub spawned: &'r mut Vec<Entity>,
+    pub world:     &'r mut World,
+    pub spawned:   &'r mut Vec<Entity>,
+    pub despawned: &'r mut Vec<Entity>,
 }
 
 impl<'r> Spawn<'r> {
@@ -32,6 +33,8 @@ impl<'r> Spawn<'r> {
     }
 
     pub fn despawn(&mut self, entity: Entity) -> Result<(), NoSuchEntity> {
-        self.world.despawn(entity)
+        self.world.despawn(entity)?;
+        self.despawned.push(entity);
+        Ok(())
     }
 }

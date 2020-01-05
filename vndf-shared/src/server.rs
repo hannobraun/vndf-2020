@@ -14,7 +14,10 @@ use crate::{
     net::{
         self,
         Network,
-        game::Entity,
+        game::{
+            Entity,
+            Id,
+        },
         msg,
         network,
     },
@@ -80,6 +83,8 @@ impl Server {
             spawned.push(Entity::from_world(entity, &self.state.world));
         }
 
+        let despawned: Vec<_> = self.state.despawned().collect();
+
         let mut updated = Vec::new();
         for (entity, _) in self.state.world.iter() {
             updated.push(Entity::from_world(entity, &self.state.world));
@@ -91,6 +96,12 @@ impl Server {
                 self.network.send(
                     client,
                     msg::FromServer::AddEntity(entity.clone()),
+                );
+            }
+            for entity in &despawned {
+                self.network.send(
+                    client,
+                    msg::FromServer::RemoveEntity(Id::from_hecs_entity(entity)),
                 );
             }
             for entity in &updated {
