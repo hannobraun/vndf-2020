@@ -124,7 +124,7 @@ mod tests {
 
 
     #[test]
-    fn it_should_create_an_entity_from_the_world() -> Result {
+    fn it_should_create_an_entity_from_the_world() -> Result<(), Error> {
         let mut world  = World::new();
         let     entity = world.spawn((Body::new(), Ship::new()));
 
@@ -137,7 +137,7 @@ mod tests {
     }
 
     #[test]
-    fn it_should_spawn_entities() -> Result {
+    fn it_should_spawn_entities() -> Result<(), Error> {
         let mut world = World::new();
 
         let mut entity = Entity::new(Id(0));
@@ -153,7 +153,7 @@ mod tests {
     }
 
     #[test]
-    fn update_should_update_components() -> Result {
+    fn update_should_update_components() -> Result<(), Error> {
         let mut world = World::new();
         let     id    = world.spawn((Body::new(), Ship::new()));
 
@@ -170,7 +170,7 @@ mod tests {
     }
 
     #[test]
-    fn update_should_add_components() -> Result {
+    fn update_should_add_components() -> Result<(), Error> {
         let mut world = World::new();
         let     id    = world.spawn(());
 
@@ -185,7 +185,7 @@ mod tests {
     }
 
     #[test]
-    fn update_should_remove_components() -> Result {
+    fn update_should_remove_components() -> Result<(), Error> {
         let mut world = World::new();
         let     id    = world.spawn((Body::new(),));
 
@@ -196,9 +196,6 @@ mod tests {
 
         Ok(())
     }
-
-
-    type Result<T = ()> = std::result::Result<T, Error>;
 
 
     #[derive(Debug)]
