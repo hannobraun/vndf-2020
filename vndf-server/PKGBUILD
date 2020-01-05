@@ -1,0 +1,23 @@
+pkgname=vndf-server
+pkgver=0.1
+pkgrel=1
+arch=('any')
+
+depends=()
+
+build() {
+    cd ..
+    cargo build --release
+}
+
+package() {
+    SOURCE="$srcdir"/..
+    SYSTEMD_DIR="$pkgdir"/usr/lib/systemd/system
+    INSTALL_DIR="$pkgdir"/usr/bin
+
+    mkdir -p $SYSTEMD_DIR
+    cp $SOURCE/systemd-service $SYSTEMD_DIR/"$pkgname".service
+
+    mkdir -p $INSTALL_DIR
+    cp $SOURCE/../target/release/$pkgname $INSTALL_DIR/$pkgname
+}

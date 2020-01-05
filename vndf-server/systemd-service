@@ -1,0 +1,11 @@
+[Unit]
+Description=Von Neumann Defense Force server
+After=network.target
+
+[Service]
+PrivateDevices=yes
+ExecStart=/usr/bin/vndf-server
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
