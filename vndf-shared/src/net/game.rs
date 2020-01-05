@@ -23,7 +23,7 @@ macro_rules! entity {
 
         impl Entity {
             pub fn from_world(hecs_id: hecs::Entity, world: &World) -> Self {
-                let     id     = Id(hecs_id.to_bits());
+                let     id     = Id::from_hecs_entity(&hecs_id);
                 let mut entity = Self::new(id);
 
                 $(
@@ -88,6 +88,12 @@ macro_rules! entity {
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Deserialize, Serialize)]
 pub struct Id(pub u64);
+
+impl Id {
+    pub fn from_hecs_entity(entity: &hecs::Entity) -> Self {
+        Self(entity.to_bits())
+    }
+}
 
 
 entity!(
