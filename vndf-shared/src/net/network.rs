@@ -224,7 +224,7 @@ impl ConnAdapter {
 
                     if let Err(SendError(_)) = receive.send(event) {
                         // Other hand has hung up. No need to keep this up.
-                        break;
+                        return;
                     }
                 }
             }
