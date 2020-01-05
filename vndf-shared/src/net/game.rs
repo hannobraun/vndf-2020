@@ -1,8 +1,4 @@
-use hecs::{
-    ComponentError,
-    NoSuchEntity,
-    World,
-};
+use hecs::World;
 use serde::{
     Deserialize,
     Serialize,
@@ -11,6 +7,12 @@ use serde::{
 
 macro_rules! entity {
     ($($name:ident, $ty:ty;)*) => {
+        use hecs::{
+            ComponentError,
+            NoSuchEntity,
+        };
+
+
         #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
         pub struct Entity {
             pub id: Id,
@@ -105,33 +107,49 @@ entity!(
 #[cfg(test)]
 mod tests {
     use hecs::World;
-
-    use crate::{
-        game::components::{
-            Body,
-            Ship,
-        },
-        math::{
-            prelude::*,
-            Rad,
-        },
+    use serde::{
+        Deserialize,
+        Serialize,
     };
 
-    use super::{
-        Entity,
-        Id,
-    };
+    use super::Id;
+
+
+    #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
+    pub struct A(u64);
+
+    impl A {
+        pub fn new() -> Self {
+            Self(0)
+        }
+    }
+
+
+    #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
+    pub struct B(u64);
+
+    impl B {
+        pub fn new() -> Self {
+            Self(0)
+        }
+    }
+
+
+    entity!(
+        a, A;
+        b, B;
+    );
 
 
     #[test]
     fn it_should_create_an_entity_from_the_world() -> Result<(), Error> {
         let mut world  = World::new();
-        let     entity = world.spawn((Body::new(), Ship::new()));
+        let     entity = world.spawn((A::new(), B::new()));
 
         let entity = Entity::from_world(entity, &world);
 
-        assert_eq!(entity.body, Some(Body::new()));
-        assert_eq!(entity.ship, Some(Ship::new()));
+        assert_eq!(entity.a, Some(A::new()));
+        assert_eq!(entity.b, Some(B::new()));
 
         Ok(())
     }
@@ -141,13 +159,13 @@ mod tests {
         let mut world = World::new();
 
         let mut entity = Entity::new(Id(0));
-        entity.body = Some(Body::new());
-        entity.ship = Some(Ship::new());
+        entity.a = Some(A::new());
+        entity.b = Some(B::new());
 
         let id = entity.spawn(&mut world);
 
-        assert_eq!(*world.get::<Body>(id)?, entity.body.unwrap());
-        assert_eq!(*world.get::<Ship>(id)?, entity.ship.unwrap());
+        assert_eq!(*world.get::<A>(id)?, entity.a.unwrap());
+        assert_eq!(*world.get::<B>(id)?, entity.b.unwrap());
 
         Ok(())
     }
@@ -155,16 +173,16 @@ mod tests {
     #[test]
     fn update_should_update_components() -> Result<(), Error> {
         let mut world = World::new();
-        let     id    = world.spawn((Body::new(), Ship::new()));
+        let     id    = world.spawn((A::new(), B::new()));
 
         let mut entity = Entity::new(Id(0));
-        entity.body = Some(Body { dir: Rad::full_turn(), .. Body::new()});
-        entity.ship = Some(Ship { missiles: u64::max_value(), .. Ship::new()});
+        entity.a = Some(A(1));
+        entity.b = Some(B(2));
 
         entity.update(id, &mut world)?;
 
-        assert_eq!(*world.get::<Body>(id)?, entity.body.unwrap());
-        assert_eq!(*world.get::<Ship>(id)?, entity.ship.unwrap());
+        assert_eq!(*world.get::<A>(id)?, entity.a.unwrap());
+        assert_eq!(*world.get::<B>(id)?, entity.b.unwrap());
 
         Ok(())
     }
@@ -175,11 +193,11 @@ mod tests {
         let     id    = world.spawn(());
 
         let mut entity = Entity::new(Id(0));
-        entity.body = Some(Body::new());
+        entity.a = Some(A::new());
 
         entity.update(id, &mut world)?;
 
-        assert_eq!(*world.get::<Body>(id)?, entity.body.unwrap());
+        assert_eq!(*world.get::<A>(id)?, entity.a.unwrap());
 
         Ok(())
     }
@@ -187,12 +205,12 @@ mod tests {
     #[test]
     fn update_should_remove_components() -> Result<(), Error> {
         let mut world = World::new();
-        let     id    = world.spawn((Body::new(),));
+        let     id    = world.spawn((A::new(),));
 
         let entity = Entity::new(Id(0));
         entity.update(id, &mut world)?;
 
-        assert!(world.get::<Body>(id).is_err());
+        assert!(world.get::<A>(id).is_err());
 
         Ok(())
     }
