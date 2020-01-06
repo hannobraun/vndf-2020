@@ -63,7 +63,7 @@ impl Server {
                 network::Event::Message(id, msg::FromClient::Hello) => {
                     info!("Connected: {}", id);
                     self.network.send(id, msg::FromServer::Welcome(id));
-                    self.state.spawn_ship(id);
+                    self.state.connect_player(id);
                 }
                 network::Event::Message(id, msg::FromClient::Input(input)) => {
                     self.state.handle_input(id, input);
