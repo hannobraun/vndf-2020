@@ -24,7 +24,6 @@ use std::{
 use log::{
     debug,
     error,
-    info,
 };
 
 use crate::net::{
@@ -195,7 +194,6 @@ impl ConnAdapter {
         let stream = stream?;
 
         let conn = conn::Conn::from_stream(stream)?;
-        info!("Connected: {}", conn.peer_addr);
 
         let mut rx   = conn.rx;
         let     tx   = conn.tx;

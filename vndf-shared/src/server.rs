@@ -6,6 +6,8 @@ use std::{
     },
 };
 
+use log::info;
+
 use crate::{
     game::{
         self,
@@ -59,6 +61,7 @@ impl Server {
         for event in self.events.drain(..) {
             match event {
                 network::Event::Message(id, msg::FromClient::Hello) => {
+                    info!("Connected: {}", id);
                     self.network.send(id, msg::FromServer::Welcome(id));
                     self.state.spawn_ship(id);
                 }
