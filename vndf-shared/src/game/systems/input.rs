@@ -7,10 +7,7 @@ use crate::{
             Engine,
             Ship,
         },
-        events::{
-            Event,
-            Events,
-        },
+        events::Events,
     },
     input::Rotation,
     world,
@@ -49,7 +46,7 @@ pub fn handle_launch(
     for (_, (ship, body)) in &mut world.query::<(&mut Ship, &Body)>() {
         if ship.player == player {
             if let Some(missile) = ship.launch_missile(body) {
-                events.push(Event::LaunchMissile(missile));
+                events.push().launch_missile(missile);
             }
         }
     }

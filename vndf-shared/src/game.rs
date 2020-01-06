@@ -16,10 +16,7 @@ use crate::{
     world,
 };
 
-use self::events::{
-    Event,
-    Events,
-};
+use self::events::Events;
 
 
 pub const WORLD_SIZE: f32 = 1000.0;
@@ -47,7 +44,7 @@ impl State {
     }
 
     pub fn connect_player(&mut self, player: SocketAddr) {
-        self.events.push(Event::ConnectPlayer { player });
+        self.events.push().connect_player(player);
     }
 
     pub fn handle_input(&mut self, player: SocketAddr, event: input::Event) {
