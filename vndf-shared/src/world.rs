@@ -7,6 +7,32 @@ use hecs::{
 };
 
 
+pub struct World(hecs::World);
+
+impl World {
+    pub fn new() -> Self {
+        Self(hecs::World::new())
+    }
+
+    pub fn query(&mut self) -> Query {
+        Query {
+            world: &mut self.0,
+        }
+    }
+
+    pub fn spawn<'r>(&'r mut self, de_spawned: &'r mut DeSpawned) -> Spawn<'r> {
+        Spawn {
+            world: &mut self.0,
+            de_spawned,
+        }
+    }
+
+    pub fn inner(&self) -> &hecs::World {
+        &self.0
+    }
+}
+
+
 pub struct DeSpawned {
     pub spawned:   Vec<Entity>,
     pub despawned: Vec<Entity>,

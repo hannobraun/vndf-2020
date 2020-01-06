@@ -6,16 +6,13 @@ pub mod systems;
 
 use std::net::SocketAddr;
 
-use hecs::{
-    Entity,
-    World,
-};
+use hecs::Entity;
 
 use crate::{
     input,
     world::{
-        self,
         DeSpawned,
+        World,
     },
 };
 
@@ -52,28 +49,24 @@ impl State {
     }
 
     pub fn handle_input(&mut self, player: SocketAddr, event: input::Event) {
-        let mut world = world::Query {
-            world: &mut self.world,
-        };
-
         match event {
             input::Event::Rotate(rotation) => {
                 systems::input::handle_rotate(
-                    &mut world,
+                    &mut self.world.query(),
                     player,
                     rotation,
                 );
             }
             input::Event::Thrust(thrust) => {
                 systems::input::handle_thrust(
-                    &mut world,
+                    &mut self.world.query(),
                     player,
                     thrust,
                 );
             }
             input::Event::LaunchMissile => {
                 systems::input::handle_launch(
-                    &mut world,
+                    &mut self.world.query(),
                     player,
                     &mut self.events.push(),
                 );
@@ -82,26 +75,22 @@ impl State {
     }
 
     pub fn update(&mut self, dt: f32) {
-        let mut world = world::Query {
-            world: &mut self.world,
-        };
-
-        systems::update::update_ships(&mut world);
-        systems::update::update_engines(&mut world, dt);
-        systems::update::update_bodies(&mut world, WORLD_SIZE, dt);
-        systems::update::update_missiles(&mut world, &mut self.events.push());
+        systems::update::update_ships(&mut self.world.query());
+        systems::update::update_engines(&mut self.world.query(), dt);
+        systems::update::update_bodies(&mut self.world.query(), WORLD_SIZE, dt);
+        systems::update::update_missiles(
+            &mut self.world.query(),
+            &mut self.events.push(),
+        );
         systems::update::update_explosions(
-            &mut world,
+            &mut self.world.query(),
             dt,
             &mut self.events.push(),
         );
     }
 
     pub fn dispatch(&mut self) {
-        let mut world = world::Spawn {
-            world:      &mut self.world,
-            de_spawned: &mut self.de_spawned,
-        };
+        let mut world = self.world.spawn(&mut self.de_spawned);
 
         for event in self.events.drain() {
             match event {
