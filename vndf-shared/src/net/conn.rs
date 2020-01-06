@@ -22,7 +22,6 @@ use std::{
 
 use log::{
     debug,
-    error,
     trace,
 };
 
@@ -63,13 +62,13 @@ impl<In, Out> Conn<In, Out>
 
         thread::spawn(move ||
             if let Err(err) = send(stream_send, out_rx) {
-                error!("Send error ({}): {:?}", peer_addr, err);
+                debug!("Send error ({}): {:?}", peer_addr, err);
             }
         );
 
         thread::spawn(move || {
             if let Err(err) = receive(stream_receive, in_tx) {
-                error!("Receive error ({}) : {:?}", peer_addr, err);
+                debug!("Receive error ({}) : {:?}", peer_addr, err);
             }
         });
 
