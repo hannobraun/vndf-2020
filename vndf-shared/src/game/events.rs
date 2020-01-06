@@ -5,13 +5,9 @@ use std::{
 
 use hecs::Entity;
 
-use crate::{
-    game::entities::{
-        self,
-        Explosion,
-        Missile,
-    },
-    world,
+use crate::game::entities::{
+    Explosion,
+    Missile,
 };
 
 
@@ -67,26 +63,4 @@ pub enum Event {
     RemoveExplosion {
         explosion: Entity,
     },
-}
-
-impl Event {
-    pub fn handle(self, world: &mut world::Spawn) {
-        match self {
-            Self::ConnectPlayer { player } => {
-                world.spawn(entities::ship(player));
-            }
-            Self::LaunchMissile { missile } => {
-                world.spawn(missile);
-            }
-            Self::ExplodeMissile { missile, explosion } => {
-                world.despawn(missile)
-                    .expect("Missile should exist");
-                world.spawn(explosion);
-            }
-            Self::RemoveExplosion { explosion } => {
-                world.despawn(explosion)
-                    .expect("Explosion should exist");
-            }
-        }
-    }
 }

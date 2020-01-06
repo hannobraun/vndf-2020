@@ -16,7 +16,10 @@ use crate::{
     world,
 };
 
-use self::events::Events;
+use self::events::{
+    Event,
+    Events,
+};
 
 
 pub const WORLD_SIZE: f32 = 1000.0;
@@ -101,7 +104,23 @@ impl State {
         };
 
         for event in self.events.drain() {
-            event.handle(&mut world);
+            match event {
+                Event::ConnectPlayer { player } => {
+                    world.spawn(entities::ship(player));
+                }
+                Event::LaunchMissile { missile } => {
+                    world.spawn(missile);
+                }
+                Event::ExplodeMissile { missile, explosion } => {
+                    world.despawn(missile)
+                        .expect("Missile should exist");
+                    world.spawn(explosion);
+                }
+                Event::RemoveExplosion { explosion } => {
+                    world.despawn(explosion)
+                        .expect("Explosion should exist");
+                }
+            }
         }
     }
 
