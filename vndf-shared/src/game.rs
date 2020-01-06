@@ -13,7 +13,10 @@ use hecs::{
 
 use crate::{
     input,
-    world,
+    world::{
+        self,
+        DeSpawned,
+    },
 };
 
 use self::events::{
@@ -32,17 +35,15 @@ pub struct State {
     pub world:  World,
     pub events: Events,
 
-    spawned:   Vec<Entity>,
-    despawned: Vec<Entity>,
+    de_spawned: DeSpawned,
 }
 
 impl State {
     pub fn new() -> Self {
         Self {
-            world:     World::new(),
-            events:    Events::new(),
-            spawned:   Vec::new(),
-            despawned: Vec::new(),
+            world:      World::new(),
+            events:     Events::new(),
+            de_spawned: DeSpawned::new(),
         }
     }
 
@@ -98,9 +99,8 @@ impl State {
 
     pub fn dispatch(&mut self) {
         let mut world = world::Spawn {
-            world:     &mut self.world,
-            spawned:   &mut self.spawned,
-            despawned: &mut self.despawned,
+            world:      &mut self.world,
+            de_spawned: &mut self.de_spawned,
         };
 
         for event in self.events.drain() {
@@ -125,10 +125,10 @@ impl State {
     }
 
     pub fn spawned(&mut self) -> impl Iterator<Item=Entity> + '_ {
-        self.spawned.drain(..)
+        self.de_spawned.spawned.drain(..)
     }
 
     pub fn despawned(&mut self) -> impl Iterator<Item=Entity> + '_ {
-        self.despawned.drain(..)
+        self.de_spawned.despawned.drain(..)
     }
 }
