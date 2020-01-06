@@ -71,7 +71,7 @@ impl State {
                 systems::input::handle_launch(
                     &mut world,
                     player,
-                    &mut self.events,
+                    &mut self.events.push(),
                 );
             }
         }
@@ -85,8 +85,12 @@ impl State {
         systems::update::update_ships(&mut world);
         systems::update::update_engines(&mut world, dt);
         systems::update::update_bodies(&mut world, WORLD_SIZE, dt);
-        systems::update::update_missiles(&mut world, &mut self.events);
-        systems::update::update_explosions(&mut world, dt, &mut self.events);
+        systems::update::update_missiles(&mut world, &mut self.events.push());
+        systems::update::update_explosions(
+            &mut world,
+            dt,
+            &mut self.events.push(),
+        );
 
         let mut world = world::Spawn {
             world:     &mut self.world,

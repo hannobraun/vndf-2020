@@ -7,7 +7,7 @@ use crate::{
             Missile,
             Ship,
         },
-        events::Events,
+        events,
     },
     world,
 };
@@ -32,11 +32,11 @@ pub fn update_bodies(world: &mut world::Query, world_size: f32, dt: f32) {
     }
 }
 
-pub fn update_missiles(world: &mut world::Query, events: &mut Events) {
+pub fn update_missiles(world: &mut world::Query, events: &mut events::Push) {
     let query = &mut world.query::<(&Missile, &Body, &Engine)>();
     for (id, (missile, body, engine)) in query {
         if let Some(explosion) = missile.update(body, engine) {
-            events.push().explode_missile(id, explosion);
+            events.explode_missile(id, explosion);
         }
     }
 }
@@ -44,11 +44,11 @@ pub fn update_missiles(world: &mut world::Query, events: &mut Events) {
 pub fn update_explosions(
     world:  &mut world::Query,
     dt:     f32,
-    events: &mut Events,
+    events: &mut events::Push,
 ) {
     for (id, (explosion,)) in &mut world.query::<(&mut Explosion,)>() {
         if explosion.update(dt) {
-            events.push().remove_explosion(id);
+            events.remove_explosion(id);
         }
     }
 }
