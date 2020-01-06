@@ -31,26 +31,22 @@ fn network_should_emit_connect_events() -> net::Result {
 #[test]
 fn network_should_emit_receive_events() -> net::Result {
     let mut server = Network::start_local()?;
+    let mut conn   = Conn::connect(server.addr())?;
 
     let sent = msg::FromClient::Hello;
-    Conn::connect(server.addr())?
-        .send(sent)?;
+    conn.send(sent)?;
 
-    let mut client_id = None;
-    let mut received  = None;
+    let mut received = None;
 
-    while client_id.is_none() || received.is_none() {
+    while received.is_none() {
         for event in server.events() {
-            if let network::Event::Connect(id) = event {
-                client_id = Some(id);
-            }
             if let network::Event::Message(id, message) = event {
                 received = Some((id, message));
             }
         }
     }
 
-    assert_eq!(received, Some((client_id.unwrap(), sent)));
+    assert_eq!(received, Some((conn.local_addr, sent)));
 
     Ok(())
 }
@@ -61,21 +57,12 @@ fn network_should_remove_clients_that_cause_errors() -> net::Result {
     let     client = Conn::connect(server.addr())?;
     let     addr   = client.local_addr;
 
-    let mut connect_id = None;
-    while connect_id.is_none() {
-        for event in server.events() {
-            if let network::Event::Connect(id) = event {
-                connect_id = Some(id);
-            }
-        }
-    }
-
     client.disconnect();
 
     let mut disconnect_id = None;
     while disconnect_id.is_none() {
         // Attempt to send, to trigger an error.
-        server.send(connect_id.unwrap(), msg::FromServer::Welcome(addr));
+        server.send(addr, msg::FromServer::Welcome(addr));
 
         for event in server.events() {
             if let network::Event::Disconnect(id, _error) = event {
@@ -84,7 +71,7 @@ fn network_should_remove_clients_that_cause_errors() -> net::Result {
         }
     }
 
-    assert_eq!(connect_id, disconnect_id);
+    assert_eq!(Some(addr), disconnect_id);
 
     Ok(())
 }
@@ -94,22 +81,20 @@ fn clients_should_emit_receive_events() -> Result<(), network::Error> {
     let mut server = Network::start_local()?;
     let mut client = Conn::connect(server.addr())?;
 
-    let message = msg::FromServer::Welcome(client.peer_addr);
+    client.send(msg::FromClient::Hello)?;
 
-    let mut client_id = None;
-    while client_id.is_none() {
+    let mut client_connected = false;
+    while !client_connected {
         for event in server.events() {
-            if let network::Event::Connect(id) = event {
-                client_id = Some(id);
+            if let network::Event::Message(_, _) = event {
+                client_connected = true;
             }
         }
     }
 
-    if let Some(id) = client_id {
-        // This is going to happen, otherwise the previous loop wouldn't have
-        // finished.
-        server.send(id, message);
-    }
+    let message = msg::FromServer::Welcome(client.peer_addr);
+
+    server.send(client.local_addr, message);
 
     let mut messages = Vec::new();
     while messages.len() < 1 {
