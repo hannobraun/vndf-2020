@@ -117,7 +117,7 @@ impl Network {
         iter::from_fn(move || {
             if let Some((id, err)) = self.remove.pop_front() {
                 self.clients.remove(&id);
-                return Some(Event::Disconnect(id, err));
+                return Some(Event::Error(id, err));
             }
 
             match self.receive.try_recv() {
@@ -213,7 +213,7 @@ impl ConnAdapter {
 
                             // We can ignore any channel errors here. The thread
                             // is ending anyway.
-                            let event = Event::Disconnect(addr, err);
+                            let event = Event::Error(addr, err);
                             let _ = receive.send(event);
 
                             return;
@@ -237,7 +237,7 @@ impl ConnAdapter {
 
 #[derive(Debug, PartialEq)]
 pub enum Event {
-    Disconnect(SocketAddr, net::Error),
+    Error(SocketAddr, net::Error),
     Message(SocketAddr, msg::FromClient),
 }
 

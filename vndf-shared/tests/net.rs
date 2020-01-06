@@ -31,7 +31,7 @@ fn network_should_emit_receive_events() -> net::Result {
 }
 
 #[test]
-fn network_should_remove_clients_that_cause_errors() -> net::Result {
+fn network_should_report_client_errors() -> net::Result {
     let mut server = Network::start_local()?;
     let     client = Conn::connect(server.addr())?;
     let     addr   = client.local_addr;
@@ -44,7 +44,7 @@ fn network_should_remove_clients_that_cause_errors() -> net::Result {
         server.send(addr, msg::FromServer::Welcome(addr));
 
         for event in server.events() {
-            if let network::Event::Disconnect(id, _error) = event {
+            if let network::Event::Error(id, _error) = event {
                 disconnect_id = Some(id);
             }
         }
