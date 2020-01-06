@@ -91,7 +91,9 @@ impl State {
             dt,
             &mut self.events.push(),
         );
+    }
 
+    pub fn dispatch(&mut self) {
         let mut world = world::Spawn {
             world:     &mut self.world,
             spawned:   &mut self.spawned,

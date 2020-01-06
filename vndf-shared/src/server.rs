@@ -77,6 +77,7 @@ impl Server {
 
         while now.duration_since(self.last_update) > frame_time {
             self.state.update(FRAME_TIME);
+            self.state.dispatch();
             self.last_update += frame_time;
         }
 
