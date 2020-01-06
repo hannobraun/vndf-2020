@@ -8,27 +8,6 @@ use vndf_shared::net::{
 
 
 #[test]
-fn network_should_emit_connect_events() -> net::Result {
-    let mut server = Network::start_local()?;
-
-    let conn_1 = Conn::connect(server.addr())?;
-    let conn_2 = Conn::connect(server.addr())?;
-
-    let mut events = Vec::new();
-
-    while events.len() < 2 {
-        for event in server.events() {
-            events.push(event);
-        }
-    }
-
-    assert!(events.contains(&network::Event::Connect(conn_1.local_addr)));
-    assert!(events.contains(&network::Event::Connect(conn_2.local_addr)));
-
-    Ok(())
-}
-
-#[test]
 fn network_should_emit_receive_events() -> net::Result {
     let mut server = Network::start_local()?;
     let mut conn   = Conn::connect(server.addr())?;

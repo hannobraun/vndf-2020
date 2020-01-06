@@ -140,7 +140,6 @@ impl Network {
             match self.accept.try_recv() {
                 Ok((id, conn)) => {
                     self.clients.insert(id, conn);
-                    return Some(Event::Connect(id));
                 }
                 Err(TryRecvError::Empty) => {
                     ()
@@ -238,7 +237,6 @@ impl ConnAdapter {
 
 #[derive(Debug, PartialEq)]
 pub enum Event {
-    Connect(SocketAddr),
     Disconnect(SocketAddr, net::Error),
     Message(SocketAddr, msg::FromClient),
 }
