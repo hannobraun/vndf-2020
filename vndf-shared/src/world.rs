@@ -4,12 +4,11 @@ use hecs::{
     Entity,
     NoSuchEntity,
     QueryBorrow,
-    World,
 };
 
 
 pub struct Query<'r> {
-    pub world: &'r mut World,
+    pub world: &'r mut hecs::World,
 }
 
 impl<'r> Query<'r> {
@@ -20,7 +19,7 @@ impl<'r> Query<'r> {
 
 
 pub struct Spawn<'r> {
-    pub world:     &'r mut World,
+    pub world:     &'r mut hecs::World,
     pub spawned:   &'r mut Vec<Entity>,
     pub despawned: &'r mut Vec<Entity>,
 }
