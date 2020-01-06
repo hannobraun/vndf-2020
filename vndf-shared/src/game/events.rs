@@ -40,7 +40,7 @@ impl Push<'_> {
     }
 
     pub fn launch_missile(&mut self, missile: Missile) {
-        self.0.push_back(Event::LaunchMissile(missile));
+        self.0.push_back(Event::LaunchMissile { missile });
     }
 
     pub fn explode_missile(&mut self, missile: Entity, explosion: Explosion) {
@@ -48,7 +48,7 @@ impl Push<'_> {
     }
 
     pub fn remove_explosion(&mut self, explosion: Entity) {
-        self.0.push_back(Event::RemoveExplosion(explosion))
+        self.0.push_back(Event::RemoveExplosion { explosion })
     }
 }
 
@@ -57,12 +57,16 @@ pub enum Event {
     ConnectPlayer {
         player: SocketAddr,
     },
-    LaunchMissile(Missile),
+    LaunchMissile {
+        missile: Missile,
+    },
     ExplodeMissile {
         missile:   Entity,
         explosion: Explosion,
     },
-    RemoveExplosion(Entity),
+    RemoveExplosion {
+        explosion: Entity,
+    },
 }
 
 impl Event {
@@ -71,7 +75,7 @@ impl Event {
             Self::ConnectPlayer { player } => {
                 world.spawn(entities::ship(player));
             }
-            Self::LaunchMissile(missile) => {
+            Self::LaunchMissile { missile } => {
                 world.spawn(missile);
             }
             Self::ExplodeMissile { missile, explosion } => {
@@ -79,7 +83,7 @@ impl Event {
                     .expect("Missile should exist");
                 world.spawn(explosion);
             }
-            Self::RemoveExplosion(explosion) => {
+            Self::RemoveExplosion { explosion } => {
                 world.despawn(explosion)
                     .expect("Explosion should exist");
             }
