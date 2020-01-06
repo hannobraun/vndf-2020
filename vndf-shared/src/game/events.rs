@@ -33,7 +33,7 @@ impl Events {
 
 
 pub enum Event {
-    SpawnShip {
+    ConnectPlayer {
         player: SocketAddr,
     },
     LaunchMissile(Missile),
@@ -47,7 +47,7 @@ pub enum Event {
 impl Event {
     pub fn handle(self, world: &mut world::Spawn) {
         match self {
-            Self::SpawnShip { player } => {
+            Self::ConnectPlayer { player } => {
                 world.spawn(entities::ship(player));
             }
             Self::LaunchMissile(missile) => {

@@ -47,7 +47,7 @@ impl State {
     }
 
     pub fn connect_player(&mut self, player: SocketAddr) {
-        self.events.push(Event::SpawnShip { player });
+        self.events.push(Event::ConnectPlayer { player });
     }
 
     pub fn handle_input(&mut self, player: SocketAddr, event: input::Event) {
