@@ -15,7 +15,7 @@ use crate::{
 
 
 pub fn handle_rotate(
-    world:    &mut world::Query,
+    world:    world::Query,
     player:   SocketAddr,
     rotation: Rotation,
 ) {
@@ -27,7 +27,7 @@ pub fn handle_rotate(
 }
 
 pub fn handle_thrust(
-    world:  &mut world::Query,
+    world:  world::Query,
     player: SocketAddr,
     thrust: bool,
 ) {
@@ -39,7 +39,7 @@ pub fn handle_thrust(
 }
 
 pub fn handle_launch(
-    world:  &mut world::Query,
+    world:  world::Query,
     player: SocketAddr,
     events: &mut events::Push,
 ) {

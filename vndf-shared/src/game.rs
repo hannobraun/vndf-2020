@@ -52,21 +52,21 @@ impl State {
         match event {
             input::Event::Rotate(rotation) => {
                 systems::input::handle_rotate(
-                    &mut self.world.query(),
+                    self.world.query(),
                     player,
                     rotation,
                 );
             }
             input::Event::Thrust(thrust) => {
                 systems::input::handle_thrust(
-                    &mut self.world.query(),
+                    self.world.query(),
                     player,
                     thrust,
                 );
             }
             input::Event::LaunchMissile => {
                 systems::input::handle_launch(
-                    &mut self.world.query(),
+                    self.world.query(),
                     player,
                     &mut self.events.push(),
                 );
@@ -75,15 +75,15 @@ impl State {
     }
 
     pub fn update(&mut self, dt: f32) {
-        systems::update::update_ships(&mut self.world.query());
-        systems::update::update_engines(&mut self.world.query(), dt);
-        systems::update::update_bodies(&mut self.world.query(), WORLD_SIZE, dt);
+        systems::update::update_ships(self.world.query());
+        systems::update::update_engines(self.world.query(), dt);
+        systems::update::update_bodies(self.world.query(), WORLD_SIZE, dt);
         systems::update::update_missiles(
-            &mut self.world.query(),
+            self.world.query(),
             &mut self.events.push(),
         );
         systems::update::update_explosions(
-            &mut self.world.query(),
+            self.world.query(),
             dt,
             &mut self.events.push(),
         );
