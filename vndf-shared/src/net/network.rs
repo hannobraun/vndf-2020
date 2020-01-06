@@ -237,8 +237,8 @@ impl ConnAdapter {
 
 #[derive(Debug, PartialEq)]
 pub enum Event {
-    Error(SocketAddr, net::Error),
     Message(SocketAddr, msg::FromClient),
+    Error(SocketAddr, net::Error),
 }
 
 
