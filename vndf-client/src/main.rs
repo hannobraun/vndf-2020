@@ -1,6 +1,6 @@
+mod game;
 mod graphics;
 mod input;
-mod state;
 
 
 pub use vndf_shared as shared;
@@ -35,13 +35,13 @@ use ggez::{
 use log::error;
 
 use self::{
+    game::State,
     graphics::Graphics,
     shared::net::{
         self,
         client::Conn,
         msg,
     },
-    state::State,
 };
 
 

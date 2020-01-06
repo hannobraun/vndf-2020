@@ -12,6 +12,7 @@ use ggez::{
 };
 
 use crate::{
+    game::State,
     shared::game::{
         WORLD_SIZE,
         components::{
@@ -22,7 +23,6 @@ use crate::{
             Ship,
         },
     },
-    state::State,
 };
 
 
