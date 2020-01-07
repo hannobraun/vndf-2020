@@ -25,8 +25,8 @@ pub const FRAME_TIME: f32 = 1.0 / TARGET_FPS as f32;
 
 pub struct State {
     pub world:  World,
-    pub events: Events,
 
+    events:     Events,
     de_spawned: DeSpawned,
 }
 
