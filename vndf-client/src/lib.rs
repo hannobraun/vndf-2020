@@ -9,6 +9,7 @@ pub use vndf_shared as shared;
 use std::{
     env,
     io,
+    net::ToSocketAddrs,
 };
 
 use ggez::{
@@ -45,26 +46,7 @@ use self::{
 };
 
 
-fn main() -> Result<(), Error> {
-    env_logger::init_from_env(
-        env_logger::Env::new()
-            .default_filter_or("vndf_shared=info,vndf_client=info")
-    );
-
-    #[cfg(feature="production")]
-    let (server, conn) = {
-        let server = DummyServer;
-        let conn   = Conn::connect(("reineke.hannobraun.de", 34480))?;
-        (server, conn)
-    };
-
-    #[cfg(not(feature = "production"))]
-    let (server, conn) = {
-        let server = Server::start_local()?;
-        let conn   = Conn::connect(server.addr())?;
-        (server, conn)
-    };
-
+pub fn start<A: ToSocketAddrs>(addr: A) -> Result<(), Error> {
     // Force X11 backend to prevent panic.
     // See https://github.com/ggez/ggez/issues/579
     env::set_var("WINIT_UNIX_BACKEND", "x11");
@@ -81,15 +63,16 @@ fn main() -> Result<(), Error> {
             )
             .build()?;
 
-    let mut game = Game::new(server, conn, &mut context)?;
+    let     conn = Conn::connect(addr)?;
+    let mut game = Game::new(conn, &mut context)?;
 
     run(&mut context, &mut event_loop, &mut game)?;
+
     Ok(())
 }
 
 
 pub struct Game {
-    server:   Server,
     conn:     Conn,
     graphics: Graphics,
     state:    State,
@@ -97,7 +80,6 @@ pub struct Game {
 
 impl Game {
     pub fn new(
-        server:  Server,
         conn:    Conn,
         context: &mut Context,
     )
@@ -108,7 +90,6 @@ impl Game {
 
         Ok(
             Game {
-                server,
                 conn,
                 graphics: Graphics::new(context)?,
                 state:    State::new(),
@@ -146,8 +127,6 @@ impl EventHandler for Game {
     }
 
     fn update(&mut self, context: &mut Context) -> GameResult {
-        self.server.update();
-
         for message in self.conn.incoming() {
             match message {
                 Ok(msg::FromServer::Welcome(id)) => {
@@ -173,22 +152,6 @@ impl EventHandler for Game {
     fn draw(&mut self, context: &mut Context) -> GameResult {
         self.graphics.draw(context, &self.state)
     }
-}
-
-
-#[cfg(feature = "production")]
-type Server = DummyServer;
-
-#[cfg(not(feature = "production"))]
-type Server = crate::shared::Server;
-
-
-#[cfg(feature = "production")]
-pub struct DummyServer;
-
-#[cfg(feature = "production")]
-impl DummyServer {
-    pub fn update(&mut self) {}
 }
 
 
