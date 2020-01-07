@@ -31,8 +31,8 @@ pub fn missile(launcher: &c::Body) -> Missile {
     };
     let engine = c::Engine {
         enabled: true,
-        thrust:  10.0,
-        fuel:    80.0
+        thrust:  200.0,
+        fuel:    400.0,
     };
 
     (c::Missile::new(), body, engine)
@@ -41,8 +41,8 @@ pub fn missile(launcher: &c::Body) -> Missile {
 pub fn ship(player: SocketAddr) -> Ship {
     let engine = c::Engine {
         enabled: false,
-        thrust:  5.0,
-        fuel:    300.0,
+        thrust:  100.0,
+        fuel:    1200.0,
     };
 
     (c::Ship::new(player), c::Body::new(), engine)

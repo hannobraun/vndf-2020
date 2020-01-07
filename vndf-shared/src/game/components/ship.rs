@@ -46,6 +46,6 @@ impl Ship {
 
     pub fn update(&self, body: &mut Body) {
         let rotation = self.rotation as i32 as f32;
-        body.rot = Rad::full_turn() * 0.4 * rotation;
+        body.rot = Rad::full_turn() * 0.6 * rotation;
     }
 }
