@@ -97,7 +97,7 @@ impl Server {
             );
         }
 
-        let clients: Vec<SocketAddr> = self.network.clients().collect();
+        let clients = self.state.players();
         for client in clients {
             for entity in &despawned {
                 self.network.send(

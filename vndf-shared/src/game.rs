@@ -5,6 +5,8 @@ pub mod indices;
 pub mod systems;
 
 
+use std::net::SocketAddr;
+
 use hecs::Entity;
 
 use crate::world::{
@@ -13,6 +15,7 @@ use crate::world::{
 };
 
 use self::{
+    components::Ship,
     events::{
         Event,
         Events,
@@ -121,6 +124,15 @@ impl State {
 
     pub fn world(&self) -> &World {
         &self.world
+    }
+
+    pub fn players(&self) -> Vec<SocketAddr> {
+        self.world
+            .inner()
+            .query::<(&Ship,)>()
+            .into_iter()
+            .map(|(_, (ship,))| ship.player)
+            .collect()
     }
 
     pub fn spawned(&mut self) -> impl Iterator<Item=Entity> + '_ {
