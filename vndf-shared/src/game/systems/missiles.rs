@@ -6,11 +6,16 @@ use crate::{
             Explosion,
             Missile,
         },
+        entities as e,
         events,
     },
     world,
 };
 
+
+pub fn launch_missile(world: &mut world::Spawn, missile: e::Missile) {
+    world.spawn(missile);
+}
 
 pub fn update_missiles(world: world::Query, events: &mut events::Push) {
     let query = &mut world.query::<(&Missile, &Body, &Engine)>();
@@ -19,6 +24,16 @@ pub fn update_missiles(world: world::Query, events: &mut events::Push) {
             events.explode_missile(id, explosion);
         }
     }
+}
+
+pub fn explode_missile(
+    world:     &mut world::Spawn,
+    missile:   hecs::Entity,
+    explosion: e::Explosion,
+) {
+    world.despawn(missile)
+        .expect("Missile should exist");
+    world.spawn(explosion);
 }
 
 pub fn update_explosions(
@@ -31,4 +46,9 @@ pub fn update_explosions(
             events.remove_explosion(id);
         }
     }
+}
+
+pub fn remove_explosion(world: &mut world::Spawn, explosion: hecs::Entity) {
+    world.despawn(explosion)
+        .expect("Explosion should exist");
 }

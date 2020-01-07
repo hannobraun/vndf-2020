@@ -7,12 +7,17 @@ use crate::{
             Engine,
             Ship,
         },
+        entities,
         events,
     },
     input,
     world,
 };
 
+
+pub fn create_ship(world: &mut world::Spawn, player: SocketAddr) {
+    world.spawn(entities::ship(player));
+}
 
 pub fn handle_input(
     world:  world::Query,

@@ -73,24 +73,32 @@ impl State {
     }
 
     pub fn dispatch(&mut self) {
-        let mut world = self.world.spawn(&mut self.de_spawned);
-
         for event in self.events.drain() {
             match event {
                 Event::ConnectPlayer { player } => {
-                    world.spawn(entities::ship(player));
+                    systems::ships::create_ship(
+                        &mut self.world.spawn(&mut self.de_spawned),
+                        player,
+                    );
                 }
                 Event::LaunchMissile { missile } => {
-                    world.spawn(missile);
+                    systems::missiles::launch_missile(
+                        &mut self.world.spawn(&mut self.de_spawned),
+                        missile,
+                    );
                 }
                 Event::ExplodeMissile { missile, explosion } => {
-                    world.despawn(missile)
-                        .expect("Missile should exist");
-                    world.spawn(explosion);
+                    systems::missiles::explode_missile(
+                        &mut self.world.spawn(&mut self.de_spawned),
+                        missile,
+                        explosion,
+                    );
                 }
                 Event::RemoveExplosion { explosion } => {
-                    world.despawn(explosion)
-                        .expect("Explosion should exist");
+                    systems::missiles::remove_explosion(
+                        &mut self.world.spawn(&mut self.de_spawned),
+                        explosion,
+                    );
                 }
             }
         }
