@@ -131,6 +131,8 @@ fn receive<T>(mut stream: TcpStream, in_chan: Sender<T>) -> net::Result
     let mut buf = Vec::new();
 
     loop {
+        trace!("Starting receive loop");
+
         let mut tmp = [0; 1024];
 
         let read = stream.read(&mut tmp)?;

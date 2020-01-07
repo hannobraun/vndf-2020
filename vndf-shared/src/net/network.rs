@@ -24,6 +24,7 @@ use std::{
 use log::{
     debug,
     error,
+    trace,
 };
 
 use crate::net::{
@@ -196,6 +197,8 @@ impl ConnAdapter {
 
         thread::spawn(move || {
             loop {
+                trace!("Starting adapter receive loop");
+
                 for message in rx.incoming() {
                     let message = match message {
                         Ok(message) => {
