@@ -9,44 +9,35 @@ use crate::{
         },
         events,
     },
-    input::Rotation,
+    input,
     world,
 };
 
 
-pub fn handle_rotate(
-    world:    world::Query,
-    player:   SocketAddr,
-    rotation: Rotation,
-) {
-    for (_, (ship,)) in &mut world.query::<(&mut Ship,)>() {
-        if ship.player == player {
-            ship.rotation = rotation;
-        }
-    }
-}
-
-pub fn handle_thrust(
+pub fn handle_input(
     world:  world::Query,
-    player: SocketAddr,
-    thrust: bool,
-) {
-    for (_, (ship, engine)) in &mut world.query::<(&Ship, &mut Engine)>() {
-        if ship.player == player {
-            engine.enabled = thrust;
-        }
-    }
-}
-
-pub fn handle_launch(
-    world:  world::Query,
-    player: SocketAddr,
     events: &mut events::Push,
+    player: SocketAddr,
+    input:  input::Event,
 ) {
-    for (_, (ship, body)) in &mut world.query::<(&mut Ship, &Body)>() {
-        if ship.player == player {
-            if let Some(missile) = ship.launch_missile(body) {
-                events.launch_missile(missile);
+    let query = &mut world.query::<(&mut Ship, &Body, &mut Engine)>();
+
+    for (_, (ship, body, engine)) in query {
+        if ship.player != player {
+            continue;
+        }
+
+        match input {
+            input::Event::Rotate(rotation) => {
+                ship.rotation = rotation;
+            }
+            input::Event::Thrust(thrust) => {
+                engine.enabled = thrust;
+            }
+            input::Event::LaunchMissile => {
+                if let Some(missile) = ship.launch_missile(body) {
+                    events.launch_missile(missile);
+                }
             }
         }
     }

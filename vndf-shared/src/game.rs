@@ -49,29 +49,12 @@ impl State {
     }
 
     pub fn handle_input(&mut self, player: SocketAddr, event: input::Event) {
-        match event {
-            input::Event::Rotate(rotation) => {
-                systems::input::handle_rotate(
-                    self.world.query(),
-                    player,
-                    rotation,
-                );
-            }
-            input::Event::Thrust(thrust) => {
-                systems::input::handle_thrust(
-                    self.world.query(),
-                    player,
-                    thrust,
-                );
-            }
-            input::Event::LaunchMissile => {
-                systems::input::handle_launch(
-                    self.world.query(),
-                    player,
-                    &mut self.events.push(),
-                );
-            }
-        }
+        systems::input::handle_input(
+            self.world.query(),
+            &mut self.events.push(),
+            player,
+            event,
+        );
     }
 
     pub fn update(&mut self, dt: f32) {
