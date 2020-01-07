@@ -1,4 +1,13 @@
+use structopt::StructOpt;
+
 use vndf_client as client;
+
+
+#[derive(StructOpt)]
+struct Options {
+    #[structopt(short, long)]
+    local: bool,
+}
 
 
 fn main() -> Result<(), client::Error> {
@@ -9,5 +18,14 @@ fn main() -> Result<(), client::Error> {
             )
     );
 
-    client::start(("reineke.hannobraun.de", 34480))
+    let options = Options::from_args();
+
+    let addr = if options.local {
+        "localhost"
+    }
+    else {
+        "reineke.hannobraun.de"
+    };
+
+    client::start((addr, 34480))
 }
