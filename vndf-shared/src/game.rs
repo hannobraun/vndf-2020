@@ -49,7 +49,7 @@ impl State {
     }
 
     pub fn handle_input(&mut self, player: SocketAddr, event: input::Event) {
-        systems::input::handle_input(
+        systems::ships::handle_input(
             self.world.query(),
             &mut self.events.push(),
             player,
@@ -58,7 +58,7 @@ impl State {
     }
 
     pub fn update(&mut self, dt: f32) {
-        systems::update::update_ships(self.world.query());
+        systems::ships::update_ships(self.world.query());
         systems::update::update_engines(self.world.query(), dt);
         systems::update::update_bodies(self.world.query(), WORLD_SIZE, dt);
         systems::update::update_missiles(

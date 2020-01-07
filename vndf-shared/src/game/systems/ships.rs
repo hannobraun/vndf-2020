@@ -42,3 +42,9 @@ pub fn handle_input(
         }
     }
 }
+
+pub fn update_ships(world: world::Query) {
+    for (_, (ship, body)) in &mut world.query::<(&mut Ship, &mut Body)>() {
+        ship.update(body);
+    }
+}

@@ -5,19 +5,12 @@ use crate::{
             Engine,
             Explosion,
             Missile,
-            Ship,
         },
         events,
     },
     world,
 };
 
-
-pub fn update_ships(world: world::Query) {
-    for (_, (ship, body)) in &mut world.query::<(&mut Ship, &mut Body)>() {
-        ship.update(body);
-    }
-}
 
 pub fn update_engines(world: world::Query, dt: f32) {
     for (_, (engine, body)) in &mut world.query::<(&mut Engine, &mut Body)>() {
