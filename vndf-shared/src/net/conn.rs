@@ -113,31 +113,6 @@ impl<In, Out> Conn<In, Out>
 }
 
 
-fn send<T>(mut stream: TcpStream, out_chan: Receiver<T>) -> net::Result
-    where T: Message
-{
-    let mut buf = Vec::new();
-
-    loop {
-        trace!("Starting send loop: {:?}", buf);
-
-        stream.write_all(&buf)?;
-        buf.clear();
-
-        match out_chan.recv() {
-            Ok(message) => {
-                debug!("Writing message: {:?}", message);
-                message.write(&mut buf)?;
-            }
-            Err(RecvError) => {
-                // This means the other end has hung up. No need to continue
-                // here.
-                return Ok(());
-            }
-        }
-    }
-}
-
 fn receive<T>(mut stream: TcpStream, in_chan: Sender<T>) -> net::Result
     where T: Message
 {
@@ -159,6 +134,31 @@ fn receive<T>(mut stream: TcpStream, in_chan: Sender<T>) -> net::Result
             if let Err(SendError(_)) = in_chan.send(message) {
                 // Other end has hung up. No need to keep this up.
                 return Ok(())
+            }
+        }
+    }
+}
+
+fn send<T>(mut stream: TcpStream, out_chan: Receiver<T>) -> net::Result
+    where T: Message
+{
+    let mut buf = Vec::new();
+
+    loop {
+        trace!("Starting send loop: {:?}", buf);
+
+        stream.write_all(&buf)?;
+        buf.clear();
+
+        match out_chan.recv() {
+            Ok(message) => {
+                debug!("Writing message: {:?}", message);
+                message.write(&mut buf)?;
+            }
+            Err(RecvError) => {
+                // This means the other end has hung up. No need to continue
+                // here.
+                return Ok(());
             }
         }
     }
