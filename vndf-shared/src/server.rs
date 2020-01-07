@@ -91,8 +91,10 @@ impl Server {
         let despawned: Vec<_> = self.state.despawned().collect();
 
         let mut updated = Vec::new();
-        for (entity, _) in self.state.world.inner().iter() {
-            updated.push(Entity::from_world(entity, self.state.world.inner()));
+        for (entity, _) in self.state.world().inner().iter() {
+            updated.push(
+                Entity::from_world(entity, self.state.world().inner()),
+            );
         }
 
         let clients: Vec<SocketAddr> = self.network.clients().collect();

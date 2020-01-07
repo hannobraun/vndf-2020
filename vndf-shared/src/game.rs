@@ -28,8 +28,7 @@ pub const FRAME_TIME: f32 = 1.0 / TARGET_FPS as f32;
 
 
 pub struct State {
-    pub world:  World,
-
+    world:      World,
     events:     Events,
     de_spawned: DeSpawned,
     indices:    Indices,
@@ -118,6 +117,10 @@ impl State {
                 }
             }
         }
+    }
+
+    pub fn world(&self) -> &World {
+        &self.world
     }
 
     pub fn spawned(&mut self) -> impl Iterator<Item=Entity> + '_ {
