@@ -6,7 +6,10 @@ use std::{
     },
 };
 
-use log::info;
+use log::{
+    debug,
+    info,
+};
 
 use crate::{
     game::{
@@ -66,6 +69,7 @@ impl Server {
                     self.state.push().connect_player(id);
                 }
                 network::Event::Message(id, msg::FromClient::Input(input)) => {
+                    debug!("Input from {}: {:?}", id, input);
                     self.state.push().player_input(id, input);
                 }
                 _ => (),
