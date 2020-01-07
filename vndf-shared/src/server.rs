@@ -66,7 +66,7 @@ impl Server {
                     self.state.push().connect_player(id);
                 }
                 network::Event::Message(id, msg::FromClient::Input(input)) => {
-                    self.state.handle_input(id, input);
+                    self.state.push().player_input(id, input);
                 }
                 _ => (),
             }

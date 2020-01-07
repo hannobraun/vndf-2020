@@ -5,9 +5,12 @@ use std::{
 
 use hecs::Entity;
 
-use crate::game::entities::{
-    Explosion,
-    Missile,
+use crate::{
+    game::entities::{
+        Explosion,
+        Missile,
+    },
+    input,
 };
 
 
@@ -35,6 +38,10 @@ impl Push<'_> {
         self.0.push_back(Event::ConnectPlayer { player });
     }
 
+    pub fn player_input(&mut self, player: SocketAddr, event: input::Event) {
+        self.0.push_back(Event::PlayerInput { player, event });
+    }
+
     pub fn launch_missile(&mut self, missile: Missile) {
         self.0.push_back(Event::LaunchMissile { missile });
     }
@@ -52,6 +59,10 @@ impl Push<'_> {
 pub enum Event {
     ConnectPlayer {
         player: SocketAddr,
+    },
+    PlayerInput {
+        player: SocketAddr,
+        event:  input::Event,
     },
     LaunchMissile {
         missile: Missile,

@@ -4,16 +4,11 @@ pub mod events;
 pub mod systems;
 
 
-use std::net::SocketAddr;
-
 use hecs::Entity;
 
-use crate::{
-    input,
-    world::{
-        DeSpawned,
-        World,
-    },
+use crate::world::{
+    DeSpawned,
+    World,
 };
 
 use self::events::{
@@ -48,15 +43,6 @@ impl State {
         self.events.push()
     }
 
-    pub fn handle_input(&mut self, player: SocketAddr, event: input::Event) {
-        systems::ships::handle_input(
-            self.world.query(),
-            &mut self.events.push(),
-            player,
-            event,
-        );
-    }
-
     pub fn update(&mut self, dt: f32) {
         systems::ships::update_ships(self.world.query());
         systems::crafts::update_engines(self.world.query(), dt);
@@ -79,6 +65,14 @@ impl State {
                     systems::ships::create_ship(
                         &mut self.world.spawn(&mut self.de_spawned),
                         player,
+                    );
+                }
+                Event::PlayerInput { player, event } => {
+                    systems::ships::handle_input(
+                        self.world.query(),
+                        &mut self.events.push(),
+                        player,
+                        event,
                     );
                 }
                 Event::LaunchMissile { missile } => {
