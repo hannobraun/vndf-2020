@@ -21,11 +21,7 @@ use std::{
     thread,
 };
 
-use log::{
-    debug,
-    error,
-    trace,
-};
+use log::error;
 
 use crate::net::{
     self,
@@ -39,9 +35,8 @@ pub const PORT: u16 = 34480;
 
 pub struct Network {
     addr:    SocketAddr,
-    accept:  Receiver<(SocketAddr, ConnAdapter)>,
-    receive: Receiver<Event>,
-    clients: HashMap<SocketAddr, ConnAdapter>,
+    accept:  Receiver<Conn>,
+    clients: HashMap<SocketAddr, Conn>,
     remove:  VecDeque<(SocketAddr, net::Error)>,
 }
 
@@ -62,16 +57,14 @@ impl Network {
         // on.
         let addr = listener.local_addr()?;
 
-        let (accept_tx, accept_rx)   = channel();
-        let (receive_tx, receive_rx) = channel();
+        let (accept_tx, accept_rx) = channel();
 
-        thread::spawn(|| accept(listener, accept_tx, receive_tx));
+        thread::spawn(|| accept(listener, accept_tx));
 
         Ok(
             Self {
                 addr,
                 accept:  accept_rx,
-                receive: receive_rx,
                 clients: HashMap::new(),
                 remove:  VecDeque::new(),
             }
@@ -101,7 +94,7 @@ impl Network {
             None => return,
         };
 
-        if let Err(err) = conn.0.send(message) {
+        if let Err(err) = conn.send(message) {
             self.remove.push_back((addr, err));
             // No need to return the error. The user will get it via the
             // disconnect event.
@@ -115,26 +108,24 @@ impl Network {
                 return Some(Event::Error(id, err));
             }
 
-            match self.receive.try_recv() {
-                Ok(event) => {
-                    return Some(event);
-                }
-                Err(TryRecvError::Empty) => {
-                    ()
-                }
-                Err(TryRecvError::Disconnected) => {
-                    // Can only happen if we have no connection threads _and_
-                    // the accept thread ended, since that one has its own clone
-                    // of the sender.
-                    unreachable!(
-                        "`accept` thread does not end while receiver exists"
-                    );
+            for (&addr, conn) in &mut self.clients {
+                match conn.incoming().next() {
+                    Some(Ok(message)) => {
+                        return Some(Event::Message(addr, message));
+                    }
+                    Some(Err(err)) => {
+                        self.remove.push_back((addr, err));
+                    }
+                    None => {
+                        // Do nothing. The next loop iteration will look at
+                        // another client.
+                    }
                 }
             }
 
             match self.accept.try_recv() {
-                Ok((id, conn)) => {
-                    self.clients.insert(id, conn);
+                Ok(conn) => {
+                    self.clients.insert(conn.peer_addr, conn);
                 }
                 Err(TryRecvError::Empty) => {
                     ()
@@ -156,13 +147,12 @@ impl Network {
 
 fn accept(
     listener: TcpListener,
-    accept:   Sender<(SocketAddr, ConnAdapter)>,
-    receive:  Sender<Event>,
+    accept:   Sender<Conn>,
 ) {
     for stream in listener.incoming() {
-        let (conn, addr) = match ConnAdapter::accept(stream, receive.clone()) {
-            Ok((conn, addr)) => {
-                (conn, addr)
+        let conn = match accept_conn(stream) {
+            Ok(conn) => {
+                conn
             }
             Err(err) => {
                 error!("Error accepting connection: {:?}", err);
@@ -170,7 +160,7 @@ fn accept(
             }
         };
 
-        if let Err(SendError(_)) = accept.send((addr, conn)) {
+        if let Err(SendError(_)) = accept.send(conn) {
             // Channel disconnected. This means the receiver has been dropped,
             // and we have no reason to keep this up.
             return;
@@ -180,55 +170,13 @@ fn accept(
     unreachable!("`listener.incoming()` does never yield `None`");
 }
 
-
-struct ConnAdapter(conn::Tx<msg::FromServer>);
-
-impl ConnAdapter {
-    pub fn accept(stream: io::Result<TcpStream>, receive: Sender<Event>)
-        -> io::Result<(Self, SocketAddr)>
-    {
-        let stream = stream?;
-
-        let conn = conn::Conn::from_stream(stream)?;
-
-        let mut rx   = conn.rx;
-        let     tx   = conn.tx;
-        let     addr = conn.peer_addr;
-
-        thread::spawn(move || {
-            loop {
-                trace!("Starting adapter receive loop");
-
-                for message in rx.incoming() {
-                    let message = match message {
-                        Ok(message) => {
-                            message
-                        }
-                        Err(err) => {
-                            debug!("Error receiving message: {:?}", err);
-
-                            // We can ignore any channel errors here. The thread
-                            // is ending anyway.
-                            let event = Event::Error(addr, err);
-                            let _ = receive.send(event);
-
-                            return;
-                        }
-                    };
-
-                    let event = Event::Message(addr, message);
-
-                    if let Err(SendError(_)) = receive.send(event) {
-                        // Other hand has hung up. No need to keep this up.
-                        return;
-                    }
-                }
-            }
-        });
-
-        Ok((Self(tx), addr))
-    }
+fn accept_conn(stream: io::Result<TcpStream>) -> io::Result<Conn> {
+    let stream = stream?;
+    Conn::from_stream(stream)
 }
+
+
+pub type Conn = conn::Conn<msg::FromClient, msg::FromServer>;
 
 
 #[derive(Debug, PartialEq)]
