@@ -43,24 +43,32 @@ impl State {
         self.events.push()
     }
 
-    pub fn update(&mut self, dt: f32) {
-        systems::ships::update_ships(self.world.query());
-        systems::crafts::update_engines(self.world.query(), dt);
-        systems::crafts::update_bodies(self.world.query(), WORLD_SIZE, dt);
-        systems::missiles::update_missiles(
-            self.world.query(),
-            &mut self.events.push(),
-        );
-        systems::missiles::update_explosions(
-            self.world.query(),
-            dt,
-            &mut self.events.push(),
-        );
-    }
-
     pub fn dispatch(&mut self) {
         while let Some(event) = self.events.next() {
             match event {
+                Event::Update { dt } => {
+                    systems::ships::update_ships(
+                        self.world.query(),
+                    );
+                    systems::crafts::update_engines(
+                        self.world.query(),
+                        dt,
+                    );
+                    systems::crafts::update_bodies(
+                        self.world.query(),
+                        WORLD_SIZE,
+                        dt,
+                    );
+                    systems::missiles::update_missiles(
+                        self.world.query(),
+                        &mut self.events.push(),
+                    );
+                    systems::missiles::update_explosions(
+                        self.world.query(),
+                        dt,
+                        &mut self.events.push(),
+                    );
+                }
                 Event::ConnectPlayer { player } => {
                     systems::ships::create_ship(
                         &mut self.world.spawn(&mut self.de_spawned),

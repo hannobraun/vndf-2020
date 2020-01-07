@@ -34,6 +34,10 @@ impl Events {
 pub struct Push<'r>(&'r mut VecDeque<Event>);
 
 impl Push<'_> {
+    pub fn update(&mut self, dt: f32) {
+        self.0.push_back(Event::Update { dt });
+    }
+
     pub fn connect_player(&mut self, player: SocketAddr) {
         self.0.push_back(Event::ConnectPlayer { player });
     }
@@ -57,6 +61,9 @@ impl Push<'_> {
 
 
 pub enum Event {
+    Update {
+        dt: f32,
+    },
     ConnectPlayer {
         player: SocketAddr,
     },
