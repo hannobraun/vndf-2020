@@ -31,54 +31,54 @@ impl Events {
 }
 
 
-pub struct Push<'r>(&'r mut VecDeque<Event>);
+macro_rules! events {
+    (
+        $(
+            $event:ident, $event_lower:ident {
+                $($arg_name:ident: $arg_type:ty,)*
+            }
+        )*
+    ) => {
+        pub struct Push<'r>(&'r mut VecDeque<Event>);
 
-impl Push<'_> {
-    pub fn update(&mut self, dt: f32) {
-        self.0.push_back(Event::Update { dt });
-    }
+        impl Push<'_> {
+            $(
+                pub fn $event_lower(&mut self, $($arg_name: $arg_type,)*) {
+                    self.0.push_back(Event::$event { $($arg_name,)* });
+                }
+            )*
+        }
 
-    pub fn connect_player(&mut self, player: SocketAddr) {
-        self.0.push_back(Event::ConnectPlayer { player });
-    }
 
-    pub fn player_input(&mut self, player: SocketAddr, event: input::Event) {
-        self.0.push_back(Event::PlayerInput { player, event });
-    }
-
-    pub fn launch_missile(&mut self, missile: Missile) {
-        self.0.push_back(Event::LaunchMissile { missile });
-    }
-
-    pub fn explode_missile(&mut self, missile: Entity, explosion: Explosion) {
-        self.0.push_back(Event::ExplodeMissile { missile, explosion });
-    }
-
-    pub fn remove_explosion(&mut self, explosion: Entity) {
-        self.0.push_back(Event::RemoveExplosion { explosion })
-    }
+        pub enum Event {
+            $(
+                $event {
+                    $($arg_name: $arg_type,)*
+                },
+            )*
+        }
+    };
 }
 
-
-pub enum Event {
-    Update {
+events! {
+    Update, update {
         dt: f32,
-    },
-    ConnectPlayer {
+    }
+    ConnectPlayer, connect_player {
         player: SocketAddr,
-    },
-    PlayerInput {
+    }
+    PlayerInput, player_input {
         player: SocketAddr,
         event:  input::Event,
-    },
-    LaunchMissile {
+    }
+    LaunchMissile, launch_missile {
         missile: Missile,
-    },
-    ExplodeMissile {
+    }
+    ExplodeMissile, explode_missile {
         missile:   Entity,
         explosion: Explosion,
-    },
-    RemoveExplosion {
+    }
+    RemoveExplosion, remove_explosion {
         explosion: Entity,
-    },
+    }
 }
