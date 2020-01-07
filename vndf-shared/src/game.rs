@@ -61,11 +61,11 @@ impl State {
         systems::ships::update_ships(self.world.query());
         systems::update::update_engines(self.world.query(), dt);
         systems::update::update_bodies(self.world.query(), WORLD_SIZE, dt);
-        systems::update::update_missiles(
+        systems::missiles::update_missiles(
             self.world.query(),
             &mut self.events.push(),
         );
-        systems::update::update_explosions(
+        systems::missiles::update_explosions(
             self.world.query(),
             dt,
             &mut self.events.push(),
