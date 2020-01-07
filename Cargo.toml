@@ -1,6 +1,7 @@
 [workspace]
 members = [
     "vndf-client",
+    "vndf-launcher",
     "vndf-server",
     "vndf-shared",
 ]

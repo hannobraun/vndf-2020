@@ -2044,6 +2044,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "vndf-launcher"
+version = "0.1.0"
+dependencies = [
+ "env_logger 0.7.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "vndf-client 0.1.0",
+]
+
+[[package]]
 name = "vndf-server"
 version = "0.1.0"
 dependencies = [

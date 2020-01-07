@@ -13,7 +13,3 @@ log        = "*"
 
 [dependencies.vndf-shared]
 path = "../vndf-shared"
-
-
-[features]
-production = []
