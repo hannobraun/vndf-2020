@@ -32,7 +32,7 @@ use crate::net::{
 
 
 pub struct Conn<In, Out> {
-    rx: Receiver<In>,
+    rx: Receiver<Option<In>>,
     tx: Sender<Out>,
 
     pub local_addr: SocketAddr,
@@ -86,15 +86,22 @@ impl<In, Out> Conn<In, Out>
         -> impl Iterator<Item=net::Result<In>> + 's
     {
         iter::from_fn(move || {
-            match self.rx.try_recv() {
-                Ok(event) => {
-                    Some(Ok(event))
-                }
-                Err(TryRecvError::Empty) => {
-                    None
-                }
-                Err(TryRecvError::Disconnected) => {
-                    Some(Err(net::Error::ThreadFailed))
+            loop {
+                match self.rx.try_recv() {
+                    Ok(Some(event)) => {
+                        return Some(Ok(event));
+                    }
+                    Ok(None) => {
+                        // Just a ping from the receive thread. Real messages might
+                        // be coming after it.
+                        continue;
+                    }
+                    Err(TryRecvError::Empty) => {
+                        return None;
+                    }
+                    Err(TryRecvError::Disconnected) => {
+                        return Some(Err(net::Error::ThreadFailed));
+                    }
                 }
             }
         })
@@ -113,7 +120,7 @@ impl<In, Out> Conn<In, Out>
 }
 
 
-fn receive<T>(mut stream: TcpStream, in_chan: Sender<T>) -> net::Result
+fn receive<T>(mut stream: TcpStream, in_chan: Sender<Option<T>>) -> net::Result
     where T: Message
 {
     let mut buf = Vec::new();
@@ -128,12 +135,23 @@ fn receive<T>(mut stream: TcpStream, in_chan: Sender<T>) -> net::Result
 
         buf.extend(read);
 
-        while let Some(message) = T::read(&mut buf)? {
-            debug!("Received: {:?}", message);
+        let mut message = None;
 
+        loop {
+            // We need to try this at least once, no matter if we have a message
+            // or not. Otherwise, we might never notice, if the other end has
+            // hung up.
             if let Err(SendError(_)) = in_chan.send(message) {
                 // Other end has hung up. No need to keep this up.
                 return Ok(())
+            }
+
+            message = T::read(&mut buf)?;
+
+            if message.is_none() {
+                // No more message to read. No need to keep sending crap through
+                // the channel.
+                break;
             }
         }
     }
