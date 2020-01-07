@@ -22,8 +22,8 @@ impl Events {
         Push(&mut self.0)
     }
 
-    pub fn drain(&mut self) -> impl Iterator<Item=Event> + '_ {
-        self.0.drain(..)
+    pub fn next(&mut self) -> Option<Event> {
+        self.0.pop_front()
     }
 }
 

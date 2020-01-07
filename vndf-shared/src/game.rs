@@ -73,7 +73,7 @@ impl State {
     }
 
     pub fn dispatch(&mut self) {
-        for event in self.events.drain() {
+        while let Some(event) = self.events.next() {
             match event {
                 Event::ConnectPlayer { player } => {
                     systems::ships::create_ship(
