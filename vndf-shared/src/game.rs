@@ -1,6 +1,7 @@
 pub mod components;
 pub mod entities;
 pub mod events;
+pub mod indices;
 pub mod systems;
 
 
@@ -11,9 +12,12 @@ use crate::world::{
     World,
 };
 
-use self::events::{
-    Event,
-    Events,
+use self::{
+    events::{
+        Event,
+        Events,
+    },
+    indices::Indices,
 };
 
 
@@ -28,6 +32,7 @@ pub struct State {
 
     events:     Events,
     de_spawned: DeSpawned,
+    indices:    Indices,
 }
 
 impl State {
@@ -36,6 +41,7 @@ impl State {
             world:      World::new(),
             events:     Events::new(),
             de_spawned: DeSpawned::new(),
+            indices:    Indices::new(),
         }
     }
 
@@ -72,6 +78,7 @@ impl State {
                 Event::ConnectPlayer { player } => {
                     systems::ships::create_ship(
                         &mut self.world.spawn(&mut self.de_spawned),
+                        &mut self.indices,
                         player,
                     );
                 }

@@ -9,14 +9,20 @@ use crate::{
         },
         entities,
         events,
+        indices::Indices,
     },
     input,
     world,
 };
 
 
-pub fn create_ship(world: &mut world::Spawn, player: SocketAddr) {
-    world.spawn(entities::ship(player));
+pub fn create_ship(
+    world:   &mut world::Spawn,
+    indices: &mut Indices,
+    player:  SocketAddr,
+) {
+    let entity = world.spawn(entities::ship(player));
+    indices.players.insert(player, entity);
 }
 
 pub fn handle_input(
