@@ -170,6 +170,13 @@ impl Graphics {
     fn draw_ui(&self, context: &mut Context, state: &State) -> GameResult {
         activate_ui_coordinate_system(context)?;
 
+        graphics::draw(
+            context,
+            &Text::new(INSTRUCTIONS),
+            DrawParam::new()
+                .dest([20.0, 20.0])
+        )?;
+
         let query = &mut state.world.query::<(&Ship, &Engine)>();
         for (_, (ship, engine)) in query {
             if state.own_id != Some(ship.player) {
@@ -239,3 +246,11 @@ fn activate_ui_coordinate_system(context: &mut Context) -> GameResult {
 
     Ok(())
 }
+
+
+const INSTRUCTIONS: &str = "Instructions:
+Left, right - Turn your ship
+Up - Accelerate
+Enter - Shoot missile
+Escape - End game
+";
