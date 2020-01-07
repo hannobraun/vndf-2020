@@ -32,8 +32,8 @@ use crate::net::{
 
 
 pub struct Conn<In, Out> {
-    pub rx: Rx<In>,
-    pub tx: Tx<Out>,
+    rx: Receiver<In>,
+    tx: Sender<Out>,
 
     pub local_addr: SocketAddr,
     pub peer_addr:  SocketAddr,
@@ -74,8 +74,8 @@ impl<In, Out> Conn<In, Out>
 
         Ok(
             Self {
-                rx: Rx(in_rx),
-                tx: Tx(out_tx),
+                rx: in_rx,
+                tx: out_tx,
                 local_addr,
                 peer_addr,
             }
@@ -85,11 +85,24 @@ impl<In, Out> Conn<In, Out>
     pub fn incoming<'s>(&'s mut self)
         -> impl Iterator<Item=net::Result<In>> + 's
     {
-        self.rx.incoming()
+        iter::from_fn(move || {
+            match self.rx.try_recv() {
+                Ok(event) => {
+                    Some(Ok(event))
+                }
+                Err(TryRecvError::Empty) => {
+                    None
+                }
+                Err(TryRecvError::Disconnected) => {
+                    Some(Err(net::Error::ThreadFailed))
+                }
+            }
+        })
     }
 
     pub fn send(&mut self, message: Out) -> net::Result {
-        self.tx.send(message)
+        self.tx.send(message)?;
+        Ok(())
     }
 
     pub fn disconnect(self) {
@@ -148,38 +161,5 @@ fn receive<T>(mut stream: TcpStream, in_chan: Sender<T>) -> net::Result
                 return Ok(())
             }
         }
-    }
-}
-
-
-pub struct Rx<T>(Receiver<T>);
-
-impl<T> Rx<T> {
-    pub fn incoming<'s>(&'s mut self)
-        -> impl Iterator<Item=net::Result<T>> + 's
-    {
-        iter::from_fn(move || {
-            match self.0.try_recv() {
-                Ok(event) => {
-                    Some(Ok(event))
-                }
-                Err(TryRecvError::Empty) => {
-                    None
-                }
-                Err(TryRecvError::Disconnected) => {
-                    Some(Err(net::Error::ThreadFailed))
-                }
-            }
-        })
-    }
-}
-
-
-pub struct Tx<T>(Sender<T>);
-
-impl<T> Tx<T> {
-    pub fn send(&mut self, message: T) -> net::Result {
-        self.0.send(message)?;
-        Ok(())
     }
 }
