@@ -67,6 +67,9 @@ events! {
     ConnectPlayer, connect_player {
         player: SocketAddr,
     }
+    DisconnectPlayer, disconnect_player {
+        player: SocketAddr,
+    }
     PlayerInput, player_input {
         player: SocketAddr,
         event:  input::Event,

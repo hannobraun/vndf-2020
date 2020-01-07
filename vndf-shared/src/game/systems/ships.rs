@@ -25,6 +25,19 @@ pub fn create_ship(
     indices.players.insert(player, entity);
 }
 
+pub fn remove_ship(
+    world:   &mut world::Spawn,
+    indices: &mut Indices,
+    player:  SocketAddr,
+) {
+    // It's possible that we're getting multiple disconnect events per player,
+    // so the ship could have been removed already.
+    if let Some(entity) = indices.players.remove(&player) {
+        world.despawn(entity)
+            .expect("Tried to remove ship that doesn't exist")
+    }
+}
+
 pub fn handle_input(
     world:  world::Query,
     events: &mut events::Push,

@@ -72,7 +72,10 @@ impl Server {
                     debug!("Input from {}: {:?}", id, input);
                     self.state.push().player_input(id, input);
                 }
-                _ => (),
+                network::Event::Error(id, _) => {
+                    info!("Disconnected: {}", id);
+                    self.state.push().disconnect_player(id);
+                }
             }
         }
 

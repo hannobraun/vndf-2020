@@ -82,6 +82,13 @@ impl State {
                         player,
                     );
                 }
+                Event::DisconnectPlayer { player } => {
+                    systems::ships::remove_ship(
+                        &mut self.world.spawn(&mut self.de_spawned),
+                        &mut self.indices,
+                        player,
+                    );
+                }
                 Event::PlayerInput { player, event } => {
                     systems::ships::handle_input(
                         self.world.query(),
