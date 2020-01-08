@@ -37,7 +37,10 @@ use ggez::{
 use log::error;
 
 use self::{
-    config::Config,
+    config::{
+        Config,
+        Key,
+    },
     game::State,
     graphics::Graphics,
     input::Input,
@@ -119,7 +122,7 @@ impl EventHandler for Game {
             quit(context);
         }
 
-        if let Some(event) = self.input.key_down(key_code) {
+        if let Some(event) = self.input.key_down(Key::Keyboard(key_code)) {
             self.conn.send(msg::FromClient::Input(event))
                 .expect("Failed to send input event");
         }
@@ -130,7 +133,7 @@ impl EventHandler for Game {
         key_code: KeyCode,
         _:        KeyMods,
     ) {
-        if let Some(event) = self.input.key_up(key_code) {
+        if let Some(event) = self.input.key_up(Key::Keyboard(key_code)) {
             self.conn.send(msg::FromClient::Input(event))
                 .expect("Failed to send input event");
         }

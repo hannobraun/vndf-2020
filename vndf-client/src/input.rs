@@ -1,7 +1,8 @@
-use ggez::input::keyboard::KeyCode;
-
 use crate::{
-    config::Config,
+    config::{
+        Config,
+        Key,
+    },
     shared::input::{
         Event,
         Rotation,
@@ -20,28 +21,28 @@ impl Input {
         }
     }
 
-    pub fn key_down(&self, key_code: KeyCode) -> Option<Event> {
-        match key_code {
-            k if k == self.config.left =>
+    pub fn key_down(&self, key: Key) -> Option<Event> {
+        match key {
+            k if k == Key::Keyboard(self.config.left) =>
                 Some(Event::Rotate(Rotation::Left)),
-            k if k == self.config.right =>
+            k if k == Key::Keyboard(self.config.right) =>
                 Some(Event::Rotate(Rotation::Right)),
-            k if k == self.config.thrust =>
+            k if k == Key::Keyboard(self.config.thrust) =>
                 Some(Event::Thrust(true)),
-            k if k == self.config.launch =>
+            k if k == Key::Keyboard(self.config.launch) =>
                 Some(Event::LaunchMissile),
 
             _ => None,
         }
     }
 
-    pub fn key_up(&self, key_code: KeyCode) -> Option<Event> {
-        match key_code {
-            k if k == self.config.left =>
+    pub fn key_up(&self, key: Key) -> Option<Event> {
+        match key {
+            k if k == Key::Keyboard(self.config.left) =>
                 Some(Event::Rotate(Rotation::None)),
-            k if k == self.config.right =>
+            k if k == Key::Keyboard(self.config.right) =>
                 Some(Event::Rotate(Rotation::None)),
-            k if k == self.config.thrust =>
+            k if k == Key::Keyboard(self.config.thrust) =>
                 Some(Event::Thrust(false)),
 
             _ => None,
