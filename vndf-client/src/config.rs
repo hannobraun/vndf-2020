@@ -50,10 +50,10 @@ impl Config {
 impl Default for Config {
     fn default() -> Self {
         Self {
-            left:   KeyCode::Left,
-            right:  KeyCode::Right,
-            thrust: KeyCode::Up,
-            launch: KeyCode::Return,
+            left:   KeyCode::A,
+            right:  KeyCode::D,
+            thrust: KeyCode::W,
+            launch: KeyCode::Key1,
         }
     }
 }
