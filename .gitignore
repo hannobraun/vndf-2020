@@ -4,3 +4,6 @@
 # Pacman
 /vndf-server/pkg
 /vndf-server/*.pkg.tar.xz
+
+# VNDF
+/config.toml
