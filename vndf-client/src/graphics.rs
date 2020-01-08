@@ -249,8 +249,8 @@ fn activate_ui_coordinate_system(context: &mut Context) -> GameResult {
 
 
 const INSTRUCTIONS: &str = "Instructions:
-Left, right - Turn your ship
-Up - Accelerate
-Enter - Shoot missile
+A, D - Turn your ship
+W - Accelerate
+Left mouse button - Shoot missile
 Escape - End game
 ";
