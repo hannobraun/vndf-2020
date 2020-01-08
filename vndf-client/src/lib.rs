@@ -43,6 +43,7 @@ use self::{
     config::Config,
     game::State,
     graphics::Graphics,
+    input::Input,
     shared::net::{
         self,
         client::Conn,
@@ -71,8 +72,10 @@ pub fn start<A: ToSocketAddrs>(addr: A) -> Result<(), Error> {
             )
             .build()?;
 
+    let input = Input;
+
     let     conn = Conn::connect(addr)?;
-    let mut game = Game::new(conn, &mut context)?;
+    let mut game = Game::new(conn, input, &mut context)?;
 
     run(&mut context, &mut event_loop, &mut game)?;
 
@@ -83,12 +86,14 @@ pub fn start<A: ToSocketAddrs>(addr: A) -> Result<(), Error> {
 pub struct Game {
     conn:     Conn,
     graphics: Graphics,
+    input:    Input,
     state:    State,
 }
 
 impl Game {
     pub fn new(
         conn:    Conn,
+        input:   Input,
         context: &mut Context,
     )
         -> Result<Self, Error>
@@ -99,6 +104,7 @@ impl Game {
         Ok(
             Game {
                 conn,
+                input,
                 graphics: Graphics::new(context)?,
                 state:    State::new(),
             }
@@ -117,7 +123,7 @@ impl EventHandler for Game {
             quit(context);
         }
 
-        if let Some(event) = input::key_down(key_code) {
+        if let Some(event) = self.input.key_down(key_code) {
             self.conn.send(msg::FromClient::Input(event))
                 .expect("Failed to send input event");
         }
@@ -128,7 +134,7 @@ impl EventHandler for Game {
         key_code: KeyCode,
         _:        KeyMods,
     ) {
-        if let Some(event) = input::key_up(key_code) {
+        if let Some(event) = self.input.key_up(key_code) {
             self.conn.send(msg::FromClient::Input(event))
                 .expect("Failed to send input event");
         }
