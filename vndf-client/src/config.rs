@@ -7,7 +7,10 @@ use std::{
     path::Path,
 };
 
-use ggez::event::KeyCode;
+use ggez::event::{
+    KeyCode,
+    MouseButton,
+};
 use serde::{
     Deserialize,
     Serialize,
@@ -56,6 +59,13 @@ impl Default for Config {
             launch: KeyCode::Key1,
         }
     }
+}
+
+
+#[derive(Debug, Deserialize, Serialize, Eq, PartialEq)]
+pub enum Key {
+    Keyboard(KeyCode),
+    Mouse(MouseButton),
 }
 
 
