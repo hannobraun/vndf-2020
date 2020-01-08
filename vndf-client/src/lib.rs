@@ -26,6 +26,7 @@ use ggez::{
     },
     event::{
         EventHandler,
+        MouseButton,
         quit,
         run,
     },
@@ -112,6 +113,30 @@ impl Game {
 }
 
 impl EventHandler for Game {
+    fn mouse_button_down_event(&mut self,
+        _:      &mut Context,
+        button: MouseButton,
+        _x:     f32,
+        _y:     f32,
+    ) {
+        if let Some(event) = self.input.key_down(Key::Mouse(button)) {
+            self.conn.send(msg::FromClient::Input(event))
+                .expect("Failed to send input event");
+        }
+    }
+
+    fn mouse_button_up_event(&mut self,
+        _:      &mut Context,
+        button: MouseButton,
+        _x:     f32,
+        _y:     f32,
+    ) {
+        if let Some(event) = self.input.key_up(Key::Mouse(button)) {
+            self.conn.send(msg::FromClient::Input(event))
+                .expect("Failed to send input event");
+        }
+    }
+
     fn key_down_event(&mut self,
         context:  &mut Context,
         key_code: KeyCode,
