@@ -1,3 +1,4 @@
+mod config;
 mod game;
 mod graphics;
 mod input;
@@ -33,9 +34,13 @@ use ggez::{
         KeyMods,
     },
 };
-use log::error;
+use log::{
+    error,
+    info,
+};
 
 use self::{
+    config::Config,
     game::State,
     graphics::Graphics,
     shared::net::{
@@ -50,6 +55,9 @@ pub fn start<A: ToSocketAddrs>(addr: A) -> Result<(), Error> {
     // Force X11 backend to prevent panic.
     // See https://github.com/ggez/ggez/issues/579
     env::set_var("WINIT_UNIX_BACKEND", "x11");
+
+    let config = Config::load()?;
+    info!("Config: {:?}", config);
 
     let (mut context, mut event_loop) =
         ContextBuilder::new("vndf", "Hanno Braun")
@@ -157,9 +165,16 @@ impl EventHandler for Game {
 
 #[derive(Debug)]
 pub enum Error {
+    Config(config::Error),
     Ggez(GameError),
     Io(io::Error),
     Net(net::Error),
+}
+
+impl From<config::Error> for Error {
+    fn from(err: config::Error) -> Self {
+        Self::Config(err)
+    }
 }
 
 impl From<GameError> for Error {
