@@ -13,11 +13,5 @@ log        = "*"
 serde      = "*"
 toml       = "*"
 
-# We just depend on this to activate the `serde` feature. The version needs to
-# be in sync with what ggez is using.
-[dependencies.winit]
-version  = "0.19.5"
-features = ["serde"]
-
 [dependencies.vndf-shared]
 path = "../vndf-shared"
