@@ -26,10 +26,10 @@ use serde::{
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Config {
-    pub left:   KeyCode,
-    pub right:  KeyCode,
-    pub thrust: KeyCode,
-    pub launch: KeyCode
+    pub left:   Key,
+    pub right:  Key,
+    pub thrust: Key,
+    pub launch: Key
 }
 
 impl Config {
@@ -60,10 +60,10 @@ impl Config {
 impl Default for Config {
     fn default() -> Self {
         Self {
-            left:   KeyCode::A,
-            right:  KeyCode::D,
-            thrust: KeyCode::W,
-            launch: KeyCode::Key1,
+            left:   Key::Keyboard(KeyCode::A),
+            right:  Key::Keyboard(KeyCode::D),
+            thrust: Key::Keyboard(KeyCode::W),
+            launch: Key::Keyboard(KeyCode::Key1),
         }
     }
 }

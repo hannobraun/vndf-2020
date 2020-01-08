@@ -23,13 +23,13 @@ impl Input {
 
     pub fn key_down(&self, key: Key) -> Option<Event> {
         match key {
-            k if k == Key::Keyboard(self.config.left) =>
+            k if k == self.config.left =>
                 Some(Event::Rotate(Rotation::Left)),
-            k if k == Key::Keyboard(self.config.right) =>
+            k if k == self.config.right =>
                 Some(Event::Rotate(Rotation::Right)),
-            k if k == Key::Keyboard(self.config.thrust) =>
+            k if k == self.config.thrust =>
                 Some(Event::Thrust(true)),
-            k if k == Key::Keyboard(self.config.launch) =>
+            k if k == self.config.launch =>
                 Some(Event::LaunchMissile),
 
             _ => None,
@@ -38,11 +38,11 @@ impl Input {
 
     pub fn key_up(&self, key: Key) -> Option<Event> {
         match key {
-            k if k == Key::Keyboard(self.config.left) =>
+            k if k == self.config.left =>
                 Some(Event::Rotate(Rotation::None)),
-            k if k == Key::Keyboard(self.config.right) =>
+            k if k == self.config.right =>
                 Some(Event::Rotate(Rotation::None)),
-            k if k == Key::Keyboard(self.config.thrust) =>
+            k if k == self.config.thrust =>
                 Some(Event::Thrust(false)),
 
             _ => None,
