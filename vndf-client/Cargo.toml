@@ -11,5 +11,9 @@ ggez       = "*"
 hecs       = "*"
 log        = "*"
 
+[dependencies.winit]
+version  = "*"
+features = ["serde"]
+
 [dependencies.vndf-shared]
 path = "../vndf-shared"
