@@ -92,8 +92,8 @@ impl<In, Out> Conn<In, Out>
                         return Some(Ok(event));
                     }
                     Ok(None) => {
-                        // Just a ping from the receive thread. Real messages might
-                        // be coming after it.
+                        // Just a ping from the receive thread. Real messages
+                        // might be coming after it.
                         continue;
                     }
                     Err(TryRecvError::Empty) => {
