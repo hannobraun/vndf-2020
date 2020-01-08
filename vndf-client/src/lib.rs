@@ -72,7 +72,7 @@ pub fn start<A: ToSocketAddrs>(addr: A) -> Result<(), Error> {
             )
             .build()?;
 
-    let input = Input;
+    let input = Input::new(config);
 
     let     conn = Conn::connect(addr)?;
     let mut game = Game::new(conn, input, &mut context)?;
