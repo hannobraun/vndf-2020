@@ -63,7 +63,7 @@ impl Default for Config {
             left:   Key::Keyboard(KeyCode::A),
             right:  Key::Keyboard(KeyCode::D),
             thrust: Key::Keyboard(KeyCode::W),
-            launch: Key::Keyboard(KeyCode::Key1),
+            launch: Key::Mouse(MouseButton::Left),
         }
     }
 }
