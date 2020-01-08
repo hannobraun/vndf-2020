@@ -34,10 +34,7 @@ use ggez::{
         KeyMods,
     },
 };
-use log::{
-    error,
-    info,
-};
+use log::error;
 
 use self::{
     config::Config,
@@ -58,7 +55,6 @@ pub fn start<A: ToSocketAddrs>(addr: A) -> Result<(), Error> {
     env::set_var("WINIT_UNIX_BACKEND", "x11");
 
     let config = Config::load()?;
-    info!("Config: {:?}", config);
 
     let (mut context, mut event_loop) =
         ContextBuilder::new("vndf", "Hanno Braun")
