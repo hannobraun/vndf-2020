@@ -10,6 +10,7 @@ env_logger = "*"
 ggez       = "*"
 hecs       = "*"
 log        = "*"
+serde      = "*"
 toml       = "*"
 
 [dependencies.winit]
