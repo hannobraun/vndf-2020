@@ -6,4 +6,4 @@
 /vndf-server/*.pkg.tar.xz
 
 # VNDF
-/config.toml
+**/config.toml
