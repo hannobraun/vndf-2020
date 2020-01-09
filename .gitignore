@@ -1,7 +1,7 @@
 # Cargo
 /target
 
-# Pacman
+# makepkg
 /vndf-server/pkg
 /vndf-server/*.pkg.tar.xz
 
