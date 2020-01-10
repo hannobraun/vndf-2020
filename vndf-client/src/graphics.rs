@@ -13,6 +13,7 @@ use ggez::{
 
 use crate::{
     game::State,
+    input::Input,
     shared::game::{
         WORLD_SIZE,
         components::{
@@ -87,11 +88,15 @@ impl Graphics {
         )
     }
 
-    pub fn draw(&self, context: &mut Context, state: &State) -> GameResult {
+    pub fn draw(&self,
+        context: &mut Context,
+        input:   &Input,
+        state:   &State,
+    ) -> GameResult {
         graphics::clear(context, [0.0, 0.0, 0.1, 1.0].into());
 
         self.draw_world(context, state)?;
-        self.draw_ui(context, state)?;
+        self.draw_ui(context, input, state)?;
 
         graphics::present(context)?;
         Ok(())
@@ -167,12 +172,31 @@ impl Graphics {
         )
     }
 
-    fn draw_ui(&self, context: &mut Context, state: &State) -> GameResult {
+    fn draw_ui(&self,
+        context: &mut Context,
+        input:   &Input,
+        state:   &State,
+    )
+        -> GameResult
+    {
         activate_ui_coordinate_system(context)?;
+
+        let instructions = format!(
+"Instructions:
+Turn left - {}
+Turn right - {}
+Accelerate - {}
+Shoot - {}
+End game - Escape",
+            input.config.left,
+            input.config.right,
+            input.config.thrust,
+            input.config.launch,
+        );
 
         graphics::draw(
             context,
-            &Text::new(INSTRUCTIONS),
+            &Text::new(instructions),
             DrawParam::new()
                 .dest([20.0, 20.0])
         )?;
@@ -246,11 +270,3 @@ fn activate_ui_coordinate_system(context: &mut Context) -> GameResult {
 
     Ok(())
 }
-
-
-const INSTRUCTIONS: &str = "Instructions:
-A, D - Turn your ship
-W - Accelerate
-Left mouse button - Shoot missile
-Escape - End game
-";
