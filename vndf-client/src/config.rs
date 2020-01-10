@@ -34,7 +34,7 @@ pub struct Config {
 
 impl Config {
     pub fn load() -> Result<Self, Error> {
-        let path = Path::new("config.toml");
+        let path = Path::new("vndf-config.toml");
 
         if path.exists() {
             let mut s = String::new();
