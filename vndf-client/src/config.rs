@@ -126,6 +126,17 @@ macro_rules! keys {
                 }
             }
         }
+
+        impl fmt::Display for Key {
+            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+                #[allow(unused_parens)]
+                match self {
+                    $($k => write!(f, "{}", $s),)*
+
+                    _ => write!(f, "Unknown key"),
+                }
+            }
+        }
     };
 }
 
