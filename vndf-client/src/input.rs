@@ -11,7 +11,7 @@ use crate::{
 
 
 pub struct Input {
-    config: Config,
+    pub config: Config,
 }
 
 impl Input {
