@@ -45,10 +45,13 @@ use self::{
     game::State,
     graphics::Graphics,
     input::Input,
-    shared::net::{
-        self,
-        client::Conn,
-        msg,
+    shared::{
+        math::Pnt2,
+        net::{
+            self,
+            client::Conn,
+            msg,
+        },
     },
 };
 
@@ -135,6 +138,16 @@ impl EventHandler for Game {
             self.conn.send(msg::FromClient::Input(event))
                 .expect("Failed to send input event");
         }
+    }
+
+    fn mouse_motion_event(&mut self,
+        _:   &mut Context,
+        x:   f32,
+        y:   f32,
+        _dx: f32,
+        _dy: f32
+    ) {
+        self.input.pointer = Pnt2::new(x, y);
     }
 
     fn key_down_event(&mut self,

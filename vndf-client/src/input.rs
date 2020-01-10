@@ -3,21 +3,26 @@ use crate::{
         Config,
         Key,
     },
-    shared::input::{
-        Event,
-        Rotation,
+    shared::{
+        input::{
+            Event,
+            Rotation,
+        },
+        math::Pnt2,
     },
 };
 
 
 pub struct Input {
-    pub config: Config,
+    pub config:  Config,
+    pub pointer: Pnt2,
 }
 
 impl Input {
     pub fn new(config: Config) -> Self {
         Self {
             config,
+            pointer: Pnt2::new(0.0, 0.0),
         }
     }
 

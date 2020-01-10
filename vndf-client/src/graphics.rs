@@ -32,6 +32,8 @@ pub struct Graphics {
     explosion: Mesh,
     missile:   Mesh,
     ship:      Mesh,
+
+    pointer: Mesh,
 }
 
 impl Graphics {
@@ -78,12 +80,25 @@ impl Graphics {
             [1.0, 1.0, 0.0, 1.0].into(),
         )?;
 
+        let pointer = Mesh::new_polygon(
+            context,
+            DrawMode::stroke(0.1),
+            &[
+                [ 0.5,  0.5],
+                [ 0.0, -0.5],
+                [-0.5,  0.5],
+            ],
+            [1.0, 0.0, 0.0, 1.0].into(),
+        )?;
+
         Ok(
             Graphics {
                 boundary,
                 explosion,
                 missile,
                 ship,
+
+                pointer,
             }
         )
     }
@@ -225,6 +240,14 @@ End game - Escape",
             // There should only be one ship, so let's quit.
             break;
         }
+
+        graphics::draw(
+            context,
+            &self.pointer,
+            DrawParam::new()
+                .dest(input.pointer)
+                .scale([10.0, 10.0])
+        )?;
 
         Ok(())
     }
