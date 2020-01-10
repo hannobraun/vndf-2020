@@ -223,7 +223,7 @@ End game - Escape",
             )?;
 
             // There should only be one ship, so let's quit.
-            return Ok(());
+            break;
         }
 
         Ok(())
