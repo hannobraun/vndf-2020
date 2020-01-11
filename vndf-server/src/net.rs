@@ -23,7 +23,7 @@ use std::{
 
 use log::error;
 
-use crate::net::{
+use crate::shared::net::{
     self,
     conn,
     msg,

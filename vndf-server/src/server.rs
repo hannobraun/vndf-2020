@@ -11,27 +11,31 @@ use log::{
     info,
 };
 
-use crate::shared::{
-    game::{
-        self,
-        FRAME_TIME,
-    },
+use crate::{
     net::{
-        self,
+        Event,
         Network,
+    },
+    shared::{
         game::{
-            Entity,
-            Id,
+            self,
+            FRAME_TIME,
         },
-        msg,
-        network,
+        net::{
+            self,
+            game::{
+                Entity,
+                Id,
+            },
+            msg,
+        },
     },
 };
 
 
 pub struct Server {
     network:     Network,
-    events:      Vec<network::Event>,
+    events:      Vec<Event>,
     state:       game::State,
     last_update: Instant,
 }
@@ -63,16 +67,16 @@ impl Server {
 
         for event in self.events.drain(..) {
             match event {
-                network::Event::Message(id, msg::FromClient::Hello) => {
+                Event::Message(id, msg::FromClient::Hello) => {
                     info!("Connected: {}", id);
                     self.network.send(id, msg::FromServer::Welcome(id));
                     self.state.push().connect_player(id);
                 }
-                network::Event::Message(id, msg::FromClient::Input(input)) => {
+                Event::Message(id, msg::FromClient::Input(input)) => {
                     debug!("Input from {}: {:?}", id, input);
                     self.state.push().player_input(id, input);
                 }
-                network::Event::Error(id, _) => {
+                Event::Error(id, _) => {
                     info!("Disconnected: {}", id);
                     self.state.push().disconnect_player(id);
                 }

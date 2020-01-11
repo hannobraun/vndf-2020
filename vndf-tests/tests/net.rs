@@ -1,9 +1,12 @@
+use vndf_server::net::{
+    Error,
+    Event,
+    Network,
+};
 use vndf_shared::net::{
     self,
-    Network,
     client::Conn,
     msg,
-    network,
 };
 
 
@@ -19,7 +22,7 @@ fn network_should_emit_receive_events() -> net::Result {
 
     while received.is_none() {
         for event in server.events() {
-            if let network::Event::Message(id, message) = event {
+            if let Event::Message(id, message) = event {
                 received = Some((id, message));
             }
         }
@@ -44,7 +47,7 @@ fn network_should_report_client_errors() -> net::Result {
         server.send(addr, msg::FromServer::Welcome(addr));
 
         for event in server.events() {
-            if let network::Event::Error(id, _error) = event {
+            if let Event::Error(id, _error) = event {
                 disconnect_id = Some(id);
             }
         }
@@ -56,7 +59,7 @@ fn network_should_report_client_errors() -> net::Result {
 }
 
 #[test]
-fn clients_should_emit_receive_events() -> Result<(), network::Error> {
+fn clients_should_emit_receive_events() -> Result<(), Error> {
     let mut server = Network::start_local()?;
     let mut client = Conn::connect(server.addr())?;
 
@@ -65,7 +68,7 @@ fn clients_should_emit_receive_events() -> Result<(), network::Error> {
     let mut client_connected = false;
     while !client_connected {
         for event in server.events() {
-            if let network::Event::Message(_, _) = event {
+            if let Event::Message(_, _) = event {
                 client_connected = true;
             }
         }

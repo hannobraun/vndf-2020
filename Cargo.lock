@@ -2202,6 +2202,7 @@ dependencies = [
 name = "vndf-tests"
 version = "0.1.0"
 dependencies = [
+ "vndf-server 0.1.0",
  "vndf-shared 0.1.0",
 ]
 
