@@ -18,7 +18,7 @@ pub fn launch_missile(world: &mut world::Spawn, missile: e::Missile) {
 }
 
 pub fn update_missiles(world: world::Query, events: &mut events::Push) {
-    let query = &mut world.query::<(&Missile, &Body, &Engine)>();
+    let query = &mut world.query::<(&Missile, &mut Body, &Engine)>();
     for (id, (missile, body, engine)) in query {
         if let Some(explosion) = missile.update(body, engine) {
             events.explode_missile(id, explosion);

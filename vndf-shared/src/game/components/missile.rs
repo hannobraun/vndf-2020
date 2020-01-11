@@ -11,7 +11,11 @@ use crate::{
         },
         entities as e,
     },
-    math::Pnt2,
+    math::{
+        prelude::*,
+        Pnt2,
+        Vec2,
+    },
 };
 
 
@@ -27,7 +31,12 @@ impl Missile {
         }
     }
 
-    pub fn update(&self, body: &Body, engine: &Engine) -> Option<e::Explosion> {
+    pub fn update(&self, body: &mut Body, engine: &Engine)
+        -> Option<e::Explosion>
+    {
+        let to_target = self.target - body.pos;
+        body.dir = Vec2::unit_x().angle(to_target);
+
         if engine.fuel <= 0.0 {
             Some(e::explosion(body))
         }
