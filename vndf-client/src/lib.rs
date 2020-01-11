@@ -2,6 +2,7 @@ mod config;
 mod game;
 mod graphics;
 mod input;
+mod transforms;
 
 
 pub use vndf_shared as shared;
