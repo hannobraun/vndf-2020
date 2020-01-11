@@ -20,6 +20,7 @@ pub struct Input {
     pub config: Config,
 
     pub pointer_screen: Pnt2,
+    pub pointer_world:  Option<Pnt2>,
 }
 
 impl Input {
@@ -27,15 +28,21 @@ impl Input {
         Self {
             config,
             pointer_screen: Pnt2::new(0.0, 0.0),
+            pointer_world:  None,
         }
     }
 
-    pub fn mouse_motion(&mut self, x: f32, y: f32) {
+    pub fn mouse_motion(&mut self, context: &mut Context, x: f32, y: f32) {
         self.pointer_screen.x = x;
         self.pointer_screen.y = y;
+
+        self.pointer_world = transforms::screen_to_world(
+            context,
+            self.pointer_screen,
+        );
     }
 
-    pub fn key_down(&self, context: &mut Context, key: Key) -> Option<Event> {
+    pub fn key_down(&self, key: Key) -> Option<Event> {
         match key {
             k if k == self.config.left =>
                 Some(Event::Rotate(Rotation::Left)),
@@ -44,7 +51,7 @@ impl Input {
             k if k == self.config.thrust =>
                 Some(Event::Thrust(true)),
             k if k == self.config.launch =>
-                transforms::screen_to_world(context, self.pointer_screen)
+                self.pointer_world
                     .map(|target| Event::LaunchMissile { target }),
 
             _ => None,

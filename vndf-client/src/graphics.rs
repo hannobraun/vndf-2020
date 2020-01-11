@@ -245,14 +245,7 @@ End game - Escape",
             break;
         }
 
-        let pointing_at_world =
-            transforms::screen_to_world(
-                context,
-                input.pointer_screen
-            )
-            .is_some();
-
-        if pointing_at_world {
+        if input.pointer_world.is_some() {
             graphics::draw(
                 context,
                 &self.pointer,
@@ -262,7 +255,7 @@ End game - Escape",
             )?;
         }
 
-        mouse::set_cursor_hidden(context, pointing_at_world);
+        mouse::set_cursor_hidden(context, input.pointer_world.is_some());
 
         Ok(())
     }
