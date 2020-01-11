@@ -29,10 +29,9 @@ impl Input {
         }
     }
 
-    pub fn mouse_motion(&mut self, x: f32, y: f32) -> Pnt2 {
+    pub fn mouse_motion(&mut self, x: f32, y: f32) {
         self.pointer.x = x;
         self.pointer.y = y;
-        self.pointer
     }
 
     pub fn key_down(&self, context: &mut Context, key: Key) -> Option<Event> {
