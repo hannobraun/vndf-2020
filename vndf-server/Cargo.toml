@@ -7,6 +7,7 @@ edition = "2018"
 
 [dependencies]
 env_logger = "*"
+log        = "*"
 
 [dependencies.vndf-shared]
 path = "../vndf-shared"

@@ -13,5 +13,8 @@ log        = "*"
 serde      = "*"
 toml       = "*"
 
+[dependencies.vndf-server]
+path = "../vndf-server"
+
 [dependencies.vndf-shared]
 path = "../vndf-shared"

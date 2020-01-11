@@ -11,7 +11,7 @@ use log::{
     info,
 };
 
-use crate::{
+use crate::shared::{
     game::{
         self,
         FRAME_TIME,

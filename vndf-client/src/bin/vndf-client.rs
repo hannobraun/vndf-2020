@@ -1,10 +1,8 @@
 use std::thread;
 
 use vndf_client as client;
-use vndf_shared::{
-    Server,
-    main_loop::main_loop,
-};
+use vndf_server::server::Server;
+use vndf_shared::main_loop::main_loop;
 
 
 fn main() -> Result<(), client::Error> {

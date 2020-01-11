@@ -1,5 +1,5 @@
+use vndf_server::server::Server;
 use vndf_shared::{
-    Server,
     main_loop::main_loop,
     net,
 };
