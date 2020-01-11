@@ -108,7 +108,7 @@ impl Graphics {
         input:   &Input,
         state:   &State,
     ) -> GameResult {
-        graphics::clear(context, [0.0, 0.0, 0.1, 1.0].into());
+        graphics::clear(context, [0.0, 0.0, 0.15, 1.0].into());
 
         self.draw_world(context, state)?;
         self.draw_ui(context, input, state)?;
