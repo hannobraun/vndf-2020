@@ -39,7 +39,10 @@ impl Missile {
     pub fn should_explode(&self, body: &Body, engine: &Engine)
         -> Option<e::Explosion>
     {
-        if engine.fuel <= 0.0 {
+        let no_fuel_left = engine.fuel <= 0.0;
+        let near_target  = (body.pos - self.target).magnitude() <= 10.0;
+
+        if no_fuel_left || near_target {
             Some(e::explosion(body))
         }
         else {
