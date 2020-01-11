@@ -28,12 +28,9 @@ use ggez::{
         quit,
         run,
     },
-    input::{
-        keyboard::{
-            KeyCode,
-            KeyMods,
-        },
-        mouse,
+    input::keyboard::{
+        KeyCode,
+        KeyMods,
     },
 };
 use log::error;
@@ -145,14 +142,13 @@ impl EventHandler for Game {
     }
 
     fn mouse_motion_event(&mut self,
-        context: &mut Context,
-        x:       f32,
-        y:       f32,
-        _dx:     f32,
-        _dy:     f32
+        _:   &mut Context,
+        x:   f32,
+        y:   f32,
+        _dx: f32,
+        _dy: f32,
     ) {
         self.input.mouse_motion(x, y);
-        mouse::set_cursor_hidden(context, true);
     }
 
     fn key_down_event(&mut self,

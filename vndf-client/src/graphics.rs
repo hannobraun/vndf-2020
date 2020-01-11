@@ -8,6 +8,7 @@ use ggez::{
         Mesh,
         Text,
     },
+    input::mouse,
 };
 
 use crate::{
@@ -256,6 +257,8 @@ End game - Escape",
                     .scale([10.0, 10.0])
             )?;
         }
+
+        mouse::set_cursor_hidden(context, pointing_at_world);
 
         Ok(())
     }
