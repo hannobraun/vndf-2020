@@ -244,13 +244,18 @@ End game - Escape",
             break;
         }
 
-        graphics::draw(
-            context,
-            &self.pointer,
-            DrawParam::new()
-                .dest(input.pointer)
-                .scale([10.0, 10.0])
-        )?;
+        let pointing_at_world =
+            transforms::screen_to_world(context, input.pointer).is_some();
+
+        if pointing_at_world {
+            graphics::draw(
+                context,
+                &self.pointer,
+                DrawParam::new()
+                    .dest(input.pointer)
+                    .scale([10.0, 10.0])
+            )?;
+        }
 
         Ok(())
     }
