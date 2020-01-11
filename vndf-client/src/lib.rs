@@ -71,7 +71,11 @@ pub fn start<A: ToSocketAddrs>(addr: A) -> Result<(), Error> {
             )
             .window_mode(
                 WindowMode::default()
-                    .fullscreen_type(FullscreenType::Desktop),
+                    .fullscreen_type(FullscreenType::Windowed)
+                    // This doesn't work for me on Wayland, using the X11
+                    // backend, as per the configuration above. I'm leaving it
+                    // in, hoping it will work on other platforms.
+                    .maximized(true),
             )
             .build()?;
 
