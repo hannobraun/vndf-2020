@@ -48,13 +48,10 @@ use self::{
     game::State,
     graphics::Graphics,
     input::Input,
-    shared::{
-        math::Pnt2,
-        net::{
-            self,
-            client::Conn,
-            msg,
-        },
+    shared::net::{
+        self,
+        client::Conn,
+        msg,
     },
 };
 
@@ -154,7 +151,7 @@ impl EventHandler for Game {
         _dx:     f32,
         _dy:     f32
     ) {
-        self.input.pointer = Pnt2::new(x, y);
+        self.input.mouse_motion(x, y);
         mouse::set_cursor_hidden(context, true);
     }
 

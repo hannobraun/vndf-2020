@@ -26,6 +26,12 @@ impl Input {
         }
     }
 
+    pub fn mouse_motion(&mut self, x: f32, y: f32) -> Pnt2 {
+        self.pointer.x = x;
+        self.pointer.y = y;
+        self.pointer
+    }
+
     pub fn key_down(&self, key: Key) -> Option<Event> {
         match key {
             k if k == self.config.left =>
