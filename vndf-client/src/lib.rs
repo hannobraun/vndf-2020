@@ -72,10 +72,10 @@ pub fn start<A: ToSocketAddrs>(addr: A) -> Result<(), Error> {
             .window_mode(
                 WindowMode::default()
                     .fullscreen_type(FullscreenType::Windowed)
-                    // This doesn't work for me on Wayland, using the X11
-                    // backend, as per the configuration above. I'm leaving it
-                    // in, hoping it will work on other platforms.
-                    .maximized(true),
+                    // This only works for me, if `resizable` is set to `true`.
+                    // See https://github.com/ggez/ggez/issues/732
+                    .maximized(true)
+                    .resizable(true),
             )
             .build()?;
 
