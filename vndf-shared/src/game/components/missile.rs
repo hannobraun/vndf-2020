@@ -3,21 +3,28 @@ use serde::{
     Serialize,
 };
 
-use crate::game::{
-    components::{
-        Body,
-        Engine,
+use crate::{
+    game::{
+        components::{
+            Body,
+            Engine,
+        },
+        entities as e,
     },
-    entities as e,
+    math::Pnt2,
 };
 
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
-pub struct Missile;
+pub struct Missile {
+    pub target: Pnt2,
+}
 
 impl Missile {
-    pub fn new() -> Self {
-        Self
+    pub fn new(target: Pnt2) -> Self {
+        Self {
+            target,
+        }
     }
 
     pub fn update(&self, body: &Body, engine: &Engine) -> Option<e::Explosion> {

@@ -4,6 +4,7 @@ use crate::{
     game::components as c,
     math::{
         prelude::*,
+        Pnt2,
         Rad,
     },
 };
@@ -24,7 +25,7 @@ pub fn explosion(exploding: &c::Body) -> Explosion {
     (c::Explosion::new(), body)
 }
 
-pub fn missile(launcher: &c::Body) -> Missile {
+pub fn missile(launcher: &c::Body, target: Pnt2) -> Missile {
     let body = c::Body {
         rot: Rad::zero(),
         .. *launcher
@@ -35,7 +36,7 @@ pub fn missile(launcher: &c::Body) -> Missile {
         fuel:    400.0,
     };
 
-    (c::Missile::new(), body, engine)
+    (c::Missile::new(target), body, engine)
 }
 
 pub fn ship(player: SocketAddr) -> Ship {

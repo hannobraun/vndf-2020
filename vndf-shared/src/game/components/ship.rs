@@ -13,6 +13,7 @@ use crate::{
     input::Rotation,
     math::{
         prelude::*,
+        Pnt2,
         Rad,
     },
 };
@@ -34,10 +35,12 @@ impl Ship {
         }
     }
 
-    pub fn launch_missile(&mut self, body: &Body) -> Option<e::Missile> {
+    pub fn launch_missile(&mut self, body: &Body, target: Pnt2)
+        -> Option<e::Missile>
+    {
         if self.missiles > 0 {
             self.missiles -= 1;
-            Some(e::missile(body))
+            Some(e::missile(body, target))
         }
         else {
             None
