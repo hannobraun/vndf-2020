@@ -107,7 +107,9 @@ impl Graphics {
         context: &mut Context,
         input:   &Input,
         state:   &State,
-    ) -> GameResult {
+    )
+        -> GameResult
+    {
         graphics::clear(context, [0.0, 0.0, 0.15, 1.0].into());
 
         self.draw_world(context, state)?;
