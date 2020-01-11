@@ -31,12 +31,14 @@ impl Missile {
         }
     }
 
-    pub fn update(&self, body: &mut Body, engine: &Engine)
-        -> Option<e::Explosion>
-    {
+    pub fn update_guidance(&self, body: &mut Body) {
         let to_target = self.target - body.pos;
         body.dir = Vec2::unit_x().angle(to_target);
+    }
 
+    pub fn should_explode(&self, body: &Body, engine: &Engine)
+        -> Option<e::Explosion>
+    {
         if engine.fuel <= 0.0 {
             Some(e::explosion(body))
         }
