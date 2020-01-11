@@ -239,7 +239,8 @@ End game - Escape",
                     .dest([width - 200.0, 50.0])
             )?;
 
-            // There should only be one ship, so let's quit.
+            // There should only be one ship owned by the local player, so let's
+            // quit.
             break;
         }
 
