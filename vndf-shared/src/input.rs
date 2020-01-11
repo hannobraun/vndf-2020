@@ -3,13 +3,16 @@ use serde::{
     Serialize,
 };
 
+use crate::math::Pnt2;
 
 
 #[derive(Clone, Copy, Debug, Deserialize, Serialize, PartialEq)]
 pub enum Event {
     Rotate(Rotation),
     Thrust(bool),
-    LaunchMissile,
+    LaunchMissile {
+        target: Pnt2,
+    },
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Serialize, Eq, PartialEq)]

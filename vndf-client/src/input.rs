@@ -1,3 +1,5 @@
+use ggez::Context;
+
 use crate::{
     config::{
         Config,
@@ -10,6 +12,7 @@ use crate::{
         },
         math::Pnt2,
     },
+    transforms,
 };
 
 
@@ -32,7 +35,7 @@ impl Input {
         self.pointer
     }
 
-    pub fn key_down(&self, key: Key) -> Option<Event> {
+    pub fn key_down(&self, context: &mut Context, key: Key) -> Option<Event> {
         match key {
             k if k == self.config.left =>
                 Some(Event::Rotate(Rotation::Left)),
@@ -41,7 +44,8 @@ impl Input {
             k if k == self.config.thrust =>
                 Some(Event::Thrust(true)),
             k if k == self.config.launch =>
-                Some(Event::LaunchMissile),
+                transforms::screen_to_world(context, self.pointer)
+                    .map(|target| Event::LaunchMissile { target }),
 
             _ => None,
         }

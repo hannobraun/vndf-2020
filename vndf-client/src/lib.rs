@@ -118,12 +118,12 @@ impl Game {
 
 impl EventHandler for Game {
     fn mouse_button_down_event(&mut self,
-        _:      &mut Context,
-        button: MouseButton,
-        _x:     f32,
-        _y:     f32,
+        context: &mut Context,
+        button:  MouseButton,
+        _x:      f32,
+        _y:      f32,
     ) {
-        if let Some(event) = self.input.key_down(Key::Mouse(button)) {
+        if let Some(event) = self.input.key_down(context, Key::Mouse(button)) {
             self.conn.send(msg::FromClient::Input(event))
                 .expect("Failed to send input event");
         }
@@ -161,7 +161,8 @@ impl EventHandler for Game {
             quit(context);
         }
 
-        if let Some(event) = self.input.key_down(Key::Keyboard(key_code)) {
+        let event = self.input.key_down(context, Key::Keyboard(key_code));
+        if let Some(event) = event {
             self.conn.send(msg::FromClient::Input(event))
                 .expect("Failed to send input event");
         }
