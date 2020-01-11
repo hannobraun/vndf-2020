@@ -4,8 +4,10 @@ members = [
     "vndf-launcher",
     "vndf-server",
     "vndf-shared",
+    "vndf-tests",
 ]
 default-members = [
     "vndf-client",
     "vndf-shared",
+    "vndf-tests",
 ]
