@@ -5,9 +5,6 @@ mod input;
 mod transforms;
 
 
-pub use vndf_shared as shared;
-
-
 use std::{
     env,
     io,
@@ -40,6 +37,8 @@ use ggez::{
     },
 };
 use log::error;
+
+use vndf_shared as shared;
 
 use self::{
     config::{
