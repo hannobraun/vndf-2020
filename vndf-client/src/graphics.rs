@@ -82,7 +82,7 @@ impl Graphics {
 
         let pointer = Mesh::new_polygon(
             context,
-            DrawMode::stroke(0.1),
+            DrawMode::stroke(0.2),
             &[
                 [ 0.5,  0.5],
                 [ 0.0, -0.5],
