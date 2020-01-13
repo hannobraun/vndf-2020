@@ -8,6 +8,12 @@ edition = "2018"
 cgmath   = { version = "*", features = ["mint", "serde"] }
 hecs     = "*"
 log      = "*"
-pid      = "*"
 postcard = "*"
 serde    = "*"
+
+# Currently depending on my own fork, until this pull request is merged:
+# https://github.com/braincore/pid-rs/pull/5
+[dependencies.pid]
+git      = "https://github.com/hannobraun/pid-rs.git"
+branch   = "traits"
+features = ["serde"]
