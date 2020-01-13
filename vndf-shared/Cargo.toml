@@ -8,5 +8,6 @@ edition = "2018"
 cgmath   = { version = "*", features = ["mint", "serde"] }
 hecs     = "*"
 log      = "*"
+pid      = "*"
 postcard = "*"
 serde    = "*"
