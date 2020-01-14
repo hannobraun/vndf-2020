@@ -6,7 +6,6 @@ use crate::{
         prelude::*,
         Pnt2,
         Rad,
-        Vec2,
     },
 };
 
@@ -30,7 +29,7 @@ pub fn missile(launcher: &c::Body, target: Pnt2) -> Missile {
     let to_target = target - launcher.pos;
 
     let body = c::Body {
-        dir: Vec2::unit_x().angle(to_target),
+        dir: to_target,
         rot: Rad::zero(),
         .. *launcher
     };

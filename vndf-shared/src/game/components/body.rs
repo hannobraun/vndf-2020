@@ -8,6 +8,7 @@ use crate::math::{
     Pnt2,
     Rad,
     Vec2,
+    rotate,
 };
 
 
@@ -17,7 +18,7 @@ pub struct Body {
     pub vel: Vec2,
     pub acc: Vec2,
 
-    pub dir: Rad,
+    pub dir: Vec2,
     pub rot: Rad,
 }
 
@@ -28,13 +29,13 @@ impl Body {
             vel: Vec2::zero(),
             acc: Vec2::zero(),
 
-            dir: Rad::zero(),
+            dir: Vec2::unit_x(),
             rot: Rad::zero(),
         }
     }
 
     pub fn update(&mut self, dt: f32) {
-        self.dir += self.rot * dt;
+        self.dir = rotate(self.dir, self.rot * dt);
 
         self.vel += self.acc * dt;
         self.pos += self.vel * dt;

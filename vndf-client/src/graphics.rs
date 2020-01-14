@@ -14,15 +14,21 @@ use ggez::{
 use crate::{
     game::State,
     input::Input,
-    shared::game::{
-        WORLD_SIZE,
-        components::{
-            Body,
-            Engine,
-            Explosion,
-            Missile,
-            Ship,
+    shared::{
+        game::{
+            WORLD_SIZE,
+            components::{
+                Body,
+                Engine,
+                Explosion,
+                Missile,
+                Ship,
+            },
         },
+        math::{
+            prelude::*,
+            Vec2,
+        }
     },
     transforms,
 };
@@ -156,7 +162,7 @@ impl Graphics {
             &self.ship,
             DrawParam::new()
                 .dest(body.pos)
-                .rotation(body.dir.0)
+                .rotation(Vec2::unit_x().angle(body.dir).0)
                 .scale([30.0, 30.0]),
         )
     }

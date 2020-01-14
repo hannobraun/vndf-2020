@@ -14,7 +14,6 @@ use crate::{
     math::{
         prelude::*,
         Pnt2,
-        Vec2,
     },
 };
 
@@ -33,7 +32,7 @@ impl Missile {
 
     pub fn update_guidance(&mut self, body: &mut Body) {
         let to_target = self.target - body.pos;
-        body.dir = Vec2::unit_x().angle(to_target);
+        body.dir = to_target;
     }
 
     pub fn should_explode(&self, body: &Body, engine: &Engine)

@@ -8,7 +8,6 @@ use crate::{
     math::{
         prelude::*,
         Vec2,
-        rotate,
     },
 };
 
@@ -24,7 +23,7 @@ impl Engine {
     pub fn update(&mut self, body: &mut Body, dt: f32) {
         body.acc = if self.enabled && self.fuel > 0.0 {
             self.fuel -= self.thrust * dt;
-            rotate(Vec2::unit_x(), body.dir) * self.thrust
+            body.dir.normalize() * self.thrust
         }
         else {
             Vec2::zero()
