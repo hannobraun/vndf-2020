@@ -1,6 +1,3 @@
-use std::f32;
-
-use pid::Pid;
 use serde::{
     Deserialize,
     Serialize,
@@ -17,47 +14,26 @@ use crate::{
     math::{
         prelude::*,
         Pnt2,
-        Rad,
+        Vec2,
     },
 };
 
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Missile {
-    pub target:   Pnt2,
-    pub guidance: Pid<f32>,
+    pub target: Pnt2,
 }
 
 impl Missile {
     pub fn new(target: Pnt2) -> Self {
-        let guidance = Pid::new(
-            // Proportional term
-            0.01,
-            // Integral term
-            0.0,
-            // Derivative term
-            0.0,
-            // Limit of proportional output
-            Rad::full_turn().0,
-            // Limit of integral output
-            0.0,
-            // Limit of derivative output
-            0.0,
-            // Set point
-            0.0,
-        );
-
         Self {
             target,
-            guidance,
         }
     }
 
     pub fn update_guidance(&mut self, body: &mut Body) {
         let to_target = self.target - body.pos;
-        let angle     = to_target.angle(body.vel);
-
-        body.dir.0 += self.guidance.next_control_output(angle.0).output;
+        body.dir = Vec2::unit_x().angle(to_target);
     }
 
     pub fn should_explode(&self, body: &Body, engine: &Engine)
