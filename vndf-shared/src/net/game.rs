@@ -97,7 +97,7 @@ impl Id {
 use crate::game::components::*;
 entity!(
     body,      Body;
-    engine,    Engine;
+    craft,     Craft;
     explosion, Explosion;
     missile,   Missile;
     ship,      Ship;

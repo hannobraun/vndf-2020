@@ -2,7 +2,7 @@ use crate::{
     game::{
         components::{
             Body,
-            Engine,
+            Craft,
             Explosion,
             Missile,
         },
@@ -18,11 +18,11 @@ pub fn launch_missile(world: &mut world::Spawn, missile: e::Missile) {
 }
 
 pub fn update_missiles(world: world::Query, events: &mut events::Push) {
-    let query = &mut world.query::<(&mut Missile, &mut Body, &Engine)>();
-    for (id, (missile, body, engine)) in query {
+    let query = &mut world.query::<(&mut Missile, &mut Body, &Craft)>();
+    for (id, (missile, body, craft)) in query {
         missile.update_guidance(body);
 
-        if let Some(explosion) = missile.should_explode(body, engine) {
+        if let Some(explosion) = missile.should_explode(body, craft) {
             events.explode_missile(id, explosion);
         }
     }

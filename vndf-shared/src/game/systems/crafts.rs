@@ -1,7 +1,7 @@
 use crate::{
     game::components::{
         Body,
-        Engine,
+        Craft,
     },
     world,
 };
@@ -14,8 +14,8 @@ pub fn update_bodies(world: world::Query, world_size: f32, dt: f32) {
     }
 }
 
-pub fn update_engines(world: world::Query, dt: f32) {
-    for (_, (engine, body)) in &mut world.query::<(&mut Engine, &mut Body)>() {
-        engine.update(body, dt)
+pub fn update_crafts(world: world::Query, dt: f32) {
+    for (_, (craft, body)) in &mut world.query::<(&mut Craft, &mut Body)>() {
+        craft.update(body, dt)
     }
 }

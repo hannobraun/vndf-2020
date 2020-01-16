@@ -11,8 +11,8 @@ use crate::{
 
 
 pub type Explosion = (c::Explosion, c::Body);
-pub type Missile   = (c::Missile, c::Body, c::Engine);
-pub type Ship      = (c::Ship, c::Body, c::Engine);
+pub type Missile   = (c::Missile, c::Body, c::Craft);
+pub type Ship      = (c::Ship, c::Body, c::Craft);
 
 
 pub fn explosion(exploding: &c::Body) -> Explosion {
@@ -33,21 +33,21 @@ pub fn missile(launcher: &c::Body, target: Pnt2) -> Missile {
         rot: Rad::zero(),
         .. *launcher
     };
-    let engine = c::Engine {
+    let craft = c::Craft {
         enabled: true,
         thrust:  200.0,
         fuel:    400.0,
     };
 
-    (c::Missile::new(target), body, engine)
+    (c::Missile::new(target), body, craft)
 }
 
 pub fn ship(player: SocketAddr) -> Ship {
-    let engine = c::Engine {
+    let craft = c::Craft {
         enabled: false,
         thrust:  100.0,
         fuel:    1200.0,
     };
 
-    (c::Ship::new(player), c::Body::new(), engine)
+    (c::Ship::new(player), c::Body::new(), craft)
 }

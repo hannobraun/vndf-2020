@@ -4,7 +4,7 @@ use crate::{
     game::{
         components::{
             Body,
-            Engine,
+            Craft,
             Ship,
         },
         entities,
@@ -44,9 +44,9 @@ pub fn handle_input(
     player: SocketAddr,
     input:  input::Event,
 ) {
-    let query = &mut world.query::<(&mut Ship, &Body, &mut Engine)>();
+    let query = &mut world.query::<(&mut Ship, &Body, &mut Craft)>();
 
-    for (_, (ship, body, engine)) in query {
+    for (_, (ship, body, craft)) in query {
         if ship.player != player {
             continue;
         }
@@ -56,7 +56,7 @@ pub fn handle_input(
                 ship.rotation = rotation;
             }
             input::Event::Thrust(thrust) => {
-                engine.enabled = thrust;
+                craft.enabled = thrust;
             }
             input::Event::LaunchMissile { target } => {
                 if let Some(missile) = ship.launch_missile(body, target) {

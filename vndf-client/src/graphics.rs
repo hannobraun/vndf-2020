@@ -19,7 +19,7 @@ use crate::{
             WORLD_SIZE,
             components::{
                 Body,
-                Engine,
+                Craft,
                 Explosion,
                 Missile,
                 Ship,
@@ -225,8 +225,8 @@ End game - Escape",
                 .dest([20.0, 20.0])
         )?;
 
-        let query = &mut state.world.query::<(&Ship, &Engine)>();
-        for (_, (ship, engine)) in query {
+        let query = &mut state.world.query::<(&Ship, &Craft)>();
+        for (_, (ship, craft)) in query {
             if state.own_id != Some(ship.player) {
                 continue;
             }
@@ -235,7 +235,7 @@ End game - Escape",
 
             graphics::draw(
                 context,
-                &Text::new(format!("Fuel: {:.2}", engine.fuel)),
+                &Text::new(format!("Fuel: {:.2}", craft.fuel)),
                 DrawParam::new()
                     .dest([width - 200.0, 20.0])
             )?;

@@ -1,5 +1,5 @@
 pub mod body;
-pub mod engine;
+pub mod craft;
 pub mod explosion;
 pub mod missile;
 pub mod ship;
@@ -7,7 +7,7 @@ pub mod ship;
 
 pub use self::{
     body::Body,
-    engine::Engine,
+    craft::Craft,
     explosion::Explosion,
     missile::Missile,
     ship::Ship,

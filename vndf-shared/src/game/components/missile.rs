@@ -8,7 +8,7 @@ use crate::{
     game::{
         components::{
             Body,
-            Engine,
+            Craft,
         },
         entities as e,
     },
@@ -74,10 +74,10 @@ impl Missile {
         body.dir = rotate(to_target, cgmath::Rad(control_output.output));
     }
 
-    pub fn should_explode(&self, body: &Body, engine: &Engine)
+    pub fn should_explode(&self, body: &Body, craft: &Craft)
         -> Option<e::Explosion>
     {
-        let no_fuel_left = engine.fuel <= 0.0;
+        let no_fuel_left = craft.fuel <= 0.0;
         let near_target  = (body.pos - self.target).magnitude() <= 10.0;
 
         if no_fuel_left || near_target {

@@ -58,7 +58,7 @@ impl State {
                     systems::ships::update_ships(
                         self.world.query(),
                     );
-                    systems::crafts::update_engines(
+                    systems::crafts::update_crafts(
                         self.world.query(),
                         dt,
                     );
