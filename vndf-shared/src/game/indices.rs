@@ -5,13 +5,13 @@ use std::{
 
 
 pub struct Indices {
-    pub players: HashMap<SocketAddr, hecs::Entity>,
+    pub players_by_address: HashMap<SocketAddr, hecs::Entity>,
 }
 
 impl Indices {
     pub fn new() -> Self {
         Self {
-            players: HashMap::new(),
+            players_by_address: HashMap::new(),
         }
     }
 }

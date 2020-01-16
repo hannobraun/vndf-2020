@@ -24,7 +24,7 @@ pub fn connect_player(
     address: SocketAddr,
 ) {
     let entity = world.spawn(entities::player(id));
-    indices.players.insert(address, entity);
+    indices.players_by_address.insert(address, entity);
 
     world.spawn(entities::ship(id, address));
 }
@@ -36,7 +36,7 @@ pub fn disconnect_player(
 ) {
     // It's possible that we're getting multiple disconnect events per player,
     // so the ship could have been removed already.
-    if let Some(entity) = indices.players.remove(&player) {
+    if let Some(entity) = indices.players_by_address.remove(&player) {
         world.despawn(entity)
             .expect("Tried to remove ship that doesn't exist")
     }
