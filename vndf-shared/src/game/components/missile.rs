@@ -61,11 +61,15 @@ impl Missile {
         let error_dir = {
             let cross = to_target.extend(0.0).cross(rejection.extend(0.0));
             match cross.z {
-                dir if dir  > 0.0 =>  1.0,
-                dir if dir  < 0.0 => -1.0,
+                dir if dir >  0.0 =>  1.0,
+                dir if dir <  0.0 => -1.0,
                 dir if dir == 0.0 =>  0.0,
 
-                _ => unreachable!(),
+                // The above cover all the regular cases, but if the missile
+                // sits directly on top of the target, we'll get `NaN`. Doesn't
+                // really matter what we do here in this case, so let's just
+                // give it a valid value.
+                _ => 0.0,
             }
         };
         let error = rejection.magnitude() * error_dir;
