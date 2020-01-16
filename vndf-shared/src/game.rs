@@ -35,6 +35,7 @@ pub struct State {
     events:     Events,
     de_spawned: DeSpawned,
     indices:    Indices,
+    next_id:    u64,
 }
 
 impl State {
@@ -44,6 +45,7 @@ impl State {
             events:     Events::new(),
             de_spawned: DeSpawned::new(),
             indices:    Indices::new(),
+            next_id:    0,
         }
     }
 
@@ -78,10 +80,14 @@ impl State {
                     );
                 }
                 Event::ConnectPlayer { player } => {
+                    let id = self.next_id;
+                    self.next_id += 1;
+
                     systems::ships::create_ship(
                         &mut self.world.spawn(&mut self.de_spawned),
                         &mut self.indices,
                         player,
+                        id,
                     );
                 }
                 Event::DisconnectPlayer { player } => {

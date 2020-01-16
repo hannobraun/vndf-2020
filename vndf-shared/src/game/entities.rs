@@ -43,8 +43,8 @@ pub fn missile(launcher: &c::Body, target: Pnt2) -> Missile {
     (c::Missile::new(target), body, craft)
 }
 
-pub fn player() -> Player {
-    (c::Player,)
+pub fn player(id: u64) -> Player {
+    (c::Player::new(id),)
 }
 
 pub fn ship(player: SocketAddr) -> Ship {
