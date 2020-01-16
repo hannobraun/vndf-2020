@@ -20,13 +20,13 @@ use crate::{
 pub fn connect_player(
     world:   &mut world::Spawn,
     indices: &mut Indices,
-    player:  SocketAddr,
+    address: SocketAddr,
     id:      PlayerId,
 ) {
     let entity = world.spawn(entities::player(id));
-    indices.players.insert(player, entity);
+    indices.players.insert(address, entity);
 
-    world.spawn(entities::ship(id, player));
+    world.spawn(entities::ship(id, address));
 }
 
 pub fn disconnect_player(
