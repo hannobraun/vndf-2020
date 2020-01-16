@@ -43,15 +43,15 @@ pub fn disconnect_player(
 }
 
 pub fn handle_input(
-    world:  world::Query,
-    events: &mut events::Push,
-    player: SocketAddr,
-    input:  input::Event,
+    world:   world::Query,
+    events:  &mut events::Push,
+    address: SocketAddr,
+    input:   input::Event,
 ) {
     let query = &mut world.query::<(&mut Ship, &Body, &mut Craft)>();
 
     for (_, (ship, body, craft)) in query {
-        if ship.player != player {
+        if ship.player != address {
             continue;
         }
 
