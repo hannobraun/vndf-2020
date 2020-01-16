@@ -21,6 +21,7 @@ pub fn create_ship(
     indices: &mut Indices,
     player:  SocketAddr,
 ) {
+    world.spawn(entities::player());
     let entity = world.spawn(entities::ship(player));
     indices.players.insert(player, entity);
 }

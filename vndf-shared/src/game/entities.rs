@@ -12,6 +12,7 @@ use crate::{
 
 pub type Explosion = (c::Explosion, c::Body);
 pub type Missile   = (c::Missile, c::Body, c::Craft);
+pub type Player    = (c::Player,);
 pub type Ship      = (c::Ship, c::Body, c::Craft);
 
 
@@ -40,6 +41,10 @@ pub fn missile(launcher: &c::Body, target: Pnt2) -> Missile {
     };
 
     (c::Missile::new(target), body, craft)
+}
+
+pub fn player() -> Player {
+    (c::Player,)
 }
 
 pub fn ship(player: SocketAddr) -> Ship {
