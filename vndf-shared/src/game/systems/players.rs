@@ -20,8 +20,8 @@ use crate::{
 pub fn connect_player(
     world:   &mut world::Spawn,
     indices: &mut Indices,
-    address: SocketAddr,
     id:      PlayerId,
+    address: SocketAddr,
 ) {
     let entity = world.spawn(entities::player(id));
     indices.players.insert(address, entity);

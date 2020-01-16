@@ -89,8 +89,8 @@ impl State {
                     systems::players::connect_player(
                         &mut self.world.spawn(&mut self.de_spawned),
                         &mut self.indices,
-                        player,
                         id,
+                        player,
                     );
                 }
                 Event::DisconnectPlayer { player } => {
