@@ -154,7 +154,7 @@ impl State {
 }
 
 
-#[derive(Clone, Copy, Debug, Deserialize, Serialize, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Deserialize, Serialize, Eq, PartialEq, Hash)]
 pub struct PlayerId(u64);
 
 impl PlayerId {
