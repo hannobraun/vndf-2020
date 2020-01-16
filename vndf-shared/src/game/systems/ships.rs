@@ -56,7 +56,7 @@ pub fn handle_input(
                 ship.rotation = rotation;
             }
             input::Event::Thrust(thrust) => {
-                craft.enabled = thrust;
+                craft.engine_on = thrust;
             }
             input::Event::LaunchMissile { target } => {
                 if let Some(missile) = ship.launch_missile(body, target) {

@@ -34,9 +34,9 @@ pub fn missile(launcher: &c::Body, target: Pnt2) -> Missile {
         .. *launcher
     };
     let craft = c::Craft {
-        enabled: true,
-        thrust:  200.0,
-        fuel:    400.0,
+        engine_on: true,
+        thrust:    200.0,
+        fuel:      400.0,
     };
 
     (c::Missile::new(target), body, craft)
@@ -44,9 +44,9 @@ pub fn missile(launcher: &c::Body, target: Pnt2) -> Missile {
 
 pub fn ship(player: SocketAddr) -> Ship {
     let craft = c::Craft {
-        enabled: false,
-        thrust:  100.0,
-        fuel:    1200.0,
+        engine_on: false,
+        thrust:    100.0,
+        fuel:      1200.0,
     };
 
     (c::Ship::new(player), c::Body::new(), craft)
