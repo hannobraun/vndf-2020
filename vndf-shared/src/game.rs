@@ -8,6 +8,10 @@ pub mod systems;
 use std::net::SocketAddr;
 
 use hecs::Entity;
+use serde::{
+    Deserialize,
+    Serialize,
+};
 
 use crate::world::{
     DeSpawned,

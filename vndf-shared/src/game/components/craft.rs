@@ -4,7 +4,10 @@ use serde::{
 };
 
 use crate::{
-    game::components::Body,
+    game::{
+        PlayerId,
+        components::Body,
+    },
     math::{
         prelude::*,
         Vec2,
@@ -17,6 +20,7 @@ pub struct Craft {
     pub engine_on: bool,
     pub thrust:    f32,
     pub fuel:      f32,
+    pub owner:     PlayerId,
 }
 
 impl Craft {

@@ -29,7 +29,7 @@ pub fn explosion(exploding: &c::Body) -> Explosion {
     (c::Explosion::new(), body)
 }
 
-pub fn missile(launcher: &c::Body, target: Pnt2) -> Missile {
+pub fn missile(owner: PlayerId, launcher: &c::Body, target: Pnt2) -> Missile {
     let to_target = target - launcher.pos;
 
     let body = c::Body {
@@ -41,6 +41,7 @@ pub fn missile(launcher: &c::Body, target: Pnt2) -> Missile {
         engine_on: true,
         thrust:    200.0,
         fuel:      400.0,
+        owner,
     };
 
     (c::Missile::new(target), body, craft)
@@ -50,11 +51,12 @@ pub fn player(id: PlayerId) -> Player {
     (c::Player::new(id),)
 }
 
-pub fn ship(player: SocketAddr) -> Ship {
+pub fn ship(owner: PlayerId, player: SocketAddr) -> Ship {
     let craft = c::Craft {
         engine_on: false,
         thrust:    100.0,
         fuel:      1200.0,
+        owner,
     };
 
     (c::Ship::new(player), c::Body::new(), craft)

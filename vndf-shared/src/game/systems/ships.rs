@@ -26,7 +26,7 @@ pub fn create_ship(
     let entity = world.spawn(entities::player(id));
     indices.players.insert(player, entity);
 
-    world.spawn(entities::ship(player));
+    world.spawn(entities::ship(id, player));
 }
 
 pub fn remove_ship(
@@ -63,7 +63,8 @@ pub fn handle_input(
                 craft.engine_on = thrust;
             }
             input::Event::LaunchMissile { target } => {
-                if let Some(missile) = ship.launch_missile(body, target) {
+                let missile = ship.launch_missile(craft.owner, body, target);
+                if let Some(missile) = missile {
                     events.launch_missile(missile);
                 }
             }
