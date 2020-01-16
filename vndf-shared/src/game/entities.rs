@@ -29,13 +29,13 @@ pub fn explosion(exploding: &c::Body) -> Explosion {
     (c::Explosion::new(), body)
 }
 
-pub fn missile(owner: PlayerId, launcher: &c::Body, target: Pnt2) -> Missile {
-    let to_target = target - launcher.pos;
+pub fn missile(owner: PlayerId, from_body: &c::Body, target: Pnt2) -> Missile {
+    let to_target = target - from_body.pos;
 
     let body = c::Body {
         dir: to_target,
         rot: Rad::zero(),
-        .. *launcher
+        .. *from_body
     };
     let craft = c::Craft {
         engine_on: true,
