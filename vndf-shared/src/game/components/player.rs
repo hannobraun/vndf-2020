@@ -1,6 +1,7 @@
 use crate::game::PlayerId;
 
 
+#[derive(Clone, Copy)]
 pub struct Player {
     pub id: PlayerId,
 }
