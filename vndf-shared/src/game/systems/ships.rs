@@ -17,7 +17,7 @@ use crate::{
 };
 
 
-pub fn create_ship(
+pub fn connect_player(
     world:   &mut world::Spawn,
     indices: &mut Indices,
     player:  SocketAddr,

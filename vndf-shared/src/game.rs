@@ -86,7 +86,7 @@ impl State {
                 Event::ConnectPlayer { player } => {
                     let id = self.next_id.increment();
 
-                    systems::ships::create_ship(
+                    systems::ships::connect_player(
                         &mut self.world.spawn(&mut self.de_spawned),
                         &mut self.indices,
                         player,
