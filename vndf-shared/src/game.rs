@@ -61,7 +61,7 @@ impl State {
         while let Some(event) = self.events.next() {
             match event {
                 Event::Update { dt } => {
-                    systems::ships::update_ships(
+                    systems::players::update_ships(
                         self.world.query(),
                     );
                     systems::crafts::update_crafts(
@@ -86,7 +86,7 @@ impl State {
                 Event::ConnectPlayer { player } => {
                     let id = self.next_id.increment();
 
-                    systems::ships::connect_player(
+                    systems::players::connect_player(
                         &mut self.world.spawn(&mut self.de_spawned),
                         &mut self.indices,
                         player,
@@ -94,14 +94,14 @@ impl State {
                     );
                 }
                 Event::DisconnectPlayer { player } => {
-                    systems::ships::disconnect_player(
+                    systems::players::disconnect_player(
                         &mut self.world.spawn(&mut self.de_spawned),
                         &mut self.indices,
                         player,
                     );
                 }
                 Event::PlayerInput { player, event } => {
-                    systems::ships::handle_input(
+                    systems::players::handle_input(
                         self.world.query(),
                         &mut self.events.push(),
                         player,
