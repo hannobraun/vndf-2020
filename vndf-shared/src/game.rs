@@ -35,7 +35,7 @@ pub struct State {
     events:     Events,
     de_spawned: DeSpawned,
     indices:    Indices,
-    next_id:    u64,
+    next_id:    PlayerId,
 }
 
 impl State {
@@ -45,7 +45,7 @@ impl State {
             events:     Events::new(),
             de_spawned: DeSpawned::new(),
             indices:    Indices::new(),
-            next_id:    0,
+            next_id:    PlayerId::first(),
         }
     }
 
@@ -80,8 +80,7 @@ impl State {
                     );
                 }
                 Event::ConnectPlayer { player } => {
-                    let id = self.next_id;
-                    self.next_id += 1;
+                    let id = self.next_id.increment();
 
                     systems::ships::create_ship(
                         &mut self.world.spawn(&mut self.de_spawned),
@@ -147,5 +146,20 @@ impl State {
 
     pub fn despawned(&mut self) -> impl Iterator<Item=Entity> + '_ {
         self.de_spawned.despawned.drain(..)
+    }
+}
+
+
+pub struct PlayerId(u64);
+
+impl PlayerId {
+    fn first() -> Self {
+        Self(0)
+    }
+
+    fn increment(&mut self) -> Self {
+        let current = self.0;
+        self.0 += 1;
+        Self(current)
     }
 }

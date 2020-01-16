@@ -1,7 +1,10 @@
 use std::net::SocketAddr;
 
 use crate::{
-    game::components as c,
+    game::{
+        PlayerId,
+        components as c,
+    },
     math::{
         prelude::*,
         Pnt2,
@@ -43,7 +46,7 @@ pub fn missile(launcher: &c::Body, target: Pnt2) -> Missile {
     (c::Missile::new(target), body, craft)
 }
 
-pub fn player(id: u64) -> Player {
+pub fn player(id: PlayerId) -> Player {
     (c::Player::new(id),)
 }
 

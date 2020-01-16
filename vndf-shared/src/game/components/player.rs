@@ -1,9 +1,12 @@
+use crate::game::PlayerId;
+
+
 pub struct Player {
-    pub id: u64,
+    pub id: PlayerId,
 }
 
 impl Player {
-    pub fn new(id: u64) -> Self {
+    pub fn new(id: PlayerId) -> Self {
         Self {
             id,
         }

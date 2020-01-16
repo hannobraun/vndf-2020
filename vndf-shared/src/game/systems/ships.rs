@@ -2,6 +2,7 @@ use std::net::SocketAddr;
 
 use crate::{
     game::{
+        PlayerId,
         components::{
             Body,
             Craft,
@@ -20,7 +21,7 @@ pub fn create_ship(
     world:   &mut world::Spawn,
     indices: &mut Indices,
     player:  SocketAddr,
-    id:      u64,
+    id:      PlayerId,
 ) {
     let entity = world.spawn(entities::player(id));
     indices.players.insert(player, entity);
