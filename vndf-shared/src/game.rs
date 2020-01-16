@@ -94,7 +94,7 @@ impl State {
                     );
                 }
                 Event::DisconnectPlayer { player } => {
-                    systems::ships::remove_ship(
+                    systems::ships::disconnect_player(
                         &mut self.world.spawn(&mut self.de_spawned),
                         &mut self.indices,
                         player,

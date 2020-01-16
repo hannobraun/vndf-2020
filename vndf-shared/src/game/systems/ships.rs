@@ -29,7 +29,7 @@ pub fn connect_player(
     world.spawn(entities::ship(id, player));
 }
 
-pub fn remove_ship(
+pub fn disconnect_player(
     world:   &mut world::Spawn,
     indices: &mut Indices,
     player:  SocketAddr,
