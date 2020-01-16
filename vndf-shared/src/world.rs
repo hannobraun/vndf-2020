@@ -1,9 +1,12 @@
 use hecs::{
     self,
+    Component,
+    ComponentError,
     DynamicBundle,
     Entity,
     NoSuchEntity,
     QueryBorrow,
+    Ref,
 };
 
 
@@ -55,6 +58,12 @@ pub struct Query<'r> {
 impl<'r> Query<'r> {
     pub fn query<Q: hecs::Query>(&self) -> QueryBorrow<Q> {
         self.world.query()
+    }
+
+    pub fn get<T: Component>(&self, entity: Entity)
+        -> Result<Ref<T>, ComponentError>
+    {
+        self.world.get(entity)
     }
 }
 
