@@ -32,11 +32,11 @@ pub fn connect_player(
 pub fn disconnect_player(
     world:   &mut world::Spawn,
     indices: &mut Indices,
-    player:  SocketAddr,
+    address: SocketAddr,
 ) {
     // It's possible that we're getting multiple disconnect events per player,
     // so the ship could have been removed already.
-    if let Some(entity) = indices.players_by_address.remove(&player) {
+    if let Some(entity) = indices.players_by_address.remove(&address) {
         world.despawn(entity)
             .expect("Tried to remove ship that doesn't exist")
     }
