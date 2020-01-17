@@ -44,7 +44,7 @@ fn network_should_report_client_errors() -> net::Result {
     let mut disconnect_id = None;
     while disconnect_id.is_none() {
         // Attempt to send, to trigger an error.
-        server.send(addr, msg::FromServer::Welcome(addr));
+        server.send(addr, msg::FromServer::Ping);
 
         for event in server.events() {
             if let Event::Error(id, _error) = event {
@@ -74,7 +74,7 @@ fn clients_should_emit_receive_events() -> Result<(), Error> {
         }
     }
 
-    let message = msg::FromServer::Welcome(client.peer_addr);
+    let message = msg::FromServer::Ping;
 
     server.send(client.local_addr, message);
 
