@@ -39,7 +39,7 @@ pub const FRAME_TIME: f32 = 1.0 / TARGET_FPS as f32;
 
 pub struct State {
     world:      World,
-    events:     Events<InEvent>,
+    in_events:  Events<InEvent>,
     de_spawned: DeSpawned,
     indices:    Indices,
     next_id:    PlayerId,
@@ -49,7 +49,7 @@ impl State {
     pub fn new() -> Self {
         Self {
             world:      World::new(),
-            events:     Events::new(),
+            in_events:  Events::new(),
             de_spawned: DeSpawned::new(),
             indices:    Indices::new(),
             next_id:    PlayerId::first(),
@@ -57,11 +57,11 @@ impl State {
     }
 
     pub fn push(&mut self) -> Push<InEvent> {
-        self.events.push()
+        self.in_events.push()
     }
 
     pub fn dispatch(&mut self) {
-        while let Some(event) = self.events.next() {
+        while let Some(event) = self.in_events.next() {
             match event {
                 InEvent::Update { dt } => {
                     systems::players::update_ships(
@@ -78,12 +78,12 @@ impl State {
                     );
                     systems::missiles::update_missiles(
                         self.world.query(),
-                        &mut self.events.push(),
+                        &mut self.in_events.push(),
                     );
                     systems::missiles::update_explosions(
                         self.world.query(),
                         dt,
-                        &mut self.events.push(),
+                        &mut self.in_events.push(),
                     );
                 }
                 InEvent::ConnectPlayer { player } => {
@@ -106,7 +106,7 @@ impl State {
                 InEvent::PlayerInput { player, event } => {
                     systems::players::handle_input(
                         self.world.query(),
-                        &mut self.events.push(),
+                        &mut self.in_events.push(),
                         player,
                         event,
                     );
