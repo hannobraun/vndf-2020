@@ -47,8 +47,8 @@ pub fn missile(owner: PlayerId, from_body: &c::Body, target: Pnt2) -> Missile {
     (c::Missile::new(target), body, craft)
 }
 
-pub fn player(id: PlayerId) -> Player {
-    (c::Player::new(id),)
+pub fn player(id: PlayerId, addr: SocketAddr) -> Player {
+    (c::Player::new(id, addr),)
 }
 
 pub fn ship(owner: PlayerId, player: SocketAddr) -> Ship {
