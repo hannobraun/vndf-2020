@@ -70,7 +70,6 @@ impl Server {
             match event {
                 Event::Message(id, msg::FromClient::Hello) => {
                     info!("Connected: {}", id);
-                    self.network.send(id, msg::FromServer::Welcome(id));
                     self.state.push().connect_player(id);
                 }
                 Event::Message(id, msg::FromClient::Input(input)) => {
@@ -107,8 +106,8 @@ impl Server {
                         );
                     }
                 }
-                OutEvent::CreatePlayer { .. } => {
-                    // do nothing for now
+                OutEvent::CreatePlayer { addr, .. } => {
+                    self.network.send(addr, msg::FromServer::Welcome(addr));
                 }
             }
         }
