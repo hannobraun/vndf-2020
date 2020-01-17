@@ -8,7 +8,7 @@ use crate::{
             Missile,
         },
         entities as e,
-        events::Event,
+        in_event::Event,
     },
     world,
 };

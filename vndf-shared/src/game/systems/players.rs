@@ -10,7 +10,7 @@ use crate::{
             Ship,
         },
         entities,
-        events::Event,
+        in_event::Event,
         indices::Indices,
     },
     input,
