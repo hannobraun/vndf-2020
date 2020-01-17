@@ -20,6 +20,7 @@ use crate::{
         game::{
             self,
             FRAME_TIME,
+            out_event::OutEvent,
         },
         net::{
             self,
@@ -92,7 +93,9 @@ impl Server {
             self.last_update += frame_time;
         }
 
-        let despawned: Vec<_> = self.state.despawned().collect();
+        let despawned: Vec<_> = self.state.out_events()
+            .map(|OutEvent::Despawn { entity }| entity)
+            .collect();
 
         let mut updated = Vec::new();
         for (entity, _) in self.state.world().inner().iter() {

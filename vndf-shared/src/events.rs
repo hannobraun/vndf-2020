@@ -1,4 +1,7 @@
-use std::collections::VecDeque;
+use std::{
+    collections::VecDeque,
+    iter,
+};
 
 pub struct Events<T>(VecDeque<T>);
 
@@ -13,6 +16,10 @@ impl<T> Events<T> {
 
     pub fn next(&mut self) -> Option<T> {
         self.0.pop_front()
+    }
+
+    pub fn drain(&mut self) -> impl Iterator<Item=T> + '_ {
+        iter::from_fn(move || self.next())
     }
 }
 

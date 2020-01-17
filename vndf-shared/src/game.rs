@@ -2,12 +2,12 @@ pub mod components;
 pub mod entities;
 pub mod indices;
 pub mod in_event;
+pub mod out_event;
 pub mod systems;
 
 
 use std::net::SocketAddr;
 
-use hecs::Entity;
 use serde::{
     Deserialize,
     Serialize,
@@ -25,6 +25,7 @@ use self::{
     components::Ship,
     indices::Indices,
     in_event::InEvent,
+    out_event::OutEvent,
 };
 
 
@@ -35,21 +36,21 @@ pub const FRAME_TIME: f32 = 1.0 / TARGET_FPS as f32;
 
 
 pub struct State {
-    world:     World,
-    in_events: Events<InEvent>,
-    despawned: Vec<Entity>,
-    indices:   Indices,
-    next_id:   PlayerId,
+    world:      World,
+    in_events:  Events<InEvent>,
+    out_events: Events<OutEvent>,
+    indices:    Indices,
+    next_id:    PlayerId,
 }
 
 impl State {
     pub fn new() -> Self {
         Self {
-            world:     World::new(),
-            in_events: Events::new(),
-            despawned: Vec::new(),
-            indices:   Indices::new(),
-            next_id:   PlayerId::first(),
+            world:      World::new(),
+            in_events:  Events::new(),
+            out_events: Events::new(),
+            indices:    Indices::new(),
+            next_id:    PlayerId::first(),
         }
     }
 
@@ -58,8 +59,8 @@ impl State {
     }
 
     pub fn dispatch(&mut self) {
-        let despawned = &mut self.despawned;
-        let mut on_despawn = |entity| despawned.push(entity);
+        let out_events = &mut self.out_events;
+        let mut on_despawn = |entity| out_events.push().despawn(entity);
 
         while let Some(event) = self.in_events.next() {
             match event {
@@ -147,8 +148,8 @@ impl State {
             .collect()
     }
 
-    pub fn despawned(&mut self) -> impl Iterator<Item=Entity> + '_ {
-        self.despawned.drain(..)
+    pub fn out_events(&mut self) -> impl Iterator<Item=OutEvent> + '_ {
+        self.out_events.drain()
     }
 }
 
