@@ -22,24 +22,26 @@ pub struct Push<'r, T>(pub &'r mut VecDeque<T>);
 
 macro_rules! events {
     (
-        $(
-            $event:ident, $event_lower:ident {
-                $($arg_name:ident: $arg_type:ty,)*
-            }
-        )*
+        $name:ident {
+            $(
+                $event:ident, $event_lower:ident {
+                    $($arg_name:ident: $arg_type:ty,)*
+                }
+            )*
+        }
     ) => {
         use crate::events::Push;
 
-        impl Push<'_, Event> {
+        impl Push<'_, $name> {
             $(
                 pub fn $event_lower(&mut self, $($arg_name: $arg_type,)*) {
-                    self.0.push_back(Event::$event { $($arg_name,)* });
+                    self.0.push_back($name::$event { $($arg_name,)* });
                 }
             )*
         }
 
 
-        pub enum Event {
+        pub enum $name {
             $(
                 $event {
                     $($arg_name: $arg_type,)*
