@@ -23,12 +23,12 @@ impl World {
         }
     }
 
-    pub fn spawn<'r>(&'r mut self, on_despawn: &'r mut dyn FnMut(Entity))
+    pub fn spawn<'r>(&'r mut self, despawned: &'r mut Vec<Entity>)
         -> Spawn<'r>
     {
         Spawn {
             world: &mut self.0,
-            on_despawn,
+            despawned,
         }
     }
 
@@ -56,8 +56,8 @@ impl<'r> Query<'r> {
 
 
 pub struct Spawn<'r> {
-    pub world:      &'r mut hecs::World,
-    pub on_despawn: &'r mut dyn FnMut(Entity),
+    pub world:     &'r mut hecs::World,
+    pub despawned: &'r mut Vec<Entity>,
 }
 
 impl<'r> Spawn<'r> {
@@ -68,7 +68,7 @@ impl<'r> Spawn<'r> {
 
     pub fn despawn(&mut self, entity: Entity) -> Result<(), NoSuchEntity> {
         self.world.despawn(entity)?;
-        (self.on_despawn)(entity);
+        self.despawned.push(entity);
         Ok(())
     }
 }

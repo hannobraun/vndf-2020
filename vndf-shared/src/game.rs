@@ -59,8 +59,7 @@ impl State {
     }
 
     pub fn dispatch(&mut self) {
-        let out_events = &mut self.out_events;
-        let mut on_despawn = |entity| out_events.push().despawn(entity);
+        let mut despawned = Vec::new();
 
         while let Some(event) = self.in_events.next() {
             match event {
@@ -91,7 +90,7 @@ impl State {
                     let id = self.next_id.increment();
 
                     systems::players::connect_player(
-                        &mut self.world.spawn(&mut on_despawn),
+                        &mut self.world.spawn(&mut despawned),
                         &mut self.indices,
                         id,
                         player,
@@ -99,7 +98,7 @@ impl State {
                 }
                 InEvent::DisconnectPlayer { player } => {
                     systems::players::disconnect_player(
-                        &mut self.world.spawn(&mut on_despawn),
+                        &mut self.world.spawn(&mut despawned),
                         &mut self.indices,
                         player,
                     );
@@ -114,24 +113,28 @@ impl State {
                 }
                 InEvent::LaunchMissile { missile } => {
                     systems::missiles::launch_missile(
-                        &mut self.world.spawn(&mut on_despawn),
+                        &mut self.world.spawn(&mut despawned),
                         missile,
                     );
                 }
                 InEvent::ExplodeMissile { missile, explosion } => {
                     systems::missiles::explode_missile(
-                        &mut self.world.spawn(&mut on_despawn),
+                        &mut self.world.spawn(&mut despawned),
                         missile,
                         explosion,
                     );
                 }
                 InEvent::RemoveExplosion { explosion } => {
                     systems::missiles::remove_explosion(
-                        &mut self.world.spawn(&mut on_despawn),
+                        &mut self.world.spawn(&mut despawned),
                         explosion,
                     );
                 }
             }
+        }
+
+        for entity in despawned {
+            self.out_events.push().despawn(entity);
         }
     }
 
