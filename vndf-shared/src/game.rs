@@ -1,7 +1,7 @@
 pub mod components;
 pub mod entities;
-pub mod in_event;
 pub mod indices;
+pub mod in_event;
 pub mod systems;
 
 
@@ -23,8 +23,8 @@ use crate::{
 
 use self::{
     components::Ship,
-    in_event::InEvent,
     indices::Indices,
+    in_event::InEvent,
 };
 
 
