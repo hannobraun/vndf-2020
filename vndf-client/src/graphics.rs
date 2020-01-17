@@ -210,7 +210,7 @@ impl Graphics {
 Turn left - {}
 Turn right - {}
 Accelerate - {}
-Shoot - {}
+Shoot - {} (aim with mouse)
 End game - Escape",
             input.config.left,
             input.config.right,
