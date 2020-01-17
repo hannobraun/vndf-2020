@@ -1,5 +1,3 @@
-use std::net::SocketAddr;
-
 use serde::{
     Deserialize,
     Serialize,
@@ -24,15 +22,13 @@ use crate::{
 pub struct Ship {
     pub rotation: Rotation,
     pub missiles: u64,
-    pub player:   SocketAddr,
 }
 
 impl Ship {
-    pub fn new(player: SocketAddr) -> Self {
+    pub fn new() -> Self {
         Self {
             rotation: Rotation::None,
             missiles: 16,
-            player,
         }
     }
 

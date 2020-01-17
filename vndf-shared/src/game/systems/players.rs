@@ -30,7 +30,7 @@ pub fn connect_player(
     let entity = world.spawn(entities::player(id, address));
     indices.players_by_address.insert(address, entity);
 
-    world.spawn(entities::ship(id, address));
+    world.spawn(entities::ship(id));
     events.create_player(id, address);
 }
 
