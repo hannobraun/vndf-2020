@@ -108,6 +108,7 @@ impl State {
                     systems::players::handle_input(
                         self.world.query(),
                         &mut self.in_events.push(),
+                        &mut self.indices,
                         player,
                         event,
                     );

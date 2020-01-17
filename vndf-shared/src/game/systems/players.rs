@@ -7,6 +7,7 @@ use crate::{
         components::{
             Body,
             Craft,
+            Player,
             Ship,
         },
         entities,
@@ -49,13 +50,23 @@ pub fn disconnect_player(
 pub fn handle_input(
     world:   world::Query,
     events:  &mut events::Push<InEvent>,
+    indices: &mut Indices,
     address: SocketAddr,
     input:   input::Event,
 ) {
-    let query = &mut world.query::<(&mut Ship, &Body, &mut Craft)>();
+    let player = match indices.players_by_address.get(&address) {
+        Some(player) =>
+            *player,
+        // Ignore input from unknown player.
+        None =>
+            return,
+    };
+    let player: Player = *world.get(player)
+        .expect("Couldn't find player despite getting id from index");
 
+    let query = &mut world.query::<(&mut Ship, &Body, &mut Craft)>();
     for (_, (ship, body, craft)) in query {
-        if ship.player != address {
+        if craft.owner != player.id {
             continue;
         }
 
