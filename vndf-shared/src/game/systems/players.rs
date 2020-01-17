@@ -1,6 +1,7 @@
 use std::net::SocketAddr;
 
 use crate::{
+    events,
     game::{
         PlayerId,
         components::{
@@ -9,7 +10,7 @@ use crate::{
             Ship,
         },
         entities,
-        events,
+        events::Event,
         indices::Indices,
     },
     input,
@@ -44,7 +45,7 @@ pub fn disconnect_player(
 
 pub fn handle_input(
     world:   world::Query,
-    events:  &mut events::Push,
+    events:  &mut events::Push<Event>,
     address: SocketAddr,
     input:   input::Event,
 ) {

@@ -13,17 +13,20 @@ use serde::{
     Serialize,
 };
 
-use crate::world::{
-    DeSpawned,
-    World,
+use crate::{
+    events::{
+        Events,
+        Push,
+    },
+    world::{
+        DeSpawned,
+        World,
+    },
 };
 
 use self::{
     components::Ship,
-    events::{
-        Event,
-        Events,
-    },
+    events::Event,
     indices::Indices,
 };
 
@@ -36,7 +39,7 @@ pub const FRAME_TIME: f32 = 1.0 / TARGET_FPS as f32;
 
 pub struct State {
     world:      World,
-    events:     Events,
+    events:     Events<Event>,
     de_spawned: DeSpawned,
     indices:    Indices,
     next_id:    PlayerId,
@@ -53,7 +56,7 @@ impl State {
         }
     }
 
-    pub fn push(&mut self) -> events::Push {
+    pub fn push(&mut self) -> Push<Event> {
         self.events.push()
     }
 
