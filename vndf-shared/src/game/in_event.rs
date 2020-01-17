@@ -11,7 +11,7 @@ use crate::{
 };
 
 events! {
-    Event {
+    InEvent {
         Update, update {
             dt: f32,
         }

@@ -10,7 +10,7 @@ use crate::{
             Ship,
         },
         entities,
-        in_event::Event,
+        in_event::InEvent,
         indices::Indices,
     },
     input,
@@ -45,7 +45,7 @@ pub fn disconnect_player(
 
 pub fn handle_input(
     world:   world::Query,
-    events:  &mut events::Push<Event>,
+    events:  &mut events::Push<InEvent>,
     address: SocketAddr,
     input:   input::Event,
 ) {

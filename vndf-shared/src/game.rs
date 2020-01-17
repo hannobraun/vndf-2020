@@ -26,7 +26,7 @@ use crate::{
 
 use self::{
     components::Ship,
-    in_event::Event,
+    in_event::InEvent,
     indices::Indices,
 };
 
@@ -39,7 +39,7 @@ pub const FRAME_TIME: f32 = 1.0 / TARGET_FPS as f32;
 
 pub struct State {
     world:      World,
-    events:     Events<Event>,
+    events:     Events<InEvent>,
     de_spawned: DeSpawned,
     indices:    Indices,
     next_id:    PlayerId,
@@ -56,14 +56,14 @@ impl State {
         }
     }
 
-    pub fn push(&mut self) -> Push<Event> {
+    pub fn push(&mut self) -> Push<InEvent> {
         self.events.push()
     }
 
     pub fn dispatch(&mut self) {
         while let Some(event) = self.events.next() {
             match event {
-                Event::Update { dt } => {
+                InEvent::Update { dt } => {
                     systems::players::update_ships(
                         self.world.query(),
                     );
@@ -86,7 +86,7 @@ impl State {
                         &mut self.events.push(),
                     );
                 }
-                Event::ConnectPlayer { player } => {
+                InEvent::ConnectPlayer { player } => {
                     let id = self.next_id.increment();
 
                     systems::players::connect_player(
@@ -96,14 +96,14 @@ impl State {
                         player,
                     );
                 }
-                Event::DisconnectPlayer { player } => {
+                InEvent::DisconnectPlayer { player } => {
                     systems::players::disconnect_player(
                         &mut self.world.spawn(&mut self.de_spawned),
                         &mut self.indices,
                         player,
                     );
                 }
-                Event::PlayerInput { player, event } => {
+                InEvent::PlayerInput { player, event } => {
                     systems::players::handle_input(
                         self.world.query(),
                         &mut self.events.push(),
@@ -111,20 +111,20 @@ impl State {
                         event,
                     );
                 }
-                Event::LaunchMissile { missile } => {
+                InEvent::LaunchMissile { missile } => {
                     systems::missiles::launch_missile(
                         &mut self.world.spawn(&mut self.de_spawned),
                         missile,
                     );
                 }
-                Event::ExplodeMissile { missile, explosion } => {
+                InEvent::ExplodeMissile { missile, explosion } => {
                     systems::missiles::explode_missile(
                         &mut self.world.spawn(&mut self.de_spawned),
                         missile,
                         explosion,
                     );
                 }
-                Event::RemoveExplosion { explosion } => {
+                InEvent::RemoveExplosion { explosion } => {
                     systems::missiles::remove_explosion(
                         &mut self.world.spawn(&mut self.de_spawned),
                         explosion,
