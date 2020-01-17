@@ -22,7 +22,7 @@ use crate::{
 };
 
 use self::{
-    components::Ship,
+    components::Player,
     indices::Indices,
     in_event::InEvent,
     out_event::OutEvent,
@@ -146,9 +146,9 @@ impl State {
     pub fn players(&self) -> Vec<SocketAddr> {
         self.world
             .inner()
-            .query::<(&Ship,)>()
+            .query::<(&Player,)>()
             .into_iter()
-            .map(|(_, (ship,))| ship.player)
+            .map(|(_, (player,))| player.addr)
             .collect()
     }
 
