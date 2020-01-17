@@ -93,9 +93,22 @@ impl Server {
             self.last_update += frame_time;
         }
 
-        let despawned: Vec<_> = self.state.out_events()
-            .map(|OutEvent::Despawn { entity }| entity)
-            .collect();
+        let clients = self.state.players();
+
+        for event in self.state.out_events() {
+            match event {
+                OutEvent::Despawn { entity } => {
+                    for &address in &clients {
+                        self.network.send(
+                            address,
+                            msg::FromServer::RemoveEntity(
+                                Id::from_hecs_entity(&entity)
+                            ),
+                        );
+                    }
+                }
+            }
+        }
 
         let mut updated = Vec::new();
         for (entity, _) in self.state.world().inner().iter() {
@@ -104,14 +117,7 @@ impl Server {
             );
         }
 
-        let clients = self.state.players();
         for client in clients {
-            for entity in &despawned {
-                self.network.send(
-                    client,
-                    msg::FromServer::RemoveEntity(Id::from_hecs_entity(entity)),
-                );
-            }
             for entity in &updated {
                 self.network.send(
                     client,
