@@ -1,7 +1,4 @@
-use std::{
-    fmt::Debug,
-    net::SocketAddr,
-};
+use std::fmt::Debug;
 
 use postcard;
 use serde::{
@@ -56,7 +53,7 @@ pub enum FromClient {
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub enum FromServer {
     Ping,
-    Welcome(PlayerId, SocketAddr),
+    Welcome(PlayerId),
     UpdateEntity(Entity),
     RemoveEntity(Id),
 }

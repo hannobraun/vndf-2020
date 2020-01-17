@@ -185,7 +185,7 @@ impl EventHandler for Game {
                 Ok(msg::FromServer::Ping) => {
                     // This message is just for testing purposes. Nothing to do.
                 }
-                Ok(msg::FromServer::Welcome(id, _)) => {
+                Ok(msg::FromServer::Welcome(id)) => {
                     self.state.own_id = Some(id);
                 }
                 Ok(msg::FromServer::UpdateEntity(entity)) => {
