@@ -54,6 +54,7 @@ pub enum FromClient {
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub enum FromServer {
+    Ping,
     Welcome(SocketAddr),
     UpdateEntity(Entity),
     RemoveEntity(Id),

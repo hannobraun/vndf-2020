@@ -182,6 +182,9 @@ impl EventHandler for Game {
     fn update(&mut self, context: &mut Context) -> GameResult {
         for message in self.conn.incoming() {
             match message {
+                Ok(msg::FromServer::Ping) => {
+                    // This message is just for testing purposes. Nothing to do.
+                }
                 Ok(msg::FromServer::Welcome(id)) => {
                     self.state.own_id = Some(id);
                 }
