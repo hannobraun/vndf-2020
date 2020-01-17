@@ -23,30 +23,17 @@ impl World {
         }
     }
 
-    pub fn spawn<'r>(&'r mut self, de_spawned: &'r mut DeSpawned) -> Spawn<'r> {
+    pub fn spawn<'r>(&'r mut self, despawned: &'r mut Vec<Entity>)
+        -> Spawn<'r>
+    {
         Spawn {
             world: &mut self.0,
-            de_spawned,
+            despawned,
         }
     }
 
     pub fn inner(&self) -> &hecs::World {
         &self.0
-    }
-}
-
-
-pub struct DeSpawned {
-    pub spawned:   Vec<Entity>,
-    pub despawned: Vec<Entity>,
-}
-
-impl DeSpawned {
-    pub fn new() -> Self {
-        Self {
-            spawned:   Vec::new(),
-            despawned: Vec::new(),
-        }
     }
 }
 
@@ -69,20 +56,19 @@ impl<'r> Query<'r> {
 
 
 pub struct Spawn<'r> {
-    pub world:      &'r mut hecs::World,
-    pub de_spawned: &'r mut DeSpawned,
+    pub world:     &'r mut hecs::World,
+    pub despawned: &'r mut Vec<Entity>,
 }
 
 impl<'r> Spawn<'r> {
     pub fn spawn(&mut self, components: impl DynamicBundle) -> Entity {
         let entity = self.world.spawn(components);
-        self.de_spawned.spawned.push(entity);
         entity
     }
 
     pub fn despawn(&mut self, entity: Entity) -> Result<(), NoSuchEntity> {
         self.world.despawn(entity)?;
-        self.de_spawned.despawned.push(entity);
+        self.despawned.push(entity);
         Ok(())
     }
 }

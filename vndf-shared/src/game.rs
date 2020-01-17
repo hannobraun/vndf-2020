@@ -18,10 +18,7 @@ use crate::{
         Events,
         Push,
     },
-    world::{
-        DeSpawned,
-        World,
-    },
+    world::World,
 };
 
 use self::{
@@ -38,21 +35,21 @@ pub const FRAME_TIME: f32 = 1.0 / TARGET_FPS as f32;
 
 
 pub struct State {
-    world:      World,
-    in_events:  Events<InEvent>,
-    de_spawned: DeSpawned,
-    indices:    Indices,
-    next_id:    PlayerId,
+    world:     World,
+    in_events: Events<InEvent>,
+    despawned: Vec<Entity>,
+    indices:   Indices,
+    next_id:   PlayerId,
 }
 
 impl State {
     pub fn new() -> Self {
         Self {
-            world:      World::new(),
-            in_events:  Events::new(),
-            de_spawned: DeSpawned::new(),
-            indices:    Indices::new(),
-            next_id:    PlayerId::first(),
+            world:     World::new(),
+            in_events: Events::new(),
+            despawned: Vec::new(),
+            indices:   Indices::new(),
+            next_id:   PlayerId::first(),
         }
     }
 
@@ -90,7 +87,7 @@ impl State {
                     let id = self.next_id.increment();
 
                     systems::players::connect_player(
-                        &mut self.world.spawn(&mut self.de_spawned),
+                        &mut self.world.spawn(&mut self.despawned),
                         &mut self.indices,
                         id,
                         player,
@@ -98,7 +95,7 @@ impl State {
                 }
                 InEvent::DisconnectPlayer { player } => {
                     systems::players::disconnect_player(
-                        &mut self.world.spawn(&mut self.de_spawned),
+                        &mut self.world.spawn(&mut self.despawned),
                         &mut self.indices,
                         player,
                     );
@@ -113,20 +110,20 @@ impl State {
                 }
                 InEvent::LaunchMissile { missile } => {
                     systems::missiles::launch_missile(
-                        &mut self.world.spawn(&mut self.de_spawned),
+                        &mut self.world.spawn(&mut self.despawned),
                         missile,
                     );
                 }
                 InEvent::ExplodeMissile { missile, explosion } => {
                     systems::missiles::explode_missile(
-                        &mut self.world.spawn(&mut self.de_spawned),
+                        &mut self.world.spawn(&mut self.despawned),
                         missile,
                         explosion,
                     );
                 }
                 InEvent::RemoveExplosion { explosion } => {
                     systems::missiles::remove_explosion(
-                        &mut self.world.spawn(&mut self.de_spawned),
+                        &mut self.world.spawn(&mut self.despawned),
                         explosion,
                     );
                 }
@@ -147,12 +144,8 @@ impl State {
             .collect()
     }
 
-    pub fn spawned(&mut self) -> impl Iterator<Item=Entity> + '_ {
-        self.de_spawned.spawned.drain(..)
-    }
-
     pub fn despawned(&mut self) -> impl Iterator<Item=Entity> + '_ {
-        self.de_spawned.despawned.drain(..)
+        self.despawned.drain(..)
     }
 }
 
