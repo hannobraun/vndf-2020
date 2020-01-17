@@ -52,6 +52,35 @@ impl Missile {
         }
     }
 
+    pub fn update_target(&mut self,
+        craft:   &Craft,
+        targets: impl IntoIterator<Item=(Body, Craft)>,
+    ) {
+        // TASK: Missiles shouldn't consider themselves targets.
+
+        let mut best_rating = 0.0;
+        let mut new_target  = None;
+
+        for (target_body, target_craft) in targets {
+            if target_craft.owner == craft.owner {
+                continue;
+            }
+
+            let distance  = (self.target - target_body.pos).magnitude();
+            let threshold = 100.0;
+            let rating    = 1.0 / (threshold - distance);
+
+            if rating > best_rating {
+                best_rating = rating;
+                new_target  = Some(target_body.pos);
+            }
+        }
+
+        if let Some(new_target) = new_target {
+            self.target = new_target
+        }
+    }
+
     pub fn update_guidance(&mut self, body: &mut Body) {
         let to_target = self.target - body.pos;
 
