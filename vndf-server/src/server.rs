@@ -106,8 +106,11 @@ impl Server {
                         );
                     }
                 }
-                OutEvent::CreatePlayer { addr, .. } => {
-                    self.network.send(addr, msg::FromServer::Welcome(addr));
+                OutEvent::CreatePlayer { id, addr } => {
+                    self.network.send(
+                        addr,
+                        msg::FromServer::Welcome(id, addr),
+                    );
                 }
             }
         }

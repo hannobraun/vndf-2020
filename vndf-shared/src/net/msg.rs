@@ -11,6 +11,7 @@ use serde::{
 };
 
 use crate::{
+    game::PlayerId,
     input,
     net::game::{
         Entity,
@@ -55,7 +56,7 @@ pub enum FromClient {
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub enum FromServer {
     Ping,
-    Welcome(SocketAddr),
+    Welcome(PlayerId, SocketAddr),
     UpdateEntity(Entity),
     RemoveEntity(Id),
 }
