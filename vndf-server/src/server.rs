@@ -107,6 +107,9 @@ impl Server {
                         );
                     }
                 }
+                OutEvent::CreatePlayer { .. } => {
+                    // do nothing for now
+                }
             }
         }
 
