@@ -91,6 +91,7 @@ impl State {
 
                     systems::players::connect_player(
                         &mut self.world.spawn(&mut despawned),
+                        &mut self.out_events.push(),
                         &mut self.indices,
                         id,
                         player,

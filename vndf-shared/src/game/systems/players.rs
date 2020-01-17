@@ -11,6 +11,7 @@ use crate::{
         },
         entities,
         in_event::InEvent,
+        out_event::OutEvent,
         indices::Indices,
     },
     input,
@@ -20,6 +21,7 @@ use crate::{
 
 pub fn connect_player(
     world:   &mut world::Spawn,
+    events:  &mut events::Push<OutEvent>,
     indices: &mut Indices,
     id:      PlayerId,
     address: SocketAddr,
@@ -28,6 +30,7 @@ pub fn connect_player(
     indices.players_by_address.insert(address, entity);
 
     world.spawn(entities::ship(id, address));
+    events.create_player(id, address);
 }
 
 pub fn disconnect_player(
