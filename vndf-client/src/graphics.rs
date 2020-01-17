@@ -227,7 +227,7 @@ End game - Escape",
 
         let query = &mut state.world.query::<(&Ship, &Craft)>();
         for (_, (ship, craft)) in query {
-            if state.own_id != Some(ship.player) {
+            if state.own_id != Some(craft.owner) {
                 continue;
             }
 

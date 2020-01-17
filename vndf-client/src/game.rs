@@ -1,19 +1,19 @@
-use std::{
-    collections::HashMap,
-    net::SocketAddr,
-};
+use std::collections::HashMap;
 
 use hecs::World;
 
-use crate::shared::net::game::{
-    Entity,
-    Id,
+use crate::shared::{
+    game::PlayerId,
+    net::game::{
+        Entity,
+        Id,
+    },
 };
 
 
 pub struct State {
     pub world:  World,
-    pub own_id: Option<SocketAddr>,
+    pub own_id: Option<PlayerId>,
 
     ids: HashMap<Id, hecs::Entity>,
 }
