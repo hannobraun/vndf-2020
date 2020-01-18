@@ -85,7 +85,7 @@ impl Graphics {
                 [-0.1,  0.0],
                 [-0.4, -0.4],
             ],
-            [1.0, 1.0, 0.0, 1.0].into(),
+            [1.0, 1.0, 1.0, 1.0].into(),
         )?;
 
         let pointer = Mesh::new_polygon(
@@ -164,7 +164,8 @@ impl Graphics {
             DrawParam::new()
                 .dest(body.pos)
                 .rotation(Vec2::unit_x().angle(body.dir).0)
-                .scale([30.0, 30.0]),
+                .scale([30.0, 30.0])
+                .color([1.0, 1.0, 0.0, 1.0].into()),
         )
     }
 
