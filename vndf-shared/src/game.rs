@@ -121,7 +121,7 @@ impl State {
                     );
                 }
                 InEvent::ExplodeMissile { missile, explosion } => {
-                    systems::missiles::explode_missile(
+                    systems::missiles::damage_nearby_crafts(
                         &mut self.world.query(),
                         missile,
                     );

@@ -38,7 +38,7 @@ pub fn update_missiles(
     }
 }
 
-pub fn explode_missile(
+pub fn damage_nearby_crafts(
     world:  &mut world::Query,
     entity: hecs::Entity,
 ) {
