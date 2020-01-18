@@ -19,12 +19,10 @@ pub struct Explosion {
 }
 
 impl Explosion {
-    pub fn new() -> Self {
-        let strength_total = 3.0;
-
+    pub fn new(strength: f32) -> Self {
         Self {
-            strength_total,
-            strength_left: strength_total,
+            strength_total: strength,
+            strength_left:  strength,
         }
     }
 

@@ -26,7 +26,7 @@ pub fn explosion(exploding: &c::Body) -> Explosion {
         .. c::Body::new()
     };
 
-    (c::Explosion::new(), body)
+    (c::Explosion::new(3.0), body)
 }
 
 pub fn missile(owner: PlayerId, from_body: &c::Body, target: Pnt2) -> Missile {
