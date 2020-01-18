@@ -14,17 +14,17 @@ use crate::{
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Explosion {
-    pub time_total: f32,
-    pub time_left:  f32,
+    pub strength_total: f32,
+    pub time_left:      f32,
 }
 
 impl Explosion {
     pub fn new() -> Self {
-        let time_total = 3.0;
+        let strength_total = 3.0;
 
         Self {
-            time_total,
-            time_left: time_total,
+            strength_total,
+            time_left: strength_total,
         }
     }
 

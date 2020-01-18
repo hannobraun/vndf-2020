@@ -184,7 +184,7 @@ impl Graphics {
     )
         -> GameResult
     {
-        let alpha = explosion.time_left / explosion.time_total;
+        let alpha = explosion.time_left / explosion.strength_total;
 
         graphics::draw(
             context,
