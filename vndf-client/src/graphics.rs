@@ -234,8 +234,10 @@ End game - Escape",
             let (width, _) = graphics::drawable_size(context);
 
             let status = format!("Ship Status
+Structural Integrity: {:.2}
 Fuel: {:.2}
 Heavy Missiles: {}",
+                craft.health,
                 craft.fuel,
                 ship.missiles,
             );
