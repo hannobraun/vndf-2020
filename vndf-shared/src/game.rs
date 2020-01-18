@@ -128,22 +128,21 @@ impl State {
                     );
                 }
                 InEvent::DeadEntity { entity } => {
-                    explosive::explode_entity(
+                    let explosion = explosive::explode_entity(
                         self.world.query(),
-                        &mut self.in_events.push(),
                         entity,
                     );
                     health::remove_entity(
                         &mut self.world.spawn(&mut despawned),
                         entity,
                     );
-                }
-                InEvent::ExplodeCraft { explosion, .. } => {
-                    explosive::create_explosion(
-                        &mut self.world.spawn(&mut despawned),
-                        &mut self.in_events.push(),
-                        explosion,
-                    );
+                    if let Some(explosion) = explosion {
+                        explosive::create_explosion(
+                            &mut self.world.spawn(&mut despawned),
+                            &mut self.in_events.push(),
+                            explosion,
+                        );
+                    }
                 }
                 InEvent::Explosion { explosion } => {
                     systems::explosions::damage_nearby(

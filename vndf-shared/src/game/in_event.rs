@@ -3,10 +3,7 @@ use std::net::SocketAddr;
 use hecs::Entity;
 
 use crate::{
-    game::entities::{
-        Explosion,
-        Missile,
-    },
+    game::entities::Missile,
     input,
 };
 
@@ -30,10 +27,6 @@ events! {
         }
         DeadEntity, dead_entity {
             entity: Entity,
-        }
-        ExplodeCraft, explode_craft {
-            craft:     Entity,
-            explosion: Explosion,
         }
         Explosion, explosion {
             explosion: Entity,

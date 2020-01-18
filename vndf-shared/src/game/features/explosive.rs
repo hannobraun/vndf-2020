@@ -11,14 +11,12 @@ use crate::{
 
 pub fn explode_entity(
     world:  world::Query,
-    events: &mut events::Push<InEvent>,
     entity: hecs::Entity,
 )
-    -> Option<()>
+    -> Option<e::Explosion>
 {
     let body = world.get::<Body>(entity).ok()?;
-    events.explode_craft(entity, e::explosion(&body));
-    Some(())
+    Some(e::explosion(&body))
 }
 
 pub fn create_explosion(
