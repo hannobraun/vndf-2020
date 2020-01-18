@@ -121,12 +121,9 @@ impl State {
                     );
                 }
                 InEvent::ExplodeMissile { missile, explosion } => {
-                    systems::missiles::damage_nearby_crafts(
-                        &mut self.world.query(),
-                        missile,
-                    );
                     systems::crafts::explode_craft(
                         &mut self.world.spawn(&mut despawned),
+                        &mut self.in_events.push(),
                         missile,
                         explosion,
                     );
@@ -134,7 +131,14 @@ impl State {
                 InEvent::ExplodeCraft { craft, explosion } => {
                     systems::crafts::explode_craft(
                         &mut self.world.spawn(&mut despawned),
+                        &mut self.in_events.push(),
                         craft,
+                        explosion,
+                    );
+                }
+                InEvent::CreateExplosion { explosion } => {
+                    systems::missiles::damage_nearby_crafts(
+                        &mut self.world.query(),
                         explosion,
                     );
                 }

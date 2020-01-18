@@ -3,6 +3,14 @@ use serde::{
     Serialize,
 };
 
+use crate::{
+    game::components::{
+        Body,
+        Craft,
+    },
+    math::prelude::*,
+};
+
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Explosion {
@@ -17,6 +25,22 @@ impl Explosion {
         Self {
             time_total,
             time_left: time_total,
+        }
+    }
+
+    pub fn damage_nearby_crafts<'r>(&self,
+        body:   &Body,
+        nearby: impl IntoIterator<Item=(&'r Body, &'r mut Craft)>,
+    ) {
+        for (nearby_body, nearby_craft) in nearby {
+            let distance  = (nearby_body.pos - body.pos).magnitude();
+
+            if distance > 20.0 {
+                continue;
+            }
+
+            let damage = f32::min(1.0 / distance, 5.0);
+            nearby_craft.health -= damage;
         }
     }
 

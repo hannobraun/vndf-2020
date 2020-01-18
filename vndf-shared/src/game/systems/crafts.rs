@@ -36,10 +36,12 @@ pub fn update_crafts(
 
 pub fn explode_craft(
     world:     &mut world::Spawn,
+    events:    &mut events::Push<InEvent>,
     craft:     hecs::Entity,
     explosion: e::Explosion,
 ) {
     world.despawn(craft)
         .expect("Exploding craft not found");
-    world.spawn(explosion);
+    let explosion = world.spawn(explosion);
+    events.create_explosion(explosion);
 }

@@ -42,17 +42,17 @@ pub fn damage_nearby_crafts(
     world:  &mut world::Query,
     entity: hecs::Entity,
 ) {
-    let missile = world.get::<Missile>(entity)
-        .expect("Exploding missile not found");
+    let explosion = world.get::<Explosion>(entity)
+        .expect("Explosion not found");
     let body = world.get(entity)
-        .expect("Exploding missile not found");
+        .expect("Explosion not found");
 
     let query = &mut world.query::<(&Body, &mut Craft)>();
     let nearby = query
         .into_iter()
         .map(|(_, (body, craft))| (body, craft));
 
-    missile.damage_nearby_crafts(&body, nearby);
+    explosion.damage_nearby_crafts(&body, nearby);
 }
 
 pub fn update_explosions(

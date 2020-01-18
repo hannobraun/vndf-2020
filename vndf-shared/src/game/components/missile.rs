@@ -118,20 +118,4 @@ impl Missile {
             None
         }
     }
-
-    pub fn damage_nearby_crafts<'r>(&self,
-        body:   &Body,
-        nearby: impl IntoIterator<Item=(&'r Body, &'r mut Craft)>,
-    ) {
-        for (nearby_body, nearby_craft) in nearby {
-            let distance  = (nearby_body.pos - body.pos).magnitude();
-
-            if distance > 20.0 {
-                continue;
-            }
-
-            let damage = f32::min(1.0 / distance, 5.0);
-            nearby_craft.health -= damage;
-        }
-    }
 }
