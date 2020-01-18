@@ -140,7 +140,7 @@ impl State {
                     );
                 }
                 InEvent::ExplodeCraft { explosion, .. } => {
-                    systems::crafts::explode_craft(
+                    explosive::explode_craft(
                         &mut self.world.spawn(&mut despawned),
                         &mut self.in_events.push(),
                         explosion,

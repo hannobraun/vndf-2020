@@ -1,12 +1,7 @@
 use crate::{
-    events,
-    game::{
-        components::{
-            Body,
-            Craft,
-        },
-        entities as e,
-        in_event::InEvent,
+    game::components::{
+        Body,
+        Craft,
     },
     world,
 };
@@ -27,13 +22,4 @@ pub fn update_crafts(
     for (_, (craft, body)) in query {
         craft.apply_thrust(body, dt);
     }
-}
-
-pub fn explode_craft(
-    world:     &mut world::Spawn,
-    events:    &mut events::Push<InEvent>,
-    explosion: e::Explosion,
-) {
-    let explosion = world.spawn(explosion);
-    events.explosion(explosion);
 }

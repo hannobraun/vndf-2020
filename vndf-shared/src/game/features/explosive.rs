@@ -20,3 +20,12 @@ pub fn explode_entity(
     events.explode_craft(entity, e::explosion(&body));
     Some(())
 }
+
+pub fn explode_craft(
+    world:     &mut world::Spawn,
+    events:    &mut events::Push<InEvent>,
+    explosion: e::Explosion,
+) {
+    let explosion = world.spawn(explosion);
+    events.explosion(explosion);
+}
