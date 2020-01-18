@@ -1,5 +1,4 @@
 use crate::{
-    events,
     game::{
         components::{
             Body,
@@ -7,7 +6,7 @@ use crate::{
             Missile,
         },
         entities as e,
-        in_event::InEvent,
+        features::health::Health,
     },
     world,
 };
@@ -19,20 +18,22 @@ pub fn launch_missile(world: &mut world::Spawn, missile: e::Missile) {
 
 pub fn update_missiles(
     world:  world::Query,
-    events: &mut events::Push<InEvent>,
 ) {
     let potential_targets: Vec<_> = (&mut world.query::<(&Body, &Craft)>())
         .into_iter()
         .map(|(_, (&body, &craft))| (body, craft))
         .collect();
 
-    let query = &mut world.query::<(&mut Missile, &mut Body, &Craft)>();
-    for (id, (missile, body, craft)) in query {
+    let query = &mut world.query::<
+        (&mut Missile, &mut Body, &Craft, &mut Health)
+    >();
+    for (_, (missile, body, craft, health)) in query {
         missile.update_target(craft, potential_targets.iter().cloned());
         missile.update_guidance(body);
 
-        if let Some(explosion) = missile.should_explode(body, craft) {
-            events.explode_craft(id, explosion);
+        if missile.should_explode(body, craft) {
+            // Setting the missile's health to zero will cause it to explode.
+            health.value = 0.0;
         }
     }
 }

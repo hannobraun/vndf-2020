@@ -83,7 +83,6 @@ impl State {
                     );
                     systems::missiles::update_missiles(
                         self.world.query(),
-                        &mut self.in_events.push(),
                     );
                     systems::explosions::update_explosions(
                         self.world.query(),

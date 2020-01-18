@@ -5,12 +5,9 @@ use serde::{
 };
 
 use crate::{
-    game::{
-        components::{
-            Body,
-            Craft,
-        },
-        entities as e,
+    game::components::{
+        Body,
+        Craft,
     },
     math::{
         prelude::*,
@@ -106,16 +103,11 @@ impl Missile {
     }
 
     pub fn should_explode(&self, body: &Body, craft: &Craft)
-        -> Option<e::Explosion>
+        -> bool
     {
         let no_fuel_left = craft.fuel <= 0.0;
         let near_target  = (body.pos - self.target).magnitude() <= 10.0;
 
-        if no_fuel_left || near_target {
-            Some(e::explosion(body))
-        }
-        else {
-            None
-        }
+        no_fuel_left || near_target
     }
 }
