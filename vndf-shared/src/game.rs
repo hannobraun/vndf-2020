@@ -24,7 +24,10 @@ use crate::{
 
 use self::{
     components::Player,
-    features::health,
+    features::{
+        explosive,
+        health,
+    },
     indices::Indices,
     in_event::InEvent,
     out_event::OutEvent,
@@ -126,7 +129,7 @@ impl State {
                     );
                 }
                 InEvent::DeadEntity { entity } => {
-                    health::explode_entity(
+                    explosive::explode_entity(
                         self.world.query(),
                         &mut self.in_events.push(),
                         entity,
