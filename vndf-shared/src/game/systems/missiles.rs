@@ -55,16 +55,6 @@ pub fn damage_nearby_crafts(
     missile.damage_nearby_crafts(&body, nearby);
 }
 
-pub fn remove_missile(
-    world:     &mut world::Spawn,
-    missile:   hecs::Entity,
-    explosion: e::Explosion,
-) {
-    world.despawn(missile)
-        .expect("Missile should exist");
-    world.spawn(explosion);
-}
-
 pub fn update_explosions(
     world:  world::Query,
     dt:     f32,

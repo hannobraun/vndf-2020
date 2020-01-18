@@ -125,7 +125,7 @@ impl State {
                         &mut self.world.query(),
                         missile,
                     );
-                    systems::missiles::remove_missile(
+                    systems::crafts::explode_craft(
                         &mut self.world.spawn(&mut despawned),
                         missile,
                         explosion,
