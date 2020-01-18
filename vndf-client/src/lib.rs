@@ -183,7 +183,8 @@ impl EventHandler for Game {
         for message in self.conn.incoming() {
             match message {
                 Ok(msg::FromServer::Ping) => {
-                    // This message is just for testing purposes. Nothing to do.
+                    // This message is just for testing purposes. Nothing to do
+                    // here.
                 }
                 Ok(msg::FromServer::Welcome(id)) => {
                     self.state.own_id = Some(id);
