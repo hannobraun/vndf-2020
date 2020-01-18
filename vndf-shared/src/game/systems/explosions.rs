@@ -26,7 +26,7 @@ pub fn damage_nearby_crafts(
         .into_iter()
         .map(|(_, (body, health))| (body, health));
 
-    explosion.damage_nearby_crafts(&body, nearby);
+    explosion.damage_nearby(&body, nearby);
 }
 
 pub fn update_explosions(

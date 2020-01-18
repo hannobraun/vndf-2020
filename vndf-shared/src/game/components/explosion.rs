@@ -26,7 +26,7 @@ impl Explosion {
         }
     }
 
-    pub fn damage_nearby_crafts<'r>(&self,
+    pub fn damage_nearby<'r>(&self,
         body:   &Body,
         nearby: impl IntoIterator<Item=(&'r Body, &'r mut Health)>,
     ) {
