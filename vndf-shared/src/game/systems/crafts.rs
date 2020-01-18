@@ -35,5 +35,5 @@ pub fn explode_craft(
     explosion: e::Explosion,
 ) {
     let explosion = world.spawn(explosion);
-    events.create_explosion(explosion);
+    events.explosion(explosion);
 }

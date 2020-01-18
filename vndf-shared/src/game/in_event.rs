@@ -35,7 +35,7 @@ events! {
             craft:     Entity,
             explosion: Explosion,
         }
-        CreateExplosion, create_explosion {
+        Explosion, explosion {
             explosion: Entity,
         }
         RemoveExplosion, remove_explosion {
