@@ -20,14 +20,14 @@ pub type Player    = (c::Player,);
 pub type Ship      = (c::Ship, c::Body, c::Craft, Health);
 
 
-pub fn explosion(exploding: &c::Body) -> Explosion {
+pub fn explosion(exploding: &c::Body, strength: f32) -> Explosion {
     let body = c::Body {
         pos: exploding.pos,
         vel: exploding.vel * 0.1,
         .. c::Body::new()
     };
 
-    (c::Explosion::new(3.0), body)
+    (c::Explosion::new(strength), body)
 }
 
 pub fn missile(owner: PlayerId, from_body: &c::Body, target: Pnt2) -> Missile {
