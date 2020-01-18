@@ -1,4 +1,3 @@
-use hecs::Entity;
 use serde::{
     Deserialize,
     Serialize,
@@ -47,7 +46,7 @@ pub fn check_health(
 pub fn explode_entity(
     world:  world::Query,
     events: &mut events::Push<InEvent>,
-    entity: Entity,
+    entity: hecs::Entity,
 )
     -> Option<()>
 {
