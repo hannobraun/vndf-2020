@@ -22,6 +22,7 @@ use crate::{
 pub struct Ship {
     pub rotation: Rotation,
     pub missiles: u64,
+    pub color:    [f32; 3],
 }
 
 impl Ship {
@@ -29,6 +30,7 @@ impl Ship {
         Self {
             rotation: Rotation::None,
             missiles: 16,
+            color:    [1.0, 1.0, 0.0],
         }
     }
 

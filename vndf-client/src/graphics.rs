@@ -132,8 +132,8 @@ impl Graphics {
 
         self.draw_boundary(context)?;
 
-        for (_, (_, body)) in &mut state.world.query::<(&Ship, &Body)>() {
-            self.draw_ship(context, body)?;
+        for (_, (ship, body)) in &mut state.world.query::<(&Ship, &Body)>() {
+            self.draw_ship(context, ship, body)?;
         }
 
         for (_, (_, body)) in &mut state.world.query::<(&Missile, &Body)>() {
@@ -157,7 +157,9 @@ impl Graphics {
         )
     }
 
-    fn draw_ship(&self, context: &mut Context, body: &Body) -> GameResult {
+    fn draw_ship(&self, context: &mut Context, ship: &Ship, body: &Body)
+        -> GameResult
+    {
         graphics::draw(
             context,
             &self.ship,
@@ -165,7 +167,9 @@ impl Graphics {
                 .dest(body.pos)
                 .rotation(Vec2::unit_x().angle(body.dir).0)
                 .scale([30.0, 30.0])
-                .color([1.0, 1.0, 0.0, 1.0].into()),
+                .color(
+                    [ship.color[0], ship.color[1], ship.color[2], 1.0].into(),
+                ),
         )
     }
 
