@@ -4,9 +4,9 @@ use serde::{
 };
 
 use crate::{
-    game::components::{
-        Body,
-        Craft,
+    game::{
+        components::Body,
+        features::health::Health,
     },
     math::prelude::*,
 };
@@ -28,9 +28,9 @@ impl Explosion {
 
     pub fn damage_nearby_crafts<'r>(&self,
         body:   &Body,
-        nearby: impl IntoIterator<Item=(&'r Body, &'r mut Craft)>,
+        nearby: impl IntoIterator<Item=(&'r Body, &'r mut Health)>,
     ) {
-        for (nearby_body, nearby_craft) in nearby {
+        for (nearby_body, health) in nearby {
             let distance  = (nearby_body.pos - body.pos).magnitude();
 
             if distance > 20.0 {
@@ -38,7 +38,7 @@ impl Explosion {
             }
 
             let damage = f32::min(1.0 / distance, 5.0);
-            nearby_craft.health -= damage;
+            health.value -= damage;
         }
     }
 

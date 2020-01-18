@@ -1,5 +1,6 @@
 pub mod components;
 pub mod entities;
+pub mod features;
 pub mod indices;
 pub mod in_event;
 pub mod out_event;
@@ -23,6 +24,7 @@ use crate::{
 
 use self::{
     components::Player,
+    features::health,
     indices::Indices,
     in_event::InEvent,
     out_event::OutEvent,
@@ -69,7 +71,6 @@ impl State {
                     );
                     systems::crafts::update_crafts(
                         self.world.query(),
-                        &mut self.in_events.push(),
                         dt,
                     );
                     systems::crafts::update_bodies(
@@ -84,6 +85,10 @@ impl State {
                     systems::explosions::update_explosions(
                         self.world.query(),
                         dt,
+                        &mut self.in_events.push(),
+                    );
+                    health::check_health(
+                        self.world.query(),
                         &mut self.in_events.push(),
                     );
                 }
@@ -118,6 +123,13 @@ impl State {
                     systems::missiles::launch_missile(
                         &mut self.world.spawn(&mut despawned),
                         missile,
+                    );
+                }
+                InEvent::DeadEntity { entity } => {
+                    health::explode_entity(
+                        self.world.query(),
+                        &mut self.in_events.push(),
+                        entity,
                     );
                 }
                 InEvent::ExplodeCraft { craft, explosion } => {

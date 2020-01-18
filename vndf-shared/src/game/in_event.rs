@@ -28,6 +28,9 @@ events! {
         LaunchMissile, launch_missile {
             missile: Missile,
         }
+        DeadEntity, dead_entity {
+            entity: Entity,
+        }
         ExplodeCraft, explode_craft {
             craft:     Entity,
             explosion: Explosion,

@@ -4,6 +4,7 @@ use crate::{
     game::{
         PlayerId,
         components as c,
+        features::health::Health,
     },
     math::{
         prelude::*,
@@ -14,9 +15,9 @@ use crate::{
 
 
 pub type Explosion = (c::Explosion, c::Body);
-pub type Missile   = (c::Missile, c::Body, c::Craft);
+pub type Missile   = (c::Missile, c::Body, c::Craft, Health);
 pub type Player    = (c::Player,);
-pub type Ship      = (c::Ship, c::Body, c::Craft);
+pub type Ship      = (c::Ship, c::Body, c::Craft, Health);
 
 
 pub fn explosion(exploding: &c::Body) -> Explosion {
@@ -41,11 +42,10 @@ pub fn missile(owner: PlayerId, from_body: &c::Body, target: Pnt2) -> Missile {
         engine_on: true,
         thrust:    200.0,
         fuel:      400.0,
-        health:    2.0,
         owner,
     };
 
-    (c::Missile::new(target), body, craft)
+    (c::Missile::new(target), body, craft, Health::new(2.0))
 }
 
 pub fn player(id: PlayerId, addr: SocketAddr) -> Player {
@@ -57,9 +57,8 @@ pub fn ship(owner: PlayerId) -> Ship {
         engine_on: false,
         thrust:    100.0,
         fuel:      1200.0,
-        health:    10.0,
         owner,
     };
 
-    (c::Ship::new(), c::Body::new(), craft)
+    (c::Ship::new(), c::Body::new(), craft, Health::new(10.0))
 }

@@ -21,16 +21,11 @@ pub fn update_bodies(world: world::Query, world_size: f32, dt: f32) {
 
 pub fn update_crafts(
     world:  world::Query,
-    events: &mut events::Push<InEvent>,
     dt:     f32,
 ) {
     let query = &mut world.query::<(&mut Craft, &mut Body)>();
-    for (entity, (craft, body)) in query {
+    for (_, (craft, body)) in query {
         craft.apply_thrust(body, dt);
-
-        if let Some(explosion) = craft.should_explode(body) {
-            events.explode_craft(entity, explosion);
-        }
     }
 }
 

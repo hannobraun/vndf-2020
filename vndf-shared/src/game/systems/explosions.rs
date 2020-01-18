@@ -3,9 +3,9 @@ use crate::{
     game::{
         components::{
             Body,
-            Craft,
             Explosion,
         },
+        features::health::Health,
         in_event::InEvent,
     },
     world,
@@ -21,10 +21,10 @@ pub fn damage_nearby_crafts(
     let body = world.get(entity)
         .expect("Explosion not found");
 
-    let query = &mut world.query::<(&Body, &mut Craft)>();
+    let query = &mut world.query::<(&Body, &mut Health)>();
     let nearby = query
         .into_iter()
-        .map(|(_, (body, craft))| (body, craft));
+        .map(|(_, (body, health))| (body, health));
 
     explosion.damage_nearby_crafts(&body, nearby);
 }

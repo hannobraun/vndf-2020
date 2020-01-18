@@ -24,6 +24,7 @@ use crate::{
                 Missile,
                 Ship,
             },
+            features::health::Health,
         },
         math::{
             prelude::*,
@@ -225,8 +226,8 @@ End game - Escape",
                 .dest([20.0, 20.0])
         )?;
 
-        let query = &mut state.world.query::<(&Ship, &Craft)>();
-        for (_, (ship, craft)) in query {
+        let query = &mut state.world.query::<(&Ship, &Craft, &Health)>();
+        for (_, (ship, craft, health)) in query {
             if state.own_id != Some(craft.owner) {
                 continue;
             }
@@ -237,7 +238,7 @@ End game - Escape",
 Structural Integrity: {:.2}
 Fuel: {:.2}
 Heavy Missiles: {}",
-                craft.health,
+                health.value,
                 craft.fuel,
                 ship.missiles,
             );
