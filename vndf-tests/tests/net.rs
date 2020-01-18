@@ -15,7 +15,7 @@ fn network_should_emit_receive_events() -> net::Result {
     let mut server = Network::start_local()?;
     let mut conn   = Conn::connect(server.addr())?;
 
-    let sent = msg::FromClient::Hello;
+    let sent = msg::FromClient::Ping;
     conn.send(sent)?;
 
     let mut received = None;
@@ -63,7 +63,7 @@ fn clients_should_emit_receive_events() -> Result<(), Error> {
     let mut server = Network::start_local()?;
     let mut client = Conn::connect(server.addr())?;
 
-    client.send(msg::FromClient::Hello)?;
+    client.send(msg::FromClient::Ping)?;
 
     let mut client_connected = false;
     while !client_connected {

@@ -45,6 +45,7 @@ impl<T> Message for T where T: Send + Debug + DeserializeOwned + Serialize {}
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub enum FromClient {
+    Ping,
     Hello,
     Input(input::Event),
 }

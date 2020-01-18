@@ -68,6 +68,10 @@ impl Server {
 
         for event in self.events.drain(..) {
             match event {
+                Event::Message(_, msg::FromClient::Ping) => {
+                    // This message is just for testing purposes. Nothing to do
+                    // here.
+                }
                 Event::Message(id, msg::FromClient::Hello) => {
                     info!("Connected: {}", id);
                     self.state.push().connect_player(id);
