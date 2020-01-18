@@ -26,6 +26,11 @@ use serde::{
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Config {
+    pub input: Input,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct Input {
     pub left:   Key,
     pub right:  Key,
     pub thrust: Key,
@@ -60,10 +65,12 @@ impl Config {
 impl Default for Config {
     fn default() -> Self {
         Self {
-            left:   Key::Keyboard(KeyCode::A),
-            right:  Key::Keyboard(KeyCode::D),
-            thrust: Key::Keyboard(KeyCode::W),
-            launch: Key::Mouse(MouseButton::Left),
+            input: Input {
+                left:   Key::Keyboard(KeyCode::A),
+                right:  Key::Keyboard(KeyCode::D),
+                thrust: Key::Keyboard(KeyCode::W),
+                launch: Key::Mouse(MouseButton::Left),
+            },
         }
     }
 }

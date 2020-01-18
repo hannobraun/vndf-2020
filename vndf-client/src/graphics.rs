@@ -214,10 +214,10 @@ Turn right - {}
 Accelerate - {}
 Shoot - {} (aim with mouse)
 End game - Escape",
-            input.config.left,
-            input.config.right,
-            input.config.thrust,
-            input.config.launch,
+            input.config.input.left,
+            input.config.input.right,
+            input.config.input.thrust,
+            input.config.input.launch,
         );
 
         graphics::draw(

@@ -44,13 +44,13 @@ impl Input {
 
     pub fn key_down(&self, key: Key) -> Option<Event> {
         match key {
-            k if k == self.config.left =>
+            k if k == self.config.input.left =>
                 Some(Event::Rotate(Rotation::Left)),
-            k if k == self.config.right =>
+            k if k == self.config.input.right =>
                 Some(Event::Rotate(Rotation::Right)),
-            k if k == self.config.thrust =>
+            k if k == self.config.input.thrust =>
                 Some(Event::Thrust(true)),
-            k if k == self.config.launch =>
+            k if k == self.config.input.launch =>
                 self.pointer_world
                     .map(|target| Event::LaunchMissile { target }),
 
@@ -60,11 +60,11 @@ impl Input {
 
     pub fn key_up(&self, key: Key) -> Option<Event> {
         match key {
-            k if k == self.config.left =>
+            k if k == self.config.input.left =>
                 Some(Event::Rotate(Rotation::None)),
-            k if k == self.config.right =>
+            k if k == self.config.input.right =>
                 Some(Event::Rotate(Rotation::None)),
-            k if k == self.config.thrust =>
+            k if k == self.config.input.thrust =>
                 Some(Event::Thrust(false)),
 
             _ => None,
