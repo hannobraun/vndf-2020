@@ -33,7 +33,7 @@ pub fn update_missiles(
         missile.update_guidance(body);
 
         if let Some(explosion) = missile.should_explode(body, craft) {
-            events.explode_missile(id, explosion);
+            events.explode_craft(id, explosion);
         }
     }
 }

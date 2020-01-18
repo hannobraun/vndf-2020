@@ -120,14 +120,6 @@ impl State {
                         missile,
                     );
                 }
-                InEvent::ExplodeMissile { missile, explosion } => {
-                    systems::crafts::explode_craft(
-                        &mut self.world.spawn(&mut despawned),
-                        &mut self.in_events.push(),
-                        missile,
-                        explosion,
-                    );
-                }
                 InEvent::ExplodeCraft { craft, explosion } => {
                     systems::crafts::explode_craft(
                         &mut self.world.spawn(&mut despawned),

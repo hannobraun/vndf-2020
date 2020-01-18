@@ -28,10 +28,6 @@ events! {
         LaunchMissile, launch_missile {
             missile: Missile,
         }
-        ExplodeMissile, explode_missile {
-            missile:   Entity,
-            explosion: Explosion,
-        }
         ExplodeCraft, explode_craft {
             craft:     Entity,
             explosion: Explosion,
