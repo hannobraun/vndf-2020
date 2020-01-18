@@ -38,7 +38,7 @@ pub fn update_missiles(
     }
 }
 
-pub fn explode_missile(
+pub fn remove_missile(
     world:     &mut world::Spawn,
     missile:   hecs::Entity,
     explosion: e::Explosion,

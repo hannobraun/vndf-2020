@@ -120,7 +120,7 @@ impl State {
                     );
                 }
                 InEvent::ExplodeMissile { missile, explosion } => {
-                    systems::missiles::explode_missile(
+                    systems::missiles::remove_missile(
                         &mut self.world.spawn(&mut despawned),
                         missile,
                         explosion,
