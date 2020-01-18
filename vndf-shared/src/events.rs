@@ -48,6 +48,7 @@ macro_rules! events {
         }
 
 
+        #[derive(Debug)]
         pub enum $name {
             $(
                 $event {
