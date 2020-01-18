@@ -46,7 +46,9 @@ impl<T> Message for T where T: Send + Debug + DeserializeOwned + Serialize {}
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub enum FromClient {
     Ping,
-    Hello,
+    Hello {
+        color: [f32; 3],
+    },
     Input(input::Event),
 }
 

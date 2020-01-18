@@ -26,11 +26,11 @@ pub struct Ship {
 }
 
 impl Ship {
-    pub fn new() -> Self {
+    pub fn new(color: [f32; 3]) -> Self {
         Self {
             rotation: Rotation::None,
             missiles: 16,
-            color:    [1.0, 1.0, 0.0],
+            color,
         }
     }
 

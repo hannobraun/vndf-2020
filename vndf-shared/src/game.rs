@@ -94,7 +94,7 @@ impl State {
                         &mut self.in_events.push(),
                     );
                 }
-                InEvent::ConnectPlayer { player } => {
+                InEvent::ConnectPlayer { player, color } => {
                     let id = self.next_id.increment();
 
                     systems::players::connect_player(
@@ -103,6 +103,7 @@ impl State {
                         &mut self.indices,
                         id,
                         player,
+                        color,
                     );
                 }
                 InEvent::DisconnectPlayer { player } => {

@@ -103,7 +103,7 @@ impl Game {
         -> Result<Self, Error>
     {
         let mut conn = conn;
-        conn.send(msg::FromClient::Hello)?;
+        conn.send(msg::FromClient::Hello { color: [1.0, 1.0, 0.0] })?;
 
         Ok(
             Game {

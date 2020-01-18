@@ -14,6 +14,7 @@ events! {
         }
         ConnectPlayer, connect_player {
             player: SocketAddr,
+            color:  [f32; 3],
         }
         DisconnectPlayer, disconnect_player {
             player: SocketAddr,

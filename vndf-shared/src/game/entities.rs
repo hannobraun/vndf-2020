@@ -52,7 +52,7 @@ pub fn player(id: PlayerId, addr: SocketAddr) -> Player {
     (c::Player::new(id, addr),)
 }
 
-pub fn ship(owner: PlayerId) -> Ship {
+pub fn ship(owner: PlayerId, color: [f32; 3]) -> Ship {
     let craft = c::Craft {
         engine_on: false,
         thrust:    100.0,
@@ -60,5 +60,5 @@ pub fn ship(owner: PlayerId) -> Ship {
         owner,
     };
 
-    (c::Ship::new(), c::Body::new(), craft, Health::new(10.0))
+    (c::Ship::new(color), c::Body::new(), craft, Health::new(10.0))
 }
