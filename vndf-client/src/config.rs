@@ -24,12 +24,12 @@ use serde::{
 };
 
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Clone, Copy, Debug, Deserialize, Serialize)]
 pub struct Config {
     pub input: Input,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Clone, Copy, Debug, Deserialize, Serialize)]
 pub struct Input {
     pub left:   Key,
     pub right:  Key,
@@ -76,7 +76,7 @@ impl Default for Config {
 }
 
 
-#[derive(Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Key {
     Keyboard(KeyCode),
     Mouse(MouseButton),
