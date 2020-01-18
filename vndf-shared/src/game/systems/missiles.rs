@@ -52,7 +52,7 @@ pub fn explode_missile(
         .into_iter()
         .map(|(_, (body, craft))| (body, craft));
 
-    missile.explode(&body, nearby);
+    missile.damage_nearby_crafts(&body, nearby);
 }
 
 pub fn remove_missile(

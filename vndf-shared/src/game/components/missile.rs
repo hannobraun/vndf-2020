@@ -119,7 +119,7 @@ impl Missile {
         }
     }
 
-    pub fn explode<'r>(&self,
+    pub fn damage_nearby_crafts<'r>(&self,
         body:   &Body,
         nearby: impl IntoIterator<Item=(&'r Body, &'r mut Craft)>,
     ) {
