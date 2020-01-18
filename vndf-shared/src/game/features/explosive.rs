@@ -21,7 +21,7 @@ pub fn explode_entity(
     Some(())
 }
 
-pub fn explode_craft(
+pub fn create_explosion(
     world:     &mut world::Spawn,
     events:    &mut events::Push<InEvent>,
     explosion: e::Explosion,
