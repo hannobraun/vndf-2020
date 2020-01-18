@@ -56,8 +56,6 @@ impl Missile {
         craft:   &Craft,
         targets: impl IntoIterator<Item=(Body, Craft)>,
     ) {
-        // TASK: Missiles shouldn't consider themselves targets.
-
         let mut best_rating = 0.0;
         let mut new_target  = None;
 
