@@ -233,17 +233,17 @@ End game - Escape",
 
             let (width, _) = graphics::drawable_size(context);
 
+            let status = format!("Ship Status
+Fuel: {:.2}
+Heavy Missiles: {}",
+                craft.fuel,
+                ship.missiles,
+            );
             graphics::draw(
                 context,
-                &Text::new(format!("Fuel: {:.2}", craft.fuel)),
+                &Text::new(status),
                 DrawParam::new()
                     .dest([width - 200.0, 20.0])
-            )?;
-            graphics::draw(
-                context,
-                &Text::new(format!("Heavy Missile: {}", ship.missiles)),
-                DrawParam::new()
-                    .dest([width - 200.0, 50.0])
             )?;
 
             // There should only be one ship owned by the local player, so let's
