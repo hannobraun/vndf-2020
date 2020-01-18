@@ -28,7 +28,7 @@ pub fn explode_entity(
         strength += 3.0;
     }
     if ship.is_some() {
-        strength += 15.0;
+        strength += 6.0;
     }
 
     Some(e::explosion(&body, strength))
