@@ -79,7 +79,7 @@ pub fn start<A: ToSocketAddrs>(addr: A) -> Result<(), Error> {
     let input = Input::new(config);
 
     let     conn = Conn::connect(addr)?;
-    let mut game = Game::new(conn, input, &mut context)?;
+    let mut game = Game::new(conn, input, config, &mut context)?;
 
     run(&mut context, &mut event_loop, &mut game)?;
 
@@ -98,12 +98,19 @@ impl Game {
     pub fn new(
         conn:    Conn,
         input:   Input,
+        config:  Config,
         context: &mut Context,
     )
         -> Result<Self, Error>
     {
         let mut conn = conn;
-        conn.send(msg::FromClient::Hello { color: [1.0, 1.0, 0.0] })?;
+
+        let color = [
+            config.color.r,
+            config.color.g,
+            config.color.b,
+        ];
+        conn.send(msg::FromClient::Hello { color })?;
 
         Ok(
             Game {

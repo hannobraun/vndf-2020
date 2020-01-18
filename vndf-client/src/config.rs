@@ -27,6 +27,7 @@ use serde::{
 #[derive(Clone, Copy, Debug, Deserialize, Serialize)]
 pub struct Config {
     pub input: Input,
+    pub color: Color,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Serialize)]
@@ -35,6 +36,13 @@ pub struct Input {
     pub right:  Key,
     pub thrust: Key,
     pub launch: Key
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Serialize)]
+pub struct Color {
+    pub r: f32,
+    pub g: f32,
+    pub b: f32,
 }
 
 impl Config {
@@ -71,6 +79,11 @@ impl Default for Config {
                 thrust: Key::Keyboard(KeyCode::W),
                 launch: Key::Mouse(MouseButton::Left),
             },
+            color: Color {
+                r: 1.0,
+                g: 1.0,
+                b: 0.0,
+            }
         }
     }
 }
