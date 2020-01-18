@@ -186,13 +186,14 @@ impl Graphics {
         -> GameResult
     {
         let alpha = explosion.strength_left / explosion.strength_total;
+        let size  = explosion.strength_total * 2.0;
 
         graphics::draw(
             context,
             &self.explosion,
             DrawParam::new()
                 .dest(body.pos)
-                .scale([6.0, 6.0])
+                .scale([size, size])
                 .color([1.0, 1.0, 1.0, alpha].into())
         )
     }
