@@ -129,17 +129,20 @@ impl State {
                     );
                 }
                 InEvent::DeadEntity { entity } => {
+                    health::remove_entity(
+                        &mut self.world.spawn(&mut despawned),
+                        entity,
+                    );
                     explosive::explode_entity(
                         self.world.query(),
                         &mut self.in_events.push(),
                         entity,
                     );
                 }
-                InEvent::ExplodeCraft { craft, explosion } => {
+                InEvent::ExplodeCraft { explosion, .. } => {
                     systems::crafts::explode_craft(
                         &mut self.world.spawn(&mut despawned),
                         &mut self.in_events.push(),
-                        craft,
                         explosion,
                     );
                 }

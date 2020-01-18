@@ -38,3 +38,13 @@ pub fn check_health(
         }
     }
 }
+
+pub fn remove_entity(
+    world:  &mut world::Spawn,
+    entity: hecs::Entity,
+)
+    -> Option<()>
+{
+    world.despawn(entity).ok()?;
+    Some(())
+}
