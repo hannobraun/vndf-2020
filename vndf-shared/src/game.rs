@@ -81,7 +81,7 @@ impl State {
                         self.world.query(),
                         &mut self.in_events.push(),
                     );
-                    systems::missiles::update_explosions(
+                    systems::explosions::update_explosions(
                         self.world.query(),
                         dt,
                         &mut self.in_events.push(),
@@ -129,13 +129,13 @@ impl State {
                     );
                 }
                 InEvent::CreateExplosion { explosion } => {
-                    systems::missiles::damage_nearby_crafts(
+                    systems::explosions::damage_nearby_crafts(
                         &mut self.world.query(),
                         explosion,
                     );
                 }
                 InEvent::RemoveExplosion { explosion } => {
-                    systems::missiles::remove_explosion(
+                    systems::explosions::remove_explosion(
                         &mut self.world.spawn(&mut despawned),
                         explosion,
                     );

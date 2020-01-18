@@ -1,0 +1,47 @@
+use crate::{
+    events,
+    game::{
+        components::{
+            Body,
+            Craft,
+            Explosion,
+        },
+        in_event::InEvent,
+    },
+    world,
+};
+
+
+pub fn damage_nearby_crafts(
+    world:  &mut world::Query,
+    entity: hecs::Entity,
+) {
+    let explosion = world.get::<Explosion>(entity)
+        .expect("Explosion not found");
+    let body = world.get(entity)
+        .expect("Explosion not found");
+
+    let query = &mut world.query::<(&Body, &mut Craft)>();
+    let nearby = query
+        .into_iter()
+        .map(|(_, (body, craft))| (body, craft));
+
+    explosion.damage_nearby_crafts(&body, nearby);
+}
+
+pub fn update_explosions(
+    world:  world::Query,
+    dt:     f32,
+    events: &mut events::Push<InEvent>,
+) {
+    for (id, (explosion,)) in &mut world.query::<(&mut Explosion,)>() {
+        if explosion.update(dt) {
+            events.remove_explosion(id);
+        }
+    }
+}
+
+pub fn remove_explosion(world: &mut world::Spawn, explosion: hecs::Entity) {
+    world.despawn(explosion)
+        .expect("Explosion should exist");
+}
