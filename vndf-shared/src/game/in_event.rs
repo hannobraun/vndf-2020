@@ -32,6 +32,10 @@ events! {
             missile:   Entity,
             explosion: Explosion,
         }
+        ExplodeCraft, explode_craft {
+            craft:     Entity,
+            explosion: Explosion,
+        }
         RemoveExplosion, remove_explosion {
             explosion: Entity,
         }

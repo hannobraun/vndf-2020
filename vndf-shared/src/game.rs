@@ -69,6 +69,7 @@ impl State {
                     );
                     systems::crafts::update_crafts(
                         self.world.query(),
+                        &mut self.in_events.push(),
                         dt,
                     );
                     systems::crafts::update_bodies(
@@ -127,6 +128,13 @@ impl State {
                     systems::missiles::remove_missile(
                         &mut self.world.spawn(&mut despawned),
                         missile,
+                        explosion,
+                    );
+                }
+                InEvent::ExplodeCraft { craft, explosion } => {
+                    systems::crafts::explode_craft(
+                        &mut self.world.spawn(&mut despawned),
+                        craft,
                         explosion,
                     );
                 }

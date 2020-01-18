@@ -7,6 +7,7 @@ use crate::{
     game::{
         PlayerId,
         components::Body,
+        entities as e,
     },
     math::{
         prelude::*,
@@ -33,5 +34,14 @@ impl Craft {
         else {
             Vec2::zero()
         };
+    }
+
+    pub fn should_explode(&self, body: &Body) -> Option<e::Explosion> {
+        if self.health <= 0.0 {
+            Some(e::explosion(body))
+        }
+        else {
+            None
+        }
     }
 }
