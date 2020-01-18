@@ -38,6 +38,23 @@ pub fn update_missiles(
     }
 }
 
+pub fn explode_missile(
+    world:  &mut world::Query,
+    entity: hecs::Entity,
+) {
+    let missile = world.get::<Missile>(entity)
+        .expect("Exploding missile not found");
+    let body = world.get(entity)
+        .expect("Exploding missile not found");
+
+    let query = &mut world.query::<(&Body, &mut Craft)>();
+    let nearby = query
+        .into_iter()
+        .map(|(_, (body, craft))| (body, craft));
+
+    missile.explode(&body, nearby);
+}
+
 pub fn remove_missile(
     world:     &mut world::Spawn,
     missile:   hecs::Entity,
