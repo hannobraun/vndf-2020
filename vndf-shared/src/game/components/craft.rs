@@ -20,6 +20,7 @@ pub struct Craft {
     pub engine_on: bool,
     pub thrust:    f32,
     pub fuel:      f32,
+    pub health:    f32,
     pub owner:     PlayerId,
 }
 

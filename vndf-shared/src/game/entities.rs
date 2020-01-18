@@ -41,6 +41,7 @@ pub fn missile(owner: PlayerId, from_body: &c::Body, target: Pnt2) -> Missile {
         engine_on: true,
         thrust:    200.0,
         fuel:      400.0,
+        health:    2.0,
         owner,
     };
 
@@ -56,6 +57,7 @@ pub fn ship(owner: PlayerId) -> Ship {
         engine_on: false,
         thrust:    100.0,
         fuel:      1200.0,
+        health:    10.0,
         owner,
     };
 
