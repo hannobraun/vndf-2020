@@ -141,7 +141,7 @@ impl State {
                     );
                 }
                 InEvent::CreateExplosion { explosion } => {
-                    systems::explosions::damage_nearby_crafts(
+                    systems::explosions::damage_nearby(
                         &mut self.world.query(),
                         explosion,
                     );

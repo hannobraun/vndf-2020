@@ -12,7 +12,7 @@ use crate::{
 };
 
 
-pub fn damage_nearby_crafts(
+pub fn damage_nearby(
     world:  &mut world::Query,
     entity: hecs::Entity,
 ) {
