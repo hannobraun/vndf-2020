@@ -15,7 +15,7 @@ use crate::{
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Explosion {
     pub strength_total: f32,
-    pub time_left:      f32,
+    pub strength_left:  f32,
 }
 
 impl Explosion {
@@ -24,7 +24,7 @@ impl Explosion {
 
         Self {
             strength_total,
-            time_left: strength_total,
+            strength_left: strength_total,
         }
     }
 
@@ -45,8 +45,8 @@ impl Explosion {
     }
 
     pub fn update(&mut self, dt: f32) -> bool {
-        if self.time_left > 0.0 {
-            self.time_left -= dt;
+        if self.strength_left > 0.0 {
+            self.strength_left -= dt;
             false
         }
         else {
