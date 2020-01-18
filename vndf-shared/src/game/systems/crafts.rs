@@ -16,6 +16,6 @@ pub fn update_bodies(world: world::Query, world_size: f32, dt: f32) {
 
 pub fn update_crafts(world: world::Query, dt: f32) {
     for (_, (craft, body)) in &mut world.query::<(&mut Craft, &mut Body)>() {
-        craft.update(body, dt)
+        craft.apply_thrust(body, dt)
     }
 }

@@ -25,7 +25,7 @@ pub struct Craft {
 }
 
 impl Craft {
-    pub fn update(&mut self, body: &mut Body, dt: f32) {
+    pub fn apply_thrust(&mut self, body: &mut Body, dt: f32) {
         body.acc = if self.engine_on && self.fuel > 0.0 {
             self.fuel -= self.thrust * dt;
             body.dir.normalize() * self.thrust
