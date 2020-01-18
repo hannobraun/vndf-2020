@@ -129,13 +129,13 @@ impl State {
                     );
                 }
                 InEvent::DeadEntity { entity } => {
-                    health::remove_entity(
-                        &mut self.world.spawn(&mut despawned),
-                        entity,
-                    );
                     explosive::explode_entity(
                         self.world.query(),
                         &mut self.in_events.push(),
+                        entity,
+                    );
+                    health::remove_entity(
+                        &mut self.world.spawn(&mut despawned),
                         entity,
                     );
                 }
