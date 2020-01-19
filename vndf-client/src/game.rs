@@ -40,9 +40,13 @@ impl State {
     }
 
     pub fn remove_entity(&mut self, id: Id) {
-        let hecs_entity = self.ids.remove(&id)
-            .expect("Server sent removal message for unknown entity");
-        self.world.despawn(hecs_entity)
-            .expect("Entity did not exist, but id was being tracked");
+        if let Some(hecs_entity) = self.ids.remove(&id) {
+            self.world.despawn(hecs_entity)
+                .expect("Entity did not exist, but id was being tracked");
+        }
+        else {
+            // The entity might not exist, if we logged in right after the
+            // entity was removed. Nothing to do in that case.
+        }
     }
 }
