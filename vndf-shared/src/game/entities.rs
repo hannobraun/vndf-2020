@@ -23,7 +23,7 @@ pub type Ship      = (c::Ship, c::Body, c::Craft, Health);
 pub fn explosion(exploding: &c::Body, strength: f32) -> Explosion {
     let body = c::Body {
         pos: exploding.pos,
-        vel: exploding.vel * 0.1,
+        vel: exploding.vel * 0.05,
         .. c::Body::new()
     };
 
