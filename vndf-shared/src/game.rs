@@ -16,6 +16,7 @@ use serde::{
 
 use crate::{
     events::{
+        self,
         Events,
         Push,
     },
@@ -46,6 +47,7 @@ pub struct State {
     out_events: Events<OutEvent>,
     indices:    Indices,
     next_id:    PlayerId,
+    new_player: events::Stream<(PlayerId, SocketAddr)>,
 }
 
 impl State {
@@ -56,6 +58,7 @@ impl State {
             out_events: Events::new(),
             indices:    Indices::new(),
             next_id:    PlayerId::first(),
+            new_player: events::Stream::new(),
         }
     }
 
@@ -99,7 +102,7 @@ impl State {
 
                     systems::players::connect_player(
                         &mut self.world.spawn(&mut despawned),
-                        &mut self.out_events.push(),
+                        &mut self.new_player.sink(),
                         &mut self.indices,
                         id,
                         player,
@@ -180,6 +183,10 @@ impl State {
 
     pub fn out_events(&mut self) -> impl Iterator<Item=OutEvent> + '_ {
         self.out_events.drain()
+    }
+
+    pub fn new_player(&mut self) -> events::Source<(PlayerId, SocketAddr)> {
+        self.new_player.source()
     }
 }
 

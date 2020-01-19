@@ -12,7 +12,6 @@ use crate::{
         },
         entities,
         in_event::InEvent,
-        out_event::OutEvent,
         indices::Indices,
     },
     input,
@@ -21,18 +20,18 @@ use crate::{
 
 
 pub fn connect_player(
-    world:   &mut world::Spawn,
-    events:  &mut events::Push<OutEvent>,
-    indices: &mut Indices,
-    id:      PlayerId,
-    address: SocketAddr,
-    color:   [f32; 3],
+    world:      &mut world::Spawn,
+    new_player: &mut events::Sink<(PlayerId, SocketAddr)>,
+    indices:    &mut Indices,
+    id:         PlayerId,
+    address:    SocketAddr,
+    color:      [f32; 3],
 ) {
     let entity = world.spawn(entities::player(id, address));
     indices.players_by_address.insert(address, entity);
 
     world.spawn(entities::ship(id, color));
-    events.new_player(id, address);
+    new_player.push((id, address));
 }
 
 pub fn disconnect_player(

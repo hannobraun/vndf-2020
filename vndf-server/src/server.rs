@@ -101,6 +101,13 @@ impl Server {
 
         let clients = self.state.players();
 
+        for (id, addr) in self.state.new_player().ready() {
+            self.network.send(
+                addr,
+                msg::FromServer::Welcome(id),
+            );
+        }
+
         for event in self.state.out_events() {
             match event {
                 OutEvent::Despawn { entity } => {
@@ -112,12 +119,6 @@ impl Server {
                             ),
                         );
                     }
-                }
-                OutEvent::NewPlayer { id, addr } => {
-                    self.network.send(
-                        addr,
-                        msg::FromServer::Welcome(id),
-                    );
                 }
             }
         }
