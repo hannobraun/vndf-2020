@@ -3,6 +3,7 @@ use std::{
     iter,
 };
 
+
 pub struct Events<T>(VecDeque<T>);
 
 impl<T> Events<T> {
