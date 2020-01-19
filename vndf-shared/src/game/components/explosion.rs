@@ -33,12 +33,9 @@ impl Explosion {
         for (nearby_body, health) in nearby {
             let distance  = (nearby_body.pos - body.pos).magnitude();
 
-            if distance > 20.0 {
-                continue;
+            if distance <= 20.0 {
+                health.value -= self.strength_total;
             }
-
-            let damage = f32::min(1.0 / distance, 5.0);
-            health.value -= damage;
         }
     }
 
