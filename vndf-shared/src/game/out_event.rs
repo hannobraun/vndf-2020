@@ -8,7 +8,7 @@ events!(
         Despawn, despawn {
             entity: hecs::Entity,
         }
-        CreatePlayer, create_player {
+        NewPlayer, new_player {
             id:   PlayerId,
             addr: SocketAddr,
         }

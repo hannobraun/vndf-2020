@@ -32,7 +32,7 @@ pub fn connect_player(
     indices.players_by_address.insert(address, entity);
 
     world.spawn(entities::ship(id, color));
-    events.create_player(id, address);
+    events.new_player(id, address);
 }
 
 pub fn disconnect_player(
