@@ -136,8 +136,8 @@ impl Graphics {
             self.draw_ship(context, ship, body)?;
         }
 
-        for (_, (_, body)) in &mut state.world.query::<(&Missile, &Body)>() {
-            self.draw_missile(context, body)?;
+        for (_, (missile, body)) in &mut state.world.query::<(&Missile, &Body)>() {
+            self.draw_missile(context, body, missile)?;
         }
 
         let query = &mut state.world.query::<(&Explosion, &Body)>();
@@ -173,13 +173,32 @@ impl Graphics {
         )
     }
 
-    fn draw_missile(&self, context: &mut Context, body: &Body) -> GameResult {
+    fn draw_missile(&self,
+        context: &mut Context,
+        body:    &Body,
+        missile: &Missile,
+    )
+        -> GameResult
+    {
         graphics::draw(
             context,
             &self.missile,
             DrawParam::new()
                 .dest(body.pos)
                 .scale([4.0, 4.0])
+        )?;
+
+        let line = Mesh::new_line(
+            context,
+            &[body.pos, missile.target],
+            1.5,
+            [0.0, 1.0, 0.0, 1.0].into(),
+        )?;
+
+        graphics::draw(
+            context,
+            &line,
+            DrawParam::new(),
         )
     }
 
