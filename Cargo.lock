@@ -1374,7 +1374,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "pid"
 version = "2.0.0"
-source = "git+https://github.com/hannobraun/pid-rs.git?branch=traits#653e73319f3f4e43c255072d704eedb2d314ce7f"
+source = "git+https://github.com/hannobraun/pid-rs.git?branch=traits#e901e88b67e840db102ae0a9ef5db717241702c8"
 dependencies = [
  "num-traits 0.2.11 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde 1.0.104 (registry+https://github.com/rust-lang/crates.io-index)",
