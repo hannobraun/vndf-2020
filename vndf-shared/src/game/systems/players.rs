@@ -26,7 +26,7 @@ pub fn connect_player(
     indices: &mut Indices,
     id:      PlayerId,
     address: SocketAddr,
-    color:   [f32; 3]
+    color:   [f32; 3],
 ) {
     let entity = world.spawn(entities::player(id, address));
     indices.players_by_address.insert(address, entity);
