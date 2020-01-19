@@ -24,14 +24,14 @@ pub fn connect_player(
     new_player: &mut events::Sink<(PlayerId, SocketAddr)>,
     indices:    &mut Indices,
     id:         PlayerId,
-    address:    SocketAddr,
+    addr:       SocketAddr,
     color:      [f32; 3],
 ) {
-    let entity = world.spawn(entities::player(id, address));
-    indices.players_by_address.insert(address, entity);
+    let entity = world.spawn(entities::player(id, addr));
+    indices.players_by_address.insert(addr, entity);
 
     world.spawn(entities::ship(id, color));
-    new_player.push((id, address));
+    new_player.push((id, addr));
 }
 
 pub fn disconnect_player(
