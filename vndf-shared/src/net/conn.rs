@@ -22,6 +22,7 @@ use std::{
 
 use log::{
     debug,
+    error,
     trace,
 };
 
@@ -47,10 +48,12 @@ impl<In, Out> Conn<In, Out>
     pub fn connect<A: ToSocketAddrs>(addr: A) -> io::Result<Self> {
         let stream = TcpStream::connect(addr)?;
 
-        Self::from_stream(stream)
+        Self::from_stream(stream, true)
     }
 
-    pub fn from_stream(stream: TcpStream) -> io::Result<Self> {
+    pub fn from_stream(stream: TcpStream, errors_are_critical: bool)
+        -> io::Result<Self>
+    {
         let local_addr = stream.local_addr()?;
         let peer_addr  = stream.peer_addr()?;
 
@@ -62,13 +65,23 @@ impl<In, Out> Conn<In, Out>
 
         thread::spawn(move ||
             if let Err(err) = send(stream_send, out_rx) {
-                debug!("Send error ({}): {:?}", peer_addr, err);
+                if errors_are_critical {
+                    error!("Send error ({}): {:?}", peer_addr, err);
+                }
+                else {
+                    debug!("Send error ({}): {:?}", peer_addr, err);
+                }
             }
         );
 
         thread::spawn(move || {
             if let Err(err) = receive(stream_receive, in_tx) {
-                debug!("Receive error ({}) : {:?}", peer_addr, err);
+                if errors_are_critical {
+                    error!("Receive error ({}) : {:?}", peer_addr, err);
+                }
+                else {
+                    debug!("Receive error ({}) : {:?}", peer_addr, err);
+                }
             }
         });
 

@@ -172,7 +172,7 @@ fn accept(
 
 fn accept_conn(stream: io::Result<TcpStream>) -> io::Result<Conn> {
     let stream = stream?;
-    Conn::from_stream(stream)
+    Conn::from_stream(stream, false)
 }
 
 
