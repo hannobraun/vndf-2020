@@ -164,7 +164,7 @@ impl State {
         }
 
         for entity in despawned {
-            self.out_events.push().despawn(entity);
+            self.out_events.push().entity_removed(entity);
         }
     }
 

@@ -1,6 +1,6 @@
 events!(
     OutEvent {
-        Despawn, despawn {
+        EntityRemoved, entity_removed {
             entity: hecs::Entity,
         }
     }

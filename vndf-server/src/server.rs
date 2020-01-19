@@ -110,7 +110,7 @@ impl Server {
 
         for event in self.state.out_events() {
             match event {
-                OutEvent::Despawn { entity } => {
+                OutEvent::EntityRemoved { entity } => {
                     for &address in &clients {
                         self.network.send(
                             address,
