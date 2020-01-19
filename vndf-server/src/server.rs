@@ -101,10 +101,10 @@ impl Server {
 
         let clients = self.state.players();
 
-        for (id, addr) in self.state.new_player().ready() {
+        for new_player in self.state.new_player().ready() {
             self.network.send(
-                addr,
-                msg::FromServer::Welcome(id),
+                new_player.addr,
+                msg::FromServer::Welcome(new_player.id),
             );
         }
 

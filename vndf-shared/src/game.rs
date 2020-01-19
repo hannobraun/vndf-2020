@@ -28,6 +28,7 @@ use self::{
     features::{
         explosive,
         health,
+        players::NewPlayer,
     },
     indices::Indices,
     in_event::InEvent,
@@ -47,7 +48,7 @@ pub struct State {
     out_events: Events<OutEvent>,
     indices:    Indices,
     next_id:    PlayerId,
-    new_player: events::Stream<(PlayerId, SocketAddr)>,
+    new_player: events::Stream<NewPlayer>,
 }
 
 impl State {
@@ -185,7 +186,7 @@ impl State {
         self.out_events.drain()
     }
 
-    pub fn new_player(&mut self) -> events::Source<(PlayerId, SocketAddr)> {
+    pub fn new_player(&mut self) -> events::Source<NewPlayer> {
         self.new_player.source()
     }
 }
