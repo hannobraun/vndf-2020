@@ -1,6 +1,6 @@
 events! {
     InEvent {
-        RemoveExplosion, remove_explosion {
+        ExplosionFaded, explosion_faded {
             explosion: hecs::Entity,
         }
     }

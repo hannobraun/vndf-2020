@@ -36,7 +36,7 @@ pub fn update_explosions(
 ) {
     for (id, (explosion,)) in &mut world.query::<(&mut Explosion,)>() {
         if explosion.update(dt) {
-            events.remove_explosion(id);
+            events.explosion_faded(id);
         }
     }
 }

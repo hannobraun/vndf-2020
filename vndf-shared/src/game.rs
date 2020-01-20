@@ -208,7 +208,7 @@ impl State {
 
         while let Some(event) = self.in_events.next() {
             match event {
-                InEvent::RemoveExplosion { explosion } => {
+                InEvent::ExplosionFaded { explosion } => {
                     systems::explosions::remove_explosion(
                         &mut self.world.spawn(&mut despawned),
                         explosion,
