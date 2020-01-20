@@ -31,7 +31,7 @@ use self::{
         },
         explosive,
         health,
-        players::NewPlayer,
+        players::PlayerEntityCreated,
     },
     indices::Indices,
     in_event::InEvent,
@@ -50,9 +50,9 @@ pub struct State {
     indices:   Indices,
     next_id:   PlayerId,
 
-    entity_removed: events::Buf<EntityRemoved>,
-    new_player:     events::Buf<NewPlayer>,
-    update:         events::Buf<Update>,
+    entity_removed:        events::Buf<EntityRemoved>,
+    player_entity_created: events::Buf<PlayerEntityCreated>,
+    update:                events::Buf<Update>,
 }
 
 impl State {
@@ -63,9 +63,9 @@ impl State {
             indices:   Indices::new(),
             next_id:   PlayerId::first(),
 
-            entity_removed: events::Buf::new(),
-            new_player:     events::Buf::new(),
-            update:         events::Buf::new(),
+            entity_removed:        events::Buf::new(),
+            player_entity_created: events::Buf::new(),
+            update:                events::Buf::new(),
         }
     }
 
@@ -114,7 +114,7 @@ impl State {
 
                     systems::players::connect_player(
                         &mut self.world.spawn(&mut despawned),
-                        &mut self.new_player.sink(),
+                        &mut self.player_entity_created.sink(),
                         &mut self.indices,
                         id,
                         player,
@@ -197,8 +197,8 @@ impl State {
         self.entity_removed.source()
     }
 
-    pub fn new_player(&mut self) -> events::Source<NewPlayer> {
-        self.new_player.source()
+    pub fn new_player(&mut self) -> events::Source<PlayerEntityCreated> {
+        self.player_entity_created.source()
     }
 }
 

@@ -3,7 +3,7 @@ use std::net::SocketAddr;
 use crate::game::PlayerId;
 
 
-pub struct NewPlayer {
+pub struct PlayerEntityCreated {
     pub id:   PlayerId,
     pub addr: SocketAddr,
 }

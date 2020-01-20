@@ -11,7 +11,7 @@ use crate::{
             Ship,
         },
         entities,
-        features::players::NewPlayer,
+        features::players::PlayerEntityCreated,
         in_event::InEvent,
         indices::Indices,
     },
@@ -21,18 +21,18 @@ use crate::{
 
 
 pub fn connect_player(
-    world:      &mut world::Spawn,
-    new_player: &mut events::Sink<NewPlayer>,
-    indices:    &mut Indices,
-    id:         PlayerId,
-    addr:       SocketAddr,
-    color:      [f32; 3],
+    world:                 &mut world::Spawn,
+    player_entity_created: &mut events::Sink<PlayerEntityCreated>,
+    indices:               &mut Indices,
+    id:                    PlayerId,
+    addr:                  SocketAddr,
+    color:                 [f32; 3],
 ) {
     let entity = world.spawn(entities::player(id, addr));
     indices.players_by_address.insert(addr, entity);
 
     world.spawn(entities::ship(id, color));
-    new_player.push(NewPlayer { id, addr });
+    player_entity_created.push(PlayerEntityCreated { id, addr });
 }
 
 pub fn disconnect_player(
