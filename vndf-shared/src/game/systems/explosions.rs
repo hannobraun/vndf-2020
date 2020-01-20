@@ -5,8 +5,10 @@ use crate::{
             Body,
             Explosion,
         },
-        features::health::components::Health,
-        in_event::InEvent,
+        features::{
+            explosions::events::ExplosionFaded,
+            health::components::Health,
+        },
     },
     world,
 };
@@ -30,13 +32,13 @@ pub fn damage_nearby(
 }
 
 pub fn update_explosions(
-    world:  world::Query,
-    dt:     f32,
-    events: &mut events::Push<InEvent>,
+    world:           world::Query,
+    dt:              f32,
+    explosion_faded: &mut events::Sink<ExplosionFaded>,
 ) {
     for (entity, (explosion,)) in &mut world.query::<(&mut Explosion,)>() {
         if explosion.update(dt) {
-            events.explosion_faded(entity);
+            explosion_faded.push(ExplosionFaded { entity });
         }
     }
 }

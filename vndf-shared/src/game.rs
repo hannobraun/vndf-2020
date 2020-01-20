@@ -2,7 +2,6 @@ pub mod components;
 pub mod entities;
 pub mod features;
 pub mod indices;
-pub mod in_event;
 pub mod systems;
 
 
@@ -14,11 +13,7 @@ use serde::{
 };
 
 use crate::{
-    events::{
-        self,
-        Events,
-        Push,
-    },
+    events,
     world::World,
 };
 
@@ -31,7 +26,10 @@ use self::{
         },
         explosions::{
             self,
-            events::ExplosionImminent,
+            events::{
+                ExplosionFaded,
+                ExplosionImminent,
+            },
         },
         health::{
             self,
@@ -46,7 +44,6 @@ use self::{
         },
     },
     indices::Indices,
-    in_event::InEvent,
 };
 
 
@@ -57,13 +54,13 @@ pub const FRAME_TIME: f32 = 1.0 / TARGET_FPS as f32;
 
 
 pub struct State {
-    world:     World,
-    in_events: Events<InEvent>,
-    indices:   Indices,
-    next_id:   PlayerId,
+    world:   World,
+    indices: Indices,
+    next_id: PlayerId,
 
     death:                 events::Buf<Death>,
     entity_removed:        events::Buf<EntityRemoved>,
+    explosion_faded:       events::Buf<ExplosionFaded>,
     explosion_imminent:    events::Buf<ExplosionImminent>,
     missile_launch:        events::Buf<MissileLaunch>,
     player_connected:      events::Buf<PlayerConnected>,
@@ -76,13 +73,13 @@ pub struct State {
 impl State {
     pub fn new() -> Self {
         Self {
-            world:     World::new(),
-            in_events: Events::new(),
-            indices:   Indices::new(),
-            next_id:   PlayerId::first(),
+            world:   World::new(),
+            indices: Indices::new(),
+            next_id: PlayerId::first(),
 
             death:                 events::Buf::new(),
             entity_removed:        events::Buf::new(),
+            explosion_faded:       events::Buf::new(),
             explosion_imminent:    events::Buf::new(),
             missile_launch:        events::Buf::new(),
             player_connected:      events::Buf::new(),
@@ -91,10 +88,6 @@ impl State {
             player_input:          events::Buf::new(),
             update:                events::Buf::new(),
         }
-    }
-
-    pub fn push(&mut self) -> Push<InEvent> {
-        self.in_events.push()
     }
 
     pub fn player_connected(&mut self) -> events::Sink<PlayerConnected> {
@@ -135,7 +128,7 @@ impl State {
             systems::explosions::update_explosions(
                 self.world.query(),
                 dt,
-                &mut self.in_events.push(),
+                &mut self.explosion_faded.sink(),
             );
             health::systems::check_health(
                 self.world.query(),
@@ -205,16 +198,13 @@ impl State {
                 explosion,
             );
         }
+        for event in self.explosion_faded.source().ready() {
+            let ExplosionFaded { entity } = event;
 
-        while let Some(event) = self.in_events.next() {
-            match event {
-                InEvent::ExplosionFaded { entity } => {
-                    systems::explosions::remove_explosion(
-                        &mut self.world.spawn(&mut despawned),
-                        entity,
-                    );
-                }
-            }
+            systems::explosions::remove_explosion(
+                &mut self.world.spawn(&mut despawned),
+                entity,
+            );
         }
 
         for entity in despawned {
