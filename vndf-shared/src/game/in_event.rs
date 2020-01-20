@@ -1,5 +1,3 @@
-use hecs::Entity;
-
 use crate::game::entities::Missile;
 
 events! {
@@ -8,13 +6,13 @@ events! {
             missile: Missile,
         }
         DeadEntity, dead_entity {
-            entity: Entity,
+            entity: hecs::Entity,
         }
         Explosion, explosion {
-            explosion: Entity,
+            explosion: hecs::Entity,
         }
         RemoveExplosion, remove_explosion {
-            explosion: Entity,
+            explosion: hecs::Entity,
         }
     }
 }
