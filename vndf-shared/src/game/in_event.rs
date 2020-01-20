@@ -10,8 +10,8 @@ use crate::{
 events! {
     InEvent {
         PlayerInput, player_input {
-            player: SocketAddr,
-            event:  input::Event,
+            addr:  SocketAddr,
+            event: input::Event,
         }
         LaunchMissile, launch_missile {
             missile: Missile,

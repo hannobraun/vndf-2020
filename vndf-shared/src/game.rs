@@ -148,12 +148,12 @@ impl State {
 
         while let Some(event) = self.in_events.next() {
             match event {
-                InEvent::PlayerInput { player, event } => {
+                InEvent::PlayerInput { addr, event } => {
                     systems::players::handle_input(
                         self.world.query(),
                         &mut self.in_events.push(),
                         &mut self.indices,
-                        player,
+                        addr,
                         event,
                     );
                 }
