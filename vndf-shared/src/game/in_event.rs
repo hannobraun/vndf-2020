@@ -1,18 +1,9 @@
-use std::net::SocketAddr;
-
 use hecs::Entity;
 
-use crate::{
-    game::entities::Missile,
-    input,
-};
+use crate::game::entities::Missile;
 
 events! {
     InEvent {
-        PlayerInput, player_input {
-            addr:  SocketAddr,
-            event: input::Event,
-        }
         LaunchMissile, launch_missile {
             missile: Missile,
         }

@@ -1,6 +1,9 @@
 use std::net::SocketAddr;
 
-use crate::game::PlayerId;
+use crate::{
+    game::PlayerId,
+    input,
+};
 
 
 pub struct PlayerConnected {
@@ -15,4 +18,9 @@ pub struct PlayerDisconnected {
 pub struct PlayerEntityCreated {
     pub id:   PlayerId,
     pub addr: SocketAddr,
+}
+
+pub struct PlayerInput {
+    pub addr:  SocketAddr,
+    pub event: input::Event,
 }

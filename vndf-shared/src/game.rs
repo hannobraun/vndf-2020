@@ -35,6 +35,7 @@ use self::{
             PlayerConnected,
             PlayerDisconnected,
             PlayerEntityCreated,
+            PlayerInput,
         },
     },
     indices::Indices,
@@ -58,6 +59,7 @@ pub struct State {
     player_connected:      events::Buf<PlayerConnected>,
     player_disconnected:   events::Buf<PlayerDisconnected>,
     player_entity_created: events::Buf<PlayerEntityCreated>,
+    player_input:          events::Buf<PlayerInput>,
     update:                events::Buf<Update>,
 }
 
@@ -73,6 +75,7 @@ impl State {
             player_connected:      events::Buf::new(),
             player_disconnected:   events::Buf::new(),
             player_entity_created: events::Buf::new(),
+            player_input:          events::Buf::new(),
             update:                events::Buf::new(),
         }
     }
@@ -87,6 +90,10 @@ impl State {
 
     pub fn player_disconnected(&mut self) -> events::Sink<PlayerDisconnected> {
         self.player_disconnected.sink()
+    }
+
+    pub fn player_input(&mut self) -> events::Sink<PlayerInput> {
+        self.player_input.sink()
     }
 
     pub fn update(&mut self) -> events::Sink<Update> {
@@ -145,18 +152,18 @@ impl State {
                 addr,
             );
         }
+        for PlayerInput { addr, event } in self.player_input.source().ready() {
+            systems::players::handle_input(
+                self.world.query(),
+                &mut self.in_events.push(),
+                &mut self.indices,
+                addr,
+                event,
+            );
+        }
 
         while let Some(event) = self.in_events.next() {
             match event {
-                InEvent::PlayerInput { addr, event } => {
-                    systems::players::handle_input(
-                        self.world.query(),
-                        &mut self.in_events.push(),
-                        &mut self.indices,
-                        addr,
-                        event,
-                    );
-                }
                 InEvent::LaunchMissile { missile } => {
                     systems::missiles::launch_missile(
                         &mut self.world.spawn(&mut despawned),

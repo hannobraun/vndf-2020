@@ -25,6 +25,7 @@ use crate::{
                 players::{
                     PlayerConnected,
                     PlayerDisconnected,
+                    PlayerInput,
                 },
             },
         },
@@ -88,7 +89,7 @@ impl Server {
                 }
                 Event::Message(addr, msg::FromClient::Input(event)) => {
                     debug!("Input from {}: {:?}", addr, event);
-                    self.state.push().player_input(addr, event);
+                    self.state.player_input().push(PlayerInput { addr, event });
                 }
                 Event::Error(addr, _) => {
                     info!("Disconnected: {}", addr);
