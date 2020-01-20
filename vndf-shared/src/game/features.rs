@@ -1,4 +1,4 @@
-pub mod entities;
+pub mod basics;
 pub mod explosive;
 pub mod health;
 pub mod players;

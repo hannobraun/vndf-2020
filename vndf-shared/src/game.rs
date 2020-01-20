@@ -25,7 +25,7 @@ use crate::{
 use self::{
     components::Player,
     features::{
-        entities::EntityRemoved,
+        basics::EntityRemoved,
         explosive,
         health,
         players::NewPlayer,
