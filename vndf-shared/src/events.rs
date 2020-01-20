@@ -1,7 +1,4 @@
-use std::{
-    collections::VecDeque,
-    iter,
-};
+use std::collections::VecDeque;
 
 
 pub struct Buf<T>(VecDeque<T>);
@@ -37,27 +34,3 @@ impl<T> Source<'_, T> {
         (self.0).0.drain(..)
     }
 }
-
-
-pub struct Events<T>(VecDeque<T>);
-
-impl<T> Events<T> {
-    pub fn new() -> Self {
-        Self(VecDeque::new())
-    }
-
-    pub fn push(&mut self) -> Push<T> {
-        Push(&mut self.0)
-    }
-
-    pub fn next(&mut self) -> Option<T> {
-        self.0.pop_front()
-    }
-
-    pub fn drain(&mut self) -> impl Iterator<Item=T> + '_ {
-        iter::from_fn(move || self.next())
-    }
-}
-
-
-pub struct Push<'r, T>(pub &'r mut VecDeque<T>);
