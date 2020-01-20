@@ -1,7 +1,7 @@
 events! {
     InEvent {
         ExplosionFaded, explosion_faded {
-            explosion: hecs::Entity,
+            entity: hecs::Entity,
         }
     }
 }
