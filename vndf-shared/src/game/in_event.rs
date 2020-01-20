@@ -1,8 +1,5 @@
 events! {
     InEvent {
-        Death, death {
-            entity: hecs::Entity,
-        }
         Explosion, explosion {
             explosion: hecs::Entity,
         }

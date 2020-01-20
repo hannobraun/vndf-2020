@@ -1,19 +1,21 @@
 use crate::{
     events,
-    game::in_event::InEvent,
     world,
 };
 
-use super::components::Health;
+use super::{
+    components::Health,
+    events::Death,
+};
 
 
 pub fn check_health(
-    world:  world::Query,
-    events: &mut events::Push<InEvent>,
+    world: world::Query,
+    death: &mut events::Sink<Death>,
 ) {
     for (entity, (health,)) in &mut world.query::<(&Health,)>() {
         if health.is_dead() {
-            events.death(entity);
+            death.push(Death { entity });
         }
     }
 }

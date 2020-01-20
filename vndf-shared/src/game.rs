@@ -30,7 +30,10 @@ use self::{
             Update,
         },
         explosive,
-        health,
+        health::{
+            self,
+            events::Death,
+        },
         missiles::MissileLaunch,
         players::{
             PlayerConnected,
@@ -56,6 +59,7 @@ pub struct State {
     indices:   Indices,
     next_id:   PlayerId,
 
+    death:                 events::Buf<Death>,
     entity_removed:        events::Buf<EntityRemoved>,
     missile_launch:        events::Buf<MissileLaunch>,
     player_connected:      events::Buf<PlayerConnected>,
@@ -73,6 +77,7 @@ impl State {
             indices:   Indices::new(),
             next_id:   PlayerId::first(),
 
+            death:                 events::Buf::new(),
             entity_removed:        events::Buf::new(),
             missile_launch:        events::Buf::new(),
             player_connected:      events::Buf::new(),
@@ -129,7 +134,7 @@ impl State {
             );
             health::systems::check_health(
                 self.world.query(),
-                &mut self.in_events.push(),
+                &mut self.death.sink(),
             );
         }
         for event in self.player_connected.source().ready() {
@@ -170,26 +175,26 @@ impl State {
                 missile,
             );
         }
+        for Death { entity } in self.death.source().ready() {
+            let explosion = explosive::explode_entity(
+                self.world.query(),
+                entity,
+            );
+            health::systems::remove_entity(
+                &mut self.world.spawn(&mut despawned),
+                entity,
+            );
+            if let Some(explosion) = explosion {
+                explosive::create_explosion(
+                    &mut self.world.spawn(&mut despawned),
+                    &mut self.in_events.push(),
+                    explosion,
+                );
+            }
+        }
 
         while let Some(event) = self.in_events.next() {
             match event {
-                InEvent::Death { entity } => {
-                    let explosion = explosive::explode_entity(
-                        self.world.query(),
-                        entity,
-                    );
-                    health::systems::remove_entity(
-                        &mut self.world.spawn(&mut despawned),
-                        entity,
-                    );
-                    if let Some(explosion) = explosion {
-                        explosive::create_explosion(
-                            &mut self.world.spawn(&mut despawned),
-                            &mut self.in_events.push(),
-                            explosion,
-                        );
-                    }
-                }
                 InEvent::Explosion { explosion } => {
                     systems::explosions::damage_nearby(
                         &mut self.world.query(),
