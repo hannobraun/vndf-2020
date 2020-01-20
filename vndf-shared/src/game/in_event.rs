@@ -1,6 +1,6 @@
 events! {
     InEvent {
-        DeadEntity, dead_entity {
+        EntityDead, entity_dead {
             entity: hecs::Entity,
         }
         Explosion, explosion {
