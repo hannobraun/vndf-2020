@@ -109,7 +109,7 @@ impl State {
 
         while let Some(event) = self.in_events.next() {
             match event {
-                InEvent::PlayerConnected { player, color } => {
+                InEvent::PlayerConnected { addr, color } => {
                     let id = self.next_id.increment();
 
                     systems::players::connect_player(
@@ -117,7 +117,7 @@ impl State {
                         &mut self.player_entity_created.sink(),
                         &mut self.indices,
                         id,
-                        player,
+                        addr,
                         color,
                     );
                 }

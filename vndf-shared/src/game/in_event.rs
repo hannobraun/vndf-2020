@@ -10,8 +10,8 @@ use crate::{
 events! {
     InEvent {
         PlayerConnected, player_connected {
-            player: SocketAddr,
-            color:  [f32; 3],
+            addr:  SocketAddr,
+            color: [f32; 3],
         }
         DisconnectPlayer, disconnect_player {
             player: SocketAddr,
