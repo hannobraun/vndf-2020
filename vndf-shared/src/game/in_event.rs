@@ -1,6 +1,6 @@
 events! {
     InEvent {
-        Explosion, explosion {
+        ExplosionImminent, explosion_imminent {
             explosion: hecs::Entity,
         }
         RemoveExplosion, remove_explosion {

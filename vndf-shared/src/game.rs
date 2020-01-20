@@ -195,7 +195,7 @@ impl State {
 
         while let Some(event) = self.in_events.next() {
             match event {
-                InEvent::Explosion { explosion } => {
+                InEvent::ExplosionImminent { explosion } => {
                     systems::explosions::damage_nearby(
                         &mut self.world.query(),
                         explosion,

@@ -40,5 +40,5 @@ pub fn create_explosion(
     explosion: e::Explosion,
 ) {
     let explosion = world.spawn(explosion);
-    events.explosion(explosion);
+    events.explosion_imminent(explosion);
 }
