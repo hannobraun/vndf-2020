@@ -48,7 +48,7 @@ pub struct State {
     out_events: Events<OutEvent>,
     indices:    Indices,
     next_id:    PlayerId,
-    new_player: events::Stream<NewPlayer>,
+    new_player: events::Buf<NewPlayer>,
 }
 
 impl State {
@@ -59,7 +59,7 @@ impl State {
             out_events: Events::new(),
             indices:    Indices::new(),
             next_id:    PlayerId::first(),
-            new_player: events::Stream::new(),
+            new_player: events::Buf::new(),
         }
     }
 
