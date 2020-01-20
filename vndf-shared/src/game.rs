@@ -132,11 +132,11 @@ impl State {
 
         while let Some(event) = self.in_events.next() {
             match event {
-                InEvent::PlayerDisconnected { player } => {
+                InEvent::PlayerDisconnected { addr } => {
                     systems::players::disconnect_player(
                         &mut self.world.spawn(&mut despawned),
                         &mut self.indices,
-                        player,
+                        addr,
                     );
                 }
                 InEvent::PlayerInput { player, event } => {
