@@ -31,6 +31,7 @@ use self::{
         },
         explosive,
         health,
+        missiles::MissileLaunch,
         players::{
             PlayerConnected,
             PlayerDisconnected,
@@ -56,6 +57,7 @@ pub struct State {
     next_id:   PlayerId,
 
     entity_removed:        events::Buf<EntityRemoved>,
+    missile_launch:        events::Buf<MissileLaunch>,
     player_connected:      events::Buf<PlayerConnected>,
     player_disconnected:   events::Buf<PlayerDisconnected>,
     player_entity_created: events::Buf<PlayerEntityCreated>,
@@ -72,6 +74,7 @@ impl State {
             next_id:   PlayerId::first(),
 
             entity_removed:        events::Buf::new(),
+            missile_launch:        events::Buf::new(),
             player_connected:      events::Buf::new(),
             player_disconnected:   events::Buf::new(),
             player_entity_created: events::Buf::new(),
@@ -155,21 +158,21 @@ impl State {
         for PlayerInput { addr, event } in self.player_input.source().ready() {
             systems::players::handle_input(
                 self.world.query(),
-                &mut self.in_events.push(),
+                &mut self.missile_launch.sink(),
                 &mut self.indices,
                 addr,
                 event,
             );
         }
+        for MissileLaunch { missile } in self.missile_launch.source().ready() {
+            systems::missiles::launch_missile(
+                &mut self.world.spawn(&mut despawned),
+                missile,
+            );
+        }
 
         while let Some(event) = self.in_events.next() {
             match event {
-                InEvent::MissileLaunch { missile } => {
-                    systems::missiles::launch_missile(
-                        &mut self.world.spawn(&mut despawned),
-                        missile,
-                    );
-                }
                 InEvent::DeadEntity { entity } => {
                     let explosion = explosive::explode_entity(
                         self.world.query(),

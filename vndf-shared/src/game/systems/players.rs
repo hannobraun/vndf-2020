@@ -11,8 +11,10 @@ use crate::{
             Ship,
         },
         entities,
-        features::players::PlayerEntityCreated,
-        in_event::InEvent,
+        features::{
+            missiles::MissileLaunch,
+            players::PlayerEntityCreated,
+        },
         indices::Indices,
     },
     input,
@@ -49,11 +51,11 @@ pub fn disconnect_player(
 }
 
 pub fn handle_input(
-    world:   world::Query,
-    events:  &mut events::Push<InEvent>,
-    indices: &mut Indices,
-    address: SocketAddr,
-    input:   input::Event,
+    world:          world::Query,
+    missile_launch: &mut events::Sink<MissileLaunch>,
+    indices:        &mut Indices,
+    address:        SocketAddr,
+    input:          input::Event,
 ) {
     let player = match indices.players_by_address.get(&address) {
         Some(player) =>
@@ -81,7 +83,7 @@ pub fn handle_input(
             input::Event::LaunchMissile { target } => {
                 let missile = ship.launch_missile(craft.owner, body, target);
                 if let Some(missile) = missile {
-                    events.missile_launch(missile);
+                    missile_launch.push(MissileLaunch { missile });
                 }
             }
         }

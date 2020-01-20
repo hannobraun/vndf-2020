@@ -1,10 +1,5 @@
-use crate::game::entities::Missile;
-
 events! {
     InEvent {
-        MissileLaunch, missile_launch {
-            missile: Missile,
-        }
         DeadEntity, dead_entity {
             entity: hecs::Entity,
         }
