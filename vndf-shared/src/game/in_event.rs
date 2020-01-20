@@ -9,7 +9,7 @@ use crate::{
 
 events! {
     InEvent {
-        ConnectPlayer, connect_player {
+        PlayerConnected, player_connected {
             player: SocketAddr,
             color:  [f32; 3],
         }

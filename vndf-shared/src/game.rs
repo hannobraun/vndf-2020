@@ -109,7 +109,7 @@ impl State {
 
         while let Some(event) = self.in_events.next() {
             match event {
-                InEvent::ConnectPlayer { player, color } => {
+                InEvent::PlayerConnected { player, color } => {
                     let id = self.next_id.increment();
 
                     systems::players::connect_player(

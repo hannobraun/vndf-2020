@@ -77,7 +77,7 @@ impl Server {
                     // Yes, it's a bad idea to just trust the client to provide
                     // a color that is not the same as the background color.
                     // It's good enough for now though.
-                    self.state.push().connect_player(id, color);
+                    self.state.push().player_connected(id, color);
                 }
                 Event::Message(id, msg::FromClient::Input(input)) => {
                     debug!("Input from {}: {:?}", id, input);
