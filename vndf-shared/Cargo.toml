@@ -4,12 +4,16 @@ version = "0.1.0"
 authors = ["Hanno Braun <hb@hannobraun.de>"]
 edition = "2018"
 
+
 [dependencies]
-cgmath   = { version = "*", features = ["mint", "serde"] }
 hecs     = "*"
 log      = "*"
 postcard = "*"
 serde    = "*"
+
+[dependencies.cgmath]
+version  = "*"
+features = ["mint", "serde"]
 
 [dependencies.pid]
 version  = "*"
