@@ -89,7 +89,7 @@ impl Server {
                 }
                 Event::Error(id, _) => {
                     info!("Disconnected: {}", id);
-                    self.state.push().disconnect_player(id);
+                    self.state.push().player_disconnected(id);
                 }
             }
         }
