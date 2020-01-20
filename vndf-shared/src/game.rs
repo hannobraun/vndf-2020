@@ -31,7 +31,10 @@ use self::{
         },
         explosive,
         health,
-        players::PlayerEntityCreated,
+        players::{
+            PlayerConnected,
+            PlayerEntityCreated,
+        },
     },
     indices::Indices,
     in_event::InEvent,
@@ -51,6 +54,7 @@ pub struct State {
     next_id:   PlayerId,
 
     entity_removed:        events::Buf<EntityRemoved>,
+    player_connected:      events::Buf<PlayerConnected>,
     player_entity_created: events::Buf<PlayerEntityCreated>,
     update:                events::Buf<Update>,
 }
@@ -64,6 +68,7 @@ impl State {
             next_id:   PlayerId::first(),
 
             entity_removed:        events::Buf::new(),
+            player_connected:      events::Buf::new(),
             player_entity_created: events::Buf::new(),
             update:                events::Buf::new(),
         }
@@ -71,6 +76,10 @@ impl State {
 
     pub fn push(&mut self) -> Push<InEvent> {
         self.in_events.push()
+    }
+
+    pub fn player_connected(&mut self) -> events::Sink<PlayerConnected> {
+        self.player_connected.sink()
     }
 
     pub fn update(&mut self) -> events::Sink<Update> {
@@ -106,21 +115,23 @@ impl State {
                 &mut self.in_events.push(),
             );
         }
+        for event in self.player_connected.source().ready() {
+            let PlayerConnected { addr, color } = event;
+
+            let id = self.next_id.increment();
+
+            systems::players::connect_player(
+                &mut self.world.spawn(&mut despawned),
+                &mut self.player_entity_created.sink(),
+                &mut self.indices,
+                id,
+                addr,
+                color,
+            );
+        }
 
         while let Some(event) = self.in_events.next() {
             match event {
-                InEvent::PlayerConnected { addr, color } => {
-                    let id = self.next_id.increment();
-
-                    systems::players::connect_player(
-                        &mut self.world.spawn(&mut despawned),
-                        &mut self.player_entity_created.sink(),
-                        &mut self.indices,
-                        id,
-                        addr,
-                        color,
-                    );
-                }
                 InEvent::DisconnectPlayer { player } => {
                     systems::players::disconnect_player(
                         &mut self.world.spawn(&mut despawned),
