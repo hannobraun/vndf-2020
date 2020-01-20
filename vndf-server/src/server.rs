@@ -20,6 +20,7 @@ use crate::{
         game::{
             self,
             FRAME_TIME,
+            features::basics::Update,
         },
         net::{
             self,
@@ -93,7 +94,7 @@ impl Server {
         let frame_time = Duration::from_millis((FRAME_TIME * 1000.0) as u64);
 
         while now.duration_since(self.last_update) > frame_time {
-            self.state.push().update(FRAME_TIME);
+            self.state.update().push(Update { dt: FRAME_TIME });
             self.state.dispatch();
             self.last_update += frame_time;
         }

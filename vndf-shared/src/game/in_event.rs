@@ -9,9 +9,6 @@ use crate::{
 
 events! {
     InEvent {
-        Update, update {
-            dt: f32,
-        }
         ConnectPlayer, connect_player {
             player: SocketAddr,
             color:  [f32; 3],

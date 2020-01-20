@@ -25,7 +25,10 @@ use crate::{
 use self::{
     components::Player,
     features::{
-        basics::EntityRemoved,
+        basics::{
+            EntityRemoved,
+            Update,
+        },
         explosive,
         health,
         players::NewPlayer,
@@ -49,6 +52,7 @@ pub struct State {
 
     entity_removed: events::Buf<EntityRemoved>,
     new_player:     events::Buf<NewPlayer>,
+    update:         events::Buf<Update>,
 }
 
 impl State {
@@ -61,6 +65,7 @@ impl State {
 
             entity_removed: events::Buf::new(),
             new_player:     events::Buf::new(),
+            update:         events::Buf::new(),
         }
     }
 
@@ -68,37 +73,42 @@ impl State {
         self.in_events.push()
     }
 
+    pub fn update(&mut self) -> events::Sink<Update> {
+        self.update.sink()
+    }
+
     pub fn dispatch(&mut self) {
         let mut despawned = Vec::new();
 
+        for Update { dt } in self.update.source().ready() {
+            systems::players::update_ships(
+                self.world.query(),
+            );
+            systems::crafts::update_crafts(
+                self.world.query(),
+                dt,
+            );
+            systems::crafts::update_bodies(
+                self.world.query(),
+                WORLD_SIZE,
+                dt,
+            );
+            systems::missiles::update_missiles(
+                self.world.query(),
+            );
+            systems::explosions::update_explosions(
+                self.world.query(),
+                dt,
+                &mut self.in_events.push(),
+            );
+            health::check_health(
+                self.world.query(),
+                &mut self.in_events.push(),
+            );
+        }
+
         while let Some(event) = self.in_events.next() {
             match event {
-                InEvent::Update { dt } => {
-                    systems::players::update_ships(
-                        self.world.query(),
-                    );
-                    systems::crafts::update_crafts(
-                        self.world.query(),
-                        dt,
-                    );
-                    systems::crafts::update_bodies(
-                        self.world.query(),
-                        WORLD_SIZE,
-                        dt,
-                    );
-                    systems::missiles::update_missiles(
-                        self.world.query(),
-                    );
-                    systems::explosions::update_explosions(
-                        self.world.query(),
-                        dt,
-                        &mut self.in_events.push(),
-                    );
-                    health::check_health(
-                        self.world.query(),
-                        &mut self.in_events.push(),
-                    );
-                }
                 InEvent::ConnectPlayer { player, color } => {
                     let id = self.next_id.increment();
 
