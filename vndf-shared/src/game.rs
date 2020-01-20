@@ -29,7 +29,7 @@ use self::{
             EntityRemoved,
             Update,
         },
-        explosive,
+        explosions,
         health::{
             self,
             events::Death,
@@ -176,7 +176,7 @@ impl State {
             );
         }
         for Death { entity } in self.death.source().ready() {
-            let explosion = explosive::explode_entity(
+            let explosion = explosions::explode_entity(
                 self.world.query(),
                 entity,
             );
@@ -185,7 +185,7 @@ impl State {
                 entity,
             );
             if let Some(explosion) = explosion {
-                explosive::create_explosion(
+                explosions::create_explosion(
                     &mut self.world.spawn(&mut despawned),
                     &mut self.in_events.push(),
                     explosion,
