@@ -72,12 +72,12 @@ impl Server {
                     // This message is just for testing purposes. Nothing to do
                     // here.
                 }
-                Event::Message(id, msg::FromClient::Hello { color }) => {
-                    info!("Connected: {}", id);
+                Event::Message(addr, msg::FromClient::Hello { color }) => {
+                    info!("Connected: {}", addr);
                     // Yes, it's a bad idea to just trust the client to provide
                     // a color that is not the same as the background color.
                     // It's good enough for now though.
-                    self.state.push().player_connected(id, color);
+                    self.state.push().player_connected(addr, color);
                 }
                 Event::Message(id, msg::FromClient::Input(input)) => {
                     debug!("Input from {}: {:?}", id, input);
