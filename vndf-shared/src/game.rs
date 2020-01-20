@@ -173,7 +173,7 @@ impl State {
 
         while let Some(event) = self.in_events.next() {
             match event {
-                InEvent::EntityDead { entity } => {
+                InEvent::Death { entity } => {
                     let explosion = explosive::explode_entity(
                         self.world.query(),
                         entity,

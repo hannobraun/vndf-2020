@@ -13,7 +13,7 @@ pub fn check_health(
 ) {
     for (entity, (health,)) in &mut world.query::<(&Health,)>() {
         if health.is_dead() {
-            events.entity_dead(entity);
+            events.death(entity);
         }
     }
 }
