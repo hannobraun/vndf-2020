@@ -4,7 +4,7 @@ use crate::{
     game::{
         PlayerId,
         components as c,
-        features::health::Health,
+        features::health::components::Health,
     },
     math::{
         prelude::*,

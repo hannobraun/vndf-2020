@@ -127,7 +127,7 @@ impl State {
                 dt,
                 &mut self.in_events.push(),
             );
-            health::check_health(
+            health::systems::check_health(
                 self.world.query(),
                 &mut self.in_events.push(),
             );
@@ -178,7 +178,7 @@ impl State {
                         self.world.query(),
                         entity,
                     );
-                    health::remove_entity(
+                    health::systems::remove_entity(
                         &mut self.world.spawn(&mut despawned),
                         entity,
                     );

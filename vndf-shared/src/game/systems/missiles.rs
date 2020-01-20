@@ -6,7 +6,7 @@ use crate::{
             Missile,
         },
         entities as e,
-        features::health::Health,
+        features::health::components::Health,
     },
     world,
 };

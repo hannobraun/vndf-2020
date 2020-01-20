@@ -24,7 +24,7 @@ use crate::{
                 Missile,
                 Ship,
             },
-            features::health::Health,
+            features::health::components::Health,
         },
         math::{
             prelude::*,

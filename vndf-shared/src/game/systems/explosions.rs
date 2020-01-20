@@ -5,7 +5,7 @@ use crate::{
             Body,
             Explosion,
         },
-        features::health::Health,
+        features::health::components::Health,
         in_event::InEvent,
     },
     world,
