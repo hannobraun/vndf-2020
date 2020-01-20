@@ -87,9 +87,9 @@ impl Server {
                     debug!("Input from {}: {:?}", id, input);
                     self.state.push().player_input(id, input);
                 }
-                Event::Error(id, _) => {
-                    info!("Disconnected: {}", id);
-                    self.state.push().player_disconnected(id);
+                Event::Error(addr, _) => {
+                    info!("Disconnected: {}", addr);
+                    self.state.push().player_disconnected(addr);
                 }
             }
         }
