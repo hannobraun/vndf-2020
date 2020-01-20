@@ -20,7 +20,6 @@ use crate::{
         game::{
             self,
             FRAME_TIME,
-            out_event::OutEvent,
         },
         net::{
             self,
@@ -107,19 +106,14 @@ impl Server {
                 msg::FromServer::Welcome(new_player.id),
             );
         }
-
-        for event in self.state.out_events() {
-            match event {
-                OutEvent::EntityRemoved { entity } => {
-                    for &address in &clients {
-                        self.network.send(
-                            address,
-                            msg::FromServer::RemoveEntity(
-                                Id::from_hecs_entity(&entity)
-                            ),
-                        );
-                    }
-                }
+        for entity_removed in self.state.entity_removed().ready() {
+            for &address in &clients {
+                self.network.send(
+                    address,
+                    msg::FromServer::RemoveEntity(
+                        Id::from_hecs_entity(&entity_removed.entity)
+                    ),
+                );
             }
         }
 

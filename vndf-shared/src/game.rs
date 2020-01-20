@@ -3,7 +3,6 @@ pub mod entities;
 pub mod features;
 pub mod indices;
 pub mod in_event;
-pub mod out_event;
 pub mod systems;
 
 
@@ -26,13 +25,13 @@ use crate::{
 use self::{
     components::Player,
     features::{
+        entities::EntityRemoved,
         explosive,
         health,
         players::NewPlayer,
     },
     indices::Indices,
     in_event::InEvent,
-    out_event::OutEvent,
 };
 
 
@@ -43,23 +42,25 @@ pub const FRAME_TIME: f32 = 1.0 / TARGET_FPS as f32;
 
 
 pub struct State {
-    world:      World,
-    in_events:  Events<InEvent>,
-    out_events: Events<OutEvent>,
-    indices:    Indices,
-    next_id:    PlayerId,
-    new_player: events::Buf<NewPlayer>,
+    world:     World,
+    in_events: Events<InEvent>,
+    indices:   Indices,
+    next_id:   PlayerId,
+
+    entity_removed: events::Buf<EntityRemoved>,
+    new_player:     events::Buf<NewPlayer>,
 }
 
 impl State {
     pub fn new() -> Self {
         Self {
-            world:      World::new(),
-            in_events:  Events::new(),
-            out_events: Events::new(),
-            indices:    Indices::new(),
-            next_id:    PlayerId::first(),
-            new_player: events::Buf::new(),
+            world:     World::new(),
+            in_events: Events::new(),
+            indices:   Indices::new(),
+            next_id:   PlayerId::first(),
+
+            entity_removed: events::Buf::new(),
+            new_player:     events::Buf::new(),
         }
     }
 
@@ -165,7 +166,7 @@ impl State {
         }
 
         for entity in despawned {
-            self.out_events.push().entity_removed(entity);
+            self.entity_removed.sink().push(EntityRemoved { entity });
         }
     }
 
@@ -182,8 +183,8 @@ impl State {
             .collect()
     }
 
-    pub fn out_events(&mut self) -> impl Iterator<Item=OutEvent> + '_ {
-        self.out_events.drain()
+    pub fn entity_removed(&mut self) -> events::Source<EntityRemoved> {
+        self.entity_removed.source()
     }
 
     pub fn new_player(&mut self) -> events::Source<NewPlayer> {
