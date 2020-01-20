@@ -9,9 +9,6 @@ use crate::{
 
 events! {
     InEvent {
-        PlayerDisconnected, player_disconnected {
-            addr: SocketAddr,
-        }
         PlayerInput, player_input {
             player: SocketAddr,
             event:  input::Event,

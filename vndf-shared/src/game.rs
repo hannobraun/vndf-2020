@@ -33,6 +33,7 @@ use self::{
         health,
         players::{
             PlayerConnected,
+            PlayerDisconnected,
             PlayerEntityCreated,
         },
     },
@@ -55,6 +56,7 @@ pub struct State {
 
     entity_removed:        events::Buf<EntityRemoved>,
     player_connected:      events::Buf<PlayerConnected>,
+    player_disconnected:   events::Buf<PlayerDisconnected>,
     player_entity_created: events::Buf<PlayerEntityCreated>,
     update:                events::Buf<Update>,
 }
@@ -69,6 +71,7 @@ impl State {
 
             entity_removed:        events::Buf::new(),
             player_connected:      events::Buf::new(),
+            player_disconnected:   events::Buf::new(),
             player_entity_created: events::Buf::new(),
             update:                events::Buf::new(),
         }
@@ -80,6 +83,10 @@ impl State {
 
     pub fn player_connected(&mut self) -> events::Sink<PlayerConnected> {
         self.player_connected.sink()
+    }
+
+    pub fn player_disconnected(&mut self) -> events::Sink<PlayerDisconnected> {
+        self.player_disconnected.sink()
     }
 
     pub fn update(&mut self) -> events::Sink<Update> {
@@ -129,16 +136,18 @@ impl State {
                 color,
             );
         }
+        for event in self.player_disconnected.source().ready() {
+            let PlayerDisconnected { addr } = event;
+
+            systems::players::disconnect_player(
+                &mut self.world.spawn(&mut despawned),
+                &mut self.indices,
+                addr,
+            );
+        }
 
         while let Some(event) = self.in_events.next() {
             match event {
-                InEvent::PlayerDisconnected { addr } => {
-                    systems::players::disconnect_player(
-                        &mut self.world.spawn(&mut despawned),
-                        &mut self.indices,
-                        addr,
-                    );
-                }
                 InEvent::PlayerInput { player, event } => {
                     systems::players::handle_input(
                         self.world.query(),

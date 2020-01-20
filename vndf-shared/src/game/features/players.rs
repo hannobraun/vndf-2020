@@ -8,6 +8,10 @@ pub struct PlayerConnected {
     pub color: [f32; 3],
 }
 
+pub struct PlayerDisconnected {
+    pub addr: SocketAddr,
+}
+
 pub struct PlayerEntityCreated {
     pub id:   PlayerId,
     pub addr: SocketAddr,

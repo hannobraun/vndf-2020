@@ -22,7 +22,10 @@ use crate::{
             FRAME_TIME,
             features::{
                 basics::Update,
-                players::PlayerConnected,
+                players::{
+                    PlayerConnected,
+                    PlayerDisconnected,
+                },
             },
         },
         net::{
@@ -89,7 +92,8 @@ impl Server {
                 }
                 Event::Error(addr, _) => {
                     info!("Disconnected: {}", addr);
-                    self.state.push().player_disconnected(addr);
+                    self.state.player_disconnected()
+                        .push(PlayerDisconnected { addr });
                 }
             }
         }
