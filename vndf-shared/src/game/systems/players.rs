@@ -81,7 +81,7 @@ pub fn handle_input(
             input::Event::LaunchMissile { target } => {
                 let missile = ship.launch_missile(craft.owner, body, target);
                 if let Some(missile) = missile {
-                    events.launch_missile(missile);
+                    events.missile_launch(missile);
                 }
             }
         }

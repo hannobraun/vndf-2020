@@ -164,7 +164,7 @@ impl State {
 
         while let Some(event) = self.in_events.next() {
             match event {
-                InEvent::LaunchMissile { missile } => {
+                InEvent::MissileLaunch { missile } => {
                     systems::missiles::launch_missile(
                         &mut self.world.spawn(&mut despawned),
                         missile,
