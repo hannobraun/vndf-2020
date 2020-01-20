@@ -7,10 +7,11 @@ use crate::{
             Ship,
         },
         entities as e,
-        in_event::InEvent,
     },
     world,
 };
+
+use super::events::ExplosionImminent;
 
 
 pub fn explode_entity(
@@ -35,10 +36,10 @@ pub fn explode_entity(
 }
 
 pub fn create_explosion(
-    world:     &mut world::Spawn,
-    events:    &mut events::Push<InEvent>,
-    explosion: e::Explosion,
+    world:              &mut world::Spawn,
+    explosion_imminent: &mut events::Sink<ExplosionImminent>,
+    explosion:          e::Explosion,
 ) {
     let explosion = world.spawn(explosion);
-    events.explosion_imminent(explosion);
+    explosion_imminent.push(ExplosionImminent { explosion });
 }

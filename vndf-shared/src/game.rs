@@ -29,7 +29,10 @@ use self::{
             EntityRemoved,
             Update,
         },
-        explosions,
+        explosions::{
+            self,
+            events::ExplosionImminent,
+        },
         health::{
             self,
             events::Death,
@@ -61,6 +64,7 @@ pub struct State {
 
     death:                 events::Buf<Death>,
     entity_removed:        events::Buf<EntityRemoved>,
+    explosion_imminent:    events::Buf<ExplosionImminent>,
     missile_launch:        events::Buf<MissileLaunch>,
     player_connected:      events::Buf<PlayerConnected>,
     player_disconnected:   events::Buf<PlayerDisconnected>,
@@ -79,6 +83,7 @@ impl State {
 
             death:                 events::Buf::new(),
             entity_removed:        events::Buf::new(),
+            explosion_imminent:    events::Buf::new(),
             missile_launch:        events::Buf::new(),
             player_connected:      events::Buf::new(),
             player_disconnected:   events::Buf::new(),
@@ -187,20 +192,22 @@ impl State {
             if let Some(explosion) = explosion {
                 explosions::systems::create_explosion(
                     &mut self.world.spawn(&mut despawned),
-                    &mut self.in_events.push(),
+                    &mut self.explosion_imminent.sink(),
                     explosion,
                 );
             }
         }
+        for event in self.explosion_imminent.source().ready() {
+            let ExplosionImminent { explosion } = event;
+
+            systems::explosions::damage_nearby(
+                &mut self.world.query(),
+                explosion,
+            );
+        }
 
         while let Some(event) = self.in_events.next() {
             match event {
-                InEvent::ExplosionImminent { explosion } => {
-                    systems::explosions::damage_nearby(
-                        &mut self.world.query(),
-                        explosion,
-                    );
-                }
                 InEvent::RemoveExplosion { explosion } => {
                     systems::explosions::remove_explosion(
                         &mut self.world.spawn(&mut despawned),
