@@ -22,6 +22,7 @@ use self::{
             EntityRemoved,
             Update,
         },
+        crafts,
         explosions::{
             self,
             events::{
@@ -114,11 +115,11 @@ impl State {
             systems::players::update_ships(
                 self.world.query(),
             );
-            systems::crafts::update_crafts(
+            crafts::systems::update_crafts(
                 self.world.query(),
                 dt,
             );
-            systems::crafts::update_bodies(
+            crafts::systems::update_bodies(
                 self.world.query(),
                 WORLD_SIZE,
                 dt,
