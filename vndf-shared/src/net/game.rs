@@ -100,6 +100,7 @@ use crate::game::{
         crafts::components::Craft,
         explosions::components::Explosion,
         health::components::Health,
+        missiles::components::Missile,
         physics::components::Body,
     },
 };

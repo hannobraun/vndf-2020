@@ -8,6 +8,7 @@ use crate::{
             crafts::components::Craft,
             explosions::components::Explosion,
             health::components::Health,
+            missiles::components::Missile,
             physics::components::Body,
         },
     },
@@ -20,7 +21,7 @@ use crate::{
 
 
 pub type ExplosionE = (Explosion, Body);
-pub type MissileE   = (c::Missile, Body, Craft, Health);
+pub type MissileE   = (Missile, Body, Craft, Health);
 pub type PlayerE    = (c::Player,);
 pub type ShipE      = (c::Ship, Body, Craft, Health);
 
@@ -50,7 +51,7 @@ pub fn missile(owner: PlayerId, from_body: &Body, target: Pnt2) -> MissileE {
         owner,
     };
 
-    (c::Missile::new(target), body, craft, Health::new(2.0))
+    (Missile::new(target), body, craft, Health::new(2.0))
 }
 
 pub fn player(id: PlayerId, addr: SocketAddr) -> PlayerE {
