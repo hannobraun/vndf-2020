@@ -127,7 +127,7 @@ impl State {
             systems::missiles::update_missiles(
                 self.world.query(),
             );
-            systems::explosions::update_explosions(
+            explosions::systems::update_explosions(
                 self.world.query(),
                 dt,
                 &mut self.explosion_faded.sink(),
@@ -195,7 +195,7 @@ impl State {
         for event in self.explosion_imminent.source().ready() {
             let ExplosionImminent { explosion } = event;
 
-            systems::explosions::damage_nearby(
+            explosions::systems::damage_nearby(
                 &mut self.world.query(),
                 explosion,
             );
@@ -203,7 +203,7 @@ impl State {
         for event in self.explosion_faded.source().ready() {
             let ExplosionFaded { entity } = event;
 
-            systems::explosions::remove_explosion(
+            explosions::systems::remove_explosion(
                 &mut self.world.spawn(&mut despawned),
                 entity,
             );
