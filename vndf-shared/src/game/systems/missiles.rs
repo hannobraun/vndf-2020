@@ -1,12 +1,14 @@
 use crate::{
     game::{
         components::{
-            Body,
             Craft,
             Missile,
         },
         entities as e,
-        features::health::components::Health,
+        features::{
+            health::components::Health,
+            physics::components::Body,
+        },
     },
     world,
 };

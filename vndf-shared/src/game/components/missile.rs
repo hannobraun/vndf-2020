@@ -5,9 +5,9 @@ use serde::{
 };
 
 use crate::{
-    game::components::{
-        Body,
-        Craft,
+    game::{
+        components::Craft,
+        features::physics::components::Body,
     },
     math::{
         prelude::*,

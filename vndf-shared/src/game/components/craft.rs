@@ -6,7 +6,7 @@ use serde::{
 use crate::{
     game::{
         PlayerId,
-        components::Body,
+        features::physics::components::Body,
     },
     math::{
         prelude::*,

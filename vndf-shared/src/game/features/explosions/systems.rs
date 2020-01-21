@@ -2,11 +2,11 @@ use crate::{
     events,
     game::{
         components::{
-            Body,
             Missile,
             Ship,
         },
         entities as e,
+        features::physics::components::Body,
     },
     world,
 };

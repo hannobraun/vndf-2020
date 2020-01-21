@@ -4,9 +4,9 @@ use serde::{
 };
 
 use crate::{
-    game::{
-        components::Body,
-        features::health::components::Health,
+    game::features::{
+        health::components::Health,
+        physics::components::Body,
     },
     math::prelude::*,
 };

@@ -5,7 +5,6 @@ use crate::{
     game::{
         PlayerId,
         components::{
-            Body,
             Craft,
             Player,
             Ship,
@@ -13,6 +12,7 @@ use crate::{
         entities,
         features::{
             missiles::MissileLaunch,
+            physics::components::Body,
             players::PlayerEntityCreated,
         },
         indices::Indices,

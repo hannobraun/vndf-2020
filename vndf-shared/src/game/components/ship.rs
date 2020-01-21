@@ -6,8 +6,8 @@ use serde::{
 use crate::{
     game::{
         PlayerId,
-        components::Body,
         entities as e,
+        features::physics::components::Body,
     },
     input::Rotation,
     math::{

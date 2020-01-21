@@ -1,13 +1,11 @@
 use crate::{
     events,
     game::{
-        components::{
-            Body,
-            Explosion,
-        },
+        components::Explosion,
         features::{
             explosions::events::ExplosionFaded,
             health::components::Health,
+            physics::components::Body,
         },
     },
     world,

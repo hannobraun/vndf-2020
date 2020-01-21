@@ -96,7 +96,10 @@ impl Id {
 
 use crate::game::{
     components::*,
-    features::health::components::Health,
+    features::{
+        health::components::Health,
+        physics::components::Body,
+    },
 };
 entity!(
     body,      Body;

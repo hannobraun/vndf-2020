@@ -4,7 +4,10 @@ use crate::{
     game::{
         PlayerId,
         components as c,
-        features::health::components::Health,
+        features::{
+            health::components::Health,
+            physics::components::Body,
+        },
     },
     math::{
         prelude::*,
@@ -14,26 +17,26 @@ use crate::{
 };
 
 
-pub type Explosion = (c::Explosion, c::Body);
-pub type Missile   = (c::Missile, c::Body, c::Craft, Health);
+pub type Explosion = (c::Explosion, Body);
+pub type Missile   = (c::Missile, Body, c::Craft, Health);
 pub type Player    = (c::Player,);
-pub type Ship      = (c::Ship, c::Body, c::Craft, Health);
+pub type Ship      = (c::Ship, Body, c::Craft, Health);
 
 
-pub fn explosion(exploding: &c::Body, strength: f32) -> Explosion {
-    let body = c::Body {
+pub fn explosion(exploding: &Body, strength: f32) -> Explosion {
+    let body = Body {
         pos: exploding.pos,
         vel: exploding.vel * 0.05,
-        .. c::Body::new()
+        .. Body::new()
     };
 
     (c::Explosion::new(strength), body)
 }
 
-pub fn missile(owner: PlayerId, from_body: &c::Body, target: Pnt2) -> Missile {
+pub fn missile(owner: PlayerId, from_body: &Body, target: Pnt2) -> Missile {
     let to_target = target - from_body.pos;
 
-    let body = c::Body {
+    let body = Body {
         dir: to_target,
         rot: Rad::zero(),
         .. *from_body
@@ -60,5 +63,5 @@ pub fn ship(owner: PlayerId, color: [f32; 3]) -> Ship {
         owner,
     };
 
-    (c::Ship::new(color), c::Body::new(), craft, Health::new(10.0))
+    (c::Ship::new(color), Body::new(), craft, Health::new(10.0))
 }
