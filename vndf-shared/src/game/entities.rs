@@ -3,7 +3,6 @@ use std::net::SocketAddr;
 use crate::{
     game::{
         PlayerId,
-        components as c,
         features::{
             crafts::components::Craft,
             explosions::components::Explosion,
@@ -11,6 +10,7 @@ use crate::{
             missiles::components::Missile,
             physics::components::Body,
             players::components::Player,
+            ships::components::Ship,
         },
     },
     math::{
@@ -24,7 +24,7 @@ use crate::{
 pub type ExplosionE = (Explosion, Body);
 pub type MissileE   = (Missile, Body, Craft, Health);
 pub type PlayerE    = (Player,);
-pub type ShipE      = (c::Ship, Body, Craft, Health);
+pub type ShipE      = (Ship, Body, Craft, Health);
 
 
 pub fn explosion(exploding: &Body, strength: f32) -> ExplosionE {
@@ -67,5 +67,5 @@ pub fn ship(owner: PlayerId, color: [f32; 3]) -> ShipE {
         owner,
     };
 
-    (c::Ship::new(color), Body::new(), craft, Health::new(10.0))
+    (Ship::new(color), Body::new(), craft, Health::new(10.0))
 }

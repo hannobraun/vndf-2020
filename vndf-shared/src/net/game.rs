@@ -94,15 +94,13 @@ impl Id {
 }
 
 
-use crate::game::{
-    components::*,
-    features::{
-        crafts::components::Craft,
-        explosions::components::Explosion,
-        health::components::Health,
-        missiles::components::Missile,
-        physics::components::Body,
-    },
+use crate::game::features::{
+    crafts::components::Craft,
+    explosions::components::Explosion,
+    health::components::Health,
+    missiles::components::Missile,
+    physics::components::Body,
+    ships::components::Ship,
 };
 entity!(
     body,      Body;

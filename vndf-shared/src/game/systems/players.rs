@@ -4,7 +4,6 @@ use crate::{
     events,
     game::{
         PlayerId,
-        components::Ship,
         entities,
         features::{
             crafts::components::Craft,
@@ -14,6 +13,7 @@ use crate::{
                 components::Player,
                 events::PlayerEntityCreated,
             },
+            ships::components::Ship,
         },
         indices::Indices,
     },
