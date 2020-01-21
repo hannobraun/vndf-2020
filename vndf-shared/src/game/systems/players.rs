@@ -4,16 +4,16 @@ use crate::{
     events,
     game::{
         PlayerId,
-        components::{
-            Player,
-            Ship,
-        },
+        components::Ship,
         entities,
         features::{
             crafts::components::Craft,
             missiles::events::MissileLaunch,
             physics::components::Body,
-            players::events::PlayerEntityCreated,
+            players::{
+                components::Player,
+                events::PlayerEntityCreated,
+            },
         },
         indices::Indices,
     },

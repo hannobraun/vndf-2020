@@ -18,7 +18,6 @@ use crate::{
 };
 
 use self::{
-    components::Player,
     features::{
         basics::{
             EntityRemoved,
@@ -36,11 +35,14 @@ use self::{
             events::Death,
         },
         missiles::events::MissileLaunch,
-        players::events::{
-            PlayerConnected,
-            PlayerDisconnected,
-            PlayerEntityCreated,
-            PlayerInput,
+        players::{
+            components::Player,
+            events::{
+                PlayerConnected,
+                PlayerDisconnected,
+                PlayerEntityCreated,
+                PlayerInput,
+            },
         },
     },
     indices::Indices,
