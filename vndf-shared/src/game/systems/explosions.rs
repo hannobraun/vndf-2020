@@ -1,12 +1,12 @@
 use crate::{
     events,
-    game::{
-        components::Explosion,
-        features::{
-            explosions::events::ExplosionFaded,
-            health::components::Health,
-            physics::components::Body,
+    game::features::{
+        explosions::{
+            components::Explosion,
+            events::ExplosionFaded,
         },
+        health::components::Health,
+        physics::components::Body,
     },
     world,
 };

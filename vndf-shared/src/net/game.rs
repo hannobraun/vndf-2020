@@ -98,6 +98,7 @@ use crate::game::{
     components::*,
     features::{
         crafts::components::Craft,
+        explosions::components::Explosion,
         health::components::Health,
         physics::components::Body,
     },
