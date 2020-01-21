@@ -11,7 +11,7 @@ use crate::{
         entities,
         features::{
             crafts::components::Craft,
-            missiles::MissileLaunch,
+            missiles::events::MissileLaunch,
             physics::components::Body,
             players::PlayerEntityCreated,
         },
