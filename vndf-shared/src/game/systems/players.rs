@@ -13,7 +13,7 @@ use crate::{
             crafts::components::Craft,
             missiles::events::MissileLaunch,
             physics::components::Body,
-            players::PlayerEntityCreated,
+            players::events::PlayerEntityCreated,
         },
         indices::Indices,
     },

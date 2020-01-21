@@ -36,7 +36,7 @@ use self::{
             events::Death,
         },
         missiles::events::MissileLaunch,
-        players::{
+        players::events::{
             PlayerConnected,
             PlayerDisconnected,
             PlayerEntityCreated,
