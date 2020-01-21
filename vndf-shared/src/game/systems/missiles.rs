@@ -1,11 +1,9 @@
 use crate::{
     game::{
-        components::{
-            Craft,
-            Missile,
-        },
+        components::Missile,
         entities as e,
         features::{
+            crafts::components::Craft,
             health::components::Health,
             physics::components::Body,
         },

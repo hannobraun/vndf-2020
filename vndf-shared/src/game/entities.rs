@@ -5,6 +5,7 @@ use crate::{
         PlayerId,
         components as c,
         features::{
+            crafts::components::Craft,
             health::components::Health,
             physics::components::Body,
         },
@@ -18,9 +19,9 @@ use crate::{
 
 
 pub type Explosion = (c::Explosion, Body);
-pub type Missile   = (c::Missile, Body, c::Craft, Health);
+pub type Missile   = (c::Missile, Body, Craft, Health);
 pub type Player    = (c::Player,);
-pub type Ship      = (c::Ship, Body, c::Craft, Health);
+pub type Ship      = (c::Ship, Body, Craft, Health);
 
 
 pub fn explosion(exploding: &Body, strength: f32) -> Explosion {
@@ -41,7 +42,7 @@ pub fn missile(owner: PlayerId, from_body: &Body, target: Pnt2) -> Missile {
         rot: Rad::zero(),
         .. *from_body
     };
-    let craft = c::Craft {
+    let craft = Craft {
         engine_on: true,
         thrust:    200.0,
         fuel:      400.0,
@@ -56,7 +57,7 @@ pub fn player(id: PlayerId, addr: SocketAddr) -> Player {
 }
 
 pub fn ship(owner: PlayerId, color: [f32; 3]) -> Ship {
-    let craft = c::Craft {
+    let craft = Craft {
         engine_on: false,
         thrust:    100.0,
         fuel:      1200.0,

@@ -1,7 +1,7 @@
 use crate::{
-    game::{
-        components::Craft,
-        features::physics::components::Body,
+    game::features::{
+        crafts::components::Craft,
+        physics::components::Body,
     },
     world,
 };

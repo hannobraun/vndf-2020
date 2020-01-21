@@ -18,12 +18,12 @@ use crate::{
         game::{
             WORLD_SIZE,
             components::{
-                Craft,
                 Explosion,
                 Missile,
                 Ship,
             },
             features::{
+                crafts::components::Craft,
                 health::components::Health,
                 physics::components::Body,
             },

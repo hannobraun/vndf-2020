@@ -1,4 +1,5 @@
 pub mod basics;
+pub mod crafts;
 pub mod explosions;
 pub mod health;
 pub mod missiles;

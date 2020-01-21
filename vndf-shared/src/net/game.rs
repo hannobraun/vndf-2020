@@ -97,6 +97,7 @@ impl Id {
 use crate::game::{
     components::*,
     features::{
+        crafts::components::Craft,
         health::components::Health,
         physics::components::Body,
     },

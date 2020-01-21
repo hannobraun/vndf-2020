@@ -5,12 +5,12 @@ use crate::{
     game::{
         PlayerId,
         components::{
-            Craft,
             Player,
             Ship,
         },
         entities,
         features::{
+            crafts::components::Craft,
             missiles::MissileLaunch,
             physics::components::Body,
             players::PlayerEntityCreated,
