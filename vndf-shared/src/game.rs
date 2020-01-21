@@ -1,7 +1,6 @@
 pub mod entities;
 pub mod features;
 pub mod indices;
-pub mod systems;
 
 
 use std::net::SocketAddr;
@@ -39,6 +38,7 @@ use self::{
             events::MissileLaunch,
         },
         players::{
+            self,
             components::Player,
             events::{
                 PlayerConnected,
@@ -115,7 +115,7 @@ impl State {
         let mut despawned = Vec::new();
 
         for Update { dt } in self.update.source().ready() {
-            systems::players::update_ships(
+            players::systems::update_ships(
                 self.world.query(),
             );
             crafts::systems::update_crafts(
@@ -145,7 +145,7 @@ impl State {
 
             let id = self.next_id.increment();
 
-            systems::players::connect_player(
+            players::systems::connect_player(
                 &mut self.world.spawn(&mut despawned),
                 &mut self.player_entity_created.sink(),
                 &mut self.indices,
@@ -157,14 +157,14 @@ impl State {
         for event in self.player_disconnected.source().ready() {
             let PlayerDisconnected { addr } = event;
 
-            systems::players::disconnect_player(
+            players::systems::disconnect_player(
                 &mut self.world.spawn(&mut despawned),
                 &mut self.indices,
                 addr,
             );
         }
         for PlayerInput { addr, event } in self.player_input.source().ready() {
-            systems::players::handle_input(
+            players::systems::handle_input(
                 self.world.query(),
                 &mut self.missile_launch.sink(),
                 &mut self.indices,
