@@ -1,6 +1,6 @@
-use crate::game::entities::Missile;
+use crate::game::entities::MissileE;
 
 
 pub struct MissileLaunch {
-    pub missile: Missile,
+    pub missile: MissileE,
 }

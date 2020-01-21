@@ -18,7 +18,7 @@ pub fn explode_entity(
     world:  world::Query,
     entity: hecs::Entity,
 )
-    -> Option<e::Explosion>
+    -> Option<e::ExplosionE>
 {
     let body    = world.get::<Body>(entity).ok()?;
     let missile = world.get::<Missile>(entity).ok();
@@ -38,7 +38,7 @@ pub fn explode_entity(
 pub fn create_explosion(
     world:              &mut world::Spawn,
     explosion_imminent: &mut events::Sink<ExplosionImminent>,
-    explosion:          e::Explosion,
+    explosion:          e::ExplosionE,
 ) {
     let explosion = world.spawn(explosion);
     explosion_imminent.push(ExplosionImminent { explosion });

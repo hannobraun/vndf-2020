@@ -12,7 +12,7 @@ use crate::{
 };
 
 
-pub fn launch_missile(world: &mut world::Spawn, missile: e::Missile) {
+pub fn launch_missile(world: &mut world::Spawn, missile: e::MissileE) {
     world.spawn(missile);
 }
 

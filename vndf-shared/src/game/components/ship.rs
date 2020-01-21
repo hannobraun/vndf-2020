@@ -35,7 +35,7 @@ impl Ship {
     }
 
     pub fn launch_missile(&mut self, owner: PlayerId, body: &Body, target: Pnt2)
-        -> Option<e::Missile>
+        -> Option<e::MissileE>
     {
         if self.missiles > 0 {
             self.missiles -= 1;
