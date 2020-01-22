@@ -44,7 +44,7 @@ use self::{
             events::{
                 PlayerConnected,
                 PlayerDisconnected,
-                PlayerEntityCreated,
+                PlayerItemCreated,
                 PlayerInput,
             },
         },
@@ -66,16 +66,16 @@ pub struct State {
 
     players: Store<Player>,
 
-    death:                 events::Buf<Death>,
-    entity_removed:        events::Buf<EntityRemoved>,
-    explosion_faded:       events::Buf<ExplosionFaded>,
-    explosion_imminent:    events::Buf<ExplosionImminent>,
-    missile_launch:        events::Buf<MissileLaunch>,
-    player_connected:      events::Buf<PlayerConnected>,
-    player_disconnected:   events::Buf<PlayerDisconnected>,
-    player_entity_created: events::Buf<PlayerEntityCreated>,
-    player_input:          events::Buf<PlayerInput>,
-    update:                events::Buf<Update>,
+    death:               events::Buf<Death>,
+    entity_removed:      events::Buf<EntityRemoved>,
+    explosion_faded:     events::Buf<ExplosionFaded>,
+    explosion_imminent:  events::Buf<ExplosionImminent>,
+    missile_launch:      events::Buf<MissileLaunch>,
+    player_connected:    events::Buf<PlayerConnected>,
+    player_disconnected: events::Buf<PlayerDisconnected>,
+    player_item_created: events::Buf<PlayerItemCreated>,
+    player_input:        events::Buf<PlayerInput>,
+    update:              events::Buf<Update>,
 }
 
 impl State {
@@ -87,16 +87,16 @@ impl State {
 
             players: Store::new(),
 
-            death:                 events::Buf::new(),
-            entity_removed:        events::Buf::new(),
-            explosion_faded:       events::Buf::new(),
-            explosion_imminent:    events::Buf::new(),
-            missile_launch:        events::Buf::new(),
-            player_connected:      events::Buf::new(),
-            player_disconnected:   events::Buf::new(),
-            player_entity_created: events::Buf::new(),
-            player_input:          events::Buf::new(),
-            update:                events::Buf::new(),
+            death:               events::Buf::new(),
+            entity_removed:      events::Buf::new(),
+            explosion_faded:     events::Buf::new(),
+            explosion_imminent:  events::Buf::new(),
+            missile_launch:      events::Buf::new(),
+            player_connected:    events::Buf::new(),
+            player_disconnected: events::Buf::new(),
+            player_item_created: events::Buf::new(),
+            player_input:        events::Buf::new(),
+            update:              events::Buf::new(),
         }
     }
 
@@ -153,7 +153,7 @@ impl State {
             players::systems::connect_player(
                 &mut self.world.spawn(&mut despawned),
                 &mut self.players,
-                &mut self.player_entity_created.sink(),
+                &mut self.player_item_created.sink(),
                 &mut self.indices,
                 id,
                 addr,
@@ -239,8 +239,8 @@ impl State {
         self.entity_removed.source()
     }
 
-    pub fn new_player(&mut self) -> events::Source<PlayerEntityCreated> {
-        self.player_entity_created.source()
+    pub fn new_player(&mut self) -> events::Source<PlayerItemCreated> {
+        self.player_item_created.source()
     }
 }
 

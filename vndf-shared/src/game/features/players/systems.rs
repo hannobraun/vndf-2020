@@ -12,7 +12,7 @@ use crate::{
             physics::components::Body,
             players::{
                 components::Player,
-                events::PlayerEntityCreated,
+                events::PlayerItemCreated,
             },
             ships::components::Ship,
         },
@@ -24,19 +24,19 @@ use crate::{
 
 
 pub fn connect_player(
-    world:                 &mut world::Spawn,
-    players:               &mut Store<Player>,
-    player_entity_created: &mut events::Sink<PlayerEntityCreated>,
-    indices:               &mut Indices,
-    id:                    PlayerId,
-    addr:                  SocketAddr,
-    color:                 [f32; 3],
+    world:               &mut world::Spawn,
+    players:             &mut Store<Player>,
+    player_item_created: &mut events::Sink<PlayerItemCreated>,
+    indices:             &mut Indices,
+    id:                  PlayerId,
+    addr:                SocketAddr,
+    color:               [f32; 3],
 ) {
     let key = players.insert(Player::new(id, addr));
     indices.players_by_address.insert(addr, key);
 
     world.spawn(entities::ship(id, color));
-    player_entity_created.push(PlayerEntityCreated { id, addr });
+    player_item_created.push(PlayerItemCreated { id, addr });
 }
 
 pub fn disconnect_player(
