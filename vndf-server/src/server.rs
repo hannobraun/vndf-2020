@@ -121,7 +121,7 @@ impl Server {
                 self.network.send(
                     address,
                     msg::FromServer::RemoveEntity(
-                        Id::from_hecs_entity(&entity_removed.handle)
+                        Id::from_handle(&entity_removed.handle)
                     ),
                 );
             }
