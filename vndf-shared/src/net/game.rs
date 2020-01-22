@@ -88,8 +88,8 @@ macro_rules! entity {
 pub struct Id(pub u64);
 
 impl Id {
-    pub fn from_handle(entity: &hecs::Entity) -> Self {
-        Self(entity.to_bits())
+    pub fn from_handle(handle: &hecs::Entity) -> Self {
+        Self(handle.to_bits())
     }
 }
 
