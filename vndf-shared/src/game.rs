@@ -52,7 +52,7 @@ use self::{
             },
             items::Player,
         },
-        ships::components::Ship,
+        ships::items::Ship,
     },
     indices::Indices,
 };

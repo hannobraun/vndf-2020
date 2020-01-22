@@ -10,7 +10,7 @@ use crate::shared::{
     game::{
         PlayerId,
         Item,
-        features::ships::components::Ship,
+        features::ships::items::Ship,
     },
     net::game::{
         Entity,
