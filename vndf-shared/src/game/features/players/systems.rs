@@ -32,8 +32,8 @@ pub fn connect_player(
     addr:                SocketAddr,
     color:               [f32; 3],
 ) {
-    let key = players.insert(Player::new(id, addr));
-    indices.players_by_address.insert(addr, key);
+    let handle = players.insert(Player::new(id, addr));
+    indices.players_by_address.insert(addr, handle);
 
     world.spawn(entities::ship(id, color));
     player_item_created.push(PlayerItemCreated { id, addr });
