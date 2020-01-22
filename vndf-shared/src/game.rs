@@ -40,13 +40,13 @@ use self::{
         },
         players::{
             self,
-            components::Player,
             events::{
                 PlayerConnected,
                 PlayerDisconnected,
                 PlayerItemCreated,
                 PlayerInput,
             },
+            items::Player,
         },
     },
     indices::Indices,

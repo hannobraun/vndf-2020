@@ -11,8 +11,8 @@ use crate::{
             missiles::events::MissileLaunch,
             physics::components::Body,
             players::{
-                components::Player,
                 events::PlayerItemCreated,
+                items::Player,
             },
             ships::components::Ship,
         },
