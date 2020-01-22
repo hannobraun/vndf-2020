@@ -1,6 +1,7 @@
 use std::net::SocketAddr;
 
 use crate::{
+    cgs::Store,
     events,
     game::{
         PlayerId,
@@ -24,34 +25,44 @@ use crate::{
 
 pub fn connect_player(
     world:                 &mut world::Spawn,
+    players:               &mut Store<Player>,
     player_entity_created: &mut events::Sink<PlayerEntityCreated>,
     indices:               &mut Indices,
     id:                    PlayerId,
     addr:                  SocketAddr,
     color:                 [f32; 3],
 ) {
-    let entity = world.spawn(entities::player(id, addr));
-    indices.players_by_address.insert(addr, entity);
+    let key = players.insert(Player::new(id, addr));
+    indices.players_by_address.insert(addr, key);
 
     world.spawn(entities::ship(id, color));
     player_entity_created.push(PlayerEntityCreated { id, addr });
 }
 
 pub fn disconnect_player(
-    world:   &mut world::Spawn,
+    players: &mut Store<Player>,
     indices: &mut Indices,
     address: SocketAddr,
 ) {
     // It's possible that we're getting multiple disconnect events per player,
     // so the ship could have been removed already.
-    if let Some(entity) = indices.players_by_address.remove(&address) {
-        world.despawn(entity)
-            .expect("Tried to remove ship that doesn't exist")
+    if let Some(handle) = indices.players_by_address.remove(&address) {
+        players.remove(handle);
+
+        // In principle, an event needs to be emitted to mark the removal of the
+        // item. Eventually, this should happen automatically, but in the
+        // meantime, systems need to do this manually.
+        //
+        // Neither is happening here. As of this writing, no item removal
+        // infrastructure exists yet, and since removing players isn't required
+        // for the correct functioning of the game, I've opted to leave this be
+        // for now.
     }
 }
 
 pub fn handle_input(
     world:          world::Query,
+    players:        &Store<Player>,
     missile_launch: &mut events::Sink<MissileLaunch>,
     indices:        &mut Indices,
     address:        SocketAddr,
@@ -64,7 +75,7 @@ pub fn handle_input(
         None =>
             return,
     };
-    let player: Player = *world.get(player)
+    let player: Player = *players.get(player)
         .expect("Couldn't find player despite getting id from index");
 
     let query = &mut world.query::<(&mut Ship, &Body, &mut Craft)>();

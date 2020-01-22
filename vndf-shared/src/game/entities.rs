@@ -1,5 +1,3 @@
-use std::net::SocketAddr;
-
 use crate::{
     game::{
         PlayerId,
@@ -9,7 +7,6 @@ use crate::{
             health::components::Health,
             missiles::components::Missile,
             physics::components::Body,
-            players::components::Player,
             ships::components::Ship,
         },
     },
@@ -23,7 +20,6 @@ use crate::{
 
 pub type ExplosionE = (Explosion, Body);
 pub type MissileE   = (Missile, Body, Craft, Health);
-pub type PlayerE    = (Player,);
 pub type ShipE      = (Ship, Body, Craft, Health);
 
 
@@ -53,10 +49,6 @@ pub fn missile(owner: PlayerId, from_body: &Body, target: Pnt2) -> MissileE {
     };
 
     (Missile::new(target), body, craft, Health::new(2.0))
-}
-
-pub fn player(id: PlayerId, addr: SocketAddr) -> PlayerE {
-    (Player::new(id, addr),)
 }
 
 pub fn ship(owner: PlayerId, color: [f32; 3]) -> ShipE {

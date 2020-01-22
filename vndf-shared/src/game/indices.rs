@@ -3,9 +3,11 @@ use std::{
     net::SocketAddr,
 };
 
+use crate::cgs::Handle;
+
 
 pub struct Indices {
-    pub players_by_address: HashMap<SocketAddr, hecs::Entity>,
+    pub players_by_address: HashMap<SocketAddr, Handle>,
 }
 
 impl Indices {

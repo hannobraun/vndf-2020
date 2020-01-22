@@ -11,6 +11,7 @@ use serde::{
 };
 
 use crate::{
+    cgs::Store,
     events,
     world::World,
 };
@@ -63,6 +64,8 @@ pub struct State {
     indices: Indices,
     next_id: PlayerId,
 
+    players: Store<Player>,
+
     death:                 events::Buf<Death>,
     entity_removed:        events::Buf<EntityRemoved>,
     explosion_faded:       events::Buf<ExplosionFaded>,
@@ -81,6 +84,8 @@ impl State {
             world:   World::new(),
             indices: Indices::new(),
             next_id: PlayerId::first(),
+
+            players: Store::new(),
 
             death:                 events::Buf::new(),
             entity_removed:        events::Buf::new(),
@@ -147,6 +152,7 @@ impl State {
 
             players::systems::connect_player(
                 &mut self.world.spawn(&mut despawned),
+                &mut self.players,
                 &mut self.player_entity_created.sink(),
                 &mut self.indices,
                 id,
@@ -158,7 +164,7 @@ impl State {
             let PlayerDisconnected { addr } = event;
 
             players::systems::disconnect_player(
-                &mut self.world.spawn(&mut despawned),
+                &mut self.players,
                 &mut self.indices,
                 addr,
             );
@@ -166,6 +172,7 @@ impl State {
         for PlayerInput { addr, event } in self.player_input.source().ready() {
             players::systems::handle_input(
                 self.world.query(),
+                &self.players,
                 &mut self.missile_launch.sink(),
                 &mut self.indices,
                 addr,
@@ -222,11 +229,9 @@ impl State {
     }
 
     pub fn players(&self) -> Vec<SocketAddr> {
-        self.world
-            .inner()
-            .query::<(&Player,)>()
-            .into_iter()
-            .map(|(_, (player,))| player.addr)
+        self.players
+            .iter()
+            .map(|(_, player)| player.addr)
             .collect()
     }
 
