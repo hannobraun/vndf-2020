@@ -10,6 +10,7 @@ hecs     = "*"
 log      = "*"
 postcard = "*"
 serde    = "*"
+slotmap  = "*"
 
 [dependencies.cgmath]
 version  = "*"
