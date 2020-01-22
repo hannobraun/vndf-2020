@@ -1,4 +1,5 @@
 use crate::{
+    cgs::Store,
     events,
     game::{
         entities as e,
@@ -23,19 +24,26 @@ use super::{
 
 pub fn explode_entity(
     world:  world::Query,
+    ships:  &Store<Ship>,
     entity: hecs::Entity,
 )
     -> Option<e::ExplosionE>
 {
     let body    = world.get::<Body>(entity).ok()?;
     let missile = world.get::<Missile>(entity).ok();
-    let ship    = world.get::<Ship>(entity).ok();
+
+    let mut is_ship = false;
+    for ship in ships.values() {
+        if entity.to_bits() == ship.entity {
+            is_ship = true;
+        }
+    }
 
     let mut strength = 0.0;
     if missile.is_some() {
         strength += 3.0;
     }
-    if ship.is_some() {
+    if is_ship {
         strength += 6.0;
     }
 

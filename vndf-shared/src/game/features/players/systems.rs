@@ -26,6 +26,7 @@ use crate::{
 pub fn connect_player(
     world:               &mut world::Spawn,
     players:             &mut Store<Player>,
+    ships:               &mut Store<Ship>,
     player_item_created: &mut events::Sink<PlayerItemCreated>,
     indices:             &mut Indices,
     id:                  PlayerId,
@@ -35,7 +36,8 @@ pub fn connect_player(
     let handle = players.insert(Player::new(id, addr));
     indices.players_by_address.insert(addr, handle);
 
-    world.spawn(entities::ship(id, color));
+    let entity = world.spawn(entities::ship(id));
+    ships.insert(Ship::new(entity, color));
     player_item_created.push(PlayerItemCreated { id, addr });
 }
 
@@ -63,6 +65,7 @@ pub fn disconnect_player(
 pub fn handle_input(
     world:          world::Query,
     players:        &Store<Player>,
+    ships:          &mut Store<Ship>,
     missile_launch: &mut events::Sink<MissileLaunch>,
     indices:        &mut Indices,
     address:        SocketAddr,
@@ -78,8 +81,14 @@ pub fn handle_input(
     let player: Player = *players.get(player)
         .expect("Couldn't find player despite getting id from index");
 
-    let query = &mut world.query::<(&mut Ship, &Body, &mut Craft)>();
-    for (_, (ship, body, craft)) in query {
+    for ship in ships.values_mut() {
+        let body = world
+            .get::<Body>(hecs::Entity::from_bits(ship.entity))
+            .expect("Failed to get body for ship");
+        let mut craft = world
+            .get_mut::<Craft>(hecs::Entity::from_bits(ship.entity))
+            .expect("Failed to get craft for ship");
+
         if craft.owner != player.id {
             continue;
         }
@@ -92,7 +101,7 @@ pub fn handle_input(
                 craft.engine_on = thrust;
             }
             input::Event::LaunchMissile { target } => {
-                let missile = ship.launch_missile(craft.owner, body, target);
+                let missile = ship.launch_missile(craft.owner, &body, target);
                 if let Some(missile) = missile {
                     missile_launch.push(MissileLaunch { missile });
                 }
@@ -101,8 +110,14 @@ pub fn handle_input(
     }
 }
 
-pub fn update_ships(world: world::Query) {
-    for (_, (ship, body)) in &mut world.query::<(&mut Ship, &mut Body)>() {
-        ship.update(body);
+pub fn update_ships(
+    ships: &mut Store<Ship>,
+    world: world::Query,
+) {
+    for ship in ships.values() {
+        let mut body = world
+            .get_mut::<Body>(hecs::Entity::from_bits(ship.entity))
+            .expect("Failed to get body for ship");
+        ship.update(&mut body);
     }
 }

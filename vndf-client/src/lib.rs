@@ -202,11 +202,11 @@ impl EventHandler for Game {
                 Ok(msg::FromServer::RemoveEntity(id)) => {
                     self.state.remove_entity(id);
                 }
-                Ok(msg::FromServer::UpdateItem(_handle, _item)) => {
-                    unreachable!("`Item` is an empty enum");
+                Ok(msg::FromServer::UpdateItem(handle, item)) => {
+                    self.state.update_item(handle, item);
                 }
-                Ok(msg::FromServer::RemoveItem(_handle)) => {
-                    unreachable!("Items don't currently exist");
+                Ok(msg::FromServer::RemoveItem(handle)) => {
+                    self.state.remove_item(handle);
                 }
                 Err(err) => {
                     error!("Connection error: {:?}", err);

@@ -20,14 +20,16 @@ use crate::{
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Ship {
+    pub entity:   u64,
     pub rotation: Rotation,
     pub missiles: u64,
     pub color:    [f32; 3],
 }
 
 impl Ship {
-    pub fn new(color: [f32; 3]) -> Self {
+    pub fn new(entity: hecs::Entity, color: [f32; 3]) -> Self {
         Self {
+            entity:   entity.to_bits(),
             rotation: Rotation::None,
             missiles: 16,
             color,

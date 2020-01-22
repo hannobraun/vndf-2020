@@ -3,10 +3,7 @@ pub mod features;
 pub mod indices;
 
 
-use std::{
-    iter,
-    net::SocketAddr,
-};
+use std::net::SocketAddr;
 
 use serde::{
     Deserialize,
@@ -55,6 +52,7 @@ use self::{
             },
             items::Player,
         },
+        ships::components::Ship,
     },
     indices::Indices,
 };
@@ -72,6 +70,7 @@ pub struct State {
     next_id: PlayerId,
 
     players: Store<Player>,
+    ships:   Store<Ship>,
 
     death:               events::Buf<Death>,
     entity_removed:      events::Buf<EntityRemoved>,
@@ -94,6 +93,7 @@ impl State {
             next_id: PlayerId::first(),
 
             players: Store::new(),
+            ships:   Store::new(),
 
             death:               events::Buf::new(),
             entity_removed:      events::Buf::new(),
@@ -126,10 +126,26 @@ impl State {
     }
 
     pub fn dispatch(&mut self) {
+        // Let's garbage-collect all items that need to be removed. This should
+        // be an automatic process, probably controlled by reference-counting of
+        // handles, but this will have to do for now.
+        let mut remove = Vec::new();
+        for (handle, ship) in &self.ships {
+            let entity = hecs::Entity::from_bits(ship.entity);
+            if !self.world.query().contains(entity) {
+                remove.push(handle);
+                self.item_removed.sink().push(ItemRemoved { handle });
+            }
+        }
+        for handle in remove {
+            self.ships.remove(handle);
+        }
+
         let mut despawned = Vec::new();
 
         for Update { dt } in self.update.source().ready() {
             players::systems::update_ships(
+                &mut self.ships,
                 self.world.query(),
             );
             crafts::systems::update_crafts(
@@ -162,6 +178,7 @@ impl State {
             players::systems::connect_player(
                 &mut self.world.spawn(&mut despawned),
                 &mut self.players,
+                &mut self.ships,
                 &mut self.player_item_created.sink(),
                 &mut self.indices,
                 id,
@@ -182,6 +199,7 @@ impl State {
             players::systems::handle_input(
                 self.world.query(),
                 &self.players,
+                &mut self.ships,
                 &mut self.missile_launch.sink(),
                 &mut self.indices,
                 addr,
@@ -197,6 +215,7 @@ impl State {
         for Death { entity } in self.death.source().ready() {
             let explosion = explosions::systems::explode_entity(
                 self.world.query(),
+                &self.ships,
                 entity,
             );
             health::systems::remove_entity(
@@ -244,8 +263,9 @@ impl State {
             .collect()
     }
 
-    pub fn item_update(&mut self) -> impl Iterator<Item=(Handle, Item)> {
-        iter::empty()
+    pub fn item_update(&mut self) -> impl Iterator<Item=(Handle, Item)> + '_ {
+        self.ships.iter()
+            .map(|(handle, item)| (handle, Item::Ship(*item)))
     }
 
     pub fn item_removed(&mut self) -> events::Source<ItemRemoved> {
@@ -279,4 +299,6 @@ impl PlayerId {
 
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
-pub enum Item {}
+pub enum Item {
+    Ship(Ship),
+}

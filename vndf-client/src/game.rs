@@ -3,7 +3,15 @@ use std::collections::HashMap;
 use hecs::World;
 
 use crate::shared::{
-    game::PlayerId,
+    cgs::{
+        Handle,
+        SecondaryStore,
+    },
+    game::{
+        PlayerId,
+        Item,
+        features::ships::components::Ship,
+    },
     net::game::{
         Entity,
         Id,
@@ -16,6 +24,8 @@ pub struct State {
     pub own_id: Option<PlayerId>,
 
     ids: HashMap<Id, hecs::Entity>,
+
+    pub ships: SecondaryStore<Ship>,
 }
 
 impl State {
@@ -24,6 +34,8 @@ impl State {
             world:  World::new(),
             own_id: None,
             ids:    HashMap::new(),
+
+            ships: SecondaryStore::new(),
         }
     }
 
@@ -48,5 +60,17 @@ impl State {
             // The entity might not exist, if we logged in right after the
             // entity was removed. Nothing to do in that case.
         }
+    }
+
+    pub fn update_item(&mut self, handle: Handle, item: Item) {
+        match item {
+            Item::Ship(ship) => {
+                self.ships.insert(handle, ship);
+            }
+        }
+    }
+
+    pub fn remove_item(&mut self, handle: Handle) {
+        self.ships.remove(handle);
     }
 }

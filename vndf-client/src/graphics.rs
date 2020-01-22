@@ -132,8 +132,11 @@ impl Graphics {
 
         self.draw_boundary(context)?;
 
-        for (_, (ship, body)) in &mut state.world.query::<(&Ship, &Body)>() {
-            self.draw_ship(context, ship, body)?;
+        for ship in state.ships.values() {
+            let body = state.world
+                .get::<Body>(hecs::Entity::from_bits(ship.entity))
+                .expect("Failed to get body for ship");
+            self.draw_ship(context, ship, &body)?;
         }
 
         for (_, (missile, body)) in &mut state.world.query::<(&Missile, &Body)>() {
@@ -251,8 +254,14 @@ End game - Escape",
                 .dest([20.0, 20.0])
         )?;
 
-        let query = &mut state.world.query::<(&Ship, &Craft, &Health)>();
-        for (_, (ship, craft, health)) in query {
+        for ship in state.ships.values() {
+            let craft = state.world
+                .get::<Craft>(hecs::Entity::from_bits(ship.entity))
+                .expect("Failed to get craft for ship");
+            let health = state.world
+                .get::<Health>(hecs::Entity::from_bits(ship.entity))
+                .expect("Failed to get health for ship");
+
             if state.own_id != Some(craft.owner) {
                 continue;
             }
