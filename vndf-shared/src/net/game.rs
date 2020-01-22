@@ -20,12 +20,12 @@ macro_rules! entity {
         }
 
         impl Entity {
-            pub fn from_world(hecs_id: hecs::Entity, world: &World) -> Self {
-                let     id     = Id::from_handle(&hecs_id);
+            pub fn from_world(handle: hecs::Entity, world: &World) -> Self {
+                let     id     = Id::from_handle(&handle);
                 let mut entity = Self::new(id);
 
                 $(
-                    entity.$name = world.get::<$ty>(hecs_id)
+                    entity.$name = world.get::<$ty>(handle)
                         .ok()
                         .map(|component_ref| (*component_ref).clone());
                 )*
