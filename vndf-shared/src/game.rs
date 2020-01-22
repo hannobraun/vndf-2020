@@ -212,8 +212,8 @@ impl State {
             );
         }
 
-        for entity in despawned {
-            self.entity_removed.sink().push(EntityRemoved { entity });
+        for handle in despawned {
+            self.entity_removed.sink().push(EntityRemoved { handle });
         }
     }
 

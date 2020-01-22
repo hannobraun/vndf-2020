@@ -1,5 +1,5 @@
 pub struct EntityRemoved {
-    pub entity: hecs::Entity,
+    pub handle: hecs::Entity,
 }
 
 pub struct Update {
