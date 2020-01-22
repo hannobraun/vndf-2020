@@ -3,7 +3,10 @@ pub mod features;
 pub mod indices;
 
 
-use std::net::SocketAddr;
+use std::{
+    iter,
+    net::SocketAddr,
+};
 
 use serde::{
     Deserialize,
@@ -11,7 +14,10 @@ use serde::{
 };
 
 use crate::{
-    cgs::Store,
+    cgs::{
+        Handle,
+        Store,
+    },
     events,
     world::World,
 };
@@ -235,6 +241,10 @@ impl State {
             .collect()
     }
 
+    pub fn item_update(&mut self) -> impl Iterator<Item=(Handle, Item)> {
+        iter::empty()
+    }
+
     pub fn entity_removed(&mut self) -> events::Source<EntityRemoved> {
         self.entity_removed.source()
     }
@@ -259,3 +269,7 @@ impl PlayerId {
         Self(current)
     }
 }
+
+
+#[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
+pub enum Item {}

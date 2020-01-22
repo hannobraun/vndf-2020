@@ -134,11 +134,20 @@ impl Server {
             );
         }
 
-        for client in clients {
+        for &client in &clients {
             for entity in &updated {
                 self.network.send(
                     client,
                     msg::FromServer::UpdateEntity(entity.clone()),
+                );
+            }
+        }
+
+        for (handle, item) in self.state.item_update() {
+            for &client in &clients {
+                self.network.send(
+                    client,
+                    msg::FromServer::UpdateItem(handle, item),
                 );
             }
         }

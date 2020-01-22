@@ -202,6 +202,9 @@ impl EventHandler for Game {
                 Ok(msg::FromServer::RemoveEntity(id)) => {
                     self.state.remove_entity(id);
                 }
+                Ok(msg::FromServer::UpdateItem(_handle, _item)) => {
+                    unreachable!("`Item` is an empty enum");
+                }
                 Err(err) => {
                     error!("Connection error: {:?}", err);
                     quit(context);
