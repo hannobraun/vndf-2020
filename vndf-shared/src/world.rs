@@ -7,6 +7,7 @@ use hecs::{
     NoSuchEntity,
     QueryBorrow,
     Ref,
+    RefMut,
 };
 
 
@@ -51,6 +52,12 @@ impl<'r> Query<'r> {
         -> Result<Ref<T>, ComponentError>
     {
         self.world.get(entity)
+    }
+
+    pub fn get_mut<T: Component>(&self, entity: Entity)
+        -> Result<RefMut<T>, ComponentError>
+    {
+        self.world.get_mut(entity)
     }
 }
 
