@@ -64,6 +64,7 @@ pub enum FromServer {
     UpdateEntity(Entity),
     RemoveEntity(Id),
     UpdateItem(Handle, Item),
+    RemoveItem(Handle),
 }
 
 

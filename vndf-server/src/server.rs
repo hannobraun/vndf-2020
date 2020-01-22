@@ -116,6 +116,16 @@ impl Server {
                 msg::FromServer::Welcome(new_player.id),
             );
         }
+
+        for event in self.state.item_removed().ready() {
+            for &client in &clients {
+                self.network.send(
+                    client,
+                    msg::FromServer::RemoveItem(event.handle),
+                );
+            }
+        }
+
         for entity_removed in self.state.entity_removed().ready() {
             for &address in &clients {
                 self.network.send(

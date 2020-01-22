@@ -205,6 +205,9 @@ impl EventHandler for Game {
                 Ok(msg::FromServer::UpdateItem(_handle, _item)) => {
                     unreachable!("`Item` is an empty enum");
                 }
+                Ok(msg::FromServer::RemoveItem(_handle)) => {
+                    unreachable!("Items don't currently exist");
+                }
                 Err(err) => {
                     error!("Connection error: {:?}", err);
                     quit(context);

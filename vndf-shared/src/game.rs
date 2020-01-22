@@ -26,6 +26,7 @@ use self::{
     features::{
         basics::{
             EntityRemoved,
+            ItemRemoved,
             Update,
         },
         crafts,
@@ -76,6 +77,7 @@ pub struct State {
     entity_removed:      events::Buf<EntityRemoved>,
     explosion_faded:     events::Buf<ExplosionFaded>,
     explosion_imminent:  events::Buf<ExplosionImminent>,
+    item_removed:        events::Buf<ItemRemoved>,
     missile_launch:      events::Buf<MissileLaunch>,
     player_connected:    events::Buf<PlayerConnected>,
     player_disconnected: events::Buf<PlayerDisconnected>,
@@ -97,6 +99,7 @@ impl State {
             entity_removed:      events::Buf::new(),
             explosion_faded:     events::Buf::new(),
             explosion_imminent:  events::Buf::new(),
+            item_removed:        events::Buf::new(),
             missile_launch:      events::Buf::new(),
             player_connected:    events::Buf::new(),
             player_disconnected: events::Buf::new(),
@@ -243,6 +246,10 @@ impl State {
 
     pub fn item_update(&mut self) -> impl Iterator<Item=(Handle, Item)> {
         iter::empty()
+    }
+
+    pub fn item_removed(&mut self) -> events::Source<ItemRemoved> {
+        self.item_removed.source()
     }
 
     pub fn entity_removed(&mut self) -> events::Source<EntityRemoved> {
