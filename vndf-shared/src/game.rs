@@ -52,7 +52,10 @@ use self::{
             },
             items::Player,
         },
-        ships::items::Ship,
+        ships::{
+            self,
+            items::Ship,
+        },
     },
     indices::Indices,
 };
@@ -144,7 +147,7 @@ impl State {
         let mut despawned = Vec::new();
 
         for Update { dt } in self.update.source().ready() {
-            players::systems::update_ships(
+            ships::systems::update_ships(
                 &mut self.ships,
                 self.world.query(),
             );
