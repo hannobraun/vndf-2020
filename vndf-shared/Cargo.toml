@@ -10,12 +10,15 @@ hecs     = "*"
 log      = "*"
 postcard = "*"
 serde    = "*"
-slotmap  = "*"
 
 [dependencies.cgmath]
 version  = "*"
 features = ["mint", "serde"]
 
 [dependencies.pid]
+version  = "*"
+features = ["serde"]
+
+[dependencies.slotmap]
 version  = "*"
 features = ["serde"]
