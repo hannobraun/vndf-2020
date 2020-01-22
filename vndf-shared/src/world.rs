@@ -44,6 +44,10 @@ pub struct Query<'r> {
 }
 
 impl<'r> Query<'r> {
+    pub fn contains(&self, entity: Entity) -> bool {
+        self.world.contains(entity)
+    }
+
     pub fn query<Q: hecs::Query>(&self) -> QueryBorrow<Q> {
         self.world.query()
     }
