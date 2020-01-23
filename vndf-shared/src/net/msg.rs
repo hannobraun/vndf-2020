@@ -11,6 +11,7 @@ use crate::{
     cgs::Handle,
     game::{
         Item,
+        ItemHandle,
         features::players::PlayerId,
     },
     input,
@@ -64,7 +65,7 @@ pub enum FromServer {
     UpdateEntity(Entity),
     RemoveEntity(Id),
     UpdateItem(Handle, Item),
-    RemoveItem(Handle),
+    RemoveItem(ItemHandle),
 }
 
 

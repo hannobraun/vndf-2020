@@ -9,6 +9,7 @@ use crate::shared::{
     },
     game::{
         Item,
+        ItemHandle,
         features::{
             players::PlayerId,
             ships::items::Ship,
@@ -72,7 +73,11 @@ impl State {
         }
     }
 
-    pub fn remove_item(&mut self, handle: Handle) {
-        self.ships.remove(handle);
+    pub fn remove_item(&mut self, handle: ItemHandle) {
+        match handle {
+            ItemHandle::Ship(handle) => {
+                self.ships.remove(handle);
+            }
+        }
     }
 }

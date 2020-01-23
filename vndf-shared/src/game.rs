@@ -138,6 +138,7 @@ impl State {
             let entity = hecs::Entity::from_bits(ship.entity);
             if !self.world.query().contains(entity) {
                 remove.push(handle);
+                let handle = ItemHandle::Ship(handle);
                 self.item_removed.sink().push(ItemRemoved { handle });
             }
         }
@@ -285,6 +286,11 @@ impl State {
     }
 }
 
+
+#[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
+pub enum ItemHandle {
+    Ship(Handle),
+}
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub enum Item {

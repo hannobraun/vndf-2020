@@ -1,4 +1,4 @@
-use crate::cgs::Handle;
+use crate::game::ItemHandle;
 
 
 pub struct EntityRemoved {
@@ -6,7 +6,7 @@ pub struct EntityRemoved {
 }
 
 pub struct ItemRemoved {
-    pub handle: Handle,
+    pub handle: ItemHandle,
 }
 
 pub struct Update {
