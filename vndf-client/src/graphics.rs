@@ -161,8 +161,12 @@ impl Graphics {
         -> GameResult
     {
         let body = state.world
-            .get::<Body>(hecs::Entity::from_bits(ship.entity))
-            .expect("Failed to get body for ship");
+            .get::<Body>(hecs::Entity::from_bits(ship.entity));
+
+        let body = match body {
+            Ok(body) => body,
+            Err(_)   => return Ok(()),
+        };
 
         graphics::draw(
             context,
@@ -286,11 +290,14 @@ End game - Escape",
         -> GameResult
     {
         let craft = state.world
-            .get::<Craft>(hecs::Entity::from_bits(ship.entity))
-            .expect("Failed to get craft for ship");
+            .get::<Craft>(hecs::Entity::from_bits(ship.entity));
         let health = state.world
-            .get::<Health>(hecs::Entity::from_bits(ship.entity))
-            .expect("Failed to get health for ship");
+            .get::<Health>(hecs::Entity::from_bits(ship.entity));
+
+        let (craft, health) = match (craft, health) {
+            (Ok(craft), Ok(health)) => (craft, health),
+            _                       => return Ok(()),
+        };
 
         if state.own_id != Some(craft.owner) {
             return Ok(());
