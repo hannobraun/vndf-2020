@@ -256,33 +256,7 @@ End game - Escape",
         )?;
 
         for ship in state.ships.values() {
-            let craft = state.world
-                .get::<Craft>(hecs::Entity::from_bits(ship.entity))
-                .expect("Failed to get craft for ship");
-            let health = state.world
-                .get::<Health>(hecs::Entity::from_bits(ship.entity))
-                .expect("Failed to get health for ship");
-
-            if state.own_id != Some(craft.owner) {
-                continue;
-            }
-
-            let (width, _) = graphics::drawable_size(context);
-
-            let status = format!("Ship Status
-Structural Integrity: {:.2}
-Fuel: {:.2}
-Heavy Missiles: {}",
-                health.value,
-                craft.fuel,
-                ship.missiles,
-            );
-            graphics::draw(
-                context,
-                &Text::new(status),
-                DrawParam::new()
-                    .dest([width - 200.0, 20.0])
-            )?;
+            self.draw_ship_status(context, ship, state)?;
 
             // There should only be one ship owned by the local player, so let's
             // quit.
@@ -302,5 +276,42 @@ Heavy Missiles: {}",
         mouse::set_cursor_hidden(context, input.pointer_world.is_some());
 
         Ok(())
+    }
+
+    fn draw_ship_status(&self,
+        context: &mut Context,
+        ship:    &Ship,
+        state:   &State,
+    )
+        -> GameResult
+    {
+        let craft = state.world
+            .get::<Craft>(hecs::Entity::from_bits(ship.entity))
+            .expect("Failed to get craft for ship");
+        let health = state.world
+            .get::<Health>(hecs::Entity::from_bits(ship.entity))
+            .expect("Failed to get health for ship");
+
+        if state.own_id != Some(craft.owner) {
+            return Ok(());
+        }
+
+        let (width, _) = graphics::drawable_size(context);
+
+        let status = format!("Ship Status
+Structural Integrity: {:.2}
+Fuel: {:.2}
+Heavy Missiles: {}",
+            health.value,
+            craft.fuel,
+            ship.missiles,
+        );
+
+        graphics::draw(
+            context,
+            &Text::new(status),
+            DrawParam::new()
+                .dest([width - 200.0, 20.0])
+        )
     }
 }
