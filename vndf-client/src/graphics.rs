@@ -133,10 +133,7 @@ impl Graphics {
         self.draw_boundary(context)?;
 
         for ship in state.ships.values() {
-            let body = state.world
-                .get::<Body>(hecs::Entity::from_bits(ship.entity))
-                .expect("Failed to get body for ship");
-            self.draw_ship(context, ship, &body)?;
+            self.draw_ship(context, ship, state)?;
         }
 
         for (_, (missile, body)) in &mut state.world.query::<(&Missile, &Body)>() {
@@ -160,9 +157,13 @@ impl Graphics {
         )
     }
 
-    fn draw_ship(&self, context: &mut Context, ship: &Ship, body: &Body)
+    fn draw_ship(&self, context: &mut Context, ship: &Ship, state: &State)
         -> GameResult
     {
+        let body = state.world
+            .get::<Body>(hecs::Entity::from_bits(ship.entity))
+            .expect("Failed to get body for ship");
+
         graphics::draw(
             context,
             &self.ship,
