@@ -44,6 +44,7 @@ use self::{
         },
         players::{
             self,
+            PlayerId,
             events::{
                 PlayerConnected,
                 PlayerDisconnected,
@@ -281,22 +282,6 @@ impl State {
 
     pub fn new_player(&mut self) -> events::Source<PlayerItemCreated> {
         self.player_item_created.source()
-    }
-}
-
-
-#[derive(Clone, Copy, Debug, Deserialize, Serialize, Eq, PartialEq, Hash)]
-pub struct PlayerId(u64);
-
-impl PlayerId {
-    fn first() -> Self {
-        Self(0)
-    }
-
-    fn increment(&mut self) -> Self {
-        let current = self.0;
-        self.0 += 1;
-        Self(current)
     }
 }
 

@@ -8,9 +8,11 @@ use crate::shared::{
         SecondaryStore,
     },
     game::{
-        PlayerId,
         Item,
-        features::ships::items::Ship,
+        features::{
+            players::PlayerId,
+            ships::items::Ship,
+        },
     },
     net::game::{
         Entity,

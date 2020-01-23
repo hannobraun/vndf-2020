@@ -11,7 +11,7 @@ use crate::{
     cgs::Handle,
     game::{
         Item,
-        PlayerId,
+        features::players::PlayerId,
     },
     input,
     net::game::{
