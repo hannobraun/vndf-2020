@@ -7,7 +7,7 @@ use crate::{
             health::components::Health,
             missiles::components::Missile,
             physics::components::Body,
-            ships::items::Ship,
+            ships::components::Ship,
         },
     },
     world,

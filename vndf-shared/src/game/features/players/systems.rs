@@ -10,7 +10,7 @@ use crate::{
             crafts::components::Craft,
             missiles::events::MissileLaunch,
             physics::components::Body,
-            ships::items::Ship,
+            ships::components::Ship,
         },
         indices::Indices,
     },

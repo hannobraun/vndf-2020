@@ -55,7 +55,7 @@ use self::{
         },
         ships::{
             self,
-            items::Ship,
+            components::Ship,
         },
     },
     indices::Indices,

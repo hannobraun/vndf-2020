@@ -2,7 +2,7 @@ use crate::{
     cgs::Store,
     game::features::{
         physics::components::Body,
-        ships::items::Ship,
+        ships::components::Ship,
     },
     world,
 };

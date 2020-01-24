@@ -100,7 +100,7 @@ use crate::game::features::{
     health::components::Health,
     missiles::components::Missile,
     physics::components::Body,
-    ships::items::Ship,
+    ships::components::Ship,
 };
 entity!(
     body,      Body;

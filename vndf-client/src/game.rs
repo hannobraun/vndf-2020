@@ -12,7 +12,7 @@ use crate::shared::{
         ItemHandle,
         features::{
             players::PlayerId,
-            ships::items::Ship,
+            ships::components::Ship,
         },
     },
     net::game::{
