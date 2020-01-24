@@ -39,7 +39,7 @@ pub fn connect_player(
     let handle = players.insert(Player::new(id, addr));
     indices.players_by_address.insert(addr, handle);
 
-    ShipEntity { player_id: id, color }.create(world, ships);
+    ShipEntity { owner: id, color }.create(world, ships);
     player_created.push(PlayerCreated { id, addr });
 }
 

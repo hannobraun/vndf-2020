@@ -13,8 +13,8 @@ use super::components::Ship;
 
 
 pub struct ShipEntity {
-    pub player_id: PlayerId,
-    pub color:     [f32; 3],
+    pub owner: PlayerId,
+    pub color: [f32; 3],
 }
 
 impl ShipEntity {
@@ -23,7 +23,7 @@ impl ShipEntity {
             engine_on: false,
             thrust:    100.0,
             fuel:      1200.0,
-            owner:     self.player_id,
+            owner:     self.owner,
         };
 
         let entity = world.spawn((Body::new(), craft, Health::new(10.0)));
