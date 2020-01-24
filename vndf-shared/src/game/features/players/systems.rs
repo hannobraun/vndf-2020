@@ -10,16 +10,17 @@ use crate::{
             crafts::components::Craft,
             missiles::events::MissileLaunch,
             physics::components::Body,
-            players::{
-                components::Player,
-                events::PlayerItemCreated,
-            },
             ships::items::Ship,
         },
         indices::Indices,
     },
     input,
     world,
+};
+
+use super::{
+    components::Player,
+    events::PlayerItemCreated,
 };
 
 
