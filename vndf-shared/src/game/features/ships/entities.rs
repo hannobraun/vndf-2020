@@ -1,10 +1,10 @@
 use crate::{
     cgs::Store,
-    game::{
-        features::crafts::components::Craft,
-        features::physics::components::Body,
-        features::players::PlayerId,
-        features::health::components::Health,
+    game::features::{
+        crafts::components::Craft,
+        physics::components::Body,
+        players::PlayerId,
+        health::components::Health,
     },
     world,
 };
