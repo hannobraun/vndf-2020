@@ -138,9 +138,8 @@ impl Graphics {
             self.draw_missile(context, body, missile)?;
         }
 
-        let query = &mut state.world.query::<(&Explosion, &Body)>();
-        for (_, (explosion, body)) in query {
-            self.draw_explosion(context, explosion, body)?;
+        for (_, explosion) in &state.explosions {
+            self.draw_explosion(context, explosion, state)?;
         }
 
         Ok(())
@@ -211,10 +210,18 @@ impl Graphics {
     fn draw_explosion(&self,
         context:   &mut Context,
         explosion: &Explosion,
-        body:      &Body,
+        state:     &State,
     )
         -> GameResult
     {
+        let body = state.world
+            .get::<Body>(hecs::Entity::from_bits(explosion.entity));
+
+        let body = match body {
+            Ok(body) => body,
+            _        => return Ok(()),
+        };
+
         let alpha = explosion.strength_left / explosion.strength_total;
         let size  = explosion.strength_total * 2.0;
 

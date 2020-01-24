@@ -10,6 +10,7 @@ use crate::shared::{
     game::{
         Item,
         ItemHandle,
+        explosions::Explosion,
         players::PlayerId,
         ships::Ship,
     },
@@ -26,7 +27,8 @@ pub struct State {
 
     ids: HashMap<Id, hecs::Entity>,
 
-    pub ships: SecondaryStore<Ship>,
+    pub explosions: SecondaryStore<Explosion>,
+    pub ships:      SecondaryStore<Ship>,
 }
 
 impl State {
@@ -36,7 +38,8 @@ impl State {
             own_id: None,
             ids:    HashMap::new(),
 
-            ships: SecondaryStore::new(),
+            explosions: SecondaryStore::new(),
+            ships:      SecondaryStore::new(),
         }
     }
 
@@ -65,6 +68,9 @@ impl State {
 
     pub fn update_item(&mut self, handle: Handle, item: Item) {
         match item {
+            Item::Explosion(explosion) => {
+                self.explosions.insert(handle, explosion);
+            }
             Item::Ship(ship) => {
                 self.ships.insert(handle, ship);
             }
@@ -73,6 +79,9 @@ impl State {
 
     pub fn remove_item(&mut self, handle: ItemHandle) {
         match handle {
+            ItemHandle::Explosion(handle) => {
+                self.explosions.remove(handle);
+            }
             ItemHandle::Ship(handle) => {
                 self.ships.remove(handle);
             }

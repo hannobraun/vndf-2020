@@ -1,5 +1,8 @@
 use crate::{
-    cgs::Store,
+    cgs::{
+        Handle,
+        Store,
+    },
     events,
     game::{
         explosions::entities::ExplosionEntity,
@@ -50,20 +53,22 @@ pub fn explode_entity(
 
 pub fn create_explosion(
     world:              &mut world::Spawn,
+    explosions:         &mut Store<Explosion>,
     explosion_imminent: &mut events::Sink<ExplosionImminent>,
     explosion:          ExplosionEntity,
 ) {
-    let handle = explosion.create(world);
+    let handle = explosion.create(world, explosions);
     explosion_imminent.push(ExplosionImminent { handle });
 }
 
 pub fn damage_nearby(
-    world:  &mut world::Query,
-    handle: hecs::Entity,
+    world:      &mut world::Query,
+    explosions: &Store<Explosion>,
+    handle:     Handle,
 ) {
-    let explosion = world.get::<Explosion>(handle)
+    let explosion = explosions.get(handle)
         .expect("Explosion not found");
-    let body = world.get(handle)
+    let body = world.get(hecs::Entity::from_bits(explosion.entity))
         .expect("Explosion not found");
 
     let query = &mut world.query::<(&Body, &mut Health)>();
@@ -75,18 +80,17 @@ pub fn damage_nearby(
 }
 
 pub fn update_explosions(
-    world:           world::Query,
+    explosions:      &mut Store<Explosion>,
     dt:              f32,
     explosion_faded: &mut events::Sink<ExplosionFaded>,
 ) {
-    for (handle, (explosion,)) in &mut world.query::<(&mut Explosion,)>() {
+    for (handle, explosion) in explosions {
         if explosion.update(dt) {
             explosion_faded.push(ExplosionFaded { handle });
         }
     }
 }
 
-pub fn remove_explosion(world: &mut world::Spawn, handle: hecs::Entity) {
-    world.despawn(handle)
-        .expect("Explosion should exist");
+pub fn remove_explosion(explosions: &mut Store<Explosion>, handle: Handle) {
+    explosions.remove(handle);
 }

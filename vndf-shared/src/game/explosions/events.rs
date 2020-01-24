@@ -1,7 +1,10 @@
+use crate::cgs::Handle;
+
+
 pub struct ExplosionImminent {
-    pub handle: hecs::Entity,
+    pub handle: Handle,
 }
 
 pub struct ExplosionFaded {
-    pub handle: hecs::Entity,
+    pub handle: Handle,
 }

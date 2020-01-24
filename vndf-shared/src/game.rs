@@ -34,6 +34,7 @@ use self::{
         Update,
     },
     explosions::{
+        Explosion,
         ExplosionFaded,
         ExplosionImminent,
     },
@@ -63,8 +64,9 @@ pub struct State {
 
     players_by_address: HashMap<SocketAddr, Handle>,
 
-    players: Store<Player>,
-    ships:   Store<Ship>,
+    explosions: Store<Explosion>,
+    players:    Store<Player>,
+    ships:      Store<Ship>,
 
     death:               events::Buf<Death>,
     entity_removed:      events::Buf<EntityRemoved>,
@@ -87,8 +89,9 @@ impl State {
 
             players_by_address: HashMap::new(),
 
-            players: Store::new(),
-            ships:   Store::new(),
+            explosions: Store::new(),
+            players:    Store::new(),
+            ships:      Store::new(),
 
             death:               events::Buf::new(),
             entity_removed:      events::Buf::new(),
@@ -157,7 +160,7 @@ impl State {
                 self.world.query(),
             );
             explosions::update_explosions(
-                self.world.query(),
+                &mut self.explosions,
                 dt,
                 &mut self.explosion_faded.sink(),
             );
@@ -221,6 +224,7 @@ impl State {
             if let Some(explosion) = explosion {
                 explosions::create_explosion(
                     &mut self.world.spawn(&mut despawned),
+                    &mut self.explosions,
                     &mut self.explosion_imminent.sink(),
                     explosion,
                 );
@@ -231,6 +235,7 @@ impl State {
 
             explosions::damage_nearby(
                 &mut self.world.query(),
+                &self.explosions,
                 handle,
             );
         }
@@ -238,7 +243,7 @@ impl State {
             let ExplosionFaded { handle } = event;
 
             explosions::remove_explosion(
-                &mut self.world.spawn(&mut despawned),
+                &mut self.explosions,
                 handle,
             );
         }
@@ -260,8 +265,12 @@ impl State {
     }
 
     pub fn item_update(&mut self) -> impl Iterator<Item=(Handle, Item)> + '_ {
-        self.ships.iter()
-            .map(|(handle, item)| (handle, Item::Ship(*item)))
+        let explosions = self.explosions.iter()
+            .map(|(handle, c)| (handle, Item::Explosion(*c)));
+        let ships = self.ships.iter()
+            .map(|(handle, item)| (handle, Item::Ship(*item)));
+
+        explosions.chain(ships)
     }
 
     pub fn item_removed(&mut self) -> events::Source<ItemRemoved> {
@@ -280,10 +289,12 @@ impl State {
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub enum ItemHandle {
+    Explosion(Handle),
     Ship(Handle),
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub enum Item {
+    Explosion(Explosion),
     Ship(Ship),
 }

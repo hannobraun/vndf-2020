@@ -1,4 +1,8 @@
 use crate::{
+    cgs::{
+        Handle,
+        Store,
+    },
     game::physics::Body,
     world,
 };
@@ -12,13 +16,19 @@ pub struct ExplosionEntity {
 }
 
 impl ExplosionEntity {
-    pub fn create(&self, world: &mut world::Spawn) -> hecs::Entity {
+    pub fn create(&self,
+        world:      &mut world::Spawn,
+        explosions: &mut Store<Explosion>,
+    )
+        -> Handle
+    {
         let body = Body {
             pos: self.exploding.pos,
             vel: self.exploding.vel * 0.05,
             .. Body::new()
         };
 
-        world.spawn((Explosion::new(self.strength), body))
+        let entity = world.spawn((body,));
+        explosions.insert(Explosion::new(entity, self.strength))
     }
 }

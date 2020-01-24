@@ -14,13 +14,17 @@ use crate::{
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Explosion {
+    pub entity: u64,
+
     pub strength_total: f32,
     pub strength_left:  f32,
 }
 
 impl Explosion {
-    pub fn new(strength: f32) -> Self {
+    pub fn new(entity: hecs::Entity, strength: f32) -> Self {
         Self {
+            entity: entity.to_bits(),
+
             strength_total: strength,
             strength_left:  strength,
         }
