@@ -4,9 +4,9 @@ use serde::{
 };
 
 use crate::{
-    game::{
-        PlayerId,
-        features::physics::components::Body,
+    game::features::{
+        physics::components::Body,
+        players::PlayerId,
     },
     math::{
         prelude::*,
