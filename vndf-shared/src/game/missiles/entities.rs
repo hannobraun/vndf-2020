@@ -4,7 +4,6 @@ use crate::{
         health::Health,
         physics::Body,
         players::PlayerId,
-        missiles::components::Missile,
     },
     math::{
         prelude::*,
@@ -13,6 +12,8 @@ use crate::{
     },
     world,
 };
+
+use super::Missile;
 
 
 pub struct MissileEntity {

@@ -1,10 +1,9 @@
 use crate::{
-    game::{
-        crafts::components::Craft,
-        physics::Body,
-    },
+    game::physics::Body,
     world,
 };
+
+use super::Craft;
 
 
 pub fn update_bodies(world: world::Query, world_size: f32, dt: f32) {
