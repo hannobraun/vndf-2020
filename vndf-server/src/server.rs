@@ -155,7 +155,7 @@ impl Server {
             for &client in &clients {
                 self.network.send(
                     client,
-                    msg::FromServer::UpdateItem(handle, component),
+                    msg::FromServer::UpdateComponent(handle, component),
                 );
             }
         }

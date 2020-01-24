@@ -66,7 +66,7 @@ pub enum FromServer {
     Welcome(PlayerId),
     UpdateEntity(Entity),
     RemoveEntity(Id),
-    UpdateItem(Handle, Component),
+    UpdateComponent(Handle, Component),
     RemoveComponent(ComponentHandle),
 }
 
