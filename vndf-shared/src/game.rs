@@ -1,8 +1,10 @@
 pub mod features;
-pub mod indices;
 
 
-use std::net::SocketAddr;
+use std::{
+    collections::HashMap,
+    net::SocketAddr,
+};
 
 use serde::{
     Deserialize,
@@ -18,46 +20,43 @@ use crate::{
     world::World,
 };
 
-use self::{
-    features::{
-        basics::{
-            EntityRemoved,
-            ItemRemoved,
-            Update,
-        },
-        crafts,
-        explosions::{
-            self,
-            events::{
-                ExplosionFaded,
-                ExplosionImminent,
-            },
-        },
-        health::{
-            self,
-            events::Death,
-        },
-        missiles::{
-            self,
-            events::MissileLaunch,
-        },
-        players::{
-            self,
-            PlayerId,
-            components::Player,
-            events::{
-                PlayerConnected,
-                PlayerCreated,
-                PlayerDisconnected,
-                PlayerInput,
-            },
-        },
-        ships::{
-            self,
-            components::Ship,
+use self::features::{
+    basics::{
+        EntityRemoved,
+        ItemRemoved,
+        Update,
+    },
+    crafts,
+    explosions::{
+        self,
+        events::{
+            ExplosionFaded,
+            ExplosionImminent,
         },
     },
-    indices::Indices,
+    health::{
+        self,
+        events::Death,
+    },
+    missiles::{
+        self,
+        events::MissileLaunch,
+    },
+    players::{
+        self,
+        PlayerId,
+        components::Player,
+        events::{
+            PlayerConnected,
+            PlayerCreated,
+            PlayerDisconnected,
+            PlayerInput,
+        },
+    },
+    ships::{
+        self,
+        components::Ship,
+    },
 };
 
 
@@ -69,8 +68,9 @@ pub const FRAME_TIME: f32 = 1.0 / TARGET_FPS as f32;
 
 pub struct State {
     world:   World,
-    indices: Indices,
     next_id: PlayerId,
+
+    players_by_address: HashMap<SocketAddr, Handle>,
 
     players: Store<Player>,
     ships:   Store<Ship>,
@@ -92,8 +92,9 @@ impl State {
     pub fn new() -> Self {
         Self {
             world:   World::new(),
-            indices: Indices::new(),
             next_id: PlayerId::first(),
+
+            players_by_address: HashMap::new(),
 
             players: Store::new(),
             ships:   Store::new(),
@@ -184,7 +185,7 @@ impl State {
                 &mut self.players,
                 &mut self.ships,
                 &mut self.player_created.sink(),
-                &mut self.indices,
+                &mut self.players_by_address,
                 id,
                 addr,
                 color,
@@ -195,7 +196,7 @@ impl State {
 
             players::systems::disconnect_player(
                 &mut self.players,
-                &mut self.indices,
+                &mut self.players_by_address,
                 addr,
             );
         }
@@ -205,7 +206,7 @@ impl State {
                 &self.players,
                 &mut self.ships,
                 &mut self.missile_launch.sink(),
-                &mut self.indices,
+                &mut self.players_by_address,
                 addr,
                 event,
             );

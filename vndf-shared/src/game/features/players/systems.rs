@@ -1,7 +1,13 @@
-use std::net::SocketAddr;
+use std::{
+    collections::HashMap,
+    net::SocketAddr,
+};
 
 use crate::{
-    cgs::Store,
+    cgs::{
+        Handle,
+        Store,
+    },
     events,
     game::{
         PlayerId,
@@ -14,7 +20,6 @@ use crate::{
                 entities::ShipEntity,
             },
         },
-        indices::Indices,
     },
     input,
     world,
@@ -31,13 +36,13 @@ pub fn connect_player(
     players:        &mut Store<Player>,
     ships:          &mut Store<Ship>,
     player_created: &mut events::Sink<PlayerCreated>,
-    indices:        &mut Indices,
+    index:          &mut HashMap<SocketAddr, Handle>,
     id:             PlayerId,
     addr:           SocketAddr,
     color:          [f32; 3],
 ) {
     let handle = players.insert(Player::new(id, addr));
-    indices.players_by_address.insert(addr, handle);
+    index.insert(addr, handle);
 
     ShipEntity { owner: id, color }.create(world, ships);
     player_created.push(PlayerCreated { id, addr });
@@ -45,12 +50,12 @@ pub fn connect_player(
 
 pub fn disconnect_player(
     players: &mut Store<Player>,
-    indices: &mut Indices,
+    index:   &mut HashMap<SocketAddr, Handle>,
     address: SocketAddr,
 ) {
     // It's possible that we're getting multiple disconnect events per player,
     // so the ship could have been removed already.
-    if let Some(handle) = indices.players_by_address.remove(&address) {
+    if let Some(handle) = index.remove(&address) {
         players.remove(handle);
 
         // In principle, an event needs to be emitted to mark the removal of the
@@ -69,11 +74,11 @@ pub fn handle_input(
     players:        &Store<Player>,
     ships:          &mut Store<Ship>,
     missile_launch: &mut events::Sink<MissileLaunch>,
-    indices:        &mut Indices,
+    index:          &mut HashMap<SocketAddr, Handle>,
     address:        SocketAddr,
     input:          input::Event,
 ) {
-    let player = match indices.players_by_address.get(&address) {
+    let player = match index.get(&address) {
         Some(player) =>
             *player,
         // Ignore input from unknown player.
