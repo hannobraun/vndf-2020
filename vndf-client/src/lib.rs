@@ -203,7 +203,7 @@ impl EventHandler for Game {
                     self.state.remove_entity(id);
                 }
                 Ok(msg::FromServer::UpdateItem(handle, item)) => {
-                    self.state.update_item(handle, item);
+                    self.state.update_component(handle, item);
                 }
                 Ok(msg::FromServer::RemoveItem(handle)) => {
                     self.state.remove_component(handle);

@@ -68,7 +68,7 @@ impl State {
         }
     }
 
-    pub fn update_item(&mut self, handle: Handle, component: Component) {
+    pub fn update_component(&mut self, handle: Handle, component: Component) {
         match component {
             Component::Explosion(explosion) => {
                 self.explosions.insert(handle, explosion);
