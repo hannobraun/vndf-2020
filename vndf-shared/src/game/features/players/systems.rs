@@ -20,26 +20,26 @@ use crate::{
 
 use super::{
     components::Player,
-    events::PlayerItemCreated,
+    events::PlayerCreated,
 };
 
 
 pub fn connect_player(
-    world:               &mut world::Spawn,
-    players:             &mut Store<Player>,
-    ships:               &mut Store<Ship>,
-    player_item_created: &mut events::Sink<PlayerItemCreated>,
-    indices:             &mut Indices,
-    id:                  PlayerId,
-    addr:                SocketAddr,
-    color:               [f32; 3],
+    world:          &mut world::Spawn,
+    players:        &mut Store<Player>,
+    ships:          &mut Store<Ship>,
+    player_created: &mut events::Sink<PlayerCreated>,
+    indices:        &mut Indices,
+    id:             PlayerId,
+    addr:           SocketAddr,
+    color:          [f32; 3],
 ) {
     let handle = players.insert(Player::new(id, addr));
     indices.players_by_address.insert(addr, handle);
 
     let entity = world.spawn(entities::ship(id));
     ships.insert(Ship::new(entity, color));
-    player_item_created.push(PlayerItemCreated { id, addr });
+    player_created.push(PlayerCreated { id, addr });
 }
 
 pub fn disconnect_player(

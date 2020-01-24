@@ -48,8 +48,8 @@ use self::{
             components::Player,
             events::{
                 PlayerConnected,
+                PlayerCreated,
                 PlayerDisconnected,
-                PlayerItemCreated,
                 PlayerInput,
             },
         },
@@ -83,8 +83,8 @@ pub struct State {
     item_removed:        events::Buf<ItemRemoved>,
     missile_launch:      events::Buf<MissileLaunch>,
     player_connected:    events::Buf<PlayerConnected>,
+    player_created:      events::Buf<PlayerCreated>,
     player_disconnected: events::Buf<PlayerDisconnected>,
-    player_item_created: events::Buf<PlayerItemCreated>,
     player_input:        events::Buf<PlayerInput>,
     update:              events::Buf<Update>,
 }
@@ -106,8 +106,8 @@ impl State {
             item_removed:        events::Buf::new(),
             missile_launch:      events::Buf::new(),
             player_connected:    events::Buf::new(),
+            player_created:      events::Buf::new(),
             player_disconnected: events::Buf::new(),
-            player_item_created: events::Buf::new(),
             player_input:        events::Buf::new(),
             update:              events::Buf::new(),
         }
@@ -184,7 +184,7 @@ impl State {
                 &mut self.world.spawn(&mut despawned),
                 &mut self.players,
                 &mut self.ships,
-                &mut self.player_item_created.sink(),
+                &mut self.player_created.sink(),
                 &mut self.indices,
                 id,
                 addr,
@@ -281,8 +281,8 @@ impl State {
         self.entity_removed.source()
     }
 
-    pub fn new_player(&mut self) -> events::Source<PlayerItemCreated> {
-        self.player_item_created.source()
+    pub fn new_player(&mut self) -> events::Source<PlayerCreated> {
+        self.player_created.source()
     }
 }
 

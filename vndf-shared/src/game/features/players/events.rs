@@ -15,7 +15,7 @@ pub struct PlayerDisconnected {
     pub addr: SocketAddr,
 }
 
-pub struct PlayerItemCreated {
+pub struct PlayerCreated {
     pub id:   PlayerId,
     pub addr: SocketAddr,
 }
