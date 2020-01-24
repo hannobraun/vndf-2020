@@ -264,7 +264,7 @@ impl State {
             .collect()
     }
 
-    pub fn item_update(&mut self)
+    pub fn updates(&mut self)
         -> impl Iterator<Item=(Handle, Component)> + '_
     {
         let explosions = self.explosions.iter()

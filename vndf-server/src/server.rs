@@ -151,7 +151,7 @@ impl Server {
             }
         }
 
-        for (handle, item) in self.state.item_update() {
+        for (handle, item) in self.state.updates() {
             for &client in &clients {
                 self.network.send(
                     client,
