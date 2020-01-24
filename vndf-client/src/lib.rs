@@ -205,7 +205,7 @@ impl EventHandler for Game {
                 Ok(msg::FromServer::UpdateItem(handle, item)) => {
                     self.state.update_component(handle, item);
                 }
-                Ok(msg::FromServer::RemoveItem(handle)) => {
+                Ok(msg::FromServer::RemoveComponent(handle)) => {
                     self.state.remove_component(handle);
                 }
                 Err(err) => {

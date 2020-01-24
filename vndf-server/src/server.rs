@@ -119,7 +119,7 @@ impl Server {
             for &client in &clients {
                 self.network.send(
                     client,
-                    msg::FromServer::RemoveItem(event.handle),
+                    msg::FromServer::RemoveComponent(event.handle),
                 );
             }
         }
