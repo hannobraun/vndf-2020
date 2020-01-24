@@ -27,22 +27,22 @@ pub fn explode_entity(
     world:    world::Query,
     missiles: &Store<Missile>,
     ships:    &Store<Ship>,
-    entity:   hecs::Entity,
+    handle:   hecs::Entity,
 )
     -> Option<ExplosionEntity>
 {
-    let body = world.get::<Body>(entity).ok()?;
+    let body = world.get::<Body>(handle).ok()?;
 
     let mut is_missile = false;
     for missile in missiles.values() {
-        if entity.to_bits() == missile.entity {
+        if handle.to_bits() == missile.entity {
             is_missile = true;
         }
     }
 
     let mut is_ship = false;
     for ship in ships.values() {
-        if entity.to_bits() == ship.entity {
+        if handle.to_bits() == ship.entity {
             is_ship = true;
         }
     }
