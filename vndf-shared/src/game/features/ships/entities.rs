@@ -1,8 +1,10 @@
 use crate::{
     cgs::Store,
     game::{
-        entities,
+        features::crafts::components::Craft,
+        features::physics::components::Body,
         features::players::PlayerId,
+        features::health::components::Health,
     },
     world,
 };
@@ -17,7 +19,14 @@ pub struct ShipEntity {
 
 impl ShipEntity {
     pub fn create(&self, world: &mut world::Spawn, ships: &mut Store<Ship>) {
-        let entity = world.spawn(entities::ship(self.player_id));
+        let craft = Craft {
+            engine_on: false,
+            thrust:    100.0,
+            fuel:      1200.0,
+            owner:     self.player_id,
+        };
+
+        let entity = world.spawn((Body::new(), craft, Health::new(10.0)));
         ships.insert(Ship::new(entity, self.color));
     }
 }

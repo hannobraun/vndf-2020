@@ -19,7 +19,6 @@ use crate::{
 
 pub type ExplosionE = (Explosion, Body);
 pub type MissileE   = (Missile, Body, Craft, Health);
-pub type ShipE      = (Body, Craft, Health);
 
 
 pub fn explosion(exploding: &Body, strength: f32) -> ExplosionE {
@@ -48,15 +47,4 @@ pub fn missile(owner: PlayerId, from_body: &Body, target: Pnt2) -> MissileE {
     };
 
     (Missile::new(target), body, craft, Health::new(2.0))
-}
-
-pub fn ship(owner: PlayerId) -> ShipE {
-    let craft = Craft {
-        engine_on: false,
-        thrust:    100.0,
-        fuel:      1200.0,
-        owner,
-    };
-
-    (Body::new(), craft, Health::new(10.0))
 }
