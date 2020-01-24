@@ -5,7 +5,7 @@ use serde::{
 
 use crate::{
     game::{
-        missiles::entities::MissileEntity,
+        missiles::MissileEntity,
         physics::components::Body,
         players::PlayerId,
     },

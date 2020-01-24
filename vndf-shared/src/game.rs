@@ -38,7 +38,7 @@ use self::{
         ExplosionImminent,
     },
     health::Death,
-    missiles::events::MissileLaunch,
+    missiles::MissileLaunch,
     players::{
         PlayerId,
         components::Player,
@@ -155,7 +155,7 @@ impl State {
                 WORLD_SIZE,
                 dt,
             );
-            missiles::systems::update_missiles(
+            missiles::update_missiles(
                 self.world.query(),
             );
             explosions::update_explosions(
@@ -205,7 +205,7 @@ impl State {
             );
         }
         for MissileLaunch { missile } in self.missile_launch.source().ready() {
-            missiles::systems::launch_missile(
+            missiles::launch_missile(
                 &mut self.world.spawn(&mut despawned),
                 missile,
             );

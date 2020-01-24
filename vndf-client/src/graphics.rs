@@ -20,7 +20,7 @@ use crate::{
             crafts::Craft,
             explosions::Explosion,
             health::Health,
-            missiles::components::Missile,
+            missiles::Missile,
             physics::components::Body,
             ships::components::Ship,
         },

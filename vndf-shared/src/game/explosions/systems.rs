@@ -4,7 +4,7 @@ use crate::{
     game::{
         explosions::entities::ExplosionEntity,
         health::Health,
-        missiles::components::Missile,
+        missiles::Missile,
         physics::components::Body,
         ships::components::Ship,
     },

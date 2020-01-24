@@ -11,7 +11,7 @@ use crate::{
     events,
     game::{
         crafts::Craft,
-        missiles::events::MissileLaunch,
+        missiles::MissileLaunch,
         physics::components::Body,
         players::PlayerId,
         ships::{
