@@ -79,7 +79,7 @@ impl State {
         }
     }
 
-    pub fn remove_item(&mut self, handle: ComponentHandle) {
+    pub fn remove_component(&mut self, handle: ComponentHandle) {
         match handle {
             ComponentHandle::Explosion(handle) => {
                 self.explosions.remove(handle);

@@ -206,7 +206,7 @@ impl EventHandler for Game {
                     self.state.update_item(handle, item);
                 }
                 Ok(msg::FromServer::RemoveItem(handle)) => {
-                    self.state.remove_item(handle);
+                    self.state.remove_component(handle);
                 }
                 Err(err) => {
                     error!("Connection error: {:?}", err);
