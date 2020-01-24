@@ -86,7 +86,7 @@ pub fn update_explosions(
     }
 }
 
-pub fn remove_explosion(world: &mut world::Spawn, explosion: hecs::Entity) {
-    world.despawn(explosion)
+pub fn remove_explosion(world: &mut world::Spawn, handle: hecs::Entity) {
+    world.despawn(handle)
         .expect("Explosion should exist");
 }
