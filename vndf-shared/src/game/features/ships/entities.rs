@@ -2,9 +2,9 @@ use crate::{
     cgs::Store,
     game::features::{
         crafts::components::Craft,
+        health::components::Health,
         physics::components::Body,
         players::PlayerId,
-        health::components::Health,
     },
     world,
 };
