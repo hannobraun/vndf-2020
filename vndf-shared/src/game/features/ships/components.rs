@@ -6,8 +6,10 @@ use serde::{
 use crate::{
     game::{
         PlayerId,
-        entities as e,
-        features::physics::components::Body,
+        features::{
+            missiles::entities::MissileEntity,
+            physics::components::Body,
+        },
     },
     input::Rotation,
     math::{
@@ -37,11 +39,11 @@ impl Ship {
     }
 
     pub fn launch_missile(&mut self, owner: PlayerId, body: &Body, target: Pnt2)
-        -> Option<e::MissileE>
+        -> Option<MissileEntity>
     {
         if self.missiles > 0 {
             self.missiles -= 1;
-            Some(e::missile(owner, body, target))
+            Some(MissileEntity { owner, origin: *body, target })
         }
         else {
             None

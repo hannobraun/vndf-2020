@@ -1,19 +1,19 @@
 use crate::{
-    game::{
-        entities as e,
-        features::{
-            crafts::components::Craft,
-            health::components::Health,
-            missiles::components::Missile,
-            physics::components::Body,
+    game::features::{
+        crafts::components::Craft,
+        health::components::Health,
+        missiles::{
+            components::Missile,
+            entities::MissileEntity,
         },
+        physics::components::Body,
     },
     world,
 };
 
 
-pub fn launch_missile(world: &mut world::Spawn, missile: e::MissileE) {
-    world.spawn(missile);
+pub fn launch_missile(world: &mut world::Spawn, missile: MissileEntity) {
+    missile.create(world);
 }
 
 pub fn update_missiles(
