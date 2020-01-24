@@ -59,11 +59,11 @@ pub fn create_explosion(
 
 pub fn damage_nearby(
     world:  &mut world::Query,
-    entity: hecs::Entity,
+    handle: hecs::Entity,
 ) {
-    let explosion = world.get::<Explosion>(entity)
+    let explosion = world.get::<Explosion>(handle)
         .expect("Explosion not found");
-    let body = world.get(entity)
+    let body = world.get(handle)
         .expect("Explosion not found");
 
     let query = &mut world.query::<(&Body, &mut Health)>();
