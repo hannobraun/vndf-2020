@@ -40,14 +40,12 @@ use self::{
     health::Death,
     missiles::MissileLaunch,
     players::{
+        Player,
+        PlayerConnected,
+        PlayerCreated,
+        PlayerDisconnected,
         PlayerId,
-        components::Player,
-        events::{
-            PlayerConnected,
-            PlayerCreated,
-            PlayerDisconnected,
-            PlayerInput,
-        },
+        PlayerInput,
     },
     ships::components::Ship,
 };
@@ -173,7 +171,7 @@ impl State {
 
             let id = self.next_id.increment();
 
-            players::systems::connect_player(
+            players::connect_player(
                 &mut self.world.spawn(&mut despawned),
                 &mut self.players,
                 &mut self.ships,
@@ -187,14 +185,14 @@ impl State {
         for event in self.player_disconnected.source().ready() {
             let PlayerDisconnected { addr } = event;
 
-            players::systems::disconnect_player(
+            players::disconnect_player(
                 &mut self.players,
                 &mut self.players_by_address,
                 addr,
             );
         }
         for PlayerInput { addr, event } in self.player_input.source().ready() {
-            players::systems::handle_input(
+            players::handle_input(
                 self.world.query(),
                 &self.players,
                 &mut self.ships,

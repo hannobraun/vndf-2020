@@ -21,7 +21,7 @@ use crate::{
             self,
             FRAME_TIME,
             base::Update,
-            players::events::{
+            players::{
                 PlayerConnected,
                 PlayerDisconnected,
                 PlayerInput,
