@@ -10,8 +10,10 @@ use serde::{
 use crate::{
     cgs::Handle,
     game::{
-        ItemHandle,
-        base::Component,
+        base::{
+            Component,
+            ItemHandle,
+        },
         players::PlayerId,
     },
     input,

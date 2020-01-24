@@ -8,8 +8,10 @@ use crate::shared::{
         SecondaryStore,
     },
     game::{
-        ItemHandle,
-        base::Component,
+        base::{
+            Component,
+            ItemHandle,
+        },
         explosions::Explosion,
         players::PlayerId,
         ships::Ship,

@@ -13,11 +13,6 @@ use std::{
     net::SocketAddr,
 };
 
-use serde::{
-    Deserialize,
-    Serialize,
-};
-
 use crate::{
     cgs::{
         Handle,
@@ -31,6 +26,7 @@ use self::{
     base::{
         Component,
         EntityRemoved,
+        ItemHandle,
         ItemRemoved,
         Update,
     },
@@ -287,11 +283,4 @@ impl State {
     pub fn player_created(&mut self) -> events::Source<PlayerCreated> {
         self.player_created.source()
     }
-}
-
-
-#[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
-pub enum ItemHandle {
-    Explosion(Handle),
-    Ship(Handle),
 }
