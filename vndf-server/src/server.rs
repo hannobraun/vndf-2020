@@ -151,11 +151,11 @@ impl Server {
             }
         }
 
-        for (handle, item) in self.state.updates() {
+        for (handle, component) in self.state.updates() {
             for &client in &clients {
                 self.network.send(
                     client,
-                    msg::FromServer::UpdateItem(handle, item),
+                    msg::FromServer::UpdateItem(handle, component),
                 );
             }
         }
