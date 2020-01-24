@@ -25,8 +25,8 @@ use crate::{
 use self::{
     base::{
         Component,
+        ComponentHandle,
         EntityRemoved,
-        ItemHandle,
         ItemRemoved,
         Update,
     },
@@ -129,7 +129,7 @@ impl State {
             let entity = hecs::Entity::from_bits(ship.entity);
             if !self.world.query().contains(entity) {
                 remove.push(handle);
-                let handle = ItemHandle::Ship(handle);
+                let handle = ComponentHandle::Ship(handle);
                 self.item_removed.sink().push(ItemRemoved { handle });
             }
         }

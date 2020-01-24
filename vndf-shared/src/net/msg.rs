@@ -12,7 +12,7 @@ use crate::{
     game::{
         base::{
             Component,
-            ItemHandle,
+            ComponentHandle,
         },
         players::PlayerId,
     },
@@ -67,7 +67,7 @@ pub enum FromServer {
     UpdateEntity(Entity),
     RemoveEntity(Id),
     UpdateItem(Handle, Component),
-    RemoveItem(ItemHandle),
+    RemoveItem(ComponentHandle),
 }
 
 

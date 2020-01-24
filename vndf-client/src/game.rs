@@ -10,7 +10,7 @@ use crate::shared::{
     game::{
         base::{
             Component,
-            ItemHandle,
+            ComponentHandle,
         },
         explosions::Explosion,
         players::PlayerId,
@@ -79,12 +79,12 @@ impl State {
         }
     }
 
-    pub fn remove_item(&mut self, handle: ItemHandle) {
+    pub fn remove_item(&mut self, handle: ComponentHandle) {
         match handle {
-            ItemHandle::Explosion(handle) => {
+            ComponentHandle::Explosion(handle) => {
                 self.explosions.remove(handle);
             }
-            ItemHandle::Ship(handle) => {
+            ComponentHandle::Ship(handle) => {
                 self.ships.remove(handle);
             }
         }

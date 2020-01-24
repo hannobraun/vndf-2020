@@ -25,7 +25,7 @@ pub enum Component {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
-pub enum ItemHandle {
+pub enum ComponentHandle {
     Explosion(Handle),
     Ship(Handle),
 }

@@ -1,4 +1,4 @@
-use super::ItemHandle;
+use super::ComponentHandle;
 
 
 pub struct EntityRemoved {
@@ -6,7 +6,7 @@ pub struct EntityRemoved {
 }
 
 pub struct ItemRemoved {
-    pub handle: ItemHandle,
+    pub handle: ComponentHandle,
 }
 
 pub struct Update {
