@@ -1,7 +1,7 @@
 use crate::{
     game::{
         crafts::Craft,
-        health::components::Health,
+        health::Health,
         missiles::{
             components::Missile,
             entities::MissileEntity,

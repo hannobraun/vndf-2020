@@ -97,7 +97,7 @@ impl Id {
 use crate::game::{
     crafts::Craft,
     explosions::Explosion,
-    health::components::Health,
+    health::Health,
     missiles::components::Missile,
     physics::components::Body,
     ships::components::Ship,

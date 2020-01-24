@@ -37,7 +37,7 @@ use self::{
         ExplosionFaded,
         ExplosionImminent,
     },
-    health::events::Death,
+    health::Death,
     missiles::events::MissileLaunch,
     players::{
         PlayerId,
@@ -163,7 +163,7 @@ impl State {
                 dt,
                 &mut self.explosion_faded.sink(),
             );
-            health::systems::check_health(
+            health::check_health(
                 self.world.query(),
                 &mut self.death.sink(),
             );
@@ -216,7 +216,7 @@ impl State {
                 &self.ships,
                 entity,
             );
-            health::systems::remove_entity(
+            health::remove_entity(
                 &mut self.world.spawn(&mut despawned),
                 entity,
             );

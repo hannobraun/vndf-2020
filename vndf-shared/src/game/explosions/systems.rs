@@ -3,7 +3,7 @@ use crate::{
     events,
     game::{
         explosions::entities::ExplosionEntity,
-        health::components::Health,
+        health::Health,
         missiles::components::Missile,
         physics::components::Body,
         ships::components::Ship,
