@@ -29,6 +29,7 @@ use crate::{
 
 use self::{
     base::{
+        Component,
         EntityRemoved,
         ItemRemoved,
         Update,
@@ -293,10 +294,4 @@ impl State {
 pub enum ItemHandle {
     Explosion(Handle),
     Ship(Handle),
-}
-
-#[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
-pub enum Component {
-    Explosion(Explosion),
-    Ship(Ship),
 }

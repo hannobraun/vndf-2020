@@ -1,4 +1,20 @@
-use crate::game::ItemHandle;
+use serde::{
+    Deserialize,
+    Serialize,
+};
+
+use crate::game::{
+    ItemHandle,
+    explosions::Explosion,
+    ships::Ship,
+};
+
+
+#[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
+pub enum Component {
+    Explosion(Explosion),
+    Ship(Ship),
+}
 
 
 pub struct EntityRemoved {
