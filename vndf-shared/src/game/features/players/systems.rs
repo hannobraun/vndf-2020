@@ -9,16 +9,14 @@ use crate::{
         Store,
     },
     events,
-    game::{
-        PlayerId,
-        features::{
-            crafts::components::Craft,
-            missiles::events::MissileLaunch,
-            physics::components::Body,
-            ships::{
-                components::Ship,
-                entities::ShipEntity,
-            },
+    game::features::{
+        crafts::components::Craft,
+        missiles::events::MissileLaunch,
+        physics::components::Body,
+        players::PlayerId,
+        ships::{
+            components::Ship,
+            entities::ShipEntity,
         },
     },
     input,
