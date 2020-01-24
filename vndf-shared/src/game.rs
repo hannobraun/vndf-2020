@@ -281,7 +281,7 @@ impl State {
         self.entity_removed.source()
     }
 
-    pub fn new_player(&mut self) -> events::Source<PlayerCreated> {
+    pub fn player_created(&mut self) -> events::Source<PlayerCreated> {
         self.player_created.source()
     }
 }
