@@ -1,6 +1,6 @@
 use crate::{
     game::{
-        crafts::components::Craft,
+        crafts::Craft,
         health::components::Health,
         missiles::{
             components::Missile,

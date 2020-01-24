@@ -1,7 +1,7 @@
 use crate::{
     cgs::Store,
     game::{
-        crafts::components::Craft,
+        crafts::Craft,
         health::components::Health,
         physics::components::Body,
         players::PlayerId,

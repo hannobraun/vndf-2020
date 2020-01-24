@@ -146,11 +146,11 @@ impl State {
                 &mut self.ships,
                 self.world.query(),
             );
-            crafts::systems::update_crafts(
+            crafts::update_crafts(
                 self.world.query(),
                 dt,
             );
-            crafts::systems::update_bodies(
+            crafts::update_bodies(
                 self.world.query(),
                 WORLD_SIZE,
                 dt,

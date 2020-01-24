@@ -10,7 +10,7 @@ use crate::{
     },
     events,
     game::{
-        crafts::components::Craft,
+        crafts::Craft,
         missiles::events::MissileLaunch,
         physics::components::Body,
         players::PlayerId,

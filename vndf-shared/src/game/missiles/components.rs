@@ -6,7 +6,7 @@ use serde::{
 
 use crate::{
     game::{
-        crafts::components::Craft,
+        crafts::Craft,
         physics::components::Body,
     },
     math::{

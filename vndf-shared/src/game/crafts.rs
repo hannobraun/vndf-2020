@@ -1,2 +1,8 @@
-pub mod components;
-pub mod systems;
+mod components;
+mod systems;
+
+
+pub use self::{
+    components::*,
+    systems::*,
+};

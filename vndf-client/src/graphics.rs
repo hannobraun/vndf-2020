@@ -17,7 +17,7 @@ use crate::{
     shared::{
         game::{
             WORLD_SIZE,
-            crafts::components::Craft,
+            crafts::Craft,
             explosions::components::Explosion,
             health::components::Health,
             missiles::components::Missile,
