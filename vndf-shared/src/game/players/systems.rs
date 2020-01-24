@@ -15,8 +15,8 @@ use crate::{
         physics::Body,
         players::PlayerId,
         ships::{
-            components::Ship,
-            entities::ShipEntity,
+            Ship,
+            ShipEntity,
         },
     },
     input,

@@ -47,7 +47,7 @@ use self::{
         PlayerId,
         PlayerInput,
     },
-    ships::components::Ship,
+    ships::Ship,
 };
 
 
@@ -140,7 +140,7 @@ impl State {
         let mut despawned = Vec::new();
 
         for Update { dt } in self.update.source().ready() {
-            ships::systems::update_ships(
+            ships::update_ships(
                 &mut self.ships,
                 self.world.query(),
             );

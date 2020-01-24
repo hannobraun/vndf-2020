@@ -11,7 +11,7 @@ use crate::shared::{
         Item,
         ItemHandle,
         players::PlayerId,
-        ships::components::Ship,
+        ships::Ship,
     },
     net::game::{
         Entity,
