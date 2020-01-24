@@ -4,12 +4,10 @@ use serde::{
 };
 
 use crate::{
-    game::{
-        PlayerId,
-        features::{
-            missiles::entities::MissileEntity,
-            physics::components::Body,
-        },
+    game::features::{
+        missiles::entities::MissileEntity,
+        physics::components::Body,
+        players::PlayerId,
     },
     input::Rotation,
     math::{
