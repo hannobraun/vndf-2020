@@ -4,7 +4,7 @@ use crate::{
     world,
 };
 
-use super::components::Ship;
+use super::Ship;
 
 
 pub fn update_ships(

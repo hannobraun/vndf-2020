@@ -3,7 +3,7 @@ use crate::{
     world,
 };
 
-use super::components::Explosion;
+use super::Explosion;
 
 
 pub struct ExplosionEntity {

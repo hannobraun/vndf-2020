@@ -9,7 +9,7 @@ use crate::{
     world,
 };
 
-use super::components::Ship;
+use super::Ship;
 
 
 pub struct ShipEntity {
