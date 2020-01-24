@@ -21,7 +21,7 @@ use crate::{
 };
 
 use self::features::{
-    basics::{
+    base::{
         EntityRemoved,
         ItemRemoved,
         Update,

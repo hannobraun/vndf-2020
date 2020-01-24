@@ -1,4 +1,4 @@
-pub mod basics;
+pub mod base;
 pub mod crafts;
 pub mod explosions;
 pub mod health;

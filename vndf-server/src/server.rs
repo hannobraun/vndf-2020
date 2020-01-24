@@ -21,7 +21,7 @@ use crate::{
             self,
             FRAME_TIME,
             features::{
-                basics::Update,
+                base::Update,
                 players::events::{
                     PlayerConnected,
                     PlayerDisconnected,
