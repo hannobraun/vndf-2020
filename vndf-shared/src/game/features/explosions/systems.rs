@@ -1,14 +1,12 @@
 use crate::{
     cgs::Store,
     events,
-    game::{
-        entities as e,
-        features::{
-            health::components::Health,
-            missiles::components::Missile,
-            physics::components::Body,
-            ships::components::Ship,
-        },
+    game::features::{
+        explosions::entities::ExplosionEntity,
+        health::components::Health,
+        missiles::components::Missile,
+        physics::components::Body,
+        ships::components::Ship,
     },
     world,
 };
@@ -27,7 +25,7 @@ pub fn explode_entity(
     ships:  &Store<Ship>,
     entity: hecs::Entity,
 )
-    -> Option<e::ExplosionE>
+    -> Option<ExplosionEntity>
 {
     let body    = world.get::<Body>(entity).ok()?;
     let missile = world.get::<Missile>(entity).ok();
@@ -47,15 +45,15 @@ pub fn explode_entity(
         strength += 6.0;
     }
 
-    Some(e::explosion(&body, strength))
+    Some(ExplosionEntity { exploding: *body, strength })
 }
 
 pub fn create_explosion(
     world:              &mut world::Spawn,
     explosion_imminent: &mut events::Sink<ExplosionImminent>,
-    explosion:          e::ExplosionE,
+    explosion:          ExplosionEntity,
 ) {
-    let explosion = world.spawn(explosion);
+    let explosion = explosion.create(world);
     explosion_imminent.push(ExplosionImminent { explosion });
 }
 

@@ -3,7 +3,6 @@ use crate::{
         PlayerId,
         features::{
             crafts::components::Craft,
-            explosions::components::Explosion,
             health::components::Health,
             missiles::components::Missile,
             physics::components::Body,
@@ -17,19 +16,8 @@ use crate::{
 };
 
 
-pub type ExplosionE = (Explosion, Body);
 pub type MissileE   = (Missile, Body, Craft, Health);
 
-
-pub fn explosion(exploding: &Body, strength: f32) -> ExplosionE {
-    let body = Body {
-        pos: exploding.pos,
-        vel: exploding.vel * 0.05,
-        .. Body::new()
-    };
-
-    (Explosion::new(strength), body)
-}
 
 pub fn missile(owner: PlayerId, from_body: &Body, target: Pnt2) -> MissileE {
     let to_target = target - from_body.pos;
