@@ -5,12 +5,14 @@ use crate::{
     events,
     game::{
         PlayerId,
-        entities,
         features::{
             crafts::components::Craft,
             missiles::events::MissileLaunch,
             physics::components::Body,
-            ships::components::Ship,
+            ships::{
+                components::Ship,
+                entities::ShipEntity,
+            },
         },
         indices::Indices,
     },
@@ -37,8 +39,7 @@ pub fn connect_player(
     let handle = players.insert(Player::new(id, addr));
     indices.players_by_address.insert(addr, handle);
 
-    let entity = world.spawn(entities::ship(id));
-    ships.insert(Ship::new(entity, color));
+    ShipEntity { player_id: id, color }.create(world, ships);
     player_created.push(PlayerCreated { id, addr });
 }
 
