@@ -1,3 +1,9 @@
+pub mod events;
+
+
+pub use self::events::*;
+
+
 use serde::{
     Deserialize,
     Serialize,
@@ -14,17 +20,4 @@ use crate::game::{
 pub enum Component {
     Explosion(Explosion),
     Ship(Ship),
-}
-
-
-pub struct EntityRemoved {
-    pub handle: hecs::Entity,
-}
-
-pub struct ItemRemoved {
-    pub handle: ItemHandle,
-}
-
-pub struct Update {
-    pub dt: f32,
 }
