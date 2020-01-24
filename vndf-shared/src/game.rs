@@ -33,7 +33,7 @@ use self::{
         ItemRemoved,
         Update,
     },
-    explosions::events::{
+    explosions::{
         ExplosionFaded,
         ExplosionImminent,
     },
@@ -158,7 +158,7 @@ impl State {
             missiles::systems::update_missiles(
                 self.world.query(),
             );
-            explosions::systems::update_explosions(
+            explosions::update_explosions(
                 self.world.query(),
                 dt,
                 &mut self.explosion_faded.sink(),
@@ -211,7 +211,7 @@ impl State {
             );
         }
         for Death { entity } in self.death.source().ready() {
-            let explosion = explosions::systems::explode_entity(
+            let explosion = explosions::explode_entity(
                 self.world.query(),
                 &self.ships,
                 entity,
@@ -221,7 +221,7 @@ impl State {
                 entity,
             );
             if let Some(explosion) = explosion {
-                explosions::systems::create_explosion(
+                explosions::create_explosion(
                     &mut self.world.spawn(&mut despawned),
                     &mut self.explosion_imminent.sink(),
                     explosion,
@@ -231,7 +231,7 @@ impl State {
         for event in self.explosion_imminent.source().ready() {
             let ExplosionImminent { explosion } = event;
 
-            explosions::systems::damage_nearby(
+            explosions::damage_nearby(
                 &mut self.world.query(),
                 explosion,
             );
@@ -239,7 +239,7 @@ impl State {
         for event in self.explosion_faded.source().ready() {
             let ExplosionFaded { entity } = event;
 
-            explosions::systems::remove_explosion(
+            explosions::remove_explosion(
                 &mut self.world.spawn(&mut despawned),
                 entity,
             );

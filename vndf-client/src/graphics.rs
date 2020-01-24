@@ -18,7 +18,7 @@ use crate::{
         game::{
             WORLD_SIZE,
             crafts::Craft,
-            explosions::components::Explosion,
+            explosions::Explosion,
             health::components::Health,
             missiles::components::Missile,
             physics::components::Body,
