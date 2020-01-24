@@ -10,7 +10,7 @@ use serde::{
 use crate::{
     cgs::Handle,
     game::{
-        Item,
+        Component,
         ItemHandle,
         players::PlayerId,
     },
@@ -64,7 +64,7 @@ pub enum FromServer {
     Welcome(PlayerId),
     UpdateEntity(Entity),
     RemoveEntity(Id),
-    UpdateItem(Handle, Item),
+    UpdateItem(Handle, Component),
     RemoveItem(ItemHandle),
 }
 

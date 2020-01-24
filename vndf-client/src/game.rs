@@ -8,7 +8,7 @@ use crate::shared::{
         SecondaryStore,
     },
     game::{
-        Item,
+        Component,
         ItemHandle,
         explosions::Explosion,
         players::PlayerId,
@@ -66,12 +66,12 @@ impl State {
         }
     }
 
-    pub fn update_item(&mut self, handle: Handle, item: Item) {
+    pub fn update_item(&mut self, handle: Handle, item: Component) {
         match item {
-            Item::Explosion(explosion) => {
+            Component::Explosion(explosion) => {
                 self.explosions.insert(handle, explosion);
             }
-            Item::Ship(ship) => {
+            Component::Ship(ship) => {
                 self.ships.insert(handle, ship);
             }
         }

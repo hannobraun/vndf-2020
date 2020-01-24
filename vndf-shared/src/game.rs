@@ -264,11 +264,13 @@ impl State {
             .collect()
     }
 
-    pub fn item_update(&mut self) -> impl Iterator<Item=(Handle, Item)> + '_ {
+    pub fn item_update(&mut self)
+        -> impl Iterator<Item=(Handle, Component)> + '_
+    {
         let explosions = self.explosions.iter()
-            .map(|(handle, c)| (handle, Item::Explosion(*c)));
+            .map(|(handle, c)| (handle, Component::Explosion(*c)));
         let ships = self.ships.iter()
-            .map(|(handle, item)| (handle, Item::Ship(*item)));
+            .map(|(handle, item)| (handle, Component::Ship(*item)));
 
         explosions.chain(ships)
     }
@@ -294,7 +296,7 @@ pub enum ItemHandle {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
-pub enum Item {
+pub enum Component {
     Explosion(Explosion),
     Ship(Ship),
 }
