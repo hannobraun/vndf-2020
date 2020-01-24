@@ -1,5 +1,5 @@
 pub struct ExplosionImminent {
-    pub explosion: hecs::Entity,
+    pub handle: hecs::Entity,
 }
 
 pub struct ExplosionFaded {

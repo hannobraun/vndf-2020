@@ -53,8 +53,8 @@ pub fn create_explosion(
     explosion_imminent: &mut events::Sink<ExplosionImminent>,
     explosion:          ExplosionEntity,
 ) {
-    let explosion = explosion.create(world);
-    explosion_imminent.push(ExplosionImminent { explosion });
+    let handle = explosion.create(world);
+    explosion_imminent.push(ExplosionImminent { handle });
 }
 
 pub fn damage_nearby(

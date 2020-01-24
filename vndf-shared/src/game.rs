@@ -227,11 +227,11 @@ impl State {
             }
         }
         for event in self.explosion_imminent.source().ready() {
-            let ExplosionImminent { explosion } = event;
+            let ExplosionImminent { handle } = event;
 
             explosions::damage_nearby(
                 &mut self.world.query(),
-                explosion,
+                handle,
             );
         }
         for event in self.explosion_faded.source().ready() {
