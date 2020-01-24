@@ -235,11 +235,11 @@ impl State {
             );
         }
         for event in self.explosion_faded.source().ready() {
-            let ExplosionFaded { entity } = event;
+            let ExplosionFaded { handle } = event;
 
             explosions::remove_explosion(
                 &mut self.world.spawn(&mut despawned),
-                entity,
+                handle,
             );
         }
 

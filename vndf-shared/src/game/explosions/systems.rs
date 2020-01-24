@@ -79,9 +79,9 @@ pub fn update_explosions(
     dt:              f32,
     explosion_faded: &mut events::Sink<ExplosionFaded>,
 ) {
-    for (entity, (explosion,)) in &mut world.query::<(&mut Explosion,)>() {
+    for (handle, (explosion,)) in &mut world.query::<(&mut Explosion,)>() {
         if explosion.update(dt) {
-            explosion_faded.push(ExplosionFaded { entity });
+            explosion_faded.push(ExplosionFaded { handle });
         }
     }
 }
