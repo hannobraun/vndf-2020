@@ -99,7 +99,7 @@ use crate::game::{
     explosions::Explosion,
     health::Health,
     missiles::Missile,
-    physics::components::Body,
+    physics::Body,
     ships::components::Ship,
 };
 entity!(

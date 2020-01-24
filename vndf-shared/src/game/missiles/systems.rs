@@ -6,7 +6,7 @@ use crate::{
             components::Missile,
             entities::MissileEntity,
         },
-        physics::components::Body,
+        physics::Body,
     },
     world,
 };

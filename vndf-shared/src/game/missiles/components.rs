@@ -7,7 +7,7 @@ use serde::{
 use crate::{
     game::{
         crafts::Craft,
-        physics::components::Body,
+        physics::Body,
     },
     math::{
         prelude::*,

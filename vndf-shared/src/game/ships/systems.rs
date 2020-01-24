@@ -1,6 +1,6 @@
 use crate::{
     cgs::Store,
-    game::physics::components::Body,
+    game::physics::Body,
     world,
 };
 

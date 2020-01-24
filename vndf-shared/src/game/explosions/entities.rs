@@ -1,5 +1,5 @@
 use crate::{
-    game::physics::components::Body,
+    game::physics::Body,
     world,
 };
 

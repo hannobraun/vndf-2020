@@ -6,7 +6,7 @@ use serde::{
 use crate::{
     game::{
         missiles::MissileEntity,
-        physics::components::Body,
+        physics::Body,
         players::PlayerId,
     },
     input::Rotation,

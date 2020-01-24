@@ -5,7 +5,7 @@ use crate::{
         explosions::entities::ExplosionEntity,
         health::Health,
         missiles::Missile,
-        physics::components::Body,
+        physics::Body,
         ships::components::Ship,
     },
     world,

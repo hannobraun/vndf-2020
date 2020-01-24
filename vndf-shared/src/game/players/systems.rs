@@ -12,7 +12,7 @@ use crate::{
     game::{
         crafts::Craft,
         missiles::MissileLaunch,
-        physics::components::Body,
+        physics::Body,
         players::PlayerId,
         ships::{
             components::Ship,

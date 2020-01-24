@@ -2,7 +2,7 @@ use crate::{
     game::{
         crafts::Craft,
         health::Health,
-        physics::components::Body,
+        physics::Body,
         players::PlayerId,
         missiles::components::Missile,
     },

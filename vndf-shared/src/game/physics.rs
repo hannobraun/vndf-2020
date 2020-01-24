@@ -1,1 +1,4 @@
-pub mod components;
+mod components;
+
+
+pub use self::components::*;

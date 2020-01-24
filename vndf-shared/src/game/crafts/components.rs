@@ -5,7 +5,7 @@ use serde::{
 
 use crate::{
     game::{
-        physics::components::Body,
+        physics::Body,
         players::PlayerId,
     },
     math::{

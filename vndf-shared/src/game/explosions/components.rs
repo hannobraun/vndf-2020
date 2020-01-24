@@ -6,7 +6,7 @@ use serde::{
 use crate::{
     game::{
         health::Health,
-        physics::components::Body,
+        physics::Body,
     },
     math::prelude::*,
 };
