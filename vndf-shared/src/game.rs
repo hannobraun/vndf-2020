@@ -270,7 +270,7 @@ impl State {
         let explosions = self.explosions.iter()
             .map(|(handle, c)| (handle, Component::Explosion(*c)));
         let ships = self.ships.iter()
-            .map(|(handle, item)| (handle, Component::Ship(*item)));
+            .map(|(handle, c)| (handle, Component::Ship(*c)));
 
         explosions.chain(ships)
     }
