@@ -1,11 +1,10 @@
 use crate::{
     cgs::Store,
-    game::features::{
-        physics::components::Body,
-        ships::components::Ship,
-    },
+    game::features::physics::components::Body,
     world,
 };
+
+use super::components::Ship;
 
 
 pub fn update_ships(
