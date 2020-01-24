@@ -45,13 +45,13 @@ use self::{
         players::{
             self,
             PlayerId,
+            components::Player,
             events::{
                 PlayerConnected,
                 PlayerDisconnected,
                 PlayerItemCreated,
                 PlayerInput,
             },
-            items::Player,
         },
         ships::{
             self,
