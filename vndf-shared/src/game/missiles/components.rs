@@ -20,12 +20,13 @@ use crate::{
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Missile {
+    pub entity:   u64,
     pub target:   Pnt2,
     pub guidance: Pid<f32>,
 }
 
 impl Missile {
-    pub fn new(target: Pnt2) -> Self {
+    pub fn new(entity: hecs::Entity, target: Pnt2) -> Self {
         let guidance = Pid::new(
             // Proportional gain
             0.1,
@@ -44,6 +45,7 @@ impl Missile {
         );
 
         Self {
+            entity: entity.to_bits(),
             target,
             guidance,
         }

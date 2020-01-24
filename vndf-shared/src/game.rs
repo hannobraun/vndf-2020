@@ -36,7 +36,10 @@ use self::{
         ExplosionImminent,
     },
     health::Death,
-    missiles::MissileLaunch,
+    missiles::{
+        Missile,
+        MissileLaunch,
+    },
     players::{
         Player,
         PlayerConnected,
@@ -63,6 +66,7 @@ pub struct State {
 
     explosions: Store<Explosion>,
     players:    Store<Player>,
+    missiles:   Store<Missile>,
     ships:      Store<Ship>,
 
     death:               events::Buf<Death>,
@@ -87,6 +91,7 @@ impl State {
             players_by_address: HashMap::new(),
 
             explosions: Store::new(),
+            missiles:   Store::new(),
             players:    Store::new(),
             ships:      Store::new(),
 
@@ -125,6 +130,18 @@ impl State {
         // be an automatic process, probably controlled by reference-counting of
         // handles, but this will have to do for now.
         let mut remove = Vec::new();
+        for (handle, missile) in &self.missiles {
+            let entity = hecs::Entity::from_bits(missile.entity);
+            if !self.world.query().contains(entity) {
+                remove.push(handle);
+                let handle = ComponentHandle::Missile(handle);
+                self.item_removed.sink().push(ItemRemoved { handle });
+            }
+        }
+        for handle in remove {
+            self.missiles.remove(handle);
+        }
+        let mut remove = Vec::new();
         for (handle, ship) in &self.ships {
             let entity = hecs::Entity::from_bits(ship.entity);
             if !self.world.query().contains(entity) {
@@ -155,6 +172,7 @@ impl State {
             );
             missiles::update_missiles(
                 self.world.query(),
+                &mut self.missiles,
             );
             explosions::update_explosions(
                 &mut self.explosions,
@@ -205,12 +223,14 @@ impl State {
         for MissileLaunch { missile } in self.missile_launch.source().ready() {
             missiles::launch_missile(
                 &mut self.world.spawn(&mut despawned),
+                &mut self.missiles,
                 missile,
             );
         }
         for Death { entity } in self.death.source().ready() {
             let explosion = explosions::explode_entity(
                 self.world.query(),
+                &self.missiles,
                 &self.ships,
                 entity,
             );
@@ -266,10 +286,14 @@ impl State {
     {
         let explosions = self.explosions.iter()
             .map(|(handle, c)| (handle, Component::Explosion(*c)));
+        let missiles = self.missiles.iter()
+            .map(|(handle, &c)| (handle, Component::Missile(c)));
         let ships = self.ships.iter()
             .map(|(handle, c)| (handle, Component::Ship(*c)));
 
-        explosions.chain(ships)
+        explosions
+            .chain(missiles)
+            .chain(ships)
     }
 
     pub fn item_removed(&mut self) -> events::Source<ItemRemoved> {

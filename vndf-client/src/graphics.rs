@@ -134,8 +134,8 @@ impl Graphics {
             self.draw_ship(context, ship, state)?;
         }
 
-        for (_, (missile, body)) in &mut state.world.query::<(&Missile, &Body)>() {
-            self.draw_missile(context, body, missile)?;
+        for (_, missile) in &state.missiles {
+            self.draw_missile(context, missile, state)?;
         }
 
         for (_, explosion) in &state.explosions {
@@ -180,11 +180,19 @@ impl Graphics {
 
     fn draw_missile(&self,
         context: &mut Context,
-        body:    &Body,
         missile: &Missile,
+        state:   &State,
     )
         -> GameResult
     {
+        let body = state.world
+            .get::<Body>(hecs::Entity::from_bits(missile.entity));
+
+        let body = match body {
+            Ok(body) => body,
+            _        => return Ok(()),
+        };
+
         graphics::draw(
             context,
             &self.missile,

@@ -24,14 +24,21 @@ use super::{
 
 
 pub fn explode_entity(
-    world:  world::Query,
-    ships:  &Store<Ship>,
-    entity: hecs::Entity,
+    world:    world::Query,
+    missiles: &Store<Missile>,
+    ships:    &Store<Ship>,
+    entity:   hecs::Entity,
 )
     -> Option<ExplosionEntity>
 {
-    let body    = world.get::<Body>(entity).ok()?;
-    let missile = world.get::<Missile>(entity).ok();
+    let body = world.get::<Body>(entity).ok()?;
+
+    let mut is_missile = false;
+    for missile in missiles.values() {
+        if entity.to_bits() == missile.entity {
+            is_missile = true;
+        }
+    }
 
     let mut is_ship = false;
     for ship in ships.values() {
@@ -41,7 +48,7 @@ pub fn explode_entity(
     }
 
     let mut strength = 0.0;
-    if missile.is_some() {
+    if is_missile {
         strength += 3.0;
     }
     if is_ship {

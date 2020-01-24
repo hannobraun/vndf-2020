@@ -1,4 +1,5 @@
 use crate::{
+    cgs::Store,
     game::{
         crafts::Craft,
         health::Health,
@@ -23,7 +24,10 @@ pub struct MissileEntity {
 }
 
 impl MissileEntity {
-    pub fn create(&self, world: &mut world::Spawn) {
+    pub fn create(&self,
+        world:    &mut world::Spawn,
+        missiles: &mut Store<Missile>,
+    ) {
         let to_target = self.target - self.origin.pos;
 
         let body = Body {
@@ -38,6 +42,7 @@ impl MissileEntity {
             owner:     self.owner,
         };
 
-        world.spawn((Missile::new(self.target), body, craft, Health::new(2.0)));
+        let entity = world.spawn((body, craft, Health::new(2.0)));
+        missiles.insert(Missile::new(entity, self.target));
     }
 }
