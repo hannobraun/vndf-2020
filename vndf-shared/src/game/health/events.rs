@@ -1,3 +1,3 @@
 pub struct Death {
-    pub entity: hecs::Entity,
+    pub handle: hecs::Entity,
 }

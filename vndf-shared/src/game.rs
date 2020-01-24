@@ -227,16 +227,16 @@ impl State {
                 missile,
             );
         }
-        for Death { entity } in self.death.source().ready() {
+        for Death { handle } in self.death.source().ready() {
             let explosion = explosions::explode_entity(
                 self.world.query(),
                 &self.missiles,
                 &self.ships,
-                entity,
+                handle,
             );
             health::remove_entity(
                 &mut self.world.spawn(&mut despawned),
-                entity,
+                handle,
             );
             if let Some(explosion) = explosion {
                 explosions::create_explosion(

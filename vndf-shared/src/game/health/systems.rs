@@ -13,9 +13,9 @@ pub fn check_health(
     world: world::Query,
     death: &mut events::Sink<Death>,
 ) {
-    for (entity, (health,)) in &mut world.query::<(&Health,)>() {
+    for (handle, (health,)) in &mut world.query::<(&Health,)>() {
         if health.is_dead() {
-            death.push(Death { entity });
+            death.push(Death { handle });
         }
     }
 }
