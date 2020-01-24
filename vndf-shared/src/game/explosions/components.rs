@@ -4,7 +4,7 @@ use serde::{
 };
 
 use crate::{
-    game::features::{
+    game::{
         health::components::Health,
         physics::components::Body,
     },

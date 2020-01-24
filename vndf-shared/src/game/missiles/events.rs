@@ -1,4 +1,4 @@
-use crate::game::features::missiles::entities::MissileEntity;
+use crate::game::missiles::entities::MissileEntity;
 
 
 pub struct MissileLaunch {

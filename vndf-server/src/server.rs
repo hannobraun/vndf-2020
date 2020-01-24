@@ -20,13 +20,11 @@ use crate::{
         game::{
             self,
             FRAME_TIME,
-            features::{
-                base::Update,
-                players::events::{
-                    PlayerConnected,
-                    PlayerDisconnected,
-                    PlayerInput,
-                },
+            base::Update,
+            players::events::{
+                PlayerConnected,
+                PlayerDisconnected,
+                PlayerInput,
             },
         },
         net::{

@@ -1,5 +1,5 @@
 use crate::{
-    game::features::{
+    game::{
         crafts::components::Craft,
         health::components::Health,
         physics::components::Body,

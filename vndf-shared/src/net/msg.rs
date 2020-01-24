@@ -12,7 +12,7 @@ use crate::{
     game::{
         Item,
         ItemHandle,
-        features::players::PlayerId,
+        players::PlayerId,
     },
     input,
     net::game::{

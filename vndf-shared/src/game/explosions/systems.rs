@@ -1,7 +1,7 @@
 use crate::{
     cgs::Store,
     events,
-    game::features::{
+    game::{
         explosions::entities::ExplosionEntity,
         health::components::Health,
         missiles::components::Missile,

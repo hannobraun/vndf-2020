@@ -17,14 +17,12 @@ use crate::{
     shared::{
         game::{
             WORLD_SIZE,
-            features::{
-                crafts::components::Craft,
-                explosions::components::Explosion,
-                health::components::Health,
-                missiles::components::Missile,
-                physics::components::Body,
-                ships::components::Ship,
-            },
+            crafts::components::Craft,
+            explosions::components::Explosion,
+            health::components::Health,
+            missiles::components::Missile,
+            physics::components::Body,
+            ships::components::Ship,
         },
         math::{
             prelude::*,

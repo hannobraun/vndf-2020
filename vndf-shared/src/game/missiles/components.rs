@@ -5,7 +5,7 @@ use serde::{
 };
 
 use crate::{
-    game::features::{
+    game::{
         crafts::components::Craft,
         physics::components::Body,
     },

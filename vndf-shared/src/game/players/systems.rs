@@ -9,7 +9,7 @@ use crate::{
         Store,
     },
     events,
-    game::features::{
+    game::{
         crafts::components::Craft,
         missiles::events::MissileLaunch,
         physics::components::Body,

@@ -1,4 +1,11 @@
-pub mod features;
+pub mod base;
+pub mod crafts;
+pub mod explosions;
+pub mod health;
+pub mod missiles;
+pub mod physics;
+pub mod players;
+pub mod ships;
 
 
 use std::{
@@ -20,30 +27,19 @@ use crate::{
     world::World,
 };
 
-use self::features::{
+use self::{
     base::{
         EntityRemoved,
         ItemRemoved,
         Update,
     },
-    crafts,
-    explosions::{
-        self,
-        events::{
-            ExplosionFaded,
-            ExplosionImminent,
-        },
+    explosions::events::{
+        ExplosionFaded,
+        ExplosionImminent,
     },
-    health::{
-        self,
-        events::Death,
-    },
-    missiles::{
-        self,
-        events::MissileLaunch,
-    },
+    health::events::Death,
+    missiles::events::MissileLaunch,
     players::{
-        self,
         PlayerId,
         components::Player,
         events::{
@@ -53,10 +49,7 @@ use self::features::{
             PlayerInput,
         },
     },
-    ships::{
-        self,
-        components::Ship,
-    },
+    ships::components::Ship,
 };
 
 
