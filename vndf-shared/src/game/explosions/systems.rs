@@ -5,7 +5,6 @@ use crate::{
     },
     events,
     game::{
-        explosions::entities::ExplosionEntity,
         health::Health,
         missiles::Missile,
         physics::Body,
@@ -16,6 +15,7 @@ use crate::{
 
 use super::{
     Explosion,
+    ExplosionEntity,
     ExplosionFaded,
     ExplosionImminent,
 };
