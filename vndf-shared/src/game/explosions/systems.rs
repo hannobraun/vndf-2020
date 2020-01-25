@@ -15,11 +15,9 @@ use crate::{
 };
 
 use super::{
-    components::Explosion,
-    events::{
-        ExplosionFaded,
-        ExplosionImminent,
-    }
+    Explosion,
+    ExplosionFaded,
+    ExplosionImminent,
 };
 
 
