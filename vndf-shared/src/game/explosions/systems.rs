@@ -70,11 +70,11 @@ pub fn damage_nearby(
     world:      &mut world::Query,
     explosions: &Store<Explosion>,
     handle:     Handle,
-) {
-    let explosion = explosions.get(handle)
-        .expect("Explosion not found");
-    let body = world.get(hecs::Entity::from_bits(explosion.entity))
-        .expect("Explosion not found");
+)
+    -> Option<()>
+{
+    let explosion = explosions.get(handle)?;
+    let body = world.get(hecs::Entity::from_bits(explosion.entity)).ok()?;
 
     let query = &mut world.query::<(&Body, &mut Health)>();
     let nearby = query
@@ -82,6 +82,7 @@ pub fn damage_nearby(
         .map(|(_, (body, health))| (body, health));
 
     explosion.damage_nearby(&body, nearby);
+    Some(())
 }
 
 pub fn update_explosions(
