@@ -187,31 +187,30 @@ impl Graphics {
         let body = state.world
             .get::<Body>(hecs::Entity::from_bits(missile.entity));
 
-        let body = match body {
-            Ok(body) => body,
-            _        => return Ok(()),
-        };
+        if let Ok(body) = body {
+            graphics::draw(
+                context,
+                &self.missile,
+                DrawParam::new()
+                    .dest(body.pos)
+                    .scale([4.0, 4.0])
+            )?;
 
-        graphics::draw(
-            context,
-            &self.missile,
-            DrawParam::new()
-                .dest(body.pos)
-                .scale([4.0, 4.0])
-        )?;
+            let line = Mesh::new_line(
+                context,
+                &[body.pos, missile.target],
+                1.5,
+                [0.0, 1.0, 0.0, 1.0].into(),
+            )?;
 
-        let line = Mesh::new_line(
-            context,
-            &[body.pos, missile.target],
-            1.5,
-            [0.0, 1.0, 0.0, 1.0].into(),
-        )?;
+            graphics::draw(
+                context,
+                &line,
+                DrawParam::new(),
+            )?;
+        }
 
-        graphics::draw(
-            context,
-            &line,
-            DrawParam::new(),
-        )
+        Ok(())
     }
 
     fn draw_explosion(&self,
