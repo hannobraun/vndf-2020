@@ -21,9 +21,9 @@ pub struct Explosion {
 }
 
 impl Explosion {
-    pub fn new(entity: hecs::Entity, strength: f32) -> Self {
+    pub fn new(body: hecs::Entity, strength: f32) -> Self {
         Self {
-            body: entity.to_bits(),
+            body: body.to_bits(),
 
             strength_total: strength,
             strength_left:  strength,
