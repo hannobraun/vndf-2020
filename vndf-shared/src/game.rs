@@ -290,11 +290,11 @@ impl State {
         let crafts = self.crafts.iter()
             .map(|(handle, &c)| (handle, Component::Craft(c)));
         let explosions = self.explosions.iter()
-            .map(|(handle, c)| (handle, Component::Explosion(*c)));
+            .map(|(handle, &c)| (handle, Component::Explosion(c)));
         let missiles = self.missiles.iter()
             .map(|(handle, &c)| (handle, Component::Missile(c)));
         let ships = self.ships.iter()
-            .map(|(handle, c)| (handle, Component::Ship(*c)));
+            .map(|(handle, &c)| (handle, Component::Ship(c)));
 
         crafts
             .chain(explosions)
