@@ -41,6 +41,7 @@ use self::{
         Missile,
         MissileLaunch,
     },
+    physics::Body,
     players::{
         Player,
         PlayerConnected,
@@ -65,6 +66,7 @@ pub struct State {
 
     players_by_address: HashMap<SocketAddr, Handle>,
 
+    bodies:     Store<Body>,
     crafts:     Store<Craft>,
     explosions: Store<Explosion>,
     players:    Store<Player>,
@@ -92,6 +94,7 @@ impl State {
 
             players_by_address: HashMap::new(),
 
+            bodies:     Store::new(),
             crafts:     Store::new(),
             explosions: Store::new(),
             missiles:   Store::new(),
@@ -292,6 +295,8 @@ impl State {
     pub fn updates(&mut self)
         -> impl Iterator<Item=(Handle, Component)> + '_
     {
+        let bodies = self.bodies.iter()
+            .map(|(handle, &c)| (handle, Component::Body(c)));
         let crafts = self.crafts.iter()
             .map(|(handle, &c)| (handle, Component::Craft(c)));
         let explosions = self.explosions.iter()
@@ -301,7 +306,8 @@ impl State {
         let ships = self.ships.iter()
             .map(|(handle, &c)| (handle, Component::Ship(c)));
 
-        crafts
+        bodies
+            .chain(crafts)
             .chain(explosions)
             .chain(missiles)
             .chain(ships)
