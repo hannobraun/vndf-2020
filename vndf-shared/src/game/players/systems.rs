@@ -75,24 +75,19 @@ pub fn handle_input(
     index:          &mut HashMap<SocketAddr, Handle>,
     address:        SocketAddr,
     input:          input::Event,
-) {
-    let player = match index.get(&address) {
-        Some(player) =>
-            *player,
-        // Ignore input from unknown player.
-        None =>
-            return,
-    };
-    let player: Player = *players.get(player)
-        .expect("Couldn't find player despite getting id from index");
+)
+    -> Option<()>
+{
+    let player = index.get(&address)?;
+    let player = players.get(*player)?;
 
     for ship in ships.values_mut() {
         let body = world
             .get::<Body>(hecs::Entity::from_bits(ship.entity))
-            .expect("Failed to get body for ship");
+            .ok()?;
         let mut craft = world
             .get_mut::<Craft>(hecs::Entity::from_bits(ship.entity))
-            .expect("Failed to get craft for ship");
+            .ok()?;
 
         if craft.owner != player.id {
             continue;
@@ -113,4 +108,6 @@ pub fn handle_input(
             }
         }
     }
+
+    Some(())
 }
