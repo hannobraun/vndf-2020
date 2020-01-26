@@ -1,3 +1,8 @@
+use std::ops::{
+    Deref,
+    DerefMut,
+};
+
 use serde::{
     Deserialize,
     Serialize,
@@ -30,11 +35,15 @@ impl Explosion {
         }
     }
 
-    pub fn damage_nearby<'r>(&self,
+    pub fn damage_nearby<'r, B, H>(&self,
         body:   &Body,
-        nearby: impl IntoIterator<Item=(&'r Body, &'r mut Health)>,
-    ) {
-        for (nearby_body, health) in nearby {
+        nearby: impl IntoIterator<Item=(B, H)>,
+    )
+        where
+            B: Deref<Target=Body>,
+            H: DerefMut<Target=Health>,
+    {
+        for (nearby_body, mut health) in nearby {
             let distance  = (nearby_body.pos - body.pos).magnitude();
 
             if distance <= 20.0 {
