@@ -17,6 +17,8 @@ use crate::{
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Craft {
+    pub body: u64,
+
     pub engine_on: bool,
     pub thrust:    f32,
     pub fuel:      f32,

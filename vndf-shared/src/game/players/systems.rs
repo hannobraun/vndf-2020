@@ -31,6 +31,7 @@ use super::{
 
 pub fn connect_player(
     world:          &mut world::Spawn,
+    crafts:         &mut Store<Craft>,
     players:        &mut Store<Player>,
     ships:          &mut Store<Ship>,
     player_created: &mut events::Sink<PlayerCreated>,
@@ -42,7 +43,7 @@ pub fn connect_player(
     let handle = players.insert(Player::new(id, addr));
     index.insert(addr, handle);
 
-    ShipEntity { owner: id, color }.create(world, ships);
+    ShipEntity { owner: id, color }.create(world, crafts, ships);
     player_created.push(PlayerCreated { id, addr });
 }
 
@@ -69,6 +70,7 @@ pub fn disconnect_player(
 
 pub fn handle_input(
     world:          world::Query,
+    crafts:         &mut Store<Craft>,
     players:        &Store<Player>,
     ships:          &mut Store<Ship>,
     missile_launch: &mut events::Sink<MissileLaunch>,
@@ -85,9 +87,9 @@ pub fn handle_input(
         let entity = hecs::Entity::from_bits(ship.entity);
 
         let body  = world.get::<Body>(entity);
-        let craft = world.get_mut::<Craft>(entity);
+        let craft = crafts.get_mut(ship.craft);
 
-        if let (Ok(body), Ok(mut craft)) = (body, craft) {
+        if let (Ok(body), Some(mut craft)) = (body, craft) {
             if craft.owner != player.id {
                 continue;
             }

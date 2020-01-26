@@ -15,14 +15,16 @@ use crate::{
 
 pub fn launch_missile(
     world:    &mut world::Spawn,
+    crafts:   &mut Store<Craft>,
     missiles: &mut Store<Missile>,
     missile:  MissileEntity,
 ) {
-    missile.create(world, missiles);
+    missile.create(world, crafts, missiles);
 }
 
 pub fn update_missiles(
     world:    world::Query,
+    crafts:   &Store<Craft>,
     missiles: &mut Store<Missile>,
 ) {
     let potential_targets: Vec<_> = (&mut world.query::<(&Body, &Craft)>())
@@ -34,12 +36,12 @@ pub fn update_missiles(
         let entity = hecs::Entity::from_bits(missile.entity);
 
         let body   = world.get_mut::<Body>(entity);
-        let craft  = world.get::<Craft>(entity);
+        let craft  = crafts.get(missile.craft);
         let health = world.get_mut::<Health>(entity);
 
         let (mut body, craft, mut health) = match (body, craft, health) {
-            (Ok(body), Ok(craft), Ok(health)) => (body, craft, health),
-            _                                 => continue,
+            (Ok(body), Some(craft), Ok(health)) => (body, craft, health),
+            _                                   => continue,
         };
 
         missile.update_target(&craft, potential_targets.iter().cloned());

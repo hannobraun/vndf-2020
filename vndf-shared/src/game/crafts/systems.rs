@@ -1,4 +1,5 @@
 use crate::{
+    cgs::Store,
     game::physics::Body,
     world,
 };
@@ -15,10 +16,13 @@ pub fn update_bodies(world: world::Query, world_size: f32, dt: f32) {
 
 pub fn update_crafts(
     world:  world::Query,
+    crafts: &mut Store<Craft>,
     dt:     f32,
 ) {
-    let query = &mut world.query::<(&mut Craft, &mut Body)>();
-    for (_, (craft, body)) in query {
-        craft.apply_thrust(body, dt);
+    for craft in crafts.values_mut() {
+        let entity = hecs::Entity::from_bits(craft.body);
+        if let Ok(mut body) = world.get_mut::<Body>(entity) {
+            craft.apply_thrust(&mut body, dt);
+        }
     }
 }

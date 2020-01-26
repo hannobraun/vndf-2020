@@ -26,6 +26,7 @@ pub struct MissileEntity {
 impl MissileEntity {
     pub fn create(&self,
         world:    &mut world::Spawn,
+        crafts:   &mut Store<Craft>,
         missiles: &mut Store<Missile>,
     ) {
         let to_target = self.target - self.origin.pos;
@@ -35,14 +36,18 @@ impl MissileEntity {
             rot: Rad::zero(),
             .. self.origin
         };
+        let entity = world.spawn((body, Health::new(2.0)));
+
         let craft = Craft {
+            body: entity.to_bits(),
+
             engine_on: true,
             thrust:    200.0,
             fuel:      400.0,
             owner:     self.owner,
         };
+        let craft  = crafts.insert(craft);
 
-        let entity = world.spawn((body, craft, Health::new(2.0)));
-        missiles.insert(Missile::new(entity, self.target));
+        missiles.insert(Missile::new(entity, craft, self.target));
     }
 }

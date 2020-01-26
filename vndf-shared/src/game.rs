@@ -166,6 +166,7 @@ impl State {
             );
             crafts::update_crafts(
                 self.world.query(),
+                &mut self.crafts,
                 dt,
             );
             crafts::update_bodies(
@@ -175,6 +176,7 @@ impl State {
             );
             missiles::update_missiles(
                 self.world.query(),
+                &self.crafts,
                 &mut self.missiles,
             );
             explosions::update_explosions(
@@ -194,6 +196,7 @@ impl State {
 
             players::connect_player(
                 &mut self.world.spawn(&mut despawned),
+                &mut self.crafts,
                 &mut self.players,
                 &mut self.ships,
                 &mut self.player_created.sink(),
@@ -215,6 +218,7 @@ impl State {
         for PlayerInput { addr, event } in self.player_input.source().ready() {
             players::handle_input(
                 self.world.query(),
+                &mut self.crafts,
                 &self.players,
                 &mut self.ships,
                 &mut self.missile_launch.sink(),
@@ -226,6 +230,7 @@ impl State {
         for MissileLaunch { missile } in self.missile_launch.source().ready() {
             missiles::launch_missile(
                 &mut self.world.spawn(&mut despawned),
+                &mut self.crafts,
                 &mut self.missiles,
                 missile,
             );
