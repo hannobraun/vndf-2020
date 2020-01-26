@@ -46,7 +46,7 @@ impl MissileEntity {
             fuel:      400.0,
             owner:     self.owner,
         };
-        let craft  = crafts.insert(craft);
+        let craft = crafts.insert(craft);
 
         missiles.insert(Missile::new(entity, craft, self.target));
     }
