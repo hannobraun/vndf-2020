@@ -1,6 +1,6 @@
 use std::net::SocketAddr;
 
-use crate::game::PlayerId;
+use crate::game::players::PlayerId;
 
 
 #[derive(Clone, Copy)]
