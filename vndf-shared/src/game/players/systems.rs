@@ -82,11 +82,13 @@ pub fn handle_input(
     let player = players.get(*player)?;
 
     for ship in ships.values_mut() {
+        let entity = hecs::Entity::from_bits(ship.entity);
+
         let body = world
-            .get::<Body>(hecs::Entity::from_bits(ship.entity))
+            .get::<Body>(entity)
             .ok()?;
         let mut craft = world
-            .get_mut::<Craft>(hecs::Entity::from_bits(ship.entity))
+            .get_mut::<Craft>(entity)
             .ok()?;
 
         if craft.owner != player.id {
