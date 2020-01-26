@@ -159,22 +159,22 @@ impl Graphics {
         let body = state.world
             .get::<Body>(hecs::Entity::from_bits(ship.entity));
 
-        let body = match body {
-            Ok(body) => body,
-            Err(_)   => return Ok(()),
-        };
+        if let Ok(body) = body {
+            graphics::draw(
+                context,
+                &self.ship,
+                DrawParam::new()
+                    .dest(body.pos)
+                    .rotation(Vec2::unit_x().angle(body.dir).0)
+                    .scale([30.0, 30.0])
+                    .color(
+                        [ship.color[0], ship.color[1], ship.color[2], 1.0]
+                            .into(),
+                    ),
+            )?
+        }
 
-        graphics::draw(
-            context,
-            &self.ship,
-            DrawParam::new()
-                .dest(body.pos)
-                .rotation(Vec2::unit_x().angle(body.dir).0)
-                .scale([30.0, 30.0])
-                .color(
-                    [ship.color[0], ship.color[1], ship.color[2], 1.0].into(),
-                ),
-        )
+        Ok(())
     }
 
     fn draw_missile(&self,
