@@ -223,22 +223,21 @@ impl Graphics {
         let body = state.world
             .get::<Body>(hecs::Entity::from_bits(explosion.entity));
 
-        let body = match body {
-            Ok(body) => body,
-            _        => return Ok(()),
-        };
+        if let Ok(body) = body {
+            let alpha = explosion.strength_left / explosion.strength_total;
+            let size  = explosion.strength_total * 2.0;
 
-        let alpha = explosion.strength_left / explosion.strength_total;
-        let size  = explosion.strength_total * 2.0;
+            graphics::draw(
+                context,
+                &self.explosion,
+                DrawParam::new()
+                    .dest(body.pos)
+                    .scale([size, size])
+                    .color([1.0, 1.0, 1.0, alpha].into())
+            )?;
+        }
 
-        graphics::draw(
-            context,
-            &self.explosion,
-            DrawParam::new()
-                .dest(body.pos)
-                .scale([size, size])
-                .color([1.0, 1.0, 1.0, alpha].into())
-        )
+        Ok(())
     }
 
     fn draw_ui(&self,
