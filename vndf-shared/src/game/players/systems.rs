@@ -84,28 +84,30 @@ pub fn handle_input(
     for ship in ships.values_mut() {
         let entity = hecs::Entity::from_bits(ship.entity);
 
-        let body = world
-            .get::<Body>(entity)
-            .ok()?;
-        let mut craft = world
-            .get_mut::<Craft>(entity)
-            .ok()?;
+        let body  = world.get::<Body>(entity);
+        let craft = world.get_mut::<Craft>(entity);
 
-        if craft.owner != player.id {
-            continue;
-        }
+        if let (Ok(body), Ok(mut craft)) = (body, craft) {
+            if craft.owner != player.id {
+                continue;
+            }
 
-        match input {
-            input::Event::Rotate(rotation) => {
-                ship.rotation = rotation;
-            }
-            input::Event::Thrust(thrust) => {
-                craft.engine_on = thrust;
-            }
-            input::Event::LaunchMissile { target } => {
-                let missile = ship.launch_missile(craft.owner, &body, target);
-                if let Some(missile) = missile {
-                    missile_launch.push(MissileLaunch { missile });
+            match input {
+                input::Event::Rotate(rotation) => {
+                    ship.rotation = rotation;
+                }
+                input::Event::Thrust(thrust) => {
+                    craft.engine_on = thrust;
+                }
+                input::Event::LaunchMissile { target } => {
+                    let missile = ship.launch_missile(
+                        craft.owner,
+                        &body,
+                        target,
+                    );
+                    if let Some(missile) = missile {
+                        missile_launch.push(MissileLaunch { missile });
+                    }
                 }
             }
         }
