@@ -96,19 +96,13 @@ impl Id {
 
 use crate::game::{
     crafts::Craft,
-    explosions::Explosion,
     health::Health,
-    missiles::Missile,
     physics::Body,
-    ships::Ship,
 };
 entity!(
     body,      Body;
     craft,     Craft;
-    explosion, Explosion;
     health,    Health;
-    missile,   Missile;
-    ship,      Ship;
 );
 
 
