@@ -12,9 +12,10 @@ pub fn update_ships(
     world: world::Query,
 ) {
     for ship in ships.values() {
-        let mut body = world
-            .get_mut::<Body>(hecs::Entity::from_bits(ship.entity))
-            .expect("Failed to get body for ship");
-        ship.update(&mut body);
+        let body = world.get_mut::<Body>(hecs::Entity::from_bits(ship.entity));
+
+        if let Ok(mut body) = body {
+            ship.update(&mut body);
+        }
     }
 }
