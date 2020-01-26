@@ -12,6 +12,7 @@ use serde::{
 use crate::{
     cgs::Handle,
     game::{
+        crafts::Craft,
         explosions::Explosion,
         missiles::Missile,
         physics::Body,
@@ -23,6 +24,7 @@ use crate::{
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub enum Component {
     Body(Body),
+    Craft(Craft),
     Explosion(Explosion),
     Missile(Missile),
     Ship(Ship),
@@ -31,6 +33,7 @@ pub enum Component {
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub enum ComponentHandle {
     Body(Handle),
+    Craft(Handle),
     Explosion(Handle),
     Missile(Handle),
     Ship(Handle),

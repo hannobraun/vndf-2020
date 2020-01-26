@@ -12,6 +12,7 @@ use crate::shared::{
             Component,
             ComponentHandle,
         },
+        crafts::Craft,
         explosions::Explosion,
         missiles::Missile,
         physics::Body,
@@ -32,6 +33,7 @@ pub struct State {
     ids: HashMap<Id, hecs::Entity>,
 
     pub bodies:     SecondaryStore<Body>,
+    pub crafts:     SecondaryStore<Craft>,
     pub explosions: SecondaryStore<Explosion>,
     pub missiles:   SecondaryStore<Missile>,
     pub ships:      SecondaryStore<Ship>,
@@ -45,6 +47,7 @@ impl State {
             ids:    HashMap::new(),
 
             bodies:     SecondaryStore::new(),
+            crafts:     SecondaryStore::new(),
             explosions: SecondaryStore::new(),
             missiles:   SecondaryStore::new(),
             ships:      SecondaryStore::new(),
@@ -79,6 +82,9 @@ impl State {
             Component::Body(body) => {
                 self.bodies.insert(handle, body);
             }
+            Component::Craft(craft) => {
+                self.crafts.insert(handle, craft);
+            }
             Component::Explosion(explosion) => {
                 self.explosions.insert(handle, explosion);
             }
@@ -95,6 +101,9 @@ impl State {
         match handle {
             ComponentHandle::Body(handle) => {
                 self.bodies.remove(handle);
+            }
+            ComponentHandle::Craft(handle) => {
+                self.crafts.remove(handle);
             }
             ComponentHandle::Explosion(handle) => {
                 self.explosions.remove(handle);
