@@ -14,6 +14,7 @@ use crate::{
     game::{
         explosions::Explosion,
         missiles::Missile,
+        physics::Body,
         ships::Ship,
     },
 };
@@ -21,6 +22,7 @@ use crate::{
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub enum Component {
+    Body(Body),
     Explosion(Explosion),
     Missile(Missile),
     Ship(Ship),
@@ -28,6 +30,7 @@ pub enum Component {
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub enum ComponentHandle {
+    Body(Handle),
     Explosion(Handle),
     Missile(Handle),
     Ship(Handle),

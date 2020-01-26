@@ -14,6 +14,7 @@ use crate::shared::{
         },
         explosions::Explosion,
         missiles::Missile,
+        physics::Body,
         players::PlayerId,
         ships::Ship,
     },
@@ -30,6 +31,7 @@ pub struct State {
 
     ids: HashMap<Id, hecs::Entity>,
 
+    pub bodies:     SecondaryStore<Body>,
     pub explosions: SecondaryStore<Explosion>,
     pub missiles:   SecondaryStore<Missile>,
     pub ships:      SecondaryStore<Ship>,
@@ -42,6 +44,7 @@ impl State {
             own_id: None,
             ids:    HashMap::new(),
 
+            bodies:     SecondaryStore::new(),
             explosions: SecondaryStore::new(),
             missiles:   SecondaryStore::new(),
             ships:      SecondaryStore::new(),
@@ -73,6 +76,9 @@ impl State {
 
     pub fn update_component(&mut self, handle: Handle, component: Component) {
         match component {
+            Component::Body(body) => {
+                self.bodies.insert(handle, body);
+            }
             Component::Explosion(explosion) => {
                 self.explosions.insert(handle, explosion);
             }
@@ -87,6 +93,9 @@ impl State {
 
     pub fn remove_component(&mut self, handle: ComponentHandle) {
         match handle {
+            ComponentHandle::Body(handle) => {
+                self.bodies.remove(handle);
+            }
             ComponentHandle::Explosion(handle) => {
                 self.explosions.remove(handle);
             }
