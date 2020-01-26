@@ -30,6 +30,7 @@ use self::{
         ItemRemoved,
         Update,
     },
+    crafts::Craft,
     explosions::{
         Explosion,
         ExplosionFaded,
@@ -64,6 +65,7 @@ pub struct State {
 
     players_by_address: HashMap<SocketAddr, Handle>,
 
+    crafts:     Store<Craft>,
     explosions: Store<Explosion>,
     players:    Store<Player>,
     missiles:   Store<Missile>,
@@ -90,6 +92,7 @@ impl State {
 
             players_by_address: HashMap::new(),
 
+            crafts:     Store::new(),
             explosions: Store::new(),
             missiles:   Store::new(),
             players:    Store::new(),
@@ -284,6 +287,8 @@ impl State {
     pub fn updates(&mut self)
         -> impl Iterator<Item=(Handle, Component)> + '_
     {
+        let crafts = self.crafts.iter()
+            .map(|(handle, &c)| (handle, Component::Craft(c)));
         let explosions = self.explosions.iter()
             .map(|(handle, c)| (handle, Component::Explosion(*c)));
         let missiles = self.missiles.iter()
@@ -291,7 +296,8 @@ impl State {
         let ships = self.ships.iter()
             .map(|(handle, c)| (handle, Component::Ship(*c)));
 
-        explosions
+        crafts
+            .chain(explosions)
             .chain(missiles)
             .chain(ships)
     }
