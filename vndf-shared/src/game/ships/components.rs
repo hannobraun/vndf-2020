@@ -4,18 +4,33 @@ use serde::{
 };
 
 use crate::{
-    cgs::Handle,
-    game::{
-        missiles::MissileEntity,
-        physics::Body,
-        players::PlayerId,
+    cgs::{
+        Handle,
+        Store,
     },
-    input::Rotation,
+    events,
+    game::{
+        crafts::Craft,
+        missiles::{
+            MissileEntity,
+            MissileLaunch,
+        },
+        physics::Body,
+        players::{
+            Player,
+            PlayerId,
+        },
+    },
+    input::{
+        self,
+        Rotation,
+    },
     math::{
         prelude::*,
         Pnt2,
         Rad,
     },
+    world,
 };
 
 
@@ -37,6 +52,44 @@ impl Ship {
             rotation: Rotation::None,
             missiles: 16,
             color,
+        }
+    }
+
+    pub fn apply_input(&mut self,
+        world:          &world::Query,
+        crafts:         &mut Store<Craft>,
+        missile_launch: &mut events::Sink<MissileLaunch>,
+        player:         &Player,
+        event:          input::Event,
+    ) {
+        let entity = hecs::Entity::from_bits(self.entity);
+
+        let body  = world.get::<Body>(entity);
+        let craft = crafts.get_mut(self.craft);
+
+        if let (Ok(body), Some(mut craft)) = (body, craft) {
+            if craft.owner != player.id {
+                return;
+            }
+
+            match event {
+                input::Event::Rotate(rotation) => {
+                    self.rotation = rotation;
+                }
+                input::Event::Thrust(thrust) => {
+                    craft.engine_on = thrust;
+                }
+                input::Event::LaunchMissile { target } => {
+                    let missile = self.launch_missile(
+                        craft.owner,
+                        &body,
+                        target,
+                    );
+                    if let Some(missile) = missile {
+                        missile_launch.push(MissileLaunch { missile });
+                    }
+                }
+            }
         }
     }
 

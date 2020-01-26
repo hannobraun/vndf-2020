@@ -12,7 +12,6 @@ use crate::{
     game::{
         crafts::Craft,
         missiles::MissileLaunch,
-        physics::Body,
         players::PlayerId,
         ships::{
             Ship,
@@ -84,35 +83,7 @@ pub fn handle_input(
     let player = players.get(*player)?;
 
     for ship in ships.values_mut() {
-        let entity = hecs::Entity::from_bits(ship.entity);
-
-        let body  = world.get::<Body>(entity);
-        let craft = crafts.get_mut(ship.craft);
-
-        if let (Ok(body), Some(mut craft)) = (body, craft) {
-            if craft.owner != player.id {
-                continue;
-            }
-
-            match input {
-                input::Event::Rotate(rotation) => {
-                    ship.rotation = rotation;
-                }
-                input::Event::Thrust(thrust) => {
-                    craft.engine_on = thrust;
-                }
-                input::Event::LaunchMissile { target } => {
-                    let missile = ship.launch_missile(
-                        craft.owner,
-                        &body,
-                        target,
-                    );
-                    if let Some(missile) = missile {
-                        missile_launch.push(MissileLaunch { missile });
-                    }
-                }
-            }
-        }
+        ship.apply_input(&world, crafts, missile_launch, player, input);
     }
 
     Some(())
