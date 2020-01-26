@@ -221,7 +221,7 @@ impl Graphics {
         -> GameResult
     {
         let body = state.world
-            .get::<Body>(hecs::Entity::from_bits(explosion.entity));
+            .get::<Body>(hecs::Entity::from_bits(explosion.body));
 
         if let Ok(body) = body {
             let alpha = explosion.strength_left / explosion.strength_total;

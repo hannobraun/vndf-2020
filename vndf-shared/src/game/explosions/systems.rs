@@ -74,7 +74,7 @@ pub fn damage_nearby(
     -> Option<()>
 {
     let explosion = explosions.get(handle)?;
-    let body = world.get(hecs::Entity::from_bits(explosion.entity)).ok()?;
+    let body = world.get(hecs::Entity::from_bits(explosion.body)).ok()?;
 
     let query = &mut world.query::<(&Body, &mut Health)>();
     let nearby = query
