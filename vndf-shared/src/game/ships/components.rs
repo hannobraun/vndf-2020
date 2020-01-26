@@ -61,36 +61,38 @@ impl Ship {
         missile_launch: &mut events::Sink<MissileLaunch>,
         player:         &Player,
         event:          input::Event,
-    ) {
+    )
+        -> Option<()>
+    {
         let entity = hecs::Entity::from_bits(self.entity);
 
-        let body  = world.get::<Body>(entity);
-        let craft = crafts.get_mut(self.craft);
+        let body  = world.get::<Body>(entity).ok()?;
+        let craft = crafts.get_mut(self.craft)?;
 
-        if let (Ok(body), Some(mut craft)) = (body, craft) {
-            if craft.owner != player.id {
-                return;
+        if craft.owner != player.id {
+            return None;
+        }
+
+        match event {
+            input::Event::Rotate(rotation) => {
+                self.rotation = rotation;
             }
-
-            match event {
-                input::Event::Rotate(rotation) => {
-                    self.rotation = rotation;
-                }
-                input::Event::Thrust(thrust) => {
-                    craft.engine_on = thrust;
-                }
-                input::Event::LaunchMissile { target } => {
-                    let missile = self.launch_missile(
-                        craft.owner,
-                        &body,
-                        target,
-                    );
-                    if let Some(missile) = missile {
-                        missile_launch.push(MissileLaunch { missile });
-                    }
+            input::Event::Thrust(thrust) => {
+                craft.engine_on = thrust;
+            }
+            input::Event::LaunchMissile { target } => {
+                let missile = self.launch_missile(
+                    craft.owner,
+                    &body,
+                    target,
+                );
+                if let Some(missile) = missile {
+                    missile_launch.push(MissileLaunch { missile });
                 }
             }
         }
+
+        Some(())
     }
 
     pub fn launch_missile(&mut self, owner: PlayerId, body: &Body, target: Pnt2)
