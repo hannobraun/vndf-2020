@@ -19,19 +19,19 @@ impl<T> Store<T> {
     }
 
     pub fn insert(&mut self, value: T) -> Handle {
-        self.0.insert(value)
+        Handle(self.0.insert(value))
     }
 
     pub fn remove(&mut self, key: Handle) -> Option<T> {
-        self.0.remove(key)
+        self.0.remove(key.0)
     }
 
     pub fn get(&self, key: Handle) -> Option<&T> {
-        self.0.get(key)
+        self.0.get(key.0)
     }
 
     pub fn get_mut(&mut self, key: Handle) -> Option<&mut T> {
-        self.0.get_mut(key)
+        self.0.get_mut(key.0)
     }
 
     pub fn iter(&self) -> Iter<T> {
@@ -77,6 +77,7 @@ impl<'a, T> Iterator for Iter<'a, T> {
 
     fn next(&mut self) -> Option<Self::Item> {
         self.0.next()
+            .map(|(key, value)| (Handle(key), value))
     }
 }
 
@@ -88,5 +89,6 @@ impl<'a, T> Iterator for IterMut<'a, T> {
 
     fn next(&mut self) -> Option<Self::Item> {
         self.0.next()
+            .map(|(key, value)| (Handle(key), value))
     }
 }

@@ -19,15 +19,15 @@ impl<T> SecondaryStore<T> {
     }
 
     pub fn insert(&mut self, key: Handle, value: T) -> Option<T> {
-        self.0.insert(key, value)
+        self.0.insert(key.0, value)
     }
 
     pub fn remove(&mut self, key: Handle) -> Option<T> {
-        self.0.remove(key)
+        self.0.remove(key.0)
     }
 
     pub fn get(&self, key: Handle) -> Option<&T> {
-        self.0.get(key)
+        self.0.get(key.0)
     }
 
     pub fn iter(&self) -> Iter<T> {
@@ -56,5 +56,6 @@ impl<'a, T> Iterator for Iter<'a, T> {
 
     fn next(&mut self) -> Option<Self::Item> {
         self.0.next()
+            .map(|(key, value)| (Handle(key), value))
     }
 }

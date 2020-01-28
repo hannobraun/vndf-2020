@@ -8,7 +8,12 @@ pub use self::{
 };
 
 
+use serde::{
+    Deserialize,
+    Serialize,
+};
 use slotmap::DefaultKey;
 
 
-pub type Handle            = DefaultKey;
+#[derive(Clone, Copy, Debug, Deserialize, Serialize, Eq, PartialEq)]
+pub struct Handle(DefaultKey);
