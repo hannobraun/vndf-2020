@@ -179,7 +179,7 @@ impl State {
         for Update { dt } in self.update.source().ready() {
             ships::update_ships(
                 &mut self.ships,
-                self.world.query(),
+                &mut self.world.query(),
             );
             crafts::update_crafts(
                 self.world.query(),
