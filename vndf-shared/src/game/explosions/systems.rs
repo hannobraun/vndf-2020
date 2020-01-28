@@ -69,10 +69,10 @@ pub fn create_explosion(
 }
 
 pub fn damage_nearby(
+    handle:     Handle,
     world:      &mut world::Query,
     bodies:     &Store<Body>,
     explosions: &Store<Explosion>,
-    handle:     Handle,
 )
     -> Option<()>
 {
