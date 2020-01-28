@@ -111,8 +111,13 @@ impl Ship {
         }
     }
 
-    pub fn update(&self, body: &mut Body) {
+    pub fn update(&self, world: &mut world::Query) -> Option<()> {
+        let     entity = hecs::Entity::from_bits(self.entity);
+        let mut body   = world.get_mut::<Body>(entity).ok()?;
+
         let rotation = self.rotation as i32 as f32;
         body.rot = Rad::full_turn() * 0.6 * rotation;
+
+        Some(())
     }
 }
