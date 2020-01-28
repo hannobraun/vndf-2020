@@ -34,15 +34,15 @@ impl<T> Store<T> {
         self.0.get_mut(key)
     }
 
-    pub fn iter(&self) -> impl Iterator<Item=(Handle, &T)> {
+    pub fn iter(&self) -> dense::Iter<DefaultKey, T> {
         self.0.iter()
     }
 
-    pub fn values(&self) -> impl Iterator<Item=&T> {
+    pub fn values(&self) -> dense::Values<DefaultKey, T> {
         self.0.values()
     }
 
-    pub fn values_mut(&mut self) -> impl Iterator<Item=&mut T> {
+    pub fn values_mut(&mut self) -> dense::ValuesMut<DefaultKey, T> {
         self.0.values_mut()
     }
 }

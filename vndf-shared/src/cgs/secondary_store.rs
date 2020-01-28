@@ -30,7 +30,7 @@ impl<T> SecondaryStore<T> {
         self.0.get(key)
     }
 
-    pub fn values(&self) -> impl Iterator<Item=&T> {
+    pub fn values(&self) -> sparse_secondary::Values<DefaultKey, T> {
         self.0.values()
     }
 }
