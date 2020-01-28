@@ -30,6 +30,10 @@ impl<T> SecondaryStore<T> {
         self.0.get(key)
     }
 
+    pub fn iter(&self) -> sparse_secondary::Iter<DefaultKey, T> {
+        self.0.iter()
+    }
+
     pub fn values(&self) -> sparse_secondary::Values<DefaultKey, T> {
         self.0.values()
     }
@@ -40,6 +44,6 @@ impl<'a, T> IntoIterator for &'a SecondaryStore<T> {
     type IntoIter = sparse_secondary::Iter<'a, DefaultKey, T>;
 
     fn into_iter(self) -> Self::IntoIter {
-        self.0.iter()
+        self.iter()
     }
 }
