@@ -14,6 +14,7 @@ use crate::{
     game::{
         crafts::Craft,
         explosions::Explosion,
+        health::Health,
         missiles::Missile,
         physics::Body,
         ships::Ship,
@@ -26,6 +27,7 @@ pub enum Component {
     Body(Body),
     Craft(Craft),
     Explosion(Explosion),
+    Health(Health),
     Missile(Missile),
     Ship(Ship),
 }
@@ -35,6 +37,7 @@ pub enum ComponentHandle {
     Body(Handle),
     Craft(Handle),
     Explosion(Handle),
+    Health(Handle),
     Missile(Handle),
     Ship(Handle),
 }

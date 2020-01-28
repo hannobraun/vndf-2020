@@ -14,6 +14,7 @@ use crate::shared::{
         },
         crafts::Craft,
         explosions::Explosion,
+        health::Health,
         missiles::Missile,
         physics::Body,
         players::PlayerId,
@@ -35,6 +36,7 @@ pub struct State {
     pub bodies:     SecondaryStore<Body>,
     pub crafts:     SecondaryStore<Craft>,
     pub explosions: SecondaryStore<Explosion>,
+    pub healths:    SecondaryStore<Health>,
     pub missiles:   SecondaryStore<Missile>,
     pub ships:      SecondaryStore<Ship>,
 }
@@ -49,6 +51,7 @@ impl State {
             bodies:     SecondaryStore::new(),
             crafts:     SecondaryStore::new(),
             explosions: SecondaryStore::new(),
+            healths:    SecondaryStore::new(),
             missiles:   SecondaryStore::new(),
             ships:      SecondaryStore::new(),
         }
@@ -88,6 +91,9 @@ impl State {
             Component::Explosion(explosion) => {
                 self.explosions.insert(handle, explosion);
             }
+            Component::Health(health) => {
+                self.healths.insert(handle, health);
+            }
             Component::Missile(missile) => {
                 self.missiles.insert(handle, missile);
             }
@@ -107,6 +113,9 @@ impl State {
             }
             ComponentHandle::Explosion(handle) => {
                 self.explosions.remove(handle);
+            }
+            ComponentHandle::Health(handle) => {
+                self.healths.remove(handle);
             }
             ComponentHandle::Missile(handle) => {
                 self.missiles.remove(handle);
