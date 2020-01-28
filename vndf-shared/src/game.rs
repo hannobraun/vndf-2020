@@ -19,7 +19,6 @@ use crate::{
         Store,
     },
     events,
-    world::World,
 };
 
 use self::{
@@ -63,7 +62,6 @@ pub const FRAME_TIME: f32 = 1.0 / TARGET_FPS as f32;
 
 
 pub struct State {
-    world:   World,
     next_id: PlayerId,
 
     players_by_address: HashMap<SocketAddr, Handle>,
@@ -92,7 +90,6 @@ pub struct State {
 impl State {
     pub fn new() -> Self {
         Self {
-            world:   World::new(),
             next_id: PlayerId::first(),
 
             players_by_address: HashMap::new(),
@@ -267,10 +264,6 @@ impl State {
                 handle,
             );
         }
-    }
-
-    pub fn world(&self) -> &World {
-        &self.world
     }
 
     pub fn players(&self) -> Vec<SocketAddr> {

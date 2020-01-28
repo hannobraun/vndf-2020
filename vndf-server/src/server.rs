@@ -29,10 +29,7 @@ use crate::{
         },
         net::{
             self,
-            game::{
-                Entity,
-                Id,
-            },
+            game::Id,
             msg,
         },
     },
@@ -131,22 +128,6 @@ impl Server {
                     msg::FromServer::RemoveEntity(
                         Id::from_handle(&entity_removed.handle)
                     ),
-                );
-            }
-        }
-
-        let mut updated = Vec::new();
-        for (entity, _) in self.state.world().inner().iter() {
-            updated.push(
-                Entity::from_world(entity, self.state.world().inner()),
-            );
-        }
-
-        for &client in &clients {
-            for entity in &updated {
-                self.network.send(
-                    client,
-                    msg::FromServer::UpdateEntity(entity.clone()),
                 );
             }
         }
