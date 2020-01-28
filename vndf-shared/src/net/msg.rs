@@ -17,10 +17,6 @@ use crate::{
         players::PlayerId,
     },
     input,
-    net::game::{
-        Entity,
-        Id,
-    },
 };
 
 
@@ -64,8 +60,6 @@ pub enum FromClient {
 pub enum FromServer {
     Ping,
     Welcome(PlayerId),
-    UpdateEntity(Entity),
-    RemoveEntity(Id),
     UpdateComponent(Handle, Component),
     RemoveComponent(ComponentHandle),
 }

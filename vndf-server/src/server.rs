@@ -29,7 +29,6 @@ use crate::{
         },
         net::{
             self,
-            game::Id,
             msg,
         },
     },
@@ -117,17 +116,6 @@ impl Server {
                 self.network.send(
                     client,
                     msg::FromServer::RemoveComponent(event.handle),
-                );
-            }
-        }
-
-        for entity_removed in self.state.entity_removed().ready() {
-            for &address in &clients {
-                self.network.send(
-                    address,
-                    msg::FromServer::RemoveEntity(
-                        Id::from_handle(&entity_removed.handle)
-                    ),
                 );
             }
         }

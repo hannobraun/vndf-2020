@@ -196,12 +196,6 @@ impl EventHandler for Game {
                 Ok(msg::FromServer::Welcome(id)) => {
                     self.state.own_id = Some(id);
                 }
-                Ok(msg::FromServer::UpdateEntity(entity)) => {
-                    self.state.update_entity(entity);
-                }
-                Ok(msg::FromServer::RemoveEntity(id)) => {
-                    self.state.remove_entity(id);
-                }
                 Ok(msg::FromServer::UpdateComponent(handle, item)) => {
                     self.state.update_component(handle, item);
                 }
