@@ -10,6 +10,7 @@ use serde::{
 use crate::{
     cgs::Handle,
     game::{
+        Diagnostics,
         base::{
             Component,
             ComponentHandle,
@@ -62,6 +63,7 @@ pub enum FromServer {
     Welcome(PlayerId),
     UpdateComponent(Handle, Component),
     RemoveComponent(ComponentHandle),
+    Diagnostics(Diagnostics),
 }
 
 

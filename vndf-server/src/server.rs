@@ -128,5 +128,12 @@ impl Server {
                 );
             }
         }
+
+        for &client in &clients {
+            self.network.send(
+                client,
+                msg::FromServer::Diagnostics(self.state.diagnostics()),
+            );
+        }
     }
 }

@@ -202,6 +202,9 @@ impl EventHandler for Game {
                 Ok(msg::FromServer::RemoveComponent(handle)) => {
                     self.state.remove_component(handle);
                 }
+                Ok(msg::FromServer::Diagnostics(diagnostics)) => {
+                    self.state.diagnostics = Some(diagnostics);
+                }
                 Err(err) => {
                     error!("Connection error: {:?}", err);
                     quit(context);

@@ -13,6 +13,11 @@ use std::{
     net::SocketAddr,
 };
 
+use serde::{
+    Deserialize,
+    Serialize,
+};
+
 use crate::{
     cgs::{
         Handle,
@@ -301,4 +306,28 @@ impl State {
     pub fn player_created(&mut self) -> events::Source<PlayerCreated> {
         self.player_created.source()
     }
+
+    pub fn diagnostics(&self) -> Diagnostics {
+        Diagnostics {
+            num_bodies:     self.bodies.len()     as u64,
+            num_crafts:     self.crafts.len()     as u64,
+            num_explosions: self.explosions.len() as u64,
+            num_healths:    self.healths.len()    as u64,
+            num_players:    self.players.len()    as u64,
+            num_missiles:   self.missiles.len()   as u64,
+            num_ships:      self.ships.len()      as u64,
+        }
+    }
+}
+
+
+#[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
+pub struct Diagnostics {
+    pub num_bodies:     u64,
+    pub num_crafts:     u64,
+    pub num_explosions: u64,
+    pub num_healths:    u64,
+    pub num_players:    u64,
+    pub num_missiles:   u64,
+    pub num_ships:      u64,
 }

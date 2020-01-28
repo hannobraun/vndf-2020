@@ -4,6 +4,7 @@ use crate::shared::{
         SecondaryStore,
     },
     game::{
+        Diagnostics,
         base::{
             Component,
             ComponentHandle,
@@ -20,7 +21,8 @@ use crate::shared::{
 
 
 pub struct State {
-    pub own_id: Option<PlayerId>,
+    pub own_id:      Option<PlayerId>,
+    pub diagnostics: Option<Diagnostics>,
 
     pub bodies:     SecondaryStore<Body>,
     pub crafts:     SecondaryStore<Craft>,
@@ -33,7 +35,8 @@ pub struct State {
 impl State {
     pub fn new() -> Self {
         Self {
-            own_id: None,
+            own_id:      None,
+            diagnostics: None,
 
             bodies:     SecondaryStore::new(),
             crafts:     SecondaryStore::new(),
