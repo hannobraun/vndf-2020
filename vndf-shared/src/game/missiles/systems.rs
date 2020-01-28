@@ -37,15 +37,17 @@ pub fn update_missiles(
             None        => continue,
         };
 
-        let body = bodies.get_mut(craft.body);
-
-        let mut body = match body {
-            Some(body) => body,
-            _          => continue,
-        };
-
         missile.update_target(&craft, potential_targets.iter().cloned());
-        missile.update_guidance(&mut body);
+    }
+}
+
+pub fn update_guidance(
+    bodies:   &mut Store<Body>,
+    crafts:   &Store<Craft>,
+    missiles: &mut Store<Missile>,
+) {
+    for missile in missiles.values_mut() {
+        missile.update_guidance(bodies, crafts);
     }
 }
 

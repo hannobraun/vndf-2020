@@ -91,7 +91,15 @@ impl Missile {
         }
     }
 
-    pub fn update_guidance(&mut self, body: &mut Body) {
+    pub fn update_guidance(&mut self,
+        bodies: &mut Store<Body>,
+        crafts: &Store<Craft>,
+    )
+        -> Option<()>
+    {
+        let craft = crafts.get(self.craft)?;
+        let body  = bodies.get_mut(craft.body)?;
+
         let to_target = self.target - body.pos;
 
         let projection = body.vel.project_on(to_target);
@@ -115,6 +123,8 @@ impl Missile {
 
         let control_output = self.guidance.next_control_output(error);
         body.dir = rotate(to_target, cgmath::Rad(control_output.output));
+
+        Some(())
     }
 
     pub fn explode_if_ready(&self,
