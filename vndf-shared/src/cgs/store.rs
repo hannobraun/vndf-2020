@@ -38,6 +38,10 @@ impl<T> Store<T> {
         self.0.iter()
     }
 
+    pub fn iter_mut(&mut self) -> dense::IterMut<DefaultKey, T> {
+        self.0.iter_mut()
+    }
+
     pub fn values(&self) -> dense::Values<DefaultKey, T> {
         self.0.values()
     }
@@ -61,6 +65,6 @@ impl<'a, T> IntoIterator for &'a mut Store<T> {
     type IntoIter = dense::IterMut<'a, DefaultKey, T>;
 
     fn into_iter(self) -> Self::IntoIter {
-        self.0.iter_mut()
+        self.iter_mut()
     }
 }
