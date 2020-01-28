@@ -111,7 +111,7 @@ impl Server {
             );
         }
 
-        for event in self.state.item_removed().ready() {
+        for event in self.state.component_removed().ready() {
             for &client in &clients {
                 self.network.send(
                     client,

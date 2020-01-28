@@ -1,7 +1,7 @@
 use super::ComponentHandle;
 
 
-pub struct ItemRemoved {
+pub struct ComponentRemoved {
     pub handle: ComponentHandle,
 }
 
