@@ -31,7 +31,7 @@ pub fn update_missiles(
         .filter_map(|craft| Some((*bodies.get(craft.body)?, *craft)))
         .collect();
 
-    for (_, missile) in missiles {
+    for missile in missiles.values_mut() {
         let craft = match crafts.get(missile.craft) {
             Some(craft) => craft,
             None        => continue,
