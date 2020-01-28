@@ -52,7 +52,7 @@ impl<'a, T> IntoIterator for &'a Store<T> {
     type IntoIter = dense::Iter<'a, DefaultKey, T>;
 
     fn into_iter(self) -> Self::IntoIter {
-        self.0.iter()
+        self.iter()
     }
 }
 
