@@ -27,9 +27,12 @@ pub fn update_missiles(
     crafts:   &Store<Craft>,
     missiles: &mut Store<Missile>,
 ) {
-    let potential_targets: Vec<_> = (&mut world.query::<(&Body, &Craft)>())
-        .into_iter()
-        .map(|(_, (&body, &craft))| (body, craft))
+    let potential_targets: Vec<_> = crafts.values()
+        .filter_map(|craft| {
+            let entity = hecs::Entity::from_bits(craft.body);
+            let body   = world.get::<Body>(entity).ok()?;
+            Some((*body, *craft))
+        })
         .collect();
 
     for (_, missile) in missiles {
