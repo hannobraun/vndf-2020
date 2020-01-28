@@ -72,6 +72,7 @@ pub struct State {
     bodies:     Store<Body>,
     crafts:     Store<Craft>,
     explosions: Store<Explosion>,
+    healths:    Store<Health>,
     players:    Store<Player>,
     missiles:   Store<Missile>,
     ships:      Store<Ship>,
@@ -100,6 +101,7 @@ impl State {
             bodies:     Store::new(),
             crafts:     Store::new(),
             explosions: Store::new(),
+            healths:    Store::new(),
             missiles:   Store::new(),
             players:    Store::new(),
             ships:      Store::new(),
@@ -331,6 +333,8 @@ impl State {
             .map(|(handle, &c)| (handle, Component::Craft(c)));
         let explosions = self.explosions.iter()
             .map(|(handle, &c)| (handle, Component::Explosion(c)));
+        let healths = self.healths.iter()
+            .map(|(handle, &c)| (handle, Component::Health(c)));
         let missiles = self.missiles.iter()
             .map(|(handle, &c)| (handle, Component::Missile(c)));
         let ships = self.ships.iter()
@@ -339,6 +343,7 @@ impl State {
         bodies
             .chain(crafts)
             .chain(explosions)
+            .chain(healths)
             .chain(missiles)
             .chain(ships)
     }
