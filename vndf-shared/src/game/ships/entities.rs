@@ -20,13 +20,15 @@ pub struct ShipEntity {
 impl ShipEntity {
     pub fn create(&self,
         world:  &mut world::Spawn,
+        bodies: &mut Store<Body>,
         crafts: &mut Store<Craft>,
         ships:  &mut Store<Ship>,
     ) {
-        let entity = world.spawn((Body::new(), Health::new(10.0)));
+        let body   = bodies.insert(Body::new());
+        let entity = world.spawn((Health::new(body, 10.0),));
 
         let craft = Craft {
-            body: entity.to_bits(),
+            body,
 
             engine_on: false,
             thrust:    100.0,

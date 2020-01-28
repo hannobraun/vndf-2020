@@ -1,16 +1,20 @@
 use crate::{
     cgs::Store,
-    world,
+    game::{
+        crafts::Craft,
+        physics::Body,
+    },
 };
 
 use super::Ship;
 
 
 pub fn update_ships(
-    ships: &mut Store<Ship>,
-    world: &mut world::Query,
+    bodies: &mut Store<Body>,
+    crafts: &Store<Craft>,
+    ships:  &mut Store<Ship>,
 ) {
     for ship in ships.values() {
-        ship.update(world);
+        ship.update(bodies, crafts);
     }
 }

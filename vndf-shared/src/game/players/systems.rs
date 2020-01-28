@@ -12,6 +12,7 @@ use crate::{
     game::{
         crafts::Craft,
         missiles::MissileLaunch,
+        physics::Body,
         players::PlayerId,
         ships::{
             Ship,
@@ -30,6 +31,7 @@ use super::{
 
 pub fn connect_player(
     world:          &mut world::Spawn,
+    bodies:         &mut Store<Body>,
     crafts:         &mut Store<Craft>,
     players:        &mut Store<Player>,
     ships:          &mut Store<Ship>,
@@ -42,7 +44,7 @@ pub fn connect_player(
     let handle = players.insert(Player::new(id, addr));
     index.insert(addr, handle);
 
-    ShipEntity { owner: id, color }.create(world, crafts, ships);
+    ShipEntity { owner: id, color }.create(world, bodies, crafts, ships);
     player_created.push(PlayerCreated { id, addr });
 }
 
@@ -68,7 +70,7 @@ pub fn disconnect_player(
 }
 
 pub fn handle_input(
-    world:          world::Query,
+    bodies:         &Store<Body>,
     crafts:         &mut Store<Craft>,
     players:        &Store<Player>,
     ships:          &mut Store<Ship>,
@@ -83,7 +85,7 @@ pub fn handle_input(
     let player = players.get(*player)?;
 
     for ship in ships.values_mut() {
-        ship.apply_input(&world, crafts, missile_launch, player, input);
+        ship.apply_input(bodies, crafts, missile_launch, player, input);
     }
 
     Some(())

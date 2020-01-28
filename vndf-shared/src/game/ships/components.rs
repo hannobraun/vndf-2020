@@ -30,7 +30,6 @@ use crate::{
         Pnt2,
         Rad,
     },
-    world,
 };
 
 
@@ -60,7 +59,7 @@ impl Ship {
     }
 
     pub fn apply_input(&mut self,
-        world:          &world::Query,
+        bodies:         &Store<Body>,
         crafts:         &mut Store<Craft>,
         missile_launch: &mut events::Sink<MissileLaunch>,
         player:         &Player,
@@ -68,10 +67,8 @@ impl Ship {
     )
         -> Option<()>
     {
-        let entity = hecs::Entity::from_bits(self.entity);
-
-        let body  = world.get::<Body>(entity).ok()?;
         let craft = crafts.get_mut(self.craft)?;
+        let body  = bodies.get(craft.body)?;
 
         if craft.owner != player.id {
             return None;
@@ -111,9 +108,14 @@ impl Ship {
         }
     }
 
-    pub fn update(&self, world: &mut world::Query) -> Option<()> {
-        let     entity = hecs::Entity::from_bits(self.entity);
-        let mut body   = world.get_mut::<Body>(entity).ok()?;
+    pub fn update(&self,
+        bodies: &mut Store<Body>,
+        crafts: &Store<Craft>,
+    )
+        -> Option<()>
+    {
+        let     craft = crafts.get(self.craft)?;
+        let mut body  = bodies.get_mut(craft.body)?;
 
         let rotation = self.rotation as i32 as f32;
         body.rot = Rad::full_turn() * 0.6 * rotation;

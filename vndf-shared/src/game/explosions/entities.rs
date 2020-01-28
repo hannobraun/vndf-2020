@@ -4,7 +4,6 @@ use crate::{
         Store,
     },
     game::physics::Body,
-    world,
 };
 
 use super::Explosion;
@@ -17,7 +16,7 @@ pub struct ExplosionEntity {
 
 impl ExplosionEntity {
     pub fn create(&self,
-        world:      &mut world::Spawn,
+        bodies:     &mut Store<Body>,
         explosions: &mut Store<Explosion>,
     )
         -> Handle
@@ -27,8 +26,8 @@ impl ExplosionEntity {
             vel: self.exploding.vel * 0.05,
             .. Body::new()
         };
+        let body = bodies.insert(body);
 
-        let entity = world.spawn((body,));
-        explosions.insert(Explosion::new(entity, self.strength))
+        explosions.insert(Explosion::new(body, self.strength))
     }
 }

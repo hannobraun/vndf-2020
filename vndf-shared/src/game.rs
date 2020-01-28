@@ -178,21 +178,23 @@ impl State {
 
         for Update { dt } in self.update.source().ready() {
             ships::update_ships(
+                &mut self.bodies,
+                &self.crafts,
                 &mut self.ships,
-                &mut self.world.query(),
             );
             crafts::update_crafts(
-                self.world.query(),
+                &mut self.bodies,
                 &mut self.crafts,
                 dt,
             );
             crafts::update_bodies(
-                self.world.query(),
+                &mut self.bodies,
                 WORLD_SIZE,
                 dt,
             );
             missiles::update_missiles(
-                self.world.query(),
+                &mut self.world.query(),
+                &mut self.bodies,
                 &self.crafts,
                 &mut self.missiles,
             );
@@ -213,6 +215,7 @@ impl State {
 
             players::connect_player(
                 &mut self.world.spawn(&mut despawned),
+                &mut self.bodies,
                 &mut self.crafts,
                 &mut self.players,
                 &mut self.ships,
@@ -234,7 +237,7 @@ impl State {
         }
         for PlayerInput { addr, event } in self.player_input.source().ready() {
             players::handle_input(
-                self.world.query(),
+                &self.bodies,
                 &mut self.crafts,
                 &self.players,
                 &mut self.ships,
@@ -247,6 +250,7 @@ impl State {
         for MissileLaunch { missile } in self.missile_launch.source().ready() {
             missiles::launch_missile(
                 &mut self.world.spawn(&mut despawned),
+                &mut self.bodies,
                 &mut self.crafts,
                 &mut self.missiles,
                 missile,
@@ -254,7 +258,8 @@ impl State {
         }
         for Death { handle } in self.death.source().ready() {
             let explosion = explosions::explode_entity(
-                self.world.query(),
+                &mut self.world.query(),
+                &self.bodies,
                 &self.missiles,
                 &self.ships,
                 handle,
@@ -265,7 +270,7 @@ impl State {
             );
             if let Some(explosion) = explosion {
                 explosions::create_explosion(
-                    &mut self.world.spawn(&mut despawned),
+                    &mut self.bodies,
                     &mut self.explosions,
                     &mut self.explosion_imminent.sink(),
                     explosion,
@@ -277,6 +282,7 @@ impl State {
 
             explosions::damage_nearby(
                 &mut self.world.query(),
+                &self.bodies,
                 &self.explosions,
                 handle,
             );

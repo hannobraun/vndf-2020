@@ -20,7 +20,6 @@ use crate::{
             explosions::Explosion,
             health::Health,
             missiles::Missile,
-            physics::Body,
             ships::Ship,
         },
         math::{
@@ -156,10 +155,10 @@ impl Graphics {
     fn draw_ship(&self, context: &mut Context, ship: &Ship, state: &State)
         -> GameResult
     {
-        let body = state.world
-            .get::<Body>(hecs::Entity::from_bits(ship.entity));
+        let body = state.crafts.get(ship.craft)
+            .and_then(|craft| state.bodies.get(craft.body));
 
-        if let Ok(body) = body {
+        if let Some(body) = body {
             graphics::draw(
                 context,
                 &self.ship,
@@ -184,10 +183,10 @@ impl Graphics {
     )
         -> GameResult
     {
-        let body = state.world
-            .get::<Body>(hecs::Entity::from_bits(missile.entity));
+        let body = state.crafts.get(missile.craft)
+            .and_then(|craft| state.bodies.get(craft.body));
 
-        if let Ok(body) = body {
+        if let Some(body) = body {
             graphics::draw(
                 context,
                 &self.missile,
@@ -220,10 +219,7 @@ impl Graphics {
     )
         -> GameResult
     {
-        let body = state.world
-            .get::<Body>(hecs::Entity::from_bits(explosion.body));
-
-        if let Ok(body) = body {
+        if let Some(body) = state.bodies.get(explosion.body) {
             let alpha = explosion.strength_left / explosion.strength_total;
             let size  = explosion.strength_total * 2.0;
 

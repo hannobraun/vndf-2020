@@ -22,14 +22,16 @@ use super::{
 
 
 pub fn explode_entity(
-    world:    world::Query,
+    world:    &mut world::Query,
+    bodies:   &Store<Body>,
     missiles: &Store<Missile>,
     ships:    &Store<Ship>,
     handle:   hecs::Entity,
 )
     -> Option<ExplosionEntity>
 {
-    let body = world.get::<Body>(handle).ok()?;
+    let health = world.get::<Health>(handle).ok()?;
+    let body   = bodies.get(health.body)?;
 
     let mut is_missile = false;
     for missile in missiles.values() {
@@ -57,29 +59,30 @@ pub fn explode_entity(
 }
 
 pub fn create_explosion(
-    world:              &mut world::Spawn,
+    bodies:             &mut Store<Body>,
     explosions:         &mut Store<Explosion>,
     explosion_imminent: &mut events::Sink<ExplosionImminent>,
     explosion:          ExplosionEntity,
 ) {
-    let handle = explosion.create(world, explosions);
+    let handle = explosion.create(bodies, explosions);
     explosion_imminent.push(ExplosionImminent { handle });
 }
 
 pub fn damage_nearby(
     world:      &mut world::Query,
+    bodies:     &Store<Body>,
     explosions: &Store<Explosion>,
     handle:     Handle,
 )
     -> Option<()>
 {
     let explosion = explosions.get(handle)?;
-    let body = world.get(hecs::Entity::from_bits(explosion.body)).ok()?;
+    let body      = bodies.get(explosion.body)?;
 
-    let query = &mut world.query::<(&Body, &mut Health)>();
+    let query = &mut world.query::<(&mut Health,)>();
     let nearby = query
         .into_iter()
-        .map(|(_, (body, health))| (body, health));
+        .filter_map(|(_, (health,))| Some((bodies.get(health.body)?, health)));
 
     explosion.damage_nearby(&body, nearby);
     Some(())

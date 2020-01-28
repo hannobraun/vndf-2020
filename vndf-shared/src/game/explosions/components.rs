@@ -9,6 +9,7 @@ use serde::{
 };
 
 use crate::{
+    cgs::Handle,
     game::{
         health::Health,
         physics::Body,
@@ -19,16 +20,16 @@ use crate::{
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Explosion {
-    pub body: u64,
+    pub body: Handle,
 
     pub strength_total: f32,
     pub strength_left:  f32,
 }
 
 impl Explosion {
-    pub fn new(body: hecs::Entity, strength: f32) -> Self {
+    pub fn new(body: Handle, strength: f32) -> Self {
         Self {
-            body: body.to_bits(),
+            body,
 
             strength_total: strength,
             strength_left:  strength,

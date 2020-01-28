@@ -4,6 +4,7 @@ use serde::{
 };
 
 use crate::{
+    cgs::Handle,
     game::{
         physics::Body,
         players::PlayerId,
@@ -17,7 +18,7 @@ use crate::{
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Craft {
-    pub body: u64,
+    pub body: Handle,
 
     pub engine_on: bool,
     pub thrust:    f32,
