@@ -264,6 +264,33 @@ End game - Escape",
                 .dest([20.0, 20.0])
         )?;
 
+        if let Some(diagnostics) = state.diagnostics {
+            let diagnostics = format!(
+"Diagnostics:
+Bodies: {}
+Crafts: {}
+Explosions: {}
+Healths: {}
+Players: {}
+Missiles: {}
+Ships: {}",
+                diagnostics.num_bodies,
+                diagnostics.num_crafts,
+                diagnostics.num_explosions,
+                diagnostics.num_healths,
+                diagnostics.num_players,
+                diagnostics.num_missiles,
+                diagnostics.num_ships,
+            );
+
+            graphics::draw(
+                context,
+                &Text::new(diagnostics),
+                DrawParam::new()
+                    .dest([20.0, 220.0])
+            )?;
+        }
+
         for ship in state.ships.values() {
             self.draw_ship_status(context, ship, state)?;
 
