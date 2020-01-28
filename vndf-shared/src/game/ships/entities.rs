@@ -2,7 +2,6 @@ use crate::{
     cgs::Store,
     game::{
         crafts::Craft,
-        explosions::Explosive,
         health::Health,
         physics::Body,
         players::PlayerId,
@@ -20,10 +19,9 @@ pub struct ShipEntity {
 
 impl ShipEntity {
     pub fn create(&self,
-        world:      &mut world::Spawn,
-        crafts:     &mut Store<Craft>,
-        explosives: &mut Store<Explosive>,
-        ships:      &mut Store<Ship>,
+        world:  &mut world::Spawn,
+        crafts: &mut Store<Craft>,
+        ships:  &mut Store<Ship>,
     ) {
         let entity = world.spawn((Body::new(), Health::new(10.0)));
 
@@ -37,10 +35,6 @@ impl ShipEntity {
         };
         let craft = crafts.insert(craft);
 
-        let mut explosive = Explosive::new();
-        explosive.parent = Some(entity.to_bits());
-        let explosive = explosives.insert(explosive);
-
-        ships.insert(Ship::new(entity, craft, explosive, self.color));
+        ships.insert(Ship::new(entity, craft, self.color));
     }
 }

@@ -21,9 +21,8 @@ use crate::{
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Missile {
-    pub entity:    u64,
-    pub craft:     Handle,
-    pub explosive: Handle,
+    pub entity: u64,
+    pub craft:  Handle,
 
     pub target:   Pnt2,
     pub guidance: Pid<f32>,
@@ -31,10 +30,9 @@ pub struct Missile {
 
 impl Missile {
     pub fn new(
-        entity:    hecs::Entity,
-        craft:     Handle,
-        explosive: Handle,
-        target:    Pnt2,
+        entity: hecs::Entity,
+        craft:  Handle,
+        target: Pnt2,
     ) -> Self {
         let guidance = Pid::new(
             // Proportional gain
@@ -56,7 +54,6 @@ impl Missile {
         Self {
             entity: entity.to_bits(),
             craft,
-            explosive,
             target,
             guidance,
         }

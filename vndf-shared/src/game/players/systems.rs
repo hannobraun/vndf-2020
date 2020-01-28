@@ -11,7 +11,6 @@ use crate::{
     events,
     game::{
         crafts::Craft,
-        explosions::Explosive,
         missiles::MissileLaunch,
         players::PlayerId,
         ships::{
@@ -32,7 +31,6 @@ use super::{
 pub fn connect_player(
     world:          &mut world::Spawn,
     crafts:         &mut Store<Craft>,
-    explosives:     &mut Store<Explosive>,
     players:        &mut Store<Player>,
     ships:          &mut Store<Ship>,
     player_created: &mut events::Sink<PlayerCreated>,
@@ -44,7 +42,7 @@ pub fn connect_player(
     let handle = players.insert(Player::new(id, addr));
     index.insert(addr, handle);
 
-    ShipEntity { owner: id, color }.create(world, crafts, explosives, ships);
+    ShipEntity { owner: id, color }.create(world, crafts, ships);
     player_created.push(PlayerCreated { id, addr });
 }
 

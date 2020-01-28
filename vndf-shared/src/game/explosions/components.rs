@@ -62,16 +62,3 @@ impl Explosion {
         }
     }
 }
-
-
-pub struct Explosive {
-    pub parent: Option<u64>,
-}
-
-impl Explosive {
-    pub fn new() -> Self {
-        Self {
-            parent: None,
-        }
-    }
-}

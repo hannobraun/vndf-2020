@@ -35,7 +35,6 @@ use self::{
         Explosion,
         ExplosionFaded,
         ExplosionImminent,
-        Explosive,
     },
     health::{
         Death,
@@ -73,7 +72,6 @@ pub struct State {
     bodies:     Store<Body>,
     crafts:     Store<Craft>,
     explosions: Store<Explosion>,
-    explosives: Store<Explosive>,
     players:    Store<Player>,
     missiles:   Store<Missile>,
     ships:      Store<Ship>,
@@ -102,7 +100,6 @@ impl State {
             bodies:     Store::new(),
             crafts:     Store::new(),
             explosions: Store::new(),
-            explosives: Store::new(),
             missiles:   Store::new(),
             players:    Store::new(),
             ships:      Store::new(),
@@ -217,7 +214,6 @@ impl State {
             players::connect_player(
                 &mut self.world.spawn(&mut despawned),
                 &mut self.crafts,
-                &mut self.explosives,
                 &mut self.players,
                 &mut self.ships,
                 &mut self.player_created.sink(),
@@ -252,7 +248,6 @@ impl State {
             missiles::launch_missile(
                 &mut self.world.spawn(&mut despawned),
                 &mut self.crafts,
-                &mut self.explosives,
                 &mut self.missiles,
                 missile,
             );

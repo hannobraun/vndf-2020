@@ -36,9 +36,8 @@ use crate::{
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Ship {
-    pub entity:    u64,
-    pub craft:     Handle,
-    pub explosive: Handle,
+    pub entity: u64,
+    pub craft:  Handle,
 
     pub rotation: Rotation,
     pub missiles: u64,
@@ -47,15 +46,13 @@ pub struct Ship {
 
 impl Ship {
     pub fn new(
-        entity:    hecs::Entity,
-        craft:     Handle,
-        explosive: Handle,
-        color:     [f32; 3],
+        entity: hecs::Entity,
+        craft:  Handle,
+        color:  [f32; 3],
     ) -> Self {
         Self {
             entity:   entity.to_bits(),
             craft,
-            explosive,
             rotation: Rotation::None,
             missiles: 16,
             color,
