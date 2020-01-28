@@ -50,7 +50,8 @@ impl MissileEntity {
         };
         let craft = crafts.insert(craft);
 
-        let explosive = Explosive::new();
+        let mut explosive = Explosive::new();
+        explosive.parent = Some(entity.to_bits());
         let explosive = explosives.insert(explosive);
 
         missiles.insert(Missile::new(entity, craft, explosive, self.target));

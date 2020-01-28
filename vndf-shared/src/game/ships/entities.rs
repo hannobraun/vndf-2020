@@ -37,7 +37,8 @@ impl ShipEntity {
         };
         let craft = crafts.insert(craft);
 
-        let explosive = Explosive::new();
+        let mut explosive = Explosive::new();
+        explosive.parent = Some(entity.to_bits());
         let explosive = explosives.insert(explosive);
 
         ships.insert(Ship::new(entity, craft, explosive, self.color));
