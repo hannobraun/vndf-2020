@@ -197,6 +197,11 @@ impl State {
                 &self.crafts,
                 &mut self.missiles,
             );
+            missiles::update_guidances(
+                &mut self.bodies,
+                &self.crafts,
+                &mut self.missiles,
+            );
             missiles::explode_missiles(
                 &self.bodies,
                 &self.crafts,
