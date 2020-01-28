@@ -267,20 +267,20 @@ End game - Escape",
         if let Some(diagnostics) = state.diagnostics {
             let diagnostics = format!(
 "Diagnostics:
-Bodies: {}
-Crafts: {}
-Explosions: {}
-Healths: {}
-Players: {}
-Missiles: {}
-Ships: {}",
-                diagnostics.num_bodies,
-                diagnostics.num_crafts,
-                diagnostics.num_explosions,
-                diagnostics.num_healths,
+Bodies: {}/{}
+Crafts: {}/{}
+Explosions: {}/{}
+Healths: {}/{}
+Players: {}/-
+Missiles: {}/{}
+Ships: {}/{}",
+                diagnostics.num_bodies, state.bodies.len(),
+                diagnostics.num_crafts, state.crafts.len(),
+                diagnostics.num_explosions, state.explosions.len(),
+                diagnostics.num_healths, state.healths.len(),
                 diagnostics.num_players,
-                diagnostics.num_missiles,
-                diagnostics.num_ships,
+                diagnostics.num_missiles, state.missiles.len(),
+                diagnostics.num_ships, state.ships.len(),
             );
 
             graphics::draw(
