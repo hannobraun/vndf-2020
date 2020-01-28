@@ -35,7 +35,7 @@ pub fn update_targets(
     }
 }
 
-pub fn update_guidance(
+pub fn update_guidances(
     bodies:   &mut Store<Body>,
     crafts:   &Store<Craft>,
     missiles: &mut Store<Missile>,
