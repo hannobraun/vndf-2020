@@ -1,5 +1,3 @@
-use hecs::World;
-
 use crate::shared::{
     cgs::{
         Handle,
@@ -22,7 +20,6 @@ use crate::shared::{
 
 
 pub struct State {
-    pub world:  World,
     pub own_id: Option<PlayerId>,
 
     pub bodies:     SecondaryStore<Body>,
@@ -36,7 +33,6 @@ pub struct State {
 impl State {
     pub fn new() -> Self {
         Self {
-            world:  World::new(),
             own_id: None,
 
             bodies:     SecondaryStore::new(),
