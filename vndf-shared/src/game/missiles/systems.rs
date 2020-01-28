@@ -2,7 +2,6 @@ use crate::{
     cgs::Store,
     game::{
         crafts::Craft,
-        health::Health,
         missiles::{
             components::Missile,
             entities::MissileEntity,
@@ -24,7 +23,6 @@ pub fn launch_missile(
 }
 
 pub fn update_missiles(
-    world:    &mut world::Query,
     bodies:   &mut Store<Body>,
     crafts:   &Store<Craft>,
     missiles: &mut Store<Missile>,
@@ -34,23 +32,30 @@ pub fn update_missiles(
         .collect();
 
     for (_, missile) in missiles {
-        let entity = hecs::Entity::from_bits(missile.entity);
-
         let craft = match crafts.get(missile.craft) {
             Some(craft) => craft,
             None        => continue,
         };
 
-        let body   = bodies.get_mut(craft.body);
-        let health = world.get_mut::<Health>(entity);
+        let body = bodies.get_mut(craft.body);
 
-        let (mut body, mut health) = match (body, health) {
-            (Some(body), Ok(health)) => (body, health),
-            _                        => continue,
+        let mut body = match body {
+            Some(body) => body,
+            _          => continue,
         };
 
         missile.update_target(&craft, potential_targets.iter().cloned());
         missile.update_guidance(&mut body);
-        missile.explode_if_ready(&body, &craft, &mut health);
+    }
+}
+
+pub fn explode_missiles(
+    bodies:   &Store<Body>,
+    crafts:   &Store<Craft>,
+    missiles: &Store<Missile>,
+    world:    &mut world::Query,
+) {
+    for missile in missiles.values() {
+        missile.explode_if_ready(bodies, crafts, world);
     }
 }

@@ -5,7 +5,10 @@ use serde::{
 };
 
 use crate::{
-    cgs::Handle,
+    cgs::{
+        Handle,
+        Store,
+    },
     game::{
         crafts::Craft,
         health::Health,
@@ -17,6 +20,7 @@ use crate::{
         Rad,
         rotate,
     },
+    world,
 };
 
 
@@ -114,10 +118,18 @@ impl Missile {
     }
 
     pub fn explode_if_ready(&self,
-        body:   &Body,
-        craft:  &Craft,
-        health: &mut Health,
-    ) {
+        bodies: &Store<Body>,
+        crafts: &Store<Craft>,
+        world:  &mut world::Query,
+    )
+        -> Option<()>
+    {
+        let craft = crafts.get(self.craft)?;
+        let body  = bodies.get(craft.body)?;
+
+        let     entity = hecs::Entity::from_bits(self.entity);
+        let mut health = world.get_mut::<Health>(entity).ok()?;
+
         let no_fuel_left   = craft.fuel <= 0.0;
         let near_target    = (body.pos - self.target).magnitude() <= 10.0;
         let should_explode = no_fuel_left || near_target;
@@ -125,5 +137,7 @@ impl Missile {
         if should_explode {
             health.value = 0.0;
         }
+
+        Some(())
     }
 }

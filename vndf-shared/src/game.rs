@@ -193,10 +193,15 @@ impl State {
                 dt,
             );
             missiles::update_missiles(
-                &mut self.world.query(),
                 &mut self.bodies,
                 &self.crafts,
                 &mut self.missiles,
+            );
+            missiles::explode_missiles(
+                &self.bodies,
+                &self.crafts,
+                &self.missiles,
+                &mut self.world.query(),
             );
             explosions::update_explosions(
                 &mut self.explosions,
