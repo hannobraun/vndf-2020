@@ -2,6 +2,7 @@ use crate::{
     cgs::Store,
     game::{
         crafts::Craft,
+        explosions::components::Explosive,
         health::Health,
         missiles::{
             components::Missile,
@@ -14,12 +15,13 @@ use crate::{
 
 
 pub fn launch_missile(
-    world:    &mut world::Spawn,
-    crafts:   &mut Store<Craft>,
-    missiles: &mut Store<Missile>,
-    missile:  MissileEntity,
+    world:      &mut world::Spawn,
+    crafts:     &mut Store<Craft>,
+    explosives: &mut Store<Explosive>,
+    missiles:   &mut Store<Missile>,
+    missile:    MissileEntity,
 ) {
-    missile.create(world, crafts, missiles);
+    missile.create(world, crafts, explosives, missiles);
 }
 
 pub fn update_missiles(

@@ -62,3 +62,12 @@ impl Explosion {
         }
     }
 }
+
+
+pub struct Explosive;
+
+impl Explosive {
+    pub fn new() -> Self {
+        Self
+    }
+}
