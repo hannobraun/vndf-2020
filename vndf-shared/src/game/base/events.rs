@@ -1,10 +1,6 @@
 use super::ComponentHandle;
 
 
-pub struct EntityRemoved {
-    pub handle: hecs::Entity,
-}
-
 pub struct ItemRemoved {
     pub handle: ComponentHandle,
 }

@@ -24,7 +24,6 @@ use crate::{
 use self::{
     base::{
         Component,
-        EntityRemoved,
         ItemRemoved,
         Update,
     },
@@ -75,7 +74,6 @@ pub struct State {
     ships:      Store<Ship>,
 
     death:               events::Buf<Death>,
-    entity_removed:      events::Buf<EntityRemoved>,
     explosion_faded:     events::Buf<ExplosionFaded>,
     explosion_imminent:  events::Buf<ExplosionImminent>,
     item_removed:        events::Buf<ItemRemoved>,
@@ -103,7 +101,6 @@ impl State {
             ships:      Store::new(),
 
             death:               events::Buf::new(),
-            entity_removed:      events::Buf::new(),
             explosion_faded:     events::Buf::new(),
             explosion_imminent:  events::Buf::new(),
             item_removed:        events::Buf::new(),
@@ -299,10 +296,6 @@ impl State {
 
     pub fn item_removed(&mut self) -> events::Source<ItemRemoved> {
         self.item_removed.source()
-    }
-
-    pub fn entity_removed(&mut self) -> events::Source<EntityRemoved> {
-        self.entity_removed.source()
     }
 
     pub fn player_created(&mut self) -> events::Source<PlayerCreated> {
