@@ -18,16 +18,16 @@ impl<T> SecondaryStore<T> {
         self.0.len()
     }
 
-    pub fn insert(&mut self, key: Handle, value: T) -> Option<T> {
-        self.0.insert(key.0, value)
+    pub fn insert(&mut self, handle: Handle, value: T) -> Option<T> {
+        self.0.insert(handle.0, value)
     }
 
-    pub fn remove(&mut self, key: Handle) -> Option<T> {
-        self.0.remove(key.0)
+    pub fn remove(&mut self, handle: Handle) -> Option<T> {
+        self.0.remove(handle.0)
     }
 
-    pub fn get(&self, key: Handle) -> Option<&T> {
-        self.0.get(key.0)
+    pub fn get(&self, handle: Handle) -> Option<&T> {
+        self.0.get(handle.0)
     }
 
     pub fn iter(&self) -> Iter<T> {

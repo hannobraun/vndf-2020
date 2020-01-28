@@ -22,16 +22,16 @@ impl<T> Store<T> {
         Handle(self.0.insert(value))
     }
 
-    pub fn remove(&mut self, key: Handle) -> Option<T> {
-        self.0.remove(key.0)
+    pub fn remove(&mut self, handle: Handle) -> Option<T> {
+        self.0.remove(handle.0)
     }
 
-    pub fn get(&self, key: Handle) -> Option<&T> {
-        self.0.get(key.0)
+    pub fn get(&self, handle: Handle) -> Option<&T> {
+        self.0.get(handle.0)
     }
 
-    pub fn get_mut(&mut self, key: Handle) -> Option<&mut T> {
-        self.0.get_mut(key.0)
+    pub fn get_mut(&mut self, handle: Handle) -> Option<&mut T> {
+        self.0.get_mut(handle.0)
     }
 
     pub fn iter(&self) -> Iter<T> {
