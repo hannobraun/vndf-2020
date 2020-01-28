@@ -1,6 +1,16 @@
 use crate::{
+    cgs::{
+        Handle,
+        Store,
+    },
+    game::{
+        base::ComponentHandle,
+        crafts::Craft,
+        missiles::Missile,
+        physics::Body,
+        ships::Ship,
+    },
     events,
-    world,
 };
 
 use super::{
@@ -10,10 +20,10 @@ use super::{
 
 
 pub fn check_health(
-    world: world::Query,
-    death: &mut events::Sink<Death>,
+    healths: &Store<Health>,
+    death:   &mut events::Sink<Death>,
 ) {
-    for (handle, (health,)) in &mut world.query::<(&Health,)>() {
+    for (handle, health) in healths {
         if health.is_dead() {
             death.push(Death { handle });
         }
@@ -21,11 +31,24 @@ pub fn check_health(
 }
 
 pub fn remove_entity(
-    world:  &mut world::Spawn,
-    handle: hecs::Entity,
+    handle:   Handle,
+    bodies:   &mut Store<Body>,
+    crafts:   &mut Store<Craft>,
+    healths:  &mut Store<Health>,
+    missiles: &mut Store<Missile>,
+    ships:    &mut Store<Ship>,
 )
     -> Option<()>
 {
-    world.despawn(handle).ok()?;
+    let health = healths.get(handle)?;
+    let parent = health.parent?;
+
+    if let ComponentHandle::Missile(handle) = parent {
+        Missile::remove(handle, bodies, crafts, healths, missiles);
+    }
+    if let ComponentHandle::Ship(handle) = parent {
+        Ship::remove(handle, bodies, crafts, healths, ships);
+    }
+
     Some(())
 }

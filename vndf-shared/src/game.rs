@@ -25,7 +25,6 @@ use crate::{
 use self::{
     base::{
         Component,
-        ComponentHandle,
         EntityRemoved,
         ItemRemoved,
         Update,
@@ -137,47 +136,6 @@ impl State {
     }
 
     pub fn dispatch(&mut self) {
-        // Make sure all healths are linked to their parent. This should happen
-        // when they're created, but can't, due to the layers of hacks that is
-        // the ECS. It will be possible to rectify this, once we're transitioned
-        // the the CGS.
-        {
-            let world = self.world.query();
-            for (handle, (health,)) in &mut world.query::<(&mut Health,)>() {
-                health.parent = Some(handle.to_bits());
-            }
-        }
-
-        // Let's garbage-collect all items that need to be removed. This should
-        // be an automatic process, probably controlled by reference-counting of
-        // handles, but this will have to do for now.
-        let mut remove = Vec::new();
-        for (handle, missile) in &self.missiles {
-            let entity = hecs::Entity::from_bits(missile.entity);
-            if !self.world.query().contains(entity) {
-                remove.push(handle);
-                let handle = ComponentHandle::Missile(handle);
-                self.item_removed.sink().push(ItemRemoved { handle });
-            }
-        }
-        for handle in remove {
-            self.missiles.remove(handle);
-        }
-        let mut remove = Vec::new();
-        for (handle, ship) in &self.ships {
-            let entity = hecs::Entity::from_bits(ship.entity);
-            if !self.world.query().contains(entity) {
-                remove.push(handle);
-                let handle = ComponentHandle::Ship(handle);
-                self.item_removed.sink().push(ItemRemoved { handle });
-            }
-        }
-        for handle in remove {
-            self.ships.remove(handle);
-        }
-
-        let mut despawned = Vec::new();
-
         for Update { dt } in self.update.source().ready() {
             ships::update_ships(
                 &mut self.bodies,
@@ -207,8 +165,8 @@ impl State {
             missiles::explode_missiles(
                 &self.bodies,
                 &self.crafts,
+                &mut self.healths,
                 &self.missiles,
-                &mut self.world.query(),
             );
             explosions::update_explosions(
                 &mut self.explosions,
@@ -216,7 +174,7 @@ impl State {
                 &mut self.explosion_faded.sink(),
             );
             health::check_health(
-                self.world.query(),
+                &self.healths,
                 &mut self.death.sink(),
             );
         }
@@ -226,9 +184,9 @@ impl State {
             let id = self.next_id.increment();
 
             players::connect_player(
-                &mut self.world.spawn(&mut despawned),
                 &mut self.bodies,
                 &mut self.crafts,
+                &mut self.healths,
                 &mut self.players,
                 &mut self.ships,
                 &mut self.player_created.sink(),
@@ -261,24 +219,26 @@ impl State {
         }
         for MissileLaunch { missile } in self.missile_launch.source().ready() {
             missiles::launch_missile(
-                &mut self.world.spawn(&mut despawned),
                 &mut self.bodies,
                 &mut self.crafts,
+                &mut self.healths,
                 &mut self.missiles,
                 missile,
             );
         }
         for Death { handle } in self.death.source().ready() {
             let explosion = explosions::explode_entity(
-                &mut self.world.query(),
                 &self.bodies,
-                &self.missiles,
-                &self.ships,
+                &self.healths,
                 handle,
             );
             health::remove_entity(
-                &mut self.world.spawn(&mut despawned),
                 handle,
+                &mut self.bodies,
+                &mut self.crafts,
+                &mut self.healths,
+                &mut self.missiles,
+                &mut self.ships,
             );
             if let Some(explosion) = explosion {
                 explosions::create_explosion(
@@ -294,9 +254,9 @@ impl State {
 
             explosions::damage_nearby(
                 handle,
-                &mut self.world.query(),
                 &self.bodies,
                 &self.explosions,
+                &mut self.healths,
             );
         }
         for event in self.explosion_faded.source().ready() {
@@ -306,10 +266,6 @@ impl State {
                 &mut self.explosions,
                 handle,
             );
-        }
-
-        for handle in despawned {
-            self.entity_removed.sink().push(EntityRemoved { handle });
         }
     }
 

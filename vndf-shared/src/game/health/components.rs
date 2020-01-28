@@ -3,12 +3,15 @@ use serde::{
     Serialize,
 };
 
-use crate::cgs::Handle;
+use crate::{
+    cgs::Handle,
+    game::base::ComponentHandle,
+};
 
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Health {
-    pub parent: Option<u64>,
+    pub parent: Option<ComponentHandle>,
     pub body:   Handle,
     pub value:  f32,
 }

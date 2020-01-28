@@ -1,3 +1,6 @@
+use crate::cgs::Handle;
+
+
 pub struct Death {
-    pub handle: hecs::Entity,
+    pub handle: Handle,
 }

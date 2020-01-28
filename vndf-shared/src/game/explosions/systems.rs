@@ -5,12 +5,10 @@ use crate::{
     },
     events,
     game::{
+        base::ComponentHandle,
         health::Health,
-        missiles::Missile,
         physics::Body,
-        ships::Ship,
     },
-    world,
 };
 
 use super::{
@@ -22,29 +20,23 @@ use super::{
 
 
 pub fn explode_entity(
-    world:    &mut world::Query,
-    bodies:   &Store<Body>,
-    missiles: &Store<Missile>,
-    ships:    &Store<Ship>,
-    handle:   hecs::Entity,
+    bodies:  &Store<Body>,
+    healths: &Store<Health>,
+    handle:  Handle,
 )
     -> Option<ExplosionEntity>
 {
-    let health = world.get::<Health>(handle).ok()?;
+    let health = healths.get(handle)?;
     let body   = bodies.get(health.body)?;
 
     let mut is_missile = false;
-    for missile in missiles.values() {
-        if handle.to_bits() == missile.entity {
-            is_missile = true;
-        }
+    if let ComponentHandle::Missile(_) = health.parent? {
+        is_missile = true;
     }
 
     let mut is_ship = false;
-    for ship in ships.values() {
-        if handle.to_bits() == ship.entity {
-            is_ship = true;
-        }
+    if let ComponentHandle::Ship(_) = health.parent? {
+        is_ship = true;
     }
 
     let mut strength = 0.0;
@@ -70,19 +62,18 @@ pub fn create_explosion(
 
 pub fn damage_nearby(
     handle:     Handle,
-    world:      &mut world::Query,
     bodies:     &Store<Body>,
     explosions: &Store<Explosion>,
+    healths:    &mut Store<Health>,
 )
     -> Option<()>
 {
     let explosion = explosions.get(handle)?;
     let body      = bodies.get(explosion.body)?;
 
-    let query = &mut world.query::<(&mut Health,)>();
-    let nearby = query
+    let nearby = healths.values_mut()
         .into_iter()
-        .filter_map(|(_, (health,))| Some((bodies.get(health.body)?, health)));
+        .filter_map(|health| Some((bodies.get(health.body)?, health)));
 
     explosion.damage_nearby(&body, nearby);
     Some(())

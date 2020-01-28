@@ -4,8 +4,12 @@ use serde::{
 };
 
 use crate::{
-    cgs::Handle,
+    cgs::{
+        Handle,
+        Store,
+    },
     game::{
+        health::Health,
         physics::Body,
         players::PlayerId,
     },
@@ -18,7 +22,8 @@ use crate::{
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Craft {
-    pub body: Handle,
+    pub body:   Handle,
+    pub health: Handle,
 
     pub engine_on: bool,
     pub thrust:    f32,
@@ -35,5 +40,21 @@ impl Craft {
         else {
             Vec2::zero()
         };
+    }
+
+    pub fn remove(
+        handle:  Handle,
+        bodies:  &mut Store<Body>,
+        crafts:  &mut Store<Craft>,
+        healths: &mut Store<Health>,
+    )
+        -> Option<()>
+    {
+        let craft = crafts.remove(handle)?;
+
+        bodies.remove(craft.body);
+        healths.remove(craft.health);
+
+        Some(())
     }
 }

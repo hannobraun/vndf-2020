@@ -18,7 +18,6 @@ use crate::{
         game::{
             WORLD_SIZE,
             explosions::Explosion,
-            health::Health,
             missiles::Missile,
             ships::Ship,
         },
@@ -295,13 +294,14 @@ End game - Escape",
     )
         -> GameResult
     {
-        let craft = state.crafts.get(ship.craft);
-        let health = state.world
-            .get::<Health>(hecs::Entity::from_bits(ship.entity));
+        let craft = match state.crafts.get(ship.craft) {
+            Some(craft) => craft,
+            None        => return Ok(()),
+        };
 
-        let (craft, health) = match (craft, health) {
-            (Some(craft), Ok(health)) => (craft, health),
-            _                         => return Ok(()),
+        let health = match state.healths.get(craft.health) {
+            Some(health) => health,
+            None         => return Ok(()),
         };
 
         if state.own_id != Some(craft.owner) {

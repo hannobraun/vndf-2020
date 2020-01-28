@@ -11,6 +11,7 @@ use crate::{
     events,
     game::{
         crafts::Craft,
+        health::Health,
         missiles::{
             MissileEntity,
             MissileLaunch,
@@ -35,9 +36,7 @@ use crate::{
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Ship {
-    pub entity: u64,
-    pub craft:  Handle,
-
+    pub craft:    Handle,
     pub rotation: Rotation,
     pub missiles: u64,
     pub color:    [f32; 3],
@@ -45,12 +44,10 @@ pub struct Ship {
 
 impl Ship {
     pub fn new(
-        entity: hecs::Entity,
         craft:  Handle,
         color:  [f32; 3],
     ) -> Self {
         Self {
-            entity:   entity.to_bits(),
             craft,
             rotation: Rotation::None,
             missiles: 16,
@@ -121,5 +118,18 @@ impl Ship {
         body.rot = Rad::full_turn() * 0.6 * rotation;
 
         Some(())
+    }
+
+    pub fn remove(
+        handle:  Handle,
+        bodies:  &mut Store<Body>,
+        crafts:  &mut Store<Craft>,
+        healths: &mut Store<Health>,
+        ships:   &mut Store<Ship>,
+    )
+        -> Option<()>
+    {
+        let ship = ships.remove(handle)?;
+        Craft::remove(ship.craft, bodies, crafts, healths)
     }
 }

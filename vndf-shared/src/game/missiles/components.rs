@@ -20,22 +20,18 @@ use crate::{
         Rad,
         rotate,
     },
-    world,
 };
 
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Missile {
-    pub entity: u64,
-    pub craft:  Handle,
-
+    pub craft:    Handle,
     pub target:   Pnt2,
     pub guidance: Pid<f32>,
 }
 
 impl Missile {
     pub fn new(
-        entity: hecs::Entity,
         craft:  Handle,
         target: Pnt2,
     ) -> Self {
@@ -57,7 +53,6 @@ impl Missile {
         );
 
         Self {
-            entity: entity.to_bits(),
             craft,
             target,
             guidance,
@@ -134,17 +129,15 @@ impl Missile {
     }
 
     pub fn explode_if_ready(&self,
-        bodies: &Store<Body>,
-        crafts: &Store<Craft>,
-        world:  &mut world::Query,
+        bodies:  &Store<Body>,
+        crafts:  &Store<Craft>,
+        healths: &mut Store<Health>,
     )
         -> Option<()>
     {
-        let craft = crafts.get(self.craft)?;
-        let body  = bodies.get(craft.body)?;
-
-        let     entity = hecs::Entity::from_bits(self.entity);
-        let mut health = world.get_mut::<Health>(entity).ok()?;
+        let     craft  = crafts.get(self.craft)?;
+        let     body   = bodies.get(craft.body)?;
+        let mut health = healths.get_mut(craft.health)?;
 
         let no_fuel_left   = craft.fuel <= 0.0;
         let near_target    = (body.pos - self.target).magnitude() <= 10.0;
@@ -155,5 +148,18 @@ impl Missile {
         }
 
         Some(())
+    }
+
+    pub fn remove(
+        handle:   Handle,
+        bodies:   &mut Store<Body>,
+        crafts:   &mut Store<Craft>,
+        healths:  &mut Store<Health>,
+        missiles: &mut Store<Missile>,
+    )
+        -> Option<()>
+    {
+        let missile = missiles.remove(handle)?;
+        Craft::remove(missile.craft, bodies, crafts, healths)
     }
 }

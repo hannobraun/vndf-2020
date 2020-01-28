@@ -1,6 +1,7 @@
 use crate::{
     cgs::Store,
     game::{
+        base::ComponentHandle,
         crafts::Craft,
         health::Health,
         physics::Body,
@@ -11,7 +12,6 @@ use crate::{
         Pnt2,
         Rad,
     },
-    world,
 };
 
 use super::Missile;
@@ -25,9 +25,9 @@ pub struct MissileEntity {
 
 impl MissileEntity {
     pub fn create(&self,
-        world:    &mut world::Spawn,
         bodies:   &mut Store<Body>,
         crafts:   &mut Store<Craft>,
+        healths:  &mut Store<Health>,
         missiles: &mut Store<Missile>,
     ) {
         let to_target = self.target - self.origin.pos;
@@ -38,8 +38,11 @@ impl MissileEntity {
         };
         let body = bodies.insert(body);
 
+        let health = healths.insert(Health::new(body, 2.0));
+
         let craft = Craft {
             body,
+            health,
 
             engine_on: true,
             thrust:    200.0,
@@ -48,8 +51,8 @@ impl MissileEntity {
         };
         let craft = crafts.insert(craft);
 
-        let entity = world.spawn((Health::new(body, 2.0),));
-
-        missiles.insert(Missile::new(entity, craft, self.target));
+        let missile = missiles.insert(Missile::new(craft, self.target));
+        healths.get_mut(health).unwrap().parent =
+            Some(ComponentHandle::Missile(missile));
     }
 }

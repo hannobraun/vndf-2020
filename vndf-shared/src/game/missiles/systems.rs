@@ -2,24 +2,24 @@ use crate::{
     cgs::Store,
     game::{
         crafts::Craft,
+        health::Health,
         missiles::{
             components::Missile,
             entities::MissileEntity,
         },
         physics::Body,
     },
-    world,
 };
 
 
 pub fn launch_missile(
-    world:    &mut world::Spawn,
     bodies:   &mut Store<Body>,
     crafts:   &mut Store<Craft>,
+    healths:  &mut Store<Health>,
     missiles: &mut Store<Missile>,
     missile:  MissileEntity,
 ) {
-    missile.create(world, bodies, crafts, missiles);
+    missile.create(bodies, crafts, healths, missiles);
 }
 
 pub fn update_targets(
@@ -48,10 +48,10 @@ pub fn update_guidances(
 pub fn explode_missiles(
     bodies:   &Store<Body>,
     crafts:   &Store<Craft>,
+    healths:  &mut Store<Health>,
     missiles: &Store<Missile>,
-    world:    &mut world::Query,
 ) {
     for missile in missiles.values() {
-        missile.explode_if_ready(bodies, crafts, world);
+        missile.explode_if_ready(bodies, crafts, healths);
     }
 }

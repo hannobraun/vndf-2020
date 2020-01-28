@@ -1,12 +1,12 @@
 use crate::{
     cgs::Store,
     game::{
+        base::ComponentHandle,
         crafts::Craft,
         health::Health,
         physics::Body,
         players::PlayerId,
     },
-    world,
 };
 
 use super::Ship;
@@ -19,16 +19,17 @@ pub struct ShipEntity {
 
 impl ShipEntity {
     pub fn create(&self,
-        world:  &mut world::Spawn,
-        bodies: &mut Store<Body>,
-        crafts: &mut Store<Craft>,
-        ships:  &mut Store<Ship>,
+        bodies:  &mut Store<Body>,
+        crafts:  &mut Store<Craft>,
+        healths: &mut Store<Health>,
+        ships:   &mut Store<Ship>,
     ) {
         let body   = bodies.insert(Body::new());
-        let entity = world.spawn((Health::new(body, 10.0),));
+        let health = healths.insert(Health::new(body, 10.0));
 
         let craft = Craft {
             body,
+            health,
 
             engine_on: false,
             thrust:    100.0,
@@ -37,6 +38,8 @@ impl ShipEntity {
         };
         let craft = crafts.insert(craft);
 
-        ships.insert(Ship::new(entity, craft, self.color));
+        let ship = ships.insert(Ship::new(craft, self.color));
+        healths.get_mut(health).unwrap().parent =
+            Some(ComponentHandle::Ship(ship));
     }
 }
