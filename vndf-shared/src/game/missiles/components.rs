@@ -8,6 +8,7 @@ use crate::{
     cgs::Handle,
     game::{
         crafts::Craft,
+        health::Health,
         physics::Body,
     },
     math::{
@@ -112,12 +113,17 @@ impl Missile {
         body.dir = rotate(to_target, cgmath::Rad(control_output.output));
     }
 
-    pub fn should_explode(&self, body: &Body, craft: &Craft)
-        -> bool
-    {
-        let no_fuel_left = craft.fuel <= 0.0;
-        let near_target  = (body.pos - self.target).magnitude() <= 10.0;
+    pub fn explode_if_ready(&self,
+        body:   &Body,
+        craft:  &Craft,
+        health: &mut Health,
+    ) {
+        let no_fuel_left   = craft.fuel <= 0.0;
+        let near_target    = (body.pos - self.target).magnitude() <= 10.0;
+        let should_explode = no_fuel_left || near_target;
 
-        no_fuel_left || near_target
+        if should_explode {
+            health.value = 0.0;
+        }
     }
 }

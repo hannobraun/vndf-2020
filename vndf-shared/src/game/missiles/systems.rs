@@ -51,10 +51,6 @@ pub fn update_missiles(
 
         missile.update_target(&craft, potential_targets.iter().cloned());
         missile.update_guidance(&mut body);
-
-        if missile.should_explode(&body, &craft) {
-            // Setting the missile's health to zero will cause it to explode.
-            health.value = 0.0;
-        }
+        missile.explode_if_ready(&body, &craft, &mut health);
     }
 }
