@@ -192,7 +192,7 @@ impl State {
                 WORLD_SIZE,
                 dt,
             );
-            missiles::update_missiles(
+            missiles::update_targets(
                 &mut self.bodies,
                 &self.crafts,
                 &mut self.missiles,

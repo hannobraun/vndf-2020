@@ -22,7 +22,7 @@ pub fn launch_missile(
     missile.create(world, bodies, crafts, missiles);
 }
 
-pub fn update_missiles(
+pub fn update_targets(
     bodies:   &mut Store<Body>,
     crafts:   &Store<Craft>,
     missiles: &mut Store<Missile>,
