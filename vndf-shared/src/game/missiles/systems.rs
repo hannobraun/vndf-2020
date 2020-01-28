@@ -27,17 +27,16 @@ pub fn update_missiles(
     crafts:   &Store<Craft>,
     missiles: &mut Store<Missile>,
 ) {
-    let potential_targets: Vec<_> = crafts.values()
-        .filter_map(|craft| Some((*bodies.get(craft.body)?, *craft)))
-        .collect();
-
     for missile in missiles.values_mut() {
+        let potential_targets = crafts.values()
+            .filter_map(|craft| Some((*bodies.get(craft.body)?, *craft)));
+
         let craft = match crafts.get(missile.craft) {
             Some(craft) => craft,
             None        => continue,
         };
 
-        missile.update_target(&craft, potential_targets.iter().cloned());
+        missile.update_target(&craft, potential_targets);
     }
 }
 
