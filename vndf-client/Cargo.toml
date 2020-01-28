@@ -8,7 +8,6 @@ edition = "2018"
 [dependencies]
 env_logger = "*"
 ggez       = "*"
-hecs       = "*"
 log        = "*"
 serde      = "*"
 toml       = "*"
