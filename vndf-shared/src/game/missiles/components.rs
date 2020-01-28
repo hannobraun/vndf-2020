@@ -65,9 +65,13 @@ impl Missile {
     }
 
     pub fn update_target(&mut self,
-        craft:   &Craft,
+        crafts:  &Store<Craft>,
         targets: impl IntoIterator<Item=(Body, Craft)>,
-    ) {
+    )
+        -> Option<()>
+    {
+        let craft = crafts.get(self.craft)?;
+
         let mut best_rating = 0.0;
         let mut new_target  = None;
 
@@ -89,6 +93,8 @@ impl Missile {
         if let Some(new_target) = new_target {
             self.target = new_target
         }
+
+        Some(())
     }
 
     pub fn update_guidance(&mut self,
