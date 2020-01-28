@@ -37,7 +37,10 @@ use self::{
         ExplosionImminent,
         Explosive,
     },
-    health::Death,
+    health::{
+        Death,
+        Health,
+    },
     missiles::{
         Missile,
         MissileLaunch,
@@ -135,6 +138,17 @@ impl State {
     }
 
     pub fn dispatch(&mut self) {
+        // Make sure all healths are linked to their parent. This should happen
+        // when they're created, but can't, due to the layers of hacks that is
+        // the ECS. It will be possible to rectify this, once we're transitioned
+        // the the CGS.
+        {
+            let world = self.world.query();
+            for (handle, (health,)) in &mut world.query::<(&mut Health,)>() {
+                health.parent = Some(handle.to_bits());
+            }
+        }
+
         // Let's garbage-collect all items that need to be removed. This should
         // be an automatic process, probably controlled by reference-counting of
         // handles, but this will have to do for now.

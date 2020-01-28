@@ -6,12 +6,14 @@ use serde::{
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Health {
-    pub value: f32,
+    pub parent: Option<u64>,
+    pub value:  f32,
 }
 
 impl Health {
     pub fn new(value: f32) -> Self {
         Health {
+            parent: None,
             value
         }
     }
