@@ -46,7 +46,7 @@ impl MissileEntity {
 
             engine_on: true,
             thrust:    200.0,
-            fuel:      400.0,
+            fuel:      1600.0,
             owner:     self.owner,
         };
         let craft = crafts.insert(craft);
