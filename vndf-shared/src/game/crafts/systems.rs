@@ -6,13 +6,6 @@ use crate::{
 use super::Craft;
 
 
-pub fn update_bodies(bodies: &mut Store<Body>, world_size: f32, dt: f32) {
-    for body in bodies.values_mut() {
-        body.update(dt);
-        body.enforce_boundary(world_size);
-    }
-}
-
 pub fn update_crafts(
     bodies: &mut Store<Body>,
     crafts: &mut Store<Craft>,

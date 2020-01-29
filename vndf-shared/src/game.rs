@@ -146,7 +146,7 @@ impl State {
                 &mut self.crafts,
                 dt,
             );
-            crafts::update_bodies(
+            physics::update_bodies(
                 &mut self.bodies,
                 WORLD_SIZE,
                 dt,
