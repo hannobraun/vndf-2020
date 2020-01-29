@@ -46,7 +46,6 @@ use self::{
         Missile,
         MissileLaunch,
     },
-    physics::Body,
     players::{
         Player,
         PlayerConnected,
@@ -70,7 +69,8 @@ pub struct State {
 
     players_by_address: HashMap<SocketAddr, Handle>,
 
-    bodies:     Store<Body>,
+    physics: physics::Feature,
+
     crafts:     Store<Craft>,
     explosions: Store<Explosion>,
     healths:    Store<Health>,
@@ -97,7 +97,8 @@ impl State {
 
             players_by_address: HashMap::new(),
 
-            bodies:     Store::new(),
+            physics: physics::Feature::new(),
+
             crafts:     Store::new(),
             explosions: Store::new(),
             healths:    Store::new(),
@@ -136,33 +137,33 @@ impl State {
 
     pub fn dispatch(&mut self) {
         for Update { dt } in self.update.source().ready() {
+            self.physics.on_update(
+                WORLD_SIZE,
+                dt,
+            );
+
             ships::update_ships(
-                &mut self.bodies,
+                &mut self.physics.bodies,
                 &self.crafts,
                 &mut self.ships,
             );
             crafts::update_crafts(
-                &mut self.bodies,
+                &mut self.physics.bodies,
                 &mut self.crafts,
                 dt,
             );
-            physics::update_bodies(
-                &mut self.bodies,
-                WORLD_SIZE,
-                dt,
-            );
             missiles::update_targets(
-                &mut self.bodies,
+                &mut self.physics.bodies,
                 &self.crafts,
                 &mut self.missiles,
             );
             missiles::update_guidances(
-                &mut self.bodies,
+                &mut self.physics.bodies,
                 &self.crafts,
                 &mut self.missiles,
             );
             missiles::explode_missiles(
-                &self.bodies,
+                &self.physics.bodies,
                 &self.crafts,
                 &mut self.healths,
                 &self.missiles,
@@ -183,7 +184,7 @@ impl State {
             let id = self.next_id.increment();
 
             players::connect_player(
-                &mut self.bodies,
+                &mut self.physics.bodies,
                 &mut self.crafts,
                 &mut self.healths,
                 &mut self.players,
@@ -206,7 +207,7 @@ impl State {
         }
         for PlayerInput { addr, event } in self.player_input.source().ready() {
             players::handle_input(
-                &self.bodies,
+                &self.physics.bodies,
                 &mut self.crafts,
                 &self.players,
                 &mut self.ships,
@@ -218,7 +219,7 @@ impl State {
         }
         for MissileLaunch { missile } in self.missile_launch.source().ready() {
             missiles::launch_missile(
-                &mut self.bodies,
+                &mut self.physics.bodies,
                 &mut self.crafts,
                 &mut self.healths,
                 &mut self.missiles,
@@ -227,13 +228,13 @@ impl State {
         }
         for Death { handle } in self.death.source().ready() {
             let explosion = explosions::explode_entity(
-                &self.bodies,
+                &self.physics.bodies,
                 &self.healths,
                 handle,
             );
             health::remove_entity(
                 handle,
-                &mut self.bodies,
+                &mut self.physics.bodies,
                 &mut self.crafts,
                 &mut self.healths,
                 &mut self.missiles,
@@ -241,7 +242,7 @@ impl State {
             );
             if let Some(explosion) = explosion {
                 explosions::create_explosion(
-                    &mut self.bodies,
+                    &mut self.physics.bodies,
                     &mut self.explosions,
                     &mut self.explosion_imminent.sink(),
                     explosion,
@@ -253,7 +254,7 @@ impl State {
 
             explosions::damage_nearby(
                 handle,
-                &self.bodies,
+                &self.physics.bodies,
                 &self.explosions,
                 &mut self.healths,
             );
@@ -278,7 +279,7 @@ impl State {
     pub fn updates(&mut self)
         -> impl Iterator<Item=(Handle, Component)> + '_
     {
-        let bodies = self.bodies.iter()
+        let bodies = self.physics.bodies.iter()
             .map(|(handle, &c)| (handle, Component::Body(c)));
         let crafts = self.crafts.iter()
             .map(|(handle, &c)| (handle, Component::Craft(c)));
@@ -309,13 +310,13 @@ impl State {
 
     pub fn diagnostics(&self) -> Diagnostics {
         Diagnostics {
-            num_bodies:     self.bodies.len()     as u64,
-            num_crafts:     self.crafts.len()     as u64,
-            num_explosions: self.explosions.len() as u64,
-            num_healths:    self.healths.len()    as u64,
-            num_players:    self.players.len()    as u64,
-            num_missiles:   self.missiles.len()   as u64,
-            num_ships:      self.ships.len()      as u64,
+            num_bodies:     self.physics.bodies.len() as u64,
+            num_crafts:     self.crafts.len()         as u64,
+            num_explosions: self.explosions.len()     as u64,
+            num_healths:    self.healths.len()        as u64,
+            num_players:    self.players.len()        as u64,
+            num_missiles:   self.missiles.len()       as u64,
+            num_ships:      self.ships.len()          as u64,
         }
     }
 }
