@@ -7,47 +7,51 @@ use slotmap::{
 use super::Handle;
 
 
-pub struct Store<T>(DenseSlotMap<DefaultKey, T>);
+pub struct Store<T> {
+    inner: DenseSlotMap<DefaultKey, T>,
+}
 
 impl<T> Store<T> {
     pub fn new() -> Self {
-        Self(DenseSlotMap::new())
+        Self {
+            inner: DenseSlotMap::new(),
+        }
     }
 
     pub fn len(&self) -> usize {
-        self.0.len()
+        self.inner.len()
     }
 
     pub fn insert(&mut self, value: T) -> Handle {
-        Handle(self.0.insert(value))
+        Handle(self.inner.insert(value))
     }
 
     pub fn remove(&mut self, handle: Handle) -> Option<T> {
-        self.0.remove(handle.0)
+        self.inner.remove(handle.0)
     }
 
     pub fn get(&self, handle: Handle) -> Option<&T> {
-        self.0.get(handle.0)
+        self.inner.get(handle.0)
     }
 
     pub fn get_mut(&mut self, handle: Handle) -> Option<&mut T> {
-        self.0.get_mut(handle.0)
+        self.inner.get_mut(handle.0)
     }
 
     pub fn iter(&self) -> Iter<T> {
-        Iter(self.0.iter())
+        Iter(self.inner.iter())
     }
 
     pub fn iter_mut(&mut self) -> IterMut<T> {
-        IterMut(self.0.iter_mut())
+        IterMut(self.inner.iter_mut())
     }
 
     pub fn values(&self) -> dense::Values<DefaultKey, T> {
-        self.0.values()
+        self.inner.values()
     }
 
     pub fn values_mut(&mut self) -> dense::ValuesMut<DefaultKey, T> {
-        self.0.values_mut()
+        self.inner.values_mut()
     }
 }
 
