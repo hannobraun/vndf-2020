@@ -135,15 +135,17 @@ impl State {
     }
 
     pub fn dispatch(&mut self) {
-        for Update { dt } in self.update.source().ready() {
+        for event in self.update.source().ready() {
             self.crafts.on_update(
-                dt,
+                &event,
                 &mut self.physics.bodies,
             );
             self.physics.on_update(
+                &event,
                 WORLD_SIZE,
-                dt,
             );
+
+            let Update { dt } = event;
 
             ships::update_ships(
                 &mut self.physics.bodies,

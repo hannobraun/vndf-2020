@@ -1,4 +1,7 @@
-use crate::cgs::Store;
+use crate::{
+    cgs::Store,
+    game::base::Update,
+};
 
 use super::{
     Body,
@@ -17,11 +20,11 @@ impl Feature {
         }
     }
 
-    pub fn on_update(&mut self, world_size: f32, dt: f32) {
+    pub fn on_update(&mut self, event: &Update, world_size: f32) {
         update_bodies(
             &mut self.bodies,
             world_size,
-            dt,
+            event.dt,
         );
     }
 }

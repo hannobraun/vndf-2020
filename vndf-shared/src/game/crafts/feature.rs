@@ -1,6 +1,9 @@
 use crate::{
     cgs::Store,
-    game::physics::Body,
+    game::{
+        base::Update,
+        physics::Body,
+    },
 };
 
 use super::{
@@ -20,11 +23,11 @@ impl Feature {
         }
     }
 
-    pub fn on_update(&mut self, dt: f32, bodies: &mut Store<Body>) {
+    pub fn on_update(&mut self, event: &Update, bodies: &mut Store<Body>) {
         update_crafts(
             bodies,
             &mut self.crafts,
-            dt,
+            event.dt,
         );
     }
 }
