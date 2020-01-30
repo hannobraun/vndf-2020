@@ -30,6 +30,10 @@ impl<T> Sink<'_, T> {
 pub struct Source<'r, T>(&'r mut Buf<T>);
 
 impl<T> Source<'_, T> {
+    pub fn next(&mut self) -> Option<T> {
+        self.ready().next()
+    }
+
     pub fn ready(&mut self) -> impl Iterator<Item=T> + '_ {
         (self.0).0.drain(..)
     }
