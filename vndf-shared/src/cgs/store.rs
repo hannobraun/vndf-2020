@@ -1,3 +1,5 @@
+use std::cell::Cell;
+
 use slotmap::{
     DefaultKey,
     DenseSlotMap,
@@ -8,13 +10,15 @@ use super::Handle;
 
 
 pub struct Store<T> {
-    inner: DenseSlotMap<DefaultKey, T>,
+    inner:     DenseSlotMap<DefaultKey, T>,
+    to_remove: Cell<Vec<Handle>>,
 }
 
 impl<T> Store<T> {
     pub fn new() -> Self {
         Self {
-            inner: DenseSlotMap::new(),
+            inner:     DenseSlotMap::new(),
+            to_remove: Cell::new(Vec::new()),
         }
     }
 
@@ -28,6 +32,12 @@ impl<T> Store<T> {
 
     pub fn remove(&mut self, handle: Handle) -> Option<T> {
         self.inner.remove(handle.0)
+    }
+
+    pub fn remove_later(&self, handle: Handle) {
+        let mut to_remove = self.to_remove.take();
+        to_remove.push(handle);
+        self.to_remove.set(to_remove);
     }
 
     pub fn get(&self, handle: Handle) -> Option<&T> {
@@ -52,6 +62,14 @@ impl<T> Store<T> {
 
     pub fn values_mut(&mut self) -> dense::ValuesMut<DefaultKey, T> {
         self.inner.values_mut()
+    }
+
+    pub fn apply_changes(&mut self) {
+        let mut to_remove = self.to_remove.take();
+        for handle in to_remove.drain(..) {
+            self.remove(handle);
+        }
+        self.to_remove.set(to_remove);
     }
 }
 
@@ -94,5 +112,30 @@ impl<'a, T> Iterator for IterMut<'a, T> {
     fn next(&mut self) -> Option<Self::Item> {
         self.0.next()
             .map(|(key, value)| (Handle(key), value))
+    }
+}
+
+
+#[cfg(test)]
+mod tests {
+    use super::Store;
+
+
+    #[test]
+    fn it_should_remove_values_later() {
+        let mut store = Store::new();
+
+        store.insert(());
+        store.insert(());
+
+        for (handle, _) in &store {
+            store.remove_later(handle);
+        }
+
+        assert_eq!(store.len(), 2);
+
+        store.apply_changes();
+
+        assert_eq!(store.len(), 0);
     }
 }
