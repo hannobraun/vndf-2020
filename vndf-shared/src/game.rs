@@ -32,7 +32,6 @@ use self::{
         ComponentRemoved,
         Update,
     },
-    crafts::Craft,
     explosions::{
         Explosion,
         ExplosionFaded,
@@ -70,8 +69,8 @@ pub struct State {
     players_by_address: HashMap<SocketAddr, Handle>,
 
     physics: physics::Feature,
+    crafts:  crafts::Feature,
 
-    crafts:     Store<Craft>,
     explosions: Store<Explosion>,
     healths:    Store<Health>,
     players:    Store<Player>,
@@ -98,8 +97,8 @@ impl State {
             players_by_address: HashMap::new(),
 
             physics: physics::Feature::new(),
+            crafts:  crafts::Feature::new(),
 
-            crafts:     Store::new(),
             explosions: Store::new(),
             healths:    Store::new(),
             missiles:   Store::new(),
@@ -137,6 +136,10 @@ impl State {
 
     pub fn dispatch(&mut self) {
         for Update { dt } in self.update.source().ready() {
+            self.crafts.on_update(
+                dt,
+                &mut self.physics.bodies,
+            );
             self.physics.on_update(
                 WORLD_SIZE,
                 dt,
@@ -144,27 +147,22 @@ impl State {
 
             ships::update_ships(
                 &mut self.physics.bodies,
-                &self.crafts,
+                &self.crafts.crafts,
                 &mut self.ships,
-            );
-            crafts::update_crafts(
-                &mut self.physics.bodies,
-                &mut self.crafts,
-                dt,
             );
             missiles::update_targets(
                 &mut self.physics.bodies,
-                &self.crafts,
+                &self.crafts.crafts,
                 &mut self.missiles,
             );
             missiles::update_guidances(
                 &mut self.physics.bodies,
-                &self.crafts,
+                &self.crafts.crafts,
                 &mut self.missiles,
             );
             missiles::explode_missiles(
                 &self.physics.bodies,
-                &self.crafts,
+                &self.crafts.crafts,
                 &mut self.healths,
                 &self.missiles,
             );
@@ -185,7 +183,7 @@ impl State {
 
             players::connect_player(
                 &mut self.physics.bodies,
-                &mut self.crafts,
+                &mut self.crafts.crafts,
                 &mut self.healths,
                 &mut self.players,
                 &mut self.ships,
@@ -208,7 +206,7 @@ impl State {
         for PlayerInput { addr, event } in self.player_input.source().ready() {
             players::handle_input(
                 &self.physics.bodies,
-                &mut self.crafts,
+                &mut self.crafts.crafts,
                 &self.players,
                 &mut self.ships,
                 &mut self.missile_launch.sink(),
@@ -220,7 +218,7 @@ impl State {
         for MissileLaunch { missile } in self.missile_launch.source().ready() {
             missiles::launch_missile(
                 &mut self.physics.bodies,
-                &mut self.crafts,
+                &mut self.crafts.crafts,
                 &mut self.healths,
                 &mut self.missiles,
                 missile,
@@ -235,7 +233,7 @@ impl State {
             health::remove_entity(
                 handle,
                 &mut self.physics.bodies,
-                &mut self.crafts,
+                &mut self.crafts.crafts,
                 &mut self.healths,
                 &mut self.missiles,
                 &mut self.ships,
@@ -281,7 +279,7 @@ impl State {
     {
         let bodies = self.physics.bodies.iter()
             .map(|(handle, &c)| (handle, Component::Body(c)));
-        let crafts = self.crafts.iter()
+        let crafts = self.crafts.crafts.iter()
             .map(|(handle, &c)| (handle, Component::Craft(c)));
         let explosions = self.explosions.iter()
             .map(|(handle, &c)| (handle, Component::Explosion(c)));
@@ -311,7 +309,7 @@ impl State {
     pub fn diagnostics(&self) -> Diagnostics {
         Diagnostics {
             num_bodies:     self.physics.bodies.len() as u64,
-            num_crafts:     self.crafts.len()         as u64,
+            num_crafts:     self.crafts.crafts.len()  as u64,
             num_explosions: self.explosions.len()     as u64,
             num_healths:    self.healths.len()        as u64,
             num_players:    self.players.len()        as u64,
