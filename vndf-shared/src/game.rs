@@ -249,7 +249,7 @@ impl State {
                 );
             }
         }
-        for event in self.explosion_imminent.source().ready() {
+        while let Some(event) = self.explosion_imminent.source().next() {
             let ExplosionImminent { handle } = event;
 
             explosions::damage_nearby(
