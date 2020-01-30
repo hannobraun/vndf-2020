@@ -32,11 +32,6 @@ use self::{
         ComponentRemoved,
         Update,
     },
-    explosions::{
-        Explosion,
-        ExplosionFaded,
-        ExplosionImminent,
-    },
     health::{
         Death,
         Health,
@@ -68,18 +63,16 @@ pub struct State {
 
     players_by_address: HashMap<SocketAddr, Handle>,
 
-    physics: physics::Feature,
-    crafts:  crafts::Feature,
+    physics:    physics::Feature,
+    crafts:     crafts::Feature,
+    explosions: explosions::Feature,
 
-    explosions: Store<Explosion>,
     healths:    Store<Health>,
     players:    Store<Player>,
     missiles:   Store<Missile>,
     ships:      Store<Ship>,
 
     death:               events::Buf<Death>,
-    explosion_faded:     events::Buf<ExplosionFaded>,
-    explosion_imminent:  events::Buf<ExplosionImminent>,
     component_removed:   events::Buf<ComponentRemoved>,
     missile_launch:      events::Buf<MissileLaunch>,
     player_connected:    events::Buf<PlayerConnected>,
@@ -96,18 +89,16 @@ impl State {
 
             players_by_address: HashMap::new(),
 
-            physics: physics::Feature::new(),
-            crafts:  crafts::Feature::new(),
+            physics:    physics::Feature::new(),
+            crafts:     crafts::Feature::new(),
+            explosions: explosions::Feature::new(),
 
-            explosions: Store::new(),
             healths:    Store::new(),
             missiles:   Store::new(),
             players:    Store::new(),
             ships:      Store::new(),
 
             death:               events::Buf::new(),
-            explosion_faded:     events::Buf::new(),
-            explosion_imminent:  events::Buf::new(),
             component_removed:   events::Buf::new(),
             missile_launch:      events::Buf::new(),
             player_connected:    events::Buf::new(),
@@ -140,12 +131,13 @@ impl State {
                 &event,
                 &mut self.physics.bodies,
             );
+            self.explosions.on_update(
+                &event,
+            );
             self.physics.on_update(
                 &event,
                 WORLD_SIZE,
             );
-
-            let Update { dt } = event;
 
             ships::update_ships(
                 &mut self.physics.bodies,
@@ -167,11 +159,6 @@ impl State {
                 &self.crafts.crafts,
                 &mut self.healths,
                 &self.missiles,
-            );
-            explosions::update_explosions(
-                &mut self.explosions,
-                dt,
-                &mut self.explosion_faded.sink(),
             );
             health::check_health(
                 &self.healths,
@@ -226,12 +213,15 @@ impl State {
                 missile,
             );
         }
-        for Death { handle } in self.death.source().ready() {
-            let explosion = explosions::explode_entity(
-                &self.physics.bodies,
+        for event in self.death.source().ready() {
+            self.explosions.on_death(
+                &event,
+                &mut self.physics.bodies,
                 &self.healths,
-                handle,
             );
+
+            let Death { handle } = event;
+
             health::remove_entity(
                 handle,
                 &mut self.physics.bodies,
@@ -240,32 +230,20 @@ impl State {
                 &mut self.missiles,
                 &mut self.ships,
             );
-            if let Some(explosion) = explosion {
-                explosions::create_explosion(
-                    &mut self.physics.bodies,
-                    &mut self.explosions,
-                    &mut self.explosion_imminent.sink(),
-                    explosion,
-                );
-            }
         }
-        while let Some(event) = self.explosion_imminent.source().next() {
-            let ExplosionImminent { handle } = event;
-
-            explosions::damage_nearby(
-                handle,
+        while let Some(event) =
+            self.explosions.explosion_imminent.source().next()
+        {
+            self.explosions.on_explosion_imminent(
+                &event,
                 &self.physics.bodies,
-                &self.explosions,
                 &mut self.healths,
-            );
+            )
         }
-        while let Some(event) = self.explosion_faded.source().next() {
-            let ExplosionFaded { handle } = event;
-
-            explosions::remove_explosion(
-                &mut self.explosions,
-                handle,
-            );
+        while let Some(event) =
+            self.explosions.explosion_faded.source().next()
+        {
+            self.explosions.on_explosion_faded(&event);
         }
     }
 
@@ -283,7 +261,7 @@ impl State {
             .map(|(handle, &c)| (handle, Component::Body(c)));
         let crafts = self.crafts.crafts.iter()
             .map(|(handle, &c)| (handle, Component::Craft(c)));
-        let explosions = self.explosions.iter()
+        let explosions = self.explosions.explosions.iter()
             .map(|(handle, &c)| (handle, Component::Explosion(c)));
         let healths = self.healths.iter()
             .map(|(handle, &c)| (handle, Component::Health(c)));
@@ -310,13 +288,13 @@ impl State {
 
     pub fn diagnostics(&self) -> Diagnostics {
         Diagnostics {
-            num_bodies:     self.physics.bodies.len() as u64,
-            num_crafts:     self.crafts.crafts.len()  as u64,
-            num_explosions: self.explosions.len()     as u64,
-            num_healths:    self.healths.len()        as u64,
-            num_players:    self.players.len()        as u64,
-            num_missiles:   self.missiles.len()       as u64,
-            num_ships:      self.ships.len()          as u64,
+            num_bodies:     self.physics.bodies.len()        as u64,
+            num_crafts:     self.crafts.crafts.len()         as u64,
+            num_explosions: self.explosions.explosions.len() as u64,
+            num_healths:    self.healths.len()               as u64,
+            num_players:    self.players.len()               as u64,
+            num_missiles:   self.missiles.len()              as u64,
+            num_ships:      self.ships.len()                 as u64,
         }
     }
 }
