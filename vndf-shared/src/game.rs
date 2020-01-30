@@ -259,7 +259,7 @@ impl State {
                 &mut self.healths,
             );
         }
-        for event in self.explosion_faded.source().ready() {
+        while let Some(event) = self.explosion_faded.source().ready().next() {
             let ExplosionFaded { handle } = event;
 
             explosions::remove_explosion(
