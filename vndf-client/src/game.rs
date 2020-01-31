@@ -1,3 +1,12 @@
+use std::{
+    collections::VecDeque,
+    time::{
+        Duration,
+        Instant,
+    },
+};
+
+
 use crate::shared::{
     cgs::{
         Handle,
@@ -23,6 +32,7 @@ use crate::shared::{
 pub struct State {
     pub own_id:      Option<PlayerId>,
     pub diagnostics: Option<Diagnostics>,
+    pub updates:     VecDeque<Instant>,
 
     pub bodies:     SecondaryStore<Body>,
     pub crafts:     SecondaryStore<Craft>,
@@ -37,6 +47,7 @@ impl State {
         Self {
             own_id:      None,
             diagnostics: None,
+            updates:     VecDeque::new(),
 
             bodies:     SecondaryStore::new(),
             crafts:     SecondaryStore::new(),
@@ -48,6 +59,16 @@ impl State {
     }
 
     pub fn update_component(&mut self, handle: Handle, component: Component) {
+        self.updates.push_back(Instant::now());
+        while let Some(instant) = self.updates.front() {
+            if instant.elapsed() > Duration::from_secs(1) {
+                self.updates.pop_front();
+            }
+            else {
+                break;
+            }
+        }
+
         match component {
             Component::Body(body) => {
                 self.bodies.insert(handle, body);

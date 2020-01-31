@@ -273,7 +273,9 @@ Explosions: {}/{}
 Healths: {}/{}
 Players: {}/-
 Missiles: {}/{}
-Ships: {}/{}",
+Ships: {}/{}
+---
+Updates per s: {}",
                 diagnostics.num_bodies, state.bodies.len(),
                 diagnostics.num_crafts, state.crafts.len(),
                 diagnostics.num_explosions, state.explosions.len(),
@@ -281,6 +283,7 @@ Ships: {}/{}",
                 diagnostics.num_players,
                 diagnostics.num_missiles, state.missiles.len(),
                 diagnostics.num_ships, state.ships.len(),
+                state.updates.len(),
             );
 
             graphics::draw(
