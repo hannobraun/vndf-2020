@@ -43,11 +43,11 @@ pub const FRAME_TIME: f32 = 1.0 / TARGET_FPS as f32;
 
 
 pub struct State {
-    physics:    physics::Feature,
     crafts:     crafts::Feature,
     explosions: explosions::Feature,
     health:     health::Feature,
     missiles:   missiles::Feature,
+    physics:    physics::Feature,
     players:    players::Feature,
     ships:      ships::Feature,
 
@@ -58,11 +58,11 @@ pub struct State {
 impl State {
     pub fn new() -> Self {
         Self {
-            physics:    physics::Feature::new(),
             crafts:     crafts::Feature::new(),
             explosions: explosions::Feature::new(),
             health:     health::Feature::new(),
             missiles:   missiles::Feature::new(),
+            physics:    physics::Feature::new(),
             players:    players::Feature::new(),
             ships:      ships::Feature::new(),
 
