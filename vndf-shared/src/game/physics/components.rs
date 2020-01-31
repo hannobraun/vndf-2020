@@ -11,6 +11,15 @@ use crate::math::{
     rotate,
 };
 
+#[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
+pub struct Position(pub Pnt2);
+
+impl Position {
+    pub fn new() -> Self {
+        Self(Pnt2::new(0.0, 0.0))
+    }
+}
+
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Body {
