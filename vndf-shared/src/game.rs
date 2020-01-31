@@ -156,7 +156,7 @@ impl State {
                 &self.missiles,
             );
         }
-        for event in self.player_connected.source().ready() {
+        while let Some(event) = self.player_connected.source().next() {
             let PlayerConnected { addr, color } = event;
 
             let id = self.next_id.increment();
@@ -174,7 +174,7 @@ impl State {
                 color,
             );
         }
-        for event in self.player_disconnected.source().ready() {
+        while let Some(event) = self.player_disconnected.source().next() {
             let PlayerDisconnected { addr } = event;
 
             players::disconnect_player(
@@ -183,7 +183,9 @@ impl State {
                 addr,
             );
         }
-        for PlayerInput { addr, event } in self.player_input.source().ready() {
+        while let Some(event) = self.player_input.source().next() {
+            let PlayerInput { addr, event } = event;
+
             players::handle_input(
                 &self.physics.bodies,
                 &mut self.crafts.crafts,
