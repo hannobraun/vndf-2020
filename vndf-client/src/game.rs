@@ -22,7 +22,10 @@ use crate::shared::{
         explosions::Explosion,
         health::Health,
         missiles::Missile,
-        physics::Body,
+        physics::{
+            Body,
+            Position,
+        },
         players::PlayerId,
         ships::Ship,
     },
@@ -39,6 +42,7 @@ pub struct State {
     pub explosions: SecondaryStore<Explosion>,
     pub healths:    SecondaryStore<Health>,
     pub missiles:   SecondaryStore<Missile>,
+    pub positions:  SecondaryStore<Position>,
     pub ships:      SecondaryStore<Ship>,
 }
 
@@ -54,6 +58,7 @@ impl State {
             explosions: SecondaryStore::new(),
             healths:    SecondaryStore::new(),
             missiles:   SecondaryStore::new(),
+            positions:  SecondaryStore::new(),
             ships:      SecondaryStore::new(),
         }
     }
