@@ -148,7 +148,9 @@ impl Graphics {
             &self.boundary,
             DrawParam::new()
                 .scale([WORLD_SIZE, WORLD_SIZE])
-        )
+        )?;
+
+        Ok(())
     }
 
     fn draw_ship(&self, context: &mut Context, ship: &Ship, state: &State)
@@ -356,6 +358,10 @@ Heavy Missiles: {}",
             &Text::new(status),
             DrawParam::new()
                 .dest([width - 200.0, 20.0])
-        )
+        )?;
+
+        Ok(())
+    }
+}
     }
 }
