@@ -3,12 +3,13 @@ use crate::{
     game::{
         crafts::Craft,
         health::Health,
-        missiles::{
-            components::Missile,
-            entities::MissileEntity,
-        },
         physics::Body,
     },
+};
+
+use super::{
+    Missile,
+    MissileEntity,
 };
 
 
