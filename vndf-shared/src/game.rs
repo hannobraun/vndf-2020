@@ -23,6 +23,7 @@ use crate::{
 use self::{
     base::{
         Component,
+        ComponentHandle,
         ComponentRemoved,
         Update,
     },
@@ -200,6 +201,37 @@ impl State {
     }
 
     pub fn component_removed(&mut self) -> events::Source<ComponentRemoved> {
+        for handle in self.physics.bodies.removed().ready() {
+            let handle = ComponentHandle::Body(handle);
+            let event  = ComponentRemoved { handle };
+            self.base.component_removed.sink().push(event);
+        }
+        for handle in self.crafts.crafts.removed().ready() {
+            let handle = ComponentHandle::Craft(handle);
+            let event  = ComponentRemoved { handle };
+            self.base.component_removed.sink().push(event);
+        }
+        for handle in self.explosions.explosions.removed().ready() {
+            let handle = ComponentHandle::Explosion(handle);
+            let event  = ComponentRemoved { handle };
+            self.base.component_removed.sink().push(event);
+        }
+        for handle in self.health.healths.removed().ready() {
+            let handle = ComponentHandle::Health(handle);
+            let event  = ComponentRemoved { handle };
+            self.base.component_removed.sink().push(event);
+        }
+        for handle in self.missiles.missiles.removed().ready() {
+            let handle = ComponentHandle::Missile(handle);
+            let event  = ComponentRemoved { handle };
+            self.base.component_removed.sink().push(event);
+        }
+        for handle in self.ships.ships.removed().ready() {
+            let handle = ComponentHandle::Ship(handle);
+            let event  = ComponentRemoved { handle };
+            self.base.component_removed.sink().push(event);
+        }
+
         self.base.component_removed.source()
     }
 
