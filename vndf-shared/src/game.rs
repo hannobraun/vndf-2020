@@ -8,10 +8,7 @@ pub mod players;
 pub mod ships;
 
 
-use std::{
-    collections::HashMap,
-    net::SocketAddr,
-};
+use std::net::SocketAddr;
 
 use serde::{
     Deserialize,
@@ -37,7 +34,6 @@ use self::{
         MissileLaunch,
     },
     players::{
-        Player,
         PlayerConnected,
         PlayerCreated,
         PlayerDisconnected,
@@ -55,64 +51,48 @@ pub const FRAME_TIME: f32 = 1.0 / TARGET_FPS as f32;
 
 
 pub struct State {
-    next_id: PlayerId,
-
-    players_by_address: HashMap<SocketAddr, Handle>,
-
     physics:    physics::Feature,
     crafts:     crafts::Feature,
     explosions: explosions::Feature,
     health:     health::Feature,
+    players:    players::Feature,
 
-    players:    Store<Player>,
     missiles:   Store<Missile>,
     ships:      Store<Ship>,
 
     component_removed:   events::Buf<ComponentRemoved>,
     missile_launch:      events::Buf<MissileLaunch>,
-    player_connected:    events::Buf<PlayerConnected>,
-    player_created:      events::Buf<PlayerCreated>,
-    player_disconnected: events::Buf<PlayerDisconnected>,
-    player_input:        events::Buf<PlayerInput>,
     update:              events::Buf<Update>,
 }
 
 impl State {
     pub fn new() -> Self {
         Self {
-            next_id: PlayerId::first(),
-
-            players_by_address: HashMap::new(),
-
             physics:    physics::Feature::new(),
             crafts:     crafts::Feature::new(),
             explosions: explosions::Feature::new(),
             health:     health::Feature::new(),
+            players:    players::Feature::new(),
 
             missiles:   Store::new(),
-            players:    Store::new(),
             ships:      Store::new(),
 
             component_removed:   events::Buf::new(),
             missile_launch:      events::Buf::new(),
-            player_connected:    events::Buf::new(),
-            player_created:      events::Buf::new(),
-            player_disconnected: events::Buf::new(),
-            player_input:        events::Buf::new(),
             update:              events::Buf::new(),
         }
     }
 
     pub fn player_connected(&mut self) -> events::Sink<PlayerConnected> {
-        self.player_connected.sink()
+        self.players.player_connected.sink()
     }
 
     pub fn player_disconnected(&mut self) -> events::Sink<PlayerDisconnected> {
-        self.player_disconnected.sink()
+        self.players.player_disconnected.sink()
     }
 
     pub fn player_input(&mut self) -> events::Sink<PlayerInput> {
-        self.player_input.sink()
+        self.players.player_input.sink()
     }
 
     pub fn update(&mut self) -> events::Sink<Update> {
@@ -156,45 +136,27 @@ impl State {
                 &self.missiles,
             );
         }
-        while let Some(event) = self.player_connected.source().next() {
-            let PlayerConnected { addr, color } = event;
-
-            let id = self.next_id.increment();
-
-            players::connect_player(
+        while let Some(event) = self.players.player_connected.source().next() {
+            self.players.on_player_connected(
+                &event,
                 &mut self.physics.bodies,
                 &mut self.crafts.crafts,
                 &mut self.health.healths,
-                &mut self.players,
                 &mut self.ships,
-                &mut self.player_created.sink(),
-                &mut self.players_by_address,
-                id,
-                addr,
-                color,
             );
         }
-        while let Some(event) = self.player_disconnected.source().next() {
-            let PlayerDisconnected { addr } = event;
-
-            players::disconnect_player(
-                &mut self.players,
-                &mut self.players_by_address,
-                addr,
-            );
+        while let Some(event) =
+            self.players.player_disconnected.source().next()
+        {
+            self.players.on_player_disconnected(&event);
         }
-        while let Some(event) = self.player_input.source().next() {
-            let PlayerInput { addr, event } = event;
-
-            players::handle_input(
+        while let Some(event) = self.players.player_input.source().next() {
+            self.players.on_player_input(
+                &event,
                 &self.physics.bodies,
                 &mut self.crafts.crafts,
-                &self.players,
                 &mut self.ships,
                 &mut self.missile_launch.sink(),
-                &mut self.players_by_address,
-                addr,
-                event,
             );
         }
         for MissileLaunch { missile } in self.missile_launch.source().ready() {
@@ -237,7 +199,7 @@ impl State {
     }
 
     pub fn players(&self) -> Vec<SocketAddr> {
-        self.players
+        self.players.players
             .iter()
             .map(|(_, player)| player.addr)
             .collect()
@@ -272,7 +234,7 @@ impl State {
     }
 
     pub fn player_created(&mut self) -> events::Source<PlayerCreated> {
-        self.player_created.source()
+        self.players.player_created.source()
     }
 
     pub fn diagnostics(&self) -> Diagnostics {
@@ -281,7 +243,7 @@ impl State {
             num_crafts:     self.crafts.crafts.len()         as u64,
             num_explosions: self.explosions.explosions.len() as u64,
             num_healths:    self.health.healths.len()        as u64,
-            num_players:    self.players.len()               as u64,
+            num_players:    self.players.players.len()       as u64,
             num_missiles:   self.missiles.len()              as u64,
             num_ships:      self.ships.len()                 as u64,
         }
