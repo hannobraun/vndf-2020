@@ -43,6 +43,7 @@ pub const FRAME_TIME: f32 = 1.0 / TARGET_FPS as f32;
 
 
 pub struct State {
+    base:       base::Feature,
     crafts:     crafts::Feature,
     explosions: explosions::Feature,
     health:     health::Feature,
@@ -50,14 +51,12 @@ pub struct State {
     physics:    physics::Feature,
     players:    players::Feature,
     ships:      ships::Feature,
-
-    component_removed:   events::Buf<ComponentRemoved>,
-    update:              events::Buf<Update>,
 }
 
 impl State {
     pub fn new() -> Self {
         Self {
+            base:       base::Feature::new(),
             crafts:     crafts::Feature::new(),
             explosions: explosions::Feature::new(),
             health:     health::Feature::new(),
@@ -65,9 +64,6 @@ impl State {
             physics:    physics::Feature::new(),
             players:    players::Feature::new(),
             ships:      ships::Feature::new(),
-
-            component_removed:   events::Buf::new(),
-            update:              events::Buf::new(),
         }
     }
 
@@ -84,11 +80,11 @@ impl State {
     }
 
     pub fn update(&mut self) -> events::Sink<Update> {
-        self.update.sink()
+        self.base.update.sink()
     }
 
     pub fn dispatch(&mut self) {
-        for event in self.update.source().ready() {
+        for event in self.base.update.source().ready() {
             self.crafts.on_update(
                 &event,
                 &mut self.physics.bodies,
@@ -204,7 +200,7 @@ impl State {
     }
 
     pub fn component_removed(&mut self) -> events::Source<ComponentRemoved> {
-        self.component_removed.source()
+        self.base.component_removed.source()
     }
 
     pub fn player_created(&mut self) -> events::Source<PlayerCreated> {

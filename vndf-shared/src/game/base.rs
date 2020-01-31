@@ -1,7 +1,11 @@
 pub mod events;
+pub mod feature;
 
 
-pub use self::events::*;
+pub use self::{
+    events::*,
+    feature::*,
+};
 
 
 use serde::{
