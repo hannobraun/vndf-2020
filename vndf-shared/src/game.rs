@@ -32,10 +32,6 @@ use self::{
         ComponentRemoved,
         Update,
     },
-    health::{
-        Death,
-        Health,
-    },
     missiles::{
         Missile,
         MissileLaunch,
@@ -66,13 +62,12 @@ pub struct State {
     physics:    physics::Feature,
     crafts:     crafts::Feature,
     explosions: explosions::Feature,
+    health:     health::Feature,
 
-    healths:    Store<Health>,
     players:    Store<Player>,
     missiles:   Store<Missile>,
     ships:      Store<Ship>,
 
-    death:               events::Buf<Death>,
     component_removed:   events::Buf<ComponentRemoved>,
     missile_launch:      events::Buf<MissileLaunch>,
     player_connected:    events::Buf<PlayerConnected>,
@@ -92,13 +87,12 @@ impl State {
             physics:    physics::Feature::new(),
             crafts:     crafts::Feature::new(),
             explosions: explosions::Feature::new(),
+            health:     health::Feature::new(),
 
-            healths:    Store::new(),
             missiles:   Store::new(),
             players:    Store::new(),
             ships:      Store::new(),
 
-            death:               events::Buf::new(),
             component_removed:   events::Buf::new(),
             missile_launch:      events::Buf::new(),
             player_connected:    events::Buf::new(),
@@ -138,6 +132,7 @@ impl State {
                 &event,
                 WORLD_SIZE,
             );
+            self.health.on_update();
 
             ships::update_ships(
                 &mut self.physics.bodies,
@@ -157,12 +152,8 @@ impl State {
             missiles::explode_missiles(
                 &self.physics.bodies,
                 &self.crafts.crafts,
-                &mut self.healths,
+                &mut self.health.healths,
                 &self.missiles,
-            );
-            health::check_health(
-                &self.healths,
-                &mut self.death.sink(),
             );
         }
         for event in self.player_connected.source().ready() {
@@ -173,7 +164,7 @@ impl State {
             players::connect_player(
                 &mut self.physics.bodies,
                 &mut self.crafts.crafts,
-                &mut self.healths,
+                &mut self.health.healths,
                 &mut self.players,
                 &mut self.ships,
                 &mut self.player_created.sink(),
@@ -208,25 +199,21 @@ impl State {
             missiles::launch_missile(
                 &mut self.physics.bodies,
                 &mut self.crafts.crafts,
-                &mut self.healths,
+                &mut self.health.healths,
                 &mut self.missiles,
                 missile,
             );
         }
-        while let Some(event) = self.death.source().next() {
+        while let Some(event) = self.health.death.source().next() {
             self.explosions.on_death(
                 &event,
                 &mut self.physics.bodies,
-                &self.healths,
+                &self.health.healths,
             );
-
-            let Death { handle } = event;
-
-            health::remove_entity(
-                handle,
+            self.health.on_death(
+                &event,
                 &mut self.physics.bodies,
                 &mut self.crafts.crafts,
-                &mut self.healths,
                 &mut self.missiles,
                 &mut self.ships,
             );
@@ -237,7 +224,7 @@ impl State {
             self.explosions.on_explosion_imminent(
                 &event,
                 &self.physics.bodies,
-                &mut self.healths,
+                &mut self.health.healths,
             )
         }
         while let Some(event) =
@@ -263,7 +250,7 @@ impl State {
             .map(|(handle, &c)| (handle, Component::Craft(c)));
         let explosions = self.explosions.explosions.iter()
             .map(|(handle, &c)| (handle, Component::Explosion(c)));
-        let healths = self.healths.iter()
+        let healths = self.health.healths.iter()
             .map(|(handle, &c)| (handle, Component::Health(c)));
         let missiles = self.missiles.iter()
             .map(|(handle, &c)| (handle, Component::Missile(c)));
@@ -291,7 +278,7 @@ impl State {
             num_bodies:     self.physics.bodies.len()        as u64,
             num_crafts:     self.crafts.crafts.len()         as u64,
             num_explosions: self.explosions.explosions.len() as u64,
-            num_healths:    self.healths.len()               as u64,
+            num_healths:    self.health.healths.len()        as u64,
             num_players:    self.players.len()               as u64,
             num_missiles:   self.missiles.len()              as u64,
             num_ships:      self.ships.len()                 as u64,
