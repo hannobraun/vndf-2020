@@ -29,10 +29,6 @@ use self::{
         ComponentRemoved,
         Update,
     },
-    missiles::{
-        Missile,
-        MissileLaunch,
-    },
     players::{
         PlayerConnected,
         PlayerCreated,
@@ -55,13 +51,12 @@ pub struct State {
     crafts:     crafts::Feature,
     explosions: explosions::Feature,
     health:     health::Feature,
+    missiles:   missiles::Feature,
     players:    players::Feature,
 
-    missiles:   Store<Missile>,
     ships:      Store<Ship>,
 
     component_removed:   events::Buf<ComponentRemoved>,
-    missile_launch:      events::Buf<MissileLaunch>,
     update:              events::Buf<Update>,
 }
 
@@ -72,13 +67,12 @@ impl State {
             crafts:     crafts::Feature::new(),
             explosions: explosions::Feature::new(),
             health:     health::Feature::new(),
+            missiles:   missiles::Feature::new(),
             players:    players::Feature::new(),
 
-            missiles:   Store::new(),
             ships:      Store::new(),
 
             component_removed:   events::Buf::new(),
-            missile_launch:      events::Buf::new(),
             update:              events::Buf::new(),
         }
     }
@@ -113,27 +107,16 @@ impl State {
                 WORLD_SIZE,
             );
             self.health.on_update();
+            self.missiles.on_update(
+                &mut self.physics.bodies,
+                &self.crafts.crafts,
+                &mut self.health.healths,
+            );
 
             ships::update_ships(
                 &mut self.physics.bodies,
                 &self.crafts.crafts,
                 &mut self.ships,
-            );
-            missiles::update_targets(
-                &mut self.physics.bodies,
-                &self.crafts.crafts,
-                &mut self.missiles,
-            );
-            missiles::update_guidances(
-                &mut self.physics.bodies,
-                &self.crafts.crafts,
-                &mut self.missiles,
-            );
-            missiles::explode_missiles(
-                &self.physics.bodies,
-                &self.crafts.crafts,
-                &mut self.health.healths,
-                &self.missiles,
             );
         }
         while let Some(event) = self.players.player_connected.source().next() {
@@ -156,18 +139,15 @@ impl State {
                 &self.physics.bodies,
                 &mut self.crafts.crafts,
                 &mut self.ships,
-                &mut self.missile_launch.sink(),
+                &mut self.missiles.missile_launch.sink(),
             );
         }
-        while let Some(event) = self.missile_launch.source().next() {
-            let MissileLaunch { missile } = event;
-
-            missiles::launch_missile(
+        while let Some(event) = self.missiles.missile_launch.source().next() {
+            self.missiles.on_missile_launch(
+                event,
                 &mut self.physics.bodies,
                 &mut self.crafts.crafts,
                 &mut self.health.healths,
-                &mut self.missiles,
-                missile,
             );
         }
         while let Some(event) = self.health.death.source().next() {
@@ -180,7 +160,7 @@ impl State {
                 &event,
                 &mut self.physics.bodies,
                 &mut self.crafts.crafts,
-                &mut self.missiles,
+                &mut self.missiles.missiles,
                 &mut self.ships,
             );
         }
@@ -218,7 +198,7 @@ impl State {
             .map(|(handle, &c)| (handle, Component::Explosion(c)));
         let healths = self.health.healths.iter()
             .map(|(handle, &c)| (handle, Component::Health(c)));
-        let missiles = self.missiles.iter()
+        let missiles = self.missiles.missiles.iter()
             .map(|(handle, &c)| (handle, Component::Missile(c)));
         let ships = self.ships.iter()
             .map(|(handle, &c)| (handle, Component::Ship(c)));
@@ -246,7 +226,7 @@ impl State {
             num_explosions: self.explosions.explosions.len() as u64,
             num_healths:    self.health.healths.len()        as u64,
             num_players:    self.players.players.len()       as u64,
-            num_missiles:   self.missiles.len()              as u64,
+            num_missiles:   self.missiles.missiles.len()     as u64,
             num_ships:      self.ships.len()                 as u64,
         }
     }
