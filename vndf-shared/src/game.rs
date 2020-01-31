@@ -213,7 +213,7 @@ impl State {
                 missile,
             );
         }
-        for event in self.death.source().ready() {
+        while let Some(event) = self.death.source().next() {
             self.explosions.on_death(
                 &event,
                 &mut self.physics.bodies,
