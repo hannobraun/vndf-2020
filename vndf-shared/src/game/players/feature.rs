@@ -3,6 +3,11 @@ use std::{
     net::SocketAddr,
 };
 
+use serde::{
+    Deserialize,
+    Serialize,
+};
+
 use crate::{
     cgs::{
         Handle,
@@ -23,7 +28,6 @@ use super::{
     PlayerConnected,
     PlayerCreated,
     PlayerDisconnected,
-    PlayerId,
     PlayerInput,
     connect_player,
     disconnect_player,
@@ -104,5 +108,21 @@ impl Feature {
             event.addr,
             event.event,
         );
+    }
+}
+
+
+#[derive(Clone, Copy, Debug, Deserialize, Serialize, Eq, PartialEq, Hash)]
+pub struct PlayerId(u64);
+
+impl PlayerId {
+    pub fn first() -> Self {
+        Self(0)
+    }
+
+    pub fn increment(&mut self) -> Self {
+        let current = self.0;
+        self.0 += 1;
+        Self(current)
     }
 }
