@@ -60,7 +60,6 @@ impl State {
 
     pub fn update_component(&mut self, handle: Handle, component: Component) {
         self.statistics.updates.push_back(Instant::now());
-        self.statistics.update();
 
         match component {
             Component::Body(body) => {
@@ -86,7 +85,6 @@ impl State {
 
     pub fn remove_component(&mut self, handle: ComponentHandle) {
         self.statistics.removals.push_back(Instant::now());
-        self.statistics.update();
 
         match handle {
             ComponentHandle::Body(handle) => {

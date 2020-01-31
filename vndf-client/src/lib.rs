@@ -213,6 +213,8 @@ impl EventHandler for Game {
             }
         }
 
+        self.state.statistics.update();
+
         Ok(())
     }
 
