@@ -58,6 +58,10 @@ impl State {
         }
     }
 
+    pub fn update(&mut self) {
+        self.statistics.update();
+    }
+
     pub fn update_component(&mut self, handle: Handle, component: Component) {
         self.statistics.updates.push_back(Instant::now());
 
