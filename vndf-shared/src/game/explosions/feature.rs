@@ -85,8 +85,8 @@ impl Feature {
         event: &ExplosionFaded,
     ) {
         remove_explosion(
-            &mut self.explosions,
             event.handle,
+            &mut self.explosions,
         );
     }
 }

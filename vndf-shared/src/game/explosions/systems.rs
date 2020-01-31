@@ -92,8 +92,8 @@ pub fn update_explosions(
 }
 
 pub fn remove_explosion(
-    explosions: &mut Store<Explosion>,
     handle:     Handle,
+    explosions: &mut Store<Explosion>,
 ) {
     explosions.remove(handle);
 }
