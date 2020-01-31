@@ -32,7 +32,9 @@ use crate::shared::{
 pub struct State {
     pub own_id:      Option<PlayerId>,
     pub diagnostics: Option<Diagnostics>,
-    pub updates:     VecDeque<Instant>,
+
+    pub updates:  VecDeque<Instant>,
+    pub removals: VecDeque<Instant>,
 
     pub bodies:     SecondaryStore<Body>,
     pub crafts:     SecondaryStore<Craft>,
@@ -47,7 +49,9 @@ impl State {
         Self {
             own_id:      None,
             diagnostics: None,
-            updates:     VecDeque::new(),
+
+            updates:  VecDeque::new(),
+            removals: VecDeque::new(),
 
             bodies:     SecondaryStore::new(),
             crafts:     SecondaryStore::new(),
@@ -92,6 +96,16 @@ impl State {
     }
 
     pub fn remove_component(&mut self, handle: ComponentHandle) {
+        self.removals.push_back(Instant::now());
+        while let Some(instant) = self.removals.front() {
+            if instant.elapsed() > Duration::from_secs(1) {
+                self.removals.pop_front();
+            }
+            else {
+                break;
+            }
+        }
+
         match handle {
             ComponentHandle::Body(handle) => {
                 self.bodies.remove(handle);
