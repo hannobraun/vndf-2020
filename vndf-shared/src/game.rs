@@ -165,7 +165,10 @@ impl State {
         while let Some(event) =
             self.explosions.explosion_faded.source().next()
         {
-            self.explosions.on_explosion_faded(&event);
+            self.explosions.on_explosion_faded(
+                &event,
+                &mut self.physics.bodies,
+            );
         }
     }
 

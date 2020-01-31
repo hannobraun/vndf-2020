@@ -93,7 +93,12 @@ pub fn update_explosions(
 
 pub fn remove_explosion(
     handle:     Handle,
+    bodies:     &mut Store<Body>,
     explosions: &mut Store<Explosion>,
-) {
-    explosions.remove(handle);
+)
+    -> Option<()>
+{
+    let explosion = explosions.remove(handle)?;
+    bodies.remove(explosion.body);
+    Some(())
 }
