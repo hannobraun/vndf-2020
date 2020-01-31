@@ -159,7 +159,9 @@ impl State {
                 &mut self.missile_launch.sink(),
             );
         }
-        for MissileLaunch { missile } in self.missile_launch.source().ready() {
+        while let Some(event) = self.missile_launch.source().next() {
+            let MissileLaunch { missile } = event;
+
             missiles::launch_missile(
                 &mut self.physics.bodies,
                 &mut self.crafts.crafts,
