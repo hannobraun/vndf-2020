@@ -54,6 +54,8 @@ impl<In, Out> Conn<In, Out>
     pub fn from_stream(stream: TcpStream, errors_are_critical: bool)
         -> io::Result<Self>
     {
+        stream.set_nodelay(true)?;
+
         let local_addr = stream.local_addr()?;
         let peer_addr  = stream.peer_addr()?;
 
