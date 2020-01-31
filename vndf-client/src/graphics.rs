@@ -284,8 +284,8 @@ Removals per s: {}",
                 diagnostics.num_players,
                 diagnostics.num_missiles, state.missiles.len(),
                 diagnostics.num_ships, state.ships.len(),
-                state.updates.len(),
-                state.removals.len(),
+                state.statistics.updates.len(),
+                state.statistics.removals.len(),
             );
 
             graphics::draw(

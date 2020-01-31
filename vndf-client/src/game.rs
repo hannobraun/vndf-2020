@@ -32,9 +32,7 @@ use crate::shared::{
 pub struct State {
     pub own_id:      Option<PlayerId>,
     pub diagnostics: Option<Diagnostics>,
-
-    pub updates:  VecDeque<Instant>,
-    pub removals: VecDeque<Instant>,
+    pub statistics:  Statistics,
 
     pub bodies:     SecondaryStore<Body>,
     pub crafts:     SecondaryStore<Craft>,
@@ -49,9 +47,7 @@ impl State {
         Self {
             own_id:      None,
             diagnostics: None,
-
-            updates:  VecDeque::new(),
-            removals: VecDeque::new(),
+            statistics:  Statistics::new(),
 
             bodies:     SecondaryStore::new(),
             crafts:     SecondaryStore::new(),
@@ -63,15 +59,8 @@ impl State {
     }
 
     pub fn update_component(&mut self, handle: Handle, component: Component) {
-        self.updates.push_back(Instant::now());
-        while let Some(instant) = self.updates.front() {
-            if instant.elapsed() > Duration::from_secs(1) {
-                self.updates.pop_front();
-            }
-            else {
-                break;
-            }
-        }
+        self.statistics.updates.push_back(Instant::now());
+        self.statistics.update();
 
         match component {
             Component::Body(body) => {
@@ -96,15 +85,8 @@ impl State {
     }
 
     pub fn remove_component(&mut self, handle: ComponentHandle) {
-        self.removals.push_back(Instant::now());
-        while let Some(instant) = self.removals.front() {
-            if instant.elapsed() > Duration::from_secs(1) {
-                self.removals.pop_front();
-            }
-            else {
-                break;
-            }
-        }
+        self.statistics.removals.push_back(Instant::now());
+        self.statistics.update();
 
         match handle {
             ComponentHandle::Body(handle) => {
@@ -124,6 +106,40 @@ impl State {
             }
             ComponentHandle::Ship(handle) => {
                 self.ships.remove(handle);
+            }
+        }
+    }
+}
+
+
+pub struct Statistics {
+    pub updates:  VecDeque<Instant>,
+    pub removals: VecDeque<Instant>,
+}
+
+impl Statistics {
+    pub fn new() -> Self {
+        Self {
+            updates:  VecDeque::new(),
+            removals: VecDeque::new(),
+        }
+    }
+
+    pub fn update(&mut self) {
+        while let Some(instant) = self.updates.front() {
+            if instant.elapsed() > Duration::from_secs(1) {
+                self.updates.pop_front();
+            }
+            else {
+                break;
+            }
+        }
+        while let Some(instant) = self.removals.front() {
+            if instant.elapsed() > Duration::from_secs(1) {
+                self.removals.pop_front();
+            }
+            else {
+                break;
             }
         }
     }
