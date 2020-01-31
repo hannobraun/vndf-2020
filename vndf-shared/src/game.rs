@@ -16,10 +16,7 @@ use serde::{
 };
 
 use crate::{
-    cgs::{
-        Handle,
-        Store,
-    },
+    cgs::Handle,
     events,
 };
 
@@ -36,7 +33,6 @@ use self::{
         PlayerId,
         PlayerInput,
     },
-    ships::Ship,
 };
 
 
@@ -53,8 +49,7 @@ pub struct State {
     health:     health::Feature,
     missiles:   missiles::Feature,
     players:    players::Feature,
-
-    ships:      Store<Ship>,
+    ships:      ships::Feature,
 
     component_removed:   events::Buf<ComponentRemoved>,
     update:              events::Buf<Update>,
@@ -69,8 +64,7 @@ impl State {
             health:     health::Feature::new(),
             missiles:   missiles::Feature::new(),
             players:    players::Feature::new(),
-
-            ships:      Store::new(),
+            ships:      ships::Feature::new(),
 
             component_removed:   events::Buf::new(),
             update:              events::Buf::new(),
@@ -112,12 +106,10 @@ impl State {
                 &self.crafts.crafts,
                 &mut self.health.healths,
             );
-
-            ships::update_ships(
+            self.ships.on_update(
                 &mut self.physics.bodies,
                 &self.crafts.crafts,
-                &mut self.ships,
-            );
+            )
         }
         while let Some(event) = self.players.player_connected.source().next() {
             self.players.on_player_connected(
@@ -125,7 +117,7 @@ impl State {
                 &mut self.physics.bodies,
                 &mut self.crafts.crafts,
                 &mut self.health.healths,
-                &mut self.ships,
+                &mut self.ships.ships,
             );
         }
         while let Some(event) =
@@ -138,7 +130,7 @@ impl State {
                 &event,
                 &self.physics.bodies,
                 &mut self.crafts.crafts,
-                &mut self.ships,
+                &mut self.ships.ships,
                 &mut self.missiles.missile_launch.sink(),
             );
         }
@@ -161,7 +153,7 @@ impl State {
                 &mut self.physics.bodies,
                 &mut self.crafts.crafts,
                 &mut self.missiles.missiles,
-                &mut self.ships,
+                &mut self.ships.ships,
             );
         }
         while let Some(event) =
@@ -200,7 +192,7 @@ impl State {
             .map(|(handle, &c)| (handle, Component::Health(c)));
         let missiles = self.missiles.missiles.iter()
             .map(|(handle, &c)| (handle, Component::Missile(c)));
-        let ships = self.ships.iter()
+        let ships = self.ships.ships.iter()
             .map(|(handle, &c)| (handle, Component::Ship(c)));
 
         bodies
@@ -227,7 +219,7 @@ impl State {
             num_healths:    self.health.healths.len()        as u64,
             num_players:    self.players.players.len()       as u64,
             num_missiles:   self.missiles.missiles.len()     as u64,
-            num_ships:      self.ships.len()                 as u64,
+            num_ships:      self.ships.ships.len()           as u64,
         }
     }
 }
