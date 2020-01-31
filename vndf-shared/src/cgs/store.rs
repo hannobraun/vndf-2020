@@ -6,12 +6,15 @@ use slotmap::{
     dense,
 };
 
+use crate::events;
+
 use super::Handle;
 
 
 pub struct Store<T> {
     inner:     DenseSlotMap<DefaultKey, T>,
     to_remove: Cell<Vec<Handle>>,
+    removed:   events::Buf<Handle>,
 }
 
 impl<T> Store<T> {
@@ -19,6 +22,7 @@ impl<T> Store<T> {
         Self {
             inner:     DenseSlotMap::new(),
             to_remove: Cell::new(Vec::new()),
+            removed:   events::Buf::new(),
         }
     }
 
@@ -31,7 +35,13 @@ impl<T> Store<T> {
     }
 
     pub fn remove(&mut self, handle: Handle) -> Option<T> {
-        self.inner.remove(handle.0)
+        let result = self.inner.remove(handle.0);
+
+        if result.is_some() {
+            self.removed.sink().push(handle)
+        }
+
+        result
     }
 
     pub fn remove_later(&self, handle: Handle) {
@@ -70,6 +80,10 @@ impl<T> Store<T> {
             self.remove(handle);
         }
         self.to_remove.set(to_remove);
+    }
+
+    pub fn removed(&mut self) -> events::Source<Handle> {
+        self.removed.source()
     }
 }
 
@@ -137,5 +151,20 @@ mod tests {
         store.apply_changes();
 
         assert_eq!(store.len(), 0);
+    }
+
+    #[test]
+    fn it_should_emit_remove_events() {
+        let mut store = Store::new();
+
+        let handle = store.insert(());
+
+        let removed: Vec<_> = store.removed().ready().collect();
+        assert_eq!(removed.len(), 0);
+
+        store.remove(handle);
+
+        let removed: Vec<_> = store.removed().ready().collect();
+        assert_eq!(removed, vec![handle]);
     }
 }
