@@ -57,7 +57,9 @@ pub fn create_explosion(
     explosion:          ExplosionEntity,
 ) {
     let handle = explosion.create(bodies, explosions);
-    explosion_imminent.push(ExplosionImminent { handle });
+    if let Some(handle) = handle {
+        explosion_imminent.push(ExplosionImminent { handle });
+    }
 }
 
 pub fn damage_nearby(

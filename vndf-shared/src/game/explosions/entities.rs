@@ -19,7 +19,7 @@ impl ExplosionEntity {
         bodies:     &mut Store<Body>,
         explosions: &mut Store<Explosion>,
     )
-        -> Handle
+        -> Option<Handle>
     {
         let body = Body {
             pos: self.exploding.pos,
@@ -28,6 +28,7 @@ impl ExplosionEntity {
         };
         let body = bodies.insert(body);
 
-        explosions.insert(Explosion::new(body, self.strength))
+        let explosion = explosions.insert(Explosion::new(body, self.strength));
+        Some(explosion)
     }
 }
