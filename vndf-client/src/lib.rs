@@ -213,12 +213,11 @@ impl EventHandler for Game {
             }
         }
 
-        self.state.statistics.update();
-
         Ok(())
     }
 
     fn draw(&mut self, context: &mut Context) -> GameResult {
+        self.state.statistics.update();
         self.graphics.draw(context, &self.input, &self.state)
     }
 }
