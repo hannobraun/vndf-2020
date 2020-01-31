@@ -24,7 +24,7 @@ pub fn launch_missile(
 }
 
 pub fn update_targets(
-    bodies:   &mut Store<Body>,
+    bodies:   &Store<Body>,
     crafts:   &Store<Craft>,
     missiles: &mut Store<Missile>,
 ) {
