@@ -52,7 +52,7 @@ impl Craft {
     {
         let craft = crafts.remove(handle)?;
 
-        bodies.remove(craft.body);
+        Body::remove(craft.body, bodies);
         healths.remove(craft.health);
 
         Some(())

@@ -111,6 +111,6 @@ pub fn remove_explosion(
     -> Option<()>
 {
     let explosion = explosions.remove(handle)?;
-    bodies.remove(explosion.body);
+    Body::remove(explosion.body, bodies);
     Some(())
 }

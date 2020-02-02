@@ -89,4 +89,8 @@ impl Body {
 
         Some(())
     }
+
+    pub fn remove(handle: Handle, bodies: &mut Store<Body>) {
+        bodies.remove(handle);
+    }
 }
