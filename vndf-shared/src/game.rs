@@ -154,6 +154,7 @@ impl State {
                 &mut self.physics.bodies,
                 &mut self.crafts.crafts,
                 &mut self.missiles.missiles,
+                &mut self.physics.positions,
                 &mut self.ships.ships,
             );
         }
@@ -173,6 +174,7 @@ impl State {
             self.explosions.on_explosion_faded(
                 &event,
                 &mut self.physics.bodies,
+                &mut self.physics.positions,
             );
         }
     }

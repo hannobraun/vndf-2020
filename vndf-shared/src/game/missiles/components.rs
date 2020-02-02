@@ -158,15 +158,16 @@ impl Missile {
     }
 
     pub fn remove(
-        handle:   Handle,
-        bodies:   &mut Store<Body>,
-        crafts:   &mut Store<Craft>,
-        healths:  &mut Store<Health>,
-        missiles: &mut Store<Missile>,
+        handle:    Handle,
+        bodies:    &mut Store<Body>,
+        crafts:    &mut Store<Craft>,
+        healths:   &mut Store<Health>,
+        missiles:  &mut Store<Missile>,
+        positions: &mut Store<Position>,
     )
         -> Option<()>
     {
         let missile = missiles.remove(handle)?;
-        Craft::remove(missile.craft, bodies, crafts, healths)
+        Craft::remove(missile.craft, bodies, crafts, healths, positions)
     }
 }

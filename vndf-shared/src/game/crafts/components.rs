@@ -10,7 +10,10 @@ use crate::{
     },
     game::{
         health::Health,
-        physics::Body,
+        physics::{
+            Body,
+            Position,
+        },
         players::PlayerId,
     },
     math::{
@@ -43,16 +46,17 @@ impl Craft {
     }
 
     pub fn remove(
-        handle:  Handle,
-        bodies:  &mut Store<Body>,
-        crafts:  &mut Store<Craft>,
-        healths: &mut Store<Health>,
+        handle:    Handle,
+        bodies:    &mut Store<Body>,
+        crafts:    &mut Store<Craft>,
+        healths:   &mut Store<Health>,
+        positions: &mut Store<Position>,
     )
         -> Option<()>
     {
         let craft = crafts.remove(handle)?;
 
-        Body::remove(craft.body, bodies);
+        Body::remove(craft.body, bodies, positions);
         healths.remove(craft.health);
 
         Some(())

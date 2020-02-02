@@ -16,7 +16,10 @@ use crate::{
             MissileEntity,
             MissileLaunch,
         },
-        physics::Body,
+        physics::{
+            Body,
+            Position,
+        },
         players::{
             Player,
             PlayerId,
@@ -121,15 +124,16 @@ impl Ship {
     }
 
     pub fn remove(
-        handle:  Handle,
-        bodies:  &mut Store<Body>,
-        crafts:  &mut Store<Craft>,
-        healths: &mut Store<Health>,
-        ships:   &mut Store<Ship>,
+        handle:    Handle,
+        bodies:    &mut Store<Body>,
+        crafts:    &mut Store<Craft>,
+        healths:   &mut Store<Health>,
+        positions: &mut Store<Position>,
+        ships:     &mut Store<Ship>,
     )
         -> Option<()>
     {
         let ship = ships.remove(handle)?;
-        Craft::remove(ship.craft, bodies, crafts, healths)
+        Craft::remove(ship.craft, bodies, crafts, healths, positions)
     }
 }

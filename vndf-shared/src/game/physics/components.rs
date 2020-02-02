@@ -90,7 +90,15 @@ impl Body {
         Some(())
     }
 
-    pub fn remove(handle: Handle, bodies: &mut Store<Body>) {
-        bodies.remove(handle);
+    pub fn remove(
+        handle:    Handle,
+        bodies:    &mut Store<Body>,
+        positions: &mut Store<Position>,
+    )
+        -> Option<()>
+    {
+        let body = bodies.remove(handle)?;
+        positions.remove(body.pos);
+        Some(())
     }
 }
