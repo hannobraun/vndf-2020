@@ -305,11 +305,11 @@ Removals per s: {}",
         }
 
         for ship in state.ships.values() {
-            self.draw_ship_status(context, ship, state)?;
-
-            // There should only be one ship owned by the local player, so let's
-            // quit.
-            break;
+            if self.draw_ship_status(context, ship, state)? {
+                // There should only be one ship owned by the local player, so
+                // let's quit.
+                break;
+            }
         }
 
         if input.pointer_world.is_some() {
