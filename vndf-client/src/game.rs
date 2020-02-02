@@ -86,6 +86,9 @@ impl State {
             Component::Missile(missile) => {
                 self.missiles.insert(handle, missile);
             }
+            Component::Position(position) => {
+                self.positions.insert(handle, position);
+            }
             Component::Ship(ship) => {
                 self.ships.insert(handle, ship);
             }
@@ -110,6 +113,9 @@ impl State {
             }
             ComponentHandle::Missile(handle) => {
                 self.missiles.remove(handle);
+            }
+            ComponentHandle::Position(handle) => {
+                self.positions.remove(handle);
             }
             ComponentHandle::Ship(handle) => {
                 self.ships.remove(handle);

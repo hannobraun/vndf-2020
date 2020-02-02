@@ -20,7 +20,10 @@ use crate::{
         explosions::Explosion,
         health::Health,
         missiles::Missile,
-        physics::Body,
+        physics::{
+            Body,
+            Position,
+        },
         ships::Ship,
     },
 };
@@ -33,6 +36,7 @@ pub enum Component {
     Explosion(Explosion),
     Health(Health),
     Missile(Missile),
+    Position(Position),
     Ship(Ship),
 }
 
@@ -43,5 +47,6 @@ pub enum ComponentHandle {
     Explosion(Handle),
     Health(Handle),
     Missile(Handle),
+    Position(Handle),
     Ship(Handle),
 }
