@@ -239,6 +239,11 @@ impl State {
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }
+        for handle in self.physics.positions.removed().ready() {
+            let handle = ComponentHandle::Position(handle);
+            let event  = ComponentRemoved { handle };
+            self.base.component_removed.sink().push(event);
+        }
         for handle in self.ships.ships.removed().ready() {
             let handle = ComponentHandle::Ship(handle);
             let event  = ComponentRemoved { handle };
