@@ -25,6 +25,7 @@ use crate::shared::{
         physics::{
             Body,
             Position,
+            Velocity,
         },
         players::PlayerId,
         ships::Ship,
@@ -44,6 +45,7 @@ pub struct State {
     pub missiles:   SecondaryStore<Missile>,
     pub positions:  SecondaryStore<Position>,
     pub ships:      SecondaryStore<Ship>,
+    pub velocities: SecondaryStore<Velocity>,
 }
 
 impl State {
@@ -60,6 +62,7 @@ impl State {
             missiles:   SecondaryStore::new(),
             positions:  SecondaryStore::new(),
             ships:      SecondaryStore::new(),
+            velocities: SecondaryStore::new(),
         }
     }
 
