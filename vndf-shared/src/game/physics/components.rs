@@ -28,6 +28,16 @@ impl Position {
 
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
+pub struct Velocity(pub Vec2);
+
+impl Velocity {
+    pub fn new() -> Self {
+        Self(Vec2::new(0.0, 0.0))
+    }
+}
+
+
+#[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Body {
     pub pos: Handle,
     pub vel: Vec2,
