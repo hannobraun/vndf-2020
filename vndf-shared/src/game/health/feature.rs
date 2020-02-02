@@ -2,9 +2,9 @@ use crate::{
     cgs::Store,
     events,
     game::{
-        physics::Body,
         crafts::Craft,
         missiles::Missile,
+        physics::Body,
         ships::Ship,
     }
 };
