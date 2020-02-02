@@ -106,14 +106,18 @@ impl Body {
     }
 
     pub fn remove(
-        handle:    Handle,
-        bodies:    &mut Store<Body>,
-        positions: &mut Store<Position>,
+        handle:     Handle,
+        bodies:     &mut Store<Body>,
+        positions:  &mut Store<Position>,
+        velocities: &mut Store<Velocity>,
     )
         -> Option<()>
     {
         let body = bodies.remove(handle)?;
+
         positions.remove(body.pos);
+        velocities.remove(body.vel);
+
         Some(())
     }
 }

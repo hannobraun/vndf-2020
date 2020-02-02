@@ -13,6 +13,7 @@ use crate::{
         physics::{
             Body,
             Position,
+            Velocity,
         },
         players::PlayerId,
     },
@@ -46,17 +47,18 @@ impl Craft {
     }
 
     pub fn remove(
-        handle:    Handle,
-        bodies:    &mut Store<Body>,
-        crafts:    &mut Store<Craft>,
-        healths:   &mut Store<Health>,
-        positions: &mut Store<Position>,
+        handle:     Handle,
+        bodies:     &mut Store<Body>,
+        crafts:     &mut Store<Craft>,
+        healths:    &mut Store<Health>,
+        positions:  &mut Store<Position>,
+        velocities: &mut Store<Velocity>,
     )
         -> Option<()>
     {
         let craft = crafts.remove(handle)?;
 
-        Body::remove(craft.body, bodies, positions);
+        Body::remove(craft.body, bodies, positions, velocities);
         healths.remove(craft.health);
 
         Some(())

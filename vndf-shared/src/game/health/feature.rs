@@ -7,6 +7,7 @@ use crate::{
         physics::{
             Body,
             Position,
+            Velocity,
         },
         ships::Ship,
     }
@@ -41,12 +42,13 @@ impl Feature {
     }
 
     pub fn on_death(&mut self,
-        event:     &Death,
-        bodies:    &mut Store<Body>,
-        crafts:    &mut Store<Craft>,
-        missiles:  &mut Store<Missile>,
-        positions: &mut Store<Position>,
-        ships:     &mut Store<Ship>,
+        event:      &Death,
+        bodies:     &mut Store<Body>,
+        crafts:     &mut Store<Craft>,
+        missiles:   &mut Store<Missile>,
+        positions:  &mut Store<Position>,
+        ships:      &mut Store<Ship>,
+        velocities: &mut Store<Velocity>,
     ) {
         remove_entity(
             event.handle,
@@ -56,6 +58,7 @@ impl Feature {
             missiles,
             positions,
             ships,
+            velocities,
         );
     }
 }

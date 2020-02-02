@@ -160,6 +160,7 @@ impl State {
                 &mut self.missiles.missiles,
                 &mut self.physics.positions,
                 &mut self.ships.ships,
+                &mut self.physics.velocities,
             );
         }
         while let Some(event) =
@@ -179,6 +180,7 @@ impl State {
                 &event,
                 &mut self.physics.bodies,
                 &mut self.physics.positions,
+                &mut self.physics.velocities,
             );
         }
     }

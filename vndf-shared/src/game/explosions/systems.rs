@@ -110,10 +110,11 @@ pub fn remove_explosion(
     bodies:     &mut Store<Body>,
     explosions: &mut Store<Explosion>,
     positions:  &mut Store<Position>,
+    velocities: &mut Store<Velocity>,
 )
     -> Option<()>
 {
     let explosion = explosions.remove(handle)?;
-    Body::remove(explosion.body, bodies, positions);
+    Body::remove(explosion.body, bodies, positions, velocities);
     Some(())
 }
