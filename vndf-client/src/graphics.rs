@@ -30,6 +30,16 @@ use crate::{
 };
 
 
+macro_rules! get {
+    ($store:expr, $handle:expr) => {
+        match $store.get($handle) {
+            Some(value) => value,
+            None        => return Ok(()),
+        }
+    };
+}
+
+
 pub struct Graphics {
     boundary:  Mesh,
     explosion: Mesh,
@@ -156,23 +166,21 @@ impl Graphics {
     fn draw_ship(&self, context: &mut Context, ship: &Ship, state: &State)
         -> GameResult
     {
-        let body = state.crafts.get(ship.craft)
-            .and_then(|craft| state.bodies.get(craft.body));
+        let craft = get!(state.crafts, ship.craft);
+        let body  = get!(state.bodies, craft.body);
 
-        if let Some(body) = body {
-            graphics::draw(
-                context,
-                &self.ship,
-                DrawParam::new()
-                    .dest(body.pos)
-                    .rotation(Vec2::unit_x().angle(body.dir).0)
-                    .scale([30.0, 30.0])
-                    .color(
-                        [ship.color[0], ship.color[1], ship.color[2], 1.0]
-                            .into(),
-                    ),
-            )?
-        }
+        graphics::draw(
+            context,
+            &self.ship,
+            DrawParam::new()
+                .dest(body.pos)
+                .rotation(Vec2::unit_x().angle(body.dir).0)
+                .scale([30.0, 30.0])
+                .color(
+                    [ship.color[0], ship.color[1], ship.color[2], 1.0]
+                        .into(),
+                ),
+        )?;
 
         Ok(())
     }
@@ -184,31 +192,29 @@ impl Graphics {
     )
         -> GameResult
     {
-        let body = state.crafts.get(missile.craft)
-            .and_then(|craft| state.bodies.get(craft.body));
+        let craft = get!(state.crafts, missile.craft);
+        let body  = get!(state.bodies, craft.body);
 
-        if let Some(body) = body {
-            graphics::draw(
-                context,
-                &self.missile,
-                DrawParam::new()
-                    .dest(body.pos)
-                    .scale([4.0, 4.0])
-            )?;
+        graphics::draw(
+            context,
+            &self.missile,
+            DrawParam::new()
+                .dest(body.pos)
+                .scale([4.0, 4.0])
+        )?;
 
-            let line = Mesh::new_line(
-                context,
-                &[body.pos, missile.target],
-                1.5,
-                [0.0, 1.0, 0.0, 1.0].into(),
-            )?;
+        let line = Mesh::new_line(
+            context,
+            &[body.pos, missile.target],
+            1.5,
+            [0.0, 1.0, 0.0, 1.0].into(),
+        )?;
 
-            graphics::draw(
-                context,
-                &line,
-                DrawParam::new(),
-            )?;
-        }
+        graphics::draw(
+            context,
+            &line,
+            DrawParam::new(),
+        )?;
 
         Ok(())
     }
@@ -220,19 +226,19 @@ impl Graphics {
     )
         -> GameResult
     {
-        if let Some(body) = state.bodies.get(explosion.body) {
-            let alpha = explosion.strength_left / explosion.strength_total;
-            let size  = explosion.strength_total * 2.0;
+        let body = get!(state.bodies, explosion.body);
 
-            graphics::draw(
-                context,
-                &self.explosion,
-                DrawParam::new()
-                    .dest(body.pos)
-                    .scale([size, size])
-                    .color([1.0, 1.0, 1.0, alpha].into())
-            )?;
-        }
+        let alpha = explosion.strength_left / explosion.strength_total;
+        let size  = explosion.strength_total * 2.0;
+
+        graphics::draw(
+            context,
+            &self.explosion,
+            DrawParam::new()
+                .dest(body.pos)
+                .scale([size, size])
+                .color([1.0, 1.0, 1.0, alpha].into())
+        )?;
 
         Ok(())
     }
@@ -328,15 +334,8 @@ Removals per s: {}",
     )
         -> GameResult
     {
-        let craft = match state.crafts.get(ship.craft) {
-            Some(craft) => craft,
-            None        => return Ok(()),
-        };
-
-        let health = match state.healths.get(craft.health) {
-            Some(health) => health,
-            None         => return Ok(()),
-        };
+        let craft  = get!(state.crafts, ship.craft);
+        let health = get!(state.healths, craft.health);
 
         if state.own_id != Some(craft.owner) {
             return Ok(());
