@@ -6,20 +6,23 @@ use crate::{
 use super::{
     Body,
     Position,
+    Velocity,
     update_bodies,
 };
 
 
 pub struct Feature {
-    pub bodies:    Store<Body>,
-    pub positions: Store<Position>,
+    pub bodies:     Store<Body>,
+    pub positions:  Store<Position>,
+    pub velocities: Store<Velocity>,
 }
 
 impl Feature {
     pub fn new() -> Self {
         Self {
-            bodies:    Store::new(),
-            positions: Store::new(),
+            bodies:     Store::new(),
+            positions:  Store::new(),
+            velocities: Store::new(),
         }
     }
 
