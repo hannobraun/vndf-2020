@@ -284,6 +284,7 @@ Explosions: {}/{}
 Healths: {}/{}
 Players: {}/-
 Missiles: {}/{}
+Positions: {}/{}
 Ships: {}/{}
 ---
 Updates per s: {}
@@ -294,6 +295,7 @@ Removals per s: {}",
                 diagnostics.num_healths, state.healths.len(),
                 diagnostics.num_players,
                 diagnostics.num_missiles, state.missiles.len(),
+                diagnostics.num_positions, state.positions.len(),
                 diagnostics.num_ships, state.ships.len(),
                 state.statistics.updates.len(),
                 state.statistics.removals.len(),

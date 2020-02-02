@@ -258,6 +258,7 @@ impl State {
             num_healths:    self.health.healths.len()        as u64,
             num_players:    self.players.players.len()       as u64,
             num_missiles:   self.missiles.missiles.len()     as u64,
+            num_positions:  self.physics.positions.len()     as u64,
             num_ships:      self.ships.ships.len()           as u64,
         }
     }
@@ -272,5 +273,6 @@ pub struct Diagnostics {
     pub num_healths:    u64,
     pub num_players:    u64,
     pub num_missiles:   u64,
+    pub num_positions:  u64,
     pub num_ships:      u64,
 }
