@@ -286,6 +286,7 @@ Players: {}/-
 Missiles: {}/{}
 Positions: {}/{}
 Ships: {}/{}
+Velocities: {}/{}
 ---
 Updates per s: {}
 Removals per s: {}",
@@ -297,6 +298,7 @@ Removals per s: {}",
                 diagnostics.num_missiles, state.missiles.len(),
                 diagnostics.num_positions, state.positions.len(),
                 diagnostics.num_ships, state.ships.len(),
+                diagnostics.num_velocities, state.velocities.len(),
                 state.statistics.updates.len(),
                 state.statistics.removals.len(),
             );
