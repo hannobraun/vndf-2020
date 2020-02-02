@@ -12,7 +12,10 @@ use crate::{
     game::{
         crafts::Craft,
         health::Health,
-        physics::Body,
+        physics::{
+            Body,
+            Position,
+        },
     },
     math::{
         prelude::*,
@@ -61,7 +64,7 @@ impl Missile {
 
     pub fn update_target(&mut self,
         crafts:  &Store<Craft>,
-        targets: impl IntoIterator<Item=(Body, Craft)>,
+        targets: impl IntoIterator<Item=(Position, Craft)>,
     )
         -> Option<()>
     {
@@ -70,18 +73,18 @@ impl Missile {
         let mut best_rating = 0.0;
         let mut new_target  = None;
 
-        for (target_body, target_craft) in targets {
+        for (target_pos, target_craft) in targets {
             if target_craft.owner == craft.owner {
                 continue;
             }
 
-            let distance  = (self.target - target_body.pos).magnitude();
+            let distance  = (self.target - target_pos.0).magnitude();
             let threshold = 100.0;
             let rating    = 1.0 / (threshold - distance);
 
             if rating > best_rating {
                 best_rating = rating;
-                new_target  = Some(target_body.pos);
+                new_target  = Some(target_pos.0);
             }
         }
 
@@ -93,15 +96,17 @@ impl Missile {
     }
 
     pub fn update_guidance(&mut self,
-        bodies: &mut Store<Body>,
-        crafts: &Store<Craft>,
+        bodies:    &mut Store<Body>,
+        crafts:    &Store<Craft>,
+        positions: &Store<Position>,
     )
         -> Option<()>
     {
         let craft = crafts.get(self.craft)?;
         let body  = bodies.get_mut(craft.body)?;
+        let pos   = positions.get(body.pos)?;
 
-        let to_target = self.target - body.pos;
+        let to_target = self.target - pos.0;
 
         let projection = body.vel.project_on(to_target);
         let rejection  = body.vel - projection;
@@ -129,18 +134,20 @@ impl Missile {
     }
 
     pub fn explode_if_ready(&self,
-        bodies:  &Store<Body>,
-        crafts:  &Store<Craft>,
-        healths: &mut Store<Health>,
+        bodies:    &Store<Body>,
+        crafts:    &Store<Craft>,
+        healths:   &mut Store<Health>,
+        positions: &Store<Position>,
     )
         -> Option<()>
     {
         let     craft  = crafts.get(self.craft)?;
         let     body   = bodies.get(craft.body)?;
+        let     pos    = positions.get(body.pos)?;
         let mut health = healths.get_mut(craft.health)?;
 
         let no_fuel_left   = craft.fuel <= 0.0;
-        let near_target    = (body.pos - self.target).magnitude() <= 10.0;
+        let near_target    = (pos.0 - self.target).magnitude() <= 10.0;
         let should_explode = no_fuel_left || near_target;
 
         if should_explode {

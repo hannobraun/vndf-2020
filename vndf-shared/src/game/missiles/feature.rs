@@ -3,7 +3,10 @@ use crate::{
     game::{
         crafts::Craft,
         health::Health,
-        physics::Body,
+        physics::{
+            Body,
+            Position,
+        },
     },
     events,
 };
@@ -32,39 +35,45 @@ impl Feature {
     }
 
     pub fn on_update(&mut self,
-        bodies:  &mut Store<Body>,
-        crafts:  &Store<Craft>,
-        healths: &mut Store<Health>,
+        bodies:    &mut Store<Body>,
+        crafts:    &Store<Craft>,
+        healths:   &mut Store<Health>,
+        positions: &Store<Position>,
     ) {
         update_targets(
             bodies,
             crafts,
             &mut self.missiles,
+            positions,
         );
         update_guidances(
             bodies,
             crafts,
             &mut self.missiles,
+            positions,
         );
         explode_missiles(
             bodies,
             crafts,
             healths,
             &self.missiles,
+            positions,
         );
     }
 
     pub fn on_missile_launch(&mut self,
-        event:   MissileLaunch,
-        bodies:  &mut Store<Body>,
-        crafts:  &mut Store<Craft>,
-        healths: &mut Store<Health>,
+        event:     MissileLaunch,
+        bodies:    &mut Store<Body>,
+        crafts:    &mut Store<Craft>,
+        healths:   &mut Store<Health>,
+        positions: &mut Store<Position>,
     ) {
         launch_missile(
             bodies,
             crafts,
             healths,
             &mut self.missiles,
+            positions,
             event.missile,
         );
     }

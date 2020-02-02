@@ -26,6 +26,7 @@ impl Feature {
     pub fn on_update(&mut self, event: &Update, world_size: f32) {
         update_bodies(
             &mut self.bodies,
+            &mut self.positions,
             world_size,
             event.dt,
         );

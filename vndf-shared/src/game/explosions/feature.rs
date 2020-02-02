@@ -7,7 +7,10 @@ use crate::{
             Death,
             Health,
         },
-        physics::Body,
+        physics::{
+            Body,
+            Position,
+        },
     },
 };
 
@@ -49,9 +52,10 @@ impl Feature {
     }
 
     pub fn on_death(&mut self,
-        event:   &Death,
-        bodies:  &mut Store<Body>,
-        healths: &Store<Health>,
+        event:     &Death,
+        bodies:    &mut Store<Body>,
+        healths:   &Store<Health>,
+        positions: &mut Store<Position>,
     ) {
         let explosion = explode_entity(
             bodies,
@@ -62,6 +66,7 @@ impl Feature {
             create_explosion(
                 bodies,
                 &mut self.explosions,
+                positions,
                 &mut self.explosion_imminent.sink(),
                 explosion,
             );
@@ -69,15 +74,17 @@ impl Feature {
     }
 
     pub fn on_explosion_imminent(&self,
-        event:   &ExplosionImminent,
-        bodies:  &Store<Body>,
-        healths: &mut Store<Health>,
+        event:     &ExplosionImminent,
+        bodies:    &Store<Body>,
+        healths:   &mut Store<Health>,
+        positions: &Store<Position>,
     ) {
         damage_nearby(
             event.handle,
             &bodies,
             &self.explosions,
             healths,
+            positions,
         );
     }
 

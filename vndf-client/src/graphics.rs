@@ -168,12 +168,13 @@ impl Graphics {
     {
         let craft = get!(state.crafts, ship.craft);
         let body  = get!(state.bodies, craft.body);
+        let pos   = get!(state.positions, body.pos);
 
         graphics::draw(
             context,
             &self.ship,
             DrawParam::new()
-                .dest(body.pos)
+                .dest(pos.0)
                 .rotation(Vec2::unit_x().angle(body.dir).0)
                 .scale([30.0, 30.0])
                 .color(
@@ -194,18 +195,19 @@ impl Graphics {
     {
         let craft = get!(state.crafts, missile.craft);
         let body  = get!(state.bodies, craft.body);
+        let pos   = get!(state.positions, body.pos);
 
         graphics::draw(
             context,
             &self.missile,
             DrawParam::new()
-                .dest(body.pos)
+                .dest(pos.0)
                 .scale([4.0, 4.0])
         )?;
 
         let line = Mesh::new_line(
             context,
-            &[body.pos, missile.target],
+            &[pos.0, missile.target],
             1.5,
             [0.0, 1.0, 0.0, 1.0].into(),
         )?;
@@ -227,6 +229,7 @@ impl Graphics {
         -> GameResult<bool>
     {
         let body = get!(state.bodies, explosion.body);
+        let pos  = get!(state.positions, body.pos);
 
         let alpha = explosion.strength_left / explosion.strength_total;
         let size  = explosion.strength_total * 2.0;
@@ -235,7 +238,7 @@ impl Graphics {
             context,
             &self.explosion,
             DrawParam::new()
-                .dest(body.pos)
+                .dest(pos.0)
                 .scale([size, size])
                 .color([1.0, 1.0, 1.0, alpha].into())
         )?;

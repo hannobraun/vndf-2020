@@ -4,7 +4,10 @@ use crate::{
         base::ComponentHandle,
         crafts::Craft,
         health::Health,
-        physics::Body,
+        physics::{
+            Body,
+            Position,
+        },
         players::PlayerId,
     },
     math::{
@@ -25,13 +28,20 @@ pub struct MissileEntity {
 
 impl MissileEntity {
     pub fn create(&self,
-        bodies:   &mut Store<Body>,
-        crafts:   &mut Store<Craft>,
-        healths:  &mut Store<Health>,
-        missiles: &mut Store<Missile>,
-    ) {
-        let to_target = self.target - self.origin.pos;
+        bodies:    &mut Store<Body>,
+        crafts:    &mut Store<Craft>,
+        healths:   &mut Store<Health>,
+        missiles:  &mut Store<Missile>,
+        positions: &mut Store<Position>,
+    )
+        -> Option<()>
+    {
+        let pos       = *positions.get(self.origin.pos)?;
+        let to_target = self.target - pos.0;
+        let pos       = positions.insert(pos);
+
         let body = Body {
+            pos,
             dir: to_target,
             rot: Rad::zero(),
             .. self.origin
@@ -54,5 +64,7 @@ impl MissileEntity {
         let missile = missiles.insert(Missile::new(craft, self.target));
         healths.get_mut(health).unwrap().parent =
             Some(ComponentHandle::Missile(missile));
+
+        Some(())
     }
 }

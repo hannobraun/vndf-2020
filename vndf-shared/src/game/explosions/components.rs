@@ -12,7 +12,7 @@ use crate::{
     cgs::Handle,
     game::{
         health::Health,
-        physics::Body,
+        physics::Position,
     },
     math::prelude::*,
 };
@@ -36,16 +36,16 @@ impl Explosion {
         }
     }
 
-    pub fn damage_nearby<'r, B, H>(&self,
-        body:   &Body,
-        nearby: impl IntoIterator<Item=(B, H)>,
+    pub fn damage_nearby<'r, P, H>(&self,
+        pos:    &Position,
+        nearby: impl IntoIterator<Item=(P, H)>,
     )
         where
-            B: Deref<Target=Body>,
+            P: Deref<Target=Position>,
             H: DerefMut<Target=Health>,
     {
-        for (nearby_body, mut health) in nearby {
-            let distance  = (nearby_body.pos - body.pos).magnitude();
+        for (nearby_pos, mut health) in nearby {
+            let distance = (nearby_pos.0 - pos.0).magnitude();
 
             if distance <= 20.0 {
                 health.value -= self.strength_total;

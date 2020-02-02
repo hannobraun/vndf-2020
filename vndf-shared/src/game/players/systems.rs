@@ -13,7 +13,10 @@ use crate::{
         crafts::Craft,
         health::Health,
         missiles::MissileLaunch,
-        physics::Body,
+        physics::{
+            Body,
+            Position,
+        },
         players::PlayerId,
         ships::{
             Ship,
@@ -34,6 +37,7 @@ pub fn connect_player(
     crafts:         &mut Store<Craft>,
     healths:        &mut Store<Health>,
     players:        &mut Store<Player>,
+    positions:      &mut Store<Position>,
     ships:          &mut Store<Ship>,
     player_created: &mut events::Sink<PlayerCreated>,
     index:          &mut HashMap<SocketAddr, Handle>,
@@ -44,7 +48,13 @@ pub fn connect_player(
     let handle = players.insert(Player::new(id, addr));
     index.insert(addr, handle);
 
-    ShipEntity { owner: id, color }.create(bodies, crafts, healths, ships);
+    ShipEntity { owner: id, color }.create(
+        bodies,
+        crafts,
+        healths,
+        positions,
+        ships,
+    );
     player_created.push(PlayerCreated { id, addr });
 }
 

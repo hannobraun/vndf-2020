@@ -4,7 +4,10 @@ use crate::{
         base::ComponentHandle,
         crafts::Craft,
         health::Health,
-        physics::Body,
+        physics::{
+            Body,
+            Position,
+        },
         players::PlayerId,
     },
 };
@@ -19,12 +22,14 @@ pub struct ShipEntity {
 
 impl ShipEntity {
     pub fn create(&self,
-        bodies:  &mut Store<Body>,
-        crafts:  &mut Store<Craft>,
-        healths: &mut Store<Health>,
-        ships:   &mut Store<Ship>,
+        bodies:    &mut Store<Body>,
+        crafts:    &mut Store<Craft>,
+        healths:   &mut Store<Health>,
+        positions: &mut Store<Position>,
+        ships:     &mut Store<Ship>,
     ) {
-        let body   = bodies.insert(Body::new());
+        let pos    = positions.insert(Position::new());
+        let body   = bodies.insert(Body::new(pos));
         let health = healths.insert(Health::new(body, 10.0));
 
         let craft = Craft {

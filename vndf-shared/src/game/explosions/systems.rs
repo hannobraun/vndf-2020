@@ -7,7 +7,10 @@ use crate::{
     game::{
         base::ComponentHandle,
         health::Health,
-        physics::Body,
+        physics::{
+            Body,
+            Position,
+        },
     },
 };
 
@@ -53,10 +56,11 @@ pub fn explode_entity(
 pub fn create_explosion(
     bodies:             &mut Store<Body>,
     explosions:         &mut Store<Explosion>,
+    positions:          &mut Store<Position>,
     explosion_imminent: &mut events::Sink<ExplosionImminent>,
     explosion:          ExplosionEntity,
 ) {
-    let handle = explosion.create(bodies, explosions);
+    let handle = explosion.create(bodies, explosions, positions);
     if let Some(handle) = handle {
         explosion_imminent.push(ExplosionImminent { handle });
     }
@@ -67,17 +71,23 @@ pub fn damage_nearby(
     bodies:     &Store<Body>,
     explosions: &Store<Explosion>,
     healths:    &mut Store<Health>,
+    positions:  &Store<Position>,
 )
     -> Option<()>
 {
     let explosion = explosions.get(handle)?;
     let body      = bodies.get(explosion.body)?;
+    let position  = positions.get(body.pos)?;
 
     let nearby = healths.values_mut()
         .into_iter()
-        .filter_map(|health| Some((bodies.get(health.body)?, health)));
+        .filter_map(|health| {
+            let body = bodies.get(health.body)?;
+            let pos  = positions.get(body.pos)?;
+            Some((pos, health))
+        });
 
-    explosion.damage_nearby(&body, nearby);
+    explosion.damage_nearby(&position, nearby);
     Some(())
 }
 

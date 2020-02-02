@@ -3,7 +3,10 @@ use crate::{
         Handle,
         Store,
     },
-    game::physics::Body,
+    game::physics::{
+        Body,
+        Position,
+    },
 };
 
 use super::Explosion;
@@ -18,13 +21,16 @@ impl ExplosionEntity {
     pub fn create(&self,
         bodies:     &mut Store<Body>,
         explosions: &mut Store<Explosion>,
+        positions:  &mut Store<Position>,
     )
         -> Option<Handle>
     {
+        let pos = *positions.get(self.exploding.pos)?;
+        let pos = positions.insert(pos);
+
         let body = Body {
-            pos: self.exploding.pos,
             vel: self.exploding.vel * 0.05,
-            .. Body::new()
+            .. Body::new(pos)
         };
         let body = bodies.insert(body);
 
