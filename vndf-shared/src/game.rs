@@ -103,6 +103,7 @@ impl State {
                 &self.crafts.crafts,
                 &mut self.health.healths,
                 &self.physics.positions,
+                &self.physics.velocities,
             );
             self.ships.on_update(
                 &mut self.physics.bodies,
@@ -117,6 +118,7 @@ impl State {
                 &mut self.health.healths,
                 &mut self.physics.positions,
                 &mut self.ships.ships,
+                &mut self.physics.velocities,
             );
         }
         while let Some(event) =
@@ -140,6 +142,7 @@ impl State {
                 &mut self.crafts.crafts,
                 &mut self.health.healths,
                 &mut self.physics.positions,
+                &mut self.physics.velocities,
             );
         }
         while let Some(event) = self.health.death.source().next() {
@@ -148,6 +151,7 @@ impl State {
                 &mut self.physics.bodies,
                 &self.health.healths,
                 &mut self.physics.positions,
+                &mut self.physics.velocities,
             );
             self.health.on_death(
                 &event,

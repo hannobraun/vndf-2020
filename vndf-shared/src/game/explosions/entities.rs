@@ -6,6 +6,7 @@ use crate::{
     game::physics::{
         Body,
         Position,
+        Velocity,
     },
 };
 
@@ -22,16 +23,17 @@ impl ExplosionEntity {
         bodies:     &mut Store<Body>,
         explosions: &mut Store<Explosion>,
         positions:  &mut Store<Position>,
+        velocities: &mut Store<Velocity>,
     )
         -> Option<Handle>
     {
         let pos = *positions.get(self.exploding.pos)?;
         let pos = positions.insert(pos);
 
-        let body = Body {
-            vel: self.exploding.vel * 0.05,
-            .. Body::new(pos)
-        };
+        let vel = *velocities.get(self.exploding.vel)?;
+        let vel = velocities.insert(Velocity(vel.0 * 0.05));
+
+        let body = Body::new(pos, vel);
         let body = bodies.insert(body);
 
         let explosion = explosions.insert(Explosion::new(body, self.strength));

@@ -10,6 +10,7 @@ use crate::{
         physics::{
             Body,
             Position,
+            Velocity,
         },
     },
 };
@@ -52,10 +53,11 @@ impl Feature {
     }
 
     pub fn on_death(&mut self,
-        event:     &Death,
-        bodies:    &mut Store<Body>,
-        healths:   &Store<Health>,
-        positions: &mut Store<Position>,
+        event:      &Death,
+        bodies:     &mut Store<Body>,
+        healths:    &Store<Health>,
+        positions:  &mut Store<Position>,
+        velocities: &mut Store<Velocity>,
     ) {
         let explosion = explode_entity(
             bodies,
@@ -67,6 +69,7 @@ impl Feature {
                 bodies,
                 &mut self.explosions,
                 positions,
+                velocities,
                 &mut self.explosion_imminent.sink(),
                 explosion,
             );

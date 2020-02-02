@@ -30,6 +30,7 @@ impl Feature {
         update_bodies(
             &mut self.bodies,
             &mut self.positions,
+            &mut self.velocities,
             world_size,
             event.dt,
         );

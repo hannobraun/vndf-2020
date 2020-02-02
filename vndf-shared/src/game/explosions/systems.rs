@@ -10,6 +10,7 @@ use crate::{
         physics::{
             Body,
             Position,
+            Velocity,
         },
     },
 };
@@ -57,10 +58,11 @@ pub fn create_explosion(
     bodies:             &mut Store<Body>,
     explosions:         &mut Store<Explosion>,
     positions:          &mut Store<Position>,
+    velocities:         &mut Store<Velocity>,
     explosion_imminent: &mut events::Sink<ExplosionImminent>,
     explosion:          ExplosionEntity,
 ) {
-    let handle = explosion.create(bodies, explosions, positions);
+    let handle = explosion.create(bodies, explosions, positions, velocities);
     if let Some(handle) = handle {
         explosion_imminent.push(ExplosionImminent { handle });
     }

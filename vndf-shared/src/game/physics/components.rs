@@ -40,7 +40,7 @@ impl Velocity {
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Body {
     pub pos: Handle,
-    pub vel: Vec2,
+    pub vel: Handle,
     pub acc: Vec2,
 
     pub dir: Vec2,
@@ -48,10 +48,10 @@ pub struct Body {
 }
 
 impl Body {
-    pub fn new(pos: Handle) -> Self {
+    pub fn new(pos: Handle, vel: Handle) -> Self {
         Self {
             pos,
-            vel: Vec2::zero(),
+            vel,
             acc: Vec2::zero(),
 
             dir: Vec2::unit_x(),
@@ -60,17 +60,19 @@ impl Body {
     }
 
     pub fn update(&mut self,
-        dt:        f32,
-        positions: &mut Store<Position>,
+        dt:         f32,
+        positions:  &mut Store<Position>,
+        velocities: &mut Store<Velocity>,
     )
         -> Option<()>
     {
         self.dir = rotate(self.dir, self.rot * dt);
 
-        self.vel += self.acc * dt;
+        let vel = velocities.get_mut(self.vel)?;
+        vel.0 += self.acc * dt;
 
         let pos = positions.get_mut(self.pos)?;
-        pos.0 += self.vel * dt;
+        pos.0 += vel.0 * dt;
 
         Some(())
     }
@@ -78,23 +80,26 @@ impl Body {
     pub fn enforce_boundary(&mut self,
         world_size: f32,
         positions:  &Store<Position>,
+        velocities: &mut Store<Velocity>,
     )
         -> Option<()>
     {
         let boundary = world_size / 2.0;
-        let pos      = positions.get(self.pos)?;
 
-        if pos.0.x >= boundary && self.vel.x > 0.0 {
-            self.vel.x *= -1.0;
+        let pos = positions.get(self.pos)?;
+        let vel = velocities.get_mut(self.vel)?;
+
+        if pos.0.x >= boundary && vel.0.x > 0.0 {
+            vel.0.x *= -1.0;
         }
-        if pos.0.x <= -boundary && self.vel.x < 0.0 {
-            self.vel.x *= -1.0;
+        if pos.0.x <= -boundary && vel.0.x < 0.0 {
+            vel.0.x *= -1.0;
         }
-        if pos.0.y >= boundary && self.vel.y > 0.0 {
-            self.vel.y *= -1.0;
+        if pos.0.y >= boundary && vel.0.y > 0.0 {
+            vel.0.y *= -1.0;
         }
-        if pos.0.y <= -boundary && self.vel.y < 0.0 {
-            self.vel.y *= -1.0;
+        if pos.0.y <= -boundary && vel.0.y < 0.0 {
+            vel.0.y *= -1.0;
         }
 
         Some(())

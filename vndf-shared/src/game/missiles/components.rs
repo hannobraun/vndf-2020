@@ -15,6 +15,7 @@ use crate::{
         physics::{
             Body,
             Position,
+            Velocity,
         },
     },
     math::{
@@ -96,20 +97,22 @@ impl Missile {
     }
 
     pub fn update_guidance(&mut self,
-        bodies:    &mut Store<Body>,
-        crafts:    &Store<Craft>,
-        positions: &Store<Position>,
+        bodies:     &mut Store<Body>,
+        crafts:     &Store<Craft>,
+        positions:  &Store<Position>,
+        velocities: &Store<Velocity>,
     )
         -> Option<()>
     {
         let craft = crafts.get(self.craft)?;
         let body  = bodies.get_mut(craft.body)?;
         let pos   = positions.get(body.pos)?;
+        let vel   = velocities.get(body.vel)?;
 
         let to_target = self.target - pos.0;
 
-        let projection = body.vel.project_on(to_target);
-        let rejection  = body.vel - projection;
+        let projection = vel.0.project_on(to_target);
+        let rejection  = vel.0 - projection;
 
         let error_dir = {
             let cross = to_target.extend(0.0).cross(rejection.extend(0.0));

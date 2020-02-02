@@ -6,6 +6,7 @@ use crate::{
         physics::{
             Body,
             Position,
+            Velocity,
         },
     },
     events,
@@ -35,10 +36,11 @@ impl Feature {
     }
 
     pub fn on_update(&mut self,
-        bodies:    &mut Store<Body>,
-        crafts:    &Store<Craft>,
-        healths:   &mut Store<Health>,
-        positions: &Store<Position>,
+        bodies:     &mut Store<Body>,
+        crafts:     &Store<Craft>,
+        healths:    &mut Store<Health>,
+        positions:  &Store<Position>,
+        velocities: &Store<Velocity>,
     ) {
         update_targets(
             bodies,
@@ -51,6 +53,7 @@ impl Feature {
             crafts,
             &mut self.missiles,
             positions,
+            velocities,
         );
         explode_missiles(
             bodies,
@@ -62,11 +65,12 @@ impl Feature {
     }
 
     pub fn on_missile_launch(&mut self,
-        event:     MissileLaunch,
-        bodies:    &mut Store<Body>,
-        crafts:    &mut Store<Craft>,
-        healths:   &mut Store<Health>,
-        positions: &mut Store<Position>,
+        event:      MissileLaunch,
+        bodies:     &mut Store<Body>,
+        crafts:     &mut Store<Craft>,
+        healths:    &mut Store<Health>,
+        positions:  &mut Store<Position>,
+        velocities: &mut Store<Velocity>,
     ) {
         launch_missile(
             bodies,
@@ -74,6 +78,7 @@ impl Feature {
             healths,
             &mut self.missiles,
             positions,
+            velocities,
             event.missile,
         );
     }

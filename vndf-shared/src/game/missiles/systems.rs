@@ -6,6 +6,7 @@ use crate::{
         physics::{
             Body,
             Position,
+            Velocity,
         },
     },
 };
@@ -17,14 +18,15 @@ use super::{
 
 
 pub fn launch_missile(
-    bodies:    &mut Store<Body>,
-    crafts:    &mut Store<Craft>,
-    healths:   &mut Store<Health>,
-    missiles:  &mut Store<Missile>,
-    positions: &mut Store<Position>,
+    bodies:     &mut Store<Body>,
+    crafts:     &mut Store<Craft>,
+    healths:    &mut Store<Health>,
+    missiles:   &mut Store<Missile>,
+    positions:  &mut Store<Position>,
+    velocities: &mut Store<Velocity>,
     missile:   MissileEntity,
 ) {
-    missile.create(bodies, crafts, healths, missiles, positions);
+    missile.create(bodies, crafts, healths, missiles, positions, velocities);
 }
 
 pub fn update_targets(
@@ -46,13 +48,14 @@ pub fn update_targets(
 }
 
 pub fn update_guidances(
-    bodies:    &mut Store<Body>,
-    crafts:    &Store<Craft>,
-    missiles:  &mut Store<Missile>,
-    positions: &Store<Position>,
+    bodies:     &mut Store<Body>,
+    crafts:     &Store<Craft>,
+    missiles:   &mut Store<Missile>,
+    positions:  &Store<Position>,
+    velocities: &Store<Velocity>,
 ) {
     for missile in missiles.values_mut() {
-        missile.update_guidance(bodies, crafts, positions);
+        missile.update_guidance(bodies, crafts, positions, velocities);
     }
 }
 

@@ -20,6 +20,7 @@ use crate::{
         physics::{
             Body,
             Position,
+            Velocity,
         },
         ships::Ship,
     },
@@ -66,12 +67,13 @@ impl Feature {
     }
 
     pub fn on_player_connected(&mut self,
-        event:     &PlayerConnected,
-        bodies:    &mut Store<Body>,
-        crafts:    &mut Store<Craft>,
-        healths:   &mut Store<Health>,
-        positions: &mut Store<Position>,
-        ships:     &mut Store<Ship>,
+        event:      &PlayerConnected,
+        bodies:     &mut Store<Body>,
+        crafts:     &mut Store<Craft>,
+        healths:    &mut Store<Health>,
+        positions:  &mut Store<Position>,
+        ships:      &mut Store<Ship>,
+        velocities: &mut Store<Velocity>,
     ) {
         connect_player(
             bodies,
@@ -80,6 +82,7 @@ impl Feature {
             &mut self.players,
             positions,
             ships,
+            velocities,
             &mut self.player_created.sink(),
             &mut self.players_by_address,
             self.next_id.increment(),

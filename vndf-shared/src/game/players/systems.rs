@@ -16,6 +16,7 @@ use crate::{
         physics::{
             Body,
             Position,
+            Velocity,
         },
         players::PlayerId,
         ships::{
@@ -39,6 +40,7 @@ pub fn connect_player(
     players:        &mut Store<Player>,
     positions:      &mut Store<Position>,
     ships:          &mut Store<Ship>,
+    velocities:     &mut Store<Velocity>,
     player_created: &mut events::Sink<PlayerCreated>,
     index:          &mut HashMap<SocketAddr, Handle>,
     id:             PlayerId,
@@ -54,6 +56,7 @@ pub fn connect_player(
         healths,
         positions,
         ships,
+        velocities,
     );
     player_created.push(PlayerCreated { id, addr });
 }

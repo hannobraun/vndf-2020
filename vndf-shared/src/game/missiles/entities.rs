@@ -7,6 +7,7 @@ use crate::{
         physics::{
             Body,
             Position,
+            Velocity,
         },
         players::PlayerId,
     },
@@ -28,11 +29,12 @@ pub struct MissileEntity {
 
 impl MissileEntity {
     pub fn create(&self,
-        bodies:    &mut Store<Body>,
-        crafts:    &mut Store<Craft>,
-        healths:   &mut Store<Health>,
-        missiles:  &mut Store<Missile>,
-        positions: &mut Store<Position>,
+        bodies:     &mut Store<Body>,
+        crafts:     &mut Store<Craft>,
+        healths:    &mut Store<Health>,
+        missiles:   &mut Store<Missile>,
+        positions:  &mut Store<Position>,
+        velocities: &mut Store<Velocity>,
     )
         -> Option<()>
     {
@@ -40,8 +42,12 @@ impl MissileEntity {
         let to_target = self.target - pos.0;
         let pos       = positions.insert(pos);
 
+        let vel = *velocities.get(self.origin.vel)?;
+        let vel = velocities.insert(vel);
+
         let body = Body {
             pos,
+            vel,
             dir: to_target,
             rot: Rad::zero(),
             .. self.origin
