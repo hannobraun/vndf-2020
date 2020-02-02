@@ -23,6 +23,7 @@ use crate::{
         physics::{
             Body,
             Position,
+            Velocity,
         },
         ships::Ship,
     },
@@ -38,6 +39,7 @@ pub enum Component {
     Missile(Missile),
     Position(Position),
     Ship(Ship),
+    Velocity(Velocity),
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
@@ -49,4 +51,5 @@ pub enum ComponentHandle {
     Missile(Handle),
     Position(Handle),
     Ship(Handle),
+    Velocity(Handle),
 }

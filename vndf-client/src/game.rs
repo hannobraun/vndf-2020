@@ -95,6 +95,9 @@ impl State {
             Component::Ship(ship) => {
                 self.ships.insert(handle, ship);
             }
+            Component::Velocity(velocity) => {
+                self.velocities.insert(handle, velocity);
+            }
         }
     }
 
@@ -122,6 +125,9 @@ impl State {
             }
             ComponentHandle::Ship(handle) => {
                 self.ships.remove(handle);
+            }
+            ComponentHandle::Velocity(handle) => {
+                self.velocities.remove(handle);
             }
         }
     }
