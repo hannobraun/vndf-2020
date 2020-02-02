@@ -192,6 +192,8 @@ impl State {
             .map(|(handle, &c)| (handle, Component::Health(c)));
         let missiles = self.missiles.missiles.iter()
             .map(|(handle, &c)| (handle, Component::Missile(c)));
+        let positions = self.physics.positions.iter()
+            .map(|(handle, &c)| (handle, Component::Position(c)));
         let ships = self.ships.ships.iter()
             .map(|(handle, &c)| (handle, Component::Ship(c)));
 
@@ -200,6 +202,7 @@ impl State {
             .chain(explosions)
             .chain(healths)
             .chain(missiles)
+            .chain(positions)
             .chain(ships)
     }
 
