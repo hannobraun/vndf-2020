@@ -34,7 +34,7 @@ macro_rules! get {
     ($store:expr, $handle:expr) => {
         match $store.get($handle) {
             Some(value) => value,
-            None        => return Ok(()),
+            None        => return Ok(false),
         }
     };
 }
@@ -164,7 +164,7 @@ impl Graphics {
     }
 
     fn draw_ship(&self, context: &mut Context, ship: &Ship, state: &State)
-        -> GameResult
+        -> GameResult<bool>
     {
         let craft = get!(state.crafts, ship.craft);
         let body  = get!(state.bodies, craft.body);
@@ -182,7 +182,7 @@ impl Graphics {
                 ),
         )?;
 
-        Ok(())
+        Ok(true)
     }
 
     fn draw_missile(&self,
@@ -190,7 +190,7 @@ impl Graphics {
         missile: &Missile,
         state:   &State,
     )
-        -> GameResult
+        -> GameResult<bool>
     {
         let craft = get!(state.crafts, missile.craft);
         let body  = get!(state.bodies, craft.body);
@@ -216,7 +216,7 @@ impl Graphics {
             DrawParam::new(),
         )?;
 
-        Ok(())
+        Ok(true)
     }
 
     fn draw_explosion(&self,
@@ -224,7 +224,7 @@ impl Graphics {
         explosion: &Explosion,
         state:     &State,
     )
-        -> GameResult
+        -> GameResult<bool>
     {
         let body = get!(state.bodies, explosion.body);
 
@@ -240,7 +240,7 @@ impl Graphics {
                 .color([1.0, 1.0, 1.0, alpha].into())
         )?;
 
-        Ok(())
+        Ok(true)
     }
 
     fn draw_ui(&self,
@@ -332,13 +332,13 @@ Removals per s: {}",
         ship:    &Ship,
         state:   &State,
     )
-        -> GameResult
+        -> GameResult<bool>
     {
         let craft  = get!(state.crafts, ship.craft);
         let health = get!(state.healths, craft.health);
 
         if state.own_id != Some(craft.owner) {
-            return Ok(());
+            return Ok(false);
         }
 
         let (width, _) = graphics::drawable_size(context);
@@ -359,6 +359,6 @@ Heavy Missiles: {}",
                 .dest([width - 200.0, 20.0])
         )?;
 
-        Ok(())
+        Ok(true)
     }
 }
