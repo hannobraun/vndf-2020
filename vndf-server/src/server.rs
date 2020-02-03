@@ -29,6 +29,7 @@ use crate::{
         },
         net::{
             self,
+            data::Data,
             msg,
         },
     },
@@ -40,6 +41,7 @@ pub struct Server {
     events:      Vec<Event>,
     state:       game::State,
     last_update: Instant,
+    data:        Data,
 }
 
 impl Server {
@@ -57,6 +59,7 @@ impl Server {
             events:      Vec::new(),
             state:       game::State::new(),
             last_update: Instant::now(),
+            data:        Data::new(),
         }
     }
 
@@ -112,6 +115,8 @@ impl Server {
         }
 
         for event in self.state.component_removed().ready() {
+            self.data.remove(event.handle);
+
             for &client in &clients {
                 self.network.send(
                     client,
@@ -121,11 +126,15 @@ impl Server {
         }
 
         for (handle, component) in self.state.updates() {
-            for &client in &clients {
-                self.network.send(
-                    client,
-                    msg::FromServer::UpdateComponent(handle, component),
-                );
+            let data_changed = self.data.update(handle, component);
+
+            if data_changed {
+                for &client in &clients {
+                    self.network.send(
+                        client,
+                        msg::FromServer::UpdateComponent(handle, component),
+                    );
+                }
             }
         }
 
