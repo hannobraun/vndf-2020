@@ -35,11 +35,14 @@ macro_rules! data {
                 }
             }
 
-            pub fn update(&mut self, handle: Handle, component: Component) {
+            pub fn update(&mut self, handle: Handle, component: Component)
+                -> bool
+            {
                 match component {
                     $(
                         Component::$ty(value) => {
-                            self.$name.insert(handle, value);
+                            let previous = self.$name.insert(handle, value);
+                            Some(value) != previous
                         }
                     )*
                 }
