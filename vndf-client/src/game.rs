@@ -8,28 +8,16 @@ use std::{
 
 
 use crate::shared::{
-    cgs::{
-        Handle,
-        SecondaryStore,
-    },
+    cgs::Handle,
     game::{
         Diagnostics,
         base::{
             Component,
             ComponentHandle,
         },
-        crafts::Craft,
-        explosions::Explosion,
-        health::Health,
-        missiles::Missile,
-        physics::{
-            Body,
-            Position,
-            Velocity,
-        },
         players::PlayerId,
-        ships::Ship,
     },
+    net::data::Data,
 };
 
 
@@ -37,15 +25,7 @@ pub struct State {
     pub own_id:      Option<PlayerId>,
     pub diagnostics: Option<Diagnostics>,
     pub statistics:  Statistics,
-
-    pub bodies:     SecondaryStore<Body>,
-    pub crafts:     SecondaryStore<Craft>,
-    pub explosions: SecondaryStore<Explosion>,
-    pub healths:    SecondaryStore<Health>,
-    pub missiles:   SecondaryStore<Missile>,
-    pub positions:  SecondaryStore<Position>,
-    pub ships:      SecondaryStore<Ship>,
-    pub velocities: SecondaryStore<Velocity>,
+    pub data:        Data,
 }
 
 impl State {
@@ -54,15 +34,7 @@ impl State {
             own_id:      None,
             diagnostics: None,
             statistics:  Statistics::new(),
-
-            bodies:     SecondaryStore::new(),
-            crafts:     SecondaryStore::new(),
-            explosions: SecondaryStore::new(),
-            healths:    SecondaryStore::new(),
-            missiles:   SecondaryStore::new(),
-            positions:  SecondaryStore::new(),
-            ships:      SecondaryStore::new(),
-            velocities: SecondaryStore::new(),
+            data:        Data::new(),
         }
     }
 
@@ -72,64 +44,12 @@ impl State {
 
     pub fn update_component(&mut self, handle: Handle, component: Component) {
         self.statistics.updates.push_back(Instant::now());
-
-        match component {
-            Component::Body(body) => {
-                self.bodies.insert(handle, body);
-            }
-            Component::Craft(craft) => {
-                self.crafts.insert(handle, craft);
-            }
-            Component::Explosion(explosion) => {
-                self.explosions.insert(handle, explosion);
-            }
-            Component::Health(health) => {
-                self.healths.insert(handle, health);
-            }
-            Component::Missile(missile) => {
-                self.missiles.insert(handle, missile);
-            }
-            Component::Position(position) => {
-                self.positions.insert(handle, position);
-            }
-            Component::Ship(ship) => {
-                self.ships.insert(handle, ship);
-            }
-            Component::Velocity(velocity) => {
-                self.velocities.insert(handle, velocity);
-            }
-        }
+        self.data.update(handle, component);
     }
 
     pub fn remove_component(&mut self, handle: ComponentHandle) {
         self.statistics.removals.push_back(Instant::now());
-
-        match handle {
-            ComponentHandle::Body(handle) => {
-                self.bodies.remove(handle);
-            }
-            ComponentHandle::Craft(handle) => {
-                self.crafts.remove(handle);
-            }
-            ComponentHandle::Explosion(handle) => {
-                self.explosions.remove(handle);
-            }
-            ComponentHandle::Health(handle) => {
-                self.healths.remove(handle);
-            }
-            ComponentHandle::Missile(handle) => {
-                self.missiles.remove(handle);
-            }
-            ComponentHandle::Position(handle) => {
-                self.positions.remove(handle);
-            }
-            ComponentHandle::Ship(handle) => {
-                self.ships.remove(handle);
-            }
-            ComponentHandle::Velocity(handle) => {
-                self.velocities.remove(handle);
-            }
-        }
+        self.data.remove(handle);
     }
 }
 

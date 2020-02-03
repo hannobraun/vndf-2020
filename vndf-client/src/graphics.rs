@@ -137,15 +137,15 @@ impl Graphics {
 
         self.draw_boundary(context)?;
 
-        for ship in state.ships.values() {
+        for ship in state.data.ships.values() {
             self.draw_ship(context, ship, state)?;
         }
 
-        for (_, missile) in &state.missiles {
+        for (_, missile) in &state.data.missiles {
             self.draw_missile(context, missile, state)?;
         }
 
-        for (_, explosion) in &state.explosions {
+        for (_, explosion) in &state.data.explosions {
             self.draw_explosion(context, explosion, state)?;
         }
 
@@ -166,9 +166,9 @@ impl Graphics {
     fn draw_ship(&self, context: &mut Context, ship: &Ship, state: &State)
         -> GameResult<bool>
     {
-        let craft = get!(state.crafts, ship.craft);
-        let body  = get!(state.bodies, craft.body);
-        let pos   = get!(state.positions, body.pos);
+        let craft = get!(state.data.crafts, ship.craft);
+        let body  = get!(state.data.bodies, craft.body);
+        let pos   = get!(state.data.positions, body.pos);
 
         graphics::draw(
             context,
@@ -193,9 +193,9 @@ impl Graphics {
     )
         -> GameResult<bool>
     {
-        let craft = get!(state.crafts, missile.craft);
-        let body  = get!(state.bodies, craft.body);
-        let pos   = get!(state.positions, body.pos);
+        let craft = get!(state.data.crafts, missile.craft);
+        let body  = get!(state.data.bodies, craft.body);
+        let pos   = get!(state.data.positions, body.pos);
 
         graphics::draw(
             context,
@@ -228,8 +228,8 @@ impl Graphics {
     )
         -> GameResult<bool>
     {
-        let body = get!(state.bodies, explosion.body);
-        let pos  = get!(state.positions, body.pos);
+        let body = get!(state.data.bodies, explosion.body);
+        let pos  = get!(state.data.positions, body.pos);
 
         let alpha = explosion.strength_left / explosion.strength_total;
         let size  = explosion.strength_total * 2.0;
@@ -290,15 +290,15 @@ Velocities: {}/{}
 ---
 Updates per s: {}
 Removals per s: {}",
-                diagnostics.num_bodies, state.bodies.len(),
-                diagnostics.num_crafts, state.crafts.len(),
-                diagnostics.num_explosions, state.explosions.len(),
-                diagnostics.num_healths, state.healths.len(),
+                diagnostics.num_bodies, state.data.bodies.len(),
+                diagnostics.num_crafts, state.data.crafts.len(),
+                diagnostics.num_explosions, state.data.explosions.len(),
+                diagnostics.num_healths, state.data.healths.len(),
                 diagnostics.num_players,
-                diagnostics.num_missiles, state.missiles.len(),
-                diagnostics.num_positions, state.positions.len(),
-                diagnostics.num_ships, state.ships.len(),
-                diagnostics.num_velocities, state.velocities.len(),
+                diagnostics.num_missiles, state.data.missiles.len(),
+                diagnostics.num_positions, state.data.positions.len(),
+                diagnostics.num_ships, state.data.ships.len(),
+                diagnostics.num_velocities, state.data.velocities.len(),
                 state.statistics.updates.len(),
                 state.statistics.removals.len(),
             );
@@ -311,7 +311,7 @@ Removals per s: {}",
             )?;
         }
 
-        for ship in state.ships.values() {
+        for ship in state.data.ships.values() {
             if self.draw_ship_status(context, ship, state)? {
                 // There should only be one ship owned by the local player, so
                 // let's quit.
@@ -341,8 +341,8 @@ Removals per s: {}",
     )
         -> GameResult<bool>
     {
-        let craft  = get!(state.crafts, ship.craft);
-        let health = get!(state.healths, craft.health);
+        let craft  = get!(state.data.crafts, ship.craft);
+        let health = get!(state.data.healths, craft.health);
 
         if state.own_id != Some(craft.owner) {
             return Ok(false);
