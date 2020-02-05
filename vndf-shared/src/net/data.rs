@@ -8,7 +8,10 @@ use crate::{
             Component,
             ComponentHandle,
         },
-        crafts::Craft,
+        crafts::{
+            Craft,
+            Fuel,
+        },
         explosions::Explosion,
         health::Health,
         missiles::{
@@ -68,6 +71,7 @@ data!(
     bodies,     Body;
     crafts,     Craft;
     explosions, Explosion;
+    fuels,      Fuel;
     healths,    Health;
     missiles,   Missile;
     positions,  Position;

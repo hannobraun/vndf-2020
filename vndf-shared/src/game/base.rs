@@ -16,7 +16,10 @@ use serde::{
 use crate::{
     cgs::Handle,
     game::{
-        crafts::Craft,
+        crafts::{
+            Craft,
+            Fuel,
+        },
         explosions::Explosion,
         health::Health,
         missiles::{
@@ -64,6 +67,7 @@ components!(
     Body,
     Craft,
     Explosion,
+    Fuel,
     Health,
     Missile,
     Position,
