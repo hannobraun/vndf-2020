@@ -30,26 +30,29 @@ use crate::{
 };
 
 
-#[derive(Clone, Copy, Debug, Deserialize, Serialize, PartialEq)]
-pub enum Component {
-    Body(Body),
-    Craft(Craft),
-    Explosion(Explosion),
-    Health(Health),
-    Missile(Missile),
-    Position(Position),
-    Ship(Ship),
-    Velocity(Velocity),
+macro_rules! components {
+    ($($component:ident,)*) => {
+        #[derive(Clone, Copy, Debug, Deserialize, Serialize, PartialEq)]
+        pub enum Component {
+            $($component($component),)*
+        }
+
+        #[derive(
+            Clone, Copy, Debug, Deserialize, Serialize, Eq, PartialEq, Hash
+        )]
+        pub enum ComponentHandle {
+            $($component(Handle),)*
+        }
+    };
 }
 
-#[derive(Clone, Copy, Debug, Deserialize, Serialize, Eq, PartialEq, Hash)]
-pub enum ComponentHandle {
-    Body(Handle),
-    Craft(Handle),
-    Explosion(Handle),
-    Health(Handle),
-    Missile(Handle),
-    Position(Handle),
-    Ship(Handle),
-    Velocity(Handle),
-}
+components!(
+    Body,
+    Craft,
+    Explosion,
+    Health,
+    Missile,
+    Position,
+    Ship,
+    Velocity,
+);
