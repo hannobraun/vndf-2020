@@ -33,7 +33,10 @@ use ggez::{
         KeyMods,
     },
 };
-use log::error;
+use log::{
+    debug,
+    error,
+};
 
 use vndf_shared as shared;
 
@@ -197,6 +200,7 @@ impl EventHandler for Game {
                     self.state.own_id = Some(id);
                 }
                 Ok(msg::FromServer::UpdateComponent(handle, item)) => {
+                    debug!("Update component: {:?}, {:?}", handle, item);
                     self.state.update_component(handle, item);
                 }
                 Ok(msg::FromServer::RemoveComponent(handle)) => {
