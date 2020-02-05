@@ -37,6 +37,10 @@ impl<T> SecondaryStore<T> {
     pub fn values(&self) -> sparse_secondary::Values<DefaultKey, T> {
         self.0.values()
     }
+
+    pub fn values_mut(&mut self) -> sparse_secondary::ValuesMut<DefaultKey, T> {
+        self.0.values_mut()
+    }
 }
 
 impl<'a, T> IntoIterator for &'a SecondaryStore<T> {
