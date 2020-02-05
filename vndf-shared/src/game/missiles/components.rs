@@ -30,14 +30,14 @@ use crate::{
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Missile {
     pub craft:    Handle,
-    pub target:   Pnt2,
+    pub target:   Handle,
     pub guidance: Pid<f32>,
 }
 
 impl Missile {
     pub fn new(
         craft:  Handle,
-        target: Pnt2,
+        target: Handle,
     ) -> Self {
         let guidance = Pid::new(
             // Proportional gain
@@ -63,53 +63,22 @@ impl Missile {
         }
     }
 
-    pub fn update_target(&mut self,
-        crafts:  &Store<Craft>,
-        targets: impl IntoIterator<Item=(Position, Craft)>,
-    )
-        -> Option<()>
-    {
-        let craft = crafts.get(self.craft)?;
-
-        let mut best_rating = 0.0;
-        let mut new_target  = None;
-
-        for (target_pos, target_craft) in targets {
-            if target_craft.owner == craft.owner {
-                continue;
-            }
-
-            let distance  = (self.target - target_pos.0).magnitude();
-            let threshold = 100.0;
-            let rating    = 1.0 / (threshold - distance);
-
-            if rating > best_rating {
-                best_rating = rating;
-                new_target  = Some(target_pos.0);
-            }
-        }
-
-        if let Some(new_target) = new_target {
-            self.target = new_target
-        }
-
-        Some(())
-    }
-
     pub fn update_guidance(&mut self,
         bodies:     &mut Store<Body>,
         crafts:     &Store<Craft>,
         positions:  &Store<Position>,
+        targets:    &Store<Target>,
         velocities: &Store<Velocity>,
     )
         -> Option<()>
     {
-        let craft = crafts.get(self.craft)?;
-        let body  = bodies.get_mut(craft.body)?;
-        let pos   = positions.get(body.pos)?;
-        let vel   = velocities.get(body.vel)?;
+        let craft  = crafts.get(self.craft)?;
+        let target = targets.get(self.target)?;
+        let body   = bodies.get_mut(craft.body)?;
+        let pos    = positions.get(body.pos)?;
+        let vel    = velocities.get(body.vel)?;
 
-        let to_target = self.target - pos.0;
+        let to_target = target.value - pos.0;
 
         let projection = vel.0.project_on(to_target);
         let rejection  = vel.0 - projection;
@@ -141,16 +110,18 @@ impl Missile {
         crafts:    &Store<Craft>,
         healths:   &mut Store<Health>,
         positions: &Store<Position>,
+        targets:   &Store<Target>,
     )
         -> Option<()>
     {
         let     craft  = crafts.get(self.craft)?;
+        let     target = targets.get(self.target)?;
         let     body   = bodies.get(craft.body)?;
         let     pos    = positions.get(body.pos)?;
         let mut health = healths.get_mut(craft.health)?;
 
         let no_fuel_left   = craft.fuel <= 0.0;
-        let near_target    = (pos.0 - self.target).magnitude() <= 10.0;
+        let near_target    = (pos.0 - target.value).magnitude() <= 10.0;
         let should_explode = no_fuel_left || near_target;
 
         if should_explode {

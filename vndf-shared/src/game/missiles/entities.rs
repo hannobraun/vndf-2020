@@ -18,7 +18,10 @@ use crate::{
     },
 };
 
-use super::Missile;
+use super::{
+    Missile,
+    Target,
+};
 
 
 pub struct MissileEntity {
@@ -34,6 +37,7 @@ impl MissileEntity {
         healths:    &mut Store<Health>,
         missiles:   &mut Store<Missile>,
         positions:  &mut Store<Position>,
+        targets:    &mut Store<Target>,
         velocities: &mut Store<Velocity>,
     )
         -> Option<()>
@@ -67,7 +71,10 @@ impl MissileEntity {
         };
         let craft = crafts.insert(craft);
 
-        let missile = missiles.insert(Missile::new(craft, self.target));
+        let target = Target { craft, value: self.target };
+        let target = targets.insert(target);
+
+        let missile = missiles.insert(Missile::new(craft, target));
         healths.get_mut(health).unwrap().parent =
             Some(ComponentHandle::Missile(missile));
 

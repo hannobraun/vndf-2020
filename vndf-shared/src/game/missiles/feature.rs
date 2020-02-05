@@ -50,14 +50,15 @@ impl Feature {
         update_targets(
             bodies,
             crafts,
-            &mut self.missiles,
             positions,
+            &mut self.targets,
         );
         update_guidances(
             bodies,
             crafts,
             &mut self.missiles,
             positions,
+            &self.targets,
             velocities,
         );
         explode_missiles(
@@ -66,6 +67,7 @@ impl Feature {
             healths,
             &self.missiles,
             positions,
+            &self.targets,
         );
     }
 
@@ -83,6 +85,7 @@ impl Feature {
             healths,
             &mut self.missiles,
             positions,
+            &mut self.targets,
             velocities,
             event.missile,
         );

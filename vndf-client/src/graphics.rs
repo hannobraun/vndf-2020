@@ -193,9 +193,10 @@ impl Graphics {
     )
         -> GameResult<bool>
     {
-        let craft = get!(state.data.crafts, missile.craft);
-        let body  = get!(state.data.bodies, craft.body);
-        let pos   = get!(state.data.positions, body.pos);
+        let craft  = get!(state.data.crafts, missile.craft);
+        let target = get!(state.data.targets, missile.target);
+        let body   = get!(state.data.bodies, craft.body);
+        let pos    = get!(state.data.positions, body.pos);
 
         graphics::draw(
             context,
@@ -207,7 +208,7 @@ impl Graphics {
 
         let line = Mesh::new_line(
             context,
-            &[pos.0, missile.target],
+            &[pos.0, target.value],
             1.5,
             [0.0, 1.0, 0.0, 1.0].into(),
         )?;

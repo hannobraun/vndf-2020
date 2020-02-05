@@ -14,6 +14,7 @@ use crate::{
 use super::{
     Missile,
     MissileEntity,
+    Target,
 };
 
 
@@ -23,19 +24,28 @@ pub fn launch_missile(
     healths:    &mut Store<Health>,
     missiles:   &mut Store<Missile>,
     positions:  &mut Store<Position>,
+    targets:    &mut Store<Target>,
     velocities: &mut Store<Velocity>,
     missile:    MissileEntity,
 ) {
-    missile.create(bodies, crafts, healths, missiles, positions, velocities);
+    missile.create(
+        bodies,
+        crafts,
+        healths,
+        missiles,
+        positions,
+        targets,
+        velocities,
+    );
 }
 
 pub fn update_targets(
     bodies:    &Store<Body>,
     crafts:    &Store<Craft>,
-    missiles:  &mut Store<Missile>,
     positions: &Store<Position>,
+    targets:   &mut Store<Target>,
 ) {
-    for missile in missiles.values_mut() {
+    for target in targets.values_mut() {
         let potential_targets = crafts.values()
             .filter_map(|craft| {
                 let body = bodies.get(craft.body)?;
@@ -43,7 +53,7 @@ pub fn update_targets(
                 Some((*pos, *craft))
             });
 
-        missile.update_target(crafts, potential_targets);
+        target.update_target(crafts, potential_targets);
     }
 }
 
@@ -52,10 +62,17 @@ pub fn update_guidances(
     crafts:     &Store<Craft>,
     missiles:   &mut Store<Missile>,
     positions:  &Store<Position>,
+    targets:    &Store<Target>,
     velocities: &Store<Velocity>,
 ) {
     for missile in missiles.values_mut() {
-        missile.update_guidance(bodies, crafts, positions, velocities);
+        missile.update_guidance(
+            bodies,
+            crafts,
+            positions,
+            targets,
+            velocities,
+        );
     }
 }
 
@@ -65,8 +82,15 @@ pub fn explode_missiles(
     healths:   &mut Store<Health>,
     missiles:  &Store<Missile>,
     positions: &Store<Position>,
+    targets:   &Store<Target>,
 ) {
     for missile in missiles.values() {
-        missile.explode_if_ready(bodies, crafts, healths, positions);
+        missile.explode_if_ready(
+            bodies,
+            crafts,
+            healths,
+            positions,
+            targets,
+        );
     }
 }
