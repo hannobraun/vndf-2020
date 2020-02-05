@@ -8,7 +8,10 @@ use slotmap::{
 
 use crate::events;
 
-use super::Handle;
+use super::{
+    GetMut,
+    Handle,
+};
 
 
 pub struct Store<T> {
@@ -84,6 +87,12 @@ impl<T> Store<T> {
 
     pub fn removed(&mut self) -> events::Source<Handle> {
         self.removed.source()
+    }
+}
+
+impl<T> GetMut<T> for Store<T> {
+    fn get_mut(&mut self, handle: Handle) -> Option<&mut T> {
+        self.get_mut(handle)
     }
 }
 
