@@ -4,7 +4,10 @@ use slotmap::{
     sparse_secondary,
 };
 
-use super::Handle;
+use super::{
+    GetMut,
+    Handle,
+};
 
 
 pub struct SecondaryStore<T>(SparseSecondaryMap<DefaultKey, T>);
@@ -30,6 +33,10 @@ impl<T> SecondaryStore<T> {
         self.0.get(handle.0)
     }
 
+    pub fn get_mut(&mut self, handle: Handle) -> Option<&mut T> {
+        self.0.get_mut(handle.0)
+    }
+
     pub fn iter(&self) -> Iter<T> {
         Iter(self.0.iter())
     }
@@ -40,6 +47,12 @@ impl<T> SecondaryStore<T> {
 
     pub fn values_mut(&mut self) -> sparse_secondary::ValuesMut<DefaultKey, T> {
         self.0.values_mut()
+    }
+}
+
+impl<T> GetMut<T> for SecondaryStore<T> {
+    fn get_mut(&mut self, handle: Handle) -> Option<&mut T> {
+        self.get_mut(handle)
     }
 }
 
