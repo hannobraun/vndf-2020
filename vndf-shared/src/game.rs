@@ -250,6 +250,11 @@ impl State {
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }
+        for handle in self.crafts.fuels.removed().ready() {
+            let handle = ComponentHandle::Fuel(handle);
+            let event  = ComponentRemoved { handle };
+            self.base.component_removed.sink().push(event);
+        }
         for handle in self.health.healths.removed().ready() {
             let handle = ComponentHandle::Health(handle);
             let event  = ComponentRemoved { handle };
