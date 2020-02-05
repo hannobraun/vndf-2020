@@ -282,6 +282,7 @@ End game - Escape",
 Bodies: {}/{}
 Crafts: {}/{}
 Explosions: {}/{}
+Guidances: {}/-
 Healths: {}/{}
 Players: {}/-
 Missiles: {}/{}
@@ -295,6 +296,7 @@ Removals per s: {}",
                 diagnostics.num_bodies, state.data.bodies.len(),
                 diagnostics.num_crafts, state.data.crafts.len(),
                 diagnostics.num_explosions, state.data.explosions.len(),
+                diagnostics.num_guidances,
                 diagnostics.num_healths, state.data.healths.len(),
                 diagnostics.num_players,
                 diagnostics.num_missiles, state.data.missiles.len(),
