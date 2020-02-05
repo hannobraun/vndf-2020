@@ -19,6 +19,7 @@ use crate::{
 };
 
 use super::{
+    Guidance,
     Missile,
     Target,
 };
@@ -34,6 +35,7 @@ impl MissileEntity {
     pub fn create(&self,
         bodies:     &mut Store<Body>,
         crafts:     &mut Store<Craft>,
+        guidances:  &mut Store<Guidance>,
         healths:    &mut Store<Health>,
         missiles:   &mut Store<Missile>,
         positions:  &mut Store<Position>,
@@ -74,7 +76,10 @@ impl MissileEntity {
         let target = Target { craft, value: self.target };
         let target = targets.insert(target);
 
-        let missile = missiles.insert(Missile::new(craft, target));
+        let guidance = Guidance::new(craft, target);
+        let guidance = guidances.insert(guidance);
+
+        let missile = missiles.insert(Missile::new(craft, guidance, target));
         healths.get_mut(health).unwrap().parent =
             Some(ComponentHandle::Missile(missile));
 

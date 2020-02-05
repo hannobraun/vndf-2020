@@ -13,6 +13,7 @@ use crate::{
 };
 
 use super::{
+    Guidance,
     Missile,
     MissileLaunch,
     Target,
@@ -24,8 +25,9 @@ use super::{
 
 
 pub struct Feature {
-    pub missiles: Store<Missile>,
-    pub targets:  Store<Target>,
+    pub guidances: Store<Guidance>,
+    pub missiles:  Store<Missile>,
+    pub targets:   Store<Target>,
 
     pub missile_launch: events::Buf<MissileLaunch>,
 }
@@ -33,8 +35,9 @@ pub struct Feature {
 impl Feature {
     pub fn new() -> Self {
         Self {
-            missiles: Store::new(),
-            targets:  Store::new(),
+            guidances: Store::new(),
+            missiles:  Store::new(),
+            targets:   Store::new(),
 
             missile_launch: events::Buf::new(),
         }
@@ -56,7 +59,7 @@ impl Feature {
         update_guidances(
             bodies,
             crafts,
-            &mut self.missiles,
+            &mut self.guidances,
             positions,
             &self.targets,
             velocities,
@@ -64,8 +67,8 @@ impl Feature {
         explode_missiles(
             bodies,
             crafts,
+            &self.guidances,
             healths,
-            &self.missiles,
             positions,
             &self.targets,
         );
@@ -82,6 +85,7 @@ impl Feature {
         launch_missile(
             bodies,
             crafts,
+            &mut self.guidances,
             healths,
             &mut self.missiles,
             positions,

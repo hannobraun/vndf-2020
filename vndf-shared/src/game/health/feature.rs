@@ -4,6 +4,7 @@ use crate::{
     game::{
         crafts::Craft,
         missiles::{
+            Guidance,
             Missile,
             Target,
         },
@@ -48,6 +49,7 @@ impl Feature {
         event:      &Death,
         bodies:     &mut Store<Body>,
         crafts:     &mut Store<Craft>,
+        guidances:  &mut Store<Guidance>,
         missiles:   &mut Store<Missile>,
         positions:  &mut Store<Position>,
         ships:      &mut Store<Ship>,
@@ -58,6 +60,7 @@ impl Feature {
             event.handle,
             bodies,
             crafts,
+            guidances,
             &mut self.healths,
             missiles,
             positions,

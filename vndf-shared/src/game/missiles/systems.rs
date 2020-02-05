@@ -12,6 +12,7 @@ use crate::{
 };
 
 use super::{
+    Guidance,
     Missile,
     MissileEntity,
     Target,
@@ -21,6 +22,7 @@ use super::{
 pub fn launch_missile(
     bodies:     &mut Store<Body>,
     crafts:     &mut Store<Craft>,
+    guidances:  &mut Store<Guidance>,
     healths:    &mut Store<Health>,
     missiles:   &mut Store<Missile>,
     positions:  &mut Store<Position>,
@@ -31,6 +33,7 @@ pub fn launch_missile(
     missile.create(
         bodies,
         crafts,
+        guidances,
         healths,
         missiles,
         positions,
@@ -60,13 +63,13 @@ pub fn update_targets(
 pub fn update_guidances(
     bodies:     &mut Store<Body>,
     crafts:     &Store<Craft>,
-    missiles:   &mut Store<Missile>,
+    guidances:  &mut Store<Guidance>,
     positions:  &Store<Position>,
     targets:    &Store<Target>,
     velocities: &Store<Velocity>,
 ) {
-    for missile in missiles.values_mut() {
-        missile.update_guidance(
+    for guidance in guidances.values_mut() {
+        guidance.update_guidance(
             bodies,
             crafts,
             positions,
@@ -79,13 +82,13 @@ pub fn update_guidances(
 pub fn explode_missiles(
     bodies:    &Store<Body>,
     crafts:    &Store<Craft>,
+    guidances: &Store<Guidance>,
     healths:   &mut Store<Health>,
-    missiles:  &Store<Missile>,
     positions: &Store<Position>,
     targets:   &Store<Target>,
 ) {
-    for missile in missiles.values() {
-        missile.explode_if_ready(
+    for guidance in guidances.values() {
+        guidance.explode_if_ready(
             bodies,
             crafts,
             healths,

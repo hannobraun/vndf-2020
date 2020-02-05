@@ -30,15 +30,64 @@ use crate::{
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Missile {
     pub craft:    Handle,
+    pub guidance: Handle,
     pub target:   Handle,
-    pub guidance: Pid<f32>,
 }
 
 impl Missile {
     pub fn new(
-        craft:  Handle,
-        target: Handle,
-    ) -> Self {
+        craft:    Handle,
+        guidance: Handle,
+        target:   Handle,
+    )
+        -> Self
+    {
+        Self {
+            craft,
+            guidance,
+            target,
+        }
+    }
+
+    pub fn remove(
+        handle:     Handle,
+        bodies:     &mut Store<Body>,
+        crafts:     &mut Store<Craft>,
+        guidances:  &mut Store<Guidance>,
+        healths:    &mut Store<Health>,
+        missiles:   &mut Store<Missile>,
+        positions:  &mut Store<Position>,
+        targets:    &mut Store<Target>,
+        velocities: &mut Store<Velocity>,
+    )
+        -> Option<()>
+    {
+        let missile = missiles.remove(handle)?;
+
+        Craft::remove(
+            missile.craft,
+            bodies,
+            crafts,
+            healths,
+            positions,
+            velocities,
+        );
+        guidances.remove(missile.guidance);
+        targets.remove(missile.target);
+
+        Some(())
+    }
+}
+
+
+pub struct Guidance {
+    pub craft:    Handle,
+    pub target:   Handle,
+    pub guidance: Pid<f32>,
+}
+
+impl Guidance {
+    pub fn new(craft: Handle, target: Handle) -> Self {
         let guidance = Pid::new(
             // Proportional gain
             0.1,
@@ -127,33 +176,6 @@ impl Missile {
         if should_explode {
             health.value = 0.0;
         }
-
-        Some(())
-    }
-
-    pub fn remove(
-        handle:     Handle,
-        bodies:     &mut Store<Body>,
-        crafts:     &mut Store<Craft>,
-        healths:    &mut Store<Health>,
-        missiles:   &mut Store<Missile>,
-        positions:  &mut Store<Position>,
-        targets:    &mut Store<Target>,
-        velocities: &mut Store<Velocity>,
-    )
-        -> Option<()>
-    {
-        let missile = missiles.remove(handle)?;
-
-        Craft::remove(
-            missile.craft,
-            bodies,
-            crafts,
-            healths,
-            positions,
-            velocities,
-        );
-        targets.remove(missile.target);
 
         Some(())
     }
