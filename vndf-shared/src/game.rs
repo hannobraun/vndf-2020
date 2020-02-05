@@ -203,6 +203,8 @@ impl State {
             .map(|(handle, &c)| (handle, Component::Craft(c)));
         let explosions = self.explosions.explosions.iter()
             .map(|(handle, &c)| (handle, Component::Explosion(c)));
+        let fuels = self.crafts.fuels.iter()
+            .map(|(handle, &c)| (handle, Component::Fuel(c)));
         let healths = self.health.healths.iter()
             .map(|(handle, &c)| (handle, Component::Health(c)));
         let missiles = self.missiles.missiles.iter()
@@ -219,6 +221,7 @@ impl State {
         bodies
             .chain(crafts)
             .chain(explosions)
+            .chain(fuels)
             .chain(healths)
             .chain(missiles)
             .chain(positions)
