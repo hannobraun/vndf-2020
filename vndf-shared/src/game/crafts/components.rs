@@ -75,4 +75,4 @@ impl Craft {
 }
 
 
-pub struct Fuel(f32);
+pub struct Fuel(pub f32);
