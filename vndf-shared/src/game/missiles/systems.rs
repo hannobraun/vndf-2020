@@ -24,7 +24,7 @@ pub fn launch_missile(
     missiles:   &mut Store<Missile>,
     positions:  &mut Store<Position>,
     velocities: &mut Store<Velocity>,
-    missile:   MissileEntity,
+    missile:    MissileEntity,
 ) {
     missile.create(bodies, crafts, healths, missiles, positions, velocities);
 }
