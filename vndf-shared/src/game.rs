@@ -209,6 +209,8 @@ impl State {
             .map(|(handle, &c)| (handle, Component::Position(c)));
         let ships = self.ships.ships.iter()
             .map(|(handle, &c)| (handle, Component::Ship(c)));
+        let targets = self.missiles.targets.iter()
+            .map(|(handle, &c)| (handle, Component::Target(c)));
         let velocities = self.physics.velocities.iter()
             .map(|(handle, &c)| (handle, Component::Velocity(c)));
 
@@ -219,6 +221,7 @@ impl State {
             .chain(missiles)
             .chain(positions)
             .chain(ships)
+            .chain(targets)
             .chain(velocities)
     }
 
