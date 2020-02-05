@@ -15,6 +15,7 @@ use crate::{
 use super::{
     Missile,
     MissileLaunch,
+    Target,
     explode_missiles,
     launch_missile,
     update_guidances,
@@ -23,14 +24,18 @@ use super::{
 
 
 pub struct Feature {
-    pub missiles:       Store<Missile>,
+    pub missiles: Store<Missile>,
+    pub targets:  Store<Target>,
+
     pub missile_launch: events::Buf<MissileLaunch>,
 }
 
 impl Feature {
     pub fn new() -> Self {
         Self {
-            missiles:       Store::new(),
+            missiles: Store::new(),
+            targets:  Store::new(),
+
             missile_launch: events::Buf::new(),
         }
     }
