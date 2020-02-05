@@ -5,7 +5,10 @@ use crate::{
     },
     game::{
         base::ComponentHandle,
-        crafts::Craft,
+        crafts::{
+            Craft,
+            Fuel,
+        },
         missiles::{
             Guidance,
             Missile,
@@ -42,6 +45,7 @@ pub fn remove_entity(
     handle:     Handle,
     bodies:     &mut Store<Body>,
     crafts:     &mut Store<Craft>,
+    fuels:      &mut Store<Fuel>,
     guidances:  &mut Store<Guidance>,
     healths:    &mut Store<Health>,
     missiles:   &mut Store<Missile>,
@@ -60,6 +64,7 @@ pub fn remove_entity(
             handle,
             bodies,
             crafts,
+            fuels,
             guidances,
             healths,
             missiles,
@@ -73,6 +78,7 @@ pub fn remove_entity(
             handle,
             bodies,
             crafts,
+            fuels,
             healths,
             positions,
             ships,

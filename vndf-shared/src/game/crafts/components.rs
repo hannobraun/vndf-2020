@@ -61,6 +61,7 @@ impl Craft {
         handle:     Handle,
         bodies:     &mut Store<Body>,
         crafts:     &mut Store<Craft>,
+        fuels:      &mut Store<Fuel>,
         healths:    &mut Store<Health>,
         positions:  &mut Store<Position>,
         velocities: &mut Store<Velocity>,
@@ -70,6 +71,7 @@ impl Craft {
         let craft = crafts.remove(handle)?;
 
         Body::remove(craft.body, bodies, positions, velocities);
+        fuels.remove(craft.fuel);
         healths.remove(craft.health);
 
         Some(())

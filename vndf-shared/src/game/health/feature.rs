@@ -2,7 +2,10 @@ use crate::{
     cgs::Store,
     events,
     game::{
-        crafts::Craft,
+        crafts::{
+            Craft,
+            Fuel,
+        },
         missiles::{
             Guidance,
             Missile,
@@ -49,6 +52,7 @@ impl Feature {
         event:      &Death,
         bodies:     &mut Store<Body>,
         crafts:     &mut Store<Craft>,
+        fuels:      &mut Store<Fuel>,
         guidances:  &mut Store<Guidance>,
         missiles:   &mut Store<Missile>,
         positions:  &mut Store<Position>,
@@ -60,6 +64,7 @@ impl Feature {
             event.handle,
             bodies,
             crafts,
+            fuels,
             guidances,
             &mut self.healths,
             missiles,

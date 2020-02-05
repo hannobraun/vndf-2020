@@ -10,7 +10,10 @@ use crate::{
     },
     events,
     game::{
-        crafts::Craft,
+        crafts::{
+            Craft,
+            Fuel,
+        },
         health::Health,
         missiles::{
             MissileEntity,
@@ -128,6 +131,7 @@ impl Ship {
         handle:     Handle,
         bodies:     &mut Store<Body>,
         crafts:     &mut Store<Craft>,
+        fuels:      &mut Store<Fuel>,
         healths:    &mut Store<Health>,
         positions:  &mut Store<Position>,
         ships:      &mut Store<Ship>,
@@ -140,6 +144,7 @@ impl Ship {
             ship.craft,
             bodies,
             crafts,
+            fuels,
             healths,
             positions,
             velocities,

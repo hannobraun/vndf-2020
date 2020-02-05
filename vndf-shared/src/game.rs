@@ -160,6 +160,7 @@ impl State {
                 &event,
                 &mut self.physics.bodies,
                 &mut self.crafts.crafts,
+                &mut self.crafts.fuels,
                 &mut self.missiles.guidances,
                 &mut self.missiles.missiles,
                 &mut self.physics.positions,
