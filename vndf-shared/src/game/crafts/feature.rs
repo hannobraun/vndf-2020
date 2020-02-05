@@ -8,18 +8,21 @@ use crate::{
 
 use super::{
     Craft,
+    Fuel,
     update_crafts,
 };
 
 
 pub struct Feature {
     pub crafts: Store<Craft>,
+    pub fuels:  Store<Fuel>,
 }
 
 impl Feature {
     pub fn new() -> Self {
         Self {
             crafts: Store::new(),
+            fuels:  Store::new(),
         }
     }
 
