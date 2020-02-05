@@ -73,3 +73,6 @@ impl Craft {
         Some(())
     }
 }
+
+
+pub struct Fuel(f32);
