@@ -43,6 +43,17 @@ macro_rules! components {
         pub enum ComponentHandle {
             $($component(Handle),)*
         }
+
+        impl ComponentHandle {
+            pub fn from_handle(handle: Handle, component: &Component) -> Self {
+                match component {
+                    $(
+                        Component::$component(_) =>
+                            ComponentHandle::$component(handle),
+                    )*
+                }
+            }
+        }
     };
 }
 
