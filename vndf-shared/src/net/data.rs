@@ -11,7 +11,10 @@ use crate::{
         crafts::Craft,
         explosions::Explosion,
         health::Health,
-        missiles::Missile,
+        missiles::{
+            Missile,
+            Target,
+        },
         physics::{
             Body,
             Position,
@@ -69,5 +72,6 @@ data!(
     missiles,   Missile;
     positions,  Position;
     ships,      Ship;
+    targets,    Target;
     velocities, Velocity;
 );

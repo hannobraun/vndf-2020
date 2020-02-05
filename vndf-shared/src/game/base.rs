@@ -19,7 +19,10 @@ use crate::{
         crafts::Craft,
         explosions::Explosion,
         health::Health,
-        missiles::Missile,
+        missiles::{
+            Missile,
+            Target,
+        },
         physics::{
             Body,
             Position,
@@ -65,5 +68,6 @@ components!(
     Missile,
     Position,
     Ship,
+    Target,
     Velocity,
 );
