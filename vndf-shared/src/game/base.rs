@@ -42,7 +42,7 @@ pub enum Component {
     Velocity(Velocity),
 }
 
-#[derive(Clone, Copy, Debug, Deserialize, Serialize, PartialEq)]
+#[derive(Clone, Copy, Debug, Deserialize, Serialize, Eq, PartialEq, Hash)]
 pub enum ComponentHandle {
     Body(Handle),
     Craft(Handle),
