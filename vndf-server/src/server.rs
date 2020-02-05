@@ -150,7 +150,8 @@ impl Server {
 
             use Component::*;
             let should_update = match component {
-                Position(_) | Velocity(_) => {
+                // These components are interpolated client-side.
+                Position(_) | Velocity(_) | Explosion(_) => {
                     data_changed && !update_within_last_minute
                 }
                 _ => {
