@@ -127,8 +127,11 @@ impl<In, Out> Conn<In, Out>
     }
 
     pub fn send(&mut self, message: Out) -> net::Result {
-        if !self.quiet {
-            info!("Sending message: {:?}", message)
+        if self.quiet {
+            debug!("Sending message: {:?}", message);
+        }
+        else {
+            info!("Sending message: {:?}", message);
         }
 
         self.tx.send(message)?;
@@ -194,7 +197,6 @@ fn send<T>(mut stream: TcpStream, out_chan: Receiver<T>) -> net::Result
 
         match out_chan.recv() {
             Ok(message) => {
-                debug!("Writing message: {:?}", message);
                 message.write(&mut buf)?;
             }
             Err(RecvError) => {
