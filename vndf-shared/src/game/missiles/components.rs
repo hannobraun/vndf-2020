@@ -138,11 +138,13 @@ impl Missile {
         healths:    &mut Store<Health>,
         missiles:   &mut Store<Missile>,
         positions:  &mut Store<Position>,
+        targets:    &mut Store<Target>,
         velocities: &mut Store<Velocity>,
     )
         -> Option<()>
     {
         let missile = missiles.remove(handle)?;
+
         Craft::remove(
             missile.craft,
             bodies,
@@ -150,7 +152,10 @@ impl Missile {
             healths,
             positions,
             velocities,
-        )
+        );
+        targets.remove(missile.target);
+
+        Some(())
     }
 }
 

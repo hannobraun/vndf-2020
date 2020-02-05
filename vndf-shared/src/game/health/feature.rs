@@ -3,7 +3,10 @@ use crate::{
     events,
     game::{
         crafts::Craft,
-        missiles::Missile,
+        missiles::{
+            Missile,
+            Target,
+        },
         physics::{
             Body,
             Position,
@@ -48,6 +51,7 @@ impl Feature {
         missiles:   &mut Store<Missile>,
         positions:  &mut Store<Position>,
         ships:      &mut Store<Ship>,
+        targets:    &mut Store<Target>,
         velocities: &mut Store<Velocity>,
     ) {
         remove_entity(
@@ -58,6 +62,7 @@ impl Feature {
             missiles,
             positions,
             ships,
+            targets,
             velocities,
         );
     }

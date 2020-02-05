@@ -160,6 +160,7 @@ impl State {
                 &mut self.missiles.missiles,
                 &mut self.physics.positions,
                 &mut self.ships.ships,
+                &mut self.missiles.targets,
                 &mut self.physics.velocities,
             );
         }
