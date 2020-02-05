@@ -32,6 +32,7 @@ use ggez::{
         KeyCode,
         KeyMods,
     },
+    timer,
 };
 use log::{
     debug,
@@ -221,7 +222,7 @@ impl EventHandler for Game {
     }
 
     fn draw(&mut self, context: &mut Context) -> GameResult {
-        self.state.update();
+        self.state.update(timer::duration_to_f64(timer::delta(context)) as f32);
         self.graphics.draw(context, &self.input, &self.state)
     }
 }

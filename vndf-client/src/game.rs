@@ -37,8 +37,16 @@ impl State {
         }
     }
 
-    pub fn update(&mut self) {
+    pub fn update(&mut self, dt: f32) {
         self.statistics.update();
+
+        for body in self.data.bodies.values_mut() {
+            body.update(
+                dt,
+                &mut self.data.positions,
+                &mut self.data.velocities,
+            );
+        }
     }
 
     pub fn update_component(&mut self, handle: Handle, component: Component) {
