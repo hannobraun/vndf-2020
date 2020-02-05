@@ -2,7 +2,10 @@ use crate::{
     cgs::Store,
     game::{
         base::ComponentHandle,
-        crafts::Craft,
+        crafts::{
+            Craft,
+            Fuel,
+        },
         health::Health,
         physics::{
             Body,
@@ -35,6 +38,7 @@ impl MissileEntity {
     pub fn create(&self,
         bodies:     &mut Store<Body>,
         crafts:     &mut Store<Craft>,
+        fuels:      &mut Store<Fuel>,
         guidances:  &mut Store<Guidance>,
         healths:    &mut Store<Health>,
         missiles:   &mut Store<Missile>,
@@ -60,15 +64,16 @@ impl MissileEntity {
         };
         let body = bodies.insert(body);
 
+        let fuel   = fuels.insert(Fuel(1600.0));
         let health = healths.insert(Health::new(body, 2.0));
 
         let craft = Craft {
             body,
+            fuel,
             health,
 
             engine_on: true,
             thrust:    200.0,
-            fuel:      1600.0,
             owner:     self.owner,
         };
         let craft = crafts.insert(craft);

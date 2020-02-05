@@ -1,7 +1,10 @@
 use crate::{
     cgs::Store,
     game::{
-        crafts::Craft,
+        crafts::{
+            Craft,
+            Fuel,
+        },
         health::Health,
         physics::{
             Body,
@@ -46,6 +49,7 @@ impl Feature {
     pub fn on_update(&mut self,
         bodies:     &mut Store<Body>,
         crafts:     &Store<Craft>,
+        fuels:      &Store<Fuel>,
         healths:    &mut Store<Health>,
         positions:  &Store<Position>,
         velocities: &Store<Velocity>,
@@ -67,6 +71,7 @@ impl Feature {
         explode_missiles(
             bodies,
             crafts,
+            fuels,
             &self.guidances,
             healths,
             positions,
@@ -78,6 +83,7 @@ impl Feature {
         event:      MissileLaunch,
         bodies:     &mut Store<Body>,
         crafts:     &mut Store<Craft>,
+        fuels:      &mut Store<Fuel>,
         healths:    &mut Store<Health>,
         positions:  &mut Store<Position>,
         velocities: &mut Store<Velocity>,
@@ -85,6 +91,7 @@ impl Feature {
         launch_missile(
             bodies,
             crafts,
+            fuels,
             &mut self.guidances,
             healths,
             &mut self.missiles,

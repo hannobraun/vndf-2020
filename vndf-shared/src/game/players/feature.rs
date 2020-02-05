@@ -14,7 +14,10 @@ use crate::{
         Store,
     },
     game::{
-        crafts::Craft,
+        crafts::{
+            Craft,
+            Fuel,
+        },
         health::Health,
         missiles::MissileLaunch,
         physics::{
@@ -70,6 +73,7 @@ impl Feature {
         event:      &PlayerConnected,
         bodies:     &mut Store<Body>,
         crafts:     &mut Store<Craft>,
+        fuels:      &mut Store<Fuel>,
         healths:    &mut Store<Health>,
         positions:  &mut Store<Position>,
         ships:      &mut Store<Ship>,
@@ -78,6 +82,7 @@ impl Feature {
         connect_player(
             bodies,
             crafts,
+            fuels,
             healths,
             &mut self.players,
             positions,

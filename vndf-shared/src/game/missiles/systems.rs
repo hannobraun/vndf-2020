@@ -1,7 +1,10 @@
 use crate::{
     cgs::Store,
     game::{
-        crafts::Craft,
+        crafts::{
+            Craft,
+            Fuel,
+        },
         health::Health,
         physics::{
             Body,
@@ -22,6 +25,7 @@ use super::{
 pub fn launch_missile(
     bodies:     &mut Store<Body>,
     crafts:     &mut Store<Craft>,
+    fuels:      &mut Store<Fuel>,
     guidances:  &mut Store<Guidance>,
     healths:    &mut Store<Health>,
     missiles:   &mut Store<Missile>,
@@ -33,6 +37,7 @@ pub fn launch_missile(
     missile.create(
         bodies,
         crafts,
+        fuels,
         guidances,
         healths,
         missiles,
@@ -82,6 +87,7 @@ pub fn update_guidances(
 pub fn explode_missiles(
     bodies:    &Store<Body>,
     crafts:    &Store<Craft>,
+    fuels:     &Store<Fuel>,
     guidances: &Store<Guidance>,
     healths:   &mut Store<Health>,
     positions: &Store<Position>,
@@ -91,6 +97,7 @@ pub fn explode_missiles(
         guidance.explode_if_ready(
             bodies,
             crafts,
+            fuels,
             healths,
             positions,
             targets,

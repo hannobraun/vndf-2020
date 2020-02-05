@@ -10,7 +10,10 @@ use crate::{
     },
     events,
     game::{
-        crafts::Craft,
+        crafts::{
+            Craft,
+            Fuel,
+        },
         health::Health,
         missiles::MissileLaunch,
         physics::{
@@ -36,6 +39,7 @@ use super::{
 pub fn connect_player(
     bodies:         &mut Store<Body>,
     crafts:         &mut Store<Craft>,
+    fuels:          &mut Store<Fuel>,
     healths:        &mut Store<Health>,
     players:        &mut Store<Player>,
     positions:      &mut Store<Position>,
@@ -53,6 +57,7 @@ pub fn connect_player(
     ShipEntity { owner: id, color }.create(
         bodies,
         crafts,
+        fuels,
         healths,
         positions,
         ships,

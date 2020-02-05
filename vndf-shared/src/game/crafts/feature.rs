@@ -30,6 +30,7 @@ impl Feature {
         update_crafts(
             bodies,
             &mut self.crafts,
+            &mut self.fuels,
             event.dt,
         );
     }

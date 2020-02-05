@@ -27,11 +27,11 @@ use crate::{
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Craft {
     pub body:   Handle,
+    pub fuel:   Handle,
     pub health: Handle,
 
     pub engine_on: bool,
     pub thrust:    f32,
-    pub fuel:      f32,
     pub owner:     PlayerId,
 }
 
@@ -39,13 +39,15 @@ impl Craft {
     pub fn apply_thrust(&mut self,
         dt:     f32,
         bodies: &mut Store<Body>,
+        fuels:  &mut Store<Fuel>,
     )
         -> Option<()>
     {
         let body = bodies.get_mut(self.body)?;
+        let fuel = fuels.get_mut(self.fuel)?;
 
-        body.acc = if self.engine_on && self.fuel > 0.0 {
-            self.fuel -= self.thrust * dt;
+        body.acc = if self.engine_on && fuel.0 > 0.0 {
+            fuel.0 -= self.thrust * dt;
             body.dir.normalize() * self.thrust
         }
         else {

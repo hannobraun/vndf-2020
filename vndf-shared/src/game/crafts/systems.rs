@@ -3,15 +3,19 @@ use crate::{
     game::physics::Body,
 };
 
-use super::Craft;
+use super::{
+    Craft,
+    Fuel,
+};
 
 
 pub fn update_crafts(
     bodies: &mut Store<Body>,
     crafts: &mut Store<Craft>,
+    fuels:  &mut Store<Fuel>,
     dt:     f32,
 ) {
     for craft in crafts.values_mut() {
-        craft.apply_thrust(dt, bodies);
+        craft.apply_thrust(dt, bodies, fuels);
     }
 }

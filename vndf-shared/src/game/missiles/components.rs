@@ -10,7 +10,10 @@ use crate::{
         Store,
     },
     game::{
-        crafts::Craft,
+        crafts::{
+            Craft,
+            Fuel,
+        },
         health::Health,
         physics::{
             Body,
@@ -157,6 +160,7 @@ impl Guidance {
     pub fn explode_if_ready(&self,
         bodies:    &Store<Body>,
         crafts:    &Store<Craft>,
+        fuels:     &Store<Fuel>,
         healths:   &mut Store<Health>,
         positions: &Store<Position>,
         targets:   &Store<Target>,
@@ -168,8 +172,9 @@ impl Guidance {
         let     body   = bodies.get(craft.body)?;
         let     pos    = positions.get(body.pos)?;
         let mut health = healths.get_mut(craft.health)?;
+        let     fuel   = fuels.get(craft.fuel)?;
 
-        let no_fuel_left   = craft.fuel <= 0.0;
+        let no_fuel_left   = fuel.0 <= 0.0;
         let near_target    = (pos.0 - target.value).magnitude() <= 10.0;
         let should_explode = no_fuel_left || near_target;
 

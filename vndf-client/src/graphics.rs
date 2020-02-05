@@ -347,6 +347,7 @@ Removals per s: {}",
         -> GameResult<bool>
     {
         let craft  = get!(state.data.crafts, ship.craft);
+        let fuel   = get!(state.data.fuels, craft.fuel);
         let health = get!(state.data.healths, craft.health);
 
         if state.own_id != Some(craft.owner) {
@@ -360,7 +361,7 @@ Structural Integrity: {:.2}
 Fuel: {:.2}
 Heavy Missiles: {}",
             health.value,
-            craft.fuel,
+            fuel.0,
             ship.missiles,
         );
 

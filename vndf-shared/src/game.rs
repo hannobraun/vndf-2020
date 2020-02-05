@@ -101,6 +101,7 @@ impl State {
             self.missiles.on_update(
                 &mut self.physics.bodies,
                 &self.crafts.crafts,
+                &self.crafts.fuels,
                 &mut self.health.healths,
                 &self.physics.positions,
                 &self.physics.velocities,
@@ -115,6 +116,7 @@ impl State {
                 &event,
                 &mut self.physics.bodies,
                 &mut self.crafts.crafts,
+                &mut self.crafts.fuels,
                 &mut self.health.healths,
                 &mut self.physics.positions,
                 &mut self.ships.ships,
@@ -140,6 +142,7 @@ impl State {
                 event,
                 &mut self.physics.bodies,
                 &mut self.crafts.crafts,
+                &mut self.crafts.fuels,
                 &mut self.health.healths,
                 &mut self.physics.positions,
                 &mut self.physics.velocities,
