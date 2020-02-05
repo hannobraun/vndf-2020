@@ -6,7 +6,6 @@ use std::{
     },
 };
 
-
 use crate::shared::{
     cgs::Handle,
     game::{
