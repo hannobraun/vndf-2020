@@ -47,6 +47,13 @@ impl State {
                 &mut self.data.velocities,
             );
         }
+        for craft in self.data.crafts.values_mut() {
+            craft.apply_thrust(
+                dt,
+                &mut self.data.bodies,
+                &mut self.data.fuels,
+            );
+        }
         for explosion in self.data.explosions.values_mut() {
             explosion.update(dt);
         }
