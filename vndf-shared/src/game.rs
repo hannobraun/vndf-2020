@@ -99,6 +99,7 @@ impl State {
             );
             self.health.on_update();
             self.missiles.on_update(
+                &event,
                 &mut self.physics.bodies,
                 &self.crafts.crafts,
                 &self.crafts.fuels,

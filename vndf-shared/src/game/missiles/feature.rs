@@ -1,6 +1,7 @@
 use crate::{
     cgs::Store,
     game::{
+        base::Update,
         crafts::{
             Craft,
             Fuel,
@@ -33,6 +34,8 @@ pub struct Feature {
     pub targets:   Store<Target>,
 
     pub missile_launch: events::Buf<MissileLaunch>,
+
+    acc: f32,
 }
 
 impl Feature {
@@ -43,10 +46,13 @@ impl Feature {
             targets:   Store::new(),
 
             missile_launch: events::Buf::new(),
+
+            acc: 0.0,
         }
     }
 
     pub fn on_update(&mut self,
+        event:      &Update,
         bodies:     &mut Store<Body>,
         crafts:     &Store<Craft>,
         fuels:      &Store<Fuel>,
@@ -54,20 +60,27 @@ impl Feature {
         positions:  &Store<Position>,
         velocities: &Store<Velocity>,
     ) {
-        update_targets(
-            bodies,
-            crafts,
-            positions,
-            &mut self.targets,
-        );
-        update_guidances(
-            bodies,
-            crafts,
-            &mut self.guidances,
-            positions,
-            &self.targets,
-            velocities,
-        );
+        self.acc += event.dt;
+
+        const TIME: f32 = 0.1;
+        if self.acc >= TIME {
+            self.acc -= TIME;
+
+            update_targets(
+                bodies,
+                crafts,
+                positions,
+                &mut self.targets,
+            );
+            update_guidances(
+                bodies,
+                crafts,
+                &mut self.guidances,
+                positions,
+                &self.targets,
+                velocities,
+            );
+        }
         explode_missiles(
             bodies,
             crafts,
