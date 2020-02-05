@@ -5,6 +5,7 @@ use serde::{
 
 use crate::{
     cgs::{
+        GetMut,
         Handle,
         Store,
     },
@@ -61,8 +62,8 @@ impl Body {
 
     pub fn update(&mut self,
         dt:         f32,
-        positions:  &mut Store<Position>,
-        velocities: &mut Store<Velocity>,
+        positions:  &mut impl GetMut<Position>,
+        velocities: &mut impl GetMut<Velocity>,
     )
         -> Option<()>
     {
