@@ -209,6 +209,8 @@ impl State {
             .map(|(handle, &c)| (handle, Component::Position(c)));
         let ships = self.ships.ships.iter()
             .map(|(handle, &c)| (handle, Component::Ship(c)));
+        let velocities = self.physics.velocities.iter()
+            .map(|(handle, &c)| (handle, Component::Velocity(c)));
 
         bodies
             .chain(crafts)
@@ -217,6 +219,7 @@ impl State {
             .chain(missiles)
             .chain(positions)
             .chain(ships)
+            .chain(velocities)
     }
 
     pub fn component_removed(&mut self) -> events::Source<ComponentRemoved> {
