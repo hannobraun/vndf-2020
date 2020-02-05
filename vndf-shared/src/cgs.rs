@@ -15,5 +15,5 @@ use serde::{
 use slotmap::DefaultKey;
 
 
-#[derive(Clone, Copy, Debug, Deserialize, Serialize, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Deserialize, Serialize, Eq, PartialEq, Hash)]
 pub struct Handle(DefaultKey);
