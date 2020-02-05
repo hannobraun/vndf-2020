@@ -47,6 +47,9 @@ impl State {
                 &mut self.data.velocities,
             );
         }
+        for explosion in self.data.explosions.values_mut() {
+            explosion.update(dt);
+        }
     }
 
     pub fn update_component(&mut self, handle: Handle, component: Component) {
