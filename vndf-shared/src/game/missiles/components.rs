@@ -162,7 +162,7 @@ pub struct Target {
 }
 
 impl Target {
-    pub fn update_target(&mut self,
+    pub fn update(&mut self,
         crafts:  &Store<Craft>,
         targets: impl IntoIterator<Item=(Position, Craft)>,
     )

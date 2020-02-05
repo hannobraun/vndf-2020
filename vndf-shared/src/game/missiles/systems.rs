@@ -53,7 +53,7 @@ pub fn update_targets(
                 Some((*pos, *craft))
             });
 
-        target.update_target(crafts, potential_targets);
+        target.update(crafts, potential_targets);
     }
 }
 
