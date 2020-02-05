@@ -48,10 +48,10 @@ impl<In, Out> Conn<In, Out>
     pub fn connect<A: ToSocketAddrs>(addr: A) -> io::Result<Self> {
         let stream = TcpStream::connect(addr)?;
 
-        Self::from_stream(stream, true)
+        Self::from_stream(stream, false)
     }
 
-    pub fn from_stream(stream: TcpStream, errors_are_critical: bool)
+    pub fn from_stream(stream: TcpStream, quiet: bool)
         -> io::Result<Self>
     {
         stream.set_nodelay(true)?;
@@ -67,22 +67,22 @@ impl<In, Out> Conn<In, Out>
 
         thread::spawn(move ||
             if let Err(err) = send(stream_send, out_rx) {
-                if errors_are_critical {
-                    error!("Send error ({}): {:?}", peer_addr, err);
+                if quiet {
+                    debug!("Send error ({}): {:?}", peer_addr, err);
                 }
                 else {
-                    debug!("Send error ({}): {:?}", peer_addr, err);
+                    error!("Send error ({}): {:?}", peer_addr, err);
                 }
             }
         );
 
         thread::spawn(move || {
             if let Err(err) = receive(stream_receive, in_tx) {
-                if errors_are_critical {
-                    error!("Receive error ({}) : {:?}", peer_addr, err);
+                if quiet {
+                    debug!("Receive error ({}) : {:?}", peer_addr, err);
                 }
                 else {
-                    debug!("Receive error ({}) : {:?}", peer_addr, err);
+                    error!("Receive error ({}) : {:?}", peer_addr, err);
                 }
             }
         });
