@@ -5,6 +5,7 @@ use serde::{
 
 use crate::{
     cgs::{
+        GetMut,
         Handle,
         Store,
     },
@@ -38,8 +39,8 @@ pub struct Craft {
 impl Craft {
     pub fn apply_thrust(&mut self,
         dt:     f32,
-        bodies: &mut Store<Body>,
-        fuels:  &mut Store<Fuel>,
+        bodies: &mut impl GetMut<Body>,
+        fuels:  &mut impl GetMut<Fuel>,
     )
         -> Option<()>
     {
