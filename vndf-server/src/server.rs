@@ -148,8 +148,9 @@ impl Server {
 
             let data_changed = self.data.update(handle, component);
 
+            use Component::*;
             let should_update = match component {
-                Component::Position(_) | Component::Velocity(_) => {
+                Position(_) | Velocity(_) => {
                     data_changed && !update_within_last_minute
                 }
                 _ => {
