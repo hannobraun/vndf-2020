@@ -182,3 +182,44 @@ impl Missile {
         )
     }
 }
+
+
+pub struct Target {
+    pub craft: Handle,
+    pub value: Pnt2,
+}
+
+impl Target {
+    pub fn update_target(&mut self,
+        crafts:  &Store<Craft>,
+        targets: impl IntoIterator<Item=(Position, Craft)>,
+    )
+        -> Option<()>
+    {
+        let craft = crafts.get(self.craft)?;
+
+        let mut best_rating = 0.0;
+        let mut new_target  = None;
+
+        for (target_pos, target_craft) in targets {
+            if target_craft.owner == craft.owner {
+                continue;
+            }
+
+            let distance  = (self.value - target_pos.0).magnitude();
+            let threshold = 100.0;
+            let rating    = 1.0 / (threshold - distance);
+
+            if rating > best_rating {
+                best_rating = rating;
+                new_target  = Some(target_pos.0);
+            }
+        }
+
+        if let Some(new_target) = new_target {
+            self.value = new_target
+        }
+
+        Some(())
+    }
+}
