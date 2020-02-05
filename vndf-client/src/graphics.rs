@@ -287,6 +287,7 @@ Players: {}/-
 Missiles: {}/{}
 Positions: {}/{}
 Ships: {}/{}
+Targets: {}/{}
 Velocities: {}/{}
 ---
 Updates per s: {}
@@ -299,6 +300,7 @@ Removals per s: {}",
                 diagnostics.num_missiles, state.data.missiles.len(),
                 diagnostics.num_positions, state.data.positions.len(),
                 diagnostics.num_ships, state.data.ships.len(),
+                diagnostics.num_targets, state.data.targets.len(),
                 diagnostics.num_velocities, state.data.velocities.len(),
                 state.statistics.updates.len(),
                 state.statistics.removals.len(),

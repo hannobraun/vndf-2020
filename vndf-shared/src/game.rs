@@ -284,6 +284,7 @@ impl State {
             num_missiles:   self.missiles.missiles.len()     as u64,
             num_positions:  self.physics.positions.len()     as u64,
             num_ships:      self.ships.ships.len()           as u64,
+            num_targets:    self.missiles.targets.len()      as u64,
             num_velocities: self.physics.velocities.len()    as u64,
         }
     }
@@ -300,5 +301,6 @@ pub struct Diagnostics {
     pub num_missiles:   u64,
     pub num_positions:  u64,
     pub num_ships:      u64,
+    pub num_targets:    u64,
     pub num_velocities: u64,
 }
