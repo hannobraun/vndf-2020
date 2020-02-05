@@ -75,4 +75,5 @@ impl Craft {
 }
 
 
+#[derive(Clone, Copy, Debug, Deserialize, Serialize, PartialEq)]
 pub struct Fuel(pub f32);
