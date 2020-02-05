@@ -30,7 +30,7 @@ use crate::{
 };
 
 
-#[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Copy, Debug, Deserialize, Serialize, PartialEq)]
 pub enum Component {
     Body(Body),
     Craft(Craft),
@@ -42,7 +42,7 @@ pub enum Component {
     Velocity(Velocity),
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Copy, Debug, Deserialize, Serialize, PartialEq)]
 pub enum ComponentHandle {
     Body(Handle),
     Craft(Handle),
