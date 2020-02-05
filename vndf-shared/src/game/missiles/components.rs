@@ -184,6 +184,7 @@ impl Missile {
 }
 
 
+#[derive(Clone, Copy, Debug, Deserialize, Serialize, PartialEq)]
 pub struct Target {
     pub craft: Handle,
     pub value: Pnt2,
