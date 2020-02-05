@@ -12,8 +12,6 @@ pub fn update_crafts(
     dt:     f32,
 ) {
     for craft in crafts.values_mut() {
-        if let Some(mut body) = bodies.get_mut(craft.body) {
-            craft.apply_thrust(&mut body, dt);
-        }
+        craft.apply_thrust(dt, bodies);
     }
 }

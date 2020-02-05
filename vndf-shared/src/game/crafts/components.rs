@@ -36,7 +36,14 @@ pub struct Craft {
 }
 
 impl Craft {
-    pub fn apply_thrust(&mut self, body: &mut Body, dt: f32) {
+    pub fn apply_thrust(&mut self,
+        dt:     f32,
+        bodies: &mut Store<Body>,
+    )
+        -> Option<()>
+    {
+        let body = bodies.get_mut(self.body)?;
+
         body.acc = if self.engine_on && self.fuel > 0.0 {
             self.fuel -= self.thrust * dt;
             body.dir.normalize() * self.thrust
@@ -44,6 +51,8 @@ impl Craft {
         else {
             Vec2::zero()
         };
+
+        Some(())
     }
 
     pub fn remove(
