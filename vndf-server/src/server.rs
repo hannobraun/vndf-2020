@@ -1,4 +1,5 @@
 use std::{
+    collections::HashMap,
     net::SocketAddr,
     time::{
         Duration,
@@ -41,7 +42,7 @@ pub struct Server {
     events:      Vec<Event>,
     state:       game::State,
     last_update: Instant,
-    client:      Client,
+    clients:     HashMap<SocketAddr, Client>,
 }
 
 impl Server {
@@ -59,7 +60,7 @@ impl Server {
             events:      Vec::new(),
             state:       game::State::new(),
             last_update: Instant::now(),
-            client:      Client::new(),
+            clients:     HashMap::new(),
         }
     }
 
@@ -78,6 +79,9 @@ impl Server {
                 }
                 Event::Message(addr, msg::FromClient::Hello { color }) => {
                     info!("Connected: {}", addr);
+
+                    self.clients.insert(addr, Client::new());
+
                     // Yes, it's a bad idea to just trust the client to provide
                     // a color that is not the same as the background color.
                     // It's good enough for now though.
@@ -90,6 +94,9 @@ impl Server {
                 }
                 Event::Error(addr, _) => {
                     info!("Disconnected: {}", addr);
+
+                    self.clients.remove(&addr);
+
                     self.state.player_disconnected()
                         .push(PlayerDisconnected { addr });
                 }
@@ -105,8 +112,6 @@ impl Server {
             self.last_update += frame_time;
         }
 
-        let clients = self.state.players();
-
         for player in self.state.player_created().ready() {
             self.network.send(
                 player.addr,
@@ -115,32 +120,31 @@ impl Server {
         }
 
         for event in self.state.component_removed().ready() {
-            self.client.remove(event.handle);
-
-            for &client in &clients {
+            for (&addr, client) in &mut self.clients {
+                client.remove(event.handle);
                 self.network.send(
-                    client,
+                    addr,
                     msg::FromServer::RemoveComponent(event.handle),
                 );
             }
         }
 
         for (handle, component) in self.state.updates() {
-            let should_update = self.client.update(handle, component);
+            for (&addr, client) in &mut self.clients {
+                let should_update = client.update(handle, component);
 
-            if should_update {
-                for &client in &clients {
+                if should_update {
                     self.network.send(
-                        client,
+                        addr,
                         msg::FromServer::UpdateComponent(handle, component),
                     );
                 }
             }
         }
 
-        for &client in &clients {
+        for (&addr, _) in &self.clients {
             self.network.send(
-                client,
+                addr,
                 msg::FromServer::Diagnostics(self.state.diagnostics()),
             );
         }
