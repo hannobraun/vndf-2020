@@ -1,5 +1,4 @@
 use std::{
-    collections::HashMap,
     net::SocketAddr,
     time::{
         Duration,
@@ -13,6 +12,7 @@ use log::{
 };
 
 use crate::{
+    client::Client,
     net::{
         Event,
         Network,
@@ -21,11 +21,7 @@ use crate::{
         game::{
             self,
             FRAME_TIME,
-            base::{
-                Component,
-                ComponentHandle,
-                Update,
-            },
+            base::Update,
             players::{
                 PlayerConnected,
                 PlayerDisconnected,
@@ -34,7 +30,6 @@ use crate::{
         },
         net::{
             self,
-            data::Data,
             msg,
         },
     },
@@ -46,8 +41,7 @@ pub struct Server {
     events:      Vec<Event>,
     state:       game::State,
     last_update: Instant,
-    data:        Data,
-    updates:     HashMap<ComponentHandle, Instant>,
+    client:      Client,
 }
 
 impl Server {
@@ -65,8 +59,7 @@ impl Server {
             events:      Vec::new(),
             state:       game::State::new(),
             last_update: Instant::now(),
-            data:        Data::new(),
-            updates:     HashMap::new(),
+            client:      Client::new(),
         }
     }
 
@@ -122,8 +115,7 @@ impl Server {
         }
 
         for event in self.state.component_removed().ready() {
-            self.data.remove(event.handle);
-            self.updates.remove(&event.handle);
+            self.client.remove(event.handle);
 
             for &client in &clients {
                 self.network.send(
@@ -134,30 +126,7 @@ impl Server {
         }
 
         for (handle, component) in self.state.updates() {
-            let component_handle = ComponentHandle::from_handle(
-                handle,
-                &component,
-            );
-
-            let update_within_last_minute = self.updates
-                .get(&component_handle)
-                .map(|last_update|
-                    last_update.elapsed() < Duration::from_secs(1)
-                )
-                .unwrap_or(false);
-
-            let data_changed = self.data.update(handle, component);
-
-            use Component::*;
-            let should_update = match component {
-                // These components are interpolated client-side.
-                Position(_) | Velocity(_) | Explosion(_) | Fuel(_) => {
-                    data_changed && !update_within_last_minute
-                }
-                _ => {
-                    data_changed
-                }
-            };
+            let should_update = self.client.update(handle, component);
 
             if should_update {
                 for &client in &clients {
@@ -166,7 +135,6 @@ impl Server {
                         msg::FromServer::UpdateComponent(handle, component),
                     );
                 }
-                self.updates.insert(component_handle, Instant::now());
             }
         }
 
