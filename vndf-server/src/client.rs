@@ -40,7 +40,7 @@ impl Client {
             &component,
         );
 
-        let update_within_last_minute = self.updates
+        let recently_updated = self.updates
             .get(&component_handle)
             .map(|last_update|
                 last_update.elapsed() < Duration::from_secs(1)
@@ -56,7 +56,7 @@ impl Client {
                 // Doesn't really matter whether the data has changed or not. We
                 // need to correct whatever the client has been thinking either
                 // way.
-                !update_within_last_minute
+                !recently_updated
             }
             _ => {
                 data_changed
