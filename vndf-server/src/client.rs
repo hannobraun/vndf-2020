@@ -53,7 +53,10 @@ impl Client {
         let should_update = match component {
             // These components are interpolated client-side.
             Position(_) | Velocity(_) | Explosion(_) | Fuel(_) => {
-                data_changed && !update_within_last_minute
+                // Doesn't really matter whether the data has changed or not. We
+                // need to correct whatever the client has been thinking either
+                // way.
+                !update_within_last_minute
             }
             _ => {
                 data_changed
