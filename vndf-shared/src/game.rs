@@ -8,8 +8,6 @@ pub mod players;
 pub mod ships;
 
 
-use std::net::SocketAddr;
-
 use serde::{
     Deserialize,
     Serialize,
@@ -190,13 +188,6 @@ impl State {
                 &mut self.physics.velocities,
             );
         }
-    }
-
-    pub fn players(&self) -> Vec<SocketAddr> {
-        self.players.players
-            .iter()
-            .map(|(_, player)| player.addr)
-            .collect()
     }
 
     pub fn updates(&mut self)
