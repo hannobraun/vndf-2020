@@ -1,3 +1,5 @@
+use std::collections::VecDeque;
+
 use ggez::Context;
 
 use crate::{
@@ -21,6 +23,8 @@ pub struct Input {
 
     pub pointer_screen: Pnt2,
     pub pointer_world:  Option<Pnt2>,
+
+    pub events: Events,
 }
 
 impl Input {
@@ -29,6 +33,8 @@ impl Input {
             config,
             pointer_screen: Pnt2::new(0.0, 0.0),
             pointer_world:  None,
+
+            events: Events(VecDeque::new()),
         }
     }
 
@@ -43,7 +49,7 @@ impl Input {
     }
 
     pub fn key_down(&mut self, key: Key) -> Option<Event> {
-        match key {
+        let event = match key {
             k if k == self.config.input.left =>
                 Some(Event::Rotate(Rotation::Left)),
             k if k == self.config.input.right =>
@@ -55,11 +61,17 @@ impl Input {
                     .map(|target| Event::LaunchMissile { target }),
 
             _ => None,
+        };
+
+        if let Some(event) = event {
+            self.events.push(event);
         }
+
+        event
     }
 
     pub fn key_up(&mut self, key: Key) -> Option<Event> {
-        match key {
+        let event = match key {
             k if k == self.config.input.left =>
                 Some(Event::Rotate(Rotation::None)),
             k if k == self.config.input.right =>
@@ -68,6 +80,24 @@ impl Input {
                 Some(Event::Thrust(false)),
 
             _ => None,
+        };
+
+        if let Some(event) = event {
+            self.events.push(event);
+        }
+
+        event
+    }
+}
+
+
+pub struct Events(pub VecDeque<Event>);
+
+impl Events {
+    pub fn push(&mut self, event: Event) {
+        self.0.push_front(event);
+        while self.0.len() > 10 {
+            self.0.pop_back();
         }
     }
 }

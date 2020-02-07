@@ -318,6 +318,18 @@ Removals per s: {}",
             )?;
         }
 
+        let mut input_events = String::from("Input:\n");
+        for event in &input.events.0 {
+            input_events.push_str(&format!("{:?}\n", event));
+        }
+
+        graphics::draw(
+            context,
+            &Text::new(input_events),
+            DrawParam::new()
+                .dest([20.0, 520.0])
+        )?;
+
         for ship in state.data.ships.values() {
             if self.draw_ship_status(context, ship, state)? {
                 // There should only be one ship owned by the local player, so
