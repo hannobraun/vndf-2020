@@ -42,7 +42,7 @@ impl Input {
         );
     }
 
-    pub fn key_down(&self, key: Key) -> Option<Event> {
+    pub fn key_down(&mut self, key: Key) -> Option<Event> {
         match key {
             k if k == self.config.input.left =>
                 Some(Event::Rotate(Rotation::Left)),
@@ -58,7 +58,7 @@ impl Input {
         }
     }
 
-    pub fn key_up(&self, key: Key) -> Option<Event> {
+    pub fn key_up(&mut self, key: Key) -> Option<Event> {
         match key {
             k if k == self.config.input.left =>
                 Some(Event::Rotate(Rotation::None)),
