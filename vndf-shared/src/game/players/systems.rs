@@ -31,6 +31,7 @@ use crate::{
 };
 
 use super::{
+    InputHandled,
     Player,
     PlayerCreated,
 };
@@ -95,6 +96,7 @@ pub fn handle_input(
     players:        &Store<Player>,
     ships:          &mut Store<Ship>,
     missile_launch: &mut events::Sink<MissileLaunch>,
+    input_handled:  &mut events::Sink<InputHandled>,
     index:          &mut HashMap<SocketAddr, Handle>,
 )
     -> Option<()>
@@ -105,6 +107,8 @@ pub fn handle_input(
     for ship in ships.values_mut() {
         ship.apply_input(bodies, crafts, missile_launch, player, input);
     }
+
+    input_handled.push(InputHandled { addr, seq: input.seq });
 
     Some(())
 }

@@ -122,6 +122,7 @@ impl Feature {
             &self.players,
             ships,
             missile_launch,
+            &mut self.input_handled.sink(),
             &mut self.players_by_address,
         );
     }
