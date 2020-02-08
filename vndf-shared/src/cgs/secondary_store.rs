@@ -5,6 +5,7 @@ use slotmap::{
 };
 
 use super::{
+    Get,
     GetMut,
     Handle,
 };
@@ -47,6 +48,12 @@ impl<T> SecondaryStore<T> {
 
     pub fn values_mut(&mut self) -> sparse_secondary::ValuesMut<DefaultKey, T> {
         self.0.values_mut()
+    }
+}
+
+impl<T> Get<T> for SecondaryStore<T> {
+    fn get(&self, handle: Handle) -> Option<&T> {
+        self.get(handle)
     }
 }
 

@@ -19,6 +19,10 @@ use slotmap::DefaultKey;
 pub struct Handle(DefaultKey);
 
 
+pub trait Get<T> {
+    fn get(&self, handle: Handle) -> Option<&T>;
+}
+
 pub trait GetMut<T> {
     fn get_mut(&mut self, handle: Handle) -> Option<&mut T>;
 }

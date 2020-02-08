@@ -9,6 +9,7 @@ use slotmap::{
 use crate::events;
 
 use super::{
+    Get,
     GetMut,
     Handle,
 };
@@ -87,6 +88,12 @@ impl<T> Store<T> {
 
     pub fn removed(&mut self) -> events::Source<Handle> {
         self.removed.source()
+    }
+}
+
+impl<T> Get<T> for Store<T> {
+    fn get(&self, handle: Handle) -> Option<&T> {
+        self.get(handle)
     }
 }
 
