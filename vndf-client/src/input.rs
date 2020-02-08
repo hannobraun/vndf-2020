@@ -35,7 +35,7 @@ impl Input {
             pointer_screen: Pnt2::new(0.0, 0.0),
             pointer_world:  None,
 
-            events: Events(VecDeque::new()),
+            events: Events::new(),
         }
     }
 
@@ -91,6 +91,10 @@ impl Input {
 pub struct Events(pub VecDeque<Event>);
 
 impl Events {
+    pub fn new() -> Self {
+        Events(VecDeque::new())
+    }
+
     pub fn push(&mut self, kind: EventKind) {
         let event = Event {
             kind,
