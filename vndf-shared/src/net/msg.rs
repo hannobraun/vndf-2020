@@ -63,6 +63,7 @@ pub enum FromServer {
     Welcome(PlayerId),
     UpdateComponent(Handle, Component),
     RemoveComponent(ComponentHandle),
+    InputHandled { seq: u64 },
     Diagnostics(Diagnostics),
 }
 
