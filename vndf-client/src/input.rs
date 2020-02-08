@@ -117,6 +117,7 @@ impl Events {
                 kind,
             },
             entered: Time::now(),
+            sent:    None,
         };
 
         self.next_seq += 1;
@@ -161,16 +162,20 @@ impl<'r> IntoIterator for &'r Events {
 pub struct Event {
     pub inner:   input::Event,
     pub entered: Time,
+    pub sent:    Option<Time>,
 }
 
 impl fmt::Display for Event {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "{:?} ({})",
-            self.inner,
-            self.entered.format("%H:%M:%S"),
-        )
+        let time_fmt = "%H:%M:%S";
+
+        write!(f, "{:?} ({}", self.inner, self.entered.format(time_fmt))?;
+        if let Some(sent) = self.sent {
+            write!(f, ", {}", sent.format(time_fmt))?;
+        }
+        write!(f, ")")?;
+
+        Ok(())
     }
 }
 
@@ -207,7 +212,8 @@ impl<'r> Iterator for Unsent<'r> {
 
     fn next(&mut self) -> Option<Self::Item> {
         self.inner.next()
-            .map(|event| {
+            .map(|mut event| {
+                event.sent = Some(Time::now());
                 self.sent.push_back(event);
                 event.inner
             })
