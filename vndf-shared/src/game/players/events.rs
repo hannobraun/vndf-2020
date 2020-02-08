@@ -6,6 +6,11 @@ use crate::{
 };
 
 
+pub struct InputHandled {
+    pub addr: SocketAddr,
+    pub seq:  u64,
+}
+
 pub struct PlayerConnected {
     pub addr:  SocketAddr,
     pub color: [f32; 3],

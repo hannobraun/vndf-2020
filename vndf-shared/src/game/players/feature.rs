@@ -31,6 +31,7 @@ use crate::{
 };
 
 use super::{
+    InputHandled,
     Player,
     PlayerConnected,
     PlayerCreated,
@@ -48,6 +49,7 @@ pub struct Feature {
 
     pub players: Store<Player>,
 
+    pub input_handled:       events::Buf<InputHandled>,
     pub player_connected:    events::Buf<PlayerConnected>,
     pub player_created:      events::Buf<PlayerCreated>,
     pub player_disconnected: events::Buf<PlayerDisconnected>,
@@ -62,6 +64,7 @@ impl Feature {
 
             players: Store::new(),
 
+            input_handled:       events::Buf::new(),
             player_connected:    events::Buf::new(),
             player_created:      events::Buf::new(),
             player_disconnected: events::Buf::new(),
