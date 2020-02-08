@@ -7,6 +7,7 @@ use std::{
 };
 
 use ggez::Context;
+use time::Time;
 
 use crate::{
     config::{
@@ -115,6 +116,7 @@ impl Events {
                 seq: self.next_seq,
                 kind,
             },
+            entered: Time::now(),
         };
 
         self.next_seq += 1;
@@ -157,12 +159,18 @@ impl<'r> IntoIterator for &'r Events {
 
 #[derive(Clone, Copy, Debug)]
 pub struct Event {
-    pub inner: input::Event,
+    pub inner:   input::Event,
+    pub entered: Time,
 }
 
 impl fmt::Display for Event {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{:?}", self.inner)
+        write!(
+            f,
+            "{:?} ({})",
+            self.inner,
+            self.entered.format("%H:%M:%S"),
+        )
     }
 }
 
