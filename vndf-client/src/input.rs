@@ -138,7 +138,7 @@ impl<'r> IntoIterator for &'r Events {
 }
 
 
-#[derive(Debug)]
+#[derive(Clone, Copy, Debug)]
 pub struct Event {
     pub inner: input::Event,
 }
