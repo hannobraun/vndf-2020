@@ -93,6 +93,7 @@ impl Input {
 
 pub struct Events {
     unsent:   VecDeque<Event>,
+    sent:     VecDeque<Event>,
     next_seq: u64,
 }
 
@@ -100,6 +101,7 @@ impl Events {
     pub fn new() -> Self {
         Self {
             unsent:   VecDeque::new(),
+            sent:     VecDeque::new(),
             next_seq: 0,
         }
     }
@@ -120,12 +122,14 @@ impl Events {
     pub fn iter(&self) -> Iter {
         Iter {
             unsent: self.unsent.iter(),
+            sent:   self.sent.iter(),
         }
     }
 
     pub fn unsent(&mut self) -> impl Iterator<Item=input::Event> + '_ {
         Unsent {
             inner: self.unsent.drain(..),
+            sent:  &mut self.sent,
         }
     }
 }
@@ -148,6 +152,7 @@ pub struct Event {
 
 pub struct Iter<'r> {
     unsent: vec_deque::Iter<'r, Event>,
+    sent:   vec_deque::Iter<'r, Event>,
 }
 
 impl<'r> Iterator for Iter<'r> {
@@ -155,12 +160,14 @@ impl<'r> Iterator for Iter<'r> {
 
     fn next(&mut self) -> Option<Self::Item> {
         self.unsent.next()
+            .or_else(|| self.sent.next())
     }
 }
 
 
 pub struct Unsent<'r> {
     inner: vec_deque::Drain<'r, Event>,
+    sent:  &'r mut VecDeque<Event>,
 }
 
 impl<'r> Iterator for Unsent<'r> {
@@ -168,6 +175,9 @@ impl<'r> Iterator for Unsent<'r> {
 
     fn next(&mut self) -> Option<Self::Item> {
         self.inner.next()
-            .map(|event| event.inner)
+            .map(|event| {
+                self.sent.push_back(event);
+                event.inner
+            })
     }
 }
