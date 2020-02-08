@@ -115,6 +115,10 @@ impl Events {
         self.inner.push_front(event);
     }
 
+    pub fn iter(&self) -> vec_deque::Iter<Event> {
+        self.inner.iter()
+    }
+
     pub fn drain(&mut self) -> impl Iterator<Item=Event> + '_ {
         self.inner.drain(..)
     }
@@ -125,6 +129,6 @@ impl<'r> IntoIterator for &'r Events {
     type Item     = &'r Event;
 
     fn into_iter(self) -> Self::IntoIter {
-        self.inner.iter()
+        self.iter()
     }
 }
