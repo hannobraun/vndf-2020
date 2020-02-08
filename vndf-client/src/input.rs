@@ -122,7 +122,9 @@ impl Events {
     }
 
     pub fn unsent(&mut self) -> impl Iterator<Item=input::Event> + '_ {
-        Unsent(self.unsent.drain(..))
+        Unsent {
+            inner: self.unsent.drain(..),
+        }
     }
 }
 
@@ -142,13 +144,15 @@ pub struct Event {
 }
 
 
-pub struct Unsent<'r>(vec_deque::Drain<'r, Event>);
+pub struct Unsent<'r> {
+    inner: vec_deque::Drain<'r, Event>,
+}
 
 impl<'r> Iterator for Unsent<'r> {
     type Item = input::Event;
 
     fn next(&mut self) -> Option<Self::Item> {
-        self.0.next()
+        self.inner.next()
             .map(|event| event.inner)
     }
 }
