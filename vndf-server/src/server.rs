@@ -142,6 +142,13 @@ impl Server {
             }
         }
 
+        for event in self.state.input_handled().ready() {
+            self.network.send(
+                event.addr,
+                msg::FromServer::InputHandled { seq: event.seq },
+            );
+        }
+
         for (&addr, _) in &self.clients {
             self.network.send(
                 addr,

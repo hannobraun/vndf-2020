@@ -26,6 +26,7 @@ use self::{
         Update,
     },
     players::{
+        InputHandled,
         PlayerConnected,
         PlayerCreated,
         PlayerDisconnected,
@@ -283,6 +284,10 @@ impl State {
 
     pub fn player_created(&mut self) -> events::Source<PlayerCreated> {
         self.players.player_created.source()
+    }
+
+    pub fn input_handled(&mut self) -> events::Source<InputHandled> {
+        self.players.input_handled.source()
     }
 
     pub fn diagnostics(&self) -> Diagnostics {
