@@ -120,7 +120,7 @@ impl Events {
     }
 
     pub fn drain(&mut self) -> impl Iterator<Item=Event> + '_ {
-        self.inner.drain(..)
+        Unsent(self.inner.drain(..))
     }
 }
 
@@ -130,5 +130,16 @@ impl<'r> IntoIterator for &'r Events {
 
     fn into_iter(self) -> Self::IntoIter {
         self.iter()
+    }
+}
+
+
+pub struct Unsent<'r>(vec_deque::Drain<'r, Event>);
+
+impl<'r> Iterator for Unsent<'r> {
+    type Item = Event;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        self.0.next()
     }
 }
