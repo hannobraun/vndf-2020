@@ -183,12 +183,12 @@ impl fmt::Display for Event {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         let time_fmt = "%H:%M:%S";
 
-        write!(f, "{:?} ({}", self.inner, self.entered.format(time_fmt))?;
+        write!(f, "{:?} (entered: {}", self.inner, self.entered.format(time_fmt))?;
         if let Some(sent) = self.sent {
-            write!(f, ", {}", sent.format(time_fmt))?;
+            write!(f, ", sent: {}", sent.format(time_fmt))?;
         }
         if let Some(handled) = self.handled {
-            write!(f, ", {}", handled.format(time_fmt))?;
+            write!(f, ", handled: {}", handled.format(time_fmt))?;
         }
         write!(f, ")")?;
 
