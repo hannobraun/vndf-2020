@@ -3,6 +3,8 @@ use std::{
     net::SocketAddr,
 };
 
+use log::warn;
+
 use crate::{
     cgs::{
         Handle,
@@ -101,8 +103,16 @@ pub fn handle_input(
 )
     -> Option<()>
 {
-    let player = index.get(&addr)?;
-    let player = players.get(*player)?;
+    let player = index.get(&addr)
+        .or_else(|| {
+            warn!("Player not in index: {}", addr);
+            None
+        })?;
+    let player = players.get(*player)
+        .or_else(|| {
+            warn!("Player component not found: {}", addr);
+            None
+        })?;
 
     for ship in ships.values_mut() {
         ship.apply_input(bodies, crafts, missile_launch, player, input);
