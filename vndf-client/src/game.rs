@@ -9,6 +9,7 @@ use std::{
 use crate::shared::{
     cgs::Handle,
     game::{
+        WORLD_SIZE,
         Diagnostics,
         base::{
             Component,
@@ -43,6 +44,11 @@ impl State {
         self.statistics.update();
 
         for body in self.data.bodies.values_mut() {
+            body.enforce_boundary(
+                WORLD_SIZE,
+                &self.data.positions,
+                &mut self.data.velocities,
+            );
             body.update(
                 dt,
                 &mut self.data.positions,
