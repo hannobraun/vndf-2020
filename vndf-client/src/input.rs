@@ -92,7 +92,7 @@ impl Input {
 
 
 pub struct Events {
-    pub inner: VecDeque<Event>,
+    inner: VecDeque<Event>,
 }
 
 impl Events {
