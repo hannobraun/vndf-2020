@@ -31,8 +31,8 @@ use crate::{
 };
 
 use super::{
-    components::Player,
-    events::PlayerCreated,
+    Player,
+    PlayerCreated,
 };
 
 
