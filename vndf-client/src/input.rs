@@ -164,6 +164,13 @@ impl<'r> Iterator for Iter<'r> {
     }
 }
 
+impl DoubleEndedIterator for Iter<'_> {
+    fn next_back(&mut self) -> Option<Self::Item> {
+        self.sent.next_back()
+            .or_else(|| self.unsent.next_back())
+    }
+}
+
 
 pub struct Unsent<'r> {
     inner: vec_deque::Drain<'r, Event>,
