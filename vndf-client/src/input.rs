@@ -118,7 +118,9 @@ impl Events {
     }
 
     pub fn iter(&self) -> Iter {
-        Iter(self.unsent.iter())
+        Iter {
+            unsent: self.unsent.iter(),
+        }
     }
 
     pub fn unsent(&mut self) -> impl Iterator<Item=input::Event> + '_ {
@@ -144,13 +146,15 @@ pub struct Event {
 }
 
 
-pub struct Iter<'r>(vec_deque::Iter<'r, Event>);
+pub struct Iter<'r> {
+    unsent: vec_deque::Iter<'r, Event>,
+}
 
 impl<'r> Iterator for Iter<'r> {
     type Item = &'r Event;
 
     fn next(&mut self) -> Option<Self::Item> {
-        self.0.next()
+        self.unsent.next()
     }
 }
 
