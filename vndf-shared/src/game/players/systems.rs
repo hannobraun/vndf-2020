@@ -94,12 +94,12 @@ pub fn handle_input(
     ships:          &mut Store<Ship>,
     missile_launch: &mut events::Sink<MissileLaunch>,
     index:          &mut HashMap<SocketAddr, Handle>,
-    address:        SocketAddr,
+    addr:           SocketAddr,
     input:          input::Event,
 )
     -> Option<()>
 {
-    let player = index.get(&address)?;
+    let player = index.get(&addr)?;
     let player = players.get(*player)?;
 
     for ship in ships.values_mut() {
