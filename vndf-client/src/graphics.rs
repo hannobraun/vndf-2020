@@ -335,7 +335,7 @@ Removals per s: {}",
         }
 
         let mut input_events = String::from("Input:\n");
-        for event in &input.events {
+        for event in input.events.iter().rev() {
             input_events.push_str(&format!("{:?}\n", event));
         }
 
