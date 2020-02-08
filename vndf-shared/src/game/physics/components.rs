@@ -5,6 +5,7 @@ use serde::{
 
 use crate::{
     cgs::{
+        Get,
         GetMut,
         Handle,
         Store,
@@ -80,8 +81,8 @@ impl Body {
 
     pub fn enforce_boundary(&mut self,
         world_size: f32,
-        positions:  &Store<Position>,
-        velocities: &mut Store<Velocity>,
+        positions:  &impl Get<Position>,
+        velocities: &mut impl GetMut<Velocity>,
     )
         -> Option<()>
     {
