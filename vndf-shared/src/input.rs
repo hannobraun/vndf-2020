@@ -7,7 +7,13 @@ use crate::math::Pnt2;
 
 
 #[derive(Clone, Copy, Debug, Deserialize, Serialize, PartialEq)]
-pub enum Event {
+pub struct Event {
+    pub kind: EventKind,
+}
+
+
+#[derive(Clone, Copy, Debug, Deserialize, Serialize, PartialEq)]
+pub enum EventKind {
     Rotate(Rotation),
     Thrust(bool),
     LaunchMissile {

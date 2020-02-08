@@ -10,6 +10,7 @@ use crate::{
     shared::{
         input::{
             Event,
+            EventKind,
             Rotation,
         },
         math::Pnt2,
@@ -51,17 +52,17 @@ impl Input {
     pub fn key_down(&mut self, key: Key) {
         match key {
             k if k == self.config.input.left => {
-                self.events.push(Event::Rotate(Rotation::Left))
+                self.events.push(EventKind::Rotate(Rotation::Left))
             }
             k if k == self.config.input.right => {
-                self.events.push(Event::Rotate(Rotation::Right))
+                self.events.push(EventKind::Rotate(Rotation::Right))
             }
             k if k == self.config.input.thrust => {
-                self.events.push(Event::Thrust(true))
+                self.events.push(EventKind::Thrust(true))
             }
             k if k == self.config.input.launch => {
                 if let Some(target) = self.pointer_world {
-                    self.events.push(Event::LaunchMissile { target })
+                    self.events.push(EventKind::LaunchMissile { target })
                 }
             }
 
@@ -72,13 +73,13 @@ impl Input {
     pub fn key_up(&mut self, key: Key) {
         match key {
             k if k == self.config.input.left => {
-                self.events.push(Event::Rotate(Rotation::None))
+                self.events.push(EventKind::Rotate(Rotation::None))
             }
             k if k == self.config.input.right => {
-                self.events.push(Event::Rotate(Rotation::None))
+                self.events.push(EventKind::Rotate(Rotation::None))
             }
             k if k == self.config.input.thrust => {
-                self.events.push(Event::Thrust(false))
+                self.events.push(EventKind::Thrust(false))
             }
 
             _ => (),
@@ -90,7 +91,10 @@ impl Input {
 pub struct Events(pub VecDeque<Event>);
 
 impl Events {
-    pub fn push(&mut self, event: Event) {
+    pub fn push(&mut self, kind: EventKind) {
+        let event = Event {
+            kind,
+        };
         self.0.push_front(event);
     }
 

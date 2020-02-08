@@ -78,14 +78,14 @@ impl Ship {
             return None;
         }
 
-        match event {
-            input::Event::Rotate(rotation) => {
+        match event.kind {
+            input::EventKind::Rotate(rotation) => {
                 self.rotation = rotation;
             }
-            input::Event::Thrust(thrust) => {
+            input::EventKind::Thrust(thrust) => {
                 craft.engine_on = thrust;
             }
-            input::Event::LaunchMissile { target } => {
+            input::EventKind::LaunchMissile { target } => {
                 let missile = self.launch_missile(
                     craft.owner,
                     &body,
