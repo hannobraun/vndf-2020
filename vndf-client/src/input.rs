@@ -117,8 +117,8 @@ impl Events {
         self.unsent.push_back(event);
     }
 
-    pub fn iter(&self) -> vec_deque::Iter<Event> {
-        self.unsent.iter()
+    pub fn iter(&self) -> Iter {
+        Iter(self.unsent.iter())
     }
 
     pub fn unsent(&mut self) -> impl Iterator<Item=input::Event> + '_ {
@@ -129,7 +129,7 @@ impl Events {
 }
 
 impl<'r> IntoIterator for &'r Events {
-    type IntoIter = vec_deque::Iter<'r, Event>;
+    type IntoIter = Iter<'r>;
     type Item     = &'r Event;
 
     fn into_iter(self) -> Self::IntoIter {
@@ -141,6 +141,17 @@ impl<'r> IntoIterator for &'r Events {
 #[derive(Debug)]
 pub struct Event {
     pub inner: input::Event,
+}
+
+
+pub struct Iter<'r>(vec_deque::Iter<'r, Event>);
+
+impl<'r> Iterator for Iter<'r> {
+    type Item = &'r Event;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        self.0.next()
+    }
 }
 
 
