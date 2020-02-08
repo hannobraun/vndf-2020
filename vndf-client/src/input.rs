@@ -92,20 +92,26 @@ impl Input {
 
 
 pub struct Events {
-    inner: VecDeque<Event>,
+    inner:    VecDeque<Event>,
+    next_seq: u64,
 }
 
 impl Events {
     pub fn new() -> Self {
         Self {
-            inner: VecDeque::new(),
+            inner:    VecDeque::new(),
+            next_seq: 0,
         }
     }
 
     pub fn push(&mut self, kind: EventKind) {
         let event = Event {
+            seq: self.next_seq,
             kind,
         };
+
+        self.next_seq += 1;
+
         self.inner.push_front(event);
     }
 

@@ -8,6 +8,7 @@ use crate::math::Pnt2;
 
 #[derive(Clone, Copy, Debug, Deserialize, Serialize, PartialEq)]
 pub struct Event {
+    pub seq:  u64,
     pub kind: EventKind,
 }
 
