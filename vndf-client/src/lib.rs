@@ -214,7 +214,10 @@ impl EventHandler for Game {
     }
 
     fn draw(&mut self, context: &mut Context) -> GameResult {
-        self.state.update(timer::duration_to_f64(timer::delta(context)) as f32);
+        let dt = timer::duration_to_f64(timer::delta(context)) as f32;
+
+        self.state.frame_time.push(dt);
+        self.state.update(dt);
         self.graphics.draw(context, &self.input, &self.state)
     }
 }

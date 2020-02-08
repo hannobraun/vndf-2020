@@ -276,6 +276,22 @@ End game - Escape",
                 .dest([20.0, 20.0])
         )?;
 
+        let report = state.frame_time.report();
+        let frame_time = format!(
+            "Frame time: {:.3} (avg {:.3}/{:.3}/{:.3})",
+            report.latest,
+            report.avg_1,
+            report.avg_2,
+            report.avg_3,
+        );
+
+        graphics::draw(
+            context,
+            &Text::new(frame_time),
+            DrawParam::new()
+                .dest([20.0, 150.0])
+        )?;
+
         if let Some(diagnostics) = state.diagnostics {
             let diagnostics = format!(
 "Diagnostics:
