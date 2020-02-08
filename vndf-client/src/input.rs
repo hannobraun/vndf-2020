@@ -1,6 +1,9 @@
-use std::collections::{
-    VecDeque,
-    vec_deque,
+use std::{
+    collections::{
+        VecDeque,
+        vec_deque,
+    },
+    fmt,
 };
 
 use ggez::Context;
@@ -155,6 +158,12 @@ impl<'r> IntoIterator for &'r Events {
 #[derive(Clone, Copy, Debug)]
 pub struct Event {
     pub inner: input::Event,
+}
+
+impl fmt::Display for Event {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{:?}", self.inner)
+    }
 }
 
 
