@@ -50,16 +50,20 @@ impl Input {
 
     pub fn key_down(&mut self, key: Key) {
         match key {
-            k if k == self.config.input.left =>
-                self.events.push(Event::Rotate(Rotation::Left)),
-            k if k == self.config.input.right =>
-                self.events.push(Event::Rotate(Rotation::Right)),
-            k if k == self.config.input.thrust =>
-                self.events.push(Event::Thrust(true)),
-            k if k == self.config.input.launch =>
+            k if k == self.config.input.left => {
+                self.events.push(Event::Rotate(Rotation::Left))
+            }
+            k if k == self.config.input.right => {
+                self.events.push(Event::Rotate(Rotation::Right))
+            }
+            k if k == self.config.input.thrust => {
+                self.events.push(Event::Thrust(true))
+            }
+            k if k == self.config.input.launch => {
                 if let Some(target) = self.pointer_world {
                     self.events.push(Event::LaunchMissile { target })
-                },
+                }
+            }
 
             _ => (),
         }
@@ -67,12 +71,15 @@ impl Input {
 
     pub fn key_up(&mut self, key: Key) {
         match key {
-            k if k == self.config.input.left =>
-                self.events.push(Event::Rotate(Rotation::None)),
-            k if k == self.config.input.right =>
-                self.events.push(Event::Rotate(Rotation::None)),
-            k if k == self.config.input.thrust =>
-                self.events.push(Event::Thrust(false)),
+            k if k == self.config.input.left => {
+                self.events.push(Event::Rotate(Rotation::None))
+            }
+            k if k == self.config.input.right => {
+                self.events.push(Event::Rotate(Rotation::None))
+            }
+            k if k == self.config.input.thrust => {
+                self.events.push(Event::Thrust(false))
+            }
 
             _ => (),
         }
