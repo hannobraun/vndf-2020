@@ -11,3 +11,6 @@ default-members = [
     "vndf-shared",
     "vndf-tests",
 ]
+
+[profile.dev.package."*"]
+opt-level = 3
