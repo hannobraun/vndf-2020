@@ -112,14 +112,14 @@ impl Feature {
         missile_launch: &mut events::Sink<MissileLaunch>,
     ) {
         handle_input(
+            event.addr,
+            event.event,
             bodies,
             crafts,
             &self.players,
             ships,
             missile_launch,
             &mut self.players_by_address,
-            event.addr,
-            event.event,
         );
     }
 }

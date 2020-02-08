@@ -88,14 +88,14 @@ pub fn disconnect_player(
 }
 
 pub fn handle_input(
+    addr:           SocketAddr,
+    input:          input::Event,
     bodies:         &Store<Body>,
     crafts:         &mut Store<Craft>,
     players:        &Store<Player>,
     ships:          &mut Store<Ship>,
     missile_launch: &mut events::Sink<MissileLaunch>,
     index:          &mut HashMap<SocketAddr, Handle>,
-    addr:           SocketAddr,
-    input:          input::Event,
 )
     -> Option<()>
 {
