@@ -12,7 +12,7 @@ use crate::{
     },
     shared::{
         input::{
-            Event,
+            self,
             EventKind,
             Rotation,
         },
@@ -106,8 +106,10 @@ impl Events {
 
     pub fn push(&mut self, kind: EventKind) {
         let event = Event {
-            seq: self.next_seq,
-            kind,
+            inner: input::Event {
+                seq: self.next_seq,
+                kind,
+            },
         };
 
         self.next_seq += 1;
@@ -119,7 +121,7 @@ impl Events {
         self.inner.iter()
     }
 
-    pub fn unsent(&mut self) -> impl Iterator<Item=Event> + '_ {
+    pub fn unsent(&mut self) -> impl Iterator<Item=input::Event> + '_ {
         Unsent(self.inner.drain(..))
     }
 }
@@ -134,12 +136,19 @@ impl<'r> IntoIterator for &'r Events {
 }
 
 
+#[derive(Debug)]
+pub struct Event {
+    pub inner: input::Event,
+}
+
+
 pub struct Unsent<'r>(vec_deque::Drain<'r, Event>);
 
 impl<'r> Iterator for Unsent<'r> {
-    type Item = Event;
+    type Item = input::Event;
 
     fn next(&mut self) -> Option<Self::Item> {
         self.0.next()
+            .map(|event| event.inner)
     }
 }
