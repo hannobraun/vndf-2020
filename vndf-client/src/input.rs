@@ -132,6 +132,14 @@ impl Events {
             sent:  &mut self.sent,
         }
     }
+
+    pub fn limit(&mut self) {
+        while self.unsent.len() + self.sent.len() > 10 {
+            if self.sent.pop_front().is_none() {
+                break;
+            }
+        }
+    }
 }
 
 impl<'r> IntoIterator for &'r Events {
