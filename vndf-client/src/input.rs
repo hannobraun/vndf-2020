@@ -1,6 +1,8 @@
 use std::{
     collections::{
+        BTreeMap,
         VecDeque,
+        btree_map,
         vec_deque,
     },
     fmt,
@@ -97,7 +99,7 @@ impl Input {
 
 pub struct Events {
     unsent:   VecDeque<Event>,
-    sent:     VecDeque<Event>,
+    sent:     BTreeMap<u64, Event>,
     next_seq: u64,
 }
 
@@ -105,7 +107,7 @@ impl Events {
     pub fn new() -> Self {
         Self {
             unsent:   VecDeque::new(),
-            sent:     VecDeque::new(),
+            sent:     BTreeMap::new(),
             next_seq: 0,
         }
     }
@@ -128,7 +130,7 @@ impl Events {
     pub fn iter(&self) -> Iter {
         Iter {
             unsent: self.unsent.iter(),
-            sent:   self.sent.iter(),
+            sent:   self.sent.values(),
         }
     }
 
@@ -141,7 +143,11 @@ impl Events {
 
     pub fn limit(&mut self) {
         while self.unsent.len() + self.sent.len() > 10 {
-            if self.sent.pop_front().is_none() {
+            let first = self.sent.keys().copied().next();
+            if let Some(first) = first {
+                self.sent.remove(&first);
+            }
+            else {
                 break;
             }
         }
@@ -182,7 +188,7 @@ impl fmt::Display for Event {
 
 pub struct Iter<'r> {
     unsent: vec_deque::Iter<'r, Event>,
-    sent:   vec_deque::Iter<'r, Event>,
+    sent:   btree_map::Values<'r, u64, Event>,
 }
 
 impl<'r> Iterator for Iter<'r> {
@@ -204,7 +210,7 @@ impl DoubleEndedIterator for Iter<'_> {
 
 pub struct Unsent<'r> {
     inner: vec_deque::Drain<'r, Event>,
-    sent:  &'r mut VecDeque<Event>,
+    sent:  &'r mut BTreeMap<u64, Event>,
 }
 
 impl<'r> Iterator for Unsent<'r> {
@@ -214,7 +220,7 @@ impl<'r> Iterator for Unsent<'r> {
         self.inner.next()
             .map(|mut event| {
                 event.sent = Some(Time::now());
-                self.sent.push_back(event);
+                self.sent.insert(event.inner.seq, event);
                 event.inner
             })
     }
