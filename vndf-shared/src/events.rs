@@ -31,7 +31,7 @@ pub struct Source<'r, T>(&'r mut Buf<T>);
 
 impl<T> Source<'_, T> {
     pub fn next(&mut self) -> Option<T> {
-        self.ready().next()
+        (self.0).0.pop_front()
     }
 
     pub fn ready(&mut self) -> impl Iterator<Item=T> + '_ {
