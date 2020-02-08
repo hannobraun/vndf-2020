@@ -1,3 +1,4 @@
+use log::warn;
 use serde::{
     Deserialize,
     Serialize,
@@ -71,8 +72,16 @@ impl Ship {
     )
         -> Option<()>
     {
-        let craft = crafts.get_mut(self.craft)?;
-        let body  = bodies.get(craft.body)?;
+        let craft = crafts.get_mut(self.craft)
+            .or_else(|| {
+                warn!("Craft not found: {:?}", self.craft);
+                None
+            })?;
+        let body = bodies.get(craft.body)
+            .or_else(|| {
+                warn!("Body not found: {:?}", craft.body);
+                None
+            })?;
 
         if craft.owner != player.id {
             return None;
