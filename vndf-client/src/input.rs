@@ -114,7 +114,7 @@ impl Events {
 
         self.next_seq += 1;
 
-        self.inner.push_front(event);
+        self.inner.push_back(event);
     }
 
     pub fn iter(&self) -> vec_deque::Iter<Event> {
