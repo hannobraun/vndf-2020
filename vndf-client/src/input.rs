@@ -119,7 +119,7 @@ impl Events {
         self.inner.iter()
     }
 
-    pub fn drain(&mut self) -> impl Iterator<Item=Event> + '_ {
+    pub fn unsent(&mut self) -> impl Iterator<Item=Event> + '_ {
         Unsent(self.inner.drain(..))
     }
 }
