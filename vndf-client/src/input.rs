@@ -48,45 +48,34 @@ impl Input {
         );
     }
 
-    pub fn key_down(&mut self, key: Key) -> Option<Event> {
-        let event = match key {
+    pub fn key_down(&mut self, key: Key) {
+        match key {
             k if k == self.config.input.left =>
-                Some(Event::Rotate(Rotation::Left)),
+                self.events.push(Event::Rotate(Rotation::Left)),
             k if k == self.config.input.right =>
-                Some(Event::Rotate(Rotation::Right)),
+                self.events.push(Event::Rotate(Rotation::Right)),
             k if k == self.config.input.thrust =>
-                Some(Event::Thrust(true)),
+                self.events.push(Event::Thrust(true)),
             k if k == self.config.input.launch =>
-                self.pointer_world
-                    .map(|target| Event::LaunchMissile { target }),
+                if let Some(target) = self.pointer_world {
+                    self.events.push(Event::LaunchMissile { target })
+                },
 
-            _ => None,
-        };
-
-        if let Some(event) = event {
-            self.events.push(event);
+            _ => (),
         }
+   }
 
-        event
-    }
-
-    pub fn key_up(&mut self, key: Key) -> Option<Event> {
-        let event = match key {
+    pub fn key_up(&mut self, key: Key) {
+        match key {
             k if k == self.config.input.left =>
-                Some(Event::Rotate(Rotation::None)),
+                self.events.push(Event::Rotate(Rotation::None)),
             k if k == self.config.input.right =>
-                Some(Event::Rotate(Rotation::None)),
+                self.events.push(Event::Rotate(Rotation::None)),
             k if k == self.config.input.thrust =>
-                Some(Event::Thrust(false)),
+                self.events.push(Event::Thrust(false)),
 
-            _ => None,
-        };
-
-        if let Some(event) = event {
-            self.events.push(event);
+            _ => (),
         }
-
-        event
     }
 }
 
@@ -96,8 +85,9 @@ pub struct Events(pub VecDeque<Event>);
 impl Events {
     pub fn push(&mut self, event: Event) {
         self.0.push_front(event);
-        while self.0.len() > 10 {
-            self.0.pop_back();
-        }
+    }
+
+    pub fn drain(&mut self) -> impl Iterator<Item=Event> + '_ {
+        self.0.drain(..)
     }
 }

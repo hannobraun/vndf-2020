@@ -134,7 +134,8 @@ impl EventHandler for Game {
         _x:     f32,
         _y:     f32,
     ) {
-        if let Some(event) = self.input.key_down(Key::Mouse(button)) {
+        self.input.key_down(Key::Mouse(button));
+        for event in self.input.events.drain() {
             self.conn.send(msg::FromClient::Input(event))
                 .expect("Failed to send input event");
         }
@@ -146,7 +147,8 @@ impl EventHandler for Game {
         _x:     f32,
         _y:     f32,
     ) {
-        if let Some(event) = self.input.key_up(Key::Mouse(button)) {
+        self.input.key_up(Key::Mouse(button));
+        for event in self.input.events.drain() {
             self.conn.send(msg::FromClient::Input(event))
                 .expect("Failed to send input event");
         }
@@ -172,8 +174,8 @@ impl EventHandler for Game {
             quit(context);
         }
 
-        let event = self.input.key_down(Key::Keyboard(key_code));
-        if let Some(event) = event {
+        self.input.key_down(Key::Keyboard(key_code));
+        for event in self.input.events.drain() {
             self.conn.send(msg::FromClient::Input(event))
                 .expect("Failed to send input event");
         }
@@ -184,7 +186,8 @@ impl EventHandler for Game {
         key_code: KeyCode,
         _:        KeyMods,
     ) {
-        if let Some(event) = self.input.key_up(Key::Keyboard(key_code)) {
+        self.input.key_up(Key::Keyboard(key_code));
+        for event in self.input.events.drain() {
             self.conn.send(msg::FromClient::Input(event))
                 .expect("Failed to send input event");
         }
