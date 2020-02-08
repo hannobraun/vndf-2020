@@ -88,21 +88,25 @@ impl Input {
 }
 
 
-pub struct Events(pub VecDeque<Event>);
+pub struct Events {
+    pub inner: VecDeque<Event>,
+}
 
 impl Events {
     pub fn new() -> Self {
-        Events(VecDeque::new())
+        Self {
+            inner: VecDeque::new(),
+        }
     }
 
     pub fn push(&mut self, kind: EventKind) {
         let event = Event {
             kind,
         };
-        self.0.push_front(event);
+        self.inner.push_front(event);
     }
 
     pub fn drain(&mut self) -> impl Iterator<Item=Event> + '_ {
-        self.0.drain(..)
+        self.inner.drain(..)
     }
 }
