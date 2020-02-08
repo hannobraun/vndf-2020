@@ -1,4 +1,7 @@
-use std::collections::VecDeque;
+use std::collections::{
+    VecDeque,
+    vec_deque,
+};
 
 use ggez::Context;
 
@@ -108,5 +111,14 @@ impl Events {
 
     pub fn drain(&mut self) -> impl Iterator<Item=Event> + '_ {
         self.inner.drain(..)
+    }
+}
+
+impl<'r> IntoIterator for &'r Events {
+    type IntoIter = vec_deque::Iter<'r, Event>;
+    type Item     = &'r Event;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.inner.iter()
     }
 }
