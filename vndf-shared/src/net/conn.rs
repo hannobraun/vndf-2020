@@ -23,7 +23,6 @@ use std::{
 use log::{
     debug,
     error,
-    info,
     trace,
 };
 
@@ -39,8 +38,6 @@ pub struct Conn<In, Out> {
 
     pub local_addr: SocketAddr,
     pub peer_addr:  SocketAddr,
-
-    quiet: bool,
 }
 
 impl<In, Out> Conn<In, Out>
@@ -96,7 +93,6 @@ impl<In, Out> Conn<In, Out>
                 tx: out_tx,
                 local_addr,
                 peer_addr,
-                quiet,
             }
         )
     }
@@ -127,12 +123,7 @@ impl<In, Out> Conn<In, Out>
     }
 
     pub fn send(&mut self, message: Out) -> net::Result {
-        if self.quiet {
-            debug!("Sending message: {:?}", message);
-        }
-        else {
-            info!("Sending message: {:?}", message);
-        }
+        debug!("Sending message: {:?}", message);
 
         self.tx.send(message)?;
 
