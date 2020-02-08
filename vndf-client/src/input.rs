@@ -120,6 +120,7 @@ impl Events {
             },
             entered: Time::now(),
             sent:    None,
+            handled: None,
         };
 
         self.next_seq += 1;
@@ -152,6 +153,12 @@ impl Events {
             }
         }
     }
+
+    pub fn handled(&mut self, seq: u64) {
+        if let Some(event) = self.sent.get_mut(&seq) {
+            event.handled = Some(Time::now());
+        }
+    }
 }
 
 impl<'r> IntoIterator for &'r Events {
@@ -169,6 +176,7 @@ pub struct Event {
     pub inner:   input::Event,
     pub entered: Time,
     pub sent:    Option<Time>,
+    pub handled: Option<Time>,
 }
 
 impl fmt::Display for Event {
@@ -178,6 +186,9 @@ impl fmt::Display for Event {
         write!(f, "{:?} ({}", self.inner, self.entered.format(time_fmt))?;
         if let Some(sent) = self.sent {
             write!(f, ", {}", sent.format(time_fmt))?;
+        }
+        if let Some(handled) = self.handled {
+            write!(f, ", {}", handled.format(time_fmt))?;
         }
         write!(f, ")")?;
 

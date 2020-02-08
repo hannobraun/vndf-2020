@@ -199,8 +199,8 @@ impl EventHandler for Game {
                 Ok(msg::FromServer::RemoveComponent(handle)) => {
                     self.state.remove_component(handle);
                 }
-                Ok(msg::FromServer::InputHandled { seq: _ }) => {
-                    // not handled right now
+                Ok(msg::FromServer::InputHandled { seq }) => {
+                    self.input.events.handled(seq);
                 }
                 Ok(msg::FromServer::Diagnostics(diagnostics)) => {
                     self.state.diagnostics = Some(diagnostics);
