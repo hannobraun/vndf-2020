@@ -135,10 +135,6 @@ impl EventHandler for Game {
         _y:     f32,
     ) {
         self.input.key_down(Key::Mouse(button));
-        for event in self.input.events.drain() {
-            self.conn.send(msg::FromClient::Input(event))
-                .expect("Failed to send input event");
-        }
     }
 
     fn mouse_button_up_event(&mut self,
@@ -148,10 +144,6 @@ impl EventHandler for Game {
         _y:     f32,
     ) {
         self.input.key_up(Key::Mouse(button));
-        for event in self.input.events.drain() {
-            self.conn.send(msg::FromClient::Input(event))
-                .expect("Failed to send input event");
-        }
     }
 
     fn mouse_motion_event(&mut self,
@@ -175,10 +167,6 @@ impl EventHandler for Game {
         }
 
         self.input.key_down(Key::Keyboard(key_code));
-        for event in self.input.events.drain() {
-            self.conn.send(msg::FromClient::Input(event))
-                .expect("Failed to send input event");
-        }
     }
 
     fn key_up_event(&mut self,
@@ -187,13 +175,14 @@ impl EventHandler for Game {
         _:        KeyMods,
     ) {
         self.input.key_up(Key::Keyboard(key_code));
+    }
+
+    fn update(&mut self, context: &mut Context) -> GameResult {
         for event in self.input.events.drain() {
             self.conn.send(msg::FromClient::Input(event))
                 .expect("Failed to send input event");
         }
-    }
 
-    fn update(&mut self, context: &mut Context) -> GameResult {
         for message in self.conn.incoming() {
             match message {
                 Ok(msg::FromServer::Ping) => {
