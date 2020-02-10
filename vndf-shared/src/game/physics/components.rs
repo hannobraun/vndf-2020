@@ -38,6 +38,15 @@ impl Velocity {
     }
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
+pub struct Direction(pub Vec2);
+
+impl Direction {
+    pub fn new() -> Self {
+        Self(Vec2::unit_x())
+    }
+}
+
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Body {
