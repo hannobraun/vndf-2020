@@ -48,6 +48,12 @@ impl Direction {
 }
 
 
+/// A physical body
+///
+/// Data that changes seldomly is kept in this struct itself. Data that is
+/// derived from other data in `Body`, changes regularly, and thus is lends
+/// itself to being interpolated client-side, is kept in separate components, so
+/// it can be sent separately, at different rates.
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Body {
     pub pos: Handle,
