@@ -116,6 +116,7 @@ pub fn update_explosions(
 pub fn remove_explosion(
     handle:     Handle,
     bodies:     &mut Store<Body>,
+    directions: &mut Store<Direction>,
     explosions: &mut Store<Explosion>,
     positions:  &mut Store<Position>,
     velocities: &mut Store<Velocity>,
@@ -123,6 +124,12 @@ pub fn remove_explosion(
     -> Option<()>
 {
     let explosion = explosions.remove(handle)?;
-    Body::remove(explosion.body, bodies, positions, velocities);
+    Body::remove(
+        explosion.body,
+        bodies,
+        directions,
+        positions,
+        velocities,
+    );
     Some(())
 }

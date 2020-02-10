@@ -13,6 +13,7 @@ use crate::{
         },
         physics::{
             Body,
+            Direction,
             Position,
             Velocity,
         },
@@ -52,6 +53,7 @@ impl Feature {
         event:      &Death,
         bodies:     &mut Store<Body>,
         crafts:     &mut Store<Craft>,
+        directions: &mut Store<Direction>,
         fuels:      &mut Store<Fuel>,
         guidances:  &mut Store<Guidance>,
         missiles:   &mut Store<Missile>,
@@ -64,6 +66,7 @@ impl Feature {
             event.handle,
             bodies,
             crafts,
+            directions,
             fuels,
             guidances,
             &mut self.healths,

@@ -127,6 +127,7 @@ impl Body {
     pub fn remove(
         handle:     Handle,
         bodies:     &mut Store<Body>,
+        directions: &mut Store<Direction>,
         positions:  &mut Store<Position>,
         velocities: &mut Store<Velocity>,
     )
@@ -134,6 +135,7 @@ impl Body {
     {
         let body = bodies.remove(handle)?;
 
+        directions.remove(body.dir);
         positions.remove(body.pos);
         velocities.remove(body.vel);
 

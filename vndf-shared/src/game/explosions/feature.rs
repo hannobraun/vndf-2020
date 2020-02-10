@@ -97,12 +97,14 @@ impl Feature {
     pub fn on_explosion_faded(&mut self,
         event:      &ExplosionFaded,
         bodies:     &mut Store<Body>,
+        directions: &mut Store<Direction>,
         positions:  &mut Store<Position>,
         velocities: &mut Store<Velocity>,
     ) {
         remove_explosion(
             event.handle,
             bodies,
+            directions,
             &mut self.explosions,
             positions,
             velocities,

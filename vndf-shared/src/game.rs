@@ -165,6 +165,7 @@ impl State {
                 &event,
                 &mut self.physics.bodies,
                 &mut self.crafts.crafts,
+                &mut self.physics.directions,
                 &mut self.crafts.fuels,
                 &mut self.missiles.guidances,
                 &mut self.missiles.missiles,
@@ -190,6 +191,7 @@ impl State {
             self.explosions.on_explosion_faded(
                 &event,
                 &mut self.physics.bodies,
+                &mut self.physics.directions,
                 &mut self.physics.positions,
                 &mut self.physics.velocities,
             );

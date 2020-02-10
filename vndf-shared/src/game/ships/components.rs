@@ -22,6 +22,7 @@ use crate::{
         },
         physics::{
             Body,
+            Direction,
             Position,
             Velocity,
         },
@@ -140,6 +141,7 @@ impl Ship {
         handle:     Handle,
         bodies:     &mut Store<Body>,
         crafts:     &mut Store<Craft>,
+        directions: &mut Store<Direction>,
         fuels:      &mut Store<Fuel>,
         healths:    &mut Store<Health>,
         positions:  &mut Store<Position>,
@@ -153,6 +155,7 @@ impl Ship {
             ship.craft,
             bodies,
             crafts,
+            directions,
             fuels,
             healths,
             positions,
