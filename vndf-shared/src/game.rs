@@ -198,6 +198,8 @@ impl State {
             .map(|(handle, &c)| (handle, Component::Body(c)));
         let crafts = self.crafts.crafts.iter()
             .map(|(handle, &c)| (handle, Component::Craft(c)));
+        let directions = self.physics.directions.iter()
+            .map(|(handle, &c)| (handle, Component::Direction(c)));
         let explosions = self.explosions.explosions.iter()
             .map(|(handle, &c)| (handle, Component::Explosion(c)));
         let fuels = self.crafts.fuels.iter()
@@ -217,6 +219,7 @@ impl State {
 
         bodies
             .chain(crafts)
+            .chain(directions)
             .chain(explosions)
             .chain(fuels)
             .chain(healths)
