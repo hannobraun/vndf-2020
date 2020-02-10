@@ -5,6 +5,7 @@ use serde::{
 
 use crate::{
     cgs::{
+        Get,
         GetMut,
         Handle,
         Store,
@@ -13,6 +14,7 @@ use crate::{
         health::Health,
         physics::{
             Body,
+            Direction,
             Position,
             Velocity,
         },
@@ -39,17 +41,19 @@ pub struct Craft {
 impl Craft {
     pub fn apply_thrust(&mut self,
         dt:     f32,
-        bodies: &mut impl GetMut<Body>,
-        fuels:  &mut impl GetMut<Fuel>,
+        bodies:     &mut impl GetMut<Body>,
+        directions: &impl Get<Direction>,
+        fuels:      &mut impl GetMut<Fuel>,
     )
         -> Option<()>
     {
         let body = bodies.get_mut(self.body)?;
+        let dir  = directions.get(body.dir)?;
         let fuel = fuels.get_mut(self.fuel)?;
 
         body.acc = if self.engine_on && fuel.0 > 0.0 {
             fuel.0 -= self.thrust * dt;
-            body.dir.normalize() * self.thrust
+            dir.0.normalize() * self.thrust
         }
         else {
             Vec2::zero()

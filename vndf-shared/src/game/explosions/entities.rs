@@ -5,6 +5,7 @@ use crate::{
     },
     game::physics::{
         Body,
+        Direction,
         Position,
         Velocity,
     },
@@ -21,6 +22,7 @@ pub struct ExplosionEntity {
 impl ExplosionEntity {
     pub fn create(&self,
         bodies:     &mut Store<Body>,
+        directions: &mut Store<Direction>,
         explosions: &mut Store<Explosion>,
         positions:  &mut Store<Position>,
         velocities: &mut Store<Velocity>,
@@ -33,7 +35,9 @@ impl ExplosionEntity {
         let vel = *velocities.get(self.exploding.vel)?;
         let vel = velocities.insert(Velocity(vel.0 * 0.05));
 
-        let body = Body::new(pos, vel);
+        let dir = directions.insert(Direction::new());
+
+        let body = Body::new(pos, vel, dir);
         let body = bodies.insert(body);
 
         let explosion = explosions.insert(Explosion::new(body, self.strength));

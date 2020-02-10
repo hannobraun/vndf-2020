@@ -9,6 +9,7 @@ use crate::{
         health::Health,
         physics::{
             Body,
+            Direction,
             Position,
             Velocity,
         },
@@ -28,6 +29,7 @@ impl ShipEntity {
     pub fn create(&self,
         bodies:     &mut Store<Body>,
         crafts:     &mut Store<Craft>,
+        directions: &mut Store<Direction>,
         fuels:      &mut Store<Fuel>,
         healths:    &mut Store<Health>,
         positions:  &mut Store<Position>,
@@ -36,7 +38,8 @@ impl ShipEntity {
     ) {
         let pos    = positions.insert(Position::new());
         let vel    = velocities.insert(Velocity::new());
-        let body   = bodies.insert(Body::new(pos, vel));
+        let dir    = directions.insert(Direction::new());
+        let body   = bodies.insert(Body::new(pos, vel, dir));
         let fuel   = fuels.insert(Fuel(1200.0));
         let health = healths.insert(Health::new(body, 10.0));
 

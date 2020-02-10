@@ -169,13 +169,14 @@ impl Graphics {
         let craft = get!(state.data.crafts, ship.craft);
         let body  = get!(state.data.bodies, craft.body);
         let pos   = get!(state.data.positions, body.pos);
+        let dir   = get!(state.data.directions, body.dir);
 
         graphics::draw(
             context,
             &self.ship,
             DrawParam::new()
                 .dest(pos.0)
-                .rotation(Vec2::unit_x().angle(body.dir).0)
+                .rotation(Vec2::unit_x().angle(dir.0).0)
                 .scale([30.0, 30.0])
                 .color(
                     [ship.color[0], ship.color[1], ship.color[2], 1.0]

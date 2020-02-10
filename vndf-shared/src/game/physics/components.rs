@@ -60,33 +60,35 @@ pub struct Body {
     pub vel: Handle,
     pub acc: Vec2,
 
-    pub dir: Vec2,
+    pub dir: Handle,
     pub rot: Rad,
 }
 
 impl Body {
-    pub fn new(pos: Handle, vel: Handle) -> Self {
+    pub fn new(pos: Handle, vel: Handle, dir: Handle) -> Self {
         Self {
             pos,
             vel,
             acc: Vec2::zero(),
 
-            dir: Vec2::unit_x(),
+            dir,
             rot: Rad::zero(),
         }
     }
 
     pub fn update(&mut self,
         dt:         f32,
+        directions: &mut impl GetMut<Direction>,
         positions:  &mut impl GetMut<Position>,
         velocities: &mut impl GetMut<Velocity>,
     )
         -> Option<()>
     {
-        self.dir = rotate(self.dir, self.rot * dt);
-
         let vel = velocities.get_mut(self.vel)?;
         let pos = positions.get_mut(self.pos)?;
+        let dir = directions.get_mut(self.dir)?;
+
+        dir.0 = rotate(dir.0, self.rot * dt);
 
         vel.0 += self.acc * dt;
         pos.0 += vel.0 * dt;

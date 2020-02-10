@@ -1,6 +1,9 @@
 use crate::{
     cgs::Store,
-    game::physics::Body,
+    game::physics::{
+        Body,
+        Direction,
+    },
 };
 
 use super::{
@@ -10,12 +13,13 @@ use super::{
 
 
 pub fn update_crafts(
-    bodies: &mut Store<Body>,
-    crafts: &mut Store<Craft>,
-    fuels:  &mut Store<Fuel>,
-    dt:     f32,
+    bodies:     &mut Store<Body>,
+    crafts:     &mut Store<Craft>,
+    directions: &Store<Direction>,
+    fuels:      &mut Store<Fuel>,
+    dt:         f32,
 ) {
     for craft in crafts.values_mut() {
-        craft.apply_thrust(dt, bodies, fuels);
+        craft.apply_thrust(dt, bodies, directions, fuels);
     }
 }

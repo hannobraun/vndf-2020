@@ -9,6 +9,7 @@ use crate::{
         health::Health,
         physics::{
             Body,
+            Direction,
             Position,
             Velocity,
         },
@@ -55,6 +56,7 @@ impl Feature {
         event:      &Update,
         bodies:     &mut Store<Body>,
         crafts:     &Store<Craft>,
+        directions: &mut Store<Direction>,
         fuels:      &Store<Fuel>,
         healths:    &mut Store<Health>,
         positions:  &Store<Position>,
@@ -75,6 +77,7 @@ impl Feature {
             update_guidances(
                 bodies,
                 crafts,
+                directions,
                 &mut self.guidances,
                 positions,
                 &self.targets,
@@ -96,6 +99,7 @@ impl Feature {
         event:      MissileLaunch,
         bodies:     &mut Store<Body>,
         crafts:     &mut Store<Craft>,
+        directions: &mut Store<Direction>,
         fuels:      &mut Store<Fuel>,
         healths:    &mut Store<Health>,
         positions:  &mut Store<Position>,
@@ -104,6 +108,7 @@ impl Feature {
         launch_missile(
             bodies,
             crafts,
+            directions,
             fuels,
             &mut self.guidances,
             healths,

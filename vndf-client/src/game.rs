@@ -51,6 +51,7 @@ impl State {
             );
             body.update(
                 dt,
+                &mut self.data.directions,
                 &mut self.data.positions,
                 &mut self.data.velocities,
             );
@@ -59,6 +60,7 @@ impl State {
             craft.apply_thrust(
                 dt,
                 &mut self.data.bodies,
+                &self.data.directions,
                 &mut self.data.fuels,
             );
         }

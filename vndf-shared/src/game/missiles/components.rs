@@ -17,6 +17,7 @@ use crate::{
         health::Health,
         physics::{
             Body,
+            Direction,
             Position,
             Velocity,
         },
@@ -120,6 +121,7 @@ impl Guidance {
     pub fn update_guidance(&mut self,
         bodies:     &mut Store<Body>,
         crafts:     &Store<Craft>,
+        directions: &mut Store<Direction>,
         positions:  &Store<Position>,
         targets:    &Store<Target>,
         velocities: &Store<Velocity>,
@@ -131,6 +133,7 @@ impl Guidance {
         let body   = bodies.get_mut(craft.body)?;
         let pos    = positions.get(body.pos)?;
         let vel    = velocities.get(body.vel)?;
+        let dir    = directions.get_mut(body.dir)?;
 
         let to_target = target.value - pos.0;
 
@@ -154,7 +157,7 @@ impl Guidance {
         let error = rejection.magnitude() * error_dir;
 
         let control_output = self.guidance.next_control_output(error);
-        body.dir = rotate(to_target, cgmath::Rad(control_output.output));
+        dir.0 = rotate(to_target, cgmath::Rad(control_output.output));
 
         Some(())
     }

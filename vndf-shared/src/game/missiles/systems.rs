@@ -8,6 +8,7 @@ use crate::{
         health::Health,
         physics::{
             Body,
+            Direction,
             Position,
             Velocity,
         },
@@ -25,6 +26,7 @@ use super::{
 pub fn launch_missile(
     bodies:     &mut Store<Body>,
     crafts:     &mut Store<Craft>,
+    directions: &mut Store<Direction>,
     fuels:      &mut Store<Fuel>,
     guidances:  &mut Store<Guidance>,
     healths:    &mut Store<Health>,
@@ -37,6 +39,7 @@ pub fn launch_missile(
     missile.create(
         bodies,
         crafts,
+        directions,
         fuels,
         guidances,
         healths,
@@ -68,6 +71,7 @@ pub fn update_targets(
 pub fn update_guidances(
     bodies:     &mut Store<Body>,
     crafts:     &Store<Craft>,
+    directions: &mut Store<Direction>,
     guidances:  &mut Store<Guidance>,
     positions:  &Store<Position>,
     targets:    &Store<Target>,
@@ -77,6 +81,7 @@ pub fn update_guidances(
         guidance.update_guidance(
             bodies,
             crafts,
+            directions,
             positions,
             targets,
             velocities,

@@ -2,7 +2,10 @@ use crate::{
     cgs::Store,
     game::{
         base::Update,
-        physics::Body,
+        physics::{
+            Body,
+            Direction,
+        },
     },
 };
 
@@ -26,10 +29,15 @@ impl Feature {
         }
     }
 
-    pub fn on_update(&mut self, event: &Update, bodies: &mut Store<Body>) {
+    pub fn on_update(&mut self,
+        event:      &Update,
+        bodies:     &mut Store<Body>,
+        directions: &Store<Direction>,
+    ) {
         update_crafts(
             bodies,
             &mut self.crafts,
+            directions,
             &mut self.fuels,
             event.dt,
         );

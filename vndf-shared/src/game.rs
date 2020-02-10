@@ -88,6 +88,7 @@ impl State {
             self.crafts.on_update(
                 &event,
                 &mut self.physics.bodies,
+                &self.physics.directions,
             );
             self.explosions.on_update(
                 &event,
@@ -101,6 +102,7 @@ impl State {
                 &event,
                 &mut self.physics.bodies,
                 &self.crafts.crafts,
+                &mut self.physics.directions,
                 &self.crafts.fuels,
                 &mut self.health.healths,
                 &self.physics.positions,
@@ -116,6 +118,7 @@ impl State {
                 &event,
                 &mut self.physics.bodies,
                 &mut self.crafts.crafts,
+                &mut self.physics.directions,
                 &mut self.crafts.fuels,
                 &mut self.health.healths,
                 &mut self.physics.positions,
@@ -142,6 +145,7 @@ impl State {
                 event,
                 &mut self.physics.bodies,
                 &mut self.crafts.crafts,
+                &mut self.physics.directions,
                 &mut self.crafts.fuels,
                 &mut self.health.healths,
                 &mut self.physics.positions,
@@ -152,6 +156,7 @@ impl State {
             self.explosions.on_death(
                 &event,
                 &mut self.physics.bodies,
+                &mut self.physics.directions,
                 &self.health.healths,
                 &mut self.physics.positions,
                 &mut self.physics.velocities,
