@@ -302,6 +302,7 @@ impl State {
         Diagnostics {
             num_bodies:     self.physics.bodies.len()        as u64,
             num_crafts:     self.crafts.crafts.len()         as u64,
+            num_directions: self.physics.directions.len()    as u64,
             num_explosions: self.explosions.explosions.len() as u64,
             num_fuels:      self.crafts.fuels.len()          as u64,
             num_guidances:  self.missiles.guidances.len()    as u64,
@@ -321,6 +322,7 @@ impl State {
 pub struct Diagnostics {
     pub num_bodies:     u64,
     pub num_crafts:     u64,
+    pub num_directions: u64,
     pub num_explosions: u64,
     pub num_fuels:      u64,
     pub num_guidances:  u64,

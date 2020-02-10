@@ -298,6 +298,7 @@ End game - Escape",
 "Diagnostics:
 Bodies: {}/{}
 Crafts: {}/{}
+Directions: {}/{}
 Explosions: {}/{}
 Fuels: {}/{}
 Guidances: {}/-
@@ -313,6 +314,7 @@ Updates per s: {}
 Removals per s: {}",
                 diagnostics.num_bodies, state.data.bodies.len(),
                 diagnostics.num_crafts, state.data.crafts.len(),
+                diagnostics.num_directions, state.data.directions.len(),
                 diagnostics.num_explosions, state.data.explosions.len(),
                 diagnostics.num_fuels, state.data.fuels.len(),
                 diagnostics.num_guidances,
