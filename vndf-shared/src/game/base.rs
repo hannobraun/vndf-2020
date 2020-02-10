@@ -28,6 +28,7 @@ use crate::{
         },
         physics::{
             Body,
+            Direction,
             Position,
             Velocity,
         },
@@ -66,6 +67,7 @@ macro_rules! components {
 components!(
     Body,
     Craft,
+    Direction,
     Explosion,
     Fuel,
     Health,

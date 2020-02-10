@@ -20,6 +20,7 @@ use crate::{
         },
         physics::{
             Body,
+            Direction,
             Position,
             Velocity,
         },
@@ -70,6 +71,7 @@ macro_rules! data {
 data!(
     bodies,     Body;
     crafts,     Craft;
+    directions, Direction;
     explosions, Explosion;
     fuels,      Fuel;
     healths,    Health;
