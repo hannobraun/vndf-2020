@@ -119,7 +119,7 @@ impl Server {
             );
         }
 
-        for event in self.state.component_removed().ready() {
+        for event in self.state.removals().ready() {
             for (&addr, client) in &mut self.clients {
                 client.remove(event.handle);
                 self.network.send(

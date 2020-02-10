@@ -237,7 +237,7 @@ impl State {
             .chain(velocities)
     }
 
-    pub fn component_removed(&mut self) -> events::Source<ComponentRemoved> {
+    pub fn removals(&mut self) -> events::Source<ComponentRemoved> {
         for handle in self.physics.bodies.removed().ready() {
             let handle = ComponentHandle::Body(handle);
             let event  = ComponentRemoved { handle };
