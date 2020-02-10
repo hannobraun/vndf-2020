@@ -80,9 +80,9 @@ impl Body {
         self.dir = rotate(self.dir, self.rot * dt);
 
         let vel = velocities.get_mut(self.vel)?;
-        vel.0 += self.acc * dt;
-
         let pos = positions.get_mut(self.pos)?;
+
+        vel.0 += self.acc * dt;
         pos.0 += vel.0 * dt;
 
         Some(())
