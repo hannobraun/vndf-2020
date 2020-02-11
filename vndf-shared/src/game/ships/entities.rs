@@ -38,7 +38,7 @@ impl ShipEntity {
     ) {
         const FUEL:   f32 = 1200.0;
         const HEALTH: f32 =   10.0;
-        const THRUST: f32 =  100.0;
+        const THRUST: f32 =    2.5;
 
         let pos    = positions.insert(Position::new());
         let vel    = velocities.insert(Velocity::new());

@@ -52,7 +52,7 @@ impl MissileEntity {
     {
         const FUEL:   f32 = 1600.0;
         const HEALTH: f32 =    2.0;
-        const THRUST: f32 =  200.0;
+        const THRUST: f32 =   10.0;
 
         let pos       = *positions.get(self.origin.pos)?;
         let to_target = self.target - pos.0;
