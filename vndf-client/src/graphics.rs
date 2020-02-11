@@ -295,7 +295,7 @@ End game - Escape",
 
         if let Some(diagnostics) = state.diagnostics {
             let diagnostics = format!(
-"Diagnostics:
+"Components:
 Bodies: {}/{}
 Crafts: {}/{}
 Directions: {}/{}
