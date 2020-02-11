@@ -50,6 +50,10 @@ impl MissileEntity {
     )
         -> Option<()>
     {
+        const FUEL:   f32 = 1600.0;
+        const HEALTH: f32 =    2.0;
+        const THRUST: f32 =  200.0;
+
         let pos       = *positions.get(self.origin.pos)?;
         let to_target = self.target - pos.0;
         let pos       = positions.insert(pos);
@@ -68,8 +72,8 @@ impl MissileEntity {
         };
         let body = bodies.insert(body);
 
-        let fuel   = fuels.insert(Fuel(1600.0));
-        let health = healths.insert(Health::new(body, 2.0));
+        let fuel   = fuels.insert(Fuel(FUEL));
+        let health = healths.insert(Health::new(body, HEALTH));
 
         let craft = Craft {
             body,
@@ -77,7 +81,7 @@ impl MissileEntity {
             health,
 
             engine_on: true,
-            thrust:    200.0,
+            thrust:    THRUST,
             owner:     self.owner,
         };
         let craft = crafts.insert(craft);
