@@ -36,9 +36,9 @@ impl ShipEntity {
         ships:      &mut Store<Ship>,
         velocities: &mut Store<Velocity>,
     ) {
+        const THRUST: f32 =    2.5;
         const FUEL:   f32 = 1200.0;
         const HEALTH: f32 =   10.0;
-        const THRUST: f32 =    2.5;
 
         let pos    = positions.insert(Position::new());
         let vel    = velocities.insert(Velocity::new());
