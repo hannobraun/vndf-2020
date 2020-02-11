@@ -1,9 +1,8 @@
-use std::{
-    collections::VecDeque,
-    time::{
-        Duration,
-        Instant,
-    },
+use std::collections::VecDeque;
+
+use time::{
+    Duration,
+    Instant,
 };
 
 use crate::shared::{
@@ -96,7 +95,7 @@ impl Statistics {
 
     pub fn update(&mut self) {
         while let Some(instant) = self.updates.front() {
-            if instant.elapsed() > Duration::from_secs(1) {
+            if instant.elapsed() > Duration::seconds(1) {
                 self.updates.pop_front();
             }
             else {
@@ -104,7 +103,7 @@ impl Statistics {
             }
         }
         while let Some(instant) = self.removals.front() {
-            if instant.elapsed() > Duration::from_secs(1) {
+            if instant.elapsed() > Duration::seconds(1) {
                 self.removals.pop_front();
             }
             else {
