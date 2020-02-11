@@ -393,6 +393,7 @@ Explosions: {}/{}
 Fuels: {}/{}
 Guidances: {}/-
 Healths: {}/{}
+Loots: {}/{}
 Players: {}/-
 Missiles: {}/{}
 Positions: {}/{}
@@ -409,6 +410,7 @@ Removals per s: {}",
                     diagnostics.num_fuels, state.data.fuels.len(),
                     diagnostics.num_guidances,
                     diagnostics.num_healths, state.data.healths.len(),
+                    diagnostics.num_loots, state.data.loots.len(),
                     diagnostics.num_players,
                     diagnostics.num_missiles, state.data.missiles.len(),
                     diagnostics.num_positions, state.data.positions.len(),
