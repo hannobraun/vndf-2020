@@ -47,8 +47,8 @@ macro_rules! get {
 pub struct Graphics {
     boundary:  Mesh,
     explosion: Mesh,
-    missile:   Mesh,
     ship:      Mesh,
+    square:    Mesh,
 
     pointer: Mesh,
 }
@@ -74,17 +74,6 @@ impl Graphics {
             0.01,
             [1.0, 1.0, 1.0, 1.0].into(),
         )?;
-        let missile = Mesh::new_polygon(
-            context,
-            DrawMode::fill(),
-            &[
-                [ 0.5,  0.5],
-                [ 0.5, -0.5],
-                [-0.5, -0.5],
-                [-0.5,  0.5],
-            ],
-            [1.0, 1.0, 1.0, 1.0].into(),
-        )?;
         let ship = Mesh::new_polygon(
             context,
             DrawMode::fill(),
@@ -93,6 +82,17 @@ impl Graphics {
                 [-0.4,  0.4],
                 [-0.1,  0.0],
                 [-0.4, -0.4],
+                ],
+                [1.0, 1.0, 1.0, 1.0].into(),
+            )?;
+        let square = Mesh::new_polygon(
+            context,
+            DrawMode::fill(),
+            &[
+                [ 0.5,  0.5],
+                [ 0.5, -0.5],
+                [-0.5, -0.5],
+                [-0.5,  0.5],
             ],
             [1.0, 1.0, 1.0, 1.0].into(),
         )?;
@@ -112,8 +112,8 @@ impl Graphics {
             Graphics {
                 boundary,
                 explosion,
-                missile,
                 ship,
+                square,
 
                 pointer,
             }
@@ -207,7 +207,7 @@ impl Graphics {
 
         graphics::draw(
             context,
-            &self.missile,
+            &self.square,
             DrawParam::new()
                 .dest(pos.0)
                 .scale([4.0, 4.0])
