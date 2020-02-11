@@ -8,6 +8,7 @@ edition = "2018"
 [dependencies]
 log      = "*"
 postcard = "*"
+rand     = "*"
 serde    = "*"
 
 [dependencies.cgmath]
