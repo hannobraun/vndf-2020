@@ -26,8 +26,9 @@ use serde::{
 
 #[derive(Clone, Copy, Debug, Deserialize, Serialize)]
 pub struct Config {
-    pub input: Input,
-    pub color: Color,
+    pub input:       Input,
+    pub color:       Color,
+    pub diagnostics: Diagnostics,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Serialize)]
@@ -43,6 +44,13 @@ pub struct Color {
     pub r: f32,
     pub g: f32,
     pub b: f32,
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Serialize)]
+pub struct Diagnostics {
+    pub frame_time: bool,
+    pub components: bool,
+    pub input:      bool,
 }
 
 impl Config {
@@ -83,7 +91,12 @@ impl Default for Config {
                 r: 1.0,
                 g: 1.0,
                 b: 0.0,
-            }
+            },
+            diagnostics: Diagnostics {
+                frame_time: true,
+                components: true,
+                input:      true,
+            },
         }
     }
 }
