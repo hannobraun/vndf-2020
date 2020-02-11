@@ -130,12 +130,12 @@ impl Game {
 
 impl EventHandler for Game {
     fn mouse_button_down_event(&mut self,
-        _:      &mut Context,
-        button: MouseButton,
-        _x:     f32,
-        _y:     f32,
+        context: &mut Context,
+        button:  MouseButton,
+        _x:      f32,
+        _y:      f32,
     ) {
-        self.input.key_down(Key::Mouse(button));
+        self.input.key_down(context, Key::Mouse(button));
     }
 
     fn mouse_button_up_event(&mut self,
@@ -167,7 +167,7 @@ impl EventHandler for Game {
             quit(context);
         }
 
-        self.input.key_down(Key::Keyboard(key_code));
+        self.input.key_down(context, Key::Keyboard(key_code));
     }
 
     fn key_up_event(&mut self,

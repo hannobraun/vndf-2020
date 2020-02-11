@@ -8,7 +8,10 @@ use std::{
     fmt,
 };
 
-use ggez::Context;
+use ggez::{
+    Context,
+    input::keyboard::is_key_repeated,
+};
 use time::Time;
 
 use crate::{
@@ -58,7 +61,11 @@ impl Input {
         );
     }
 
-    pub fn key_down(&mut self, key: Key) {
+    pub fn key_down(&mut self, context: &Context, key: Key) {
+        if is_key_repeated(context) {
+            return;
+        }
+
         match key {
             k if k == self.config.input.left => {
                 self.events.push(EventKind::Rotate(Rotation::Left))
