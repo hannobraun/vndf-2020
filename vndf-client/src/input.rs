@@ -181,19 +181,21 @@ pub struct Event {
 
 impl fmt::Display for Event {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let time_fmt = "%H:%M:%S";
-
         write!(f,
-            "{}: {:?} (entered: {}",
+            "{}: {:?} ({}",
             self.inner.seq,
             self.inner.kind,
-            self.entered.format(time_fmt),
+            self.entered.format("%H:%M:%S"),
         )?;
         if let Some(sent) = self.sent {
-            write!(f, ", sent: {}", sent.format(time_fmt))?;
+            let entered_to_sent_ms = (sent - self.entered)
+                .whole_milliseconds();
+            write!(f, ", sent: +{}ms", entered_to_sent_ms)?;
         }
         if let Some(handled) = self.handled {
-            write!(f, ", handled: {}", handled.format(time_fmt))?;
+            let entered_to_handled_ms = (handled - self.entered)
+                .whole_milliseconds();
+            write!(f, ", handled: +{}ms", entered_to_handled_ms)?;
         }
         write!(f, ")")?;
 
