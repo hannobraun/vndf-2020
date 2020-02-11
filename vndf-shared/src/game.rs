@@ -48,6 +48,7 @@ pub struct State {
     crafts:     crafts::Feature,
     explosions: explosions::Feature,
     health:     health::Feature,
+    loot:       loot::Feature,
     missiles:   missiles::Feature,
     physics:    physics::Feature,
     players:    players::Feature,
@@ -61,6 +62,7 @@ impl State {
             crafts:     crafts::Feature::new(),
             explosions: explosions::Feature::new(),
             health:     health::Feature::new(),
+            loot:       loot::Feature::new(),
             missiles:   missiles::Feature::new(),
             physics:    physics::Feature::new(),
             players:    players::Feature::new(),
@@ -214,6 +216,8 @@ impl State {
             .map(|(handle, &c)| (handle, Component::Fuel(c)));
         let healths = self.health.healths.iter()
             .map(|(handle, &c)| (handle, Component::Health(c)));
+        let loots = self.loot.loots.iter()
+            .map(|(handle, &c)| (handle, Component::Loot(c)));
         let missiles = self.missiles.missiles.iter()
             .map(|(handle, &c)| (handle, Component::Missile(c)));
         let positions = self.physics.positions.iter()
@@ -231,6 +235,7 @@ impl State {
             .chain(explosions)
             .chain(fuels)
             .chain(healths)
+            .chain(loots)
             .chain(missiles)
             .chain(positions)
             .chain(ships)
