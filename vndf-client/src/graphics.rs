@@ -277,24 +277,27 @@ End game - Escape",
                 .dest([20.0, 20.0])
         )?;
 
-        let report = state.frame_time.report();
-        let frame_time = format!(
-            "Frame time:\n{} ms (avg {}/{}/{})",
-            report.latest.whole_milliseconds(),
-            report.avg_1.whole_milliseconds(),
-            report.avg_2.whole_milliseconds(),
-            report.avg_3.whole_milliseconds(),
-        );
+        if input.config.diagnostics.frame_time {
+            let report = state.frame_time.report();
+            let frame_time = format!(
+                "Frame time:\n{} ms (avg {}/{}/{})",
+                report.latest.whole_milliseconds(),
+                report.avg_1.whole_milliseconds(),
+                report.avg_2.whole_milliseconds(),
+                report.avg_3.whole_milliseconds(),
+            );
 
-        graphics::draw(
-            context,
-            &Text::new(frame_time),
-            DrawParam::new()
-                .dest([20.0, 150.0])
-        )?;
+            graphics::draw(
+                context,
+                &Text::new(frame_time),
+                DrawParam::new()
+                    .dest([20.0, 150.0])
+            )?;
+        }
 
-        if let Some(diagnostics) = state.diagnostics {
-            let diagnostics = format!(
+        if input.config.diagnostics.components {
+            if let Some(diagnostics) = state.diagnostics {
+                let diagnostics = format!(
 "Components:
 Bodies: {}/{}
 Crafts: {}/{}
@@ -312,42 +315,45 @@ Velocities: {}/{}
 ---
 Updates per s: {}
 Removals per s: {}",
-                diagnostics.num_bodies, state.data.bodies.len(),
-                diagnostics.num_crafts, state.data.crafts.len(),
-                diagnostics.num_directions, state.data.directions.len(),
-                diagnostics.num_explosions, state.data.explosions.len(),
-                diagnostics.num_fuels, state.data.fuels.len(),
-                diagnostics.num_guidances,
-                diagnostics.num_healths, state.data.healths.len(),
-                diagnostics.num_players,
-                diagnostics.num_missiles, state.data.missiles.len(),
-                diagnostics.num_positions, state.data.positions.len(),
-                diagnostics.num_ships, state.data.ships.len(),
-                diagnostics.num_targets, state.data.targets.len(),
-                diagnostics.num_velocities, state.data.velocities.len(),
-                state.statistics.updates.len(),
-                state.statistics.removals.len(),
-            );
+                    diagnostics.num_bodies, state.data.bodies.len(),
+                    diagnostics.num_crafts, state.data.crafts.len(),
+                    diagnostics.num_directions, state.data.directions.len(),
+                    diagnostics.num_explosions, state.data.explosions.len(),
+                    diagnostics.num_fuels, state.data.fuels.len(),
+                    diagnostics.num_guidances,
+                    diagnostics.num_healths, state.data.healths.len(),
+                    diagnostics.num_players,
+                    diagnostics.num_missiles, state.data.missiles.len(),
+                    diagnostics.num_positions, state.data.positions.len(),
+                    diagnostics.num_ships, state.data.ships.len(),
+                    diagnostics.num_targets, state.data.targets.len(),
+                    diagnostics.num_velocities, state.data.velocities.len(),
+                    state.statistics.updates.len(),
+                    state.statistics.removals.len(),
+                );
+
+                graphics::draw(
+                    context,
+                    &Text::new(diagnostics),
+                    DrawParam::new()
+                        .dest([20.0, 220.0])
+                )?;
+            }
+        }
+
+        if input.config.diagnostics.input {
+            let mut input_events = String::from("Input:\n");
+            for event in input.events.iter().rev() {
+                input_events.push_str(&format!("{}\n", event));
+            }
 
             graphics::draw(
                 context,
-                &Text::new(diagnostics),
+                &Text::new(input_events),
                 DrawParam::new()
-                    .dest([20.0, 220.0])
+                    .dest([20.0, 520.0])
             )?;
         }
-
-        let mut input_events = String::from("Input:\n");
-        for event in input.events.iter().rev() {
-            input_events.push_str(&format!("{}\n", event));
-        }
-
-        graphics::draw(
-            context,
-            &Text::new(input_events),
-            DrawParam::new()
-                .dest([20.0, 520.0])
-        )?;
 
         for ship in state.data.ships.values() {
             if self.draw_ship_status(context, ship, state)? {
