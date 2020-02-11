@@ -114,7 +114,14 @@ impl State {
             self.ships.on_update(
                 &mut self.physics.bodies,
                 &self.crafts.crafts,
-            )
+            );
+            self.loot.on_update(
+                &event,
+                &mut self.physics.bodies,
+                &mut self.physics.directions,
+                &mut self.physics.positions,
+                &mut self.physics.velocities,
+            );
         }
         while let Some(event) = self.players.player_connected.source().next() {
             self.players.on_player_connected(
