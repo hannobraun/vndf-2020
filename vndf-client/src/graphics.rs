@@ -15,6 +15,10 @@ use crate::{
     game::State,
     input::Input,
     shared::{
+        cgs::{
+            GetMut,
+            Handle,
+        },
         game::{
             WORLD_SIZE,
             explosions::Explosion,
@@ -171,6 +175,8 @@ impl Graphics {
         let pos   = get!(state.data.positions, body.pos);
         let dir   = get!(state.data.directions, body.dir);
 
+        self.draw_projected_course(context, craft.body, state)?;
+
         graphics::draw(
             context,
             &self.ship,
@@ -219,6 +225,58 @@ impl Graphics {
             &line,
             DrawParam::new(),
         )?;
+
+        Ok(true)
+    }
+
+    fn draw_projected_course(&self,
+        context: &mut Context,
+        body:    Handle,
+        state:   &State,
+    )
+        -> GameResult<bool>
+    {
+        let mut body = *get!(state.data.bodies, body);
+        body.acc = Vec2::zero();
+
+        let dir = *get!(state.data.directions, body.dir);
+        let pos = *get!(state.data.positions,  body.pos);
+        let vel = *get!(state.data.velocities, body.vel);
+
+        let mut directions = OneStore { handle: body.dir, data: dir };
+        let mut positions  = OneStore { handle: body.pos, data: pos };
+        let mut velocities = OneStore { handle: body.vel, data: vel };
+
+        let mut previous = pos.0;
+
+        for _ in 0 .. 100 {
+            body.update(
+                1.0,
+                &mut directions,
+                &mut positions,
+                &mut velocities,
+            );
+
+            let current = positions.data.0;
+
+            if previous == current {
+                break;
+            }
+
+            let line = Mesh::new_line(
+                context,
+                &[previous, current],
+                1.5,
+                [1.0, 1.0, 1.0, 0.5].into(),
+            )?;
+            graphics::draw(
+                context,
+                &line,
+                DrawParam::new(),
+            )?;
+
+            previous = current;
+        }
 
         Ok(true)
     }
@@ -412,5 +470,22 @@ Heavy Missiles: {}",
         )?;
 
         Ok(true)
+    }
+}
+
+
+struct OneStore<T> {
+    pub handle: Handle,
+    pub data:   T
+}
+
+impl<T> GetMut<T> for OneStore<T> {
+    fn get_mut(&mut self, handle: Handle) -> Option<&mut T> {
+        if handle == self.handle {
+            Some(&mut self.data)
+        }
+        else {
+            None
+        }
     }
 }
