@@ -22,6 +22,7 @@ use crate::{
         game::{
             WORLD_SIZE,
             explosions::Explosion,
+            loot::Loot,
             missiles::Missile,
             ships::Ship,
         },
@@ -141,7 +142,9 @@ impl Graphics {
 
         self.draw_boundary(context)?;
 
-        self.draw_loot(context)?;
+        for loot in state.data.loots.values() {
+            self.draw_loot(context, loot, state)?;
+        }
 
         for ship in state.data.ships.values() {
             self.draw_ship(context, ship, state)?;
@@ -310,16 +313,21 @@ impl Graphics {
 
     pub fn draw_loot(&self,
         context: &mut Context,
+        loot:    &Loot,
+        state:   &State,
     )
         -> GameResult<bool>
     {
         let size = 10.0;
 
+        let body = get!(state.data.bodies,    loot.body);
+        let pos  = get!(state.data.positions, body.pos);
+
         graphics::draw(
             context,
             &self.square,
             DrawParam::new()
-                .dest([0.0, -100.0])
+                .dest(pos.0)
                 .scale([size, size])
                 .color([1.0, 1.0, 1.0, 1.0].into())
         )?;
