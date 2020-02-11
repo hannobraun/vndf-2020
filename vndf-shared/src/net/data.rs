@@ -14,6 +14,7 @@ use crate::{
         },
         explosions::Explosion,
         health::Health,
+        loot::Loot,
         missiles::{
             Missile,
             Target,
@@ -75,6 +76,7 @@ data!(
     explosions, Explosion;
     fuels,      Fuel;
     healths,    Health;
+    loots,      Loot;
     missiles,   Missile;
     positions,  Position;
     ships,      Ship;

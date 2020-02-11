@@ -22,6 +22,7 @@ use crate::{
         },
         explosions::Explosion,
         health::Health,
+        loot::Loot,
         missiles::{
             Missile,
             Target,
@@ -71,6 +72,7 @@ components!(
     Explosion,
     Fuel,
     Health,
+    Loot,
     Missile,
     Position,
     Ship,
