@@ -36,12 +36,16 @@ impl ShipEntity {
         ships:      &mut Store<Ship>,
         velocities: &mut Store<Velocity>,
     ) {
+        const FUEL:   f32 = 1200.0;
+        const HEALTH: f32 =   10.0;
+        const THRUST: f32 =  100.0;
+
         let pos    = positions.insert(Position::new());
         let vel    = velocities.insert(Velocity::new());
         let dir    = directions.insert(Direction::new());
         let body   = bodies.insert(Body::new(pos, vel, dir));
-        let fuel   = fuels.insert(Fuel(1200.0));
-        let health = healths.insert(Health::new(body, 10.0));
+        let fuel   = fuels.insert(Fuel(FUEL));
+        let health = healths.insert(Health::new(body, HEALTH));
 
         let craft = Craft {
             body,
@@ -49,7 +53,7 @@ impl ShipEntity {
             health,
 
             engine_on: false,
-            thrust:    100.0,
+            thrust:    THRUST,
             owner:     self.owner,
         };
         let craft = crafts.insert(craft);
