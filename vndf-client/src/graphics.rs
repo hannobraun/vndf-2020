@@ -279,11 +279,11 @@ End game - Escape",
 
         let report = state.frame_time.report();
         let frame_time = format!(
-            "Frame time:\n{:.3} (avg {:.3}/{:.3}/{:.3})",
-            report.latest,
-            report.avg_1,
-            report.avg_2,
-            report.avg_3,
+            "Frame time:\n{} ms (avg {}/{}/{})",
+            report.latest.whole_milliseconds(),
+            report.avg_1.whole_milliseconds(),
+            report.avg_2.whole_milliseconds(),
+            report.avg_3.whole_milliseconds(),
         );
 
         graphics::draw(

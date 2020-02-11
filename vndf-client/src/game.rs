@@ -114,7 +114,7 @@ impl Statistics {
 }
 
 
-pub struct FrameTime(VecDeque<f32>);
+pub struct FrameTime(VecDeque<Duration>);
 
 impl FrameTime {
     const MAX_LEN: usize = 60;
@@ -123,7 +123,7 @@ impl FrameTime {
         Self(VecDeque::new())
     }
 
-    pub fn push(&mut self, time: f32) {
+    pub fn push(&mut self, time: Duration) {
         self.0.push_back(time);
         while self.0.len() > Self::MAX_LEN {
             self.0.pop_front();
@@ -132,13 +132,13 @@ impl FrameTime {
 
     pub fn report(&self) -> Report {
         let mut report = Report {
-            latest: 0.0,
-            avg_1:  0.0,
-            avg_2:  0.0,
-            avg_3:  0.0,
+            latest: Duration::zero(),
+            avg_1:  Duration::zero(),
+            avg_2:  Duration::zero(),
+            avg_3:  Duration::zero(),
         };
 
-        let mut sum = 0.0;
+        let mut sum = Duration::zero();
 
         for (i, &time) in self.0.iter().enumerate() {
             report.latest = time;
@@ -161,8 +161,8 @@ impl FrameTime {
 
 
 pub struct Report {
-    pub latest: f32,
-    pub avg_1:  f32,
-    pub avg_2:  f32,
-    pub avg_3:  f32,
+    pub latest: Duration,
+    pub avg_1:  Duration,
+    pub avg_2:  Duration,
+    pub avg_3:  Duration,
 }

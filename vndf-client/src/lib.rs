@@ -6,6 +6,7 @@ mod transforms;
 
 
 use std::{
+    convert::TryInto as _,
     env,
     io,
     net::ToSocketAddrs,
@@ -217,11 +218,12 @@ impl EventHandler for Game {
     }
 
     fn draw(&mut self, context: &mut Context) -> GameResult {
-        let dt = timer::duration_to_f64(timer::delta(context)) as f32;
+        let dt = timer::delta(context);
+        self.state.frame_time.push(dt.try_into().unwrap());
 
         self.input.events.limit();
 
-        self.state.frame_time.push(dt);
+        let dt = timer::duration_to_f64(dt) as f32;
         self.state.update(dt);
 
         self.graphics.draw(context, &self.input, &self.state)
