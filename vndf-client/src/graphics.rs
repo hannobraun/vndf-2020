@@ -141,6 +141,8 @@ impl Graphics {
 
         self.draw_boundary(context)?;
 
+        self.draw_loot(context)?;
+
         for ship in state.data.ships.values() {
             self.draw_ship(context, ship, state)?;
         }
@@ -301,6 +303,25 @@ impl Graphics {
                 .dest(pos.0)
                 .scale([size, size])
                 .color([1.0, 1.0, 1.0, alpha].into())
+        )?;
+
+        Ok(true)
+    }
+
+    pub fn draw_loot(&self,
+        context: &mut Context,
+    )
+        -> GameResult<bool>
+    {
+        let size = 10.0;
+
+        graphics::draw(
+            context,
+            &self.square,
+            DrawParam::new()
+                .dest([0.0, -100.0])
+                .scale([size, size])
+                .color([1.0, 1.0, 1.0, 1.0].into())
         )?;
 
         Ok(true)
