@@ -6,7 +6,6 @@ use time::{
 };
 
 use crate::shared::{
-    cgs::Handle,
     game::{
         WORLD_SIZE,
         Diagnostics,
@@ -68,7 +67,7 @@ impl State {
         }
     }
 
-    pub fn update_component(&mut self, _: Handle, component: Component) {
+    pub fn update_component(&mut self, component: Component) {
         self.statistics.updates.push_back(Instant::now());
         self.data.update(component);
     }
