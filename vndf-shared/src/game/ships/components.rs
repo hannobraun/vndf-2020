@@ -70,7 +70,7 @@ impl Ship {
         crafts:         &mut Store<Craft>,
         missile_launch: &mut events::Sink<MissileLaunch>,
         player:         &Player,
-        event:          Action,
+        action:         Action,
     )
         -> Option<()>
     {
@@ -89,7 +89,7 @@ impl Ship {
             return None;
         }
 
-        match event.kind {
+        match action.kind {
             input::EventKind::Rotate(rotation) => {
                 self.rotation = rotation;
             }
