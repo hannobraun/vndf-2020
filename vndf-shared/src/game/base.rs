@@ -42,7 +42,7 @@ macro_rules! components {
     ($($component:ident,)*) => {
         #[derive(Clone, Copy, Debug, Deserialize, Serialize, PartialEq)]
         pub enum Component {
-            $($component($component),)*
+            $($component(Handle, $component),)*
         }
 
         #[derive(
@@ -56,7 +56,7 @@ macro_rules! components {
             pub fn from_handle(handle: Handle, component: &Component) -> Self {
                 match component {
                     $(
-                        Component::$component(_) =>
+                        Component::$component(_, _) =>
                             ComponentHandle::$component(handle),
                     )*
                 }

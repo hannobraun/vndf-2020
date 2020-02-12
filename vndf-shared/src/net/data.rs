@@ -48,7 +48,7 @@ macro_rules! data {
             {
                 match component {
                     $(
-                        Component::$ty(value) => {
+                        Component::$ty(_, value) => {
                             let previous = self.$name.insert(handle, value);
                             Some(value) != previous
                         }

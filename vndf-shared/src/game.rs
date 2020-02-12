@@ -215,29 +215,29 @@ impl State {
         -> impl Iterator<Item=(Handle, Component)> + '_
     {
         let bodies = self.physics.bodies.iter()
-            .map(|(handle, &c)| (handle, Component::Body(c)));
+            .map(|(handle, &c)| (handle, Component::Body(handle, c)));
         let crafts = self.crafts.crafts.iter()
-            .map(|(handle, &c)| (handle, Component::Craft(c)));
+            .map(|(handle, &c)| (handle, Component::Craft(handle, c)));
         let directions = self.physics.directions.iter()
-            .map(|(handle, &c)| (handle, Component::Direction(c)));
+            .map(|(handle, &c)| (handle, Component::Direction(handle, c)));
         let explosions = self.explosions.explosions.iter()
-            .map(|(handle, &c)| (handle, Component::Explosion(c)));
+            .map(|(handle, &c)| (handle, Component::Explosion(handle, c)));
         let fuels = self.crafts.fuels.iter()
-            .map(|(handle, &c)| (handle, Component::Fuel(c)));
+            .map(|(handle, &c)| (handle, Component::Fuel(handle, c)));
         let healths = self.health.healths.iter()
-            .map(|(handle, &c)| (handle, Component::Health(c)));
+            .map(|(handle, &c)| (handle, Component::Health(handle, c)));
         let loots = self.loot.loots.iter()
-            .map(|(handle, &c)| (handle, Component::Loot(c)));
+            .map(|(handle, &c)| (handle, Component::Loot(handle, c)));
         let missiles = self.missiles.missiles.iter()
-            .map(|(handle, &c)| (handle, Component::Missile(c)));
+            .map(|(handle, &c)| (handle, Component::Missile(handle, c)));
         let positions = self.physics.positions.iter()
-            .map(|(handle, &c)| (handle, Component::Position(c)));
+            .map(|(handle, &c)| (handle, Component::Position(handle, c)));
         let ships = self.ships.ships.iter()
-            .map(|(handle, &c)| (handle, Component::Ship(c)));
+            .map(|(handle, &c)| (handle, Component::Ship(handle, c)));
         let targets = self.missiles.targets.iter()
-            .map(|(handle, &c)| (handle, Component::Target(c)));
+            .map(|(handle, &c)| (handle, Component::Target(handle, c)));
         let velocities = self.physics.velocities.iter()
-            .map(|(handle, &c)| (handle, Component::Velocity(c)));
+            .map(|(handle, &c)| (handle, Component::Velocity(handle, c)));
 
         bodies
             .chain(crafts)

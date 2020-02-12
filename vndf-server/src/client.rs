@@ -52,11 +52,11 @@ impl Client {
         use Component::*;
         let should_update = match component {
             // These components are interpolated client-side.
-            Direction(_)
-                | Position(_)
-                | Velocity(_)
-                | Explosion(_)
-                | Fuel(_)
+            Direction(_, _)
+                | Position(_, _)
+                | Velocity(_, _)
+                | Explosion(_, _)
+                | Fuel(_, _)
             =>
             {
                 data_changed && !recently_updated
