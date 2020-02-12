@@ -26,6 +26,6 @@ pub struct PlayerCreated {
 }
 
 pub struct PlayerInput {
-    pub addr:  SocketAddr,
-    pub event: Action,
+    pub addr:   SocketAddr,
+    pub action: Action,
 }

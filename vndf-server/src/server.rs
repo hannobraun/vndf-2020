@@ -88,9 +88,10 @@ impl Server {
                     self.state.player_connected()
                         .push(PlayerConnected { addr, color });
                 }
-                Event::Message(addr, msg::FromClient::Input(event)) => {
-                    debug!("Input from {}: {:?}", addr, event);
-                    self.state.player_input().push(PlayerInput { addr, event });
+                Event::Message(addr, msg::FromClient::Input(action)) => {
+                    debug!("Input from {}: {:?}", addr, action);
+                    self.state.player_input()
+                        .push(PlayerInput { addr, action });
                 }
                 Event::Error(addr, _) => {
                     info!("Disconnected: {}", addr);

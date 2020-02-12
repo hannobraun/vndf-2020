@@ -119,7 +119,7 @@ impl Feature {
     ) {
         handle_input(
             event.addr,
-            event.event,
+            event.action,
             bodies,
             crafts,
             &self.players,
