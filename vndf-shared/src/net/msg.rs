@@ -52,7 +52,7 @@ pub enum FromClient {
     Hello {
         color: [f32; 3],
     },
-    Input(Action),
+    Action(Action),
 }
 
 

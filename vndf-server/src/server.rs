@@ -88,7 +88,7 @@ impl Server {
                     self.state.player_connected()
                         .push(PlayerConnected { addr, color });
                 }
-                Event::Message(addr, msg::FromClient::Input(action)) => {
+                Event::Message(addr, msg::FromClient::Action(action)) => {
                     debug!("Input from {}: {:?}", addr, action);
                     self.state.player_input()
                         .push(PlayerInput { addr, action });

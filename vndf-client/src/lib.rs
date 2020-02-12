@@ -180,7 +180,7 @@ impl EventHandler for Game {
 
     fn update(&mut self, context: &mut Context) -> GameResult {
         for event in self.input.events.unsent() {
-            self.conn.send(msg::FromClient::Input(event))
+            self.conn.send(msg::FromClient::Action(event))
                 .expect("Failed to send input event");
         }
 
