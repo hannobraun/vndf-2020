@@ -1,5 +1,5 @@
 use rand::{
-    Rng as _,
+    prelude::*,
     random,
     thread_rng,
 };
