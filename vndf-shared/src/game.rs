@@ -171,6 +171,17 @@ impl State {
                 &mut self.physics.positions,
                 &mut self.physics.velocities,
             );
+            self.loot.on_death(
+                &event,
+                &mut self.physics.bodies,
+                &self.crafts.crafts,
+                &mut self.physics.directions,
+                &self.crafts.fuels,
+                &self.health.healths,
+                &mut self.physics.positions,
+                &self.ships.ships,
+                &mut self.physics.velocities,
+            );
             self.health.on_death(
                 &event,
                 &mut self.physics.bodies,

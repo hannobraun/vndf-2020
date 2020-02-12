@@ -5,13 +5,18 @@ use rand::{
 };
 
 use crate::{
-    cgs::Store,
+    cgs::{
+        Handle,
+        Store,
+    },
     game::{
         WORLD_SIZE,
+        base::ComponentHandle,
         crafts::{
             Craft,
             Fuel,
         },
+        health::Health,
         physics::{
             Body,
             Direction,
@@ -25,6 +30,54 @@ use crate::{
 
 use super::Loot;
 
+
+pub fn spawn_death_loot(
+    handle:     Handle<Health>,
+    bodies:     &mut Store<Body>,
+    crafts:     &Store<Craft>,
+    directions: &mut Store<Direction>,
+    fuels:      &Store<Fuel>,
+    healths:    &Store<Health>,
+    loots:      &mut Store<Loot>,
+    positions:  &mut Store<Position>,
+    ships:      &Store<Ship>,
+    velocities: &mut Store<Velocity>,
+)
+    -> Option<()>
+{
+    let health = healths.get(handle)?;
+
+    if let ComponentHandle::Ship(handle) = health.parent? {
+        let ship  = ships.get(handle)?;
+        let craft = crafts.get(ship.craft)?;
+        let fuel  = fuels.get(craft.fuel)?;
+        let body  = bodies.get(craft.body)?;
+        let pos   = positions.get(body.pos)?;
+        let vel   = velocities.get(body.vel)?;
+        let dir   = directions.get(body.dir)?;
+
+        let pos = *pos;
+        let pos = positions.insert(pos);
+
+        let vel = *vel;
+        let vel = velocities.insert(vel);
+
+        let dir = *dir;
+        let dir = directions.insert(dir);
+
+        let body = bodies.insert(Body::new(pos, vel, dir));
+
+        let loot = Loot {
+            body,
+            fuel:     fuel.0 / 10.0,
+            missiles: ship.missiles / 10,
+        };
+
+        loots.insert(loot);
+    }
+
+    Some(())
+}
 
 pub fn spawn_random_loot(
     dt:         f32,

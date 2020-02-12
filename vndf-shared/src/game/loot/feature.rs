@@ -6,6 +6,10 @@ use crate::{
             Craft,
             Fuel,
         },
+        health::{
+            Death,
+            Health,
+        },
         physics::{
             Body,
             Direction,
@@ -19,6 +23,7 @@ use crate::{
 use super::{
     Loot,
     collect_loot,
+    spawn_death_loot,
     spawn_random_loot,
 };
 
@@ -61,6 +66,31 @@ impl Feature {
             &mut self.loots,
             positions,
             ships,
+        );
+    }
+
+    pub fn on_death(&mut self,
+        event:      &Death,
+        bodies:     &mut Store<Body>,
+        crafts:     &Store<Craft>,
+        directions: &mut Store<Direction>,
+        fuels:      &Store<Fuel>,
+        healths:    &Store<Health>,
+        positions:  &mut Store<Position>,
+        ships:      &Store<Ship>,
+        velocities: &mut Store<Velocity>,
+    ) {
+        spawn_death_loot(
+            event.handle,
+            bodies,
+            crafts,
+            directions,
+            fuels,
+            healths,
+            &mut self.loots,
+            positions,
+            ships,
+            velocities,
         );
     }
 }
