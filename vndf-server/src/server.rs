@@ -136,7 +136,7 @@ impl Server {
                 if should_update {
                     self.network.send(
                         addr,
-                        msg::FromServer::UpdateComponent(handle, component),
+                        msg::FromServer::UpdateComponent(component),
                     );
                 }
             }

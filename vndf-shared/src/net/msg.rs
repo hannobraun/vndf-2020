@@ -8,7 +8,6 @@ use serde::{
 };
 
 use crate::{
-    cgs::Handle,
     game::{
         Diagnostics,
         base::{
@@ -61,7 +60,7 @@ pub enum FromClient {
 pub enum FromServer {
     Ping,
     Welcome(PlayerId),
-    UpdateComponent(Handle, Component),
+    UpdateComponent(Component),
     RemoveComponent(ComponentHandle),
     InputHandled { seq: u64 },
     Diagnostics(Diagnostics),

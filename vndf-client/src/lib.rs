@@ -193,7 +193,7 @@ impl EventHandler for Game {
                 Ok(msg::FromServer::Welcome(id)) => {
                     self.state.own_id = Some(id);
                 }
-                Ok(msg::FromServer::UpdateComponent(_, item)) => {
+                Ok(msg::FromServer::UpdateComponent(item)) => {
                     debug!("Update component: {:?}", item);
                     self.state.update_component(item);
                 }
