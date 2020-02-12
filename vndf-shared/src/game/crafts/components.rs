@@ -29,9 +29,9 @@ use crate::{
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Craft {
-    pub body:   Handle,
-    pub fuel:   Handle,
-    pub health: Handle,
+    pub body:   Handle<Body>,
+    pub fuel:   Handle<Fuel>,
+    pub health: Handle<Health>,
 
     pub engine_on: bool,
     pub thrust:    f32,
@@ -63,7 +63,7 @@ impl Craft {
     }
 
     pub fn remove(
-        handle:     Handle,
+        handle:     Handle<Craft>,
         bodies:     &mut Store<Body>,
         crafts:     &mut Store<Craft>,
         directions: &mut Store<Direction>,

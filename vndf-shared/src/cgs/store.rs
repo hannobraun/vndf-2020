@@ -1,4 +1,7 @@
-use std::cell::Cell;
+use std::{
+    cell::Cell,
+    marker::PhantomData,
+};
 
 use slotmap::{
     DefaultKey,
@@ -17,8 +20,8 @@ use super::{
 
 pub struct Store<T> {
     inner:     DenseSlotMap<DefaultKey, T>,
-    to_remove: Cell<Vec<Handle>>,
-    removed:   events::Buf<Handle>,
+    to_remove: Cell<Vec<Handle<T>>>,
+    removed:   events::Buf<Handle<T>>,
 }
 
 impl<T> Store<T> {
@@ -34,11 +37,11 @@ impl<T> Store<T> {
         self.inner.len()
     }
 
-    pub fn insert(&mut self, value: T) -> Handle {
-        Handle(self.inner.insert(value))
+    pub fn insert(&mut self, value: T) -> Handle<T> {
+        Handle(self.inner.insert(value), PhantomData)
     }
 
-    pub fn remove(&mut self, handle: Handle) -> Option<T> {
+    pub fn remove(&mut self, handle: Handle<T>) -> Option<T> {
         let result = self.inner.remove(handle.0);
 
         if result.is_some() {
@@ -48,17 +51,17 @@ impl<T> Store<T> {
         result
     }
 
-    pub fn remove_later(&self, handle: Handle) {
+    pub fn remove_later(&self, handle: Handle<T>) {
         let mut to_remove = self.to_remove.take();
         to_remove.push(handle);
         self.to_remove.set(to_remove);
     }
 
-    pub fn get(&self, handle: Handle) -> Option<&T> {
+    pub fn get(&self, handle: Handle<T>) -> Option<&T> {
         self.inner.get(handle.0)
     }
 
-    pub fn get_mut(&mut self, handle: Handle) -> Option<&mut T> {
+    pub fn get_mut(&mut self, handle: Handle<T>) -> Option<&mut T> {
         self.inner.get_mut(handle.0)
     }
 
@@ -86,25 +89,25 @@ impl<T> Store<T> {
         self.to_remove.set(to_remove);
     }
 
-    pub fn removed(&mut self) -> events::Source<Handle> {
+    pub fn removed(&mut self) -> events::Source<Handle<T>> {
         self.removed.source()
     }
 }
 
 impl<T> Get<T> for Store<T> {
-    fn get(&self, handle: Handle) -> Option<&T> {
+    fn get(&self, handle: Handle<T>) -> Option<&T> {
         self.get(handle)
     }
 }
 
 impl<T> GetMut<T> for Store<T> {
-    fn get_mut(&mut self, handle: Handle) -> Option<&mut T> {
+    fn get_mut(&mut self, handle: Handle<T>) -> Option<&mut T> {
         self.get_mut(handle)
     }
 }
 
 impl<'a, T> IntoIterator for &'a Store<T> {
-    type Item     = (Handle, &'a T);
+    type Item     = (Handle<T>, &'a T);
     type IntoIter = Iter<'a, T>;
 
     fn into_iter(self) -> Self::IntoIter {
@@ -113,7 +116,7 @@ impl<'a, T> IntoIterator for &'a Store<T> {
 }
 
 impl<'a, T> IntoIterator for &'a mut Store<T> {
-    type Item     = (Handle, &'a mut T);
+    type Item     = (Handle<T>, &'a mut T);
     type IntoIter = IterMut<'a, T>;
 
     fn into_iter(self) -> Self::IntoIter {
@@ -125,11 +128,11 @@ impl<'a, T> IntoIterator for &'a mut Store<T> {
 pub struct Iter<'a, T>(dense::Iter<'a, DefaultKey, T>);
 
 impl<'a, T> Iterator for Iter<'a, T> {
-    type Item = (Handle, &'a T);
+    type Item = (Handle<T>, &'a T);
 
     fn next(&mut self) -> Option<Self::Item> {
         self.0.next()
-            .map(|(key, value)| (Handle(key), value))
+            .map(|(key, value)| (Handle(key, PhantomData), value))
     }
 }
 
@@ -137,11 +140,11 @@ impl<'a, T> Iterator for Iter<'a, T> {
 pub struct IterMut<'a, T>(dense::IterMut<'a, DefaultKey, T>);
 
 impl<'a, T> Iterator for IterMut<'a, T> {
-    type Item = (Handle, &'a mut T);
+    type Item = (Handle<T>, &'a mut T);
 
     fn next(&mut self) -> Option<Self::Item> {
         self.0.next()
-            .map(|(key, value)| (Handle(key), value))
+            .map(|(key, value)| (Handle(key, PhantomData), value))
     }
 }
 

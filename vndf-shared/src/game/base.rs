@@ -42,14 +42,14 @@ macro_rules! components {
     ($($component:ident,)*) => {
         #[derive(Clone, Copy, Debug, Deserialize, Serialize, PartialEq)]
         pub enum Component {
-            $($component(Handle, $component),)*
+            $($component(Handle<$component>, $component),)*
         }
 
         #[derive(
             Clone, Copy, Debug, Deserialize, Serialize, Eq, PartialEq, Hash
         )]
         pub enum ComponentHandle {
-            $($component(Handle),)*
+            $($component(Handle<$component>),)*
         }
 
         impl ComponentHandle {

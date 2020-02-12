@@ -45,7 +45,7 @@ use crate::{
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Ship {
-    pub craft:    Handle,
+    pub craft:    Handle<Craft>,
     pub rotation: Rotation,
     pub missiles: u64,
     pub color:    [f32; 3],
@@ -53,7 +53,7 @@ pub struct Ship {
 
 impl Ship {
     pub fn new(
-        craft:  Handle,
+        craft:  Handle<Craft>,
         color:  [f32; 3],
     ) -> Self {
         Self {
@@ -138,7 +138,7 @@ impl Ship {
     }
 
     pub fn remove(
-        handle:     Handle,
+        handle:     Handle<Ship>,
         bodies:     &mut Store<Body>,
         crafts:     &mut Store<Craft>,
         directions: &mut Store<Direction>,

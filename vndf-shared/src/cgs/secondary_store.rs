@@ -1,3 +1,5 @@
+use std::marker::PhantomData;
+
 use slotmap::{
     DefaultKey,
     SparseSecondaryMap,
@@ -22,19 +24,19 @@ impl<T> SecondaryStore<T> {
         self.0.len()
     }
 
-    pub fn insert(&mut self, handle: Handle, value: T) -> Option<T> {
+    pub fn insert(&mut self, handle: Handle<T>, value: T) -> Option<T> {
         self.0.insert(handle.0, value)
     }
 
-    pub fn remove(&mut self, handle: Handle) -> Option<T> {
+    pub fn remove(&mut self, handle: Handle<T>) -> Option<T> {
         self.0.remove(handle.0)
     }
 
-    pub fn get(&self, handle: Handle) -> Option<&T> {
+    pub fn get(&self, handle: Handle<T>) -> Option<&T> {
         self.0.get(handle.0)
     }
 
-    pub fn get_mut(&mut self, handle: Handle) -> Option<&mut T> {
+    pub fn get_mut(&mut self, handle: Handle<T>) -> Option<&mut T> {
         self.0.get_mut(handle.0)
     }
 
@@ -52,19 +54,19 @@ impl<T> SecondaryStore<T> {
 }
 
 impl<T> Get<T> for SecondaryStore<T> {
-    fn get(&self, handle: Handle) -> Option<&T> {
+    fn get(&self, handle: Handle<T>) -> Option<&T> {
         self.get(handle)
     }
 }
 
 impl<T> GetMut<T> for SecondaryStore<T> {
-    fn get_mut(&mut self, handle: Handle) -> Option<&mut T> {
+    fn get_mut(&mut self, handle: Handle<T>) -> Option<&mut T> {
         self.get_mut(handle)
     }
 }
 
 impl<'a, T> IntoIterator for &'a SecondaryStore<T> {
-    type Item     = (Handle, &'a T);
+    type Item     = (Handle<T>, &'a T);
     type IntoIter = Iter<'a, T>;
 
     fn into_iter(self) -> Self::IntoIter {
@@ -76,10 +78,10 @@ impl<'a, T> IntoIterator for &'a SecondaryStore<T> {
 pub struct Iter<'a, T>(sparse_secondary::Iter<'a, DefaultKey, T>);
 
 impl<'a, T> Iterator for Iter<'a, T> {
-    type Item = (Handle, &'a T);
+    type Item = (Handle<T>, &'a T);
 
     fn next(&mut self) -> Option<Self::Item> {
         self.0.next()
-            .map(|(key, value)| (Handle(key), value))
+            .map(|(key, value)| (Handle(key, PhantomData), value))
     }
 }

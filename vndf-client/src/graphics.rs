@@ -24,6 +24,7 @@ use crate::{
             explosions::Explosion,
             loot::Loot,
             missiles::Missile,
+            physics::Body,
             ships::Ship,
         },
         math::{
@@ -236,7 +237,7 @@ impl Graphics {
 
     fn draw_projected_course(&self,
         context: &mut Context,
-        body:    Handle,
+        body:    Handle<Body>,
         state:   &State,
     )
         -> GameResult<bool>
@@ -506,12 +507,12 @@ Heavy Missiles: {}",
 
 
 struct OneStore<T> {
-    pub handle: Handle,
+    pub handle: Handle<T>,
     pub data:   T
 }
 
 impl<T> GetMut<T> for OneStore<T> {
-    fn get_mut(&mut self, handle: Handle) -> Option<&mut T> {
+    fn get_mut(&mut self, handle: Handle<T>) -> Option<&mut T> {
         if handle == self.handle {
             Some(&mut self.data)
         }

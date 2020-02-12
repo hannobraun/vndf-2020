@@ -56,16 +56,22 @@ impl Direction {
 /// it can be sent separately, at different rates.
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Body {
-    pub pos: Handle,
-    pub vel: Handle,
+    pub pos: Handle<Position>,
+    pub vel: Handle<Velocity>,
     pub acc: Vec2,
 
-    pub dir: Handle,
+    pub dir: Handle<Direction>,
     pub rot: Rad,
 }
 
 impl Body {
-    pub fn new(pos: Handle, vel: Handle, dir: Handle) -> Self {
+    pub fn new(
+        pos: Handle<Position>,
+        vel: Handle<Velocity>,
+        dir: Handle<Direction>,
+    )
+        -> Self
+    {
         Self {
             pos,
             vel,
@@ -125,7 +131,7 @@ impl Body {
     }
 
     pub fn remove(
-        handle:     Handle,
+        handle:     Handle<Body>,
         bodies:     &mut Store<Body>,
         directions: &mut Store<Direction>,
         positions:  &mut Store<Position>,

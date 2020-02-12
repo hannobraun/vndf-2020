@@ -27,7 +27,7 @@ use super::{
 pub fn explode_entity(
     bodies:  &Store<Body>,
     healths: &Store<Health>,
-    handle:  Handle,
+    handle:  Handle<Health>,
 )
     -> Option<ExplosionEntity>
 {
@@ -77,7 +77,7 @@ pub fn create_explosion(
 }
 
 pub fn damage_nearby(
-    handle:     Handle,
+    handle:     Handle<Explosion>,
     bodies:     &Store<Body>,
     explosions: &Store<Explosion>,
     healths:    &mut Store<Health>,
@@ -114,7 +114,7 @@ pub fn update_explosions(
 }
 
 pub fn remove_explosion(
-    handle:     Handle,
+    handle:     Handle<Explosion>,
     bodies:     &mut Store<Body>,
     directions: &mut Store<Direction>,
     explosions: &mut Store<Explosion>,

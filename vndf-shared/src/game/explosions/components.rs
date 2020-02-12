@@ -12,7 +12,10 @@ use crate::{
     cgs::Handle,
     game::{
         health::Health,
-        physics::Position,
+        physics::{
+            Body,
+            Position,
+        },
     },
     math::prelude::*,
 };
@@ -20,14 +23,14 @@ use crate::{
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Explosion {
-    pub body: Handle,
+    pub body: Handle<Body>,
 
     pub strength_total: f32,
     pub strength_left:  f32,
 }
 
 impl Explosion {
-    pub fn new(body: Handle, strength: f32) -> Self {
+    pub fn new(body: Handle<Body>, strength: f32) -> Self {
         Self {
             body,
 

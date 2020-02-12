@@ -43,7 +43,7 @@ pub fn check_health(
 }
 
 pub fn remove_entity(
-    handle:     Handle,
+    handle:     Handle<Health>,
     bodies:     &mut Store<Body>,
     crafts:     &mut Store<Craft>,
     directions: &mut Store<Direction>,

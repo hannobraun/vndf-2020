@@ -27,7 +27,7 @@ impl ExplosionEntity {
         positions:  &mut Store<Position>,
         velocities: &mut Store<Velocity>,
     )
-        -> Option<Handle>
+        -> Option<Handle<Explosion>>
     {
         let pos = *positions.get(self.exploding.pos)?;
         let pos = positions.insert(pos);

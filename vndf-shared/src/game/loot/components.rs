@@ -27,14 +27,14 @@ use crate::{
 
 #[derive(Clone, Copy, Debug, Deserialize, Serialize, PartialEq)]
 pub struct Loot {
-    pub body:     Handle,
+    pub body:     Handle<Body>,
     pub fuel:     f32,
     pub missiles: u64,
 }
 
 impl Loot {
     pub fn collect(&self,
-        handle:    Handle,
+        handle:    Handle<Loot>,
         bodies:    &Store<Body>,
         crafts:    &Store<Craft>,
         fuels:     &mut Store<Fuel>,
@@ -70,7 +70,7 @@ impl Loot {
     }
 
     fn distance(&self,
-        craft:     Handle,
+        craft:     Handle<Craft>,
         bodies:    &Store<Body>,
         crafts:    &Store<Craft>,
         positions: &Store<Position>,
@@ -89,7 +89,7 @@ impl Loot {
     }
 
     fn add_to_ship(&self,
-        ship:   Handle,
+        ship:   Handle<Ship>,
         crafts: &Store<Craft>,
         fuels:  &mut Store<Fuel>,
         ships:  &mut Store<Ship>,

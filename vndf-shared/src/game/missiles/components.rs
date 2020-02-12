@@ -33,16 +33,16 @@ use crate::{
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Missile {
-    pub craft:    Handle,
-    pub guidance: Handle,
-    pub target:   Handle,
+    pub craft:    Handle<Craft>,
+    pub guidance: Handle<Guidance>,
+    pub target:   Handle<Target>,
 }
 
 impl Missile {
     pub fn new(
-        craft:    Handle,
-        guidance: Handle,
-        target:   Handle,
+        craft:    Handle<Craft>,
+        guidance: Handle<Guidance>,
+        target:   Handle<Target>,
     )
         -> Self
     {
@@ -54,7 +54,7 @@ impl Missile {
     }
 
     pub fn remove(
-        handle:     Handle,
+        handle:     Handle<Missile>,
         bodies:     &mut Store<Body>,
         crafts:     &mut Store<Craft>,
         directions: &mut Store<Direction>,
@@ -89,13 +89,13 @@ impl Missile {
 
 
 pub struct Guidance {
-    pub craft:    Handle,
-    pub target:   Handle,
+    pub craft:    Handle<Craft>,
+    pub target:   Handle<Target>,
     pub guidance: Pid<f32>,
 }
 
 impl Guidance {
-    pub fn new(craft: Handle, target: Handle) -> Self {
+    pub fn new(craft: Handle<Craft>, target: Handle<Target>) -> Self {
         let guidance = Pid::new(
             // Proportional gain
             0.1,
@@ -196,7 +196,7 @@ impl Guidance {
 
 #[derive(Clone, Copy, Debug, Deserialize, Serialize, PartialEq)]
 pub struct Target {
-    pub craft: Handle,
+    pub craft: Handle<Craft>,
     pub value: Pnt2,
 }
 

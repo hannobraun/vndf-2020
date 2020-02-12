@@ -5,19 +5,22 @@ use serde::{
 
 use crate::{
     cgs::Handle,
-    game::base::ComponentHandle,
+    game::{
+        base::ComponentHandle,
+        physics::Body,
+    },
 };
 
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Health {
     pub parent: Option<ComponentHandle>,
-    pub body:   Handle,
+    pub body:   Handle<Body>,
     pub value:  f32,
 }
 
 impl Health {
-    pub fn new(body: Handle, value: f32) -> Self {
+    pub fn new(body: Handle<Body>, value: f32) -> Self {
         Health {
             parent: None,
             body,

@@ -46,7 +46,7 @@ use super::{
 
 pub struct Feature {
     next_id:            PlayerId,
-    players_by_address: HashMap<SocketAddr, Handle>,
+    players_by_address: HashMap<SocketAddr, Handle<Player>>,
 
     pub players: Store<Player>,
 
