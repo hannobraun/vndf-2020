@@ -21,7 +21,7 @@ use crate::{
     },
     shared::{
         input::{
-            self,
+            Action,
             EventKind,
             Rotation,
         },
@@ -121,7 +121,7 @@ impl Events {
 
     pub fn push(&mut self, kind: EventKind) {
         let event = Event {
-            inner: input::Action {
+            inner: Action {
                 seq: self.next_seq,
                 kind,
             },
@@ -142,7 +142,7 @@ impl Events {
         }
     }
 
-    pub fn unsent(&mut self) -> impl Iterator<Item=input::Action> + '_ {
+    pub fn unsent(&mut self) -> impl Iterator<Item=Action> + '_ {
         Unsent {
             inner: self.unsent.drain(..),
             sent:  &mut self.sent,
@@ -180,7 +180,7 @@ impl<'r> IntoIterator for &'r Events {
 
 #[derive(Clone, Copy, Debug)]
 pub struct Event {
-    pub inner:   input::Action,
+    pub inner:   Action,
     pub entered: Time,
     pub sent:    Option<Time>,
     pub handled: Option<Time>,
@@ -239,7 +239,7 @@ pub struct Unsent<'r> {
 }
 
 impl<'r> Iterator for Unsent<'r> {
-    type Item = input::Action;
+    type Item = Action;
 
     fn next(&mut self) -> Option<Self::Item> {
         self.inner.next()
