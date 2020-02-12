@@ -81,15 +81,6 @@ pub fn disconnect_player(
     // so the ship could have been removed already.
     if let Some(handle) = index.remove(&address) {
         players.remove(handle);
-
-        // In principle, an event needs to be emitted to mark the removal of the
-        // item. Eventually, this should happen automatically, but in the
-        // meantime, systems need to do this manually.
-        //
-        // Neither is happening here. As of this writing, no item removal
-        // infrastructure exists yet, and since removing players isn't required
-        // for the correct functioning of the game, I've opted to leave this be
-        // for now.
     }
 }
 
