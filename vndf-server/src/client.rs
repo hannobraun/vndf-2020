@@ -34,7 +34,7 @@ impl Client {
     }
 
     pub fn update(&mut self, component: Component) -> bool {
-        let component_handle = ComponentHandle::from_handle(&component);
+        let component_handle = ComponentHandle::from_component(&component);
 
         let recently_updated = self.updates
             .get(&component_handle)
