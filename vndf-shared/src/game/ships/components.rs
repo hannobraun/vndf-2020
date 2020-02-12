@@ -69,7 +69,7 @@ impl Ship {
         crafts:         &mut Store<Craft>,
         missile_launch: &mut events::Sink<MissileLaunch>,
         player:         &Player,
-        event:          input::Event,
+        event:          input::Action,
     )
         -> Option<()>
     {

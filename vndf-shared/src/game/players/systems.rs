@@ -95,7 +95,7 @@ pub fn disconnect_player(
 
 pub fn handle_input(
     addr:           SocketAddr,
-    input:          input::Event,
+    input:          input::Action,
     bodies:         &Store<Body>,
     crafts:         &mut Store<Craft>,
     players:        &Store<Player>,

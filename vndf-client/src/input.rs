@@ -121,7 +121,7 @@ impl Events {
 
     pub fn push(&mut self, kind: EventKind) {
         let event = Event {
-            inner: input::Event {
+            inner: input::Action {
                 seq: self.next_seq,
                 kind,
             },
@@ -142,7 +142,7 @@ impl Events {
         }
     }
 
-    pub fn unsent(&mut self) -> impl Iterator<Item=input::Event> + '_ {
+    pub fn unsent(&mut self) -> impl Iterator<Item=input::Action> + '_ {
         Unsent {
             inner: self.unsent.drain(..),
             sent:  &mut self.sent,
@@ -180,7 +180,7 @@ impl<'r> IntoIterator for &'r Events {
 
 #[derive(Clone, Copy, Debug)]
 pub struct Event {
-    pub inner:   input::Event,
+    pub inner:   input::Action,
     pub entered: Time,
     pub sent:    Option<Time>,
     pub handled: Option<Time>,
@@ -239,7 +239,7 @@ pub struct Unsent<'r> {
 }
 
 impl<'r> Iterator for Unsent<'r> {
-    type Item = input::Event;
+    type Item = input::Action;
 
     fn next(&mut self) -> Option<Self::Item> {
         self.inner.next()
