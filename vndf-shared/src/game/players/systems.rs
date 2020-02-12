@@ -30,7 +30,7 @@ use crate::{
             ShipEntity,
         },
     },
-    input,
+    input::Action,
 };
 
 use super::{
@@ -95,7 +95,7 @@ pub fn disconnect_player(
 
 pub fn handle_input(
     addr:           SocketAddr,
-    input:          input::Action,
+    input:          Action,
     bodies:         &Store<Body>,
     crafts:         &mut Store<Craft>,
     players:        &Store<Player>,
