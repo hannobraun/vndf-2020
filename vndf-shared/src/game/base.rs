@@ -53,11 +53,11 @@ macro_rules! components {
         }
 
         impl ComponentHandle {
-            pub fn from_handle(handle: Handle, component: &Component) -> Self {
+            pub fn from_handle(component: &Component) -> Self {
                 match component {
                     $(
-                        Component::$component(_, _) =>
-                            ComponentHandle::$component(handle),
+                        Component::$component(handle, _) =>
+                            ComponentHandle::$component(*handle),
                     )*
                 }
             }

@@ -34,11 +34,8 @@ impl Client {
         self.updates.remove(&handle);
     }
 
-    pub fn update(&mut self, handle: Handle, component: Component) -> bool {
-        let component_handle = ComponentHandle::from_handle(
-            handle,
-            &component,
-        );
+    pub fn update(&mut self, _: Handle, component: Component) -> bool {
+        let component_handle = ComponentHandle::from_handle(&component);
 
         let recently_updated = self.updates
             .get(&component_handle)
