@@ -19,7 +19,7 @@ use crate::{
 use super::{
     Loot,
     collect_loot,
-    spawn_loot,
+    spawn_random_loot,
 };
 
 
@@ -46,7 +46,7 @@ impl Feature {
     ) {
         self.loots.apply_changes();
 
-        spawn_loot(
+        spawn_random_loot(
             event.dt,
             bodies,
             directions,

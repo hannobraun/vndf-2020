@@ -26,7 +26,7 @@ use crate::{
 use super::Loot;
 
 
-pub fn spawn_loot(
+pub fn spawn_random_loot(
     dt:         f32,
     bodies:     &mut Store<Body>,
     directions: &mut Store<Direction>,
