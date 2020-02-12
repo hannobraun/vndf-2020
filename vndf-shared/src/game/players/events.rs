@@ -2,7 +2,7 @@ use std::net::SocketAddr;
 
 use crate::{
     game::PlayerId,
-    input,
+    input::Action,
 };
 
 
@@ -27,5 +27,5 @@ pub struct PlayerCreated {
 
 pub struct PlayerInput {
     pub addr:  SocketAddr,
-    pub event: input::Action,
+    pub event: Action,
 }
