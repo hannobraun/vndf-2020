@@ -118,8 +118,11 @@ impl State {
             self.loot.on_update(
                 &event,
                 &mut self.physics.bodies,
+                &self.crafts.crafts,
                 &mut self.physics.directions,
+                &mut self.crafts.fuels,
                 &mut self.physics.positions,
+                &mut self.ships.ships,
                 &mut self.physics.velocities,
             );
         }

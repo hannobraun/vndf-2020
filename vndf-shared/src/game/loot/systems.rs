@@ -8,12 +8,17 @@ use crate::{
     cgs::Store,
     game::{
         WORLD_SIZE,
+        crafts::{
+            Craft,
+            Fuel,
+        },
         physics::{
             Body,
             Direction,
             Position,
             Velocity,
         },
+        ships::Ship,
     },
     math::Pnt2,
 };
@@ -58,5 +63,26 @@ pub fn spawn_loot(
         };
 
         loots.insert(loot);
+    }
+}
+
+pub fn collect_loot(
+    bodies:    &Store<Body>,
+    crafts:    &Store<Craft>,
+    fuels:     &mut Store<Fuel>,
+    loots:     &Store<Loot>,
+    positions: &Store<Position>,
+    ships:     &mut Store<Ship>,
+) {
+    for (handle, loot) in loots {
+        loot.collect(
+            handle,
+            bodies,
+            crafts,
+            fuels,
+            loots,
+            positions,
+            ships,
+        );
     }
 }
