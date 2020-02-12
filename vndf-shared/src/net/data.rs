@@ -1,8 +1,5 @@
 use crate::{
-    cgs::{
-        Handle,
-        SecondaryStore,
-    },
+    cgs::SecondaryStore,
     game::{
         base::{
             Component,
@@ -43,12 +40,12 @@ macro_rules! data {
                 }
             }
 
-            pub fn update(&mut self, handle: Handle, component: Component)
+            pub fn update(&mut self, component: Component)
                 -> bool
             {
                 match component {
                     $(
-                        Component::$ty(_, value) => {
+                        Component::$ty(handle, value) => {
                             let previous = self.$name.insert(handle, value);
                             Some(value) != previous
                         }

@@ -47,7 +47,7 @@ impl Client {
             )
             .unwrap_or(false);
 
-        let data_changed = self.data.update(handle, component);
+        let data_changed = self.data.update(component);
 
         use Component::*;
         let should_update = match component {

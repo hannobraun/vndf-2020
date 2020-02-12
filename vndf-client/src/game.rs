@@ -68,9 +68,9 @@ impl State {
         }
     }
 
-    pub fn update_component(&mut self, handle: Handle, component: Component) {
+    pub fn update_component(&mut self, _: Handle, component: Component) {
         self.statistics.updates.push_back(Instant::now());
-        self.data.update(handle, component);
+        self.data.update(component);
     }
 
     pub fn remove_component(&mut self, handle: ComponentHandle) {
