@@ -86,7 +86,7 @@ pub fn disconnect_player(
 
 pub fn handle_input(
     addr:           SocketAddr,
-    input:          Action,
+    action:         Action,
     bodies:         &Store<Body>,
     crafts:         &mut Store<Craft>,
     players:        &Store<Player>,
@@ -109,10 +109,10 @@ pub fn handle_input(
         })?;
 
     for ship in ships.values_mut() {
-        ship.apply_input(bodies, crafts, missile_launch, player, input);
+        ship.apply_input(bodies, crafts, missile_launch, player, action);
     }
 
-    input_handled.push(InputHandled { addr, seq: input.seq });
+    input_handled.push(InputHandled { addr, seq: action.seq });
 
     Some(())
 }
