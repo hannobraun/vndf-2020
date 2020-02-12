@@ -44,6 +44,8 @@ impl Feature {
         ships:      &mut Store<Ship>,
         velocities: &mut Store<Velocity>,
     ) {
+        self.loots.apply_changes();
+
         spawn_loot(
             event.dt,
             bodies,
