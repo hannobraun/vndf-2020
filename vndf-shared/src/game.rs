@@ -14,10 +14,7 @@ use serde::{
     Serialize,
 };
 
-use crate::{
-    cgs::Handle,
-    events,
-};
+use crate::events;
 
 use self::{
     base::{
@@ -211,33 +208,31 @@ impl State {
         }
     }
 
-    pub fn updates(&mut self)
-        -> impl Iterator<Item=(Handle, Component)> + '_
-    {
+    pub fn updates(&mut self) -> impl Iterator<Item=Component> + '_ {
         let bodies = self.physics.bodies.iter()
-            .map(|(handle, &c)| (handle, Component::Body(handle, c)));
+            .map(|(handle, &c)| Component::Body(handle, c));
         let crafts = self.crafts.crafts.iter()
-            .map(|(handle, &c)| (handle, Component::Craft(handle, c)));
+            .map(|(handle, &c)| Component::Craft(handle, c));
         let directions = self.physics.directions.iter()
-            .map(|(handle, &c)| (handle, Component::Direction(handle, c)));
+            .map(|(handle, &c)| Component::Direction(handle, c));
         let explosions = self.explosions.explosions.iter()
-            .map(|(handle, &c)| (handle, Component::Explosion(handle, c)));
+            .map(|(handle, &c)| Component::Explosion(handle, c));
         let fuels = self.crafts.fuels.iter()
-            .map(|(handle, &c)| (handle, Component::Fuel(handle, c)));
+            .map(|(handle, &c)| Component::Fuel(handle, c));
         let healths = self.health.healths.iter()
-            .map(|(handle, &c)| (handle, Component::Health(handle, c)));
+            .map(|(handle, &c)| Component::Health(handle, c));
         let loots = self.loot.loots.iter()
-            .map(|(handle, &c)| (handle, Component::Loot(handle, c)));
+            .map(|(handle, &c)| Component::Loot(handle, c));
         let missiles = self.missiles.missiles.iter()
-            .map(|(handle, &c)| (handle, Component::Missile(handle, c)));
+            .map(|(handle, &c)| Component::Missile(handle, c));
         let positions = self.physics.positions.iter()
-            .map(|(handle, &c)| (handle, Component::Position(handle, c)));
+            .map(|(handle, &c)| Component::Position(handle, c));
         let ships = self.ships.ships.iter()
-            .map(|(handle, &c)| (handle, Component::Ship(handle, c)));
+            .map(|(handle, &c)| Component::Ship(handle, c));
         let targets = self.missiles.targets.iter()
-            .map(|(handle, &c)| (handle, Component::Target(handle, c)));
+            .map(|(handle, &c)| Component::Target(handle, c));
         let velocities = self.physics.velocities.iter()
-            .map(|(handle, &c)| (handle, Component::Velocity(handle, c)));
+            .map(|(handle, &c)| Component::Velocity(handle, c));
 
         bodies
             .chain(crafts)

@@ -129,7 +129,7 @@ impl Server {
             }
         }
 
-        for (_, component) in self.state.updates() {
+        for component in self.state.updates() {
             for (&addr, client) in &mut self.clients {
                 let should_update = client.update(component);
 
