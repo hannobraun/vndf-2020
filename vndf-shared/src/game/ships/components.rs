@@ -33,6 +33,7 @@ use crate::{
     },
     input::{
         self,
+        Action,
         Rotation,
     },
     math::{
@@ -69,7 +70,7 @@ impl Ship {
         crafts:         &mut Store<Craft>,
         missile_launch: &mut events::Sink<MissileLaunch>,
         player:         &Player,
-        event:          input::Action,
+        event:          Action,
     )
         -> Option<()>
     {
