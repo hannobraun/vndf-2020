@@ -59,10 +59,7 @@ impl Client {
                 | Fuel(_)
             =>
             {
-                // Doesn't really matter whether the data has changed or not. We
-                // need to correct whatever the client has been thinking either
-                // way.
-                !recently_updated
+                data_changed && !recently_updated
             }
             _ => {
                 data_changed
