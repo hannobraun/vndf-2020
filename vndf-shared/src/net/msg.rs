@@ -16,7 +16,7 @@ use crate::{
         },
         players::PlayerId,
     },
-    input,
+    input::Action,
 };
 
 
@@ -52,7 +52,7 @@ pub enum FromClient {
     Hello {
         color: [f32; 3],
     },
-    Input(input::Action),
+    Input(Action),
 }
 
 
