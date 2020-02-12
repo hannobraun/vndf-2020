@@ -7,7 +7,6 @@ use std::{
 };
 
 use vndf_shared::{
-    cgs::Handle,
     game::base::{
         Component,
         ComponentHandle,
@@ -34,7 +33,7 @@ impl Client {
         self.updates.remove(&handle);
     }
 
-    pub fn update(&mut self, _: Handle, component: Component) -> bool {
+    pub fn update(&mut self, component: Component) -> bool {
         let component_handle = ComponentHandle::from_handle(&component);
 
         let recently_updated = self.updates

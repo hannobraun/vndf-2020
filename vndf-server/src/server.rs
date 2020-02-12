@@ -129,9 +129,9 @@ impl Server {
             }
         }
 
-        for (handle, component) in self.state.updates() {
+        for (_, component) in self.state.updates() {
             for (&addr, client) in &mut self.clients {
-                let should_update = client.update(handle, component);
+                let should_update = client.update(component);
 
                 if should_update {
                     self.network.send(
