@@ -47,7 +47,7 @@ impl Loot {
 
         for (ship_handle, ship) in ships.iter_mut() {
             let distance = self.distance(
-                ship.craft,
+                &ship.craft,
                 bodies,
                 crafts,
                 positions,
@@ -70,14 +70,14 @@ impl Loot {
     }
 
     fn distance(&self,
-        craft:     Handle<Craft>,
+        craft:     &Handle<Craft>,
         bodies:    &Store<Body>,
         crafts:    &Store<Craft>,
         positions: &Store<Position>,
     )
         -> Option<f32>
     {
-        let craft      = crafts.get(&craft)?;
+        let craft      = crafts.get(craft)?;
         let loot_body  = bodies.get(&self.body)?;
         let other_body = bodies.get(&craft.body)?;
         let loot_pos   = positions.get(&loot_body.pos)?;
