@@ -63,7 +63,7 @@ impl Loot {
 
         if let Some(ship) = nearest_ship {
             if min_distance < 10.0 {
-                self.add_to_ship(ship, crafts, fuels, ships);
+                self.add_to_ship(&ship, crafts, fuels, ships);
                 loots.remove_later(handle);
             }
         }
@@ -89,14 +89,14 @@ impl Loot {
     }
 
     fn add_to_ship(&self,
-        ship:   Handle<Ship>,
+        ship:   &Handle<Ship>,
         crafts: &Store<Craft>,
         fuels:  &mut Store<Fuel>,
         ships:  &mut Store<Ship>,
     )
         -> Option<()>
     {
-        let ship  = ships.get_mut(&ship)?;
+        let ship  = ships.get_mut(ship)?;
         let craft = crafts.get(&ship.craft)?;
         let fuel  = fuels.get_mut(&craft.fuel)?;
 
