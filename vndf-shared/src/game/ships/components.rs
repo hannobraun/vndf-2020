@@ -15,7 +15,6 @@ use crate::{
             Craft,
             Fuel,
         },
-        health::Health,
         missiles::{
             MissileEntity,
             MissileLaunch,
@@ -144,7 +143,6 @@ impl Ship {
         crafts:     &mut StrongStore<Craft>,
         directions: &mut StrongStore<Direction>,
         fuels:      &mut StrongStore<Fuel>,
-        healths:    &mut StrongStore<Health>,
         positions:  &mut StrongStore<Position>,
         ships:      &mut StrongStore<Ship>,
         velocities: &mut StrongStore<Velocity>,
@@ -158,7 +156,6 @@ impl Ship {
             crafts,
             directions,
             fuels,
-            healths,
             positions,
             velocities,
         )

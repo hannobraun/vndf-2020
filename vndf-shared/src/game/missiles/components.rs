@@ -60,7 +60,6 @@ impl Missile {
         directions: &mut StrongStore<Direction>,
         fuels:      &mut StrongStore<Fuel>,
         guidances:  &mut StrongStore<Guidance>,
-        healths:    &mut StrongStore<Health>,
         missiles:   &mut StrongStore<Missile>,
         positions:  &mut StrongStore<Position>,
         targets:    &mut StrongStore<Target>,
@@ -76,7 +75,6 @@ impl Missile {
             crafts,
             directions,
             fuels,
-            healths,
             positions,
             velocities,
         );

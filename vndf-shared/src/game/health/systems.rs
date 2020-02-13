@@ -58,7 +58,7 @@ pub fn remove_entity(
 )
     -> Option<()>
 {
-    let health = healths.get(&handle)?;
+    let health = healths.remove(handle)?;
 
     match health.parent? {
         ComponentHandle::Missile(handle) => {
@@ -69,7 +69,6 @@ pub fn remove_entity(
                 directions,
                 fuels,
                 guidances,
-                healths,
                 missiles,
                 positions,
                 targets,
@@ -83,7 +82,6 @@ pub fn remove_entity(
                 crafts,
                 directions,
                 fuels,
-                healths,
                 positions,
                 ships,
                 velocities,

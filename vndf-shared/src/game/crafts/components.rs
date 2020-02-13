@@ -67,7 +67,6 @@ impl Craft {
         crafts:     &mut StrongStore<Craft>,
         directions: &mut StrongStore<Direction>,
         fuels:      &mut StrongStore<Fuel>,
-        healths:    &mut StrongStore<Health>,
         positions:  &mut StrongStore<Position>,
         velocities: &mut StrongStore<Velocity>,
     )
@@ -83,7 +82,6 @@ impl Craft {
             velocities,
         );
         fuels.remove(craft.fuel);
-        healths.remove(craft.health);
 
         Some(())
     }
