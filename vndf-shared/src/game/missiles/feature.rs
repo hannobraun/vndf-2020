@@ -1,3 +1,5 @@
+use vndf_events as events;
+
 use crate::{
     cgs::Store,
     game::{
@@ -14,7 +16,6 @@ use crate::{
             Velocity,
         },
     },
-    events,
 };
 
 use super::{

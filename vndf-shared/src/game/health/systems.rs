@@ -1,3 +1,5 @@
+use vndf_events as events;
+
 use crate::{
     cgs::{
         Handle,
@@ -22,7 +24,6 @@ use crate::{
         },
         ships::Ship,
     },
-    events,
 };
 
 use super::{

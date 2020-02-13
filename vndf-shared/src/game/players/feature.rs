@@ -7,6 +7,7 @@ use serde::{
     Deserialize,
     Serialize,
 };
+use vndf_events as events;
 
 use crate::{
     cgs::{
@@ -28,7 +29,6 @@ use crate::{
         },
         ships::Ship,
     },
-    events,
 };
 
 use super::{

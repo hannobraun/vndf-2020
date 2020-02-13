@@ -13,8 +13,7 @@ use serde::{
     Deserialize,
     Serialize,
 };
-
-use crate::events;
+use vndf_events as events;
 
 use self::{
     base::{

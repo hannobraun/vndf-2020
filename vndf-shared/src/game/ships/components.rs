@@ -3,13 +3,13 @@ use serde::{
     Deserialize,
     Serialize,
 };
+use vndf_events as events;
 
 use crate::{
     cgs::{
         Handle,
         Store,
     },
-    events,
     game::{
         crafts::{
             Craft,

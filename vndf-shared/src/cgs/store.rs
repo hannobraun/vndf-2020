@@ -8,8 +8,7 @@ use slotmap::{
     DenseSlotMap,
     dense,
 };
-
-use crate::events;
+use vndf_events as events;
 
 use super::{
     Get,

@@ -2408,6 +2408,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "vndf-events"
+version = "0.1.0"
+
+[[package]]
 name = "vndf-launcher"
 version = "0.1.0"
 dependencies = [
@@ -2436,6 +2440,7 @@ dependencies = [
  "rand 0.7.3",
  "serde",
  "slotmap",
+ "vndf-events",
 ]
 
 [[package]]

@@ -1,9 +1,10 @@
+use vndf_events as events;
+
 use crate::{
     cgs::{
         Handle,
         Store,
     },
-    events,
     game::{
         base::ComponentHandle,
         health::Health,

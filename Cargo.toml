@@ -1,6 +1,7 @@
 [workspace]
 members = [
     "vndf-client",
+    "vndf-events",
     "vndf-launcher",
     "vndf-server",
     "vndf-shared",
@@ -8,6 +9,7 @@ members = [
 ]
 default-members = [
     "vndf-client",
+    "vndf-events",
     "vndf-shared",
     "vndf-tests",
 ]

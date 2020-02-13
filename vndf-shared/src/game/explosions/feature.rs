@@ -1,6 +1,7 @@
+use vndf_events as events;
+
 use crate::{
     cgs::Store,
-    events,
     game::{
         base::Update,
         health::{

@@ -15,6 +15,9 @@ serde    = "*"
 version  = "*"
 features = ["mint", "serde"]
 
+[dependencies.vndf-events]
+path = "../vndf-events"
+
 [dependencies.pid]
 version  = "*"
 features = ["serde"]
