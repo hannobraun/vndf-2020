@@ -93,7 +93,7 @@ impl MissileEntity {
         let guidance = guidances.insert(guidance);
 
         let missile = missiles.insert(Missile::new(craft, guidance, target));
-        healths.get_mut(health).unwrap().parent =
+        healths.get_mut(&health).unwrap().parent =
             Some(ComponentHandle::Missile(missile));
 
         Some(())

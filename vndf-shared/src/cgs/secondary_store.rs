@@ -36,7 +36,7 @@ impl<T> SecondaryStore<T> {
         self.0.get(handle.0)
     }
 
-    pub fn get_mut(&mut self, handle: Handle<T>) -> Option<&mut T> {
+    pub fn get_mut(&mut self, handle: &Handle<T>) -> Option<&mut T> {
         self.0.get_mut(handle.0)
     }
 
@@ -60,7 +60,7 @@ impl<T> Get<T> for SecondaryStore<T> {
 }
 
 impl<T> GetMut<T> for SecondaryStore<T> {
-    fn get_mut(&mut self, handle: Handle<T>) -> Option<&mut T> {
+    fn get_mut(&mut self, handle: &Handle<T>) -> Option<&mut T> {
         self.get_mut(handle)
     }
 }

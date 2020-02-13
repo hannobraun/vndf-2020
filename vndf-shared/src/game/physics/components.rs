@@ -90,9 +90,9 @@ impl Body {
     )
         -> Option<()>
     {
-        let vel = velocities.get_mut(self.vel)?;
-        let pos = positions.get_mut(self.pos)?;
-        let dir = directions.get_mut(self.dir)?;
+        let vel = velocities.get_mut(&self.vel)?;
+        let pos = positions.get_mut(&self.pos)?;
+        let dir = directions.get_mut(&self.dir)?;
 
         dir.0 = rotate(dir.0, self.rot * dt);
 
@@ -112,7 +112,7 @@ impl Body {
         let boundary = world_size / 2.0;
 
         let pos = positions.get(&self.pos)?;
-        let vel = velocities.get_mut(self.vel)?;
+        let vel = velocities.get_mut(&self.vel)?;
 
         if pos.0.x >= boundary && vel.0.x > 0.0 {
             vel.0.x *= -1.0;

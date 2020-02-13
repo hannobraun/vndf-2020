@@ -47,9 +47,9 @@ impl Craft {
     )
         -> Option<()>
     {
-        let body = bodies.get_mut(self.body)?;
+        let body = bodies.get_mut(&self.body)?;
         let dir  = directions.get(&body.dir)?;
-        let fuel = fuels.get_mut(self.fuel)?;
+        let fuel = fuels.get_mut(&self.fuel)?;
 
         body.acc = if self.engine_on && fuel.0 > 0.0 {
             fuel.0 -= self.thrust * dt;

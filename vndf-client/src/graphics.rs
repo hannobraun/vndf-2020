@@ -512,8 +512,8 @@ struct OneStore<T> {
 }
 
 impl<T> GetMut<T> for OneStore<T> {
-    fn get_mut(&mut self, handle: Handle<T>) -> Option<&mut T> {
-        if handle == self.handle {
+    fn get_mut(&mut self, handle: &Handle<T>) -> Option<&mut T> {
+        if handle == &self.handle {
             Some(&mut self.data)
         }
         else {

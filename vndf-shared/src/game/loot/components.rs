@@ -96,9 +96,9 @@ impl Loot {
     )
         -> Option<()>
     {
-        let ship  = ships.get_mut(ship)?;
+        let ship  = ships.get_mut(&ship)?;
         let craft = crafts.get(&ship.craft)?;
-        let fuel  = fuels.get_mut(craft.fuel)?;
+        let fuel  = fuels.get_mut(&craft.fuel)?;
 
         fuel.0        += self.fuel;
         ship.missiles += self.missiles;

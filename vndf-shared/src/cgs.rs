@@ -65,5 +65,5 @@ pub trait Get<T> {
 }
 
 pub trait GetMut<T> {
-    fn get_mut(&mut self, handle: Handle<T>) -> Option<&mut T>;
+    fn get_mut(&mut self, handle: &Handle<T>) -> Option<&mut T>;
 }
