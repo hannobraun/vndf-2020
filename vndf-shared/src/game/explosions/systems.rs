@@ -34,12 +34,12 @@ pub fn explode_entity(
     let body   = bodies.get(&health.body)?;
 
     let mut is_missile = false;
-    if let ComponentHandle::Missile(_) = health.parent? {
+    if let ComponentHandle::Missile(_) = health.parent.as_ref()? {
         is_missile = true;
     }
 
     let mut is_ship = false;
-    if let ComponentHandle::Ship(_) = health.parent? {
+    if let ComponentHandle::Ship(_) = &health.parent.as_ref()? {
         is_ship = true;
     }
 
