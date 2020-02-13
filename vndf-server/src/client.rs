@@ -43,10 +43,8 @@ impl Client {
             )
             .unwrap_or(false);
 
-        let data_changed = self.data.update(component);
-
         use Component::*;
-        let should_update = match component {
+        let is_interpolated = match component {
             // These components are interpolated client-side.
             Direction(_, _)
                 | Position(_, _)
@@ -54,12 +52,18 @@ impl Client {
                 | Explosion(_, _)
                 | Fuel(_, _)
             =>
-            {
-                data_changed && !recently_updated
-            }
-            _ => {
-                data_changed
-            }
+                true,
+            _ =>
+                false,
+        };
+
+        let data_changed = self.data.update(component);
+
+        let should_update = if is_interpolated {
+            data_changed && !recently_updated
+        }
+        else {
+            data_changed
         };
 
         if should_update {
