@@ -56,7 +56,7 @@ pub enum FromClient {
 }
 
 
-#[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub enum FromServer {
     Ping,
     Welcome(PlayerId),

@@ -76,12 +76,12 @@ fn clients_should_emit_receive_events() -> Result<(), Error> {
 
     let message = msg::FromServer::Ping;
 
-    server.send(client.local_addr, message);
+    server.send(client.local_addr, message.clone());
 
     let mut messages = Vec::new();
     while messages.len() < 1 {
         for message in client.incoming() {
-            messages.push(message?);
+            messages.push(message?.clone());
         }
     }
 
