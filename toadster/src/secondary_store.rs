@@ -11,9 +11,9 @@ use super::{
 };
 
 
-pub struct SecondaryStore<T>(SparseSecondaryMap<DefaultKey, T>);
+pub struct WeakStore<T>(SparseSecondaryMap<DefaultKey, T>);
 
-impl<T> SecondaryStore<T> {
+impl<T> WeakStore<T> {
     pub fn new() -> Self {
         Self(SparseSecondaryMap::new())
     }
@@ -51,19 +51,19 @@ impl<T> SecondaryStore<T> {
     }
 }
 
-impl<T> Get<T> for SecondaryStore<T> {
+impl<T> Get<T> for WeakStore<T> {
     fn get(&self, handle: &StrongHandle<T>) -> Option<&T> {
         self.get(handle)
     }
 }
 
-impl<T> GetMut<T> for SecondaryStore<T> {
+impl<T> GetMut<T> for WeakStore<T> {
     fn get_mut(&mut self, handle: &StrongHandle<T>) -> Option<&mut T> {
         self.get_mut(handle)
     }
 }
 
-impl<'a, T> IntoIterator for &'a SecondaryStore<T> {
+impl<'a, T> IntoIterator for &'a WeakStore<T> {
     type Item     = (StrongHandle<T>, &'a T);
     type IntoIter = Iter<'a, T>;
 

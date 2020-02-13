@@ -1,4 +1,4 @@
-use toadster::SecondaryStore;
+use toadster::WeakStore;
 
 use crate::game::{
     base::{
@@ -29,13 +29,13 @@ use crate::game::{
 macro_rules! data {
     ($($name:ident, $ty:ident;)*) => {
         pub struct Data {
-            $(pub $name: SecondaryStore<$ty>,)*
+            $(pub $name: WeakStore<$ty>,)*
         }
 
         impl Data {
             pub fn new() -> Self {
                 Self {
-                    $($name: SecondaryStore::new(),)*
+                    $($name: WeakStore::new(),)*
                 }
             }
 

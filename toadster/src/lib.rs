@@ -5,7 +5,7 @@ pub mod store;
 
 pub use self::{
     handle::StrongHandle,
-    secondary_store::SecondaryStore,
+    secondary_store::WeakStore,
     store::StrongStore,
 };
 
