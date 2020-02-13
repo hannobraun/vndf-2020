@@ -43,7 +43,7 @@ pub fn check_health(
 }
 
 pub fn remove_entity(
-    handle:     Handle<Health>,
+    handle:     &Handle<Health>,
     bodies:     &mut Store<Body>,
     crafts:     &mut Store<Craft>,
     directions: &mut Store<Direction>,
@@ -58,7 +58,7 @@ pub fn remove_entity(
 )
     -> Option<()>
 {
-    let health = healths.get(&handle)?;
+    let health = healths.get(handle)?;
     let parent = health.parent?;
 
     if let ComponentHandle::Missile(handle) = parent {
