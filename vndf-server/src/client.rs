@@ -28,9 +28,9 @@ impl Client {
         }
     }
 
-    pub fn remove(&mut self, handle: ComponentHandle) {
-        self.data.remove(&handle);
-        self.updates.remove(&handle);
+    pub fn remove(&mut self, handle: &ComponentHandle) {
+        self.data.remove(handle);
+        self.updates.remove(handle);
     }
 
     pub fn update(&mut self, component: Component) -> bool {

@@ -122,7 +122,7 @@ impl Server {
 
         for event in self.state.removals().ready() {
             for (&addr, client) in &mut self.clients {
-                client.remove(event.handle);
+                client.remove(&event.handle);
                 self.network.send(
                     addr,
                     msg::FromServer::RemoveComponent(event.handle),
