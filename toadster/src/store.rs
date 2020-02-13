@@ -1,7 +1,4 @@
-use std::{
-    cell::Cell,
-    marker::PhantomData,
-};
+use std::cell::Cell;
 
 use slotmap::{
     DefaultKey,
@@ -37,7 +34,7 @@ impl<T> Store<T> {
     }
 
     pub fn insert(&mut self, value: T) -> Handle<T> {
-        Handle(self.inner.insert(value), PhantomData)
+        Handle::new(self.inner.insert(value))
     }
 
     pub fn remove(&mut self, handle: Handle<T>) -> Option<T> {
@@ -131,7 +128,7 @@ impl<'a, T> Iterator for Iter<'a, T> {
 
     fn next(&mut self) -> Option<Self::Item> {
         self.0.next()
-            .map(|(key, value)| (Handle(key, PhantomData), value))
+            .map(|(key, value)| (Handle::new(key), value))
     }
 }
 
@@ -143,7 +140,7 @@ impl<'a, T> Iterator for IterMut<'a, T> {
 
     fn next(&mut self) -> Option<Self::Item> {
         self.0.next()
-            .map(|(key, value)| (Handle(key, PhantomData), value))
+            .map(|(key, value)| (Handle::new(key), value))
     }
 }
 

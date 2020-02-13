@@ -1,5 +1,3 @@
-use std::marker::PhantomData;
-
 use slotmap::{
     DefaultKey,
     SparseSecondaryMap,
@@ -82,6 +80,6 @@ impl<'a, T> Iterator for Iter<'a, T> {
 
     fn next(&mut self) -> Option<Self::Item> {
         self.0.next()
-            .map(|(key, value)| (Handle(key, PhantomData), value))
+            .map(|(key, value)| (Handle::new(key), value))
     }
 }

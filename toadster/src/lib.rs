@@ -27,9 +27,15 @@ use slotmap::DefaultKey;
 #[derive(Deserialize, Serialize)]
 pub struct Handle<T>(DefaultKey, PhantomData<T>);
 
+impl<T> Handle<T> {
+    pub(crate) fn new(key: DefaultKey) -> Self {
+        Self(key, PhantomData)
+    }
+}
+
 impl<T> Clone for Handle<T> {
     fn clone(&self) -> Self {
-        Handle(self.0.clone(), PhantomData)
+        Handle::new(self.0.clone())
     }
 }
 
