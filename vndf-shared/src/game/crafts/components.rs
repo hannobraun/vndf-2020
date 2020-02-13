@@ -3,8 +3,7 @@ use serde::{
     Serialize,
 };
 use toadster::{
-    Get,
-    GetMut,
+    Store,
     StrongHandle,
     StrongStore,
 };
@@ -41,9 +40,9 @@ pub struct Craft {
 impl Craft {
     pub fn apply_thrust(&mut self,
         dt:     f32,
-        bodies:     &mut impl GetMut<Body>,
-        directions: &impl Get<Direction>,
-        fuels:      &mut impl GetMut<Fuel>,
+        bodies:     &mut impl Store<Body>,
+        directions: &impl Store<Direction>,
+        fuels:      &mut impl Store<Fuel>,
     )
         -> Option<()>
     {

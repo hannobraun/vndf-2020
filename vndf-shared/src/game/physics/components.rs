@@ -3,8 +3,7 @@ use serde::{
     Serialize,
 };
 use toadster::{
-    Get,
-    GetMut,
+    Store,
     StrongHandle,
     StrongStore,
 };
@@ -82,9 +81,9 @@ impl Body {
 
     pub fn update(&mut self,
         dt:         f32,
-        directions: &mut impl GetMut<Direction>,
-        positions:  &mut impl GetMut<Position>,
-        velocities: &mut impl GetMut<Velocity>,
+        directions: &mut impl Store<Direction>,
+        positions:  &mut impl Store<Position>,
+        velocities: &mut impl Store<Velocity>,
     )
         -> Option<()>
     {
@@ -102,8 +101,8 @@ impl Body {
 
     pub fn enforce_boundary(&mut self,
         world_size: f32,
-        positions:  &impl Get<Position>,
-        velocities: &mut impl GetMut<Velocity>,
+        positions:  &impl Store<Position>,
+        velocities: &mut impl Store<Velocity>,
     )
         -> Option<()>
     {

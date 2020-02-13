@@ -11,7 +11,7 @@ use ggez::{
     input::mouse,
 };
 use toadster::{
-    GetMut,
+    Store,
     StrongHandle,
 };
 
@@ -511,7 +511,16 @@ struct OneStore<T> {
     pub data:   T
 }
 
-impl<T> GetMut<T> for OneStore<T> {
+impl<T> Store<T> for OneStore<T> {
+    fn get(&self, handle: &StrongHandle<T>) -> Option<&T> {
+        if handle == &self.handle {
+            Some(&self.data)
+        }
+        else {
+            None
+        }
+    }
+
     fn get_mut(&mut self, handle: &StrongHandle<T>) -> Option<&mut T> {
         if handle == &self.handle {
             Some(&mut self.data)

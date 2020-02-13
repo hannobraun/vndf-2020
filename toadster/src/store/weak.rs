@@ -5,8 +5,7 @@ use slotmap::{
 };
 
 use crate::{
-    Get,
-    GetMut,
+    Store,
     StrongHandle,
 };
 
@@ -51,13 +50,11 @@ impl<T> WeakStore<T> {
     }
 }
 
-impl<T> Get<T> for WeakStore<T> {
+impl<T> Store<T> for WeakStore<T> {
     fn get(&self, handle: &StrongHandle<T>) -> Option<&T> {
         self.get(handle)
     }
-}
 
-impl<T> GetMut<T> for WeakStore<T> {
     fn get_mut(&mut self, handle: &StrongHandle<T>) -> Option<&mut T> {
         self.get_mut(handle)
     }

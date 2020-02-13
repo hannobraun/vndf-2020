@@ -8,8 +8,7 @@ use slotmap::{
 use vndf_events as events;
 
 use crate::{
-    Get,
-    GetMut,
+    Store,
     StrongHandle,
 };
 
@@ -90,13 +89,11 @@ impl<T> StrongStore<T> {
     }
 }
 
-impl<T> Get<T> for StrongStore<T> {
+impl<T> Store<T> for StrongStore<T> {
     fn get(&self, handle: &StrongHandle<T>) -> Option<&T> {
         self.get(handle)
     }
-}
 
-impl<T> GetMut<T> for StrongStore<T> {
     fn get_mut(&mut self, handle: &StrongHandle<T>) -> Option<&mut T> {
         self.get_mut(handle)
     }
