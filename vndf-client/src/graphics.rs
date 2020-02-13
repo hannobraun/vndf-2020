@@ -181,7 +181,7 @@ impl Graphics {
         let pos   = get!(state.data.positions, &body.pos);
         let dir   = get!(state.data.directions, &body.dir);
 
-        self.draw_projected_course(context, craft.body, state)?;
+        self.draw_projected_course(context, &craft.body, state)?;
 
         graphics::draw(
             context,
@@ -237,12 +237,12 @@ impl Graphics {
 
     fn draw_projected_course(&self,
         context: &mut Context,
-        body:    Handle<Body>,
+        body:    &Handle<Body>,
         state:   &State,
     )
         -> GameResult<bool>
     {
-        let mut body = *get!(state.data.bodies, &body);
+        let mut body = *get!(state.data.bodies, body);
         body.acc = Vec2::zero();
 
         let dir = *get!(state.data.directions, &body.dir);
