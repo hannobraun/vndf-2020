@@ -2,14 +2,14 @@ use serde::{
     Deserialize,
     Serialize,
 };
+use toadster::{
+    Get,
+    GetMut,
+    Handle,
+    Store,
+};
 
 use crate::{
-    cgs::{
-        Get,
-        GetMut,
-        Handle,
-        Store,
-    },
     game::{
         health::Health,
         physics::{

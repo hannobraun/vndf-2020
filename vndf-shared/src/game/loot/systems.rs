@@ -3,12 +3,12 @@ use rand::{
     random,
     thread_rng,
 };
+use toadster::{
+    Handle,
+    Store,
+};
 
 use crate::{
-    cgs::{
-        Handle,
-        Store,
-    },
     game::{
         WORLD_SIZE,
         base::ComponentHandle,

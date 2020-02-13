@@ -10,15 +10,15 @@ use ggez::{
     },
     input::mouse,
 };
+use toadster::{
+    GetMut,
+    Handle,
+};
 
 use crate::{
     game::State,
     input::Input,
     shared::{
-        cgs::{
-            GetMut,
-            Handle,
-        },
         game::{
             WORLD_SIZE,
             explosions::Explosion,

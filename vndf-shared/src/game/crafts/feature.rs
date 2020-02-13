@@ -1,11 +1,10 @@
-use crate::{
-    cgs::Store,
-    game::{
-        base::Update,
-        physics::{
-            Body,
-            Direction,
-        },
+use toadster::Store;
+
+use crate::game::{
+    base::Update,
+    physics::{
+        Body,
+        Direction,
     },
 };
 

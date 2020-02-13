@@ -2328,6 +2328,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "toadster"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "slotmap",
+ "vndf-events",
+]
+
+[[package]]
 name = "toml"
 version = "0.5.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2402,6 +2411,7 @@ dependencies = [
  "log",
  "serde",
  "time",
+ "toadster",
  "toml",
  "vndf-server",
  "vndf-shared",
@@ -2439,7 +2449,7 @@ dependencies = [
  "postcard",
  "rand 0.7.3",
  "serde",
- "slotmap",
+ "toadster",
  "vndf-events",
 ]
 

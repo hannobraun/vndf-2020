@@ -4,13 +4,13 @@ use std::{
 };
 
 use log::warn;
+use toadster::{
+    Handle,
+    Store,
+};
 use vndf_events as events;
 
 use crate::{
-    cgs::{
-        Handle,
-        Store,
-    },
     game::{
         crafts::{
             Craft,

@@ -1,19 +1,17 @@
+use toadster::{
+    Handle,
+    Store,
+};
 use vndf_events as events;
 
-use crate::{
-    cgs::{
-        Handle,
-        Store,
-    },
-    game::{
-        base::ComponentHandle,
-        health::Health,
-        physics::{
-            Body,
-            Direction,
-            Position,
-            Velocity,
-        },
+use crate::game::{
+    base::ComponentHandle,
+    health::Health,
+    physics::{
+        Body,
+        Direction,
+        Position,
+        Velocity,
     },
 };
 

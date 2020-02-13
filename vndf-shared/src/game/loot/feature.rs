@@ -1,23 +1,22 @@
-use crate::{
-    cgs::Store,
-    game::{
-        base::Update,
-        crafts::{
-            Craft,
-            Fuel,
-        },
-        health::{
-            Death,
-            Health,
-        },
-        physics::{
-            Body,
-            Direction,
-            Position,
-            Velocity,
-        },
-        ships::Ship,
+use toadster::Store;
+
+use crate::game::{
+    base::Update,
+    crafts::{
+        Craft,
+        Fuel,
     },
+    health::{
+        Death,
+        Health,
+    },
+    physics::{
+        Body,
+        Direction,
+        Position,
+        Velocity,
+    },
+    ships::Ship,
 };
 
 use super::{

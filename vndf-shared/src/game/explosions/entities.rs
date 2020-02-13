@@ -1,14 +1,13 @@
-use crate::{
-    cgs::{
-        Handle,
-        Store,
-    },
-    game::physics::{
-        Body,
-        Direction,
-        Position,
-        Velocity,
-    },
+use toadster::{
+    Handle,
+    Store,
+};
+
+use crate::game::physics::{
+    Body,
+    Direction,
+    Position,
+    Velocity,
 };
 
 use super::Explosion;

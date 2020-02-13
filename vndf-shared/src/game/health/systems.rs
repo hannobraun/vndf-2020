@@ -1,29 +1,27 @@
+use toadster::{
+    Handle,
+    Store,
+};
 use vndf_events as events;
 
-use crate::{
-    cgs::{
-        Handle,
-        Store,
+use crate::game::{
+    base::ComponentHandle,
+    crafts::{
+        Craft,
+        Fuel,
     },
-    game::{
-        base::ComponentHandle,
-        crafts::{
-            Craft,
-            Fuel,
-        },
-        missiles::{
-            Guidance,
-            Missile,
-            Target,
-        },
-        physics::{
-            Body,
-            Direction,
-            Position,
-            Velocity,
-        },
-        ships::Ship,
+    missiles::{
+        Guidance,
+        Missile,
+        Target,
     },
+    physics::{
+        Body,
+        Direction,
+        Position,
+        Velocity,
+    },
+    ships::Ship,
 };
 
 use super::{

@@ -1,5 +1,6 @@
+use toadster::Store;
+
 use crate::{
-    cgs::Store,
     game::physics::{
         Body,
         Direction,

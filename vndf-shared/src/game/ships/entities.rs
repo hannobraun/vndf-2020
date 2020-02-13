@@ -1,20 +1,19 @@
-use crate::{
-    cgs::Store,
-    game::{
-        base::ComponentHandle,
-        crafts::{
-            Craft,
-            Fuel,
-        },
-        health::Health,
-        physics::{
-            Body,
-            Direction,
-            Position,
-            Velocity,
-        },
-        players::PlayerId,
+use toadster::Store;
+
+use crate::game::{
+    base::ComponentHandle,
+    crafts::{
+        Craft,
+        Fuel,
     },
+    health::Health,
+    physics::{
+        Body,
+        Direction,
+        Position,
+        Velocity,
+    },
+    players::PlayerId,
 };
 
 use super::Ship;

@@ -22,6 +22,5 @@ path = "../vndf-events"
 version  = "*"
 features = ["serde"]
 
-[dependencies.slotmap]
-version  = "*"
-features = ["serde"]
+[dependencies.toadster]
+path = "../toadster"

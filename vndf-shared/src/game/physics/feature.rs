@@ -1,7 +1,6 @@
-use crate::{
-    cgs::Store,
-    game::base::Update,
-};
+use toadster::Store;
+
+use crate::game::base::Update;
 
 use super::{
     Body,

@@ -2,13 +2,11 @@ use serde::{
     Deserialize,
     Serialize,
 };
+use toadster::Handle;
 
-use crate::{
-    cgs::Handle,
-    game::{
-        base::ComponentHandle,
-        physics::Body,
-    },
+use crate::game::{
+    base::ComponentHandle,
+    physics::Body,
 };
 
 

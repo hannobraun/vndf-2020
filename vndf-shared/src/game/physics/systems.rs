@@ -1,4 +1,4 @@
-use crate::cgs::Store;
+use toadster::Store;
 
 use super::{
     Body,

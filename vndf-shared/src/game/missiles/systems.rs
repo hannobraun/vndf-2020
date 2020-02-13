@@ -1,17 +1,16 @@
-use crate::{
-    cgs::Store,
-    game::{
-        crafts::{
-            Craft,
-            Fuel,
-        },
-        health::Health,
-        physics::{
-            Body,
-            Direction,
-            Position,
-            Velocity,
-        },
+use toadster::Store;
+
+use crate::game::{
+    crafts::{
+        Craft,
+        Fuel,
+    },
+    health::Health,
+    physics::{
+        Body,
+        Direction,
+        Position,
+        Velocity,
     },
 };
 

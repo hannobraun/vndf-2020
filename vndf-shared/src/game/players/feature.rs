@@ -7,28 +7,26 @@ use serde::{
     Deserialize,
     Serialize,
 };
+use toadster::{
+    Handle,
+    Store,
+};
 use vndf_events as events;
 
-use crate::{
-    cgs::{
-        Handle,
-        Store,
+use crate::game::{
+    crafts::{
+        Craft,
+        Fuel,
     },
-    game::{
-        crafts::{
-            Craft,
-            Fuel,
-        },
-        health::Health,
-        missiles::MissileLaunch,
-        physics::{
-            Body,
-            Direction,
-            Position,
-            Velocity,
-        },
-        ships::Ship,
+    health::Health,
+    missiles::MissileLaunch,
+    physics::{
+        Body,
+        Direction,
+        Position,
+        Velocity,
     },
+    ships::Ship,
 };
 
 use super::{

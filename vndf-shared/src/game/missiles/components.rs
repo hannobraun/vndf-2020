@@ -3,12 +3,12 @@ use serde::{
     Deserialize,
     Serialize,
 };
+use toadster::{
+    Handle,
+    Store,
+};
 
 use crate::{
-    cgs::{
-        Handle,
-        Store,
-    },
     game::{
         crafts::{
             Craft,

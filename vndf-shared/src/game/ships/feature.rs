@@ -1,9 +1,8 @@
-use crate::{
-    cgs::Store,
-    game::{
-        crafts::Craft,
-        physics::Body,
-    }
+use toadster::Store;
+
+use crate::game::{
+    crafts::Craft,
+    physics::Body,
 };
 
 use super::{

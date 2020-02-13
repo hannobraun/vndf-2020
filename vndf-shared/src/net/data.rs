@@ -1,29 +1,28 @@
-use crate::{
-    cgs::SecondaryStore,
-    game::{
-        base::{
-            Component,
-            ComponentHandle,
-        },
-        crafts::{
-            Craft,
-            Fuel,
-        },
-        explosions::Explosion,
-        health::Health,
-        loot::Loot,
-        missiles::{
-            Missile,
-            Target,
-        },
-        physics::{
-            Body,
-            Direction,
-            Position,
-            Velocity,
-        },
-        ships::Ship,
+use toadster::SecondaryStore;
+
+use crate::game::{
+    base::{
+        Component,
+        ComponentHandle,
     },
+    crafts::{
+        Craft,
+        Fuel,
+    },
+    explosions::Explosion,
+    health::Health,
+    loot::Loot,
+    missiles::{
+        Missile,
+        Target,
+    },
+    physics::{
+        Body,
+        Direction,
+        Position,
+        Velocity,
+    },
+    ships::Ship,
 };
 
 

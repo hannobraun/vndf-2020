@@ -2,21 +2,19 @@ use serde::{
     Deserialize,
     Serialize,
 };
+use toadster::{
+    Get,
+    GetMut,
+    Handle,
+    Store,
+};
 
-use crate::{
-    cgs::{
-        Get,
-        GetMut,
-        Handle,
-        Store,
-    },
-    math::{
-        prelude::*,
-        Pnt2,
-        Rad,
-        Vec2,
-        rotate,
-    },
+use crate::math::{
+    prelude::*,
+    Pnt2,
+    Rad,
+    Vec2,
+    rotate,
 };
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]

@@ -1,20 +1,18 @@
+use toadster::Store;
 use vndf_events as events;
 
-use crate::{
-    cgs::Store,
-    game::{
-        base::Update,
-        crafts::{
-            Craft,
-            Fuel,
-        },
-        health::Health,
-        physics::{
-            Body,
-            Direction,
-            Position,
-            Velocity,
-        },
+use crate::game::{
+    base::Update,
+    crafts::{
+        Craft,
+        Fuel,
+    },
+    health::Health,
+    physics::{
+        Body,
+        Direction,
+        Position,
+        Velocity,
     },
 };
 

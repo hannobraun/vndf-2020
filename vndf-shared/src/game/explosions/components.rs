@@ -7,9 +7,9 @@ use serde::{
     Deserialize,
     Serialize,
 };
+use toadster::Handle;
 
 use crate::{
-    cgs::Handle,
     game::{
         health::Health,
         physics::{
