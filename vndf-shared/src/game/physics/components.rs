@@ -5,8 +5,8 @@ use serde::{
 use toadster::{
     Get,
     GetMut,
-    Handle,
     Store,
+    StrongHandle,
 };
 
 use crate::math::{
@@ -54,19 +54,19 @@ impl Direction {
 /// it can be sent separately, at different rates.
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Body {
-    pub pos: Handle<Position>,
-    pub vel: Handle<Velocity>,
+    pub pos: StrongHandle<Position>,
+    pub vel: StrongHandle<Velocity>,
     pub acc: Vec2,
 
-    pub dir: Handle<Direction>,
+    pub dir: StrongHandle<Direction>,
     pub rot: Rad,
 }
 
 impl Body {
     pub fn new(
-        pos: Handle<Position>,
-        vel: Handle<Velocity>,
-        dir: Handle<Direction>,
+        pos: StrongHandle<Position>,
+        vel: StrongHandle<Velocity>,
+        dir: StrongHandle<Direction>,
     )
         -> Self
     {
@@ -129,7 +129,7 @@ impl Body {
     }
 
     pub fn remove(
-        handle:     Handle<Body>,
+        handle:     StrongHandle<Body>,
         bodies:     &mut Store<Body>,
         directions: &mut Store<Direction>,
         positions:  &mut Store<Position>,

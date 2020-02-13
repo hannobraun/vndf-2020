@@ -1,6 +1,6 @@
 use toadster::{
-    Handle,
     Store,
+    StrongHandle,
 };
 use vndf_events as events;
 
@@ -24,7 +24,7 @@ use super::{
 
 
 pub fn explode_entity(
-    handle:  &Handle<Health>,
+    handle:  &StrongHandle<Health>,
     bodies:  &Store<Body>,
     healths: &Store<Health>,
 )
@@ -76,7 +76,7 @@ pub fn create_explosion(
 }
 
 pub fn damage_nearby(
-    handle:     &Handle<Explosion>,
+    handle:     &StrongHandle<Explosion>,
     bodies:     &Store<Body>,
     explosions: &Store<Explosion>,
     healths:    &mut Store<Health>,
@@ -113,7 +113,7 @@ pub fn update_explosions(
 }
 
 pub fn remove_explosion(
-    handle:     Handle<Explosion>,
+    handle:     StrongHandle<Explosion>,
     bodies:     &mut Store<Body>,
     directions: &mut Store<Direction>,
     explosions: &mut Store<Explosion>,

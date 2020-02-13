@@ -5,8 +5,8 @@ use std::{
 
 use log::warn;
 use toadster::{
-    Handle,
     Store,
+    StrongHandle,
 };
 use vndf_events as events;
 
@@ -51,7 +51,7 @@ pub fn connect_player(
     ships:          &mut Store<Ship>,
     velocities:     &mut Store<Velocity>,
     player_created: &mut events::Sink<PlayerCreated>,
-    index:          &mut HashMap<SocketAddr, Handle<Player>>,
+    index:          &mut HashMap<SocketAddr, StrongHandle<Player>>,
     id:             PlayerId,
     addr:           SocketAddr,
     color:          [f32; 3],
@@ -74,7 +74,7 @@ pub fn connect_player(
 
 pub fn disconnect_player(
     players: &mut Store<Player>,
-    index:   &mut HashMap<SocketAddr, Handle<Player>>,
+    index:   &mut HashMap<SocketAddr, StrongHandle<Player>>,
     address: SocketAddr,
 ) {
     // It's possible that we're getting multiple disconnect events per player,
@@ -93,7 +93,7 @@ pub fn handle_input(
     ships:          &mut Store<Ship>,
     missile_launch: &mut events::Sink<MissileLaunch>,
     input_handled:  &mut events::Sink<InputHandled>,
-    index:          &mut HashMap<SocketAddr, Handle<Player>>,
+    index:          &mut HashMap<SocketAddr, StrongHandle<Player>>,
 )
     -> Option<()>
 {

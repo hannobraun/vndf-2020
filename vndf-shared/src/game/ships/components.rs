@@ -4,8 +4,8 @@ use serde::{
     Serialize,
 };
 use toadster::{
-    Handle,
     Store,
+    StrongHandle,
 };
 use vndf_events as events;
 
@@ -46,7 +46,7 @@ use crate::{
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Ship {
-    pub craft:    Handle<Craft>,
+    pub craft:    StrongHandle<Craft>,
     pub rotation: Rotation,
     pub missiles: u64,
     pub color:    [f32; 3],
@@ -54,7 +54,7 @@ pub struct Ship {
 
 impl Ship {
     pub fn new(
-        craft:  Handle<Craft>,
+        craft:  StrongHandle<Craft>,
         color:  [f32; 3],
     ) -> Self {
         Self {
@@ -139,7 +139,7 @@ impl Ship {
     }
 
     pub fn remove(
-        handle:     Handle<Ship>,
+        handle:     StrongHandle<Ship>,
         bodies:     &mut Store<Body>,
         crafts:     &mut Store<Craft>,
         directions: &mut Store<Direction>,

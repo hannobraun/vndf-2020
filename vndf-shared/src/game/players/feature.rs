@@ -8,8 +8,8 @@ use serde::{
     Serialize,
 };
 use toadster::{
-    Handle,
     Store,
+    StrongHandle,
 };
 use vndf_events as events;
 
@@ -44,7 +44,7 @@ use super::{
 
 pub struct Feature {
     next_id:            PlayerId,
-    players_by_address: HashMap<SocketAddr, Handle<Player>>,
+    players_by_address: HashMap<SocketAddr, StrongHandle<Player>>,
 
     pub players: Store<Player>,
 

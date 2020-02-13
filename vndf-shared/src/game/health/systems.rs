@@ -1,6 +1,6 @@
 use toadster::{
-    Handle,
     Store,
+    StrongHandle,
 };
 use vndf_events as events;
 
@@ -42,7 +42,7 @@ pub fn check_health(
 }
 
 pub fn remove_entity(
-    handle:     &Handle<Health>,
+    handle:     &StrongHandle<Health>,
     bodies:     &mut Store<Body>,
     crafts:     &mut Store<Craft>,
     directions: &mut Store<Direction>,

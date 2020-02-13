@@ -1,12 +1,12 @@
-use toadster::Handle;
+use toadster::StrongHandle;
 
 use super::Explosion;
 
 
 pub struct ExplosionImminent {
-    pub handle: Handle<Explosion>,
+    pub handle: StrongHandle<Explosion>,
 }
 
 pub struct ExplosionFaded {
-    pub handle: Handle<Explosion>,
+    pub handle: StrongHandle<Explosion>,
 }

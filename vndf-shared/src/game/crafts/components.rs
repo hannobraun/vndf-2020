@@ -5,8 +5,8 @@ use serde::{
 use toadster::{
     Get,
     GetMut,
-    Handle,
     Store,
+    StrongHandle,
 };
 
 use crate::{
@@ -29,9 +29,9 @@ use crate::{
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Craft {
-    pub body:   Handle<Body>,
-    pub fuel:   Handle<Fuel>,
-    pub health: Handle<Health>,
+    pub body:   StrongHandle<Body>,
+    pub fuel:   StrongHandle<Fuel>,
+    pub health: StrongHandle<Health>,
 
     pub engine_on: bool,
     pub thrust:    f32,
@@ -63,7 +63,7 @@ impl Craft {
     }
 
     pub fn remove(
-        handle:     Handle<Craft>,
+        handle:     StrongHandle<Craft>,
         bodies:     &mut Store<Body>,
         crafts:     &mut Store<Craft>,
         directions: &mut Store<Direction>,

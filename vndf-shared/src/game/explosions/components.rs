@@ -7,7 +7,7 @@ use serde::{
     Deserialize,
     Serialize,
 };
-use toadster::Handle;
+use toadster::StrongHandle;
 
 use crate::{
     game::{
@@ -23,14 +23,14 @@ use crate::{
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Explosion {
-    pub body: Handle<Body>,
+    pub body: StrongHandle<Body>,
 
     pub strength_total: f32,
     pub strength_left:  f32,
 }
 
 impl Explosion {
-    pub fn new(body: Handle<Body>, strength: f32) -> Self {
+    pub fn new(body: StrongHandle<Body>, strength: f32) -> Self {
         Self {
             body,
 

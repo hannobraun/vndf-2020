@@ -10,14 +10,14 @@ use vndf_events as events;
 use super::{
     Get,
     GetMut,
-    Handle,
+    StrongHandle,
 };
 
 
 pub struct Store<T> {
     inner:     DenseSlotMap<DefaultKey, T>,
     changes:   Cell<Changes<T>>,
-    removed:   events::Buf<Handle<T>>,
+    removed:   events::Buf<StrongHandle<T>>,
 }
 
 impl<T> Store<T> {
@@ -33,11 +33,11 @@ impl<T> Store<T> {
         self.inner.len()
     }
 
-    pub fn insert(&mut self, value: T) -> Handle<T> {
-        Handle::new(self.inner.insert(value))
+    pub fn insert(&mut self, value: T) -> StrongHandle<T> {
+        StrongHandle::new(self.inner.insert(value))
     }
 
-    pub fn remove(&mut self, handle: Handle<T>) -> Option<T> {
+    pub fn remove(&mut self, handle: StrongHandle<T>) -> Option<T> {
         let result = self.inner.remove(handle.0);
 
         if result.is_some() {
@@ -47,17 +47,17 @@ impl<T> Store<T> {
         result
     }
 
-    pub fn remove_later(&self, handle: Handle<T>) {
+    pub fn remove_later(&self, handle: StrongHandle<T>) {
         let mut changes = self.changes.take();
         changes.remove.push(handle);
         self.changes.set(changes);
     }
 
-    pub fn get(&self, handle: &Handle<T>) -> Option<&T> {
+    pub fn get(&self, handle: &StrongHandle<T>) -> Option<&T> {
         self.inner.get(handle.0)
     }
 
-    pub fn get_mut(&mut self, handle: &Handle<T>) -> Option<&mut T> {
+    pub fn get_mut(&mut self, handle: &StrongHandle<T>) -> Option<&mut T> {
         self.inner.get_mut(handle.0)
     }
 
@@ -85,25 +85,25 @@ impl<T> Store<T> {
         self.changes.set(changes);
     }
 
-    pub fn removed(&mut self) -> events::Source<Handle<T>> {
+    pub fn removed(&mut self) -> events::Source<StrongHandle<T>> {
         self.removed.source()
     }
 }
 
 impl<T> Get<T> for Store<T> {
-    fn get(&self, handle: &Handle<T>) -> Option<&T> {
+    fn get(&self, handle: &StrongHandle<T>) -> Option<&T> {
         self.get(handle)
     }
 }
 
 impl<T> GetMut<T> for Store<T> {
-    fn get_mut(&mut self, handle: &Handle<T>) -> Option<&mut T> {
+    fn get_mut(&mut self, handle: &StrongHandle<T>) -> Option<&mut T> {
         self.get_mut(handle)
     }
 }
 
 impl<'a, T> IntoIterator for &'a Store<T> {
-    type Item     = (Handle<T>, &'a T);
+    type Item     = (StrongHandle<T>, &'a T);
     type IntoIter = Iter<'a, T>;
 
     fn into_iter(self) -> Self::IntoIter {
@@ -112,7 +112,7 @@ impl<'a, T> IntoIterator for &'a Store<T> {
 }
 
 impl<'a, T> IntoIterator for &'a mut Store<T> {
-    type Item     = (Handle<T>, &'a mut T);
+    type Item     = (StrongHandle<T>, &'a mut T);
     type IntoIter = IterMut<'a, T>;
 
     fn into_iter(self) -> Self::IntoIter {
@@ -124,11 +124,11 @@ impl<'a, T> IntoIterator for &'a mut Store<T> {
 pub struct Iter<'a, T>(dense::Iter<'a, DefaultKey, T>);
 
 impl<'a, T> Iterator for Iter<'a, T> {
-    type Item = (Handle<T>, &'a T);
+    type Item = (StrongHandle<T>, &'a T);
 
     fn next(&mut self) -> Option<Self::Item> {
         self.0.next()
-            .map(|(key, value)| (Handle::new(key), value))
+            .map(|(key, value)| (StrongHandle::new(key), value))
     }
 }
 
@@ -136,17 +136,17 @@ impl<'a, T> Iterator for Iter<'a, T> {
 pub struct IterMut<'a, T>(dense::IterMut<'a, DefaultKey, T>);
 
 impl<'a, T> Iterator for IterMut<'a, T> {
-    type Item = (Handle<T>, &'a mut T);
+    type Item = (StrongHandle<T>, &'a mut T);
 
     fn next(&mut self) -> Option<Self::Item> {
         self.0.next()
-            .map(|(key, value)| (Handle::new(key), value))
+            .map(|(key, value)| (StrongHandle::new(key), value))
     }
 }
 
 
 struct Changes<T> {
-    remove: Vec<Handle<T>>,
+    remove: Vec<StrongHandle<T>>,
 }
 
 impl<T> Changes<T> {

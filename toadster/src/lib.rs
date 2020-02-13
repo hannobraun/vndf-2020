@@ -4,16 +4,16 @@ pub mod store;
 
 
 pub use self::{
-    handle::Handle,
+    handle::StrongHandle,
     secondary_store::SecondaryStore,
     store::Store,
 };
 
 
 pub trait Get<T> {
-    fn get(&self, handle: &Handle<T>) -> Option<&T>;
+    fn get(&self, handle: &StrongHandle<T>) -> Option<&T>;
 }
 
 pub trait GetMut<T> {
-    fn get_mut(&mut self, handle: &Handle<T>) -> Option<&mut T>;
+    fn get_mut(&mut self, handle: &StrongHandle<T>) -> Option<&mut T>;
 }

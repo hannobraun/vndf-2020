@@ -1,8 +1,8 @@
-use toadster::Handle;
+use toadster::StrongHandle;
 
 use super::Health;
 
 
 pub struct Death {
-    pub handle: Handle<Health>,
+    pub handle: StrongHandle<Health>,
 }

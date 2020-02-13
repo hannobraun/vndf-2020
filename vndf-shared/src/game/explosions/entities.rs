@@ -1,6 +1,6 @@
 use toadster::{
-    Handle,
     Store,
+    StrongHandle,
 };
 
 use crate::game::physics::{
@@ -26,7 +26,7 @@ impl ExplosionEntity {
         positions:  &mut Store<Position>,
         velocities: &mut Store<Velocity>,
     )
-        -> Option<Handle<Explosion>>
+        -> Option<StrongHandle<Explosion>>
     {
         let pos = *positions.get(&self.exploding.pos)?;
         let pos = positions.insert(pos);
