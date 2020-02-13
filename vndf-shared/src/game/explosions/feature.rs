@@ -86,7 +86,7 @@ impl Feature {
         positions: &Store<Position>,
     ) {
         damage_nearby(
-            event.handle,
+            &event.handle,
             &bodies,
             &self.explosions,
             healths,

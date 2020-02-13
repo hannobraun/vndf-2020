@@ -77,7 +77,7 @@ pub fn create_explosion(
 }
 
 pub fn damage_nearby(
-    handle:     Handle<Explosion>,
+    handle:     &Handle<Explosion>,
     bodies:     &Store<Body>,
     explosions: &Store<Explosion>,
     healths:    &mut Store<Health>,
@@ -85,7 +85,7 @@ pub fn damage_nearby(
 )
     -> Option<()>
 {
-    let explosion = explosions.get(&handle)?;
+    let explosion = explosions.get(handle)?;
     let body      = bodies.get(&explosion.body)?;
     let position  = positions.get(&body.pos)?;
 
