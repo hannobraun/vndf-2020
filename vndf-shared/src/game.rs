@@ -231,7 +231,7 @@ impl State {
         let fuels = self.crafts.fuels.iter()
             .map(|(handle, &c)| Component::Fuel(handle, c));
         let healths = self.health.healths.iter()
-            .map(|(handle, &c)| Component::Health(handle, c));
+            .map(|(handle, c)| Component::Health(handle, c.clone()));
         let loots = self.loot.loots.iter()
             .map(|(handle, &c)| Component::Loot(handle, c));
         let missiles = self.missiles.missiles.iter()
