@@ -29,7 +29,7 @@ impl Client {
     }
 
     pub fn remove(&mut self, handle: ComponentHandle) {
-        self.data.remove(handle);
+        self.data.remove(&handle);
         self.updates.remove(&handle);
     }
 
