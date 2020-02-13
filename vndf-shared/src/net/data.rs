@@ -56,7 +56,7 @@ macro_rules! data {
             }
 
             pub fn remove(&mut self, handle: ComponentHandle) {
-                match handle {
+                match &handle {
                     $(
                         ComponentHandle::$ty(handle) => {
                             self.$name.remove(handle);

@@ -25,7 +25,7 @@ impl<T> WeakStore<T> {
         self.0.insert(handle.0, value)
     }
 
-    pub fn remove(&mut self, handle: StrongHandle<T>) -> Option<T> {
+    pub fn remove(&mut self, handle: &StrongHandle<T>) -> Option<T> {
         self.0.remove(handle.0)
     }
 
