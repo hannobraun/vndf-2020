@@ -1,12 +1,13 @@
 pub mod handle;
-pub mod secondary_store;
 pub mod store;
 
 
 pub use self::{
     handle::StrongHandle,
-    secondary_store::WeakStore,
-    store::StrongStore,
+    store::{
+        strong::StrongStore,
+        weak::WeakStore,
+    },
 };
 
 
