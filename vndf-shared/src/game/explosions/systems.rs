@@ -25,13 +25,13 @@ use super::{
 
 
 pub fn explode_entity(
-    handle:  Handle<Health>,
+    handle:  &Handle<Health>,
     bodies:  &Store<Body>,
     healths: &Store<Health>,
 )
     -> Option<ExplosionEntity>
 {
-    let health = healths.get(&handle)?;
+    let health = healths.get(handle)?;
     let body   = bodies.get(&health.body)?;
 
     let mut is_missile = false;
