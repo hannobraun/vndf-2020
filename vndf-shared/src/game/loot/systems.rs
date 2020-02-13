@@ -32,7 +32,7 @@ use super::Loot;
 
 
 pub fn spawn_death_loot(
-    handle:     Handle<Health>,
+    handle:     &Handle<Health>,
     bodies:     &mut Store<Body>,
     crafts:     &Store<Craft>,
     directions: &mut Store<Direction>,
@@ -45,7 +45,7 @@ pub fn spawn_death_loot(
 )
     -> Option<()>
 {
-    let health = healths.get(&handle)?;
+    let health = healths.get(handle)?;
 
     if let ComponentHandle::Ship(handle) = health.parent? {
         let ship  = ships.get(&handle)?;

@@ -81,7 +81,7 @@ impl Feature {
         velocities: &mut Store<Velocity>,
     ) {
         spawn_death_loot(
-            event.handle,
+            &event.handle,
             bodies,
             crafts,
             directions,
