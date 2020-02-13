@@ -45,16 +45,16 @@ pub fn spawn_death_loot(
 )
     -> Option<()>
 {
-    let health = healths.get(handle)?;
+    let health = healths.get(&handle)?;
 
     if let ComponentHandle::Ship(handle) = health.parent? {
-        let ship  = ships.get(handle)?;
-        let craft = crafts.get(ship.craft)?;
-        let fuel  = fuels.get(craft.fuel)?;
-        let body  = bodies.get(craft.body)?;
-        let pos   = positions.get(body.pos)?;
-        let vel   = velocities.get(body.vel)?;
-        let dir   = directions.get(body.dir)?;
+        let ship  = ships.get(&handle)?;
+        let craft = crafts.get(&ship.craft)?;
+        let fuel  = fuels.get(&craft.fuel)?;
+        let body  = bodies.get(&craft.body)?;
+        let pos   = positions.get(&body.pos)?;
+        let vel   = velocities.get(&body.vel)?;
+        let dir   = directions.get(&body.dir)?;
 
         let pos = *pos;
         let pos = positions.insert(pos);

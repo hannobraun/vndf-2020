@@ -77,11 +77,11 @@ impl Loot {
     )
         -> Option<f32>
     {
-        let craft      = crafts.get(craft)?;
-        let loot_body  = bodies.get(self.body)?;
-        let other_body = bodies.get(craft.body)?;
-        let loot_pos   = positions.get(loot_body.pos)?;
-        let other_pos  = positions.get(other_body.pos)?;
+        let craft      = crafts.get(&craft)?;
+        let loot_body  = bodies.get(&self.body)?;
+        let other_body = bodies.get(&craft.body)?;
+        let loot_pos   = positions.get(&loot_body.pos)?;
+        let other_pos  = positions.get(&other_body.pos)?;
 
         let distance = (loot_pos.0 - other_pos.0).magnitude();
 
@@ -97,7 +97,7 @@ impl Loot {
         -> Option<()>
     {
         let ship  = ships.get_mut(ship)?;
-        let craft = crafts.get(ship.craft)?;
+        let craft = crafts.get(&ship.craft)?;
         let fuel  = fuels.get_mut(craft.fuel)?;
 
         fuel.0        += self.fuel;

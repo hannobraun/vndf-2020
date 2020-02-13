@@ -57,7 +57,7 @@ impl<T> Store<T> {
         self.changes.set(changes);
     }
 
-    pub fn get(&self, handle: Handle<T>) -> Option<&T> {
+    pub fn get(&self, handle: &Handle<T>) -> Option<&T> {
         self.inner.get(handle.0)
     }
 
@@ -95,7 +95,7 @@ impl<T> Store<T> {
 }
 
 impl<T> Get<T> for Store<T> {
-    fn get(&self, handle: Handle<T>) -> Option<&T> {
+    fn get(&self, handle: &Handle<T>) -> Option<&T> {
         self.get(handle)
     }
 }

@@ -59,8 +59,8 @@ pub fn update_targets(
     for target in targets.values_mut() {
         let potential_targets = crafts.values()
             .filter_map(|craft| {
-                let body = bodies.get(craft.body)?;
-                let pos  = positions.get(body.pos)?;
+                let body = bodies.get(&craft.body)?;
+                let pos  = positions.get(&body.pos)?;
                 Some((*pos, *craft))
             });
 

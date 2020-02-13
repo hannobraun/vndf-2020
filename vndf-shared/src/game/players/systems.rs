@@ -102,7 +102,7 @@ pub fn handle_input(
             warn!("Player not in index: {}", addr);
             None
         })?;
-    let player = players.get(*player)
+    let player = players.get(player)
         .or_else(|| {
             warn!("Player component not found: {}", addr);
             None

@@ -130,11 +130,11 @@ impl Guidance {
     )
         -> Option<()>
     {
-        let craft  = crafts.get(self.craft)?;
-        let target = targets.get(self.target)?;
+        let craft  = crafts.get(&self.craft)?;
+        let target = targets.get(&self.target)?;
         let body   = bodies.get_mut(craft.body)?;
-        let pos    = positions.get(body.pos)?;
-        let vel    = velocities.get(body.vel)?;
+        let pos    = positions.get(&body.pos)?;
+        let vel    = velocities.get(&body.vel)?;
         let dir    = directions.get_mut(body.dir)?;
 
         let to_target = target.value - pos.0;
@@ -174,12 +174,12 @@ impl Guidance {
     )
         -> Option<()>
     {
-        let     craft  = crafts.get(self.craft)?;
-        let     target = targets.get(self.target)?;
-        let     body   = bodies.get(craft.body)?;
-        let     pos    = positions.get(body.pos)?;
+        let     craft  = crafts.get(&self.craft)?;
+        let     target = targets.get(&self.target)?;
+        let     body   = bodies.get(&craft.body)?;
+        let     pos    = positions.get(&body.pos)?;
         let mut health = healths.get_mut(craft.health)?;
-        let     fuel   = fuels.get(craft.fuel)?;
+        let     fuel   = fuels.get(&craft.fuel)?;
 
         let no_fuel_left   = fuel.0 <= 0.0;
         let near_target    = (pos.0 - target.value).magnitude() <= 10.0;
@@ -207,7 +207,7 @@ impl Target {
     )
         -> Option<()>
     {
-        let craft = crafts.get(self.craft)?;
+        let craft = crafts.get(&self.craft)?;
 
         let mut best_rating = 0.0;
         let mut new_target  = None;

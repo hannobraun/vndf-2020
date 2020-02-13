@@ -31,8 +31,8 @@ pub fn explode_entity(
 )
     -> Option<ExplosionEntity>
 {
-    let health = healths.get(handle)?;
-    let body   = bodies.get(health.body)?;
+    let health = healths.get(&handle)?;
+    let body   = bodies.get(&health.body)?;
 
     let mut is_missile = false;
     if let ComponentHandle::Missile(_) = health.parent? {
@@ -85,15 +85,15 @@ pub fn damage_nearby(
 )
     -> Option<()>
 {
-    let explosion = explosions.get(handle)?;
-    let body      = bodies.get(explosion.body)?;
-    let position  = positions.get(body.pos)?;
+    let explosion = explosions.get(&handle)?;
+    let body      = bodies.get(&explosion.body)?;
+    let position  = positions.get(&body.pos)?;
 
     let nearby = healths.values_mut()
         .into_iter()
         .filter_map(|health| {
-            let body = bodies.get(health.body)?;
-            let pos  = positions.get(body.pos)?;
+            let body = bodies.get(&health.body)?;
+            let pos  = positions.get(&body.pos)?;
             Some((pos, health))
         });
 

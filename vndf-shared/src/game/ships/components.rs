@@ -79,7 +79,7 @@ impl Ship {
                 warn!("Craft not found: {:?}", self.craft);
                 None
             })?;
-        let body = bodies.get(craft.body)
+        let body = bodies.get(&craft.body)
             .or_else(|| {
                 warn!("Body not found: {:?}", craft.body);
                 None
@@ -129,7 +129,7 @@ impl Ship {
     )
         -> Option<()>
     {
-        let     craft = crafts.get(self.craft)?;
+        let     craft = crafts.get(&self.craft)?;
         let mut body  = bodies.get_mut(craft.body)?;
 
         let rotation = self.rotation as i32 as f32;

@@ -29,10 +29,10 @@ impl ExplosionEntity {
     )
         -> Option<Handle<Explosion>>
     {
-        let pos = *positions.get(self.exploding.pos)?;
+        let pos = *positions.get(&self.exploding.pos)?;
         let pos = positions.insert(pos);
 
-        let vel = *velocities.get(self.exploding.vel)?;
+        let vel = *velocities.get(&self.exploding.vel)?;
         let vel = velocities.insert(Velocity(vel.0 * 0.05));
 
         let dir = directions.insert(Direction::new());

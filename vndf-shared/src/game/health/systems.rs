@@ -58,7 +58,7 @@ pub fn remove_entity(
 )
     -> Option<()>
 {
-    let health = healths.get(handle)?;
+    let health = healths.get(&handle)?;
     let parent = health.parent?;
 
     if let ComponentHandle::Missile(handle) = parent {

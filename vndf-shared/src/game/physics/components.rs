@@ -111,7 +111,7 @@ impl Body {
     {
         let boundary = world_size / 2.0;
 
-        let pos = positions.get(self.pos)?;
+        let pos = positions.get(&self.pos)?;
         let vel = velocities.get_mut(self.vel)?;
 
         if pos.0.x >= boundary && vel.0.x > 0.0 {

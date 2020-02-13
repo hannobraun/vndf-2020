@@ -32,7 +32,7 @@ impl<T> SecondaryStore<T> {
         self.0.remove(handle.0)
     }
 
-    pub fn get(&self, handle: Handle<T>) -> Option<&T> {
+    pub fn get(&self, handle: &Handle<T>) -> Option<&T> {
         self.0.get(handle.0)
     }
 
@@ -54,7 +54,7 @@ impl<T> SecondaryStore<T> {
 }
 
 impl<T> Get<T> for SecondaryStore<T> {
-    fn get(&self, handle: Handle<T>) -> Option<&T> {
+    fn get(&self, handle: &Handle<T>) -> Option<&T> {
         self.get(handle)
     }
 }

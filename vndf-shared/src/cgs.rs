@@ -61,7 +61,7 @@ impl<T> Hash for Handle<T> {
 
 
 pub trait Get<T> {
-    fn get(&self, handle: Handle<T>) -> Option<&T>;
+    fn get(&self, handle: &Handle<T>) -> Option<&T>;
 }
 
 pub trait GetMut<T> {

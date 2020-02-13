@@ -176,10 +176,10 @@ impl Graphics {
     fn draw_ship(&self, context: &mut Context, ship: &Ship, state: &State)
         -> GameResult<bool>
     {
-        let craft = get!(state.data.crafts, ship.craft);
-        let body  = get!(state.data.bodies, craft.body);
-        let pos   = get!(state.data.positions, body.pos);
-        let dir   = get!(state.data.directions, body.dir);
+        let craft = get!(state.data.crafts, &ship.craft);
+        let body  = get!(state.data.bodies, &craft.body);
+        let pos   = get!(state.data.positions, &body.pos);
+        let dir   = get!(state.data.directions, &body.dir);
 
         self.draw_projected_course(context, craft.body, state)?;
 
@@ -206,10 +206,10 @@ impl Graphics {
     )
         -> GameResult<bool>
     {
-        let craft  = get!(state.data.crafts, missile.craft);
-        let target = get!(state.data.targets, missile.target);
-        let body   = get!(state.data.bodies, craft.body);
-        let pos    = get!(state.data.positions, body.pos);
+        let craft  = get!(state.data.crafts, &missile.craft);
+        let target = get!(state.data.targets, &missile.target);
+        let body   = get!(state.data.bodies, &craft.body);
+        let pos    = get!(state.data.positions, &body.pos);
 
         graphics::draw(
             context,
@@ -242,12 +242,12 @@ impl Graphics {
     )
         -> GameResult<bool>
     {
-        let mut body = *get!(state.data.bodies, body);
+        let mut body = *get!(state.data.bodies, &body);
         body.acc = Vec2::zero();
 
-        let dir = *get!(state.data.directions, body.dir);
-        let pos = *get!(state.data.positions,  body.pos);
-        let vel = *get!(state.data.velocities, body.vel);
+        let dir = *get!(state.data.directions, &body.dir);
+        let pos = *get!(state.data.positions,  &body.pos);
+        let vel = *get!(state.data.velocities, &body.vel);
 
         let mut directions = OneStore { handle: body.dir, data: dir };
         let mut positions  = OneStore { handle: body.pos, data: pos };
@@ -294,8 +294,8 @@ impl Graphics {
     )
         -> GameResult<bool>
     {
-        let body = get!(state.data.bodies, explosion.body);
-        let pos  = get!(state.data.positions, body.pos);
+        let body = get!(state.data.bodies, &explosion.body);
+        let pos  = get!(state.data.positions, &body.pos);
 
         let alpha = explosion.strength_left / explosion.strength_total;
         let size  = explosion.strength_total * 2.0;
@@ -321,8 +321,8 @@ impl Graphics {
     {
         let size = 10.0;
 
-        let body = get!(state.data.bodies,    loot.body);
-        let pos  = get!(state.data.positions, body.pos);
+        let body = get!(state.data.bodies,    &loot.body);
+        let pos  = get!(state.data.positions, &body.pos);
 
         graphics::draw(
             context,
@@ -475,9 +475,9 @@ Removals per s: {}",
     )
         -> GameResult<bool>
     {
-        let craft  = get!(state.data.crafts, ship.craft);
-        let fuel   = get!(state.data.fuels, craft.fuel);
-        let health = get!(state.data.healths, craft.health);
+        let craft  = get!(state.data.crafts, &ship.craft);
+        let fuel   = get!(state.data.fuels, &craft.fuel);
+        let health = get!(state.data.healths, &craft.health);
 
         if state.own_id != Some(craft.owner) {
             return Ok(false);

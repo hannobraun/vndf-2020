@@ -54,11 +54,11 @@ impl MissileEntity {
         const FUEL:   f32 = 1600.0;
         const HEALTH: f32 =    2.0;
 
-        let pos       = *positions.get(self.origin.pos)?;
+        let pos       = *positions.get(&self.origin.pos)?;
         let to_target = self.target - pos.0;
         let pos       = positions.insert(pos);
 
-        let vel = *velocities.get(self.origin.vel)?;
+        let vel = *velocities.get(&self.origin.vel)?;
         let vel = velocities.insert(vel);
 
         let dir = directions.insert(Direction(to_target));
