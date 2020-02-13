@@ -20,16 +20,16 @@ use super::{
 
 pub struct Store<T> {
     inner:     DenseSlotMap<DefaultKey, T>,
-    to_remove: Cell<Vec<Handle<T>>>,
+    changes:   Cell<Changes<T>>,
     removed:   events::Buf<Handle<T>>,
 }
 
 impl<T> Store<T> {
     pub fn new() -> Self {
         Self {
-            inner:     DenseSlotMap::new(),
-            to_remove: Cell::new(Vec::new()),
-            removed:   events::Buf::new(),
+            inner:   DenseSlotMap::new(),
+            changes: Cell::new(Changes::new()),
+            removed: events::Buf::new(),
         }
     }
 
@@ -52,9 +52,9 @@ impl<T> Store<T> {
     }
 
     pub fn remove_later(&self, handle: Handle<T>) {
-        let mut to_remove = self.to_remove.take();
-        to_remove.push(handle);
-        self.to_remove.set(to_remove);
+        let mut changes = self.changes.take();
+        changes.remove.push(handle);
+        self.changes.set(changes);
     }
 
     pub fn get(&self, handle: Handle<T>) -> Option<&T> {
@@ -82,11 +82,11 @@ impl<T> Store<T> {
     }
 
     pub fn apply_changes(&mut self) {
-        let mut to_remove = self.to_remove.take();
-        for handle in to_remove.drain(..) {
+        let mut changes = self.changes.take();
+        for handle in changes.remove.drain(..) {
             self.remove(handle);
         }
-        self.to_remove.set(to_remove);
+        self.changes.set(changes);
     }
 
     pub fn removed(&mut self) -> events::Source<Handle<T>> {
@@ -145,6 +145,25 @@ impl<'a, T> Iterator for IterMut<'a, T> {
     fn next(&mut self) -> Option<Self::Item> {
         self.0.next()
             .map(|(key, value)| (Handle(key, PhantomData), value))
+    }
+}
+
+
+struct Changes<T> {
+    remove: Vec<Handle<T>>,
+}
+
+impl<T> Changes<T> {
+    pub fn new() -> Self {
+        Self {
+            remove: Vec::new(),
+        }
+    }
+}
+
+impl<T> Default for Changes<T> {
+    fn default() -> Self {
+        Self::new()
     }
 }
 
