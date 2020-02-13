@@ -1,3 +1,4 @@
+use log::warn;
 use toadster::{
     StrongHandle,
     StrongStore,
@@ -58,35 +59,39 @@ pub fn remove_entity(
     -> Option<()>
 {
     let health = healths.get(handle)?;
-    let parent = health.parent?;
 
-    if let ComponentHandle::Missile(handle) = parent {
-        Missile::remove(
-            handle,
-            bodies,
-            crafts,
-            directions,
-            fuels,
-            guidances,
-            healths,
-            missiles,
-            positions,
-            targets,
-            velocities,
-        );
-    }
-    if let ComponentHandle::Ship(handle) = parent {
-        Ship::remove(
-            handle,
-            bodies,
-            crafts,
-            directions,
-            fuels,
-            healths,
-            positions,
-            ships,
-            velocities,
-        );
+    match health.parent? {
+        ComponentHandle::Missile(handle) => {
+            Missile::remove(
+                handle,
+                bodies,
+                crafts,
+                directions,
+                fuels,
+                guidances,
+                healths,
+                missiles,
+                positions,
+                targets,
+                velocities,
+            );
+        }
+        ComponentHandle::Ship(handle) => {
+            Ship::remove(
+                handle,
+                bodies,
+                crafts,
+                directions,
+                fuels,
+                healths,
+                positions,
+                ships,
+                velocities,
+            );
+        }
+        _ => {
+            warn!("Dead entity is neither ship nor missile");
+        }
     }
 
     Some(())
