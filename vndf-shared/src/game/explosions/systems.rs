@@ -25,9 +25,9 @@ use super::{
 
 
 pub fn explode_entity(
+    handle:  Handle<Health>,
     bodies:  &Store<Body>,
     healths: &Store<Health>,
-    handle:  Handle<Health>,
 )
     -> Option<ExplosionEntity>
 {

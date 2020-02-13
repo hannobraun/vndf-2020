@@ -62,9 +62,9 @@ impl Feature {
         velocities: &mut Store<Velocity>,
     ) {
         let explosion = explode_entity(
+            event.handle,
             bodies,
             healths,
-            event.handle,
         );
         if let Some(explosion) = explosion {
             create_explosion(
