@@ -4,7 +4,7 @@ use slotmap::{
     sparse_secondary,
 };
 
-use super::{
+use crate::{
     Get,
     GetMut,
     StrongHandle,

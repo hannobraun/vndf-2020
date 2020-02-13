@@ -7,7 +7,7 @@ use slotmap::{
 };
 use vndf_events as events;
 
-use super::{
+use crate::{
     Get,
     GetMut,
     StrongHandle,
