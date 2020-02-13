@@ -45,9 +45,7 @@ macro_rules! components {
             $($component(StrongHandle<$component>, $component),)*
         }
 
-        #[derive(
-            Clone, Copy, Debug, Deserialize, Serialize, Eq, PartialEq, Hash
-        )]
+        #[derive(Clone, Debug, Deserialize, Serialize, Eq, PartialEq, Hash)]
         pub enum ComponentHandle {
             $($component(StrongHandle<$component>),)*
         }

@@ -125,7 +125,7 @@ impl Server {
                 client.remove(&event.handle);
                 self.network.send(
                     addr,
-                    msg::FromServer::RemoveComponent(event.handle),
+                    msg::FromServer::RemoveComponent(event.handle.clone()),
                 );
             }
         }
