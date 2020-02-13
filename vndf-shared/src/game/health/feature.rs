@@ -62,7 +62,7 @@ impl Feature {
         velocities: &mut StrongStore<Velocity>,
     ) {
         remove_entity(
-            &event.handle,
+            event.handle,
             bodies,
             crafts,
             directions,
