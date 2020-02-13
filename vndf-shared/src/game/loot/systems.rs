@@ -4,8 +4,8 @@ use rand::{
     thread_rng,
 };
 use toadster::{
-    Store,
     StrongHandle,
+    StrongStore,
 };
 
 use crate::{
@@ -33,15 +33,15 @@ use super::Loot;
 
 pub fn spawn_death_loot(
     handle:     &StrongHandle<Health>,
-    bodies:     &mut Store<Body>,
-    crafts:     &Store<Craft>,
-    directions: &mut Store<Direction>,
-    fuels:      &Store<Fuel>,
-    healths:    &Store<Health>,
-    loots:      &mut Store<Loot>,
-    positions:  &mut Store<Position>,
-    ships:      &Store<Ship>,
-    velocities: &mut Store<Velocity>,
+    bodies:     &mut StrongStore<Body>,
+    crafts:     &StrongStore<Craft>,
+    directions: &mut StrongStore<Direction>,
+    fuels:      &StrongStore<Fuel>,
+    healths:    &StrongStore<Health>,
+    loots:      &mut StrongStore<Loot>,
+    positions:  &mut StrongStore<Position>,
+    ships:      &StrongStore<Ship>,
+    velocities: &mut StrongStore<Velocity>,
 )
     -> Option<()>
 {
@@ -81,11 +81,11 @@ pub fn spawn_death_loot(
 
 pub fn spawn_random_loot(
     dt:         f32,
-    bodies:     &mut Store<Body>,
-    directions: &mut Store<Direction>,
-    loots:      &mut Store<Loot>,
-    positions:  &mut Store<Position>,
-    velocities: &mut Store<Velocity>,
+    bodies:     &mut StrongStore<Body>,
+    directions: &mut StrongStore<Direction>,
+    loots:      &mut StrongStore<Loot>,
+    positions:  &mut StrongStore<Position>,
+    velocities: &mut StrongStore<Velocity>,
 ) {
     const CHANCE_PER_S: f32   = 1.0 / 30.0;
     const MAX_LOOTS:    usize = 10;
@@ -120,12 +120,12 @@ pub fn spawn_random_loot(
 }
 
 pub fn collect_loot(
-    bodies:    &Store<Body>,
-    crafts:    &Store<Craft>,
-    fuels:     &mut Store<Fuel>,
-    loots:     &Store<Loot>,
-    positions: &Store<Position>,
-    ships:     &mut Store<Ship>,
+    bodies:    &StrongStore<Body>,
+    crafts:    &StrongStore<Craft>,
+    fuels:     &mut StrongStore<Fuel>,
+    loots:     &StrongStore<Loot>,
+    positions: &StrongStore<Position>,
+    ships:     &mut StrongStore<Ship>,
 ) {
     for (handle, loot) in loots {
         loot.collect(

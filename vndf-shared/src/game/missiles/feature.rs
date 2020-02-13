@@ -1,4 +1,4 @@
-use toadster::Store;
+use toadster::StrongStore;
 use vndf_events as events;
 
 use crate::game::{
@@ -29,9 +29,9 @@ use super::{
 
 
 pub struct Feature {
-    pub guidances: Store<Guidance>,
-    pub missiles:  Store<Missile>,
-    pub targets:   Store<Target>,
+    pub guidances: StrongStore<Guidance>,
+    pub missiles:  StrongStore<Missile>,
+    pub targets:   StrongStore<Target>,
 
     pub missile_launch: events::Buf<MissileLaunch>,
 
@@ -41,9 +41,9 @@ pub struct Feature {
 impl Feature {
     pub fn new() -> Self {
         Self {
-            guidances: Store::new(),
-            missiles:  Store::new(),
-            targets:   Store::new(),
+            guidances: StrongStore::new(),
+            missiles:  StrongStore::new(),
+            targets:   StrongStore::new(),
 
             missile_launch: events::Buf::new(),
 
@@ -53,13 +53,13 @@ impl Feature {
 
     pub fn on_update(&mut self,
         event:      &Update,
-        bodies:     &mut Store<Body>,
-        crafts:     &Store<Craft>,
-        directions: &mut Store<Direction>,
-        fuels:      &Store<Fuel>,
-        healths:    &mut Store<Health>,
-        positions:  &Store<Position>,
-        velocities: &Store<Velocity>,
+        bodies:     &mut StrongStore<Body>,
+        crafts:     &StrongStore<Craft>,
+        directions: &mut StrongStore<Direction>,
+        fuels:      &StrongStore<Fuel>,
+        healths:    &mut StrongStore<Health>,
+        positions:  &StrongStore<Position>,
+        velocities: &StrongStore<Velocity>,
     ) {
         self.acc += event.dt;
 
@@ -96,13 +96,13 @@ impl Feature {
 
     pub fn on_missile_launch(&mut self,
         event:      MissileLaunch,
-        bodies:     &mut Store<Body>,
-        crafts:     &mut Store<Craft>,
-        directions: &mut Store<Direction>,
-        fuels:      &mut Store<Fuel>,
-        healths:    &mut Store<Health>,
-        positions:  &mut Store<Position>,
-        velocities: &mut Store<Velocity>,
+        bodies:     &mut StrongStore<Body>,
+        crafts:     &mut StrongStore<Craft>,
+        directions: &mut StrongStore<Direction>,
+        fuels:      &mut StrongStore<Fuel>,
+        healths:    &mut StrongStore<Health>,
+        positions:  &mut StrongStore<Position>,
+        velocities: &mut StrongStore<Velocity>,
     ) {
         launch_missile(
             bodies,

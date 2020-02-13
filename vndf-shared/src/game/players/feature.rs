@@ -8,8 +8,8 @@ use serde::{
     Serialize,
 };
 use toadster::{
-    Store,
     StrongHandle,
+    StrongStore,
 };
 use vndf_events as events;
 
@@ -46,7 +46,7 @@ pub struct Feature {
     next_id:            PlayerId,
     players_by_address: HashMap<SocketAddr, StrongHandle<Player>>,
 
-    pub players: Store<Player>,
+    pub players: StrongStore<Player>,
 
     pub input_handled:       events::Buf<InputHandled>,
     pub player_connected:    events::Buf<PlayerConnected>,
@@ -61,7 +61,7 @@ impl Feature {
             next_id:            PlayerId::first(),
             players_by_address: HashMap::new(),
 
-            players: Store::new(),
+            players: StrongStore::new(),
 
             input_handled:       events::Buf::new(),
             player_connected:    events::Buf::new(),
@@ -73,14 +73,14 @@ impl Feature {
 
     pub fn on_player_connected(&mut self,
         event:      &PlayerConnected,
-        bodies:     &mut Store<Body>,
-        crafts:     &mut Store<Craft>,
-        directions: &mut Store<Direction>,
-        fuels:      &mut Store<Fuel>,
-        healths:    &mut Store<Health>,
-        positions:  &mut Store<Position>,
-        ships:      &mut Store<Ship>,
-        velocities: &mut Store<Velocity>,
+        bodies:     &mut StrongStore<Body>,
+        crafts:     &mut StrongStore<Craft>,
+        directions: &mut StrongStore<Direction>,
+        fuels:      &mut StrongStore<Fuel>,
+        healths:    &mut StrongStore<Health>,
+        positions:  &mut StrongStore<Position>,
+        ships:      &mut StrongStore<Ship>,
+        velocities: &mut StrongStore<Velocity>,
     ) {
         connect_player(
             bodies,
@@ -110,9 +110,9 @@ impl Feature {
 
     pub fn on_player_input(&mut self,
         event:          &PlayerInput,
-        bodies:         &Store<Body>,
-        crafts:         &mut Store<Craft>,
-        ships:          &mut Store<Ship>,
+        bodies:         &StrongStore<Body>,
+        crafts:         &mut StrongStore<Craft>,
+        ships:          &mut StrongStore<Ship>,
         missile_launch: &mut events::Sink<MissileLaunch>,
     ) {
         handle_input(

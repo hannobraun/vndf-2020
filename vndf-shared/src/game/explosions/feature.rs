@@ -1,4 +1,4 @@
-use toadster::Store;
+use toadster::StrongStore;
 use vndf_events as events;
 
 use crate::game::{
@@ -28,7 +28,7 @@ use super::{
 
 
 pub struct Feature {
-    pub explosions: Store<Explosion>,
+    pub explosions: StrongStore<Explosion>,
 
     pub explosion_faded:    events::Buf<ExplosionFaded>,
     pub explosion_imminent: events::Buf<ExplosionImminent>,
@@ -37,7 +37,7 @@ pub struct Feature {
 impl Feature {
     pub fn new() -> Self {
         Self {
-            explosions: Store::new(),
+            explosions: StrongStore::new(),
 
             explosion_faded:    events::Buf::new(),
             explosion_imminent: events::Buf::new(),
@@ -54,11 +54,11 @@ impl Feature {
 
     pub fn on_death(&mut self,
         event:      &Death,
-        bodies:     &mut Store<Body>,
-        directions: &mut Store<Direction>,
-        healths:    &Store<Health>,
-        positions:  &mut Store<Position>,
-        velocities: &mut Store<Velocity>,
+        bodies:     &mut StrongStore<Body>,
+        directions: &mut StrongStore<Direction>,
+        healths:    &StrongStore<Health>,
+        positions:  &mut StrongStore<Position>,
+        velocities: &mut StrongStore<Velocity>,
     ) {
         let explosion = explode_entity(
             &event.handle,
@@ -80,9 +80,9 @@ impl Feature {
 
     pub fn on_explosion_imminent(&self,
         event:     &ExplosionImminent,
-        bodies:    &Store<Body>,
-        healths:   &mut Store<Health>,
-        positions: &Store<Position>,
+        bodies:    &StrongStore<Body>,
+        healths:   &mut StrongStore<Health>,
+        positions: &StrongStore<Position>,
     ) {
         damage_nearby(
             &event.handle,
@@ -95,10 +95,10 @@ impl Feature {
 
     pub fn on_explosion_faded(&mut self,
         event:      &ExplosionFaded,
-        bodies:     &mut Store<Body>,
-        directions: &mut Store<Direction>,
-        positions:  &mut Store<Position>,
-        velocities: &mut Store<Velocity>,
+        bodies:     &mut StrongStore<Body>,
+        directions: &mut StrongStore<Direction>,
+        positions:  &mut StrongStore<Position>,
+        velocities: &mut StrongStore<Velocity>,
     ) {
         remove_explosion(
             event.handle,

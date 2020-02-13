@@ -4,8 +4,8 @@ use serde::{
     Serialize,
 };
 use toadster::{
-    Store,
     StrongHandle,
+    StrongStore,
 };
 use vndf_events as events;
 
@@ -66,8 +66,8 @@ impl Ship {
     }
 
     pub fn apply_input(&mut self,
-        bodies:         &Store<Body>,
-        crafts:         &mut Store<Craft>,
+        bodies:         &StrongStore<Body>,
+        crafts:         &mut StrongStore<Craft>,
         missile_launch: &mut events::Sink<MissileLaunch>,
         player:         &Player,
         action:         Action,
@@ -124,8 +124,8 @@ impl Ship {
     }
 
     pub fn update(&self,
-        bodies: &mut Store<Body>,
-        crafts: &Store<Craft>,
+        bodies: &mut StrongStore<Body>,
+        crafts: &StrongStore<Craft>,
     )
         -> Option<()>
     {
@@ -140,14 +140,14 @@ impl Ship {
 
     pub fn remove(
         handle:     StrongHandle<Ship>,
-        bodies:     &mut Store<Body>,
-        crafts:     &mut Store<Craft>,
-        directions: &mut Store<Direction>,
-        fuels:      &mut Store<Fuel>,
-        healths:    &mut Store<Health>,
-        positions:  &mut Store<Position>,
-        ships:      &mut Store<Ship>,
-        velocities: &mut Store<Velocity>,
+        bodies:     &mut StrongStore<Body>,
+        crafts:     &mut StrongStore<Craft>,
+        directions: &mut StrongStore<Direction>,
+        fuels:      &mut StrongStore<Fuel>,
+        healths:    &mut StrongStore<Health>,
+        positions:  &mut StrongStore<Position>,
+        ships:      &mut StrongStore<Ship>,
+        velocities: &mut StrongStore<Velocity>,
     )
         -> Option<()>
     {

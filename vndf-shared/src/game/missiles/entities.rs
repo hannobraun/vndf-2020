@@ -1,4 +1,4 @@
-use toadster::Store;
+use toadster::StrongStore;
 
 use crate::{
     game::{
@@ -38,16 +38,16 @@ pub struct MissileEntity {
 
 impl MissileEntity {
     pub fn create(&self,
-        bodies:     &mut Store<Body>,
-        crafts:     &mut Store<Craft>,
-        directions: &mut Store<Direction>,
-        fuels:      &mut Store<Fuel>,
-        guidances:  &mut Store<Guidance>,
-        healths:    &mut Store<Health>,
-        missiles:   &mut Store<Missile>,
-        positions:  &mut Store<Position>,
-        targets:    &mut Store<Target>,
-        velocities: &mut Store<Velocity>,
+        bodies:     &mut StrongStore<Body>,
+        crafts:     &mut StrongStore<Craft>,
+        directions: &mut StrongStore<Direction>,
+        fuels:      &mut StrongStore<Fuel>,
+        guidances:  &mut StrongStore<Guidance>,
+        healths:    &mut StrongStore<Health>,
+        missiles:   &mut StrongStore<Missile>,
+        positions:  &mut StrongStore<Position>,
+        targets:    &mut StrongStore<Target>,
+        velocities: &mut StrongStore<Velocity>,
     )
         -> Option<()>
     {

@@ -5,8 +5,8 @@ use std::{
 
 use log::warn;
 use toadster::{
-    Store,
     StrongHandle,
+    StrongStore,
 };
 use vndf_events as events;
 
@@ -41,15 +41,15 @@ use super::{
 
 
 pub fn connect_player(
-    bodies:         &mut Store<Body>,
-    crafts:         &mut Store<Craft>,
-    directions:     &mut Store<Direction>,
-    fuels:          &mut Store<Fuel>,
-    healths:        &mut Store<Health>,
-    players:        &mut Store<Player>,
-    positions:      &mut Store<Position>,
-    ships:          &mut Store<Ship>,
-    velocities:     &mut Store<Velocity>,
+    bodies:         &mut StrongStore<Body>,
+    crafts:         &mut StrongStore<Craft>,
+    directions:     &mut StrongStore<Direction>,
+    fuels:          &mut StrongStore<Fuel>,
+    healths:        &mut StrongStore<Health>,
+    players:        &mut StrongStore<Player>,
+    positions:      &mut StrongStore<Position>,
+    ships:          &mut StrongStore<Ship>,
+    velocities:     &mut StrongStore<Velocity>,
     player_created: &mut events::Sink<PlayerCreated>,
     index:          &mut HashMap<SocketAddr, StrongHandle<Player>>,
     id:             PlayerId,
@@ -73,7 +73,7 @@ pub fn connect_player(
 }
 
 pub fn disconnect_player(
-    players: &mut Store<Player>,
+    players: &mut StrongStore<Player>,
     index:   &mut HashMap<SocketAddr, StrongHandle<Player>>,
     address: SocketAddr,
 ) {
@@ -87,10 +87,10 @@ pub fn disconnect_player(
 pub fn handle_input(
     addr:           SocketAddr,
     action:         Action,
-    bodies:         &Store<Body>,
-    crafts:         &mut Store<Craft>,
-    players:        &Store<Player>,
-    ships:          &mut Store<Ship>,
+    bodies:         &StrongStore<Body>,
+    crafts:         &mut StrongStore<Craft>,
+    players:        &StrongStore<Player>,
+    ships:          &mut StrongStore<Ship>,
     missile_launch: &mut events::Sink<MissileLaunch>,
     input_handled:  &mut events::Sink<InputHandled>,
     index:          &mut HashMap<SocketAddr, StrongHandle<Player>>,

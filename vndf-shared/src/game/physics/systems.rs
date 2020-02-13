@@ -1,4 +1,4 @@
-use toadster::Store;
+use toadster::StrongStore;
 
 use super::{
     Body,
@@ -9,10 +9,10 @@ use super::{
 
 
 pub fn update_bodies(
-    bodies:     &mut Store<Body>,
-    directions: &mut Store<Direction>,
-    positions:  &mut Store<Position>,
-    velocities: &mut Store<Velocity>,
+    bodies:     &mut StrongStore<Body>,
+    directions: &mut StrongStore<Direction>,
+    positions:  &mut StrongStore<Position>,
+    velocities: &mut StrongStore<Velocity>,
     world_size: f32,
     dt:         f32,
 ) {

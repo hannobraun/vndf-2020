@@ -1,6 +1,6 @@
 use toadster::{
-    Store,
     StrongHandle,
+    StrongStore,
 };
 use vndf_events as events;
 
@@ -31,7 +31,7 @@ use super::{
 
 
 pub fn check_health(
-    healths: &Store<Health>,
+    healths: &StrongStore<Health>,
     death:   &mut events::Sink<Death>,
 ) {
     for (handle, health) in healths {
@@ -43,17 +43,17 @@ pub fn check_health(
 
 pub fn remove_entity(
     handle:     &StrongHandle<Health>,
-    bodies:     &mut Store<Body>,
-    crafts:     &mut Store<Craft>,
-    directions: &mut Store<Direction>,
-    fuels:      &mut Store<Fuel>,
-    guidances:  &mut Store<Guidance>,
-    healths:    &mut Store<Health>,
-    missiles:   &mut Store<Missile>,
-    positions:  &mut Store<Position>,
-    ships:      &mut Store<Ship>,
-    targets:    &mut Store<Target>,
-    velocities: &mut Store<Velocity>,
+    bodies:     &mut StrongStore<Body>,
+    crafts:     &mut StrongStore<Craft>,
+    directions: &mut StrongStore<Direction>,
+    fuels:      &mut StrongStore<Fuel>,
+    guidances:  &mut StrongStore<Guidance>,
+    healths:    &mut StrongStore<Health>,
+    missiles:   &mut StrongStore<Missile>,
+    positions:  &mut StrongStore<Position>,
+    ships:      &mut StrongStore<Ship>,
+    targets:    &mut StrongStore<Target>,
+    velocities: &mut StrongStore<Velocity>,
 )
     -> Option<()>
 {

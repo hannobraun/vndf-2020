@@ -1,4 +1,4 @@
-use toadster::Store;
+use toadster::StrongStore;
 
 use crate::game::{
     base::Update,
@@ -28,25 +28,25 @@ use super::{
 
 
 pub struct Feature {
-    pub loots: Store<Loot>,
+    pub loots: StrongStore<Loot>,
 }
 
 impl Feature {
     pub fn new() -> Self {
         Self {
-            loots: Store::new(),
+            loots: StrongStore::new(),
         }
     }
 
     pub fn on_update(&mut self,
         event:      &Update,
-        bodies:     &mut Store<Body>,
-        crafts:     &Store<Craft>,
-        directions: &mut Store<Direction>,
-        fuels:      &mut Store<Fuel>,
-        positions:  &mut Store<Position>,
-        ships:      &mut Store<Ship>,
-        velocities: &mut Store<Velocity>,
+        bodies:     &mut StrongStore<Body>,
+        crafts:     &StrongStore<Craft>,
+        directions: &mut StrongStore<Direction>,
+        fuels:      &mut StrongStore<Fuel>,
+        positions:  &mut StrongStore<Position>,
+        ships:      &mut StrongStore<Ship>,
+        velocities: &mut StrongStore<Velocity>,
     ) {
         self.loots.apply_changes();
 
@@ -70,14 +70,14 @@ impl Feature {
 
     pub fn on_death(&mut self,
         event:      &Death,
-        bodies:     &mut Store<Body>,
-        crafts:     &Store<Craft>,
-        directions: &mut Store<Direction>,
-        fuels:      &Store<Fuel>,
-        healths:    &Store<Health>,
-        positions:  &mut Store<Position>,
-        ships:      &Store<Ship>,
-        velocities: &mut Store<Velocity>,
+        bodies:     &mut StrongStore<Body>,
+        crafts:     &StrongStore<Craft>,
+        directions: &mut StrongStore<Direction>,
+        fuels:      &StrongStore<Fuel>,
+        healths:    &StrongStore<Health>,
+        positions:  &mut StrongStore<Position>,
+        ships:      &StrongStore<Ship>,
+        velocities: &mut StrongStore<Velocity>,
     ) {
         spawn_death_loot(
             &event.handle,

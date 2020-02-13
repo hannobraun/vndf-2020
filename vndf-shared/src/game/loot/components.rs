@@ -5,8 +5,8 @@ use serde::{
     Serialize,
 };
 use toadster::{
-    Store,
     StrongHandle,
+    StrongStore,
 };
 
 use crate::{
@@ -35,12 +35,12 @@ pub struct Loot {
 impl Loot {
     pub fn collect(&self,
         handle:    StrongHandle<Loot>,
-        bodies:    &Store<Body>,
-        crafts:    &Store<Craft>,
-        fuels:     &mut Store<Fuel>,
-        loots:     &Store<Loot>,
-        positions: &Store<Position>,
-        ships:     &mut Store<Ship>,
+        bodies:    &StrongStore<Body>,
+        crafts:    &StrongStore<Craft>,
+        fuels:     &mut StrongStore<Fuel>,
+        loots:     &StrongStore<Loot>,
+        positions: &StrongStore<Position>,
+        ships:     &mut StrongStore<Ship>,
     ) {
         let mut min_distance = f32::INFINITY;
         let mut nearest_ship = None;
@@ -71,9 +71,9 @@ impl Loot {
 
     fn distance(&self,
         craft:     &StrongHandle<Craft>,
-        bodies:    &Store<Body>,
-        crafts:    &Store<Craft>,
-        positions: &Store<Position>,
+        bodies:    &StrongStore<Body>,
+        crafts:    &StrongStore<Craft>,
+        positions: &StrongStore<Position>,
     )
         -> Option<f32>
     {
@@ -90,9 +90,9 @@ impl Loot {
 
     fn add_to_ship(&self,
         ship:   &StrongHandle<Ship>,
-        crafts: &Store<Craft>,
-        fuels:  &mut Store<Fuel>,
-        ships:  &mut Store<Ship>,
+        crafts: &StrongStore<Craft>,
+        fuels:  &mut StrongStore<Fuel>,
+        ships:  &mut StrongStore<Ship>,
     )
         -> Option<()>
     {

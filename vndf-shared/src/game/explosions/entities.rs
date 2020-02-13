@@ -1,6 +1,6 @@
 use toadster::{
-    Store,
     StrongHandle,
+    StrongStore,
 };
 
 use crate::game::physics::{
@@ -20,11 +20,11 @@ pub struct ExplosionEntity {
 
 impl ExplosionEntity {
     pub fn create(&self,
-        bodies:     &mut Store<Body>,
-        directions: &mut Store<Direction>,
-        explosions: &mut Store<Explosion>,
-        positions:  &mut Store<Position>,
-        velocities: &mut Store<Velocity>,
+        bodies:     &mut StrongStore<Body>,
+        directions: &mut StrongStore<Direction>,
+        explosions: &mut StrongStore<Explosion>,
+        positions:  &mut StrongStore<Position>,
+        velocities: &mut StrongStore<Velocity>,
     )
         -> Option<StrongHandle<Explosion>>
     {

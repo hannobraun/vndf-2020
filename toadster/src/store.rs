@@ -14,13 +14,13 @@ use super::{
 };
 
 
-pub struct Store<T> {
+pub struct StrongStore<T> {
     inner:     DenseSlotMap<DefaultKey, T>,
     changes:   Cell<Changes<T>>,
     removed:   events::Buf<StrongHandle<T>>,
 }
 
-impl<T> Store<T> {
+impl<T> StrongStore<T> {
     pub fn new() -> Self {
         Self {
             inner:   DenseSlotMap::new(),
@@ -90,19 +90,19 @@ impl<T> Store<T> {
     }
 }
 
-impl<T> Get<T> for Store<T> {
+impl<T> Get<T> for StrongStore<T> {
     fn get(&self, handle: &StrongHandle<T>) -> Option<&T> {
         self.get(handle)
     }
 }
 
-impl<T> GetMut<T> for Store<T> {
+impl<T> GetMut<T> for StrongStore<T> {
     fn get_mut(&mut self, handle: &StrongHandle<T>) -> Option<&mut T> {
         self.get_mut(handle)
     }
 }
 
-impl<'a, T> IntoIterator for &'a Store<T> {
+impl<'a, T> IntoIterator for &'a StrongStore<T> {
     type Item     = (StrongHandle<T>, &'a T);
     type IntoIter = Iter<'a, T>;
 
@@ -111,7 +111,7 @@ impl<'a, T> IntoIterator for &'a Store<T> {
     }
 }
 
-impl<'a, T> IntoIterator for &'a mut Store<T> {
+impl<'a, T> IntoIterator for &'a mut StrongStore<T> {
     type Item     = (StrongHandle<T>, &'a mut T);
     type IntoIter = IterMut<'a, T>;
 
@@ -166,12 +166,12 @@ impl<T> Default for Changes<T> {
 
 #[cfg(test)]
 mod tests {
-    use super::Store;
+    use super::StrongStore;
 
 
     #[test]
     fn it_should_remove_values_later() {
-        let mut store = Store::new();
+        let mut store = StrongStore::new();
 
         store.insert(());
         store.insert(());
@@ -189,7 +189,7 @@ mod tests {
 
     #[test]
     fn it_should_emit_remove_events() {
-        let mut store = Store::new();
+        let mut store = StrongStore::new();
 
         let handle = store.insert(());
 
