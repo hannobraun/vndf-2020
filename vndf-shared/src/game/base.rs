@@ -40,7 +40,7 @@ use crate::{
 
 macro_rules! components {
     ($($component:ident,)*) => {
-        #[derive(Clone, Copy, Debug, Deserialize, Serialize, PartialEq)]
+        #[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
         pub enum Component {
             $($component(Handle<$component>, $component),)*
         }
