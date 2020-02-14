@@ -22,7 +22,7 @@ use crate::{
 pub struct Strong<T> {
     inner:   DenseSlotMap<DefaultKey, T>,
     changes: Arc<Mutex<Changes<T>>>,
-    removed: EventBuf<handle::Strong<T>>,
+    removed: EventBuf<handle::Weak<T>>,
 }
 
 impl<T> Strong<T> {
@@ -46,7 +46,7 @@ impl<T> Strong<T> {
         let result = self.inner.remove(handle.key);
 
         if result.is_some() {
-            self.removed.sink().push(handle)
+            self.removed.sink().push((&handle).into())
         }
 
         result
@@ -91,12 +91,12 @@ impl<T> Strong<T> {
             let result = self.inner.remove(handle.key);
 
             if result.is_some() {
-                self.removed.sink().push(handle)
+                self.removed.sink().push((&handle).into())
             }
         }
     }
 
-    pub fn removed(&mut self) -> EventSource<handle::Strong<T>> {
+    pub fn removed(&mut self) -> EventSource<handle::Weak<T>> {
         self.removed.source()
     }
 }
@@ -179,7 +179,10 @@ impl<T> Default for Changes<T> {
 
 #[cfg(test)]
 mod tests {
-    use crate::store;
+    use crate::{
+        handle,
+        store,
+    };
 
 
     #[test]
@@ -204,14 +207,15 @@ mod tests {
     fn it_should_emit_remove_events() {
         let mut store = store::Strong::new();
 
-        let handle = store.insert(());
+        let strong_handle = store.insert(());
+        let weak_handle: handle::Weak<()> = (&strong_handle).into();
 
         let removed: Vec<_> = store.removed().ready().collect();
         assert_eq!(removed.len(), 0);
 
-        store.remove(handle.clone());
+        store.remove(strong_handle);
 
         let removed: Vec<_> = store.removed().ready().collect();
-        assert_eq!(removed, vec![handle]);
+        assert_eq!(removed, vec![weak_handle]);
     }
 }
