@@ -1,5 +1,3 @@
-use vndf_events as events;
-
 use super::{
     ComponentRemoved,
     Update,
@@ -7,15 +5,15 @@ use super::{
 
 
 pub struct Feature {
-    pub component_removed: events::Buf<ComponentRemoved>,
-    pub update:            events::Buf<Update>,
+    pub component_removed: bach::Buf<ComponentRemoved>,
+    pub update:            bach::Buf<Update>,
 }
 
 impl Feature {
     pub fn new() -> Self {
         Self {
-            component_removed: events::Buf::new(),
-            update:            events::Buf::new(),
+            component_removed: bach::Buf::new(),
+            update:            bach::Buf::new(),
         }
     }
 }

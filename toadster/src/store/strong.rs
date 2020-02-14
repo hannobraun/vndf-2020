@@ -5,7 +5,6 @@ use slotmap::{
     DenseSlotMap,
     dense,
 };
-use vndf_events as events;
 
 use crate::{
     Store,
@@ -16,7 +15,7 @@ use crate::{
 pub struct StrongStore<T> {
     inner:     DenseSlotMap<DefaultKey, T>,
     changes:   Cell<Changes<T>>,
-    removed:   events::Buf<StrongHandle<T>>,
+    removed:   bach::Buf<StrongHandle<T>>,
 }
 
 impl<T> StrongStore<T> {
@@ -24,7 +23,7 @@ impl<T> StrongStore<T> {
         Self {
             inner:   DenseSlotMap::new(),
             changes: Cell::new(Changes::new()),
-            removed: events::Buf::new(),
+            removed: bach::Buf::new(),
         }
     }
 
@@ -84,7 +83,7 @@ impl<T> StrongStore<T> {
         self.changes.set(changes);
     }
 
-    pub fn removed(&mut self) -> events::Source<StrongHandle<T>> {
+    pub fn removed(&mut self) -> bach::Source<StrongHandle<T>> {
         self.removed.source()
     }
 }

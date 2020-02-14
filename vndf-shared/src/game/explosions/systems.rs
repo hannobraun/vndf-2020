@@ -2,7 +2,6 @@ use toadster::{
     StrongHandle,
     StrongStore,
 };
-use vndf_events as events;
 
 use crate::game::{
     base::ComponentHandle,
@@ -60,7 +59,7 @@ pub fn create_explosion(
     explosions:         &mut StrongStore<Explosion>,
     positions:          &mut StrongStore<Position>,
     velocities:         &mut StrongStore<Velocity>,
-    explosion_imminent: &mut events::Sink<ExplosionImminent>,
+    explosion_imminent: &mut bach::Sink<ExplosionImminent>,
     explosion:          ExplosionEntity,
 ) {
     let handle = explosion.create(
@@ -103,7 +102,7 @@ pub fn damage_nearby(
 pub fn update_explosions(
     explosions:      &mut StrongStore<Explosion>,
     dt:              f32,
-    explosion_faded: &mut events::Sink<ExplosionFaded>,
+    explosion_faded: &mut bach::Sink<ExplosionFaded>,
 ) {
     for (handle, explosion) in explosions {
         if explosion.update(dt) {

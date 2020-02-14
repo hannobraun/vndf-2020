@@ -8,9 +8,9 @@ edition = "2018"
 [dependencies]
 serde = "*"
 
+[dependencies.bach]
+path = "../bach"
+
 [dependencies.slotmap]
 version  = "*"
 features = ["serde"]
-
-[dependencies.vndf-events]
-path = "../vndf-events"

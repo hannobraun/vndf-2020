@@ -13,7 +13,6 @@ use serde::{
     Deserialize,
     Serialize,
 };
-use vndf_events as events;
 
 use self::{
     base::{
@@ -66,19 +65,19 @@ impl State {
         }
     }
 
-    pub fn player_connected(&mut self) -> events::Sink<PlayerConnected> {
+    pub fn player_connected(&mut self) -> bach::Sink<PlayerConnected> {
         self.players.player_connected.sink()
     }
 
-    pub fn player_disconnected(&mut self) -> events::Sink<PlayerDisconnected> {
+    pub fn player_disconnected(&mut self) -> bach::Sink<PlayerDisconnected> {
         self.players.player_disconnected.sink()
     }
 
-    pub fn player_input(&mut self) -> events::Sink<PlayerInput> {
+    pub fn player_input(&mut self) -> bach::Sink<PlayerInput> {
         self.players.player_input.sink()
     }
 
-    pub fn update(&mut self) -> events::Sink<Update> {
+    pub fn update(&mut self) -> bach::Sink<Update> {
         self.base.update.sink()
     }
 
@@ -258,7 +257,7 @@ impl State {
             .chain(velocities)
     }
 
-    pub fn removals(&mut self) -> events::Source<ComponentRemoved> {
+    pub fn removals(&mut self) -> bach::Source<ComponentRemoved> {
         for handle in self.physics.bodies.removed().ready() {
             let handle = ComponentHandle::Body(handle);
             let event  = ComponentRemoved { handle };
@@ -323,11 +322,11 @@ impl State {
         self.base.component_removed.source()
     }
 
-    pub fn player_created(&mut self) -> events::Source<PlayerCreated> {
+    pub fn player_created(&mut self) -> bach::Source<PlayerCreated> {
         self.players.player_created.source()
     }
 
-    pub fn input_handled(&mut self) -> events::Source<InputHandled> {
+    pub fn input_handled(&mut self) -> bach::Source<InputHandled> {
         self.players.input_handled.source()
     }
 

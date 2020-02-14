@@ -1,5 +1,4 @@
 use toadster::StrongStore;
-use vndf_events as events;
 
 use crate::game::{
     crafts::{
@@ -30,14 +29,14 @@ use super::{
 
 pub struct Feature {
     pub healths: StrongStore<Health>,
-    pub death:   events::Buf<Death>,
+    pub death:   bach::Buf<Death>,
 }
 
 impl Feature {
     pub fn new() -> Self {
         Self {
             healths: StrongStore::new(),
-            death:   events::Buf::new(),
+            death:   bach::Buf::new(),
         }
     }
 

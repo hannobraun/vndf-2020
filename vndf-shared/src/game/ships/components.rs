@@ -7,7 +7,6 @@ use toadster::{
     StrongHandle,
     StrongStore,
 };
-use vndf_events as events;
 
 use crate::{
     game::{
@@ -67,7 +66,7 @@ impl Ship {
     pub fn apply_input(&mut self,
         bodies:         &StrongStore<Body>,
         crafts:         &mut StrongStore<Craft>,
-        missile_launch: &mut events::Sink<MissileLaunch>,
+        missile_launch: &mut bach::Sink<MissileLaunch>,
         player:         &Player,
         action:         Action,
     )

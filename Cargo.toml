@@ -1,15 +1,15 @@
 [workspace]
 members = [
+    "bach",
     "vndf-client",
-    "vndf-events",
     "vndf-launcher",
     "vndf-server",
     "vndf-shared",
     "vndf-tests",
 ]
 default-members = [
+    "bach",
     "vndf-client",
-    "vndf-events",
     "vndf-shared",
     "vndf-tests",
 ]

@@ -11,7 +11,6 @@ use toadster::{
     StrongHandle,
     StrongStore,
 };
-use vndf_events as events;
 
 use crate::game::{
     crafts::{
@@ -48,11 +47,11 @@ pub struct Feature {
 
     pub players: StrongStore<Player>,
 
-    pub input_handled:       events::Buf<InputHandled>,
-    pub player_connected:    events::Buf<PlayerConnected>,
-    pub player_created:      events::Buf<PlayerCreated>,
-    pub player_disconnected: events::Buf<PlayerDisconnected>,
-    pub player_input:        events::Buf<PlayerInput>,
+    pub input_handled:       bach::Buf<InputHandled>,
+    pub player_connected:    bach::Buf<PlayerConnected>,
+    pub player_created:      bach::Buf<PlayerCreated>,
+    pub player_disconnected: bach::Buf<PlayerDisconnected>,
+    pub player_input:        bach::Buf<PlayerInput>,
 }
 
 impl Feature {
@@ -63,11 +62,11 @@ impl Feature {
 
             players: StrongStore::new(),
 
-            input_handled:       events::Buf::new(),
-            player_connected:    events::Buf::new(),
-            player_created:      events::Buf::new(),
-            player_disconnected: events::Buf::new(),
-            player_input:        events::Buf::new(),
+            input_handled:       bach::Buf::new(),
+            player_connected:    bach::Buf::new(),
+            player_created:      bach::Buf::new(),
+            player_disconnected: bach::Buf::new(),
+            player_input:        bach::Buf::new(),
         }
     }
 
@@ -113,7 +112,7 @@ impl Feature {
         bodies:         &StrongStore<Body>,
         crafts:         &mut StrongStore<Craft>,
         ships:          &mut StrongStore<Ship>,
-        missile_launch: &mut events::Sink<MissileLaunch>,
+        missile_launch: &mut bach::Sink<MissileLaunch>,
     ) {
         handle_input(
             event.addr,

@@ -1,5 +1,4 @@
 use toadster::StrongStore;
-use vndf_events as events;
 
 use crate::game::{
     base::Update,
@@ -30,8 +29,8 @@ use super::{
 pub struct Feature {
     pub explosions: StrongStore<Explosion>,
 
-    pub explosion_faded:    events::Buf<ExplosionFaded>,
-    pub explosion_imminent: events::Buf<ExplosionImminent>,
+    pub explosion_faded:    bach::Buf<ExplosionFaded>,
+    pub explosion_imminent: bach::Buf<ExplosionImminent>,
 }
 
 impl Feature {
@@ -39,8 +38,8 @@ impl Feature {
         Self {
             explosions: StrongStore::new(),
 
-            explosion_faded:    events::Buf::new(),
-            explosion_imminent: events::Buf::new(),
+            explosion_faded:    bach::Buf::new(),
+            explosion_imminent: bach::Buf::new(),
         }
     }
 

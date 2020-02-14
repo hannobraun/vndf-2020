@@ -3,7 +3,6 @@ use toadster::{
     StrongHandle,
     StrongStore,
 };
-use vndf_events as events;
 
 use crate::game::{
     base::ComponentHandle,
@@ -33,7 +32,7 @@ use super::{
 
 pub fn check_health(
     healths: &StrongStore<Health>,
-    death:   &mut events::Sink<Death>,
+    death:   &mut bach::Sink<Death>,
 ) {
     for (handle, health) in healths {
         if health.is_dead() {

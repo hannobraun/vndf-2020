@@ -11,12 +11,12 @@ postcard = "*"
 rand     = "*"
 serde    = "*"
 
+[dependencies.bach]
+path = "../bach"
+
 [dependencies.cgmath]
 version  = "*"
 features = ["mint", "serde"]
-
-[dependencies.vndf-events]
-path = "../vndf-events"
 
 [dependencies.pid]
 version  = "*"

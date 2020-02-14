@@ -1,5 +1,4 @@
 use toadster::StrongStore;
-use vndf_events as events;
 
 use crate::game::{
     base::Update,
@@ -33,7 +32,7 @@ pub struct Feature {
     pub missiles:  StrongStore<Missile>,
     pub targets:   StrongStore<Target>,
 
-    pub missile_launch: events::Buf<MissileLaunch>,
+    pub missile_launch: bach::Buf<MissileLaunch>,
 
     acc: f32,
 }
@@ -45,7 +44,7 @@ impl Feature {
             missiles:  StrongStore::new(),
             targets:   StrongStore::new(),
 
-            missile_launch: events::Buf::new(),
+            missile_launch: bach::Buf::new(),
 
             acc: 0.0,
         }
