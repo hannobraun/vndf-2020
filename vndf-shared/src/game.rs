@@ -243,7 +243,7 @@ impl State {
         let ships = self.ships.ships.iter()
             .map(|(handle, &c)| Component::Ship(handle, c));
         let targets = self.missiles.targets.iter()
-            .map(|(handle, &c)| Component::Target(handle, c));
+            .map(|(handle, c)| Component::Target(handle, c.clone()));
         let velocities = self.physics.velocities.iter()
             .map(|(handle, &c)| Component::Velocity(handle, c));
 

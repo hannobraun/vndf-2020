@@ -197,7 +197,7 @@ impl Guidance {
 }
 
 
-#[derive(Clone, Copy, Debug, Deserialize, Serialize, PartialEq)]
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
 pub struct Target {
     pub craft: StrongHandle<Craft>,
     pub value: Pnt2,
