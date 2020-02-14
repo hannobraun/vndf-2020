@@ -42,7 +42,7 @@ macro_rules! components {
     ($($component:ident,)*) => {
         #[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
         pub enum Component {
-            $($component(handle::Strong<$component>, $component),)*
+            $($component(handle::Weak<$component>, $component),)*
         }
 
         #[derive(Clone, Debug, Deserialize, Serialize, Eq, PartialEq, Hash)]

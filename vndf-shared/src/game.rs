@@ -225,62 +225,62 @@ impl State {
         let bodies = self.physics.bodies
             .iter()
             .map(|(handle, c)|
-                Component::Body(handle, c.clone())
+                Component::Body(handle.into(), c.clone())
             );
         let crafts = self.crafts.crafts
             .iter()
             .map(|(handle, c)|
-                Component::Craft(handle, c.clone())
+                Component::Craft(handle.into(), c.clone())
             );
         let directions = self.physics.directions
             .iter()
             .map(|(handle, c)|
-                Component::Direction(handle, c.clone())
+                Component::Direction(handle.into(), c.clone())
             );
         let explosions = self.explosions.explosions
             .iter()
             .map(|(handle, c)|
-                Component::Explosion(handle, c.clone())
+                Component::Explosion(handle.into(), c.clone())
             );
         let fuels = self.crafts.fuels
             .iter()
             .map(|(handle, c)|
-                Component::Fuel(handle, c.clone())
+                Component::Fuel(handle.into(), c.clone())
             );
         let healths = self.health.healths
             .iter()
             .map(|(handle, c)|
-                Component::Health(handle, c.clone())
+                Component::Health(handle.into(), c.clone())
             );
         let loots = self.loot.loots
             .iter()
             .map(|(handle, c)|
-                Component::Loot(handle, c.clone())
+                Component::Loot(handle.into(), c.clone())
             );
         let missiles = self.missiles.missiles
             .iter()
             .map(|(handle, c)|
-                Component::Missile(handle, c.clone())
+                Component::Missile(handle.into(), c.clone())
             );
         let positions = self.physics.positions
             .iter()
             .map(|(handle, c)|
-                Component::Position(handle, c.clone())
+                Component::Position(handle.into(), c.clone())
             );
         let ships = self.ships.ships
             .iter()
             .map(|(handle, c)|
-                Component::Ship(handle, c.clone())
+                Component::Ship(handle.into(), c.clone())
             );
         let targets = self.missiles.targets
             .iter()
             .map(|(handle, c)|
-                Component::Target(handle, c.clone())
+                Component::Target(handle.into(), c.clone())
             );
         let velocities = self.physics.velocities
             .iter()
             .map(|(handle, c)|
-                Component::Velocity(handle, c.clone())
+                Component::Velocity(handle.into(), c.clone())
             );
 
         bodies
