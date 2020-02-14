@@ -1,4 +1,4 @@
-use bach::EventBuf;
+use rinnsal::EventBuf;
 use toadster::store;
 
 use crate::game::{

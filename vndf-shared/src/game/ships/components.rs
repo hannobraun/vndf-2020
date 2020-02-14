@@ -1,5 +1,5 @@
-use bach::EventSink;
 use log::warn;
+use rinnsal::EventSink;
 use serde::{
     Deserialize,
     Serialize,

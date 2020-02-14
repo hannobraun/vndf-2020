@@ -3,7 +3,7 @@ use std::{
     net::SocketAddr,
 };
 
-use bach::{
+use rinnsal::{
     EventBuf,
     EventSink,
 };

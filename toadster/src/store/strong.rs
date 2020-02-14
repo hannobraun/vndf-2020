@@ -3,7 +3,7 @@ use std::sync::{
     Mutex,
 };
 
-use bach::{
+use rinnsal::{
     EventBuf,
     EventSource,
 };

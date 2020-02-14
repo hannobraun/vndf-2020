@@ -1,4 +1,4 @@
-use bach::EventSink;
+use rinnsal::EventSink;
 use toadster::{
     handle,
     store,

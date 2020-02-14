@@ -131,10 +131,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f8aac770f1885fd7e387acedd76065302551364496e46b3dd00860b2f8359b9d"
 
 [[package]]
-name = "bach"
-version = "0.1.0"
-
-[[package]]
 name = "backtrace"
 version = "0.3.44"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1848,6 +1844,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "rinnsal"
+version = "0.1.0"
+
+[[package]]
 name = "rodio"
 version = "0.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2335,7 +2335,7 @@ dependencies = [
 name = "toadster"
 version = "0.1.0"
 dependencies = [
- "bach",
+ "rinnsal",
  "serde",
  "slotmap",
 ]
@@ -2443,12 +2443,12 @@ dependencies = [
 name = "vndf-shared"
 version = "0.1.0"
 dependencies = [
- "bach",
  "cgmath",
  "log",
  "pid",
  "postcard",
  "rand 0.7.3",
+ "rinnsal",
  "serde",
  "toadster",
 ]

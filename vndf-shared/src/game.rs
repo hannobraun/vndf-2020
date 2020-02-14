@@ -9,7 +9,7 @@ pub mod players;
 pub mod ships;
 
 
-use bach::{
+use rinnsal::{
     EventSink,
     EventSource,
 };

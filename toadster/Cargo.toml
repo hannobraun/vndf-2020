@@ -8,8 +8,8 @@ edition = "2018"
 [dependencies]
 serde = "*"
 
-[dependencies.bach]
-path = "../bach"
+[dependencies.rinnsal]
+path = "../rinnsal"
 
 [dependencies.slotmap]
 version  = "*"

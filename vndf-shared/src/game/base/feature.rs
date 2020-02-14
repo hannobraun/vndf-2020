@@ -1,4 +1,4 @@
-use bach::EventBuf;
+use rinnsal::EventBuf;
 
 use super::{
     ComponentRemoved,

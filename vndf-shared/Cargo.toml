@@ -11,9 +11,6 @@ postcard = "*"
 rand     = "*"
 serde    = "*"
 
-[dependencies.bach]
-path = "../bach"
-
 [dependencies.cgmath]
 version  = "*"
 features = ["mint", "serde"]
@@ -21,6 +18,9 @@ features = ["mint", "serde"]
 [dependencies.pid]
 version  = "*"
 features = ["serde"]
+
+[dependencies.rinnsal]
+path = "../rinnsal"
 
 [dependencies.toadster]
 path = "../toadster"

@@ -3,8 +3,8 @@ use std::{
     net::SocketAddr,
 };
 
-use bach::EventSink;
 use log::warn;
+use rinnsal::EventSink;
 use toadster::{
     handle,
     store,

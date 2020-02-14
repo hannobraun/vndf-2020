@@ -1,5 +1,5 @@
 [package]
-name    = "bach"
+name    = "rinnsal"
 version = "0.1.0"
 authors = ["Hanno Braun <hb@hannobraun.de>"]
 edition = "2018"
