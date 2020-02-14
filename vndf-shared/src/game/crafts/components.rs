@@ -26,7 +26,7 @@ use crate::{
 };
 
 
-#[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Craft {
     pub body:   StrongHandle<Body>,
     pub fuel:   StrongHandle<Fuel>,

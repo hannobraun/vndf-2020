@@ -60,7 +60,7 @@ pub fn update_targets(
             .filter_map(|craft| {
                 let body = bodies.get(&craft.body)?;
                 let pos  = positions.get(&body.pos)?;
-                Some((*pos, *craft))
+                Some((*pos, craft.clone()))
             });
 
         target.update(crafts, potential_targets);

@@ -225,7 +225,7 @@ impl State {
         let bodies = self.physics.bodies.iter()
             .map(|(handle, &c)| Component::Body(handle, c));
         let crafts = self.crafts.crafts.iter()
-            .map(|(handle, &c)| Component::Craft(handle, c));
+            .map(|(handle, c)| Component::Craft(handle, c.clone()));
         let directions = self.physics.directions.iter()
             .map(|(handle, &c)| Component::Direction(handle, c));
         let explosions = self.explosions.explosions.iter()
