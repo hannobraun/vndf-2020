@@ -222,30 +222,66 @@ impl State {
     }
 
     pub fn updates(&mut self) -> impl Iterator<Item=Component> + '_ {
-        let bodies = self.physics.bodies.iter()
-            .map(|(handle, c)| Component::Body(handle, c.clone()));
-        let crafts = self.crafts.crafts.iter()
-            .map(|(handle, c)| Component::Craft(handle, c.clone()));
-        let directions = self.physics.directions.iter()
-            .map(|(handle, &c)| Component::Direction(handle, c));
-        let explosions = self.explosions.explosions.iter()
-            .map(|(handle, c)| Component::Explosion(handle, c.clone()));
-        let fuels = self.crafts.fuels.iter()
-            .map(|(handle, &c)| Component::Fuel(handle, c));
-        let healths = self.health.healths.iter()
-            .map(|(handle, c)| Component::Health(handle, c.clone()));
-        let loots = self.loot.loots.iter()
-            .map(|(handle, c)| Component::Loot(handle, c.clone()));
-        let missiles = self.missiles.missiles.iter()
-            .map(|(handle, c)| Component::Missile(handle, c.clone()));
-        let positions = self.physics.positions.iter()
-            .map(|(handle, &c)| Component::Position(handle, c));
-        let ships = self.ships.ships.iter()
-            .map(|(handle, c)| Component::Ship(handle, c.clone()));
-        let targets = self.missiles.targets.iter()
-            .map(|(handle, c)| Component::Target(handle, c.clone()));
-        let velocities = self.physics.velocities.iter()
-            .map(|(handle, &c)| Component::Velocity(handle, c));
+        let bodies = self.physics.bodies
+            .iter()
+            .map(|(handle, c)|
+                Component::Body(handle, c.clone())
+            );
+        let crafts = self.crafts.crafts
+            .iter()
+            .map(|(handle, c)|
+                Component::Craft(handle, c.clone())
+            );
+        let directions = self.physics.directions
+            .iter()
+            .map(|(handle, &c)|
+                Component::Direction(handle, c)
+            );
+        let explosions = self.explosions.explosions
+            .iter()
+            .map(|(handle, c)|
+                Component::Explosion(handle, c.clone())
+            );
+        let fuels = self.crafts.fuels
+            .iter()
+            .map(|(handle, &c)|
+                Component::Fuel(handle, c)
+            );
+        let healths = self.health.healths
+            .iter()
+            .map(|(handle, c)|
+                Component::Health(handle, c.clone())
+            );
+        let loots = self.loot.loots
+            .iter()
+            .map(|(handle, c)|
+                Component::Loot(handle, c.clone())
+            );
+        let missiles = self.missiles.missiles
+            .iter()
+            .map(|(handle, c)|
+                Component::Missile(handle, c.clone())
+            );
+        let positions = self.physics.positions
+            .iter()
+            .map(|(handle, &c)|
+                Component::Position(handle, c)
+            );
+        let ships = self.ships.ships
+            .iter()
+            .map(|(handle, c)|
+                Component::Ship(handle, c.clone())
+            );
+        let targets = self.missiles.targets
+            .iter()
+            .map(|(handle, c)|
+                Component::Target(handle, c.clone())
+            );
+        let velocities = self.physics.velocities
+            .iter()
+            .map(|(handle, &c)|
+                Component::Velocity(handle, c)
+            );
 
         bodies
             .chain(crafts)
