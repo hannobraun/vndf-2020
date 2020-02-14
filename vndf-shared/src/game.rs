@@ -229,7 +229,7 @@ impl State {
         let directions = self.physics.directions.iter()
             .map(|(handle, &c)| Component::Direction(handle, c));
         let explosions = self.explosions.explosions.iter()
-            .map(|(handle, &c)| Component::Explosion(handle, c));
+            .map(|(handle, c)| Component::Explosion(handle, c.clone()));
         let fuels = self.crafts.fuels.iter()
             .map(|(handle, &c)| Component::Fuel(handle, c));
         let healths = self.health.healths.iter()
