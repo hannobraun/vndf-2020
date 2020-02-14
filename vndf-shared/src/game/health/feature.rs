@@ -1,3 +1,4 @@
+use bach::EventBuf;
 use toadster::StrongStore;
 
 use crate::game::{
@@ -29,14 +30,14 @@ use super::{
 
 pub struct Feature {
     pub healths: StrongStore<Health>,
-    pub death:   bach::Buf<Death>,
+    pub death:   EventBuf<Death>,
 }
 
 impl Feature {
     pub fn new() -> Self {
         Self {
             healths: StrongStore::new(),
-            death:   bach::Buf::new(),
+            death:   EventBuf::new(),
         }
     }
 

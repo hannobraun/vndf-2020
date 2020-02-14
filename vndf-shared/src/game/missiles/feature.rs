@@ -1,3 +1,4 @@
+use bach::EventBuf;
 use toadster::StrongStore;
 
 use crate::game::{
@@ -32,7 +33,7 @@ pub struct Feature {
     pub missiles:  StrongStore<Missile>,
     pub targets:   StrongStore<Target>,
 
-    pub missile_launch: bach::Buf<MissileLaunch>,
+    pub missile_launch: EventBuf<MissileLaunch>,
 
     acc: f32,
 }
@@ -44,7 +45,7 @@ impl Feature {
             missiles:  StrongStore::new(),
             targets:   StrongStore::new(),
 
-            missile_launch: bach::Buf::new(),
+            missile_launch: EventBuf::new(),
 
             acc: 0.0,
         }

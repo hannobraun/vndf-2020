@@ -3,6 +3,7 @@ use std::{
     net::SocketAddr,
 };
 
+use bach::EventBuf;
 use serde::{
     Deserialize,
     Serialize,
@@ -47,11 +48,11 @@ pub struct Feature {
 
     pub players: StrongStore<Player>,
 
-    pub input_handled:       bach::Buf<InputHandled>,
-    pub player_connected:    bach::Buf<PlayerConnected>,
-    pub player_created:      bach::Buf<PlayerCreated>,
-    pub player_disconnected: bach::Buf<PlayerDisconnected>,
-    pub player_input:        bach::Buf<PlayerInput>,
+    pub input_handled:       EventBuf<InputHandled>,
+    pub player_connected:    EventBuf<PlayerConnected>,
+    pub player_created:      EventBuf<PlayerCreated>,
+    pub player_disconnected: EventBuf<PlayerDisconnected>,
+    pub player_input:        EventBuf<PlayerInput>,
 }
 
 impl Feature {
@@ -62,11 +63,11 @@ impl Feature {
 
             players: StrongStore::new(),
 
-            input_handled:       bach::Buf::new(),
-            player_connected:    bach::Buf::new(),
-            player_created:      bach::Buf::new(),
-            player_disconnected: bach::Buf::new(),
-            player_input:        bach::Buf::new(),
+            input_handled:       EventBuf::new(),
+            player_connected:    EventBuf::new(),
+            player_created:      EventBuf::new(),
+            player_disconnected: EventBuf::new(),
+            player_input:        EventBuf::new(),
         }
     }
 

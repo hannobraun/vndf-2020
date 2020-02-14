@@ -1,5 +1,6 @@
 use std::cell::Cell;
 
+use bach::EventBuf;
 use slotmap::{
     DefaultKey,
     DenseSlotMap,
@@ -15,7 +16,7 @@ use crate::{
 pub struct StrongStore<T> {
     inner:     DenseSlotMap<DefaultKey, T>,
     changes:   Cell<Changes<T>>,
-    removed:   bach::Buf<StrongHandle<T>>,
+    removed:   EventBuf<StrongHandle<T>>,
 }
 
 impl<T> StrongStore<T> {
@@ -23,7 +24,7 @@ impl<T> StrongStore<T> {
         Self {
             inner:   DenseSlotMap::new(),
             changes: Cell::new(Changes::new()),
-            removed: bach::Buf::new(),
+            removed: EventBuf::new(),
         }
     }
 

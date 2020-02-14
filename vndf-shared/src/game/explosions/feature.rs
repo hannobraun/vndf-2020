@@ -1,3 +1,4 @@
+use bach::EventBuf;
 use toadster::StrongStore;
 
 use crate::game::{
@@ -29,8 +30,8 @@ use super::{
 pub struct Feature {
     pub explosions: StrongStore<Explosion>,
 
-    pub explosion_faded:    bach::Buf<ExplosionFaded>,
-    pub explosion_imminent: bach::Buf<ExplosionImminent>,
+    pub explosion_faded:    EventBuf<ExplosionFaded>,
+    pub explosion_imminent: EventBuf<ExplosionImminent>,
 }
 
 impl Feature {
@@ -38,8 +39,8 @@ impl Feature {
         Self {
             explosions: StrongStore::new(),
 
-            explosion_faded:    bach::Buf::new(),
-            explosion_imminent: bach::Buf::new(),
+            explosion_faded:    EventBuf::new(),
+            explosion_imminent: EventBuf::new(),
         }
     }
 

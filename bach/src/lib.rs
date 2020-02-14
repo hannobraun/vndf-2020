@@ -1,9 +1,9 @@
 use std::collections::VecDeque;
 
 
-pub struct Buf<T>(VecDeque<T>);
+pub struct EventBuf<T>(VecDeque<T>);
 
-impl<T> Buf<T> {
+impl<T> EventBuf<T> {
     pub fn new() -> Self {
         Self(VecDeque::new())
     }
@@ -18,7 +18,7 @@ impl<T> Buf<T> {
 }
 
 
-pub struct Sink<'r, T>(&'r mut Buf<T>);
+pub struct Sink<'r, T>(&'r mut EventBuf<T>);
 
 impl<T> Sink<'_, T> {
     pub fn push(&mut self, event: T) {
@@ -27,7 +27,7 @@ impl<T> Sink<'_, T> {
 }
 
 
-pub struct Source<'r, T>(&'r mut Buf<T>);
+pub struct Source<'r, T>(&'r mut EventBuf<T>);
 
 impl<T> Source<'_, T> {
     pub fn next(&mut self) -> Option<T> {
