@@ -29,8 +29,6 @@ impl<T> Clone for StrongHandle<T> {
     }
 }
 
-impl<T> Copy for StrongHandle<T> {}
-
 impl<T> fmt::Debug for StrongHandle<T> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "StrongHandle<T>(")?;

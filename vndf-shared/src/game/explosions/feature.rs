@@ -101,7 +101,7 @@ impl Feature {
         velocities: &mut store::Strong<Velocity>,
     ) {
         remove_explosion(
-            event.handle,
+            event.handle.clone(),
             bodies,
             directions,
             &mut self.explosions,

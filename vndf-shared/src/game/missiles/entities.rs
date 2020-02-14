@@ -74,12 +74,12 @@ impl MissileEntity {
         let body = bodies.insert(body);
 
         let fuel   = fuels.insert(Fuel(FUEL));
-        let health = healths.insert(Health::new(body, HEALTH));
+        let health = healths.insert(Health::new(body.clone(), HEALTH));
 
         let craft = Craft {
             body,
             fuel,
-            health,
+            health: health.clone(),
 
             engine_on: true,
             thrust:    THRUST,
@@ -87,10 +87,10 @@ impl MissileEntity {
         };
         let craft = crafts.insert(craft);
 
-        let target = Target { craft, value: self.target };
+        let target = Target { craft: craft.clone(), value: self.target };
         let target = targets.insert(target);
 
-        let guidance = Guidance::new(craft, target);
+        let guidance = Guidance::new(craft.clone(), target.clone());
         let guidance = guidances.insert(guidance);
 
         let missile = missiles.insert(Missile::new(craft, guidance, target));

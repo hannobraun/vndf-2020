@@ -62,7 +62,7 @@ impl Feature {
         velocities: &mut store::Strong<Velocity>,
     ) {
         remove_entity(
-            event.handle,
+            event.handle.clone(),
             bodies,
             crafts,
             directions,

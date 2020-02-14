@@ -249,9 +249,9 @@ impl Graphics {
         let pos = *get!(state.data.positions,  &body.pos);
         let vel = *get!(state.data.velocities, &body.vel);
 
-        let mut directions = OneStore { handle: body.dir, data: dir };
-        let mut positions  = OneStore { handle: body.pos, data: pos };
-        let mut velocities = OneStore { handle: body.vel, data: vel };
+        let mut directions = OneStore { handle: body.dir.clone(), data: dir };
+        let mut positions  = OneStore { handle: body.pos.clone(), data: pos };
+        let mut velocities = OneStore { handle: body.vel.clone(), data: vel };
 
         let mut previous = pos.0;
 

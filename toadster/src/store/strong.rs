@@ -196,7 +196,7 @@ mod tests {
         let removed: Vec<_> = store.removed().ready().collect();
         assert_eq!(removed.len(), 0);
 
-        store.remove(handle);
+        store.remove(handle.clone());
 
         let removed: Vec<_> = store.removed().ready().collect();
         assert_eq!(removed, vec![handle]);

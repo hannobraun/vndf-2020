@@ -44,12 +44,12 @@ impl ShipEntity {
         let dir    = directions.insert(Direction::new());
         let body   = bodies.insert(Body::new(pos, vel, dir));
         let fuel   = fuels.insert(Fuel(FUEL));
-        let health = healths.insert(Health::new(body, HEALTH));
+        let health = healths.insert(Health::new(body.clone(), HEALTH));
 
         let craft = Craft {
             body,
             fuel,
-            health,
+            health: health.clone(),
 
             engine_on: false,
             thrust:    THRUST,

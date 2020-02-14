@@ -55,7 +55,7 @@ macro_rules! components {
                 match component {
                     $(
                         Component::$component(handle, _) =>
-                            ComponentHandle::$component(*handle),
+                            ComponentHandle::$component(handle.clone()),
                     )*
                 }
             }
