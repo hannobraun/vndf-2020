@@ -12,7 +12,7 @@ use serde::{
     Deserialize,
     Serialize,
 };
-use toadster::StrongHandle;
+use toadster::handle;
 
 use crate::{
     game::{
@@ -42,12 +42,12 @@ macro_rules! components {
     ($($component:ident,)*) => {
         #[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
         pub enum Component {
-            $($component(StrongHandle<$component>, $component),)*
+            $($component(handle::Strong<$component>, $component),)*
         }
 
         #[derive(Clone, Debug, Deserialize, Serialize, Eq, PartialEq, Hash)]
         pub enum ComponentHandle {
-            $($component(StrongHandle<$component>),)*
+            $($component(handle::Strong<$component>),)*
         }
 
         impl ComponentHandle {

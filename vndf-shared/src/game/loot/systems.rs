@@ -4,7 +4,7 @@ use rand::{
     thread_rng,
 };
 use toadster::{
-    StrongHandle,
+    handle,
     store,
 };
 
@@ -32,7 +32,7 @@ use super::Loot;
 
 
 pub fn spawn_death_loot(
-    handle:     &StrongHandle<Health>,
+    handle:     &handle::Strong<Health>,
     bodies:     &mut store::Strong<Body>,
     crafts:     &store::Strong<Craft>,
     directions: &mut store::Strong<Direction>,

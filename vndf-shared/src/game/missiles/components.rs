@@ -4,7 +4,7 @@ use serde::{
     Serialize,
 };
 use toadster::{
-    StrongHandle,
+    handle,
     store,
 };
 
@@ -33,16 +33,16 @@ use crate::{
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Missile {
-    pub craft:    StrongHandle<Craft>,
-    pub guidance: StrongHandle<Guidance>,
-    pub target:   StrongHandle<Target>,
+    pub craft:    handle::Strong<Craft>,
+    pub guidance: handle::Strong<Guidance>,
+    pub target:   handle::Strong<Target>,
 }
 
 impl Missile {
     pub fn new(
-        craft:    StrongHandle<Craft>,
-        guidance: StrongHandle<Guidance>,
-        target:   StrongHandle<Target>,
+        craft:    handle::Strong<Craft>,
+        guidance: handle::Strong<Guidance>,
+        target:   handle::Strong<Target>,
     )
         -> Self
     {
@@ -54,7 +54,7 @@ impl Missile {
     }
 
     pub fn remove(
-        handle:     StrongHandle<Missile>,
+        handle:     handle::Strong<Missile>,
         bodies:     &mut store::Strong<Body>,
         crafts:     &mut store::Strong<Craft>,
         directions: &mut store::Strong<Direction>,
@@ -87,15 +87,15 @@ impl Missile {
 
 
 pub struct Guidance {
-    pub craft:    StrongHandle<Craft>,
-    pub target:   StrongHandle<Target>,
+    pub craft:    handle::Strong<Craft>,
+    pub target:   handle::Strong<Target>,
     pub guidance: Pid<f32>,
 }
 
 impl Guidance {
     pub fn new(
-        craft: StrongHandle<Craft>,
-        target: StrongHandle<Target>,
+        craft: handle::Strong<Craft>,
+        target: handle::Strong<Target>,
     )
         -> Self
     {
@@ -199,7 +199,7 @@ impl Guidance {
 
 #[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
 pub struct Target {
-    pub craft: StrongHandle<Craft>,
+    pub craft: handle::Strong<Craft>,
     pub value: Pnt2,
 }
 

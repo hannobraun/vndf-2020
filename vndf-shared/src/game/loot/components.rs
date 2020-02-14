@@ -5,7 +5,7 @@ use serde::{
     Serialize,
 };
 use toadster::{
-    StrongHandle,
+    handle,
     store,
 };
 
@@ -27,14 +27,14 @@ use crate::{
 
 #[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
 pub struct Loot {
-    pub body:     StrongHandle<Body>,
+    pub body:     handle::Strong<Body>,
     pub fuel:     f32,
     pub missiles: u64,
 }
 
 impl Loot {
     pub fn collect(&self,
-        handle:    StrongHandle<Loot>,
+        handle:    handle::Strong<Loot>,
         bodies:    &store::Strong<Body>,
         crafts:    &store::Strong<Craft>,
         fuels:     &mut store::Strong<Fuel>,
@@ -70,7 +70,7 @@ impl Loot {
     }
 
     fn distance(&self,
-        craft:     &StrongHandle<Craft>,
+        craft:     &handle::Strong<Craft>,
         bodies:    &store::Strong<Body>,
         crafts:    &store::Strong<Craft>,
         positions: &store::Strong<Position>,
@@ -89,7 +89,7 @@ impl Loot {
     }
 
     fn add_to_ship(&self,
-        ship:   &StrongHandle<Ship>,
+        ship:   &handle::Strong<Ship>,
         crafts: &store::Strong<Craft>,
         fuels:  &mut store::Strong<Fuel>,
         ships:  &mut store::Strong<Ship>,

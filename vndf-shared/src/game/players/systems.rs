@@ -6,7 +6,7 @@ use std::{
 use bach::EventSink;
 use log::warn;
 use toadster::{
-    StrongHandle,
+    handle,
     store,
 };
 
@@ -51,7 +51,7 @@ pub fn connect_player(
     ships:          &mut store::Strong<Ship>,
     velocities:     &mut store::Strong<Velocity>,
     player_created: &mut EventSink<PlayerCreated>,
-    index:          &mut HashMap<SocketAddr, StrongHandle<Player>>,
+    index:          &mut HashMap<SocketAddr, handle::Strong<Player>>,
     id:             PlayerId,
     addr:           SocketAddr,
     color:          [f32; 3],
@@ -74,7 +74,7 @@ pub fn connect_player(
 
 pub fn disconnect_player(
     players: &mut store::Strong<Player>,
-    index:   &mut HashMap<SocketAddr, StrongHandle<Player>>,
+    index:   &mut HashMap<SocketAddr, handle::Strong<Player>>,
     address: SocketAddr,
 ) {
     // It's possible that we're getting multiple disconnect events per player,
@@ -93,7 +93,7 @@ pub fn handle_input(
     ships:          &mut store::Strong<Ship>,
     missile_launch: &mut EventSink<MissileLaunch>,
     input_handled:  &mut EventSink<InputHandled>,
-    index:          &mut HashMap<SocketAddr, StrongHandle<Player>>,
+    index:          &mut HashMap<SocketAddr, handle::Strong<Player>>,
 )
     -> Option<()>
 {

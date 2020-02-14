@@ -12,7 +12,7 @@ use ggez::{
 };
 use toadster::{
     Store,
-    StrongHandle,
+    handle,
 };
 
 use crate::{
@@ -237,7 +237,7 @@ impl Graphics {
 
     fn draw_projected_course(&self,
         context: &mut Context,
-        body:    &StrongHandle<Body>,
+        body:    &handle::Strong<Body>,
         state:   &State,
     )
         -> GameResult<bool>
@@ -507,12 +507,12 @@ Heavy Missiles: {}",
 
 
 struct OneStore<T> {
-    pub handle: StrongHandle<T>,
+    pub handle: handle::Strong<T>,
     pub data:   T
 }
 
 impl<T> Store<T> for OneStore<T> {
-    fn get(&self, handle: &StrongHandle<T>) -> Option<&T> {
+    fn get(&self, handle: &handle::Strong<T>) -> Option<&T> {
         if handle == &self.handle {
             Some(&self.data)
         }
@@ -521,7 +521,7 @@ impl<T> Store<T> for OneStore<T> {
         }
     }
 
-    fn get_mut(&mut self, handle: &StrongHandle<T>) -> Option<&mut T> {
+    fn get_mut(&mut self, handle: &handle::Strong<T>) -> Option<&mut T> {
         if handle == &self.handle {
             Some(&mut self.data)
         }

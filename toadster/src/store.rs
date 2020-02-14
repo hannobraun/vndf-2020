@@ -8,9 +8,9 @@ pub use self::{
 };
 
 
-use crate::StrongHandle;
+use crate::handle;
 
 pub trait Store<T> {
-    fn get(&self, handle: &StrongHandle<T>) -> Option<&T>;
-    fn get_mut(&mut self, handle: &StrongHandle<T>) -> Option<&mut T>;
+    fn get(&self, handle: &handle::Strong<T>) -> Option<&T>;
+    fn get_mut(&mut self, handle: &handle::Strong<T>) -> Option<&mut T>;
 }

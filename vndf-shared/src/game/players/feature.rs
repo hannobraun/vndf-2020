@@ -12,7 +12,7 @@ use serde::{
     Serialize,
 };
 use toadster::{
-    StrongHandle,
+    handle,
     store,
 };
 
@@ -47,7 +47,7 @@ use super::{
 
 pub struct Feature {
     next_id:            PlayerId,
-    players_by_address: HashMap<SocketAddr, StrongHandle<Player>>,
+    players_by_address: HashMap<SocketAddr, handle::Strong<Player>>,
 
     pub players: store::Strong<Player>,
 

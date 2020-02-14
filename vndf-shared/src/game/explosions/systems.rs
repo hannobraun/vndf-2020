@@ -1,6 +1,6 @@
 use bach::EventSink;
 use toadster::{
-    StrongHandle,
+    handle,
     store,
 };
 
@@ -24,7 +24,7 @@ use super::{
 
 
 pub fn explode_entity(
-    handle:  &StrongHandle<Health>,
+    handle:  &handle::Strong<Health>,
     bodies:  &store::Strong<Body>,
     healths: &store::Strong<Health>,
 )
@@ -76,7 +76,7 @@ pub fn create_explosion(
 }
 
 pub fn damage_nearby(
-    handle:     &StrongHandle<Explosion>,
+    handle:     &handle::Strong<Explosion>,
     bodies:     &store::Strong<Body>,
     explosions: &store::Strong<Explosion>,
     healths:    &mut store::Strong<Health>,
@@ -113,7 +113,7 @@ pub fn update_explosions(
 }
 
 pub fn remove_explosion(
-    handle:     StrongHandle<Explosion>,
+    handle:     handle::Strong<Explosion>,
     bodies:     &mut store::Strong<Body>,
     directions: &mut store::Strong<Direction>,
     explosions: &mut store::Strong<Explosion>,

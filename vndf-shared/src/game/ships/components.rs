@@ -5,7 +5,7 @@ use serde::{
     Serialize,
 };
 use toadster::{
-    StrongHandle,
+    handle,
     store,
 };
 
@@ -45,7 +45,7 @@ use crate::{
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Ship {
-    pub craft:    StrongHandle<Craft>,
+    pub craft:    handle::Strong<Craft>,
     pub rotation: Rotation,
     pub missiles: u64,
     pub color:    [f32; 3],
@@ -53,7 +53,7 @@ pub struct Ship {
 
 impl Ship {
     pub fn new(
-        craft:  StrongHandle<Craft>,
+        craft:  handle::Strong<Craft>,
         color:  [f32; 3],
     ) -> Self {
         Self {
@@ -138,7 +138,7 @@ impl Ship {
     }
 
     pub fn remove(
-        handle:     StrongHandle<Ship>,
+        handle:     handle::Strong<Ship>,
         bodies:     &mut store::Strong<Body>,
         crafts:     &mut store::Strong<Craft>,
         directions: &mut store::Strong<Direction>,

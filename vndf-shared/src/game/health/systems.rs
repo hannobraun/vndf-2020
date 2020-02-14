@@ -1,7 +1,7 @@
 use bach::EventSink;
 use log::warn;
 use toadster::{
-    StrongHandle,
+    handle,
     store,
 };
 
@@ -43,7 +43,7 @@ pub fn check_health(
 }
 
 pub fn remove_entity(
-    handle:     StrongHandle<Health>,
+    handle:     handle::Strong<Health>,
     bodies:     &mut store::Strong<Body>,
     crafts:     &mut store::Strong<Craft>,
     directions: &mut store::Strong<Direction>,

@@ -1,5 +1,5 @@
 use toadster::{
-    StrongHandle,
+    handle,
     store,
 };
 
@@ -26,7 +26,7 @@ impl ExplosionEntity {
         positions:  &mut store::Strong<Position>,
         velocities: &mut store::Strong<Velocity>,
     )
-        -> Option<StrongHandle<Explosion>>
+        -> Option<handle::Strong<Explosion>>
     {
         let pos = *positions.get(&self.exploding.pos)?;
         let pos = positions.insert(pos);
