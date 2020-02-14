@@ -22,19 +22,19 @@ impl<T> Weak<T> {
     }
 
     pub fn insert(&mut self, handle: handle::Strong<T>, value: T) -> Option<T> {
-        self.0.insert(handle.0, value)
+        self.0.insert(handle.key, value)
     }
 
     pub fn remove(&mut self, handle: &handle::Strong<T>) -> Option<T> {
-        self.0.remove(handle.0)
+        self.0.remove(handle.key)
     }
 
     pub fn get(&self, handle: &handle::Strong<T>) -> Option<&T> {
-        self.0.get(handle.0)
+        self.0.get(handle.key)
     }
 
     pub fn get_mut(&mut self, handle: &handle::Strong<T>) -> Option<&mut T> {
-        self.0.get_mut(handle.0)
+        self.0.get_mut(handle.key)
     }
 
     pub fn iter(&self) -> Iter<T> {

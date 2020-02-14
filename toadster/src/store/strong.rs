@@ -40,7 +40,7 @@ impl<T> Strong<T> {
     }
 
     pub fn remove(&mut self, handle: handle::Strong<T>) -> Option<T> {
-        let result = self.inner.remove(handle.0);
+        let result = self.inner.remove(handle.key);
 
         if result.is_some() {
             self.removed.sink().push(handle)
@@ -56,11 +56,11 @@ impl<T> Strong<T> {
     }
 
     pub fn get(&self, handle: &handle::Strong<T>) -> Option<&T> {
-        self.inner.get(handle.0)
+        self.inner.get(handle.key)
     }
 
     pub fn get_mut(&mut self, handle: &handle::Strong<T>) -> Option<&mut T> {
-        self.inner.get_mut(handle.0)
+        self.inner.get_mut(handle.key)
     }
 
     pub fn iter(&self) -> Iter<T> {
