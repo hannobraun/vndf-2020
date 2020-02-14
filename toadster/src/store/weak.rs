@@ -27,8 +27,8 @@ impl<T> Weak<T> {
         self.0.insert(handle.into().0, value)
     }
 
-    pub fn remove(&mut self, handle: &handle::Strong<T>) -> Option<T> {
-        self.0.remove(handle.key)
+    pub fn remove(&mut self, handle: impl Into<handle::Weak<T>>) -> Option<T> {
+        self.0.remove(handle.into().0)
     }
 
     pub fn get(&self, handle: impl Into<handle::Weak<T>>)
