@@ -5,7 +5,7 @@ use serde::{
 use toadster::{
     Store,
     StrongHandle,
-    StrongStore,
+    store,
 };
 
 use crate::{
@@ -63,12 +63,12 @@ impl Craft {
 
     pub fn remove(
         handle:     StrongHandle<Craft>,
-        bodies:     &mut StrongStore<Body>,
-        crafts:     &mut StrongStore<Craft>,
-        directions: &mut StrongStore<Direction>,
-        fuels:      &mut StrongStore<Fuel>,
-        positions:  &mut StrongStore<Position>,
-        velocities: &mut StrongStore<Velocity>,
+        bodies:     &mut store::Strong<Body>,
+        crafts:     &mut store::Strong<Craft>,
+        directions: &mut store::Strong<Direction>,
+        fuels:      &mut store::Strong<Fuel>,
+        positions:  &mut store::Strong<Position>,
+        velocities: &mut store::Strong<Velocity>,
     )
         -> Option<()>
     {

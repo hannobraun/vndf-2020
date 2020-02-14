@@ -7,7 +7,7 @@ use bach::EventSink;
 use log::warn;
 use toadster::{
     StrongHandle,
-    StrongStore,
+    store,
 };
 
 use crate::{
@@ -41,15 +41,15 @@ use super::{
 
 
 pub fn connect_player(
-    bodies:         &mut StrongStore<Body>,
-    crafts:         &mut StrongStore<Craft>,
-    directions:     &mut StrongStore<Direction>,
-    fuels:          &mut StrongStore<Fuel>,
-    healths:        &mut StrongStore<Health>,
-    players:        &mut StrongStore<Player>,
-    positions:      &mut StrongStore<Position>,
-    ships:          &mut StrongStore<Ship>,
-    velocities:     &mut StrongStore<Velocity>,
+    bodies:         &mut store::Strong<Body>,
+    crafts:         &mut store::Strong<Craft>,
+    directions:     &mut store::Strong<Direction>,
+    fuels:          &mut store::Strong<Fuel>,
+    healths:        &mut store::Strong<Health>,
+    players:        &mut store::Strong<Player>,
+    positions:      &mut store::Strong<Position>,
+    ships:          &mut store::Strong<Ship>,
+    velocities:     &mut store::Strong<Velocity>,
     player_created: &mut EventSink<PlayerCreated>,
     index:          &mut HashMap<SocketAddr, StrongHandle<Player>>,
     id:             PlayerId,
@@ -73,7 +73,7 @@ pub fn connect_player(
 }
 
 pub fn disconnect_player(
-    players: &mut StrongStore<Player>,
+    players: &mut store::Strong<Player>,
     index:   &mut HashMap<SocketAddr, StrongHandle<Player>>,
     address: SocketAddr,
 ) {
@@ -87,10 +87,10 @@ pub fn disconnect_player(
 pub fn handle_input(
     addr:           SocketAddr,
     action:         Action,
-    bodies:         &StrongStore<Body>,
-    crafts:         &mut StrongStore<Craft>,
-    players:        &StrongStore<Player>,
-    ships:          &mut StrongStore<Ship>,
+    bodies:         &store::Strong<Body>,
+    crafts:         &mut store::Strong<Craft>,
+    players:        &store::Strong<Player>,
+    ships:          &mut store::Strong<Ship>,
     missile_launch: &mut EventSink<MissileLaunch>,
     input_handled:  &mut EventSink<InputHandled>,
     index:          &mut HashMap<SocketAddr, StrongHandle<Player>>,

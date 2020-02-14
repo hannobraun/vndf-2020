@@ -5,7 +5,7 @@ use rand::{
 };
 use toadster::{
     StrongHandle,
-    StrongStore,
+    store,
 };
 
 use crate::{
@@ -33,15 +33,15 @@ use super::Loot;
 
 pub fn spawn_death_loot(
     handle:     &StrongHandle<Health>,
-    bodies:     &mut StrongStore<Body>,
-    crafts:     &StrongStore<Craft>,
-    directions: &mut StrongStore<Direction>,
-    fuels:      &StrongStore<Fuel>,
-    healths:    &StrongStore<Health>,
-    loots:      &mut StrongStore<Loot>,
-    positions:  &mut StrongStore<Position>,
-    ships:      &StrongStore<Ship>,
-    velocities: &mut StrongStore<Velocity>,
+    bodies:     &mut store::Strong<Body>,
+    crafts:     &store::Strong<Craft>,
+    directions: &mut store::Strong<Direction>,
+    fuels:      &store::Strong<Fuel>,
+    healths:    &store::Strong<Health>,
+    loots:      &mut store::Strong<Loot>,
+    positions:  &mut store::Strong<Position>,
+    ships:      &store::Strong<Ship>,
+    velocities: &mut store::Strong<Velocity>,
 )
     -> Option<()>
 {
@@ -81,11 +81,11 @@ pub fn spawn_death_loot(
 
 pub fn spawn_random_loot(
     dt:         f32,
-    bodies:     &mut StrongStore<Body>,
-    directions: &mut StrongStore<Direction>,
-    loots:      &mut StrongStore<Loot>,
-    positions:  &mut StrongStore<Position>,
-    velocities: &mut StrongStore<Velocity>,
+    bodies:     &mut store::Strong<Body>,
+    directions: &mut store::Strong<Direction>,
+    loots:      &mut store::Strong<Loot>,
+    positions:  &mut store::Strong<Position>,
+    velocities: &mut store::Strong<Velocity>,
 ) {
     const CHANCE_PER_S: f32   = 1.0 / 30.0;
     const MAX_LOOTS:    usize = 10;
@@ -120,12 +120,12 @@ pub fn spawn_random_loot(
 }
 
 pub fn collect_loot(
-    bodies:    &StrongStore<Body>,
-    crafts:    &StrongStore<Craft>,
-    fuels:     &mut StrongStore<Fuel>,
-    loots:     &StrongStore<Loot>,
-    positions: &StrongStore<Position>,
-    ships:     &mut StrongStore<Ship>,
+    bodies:    &store::Strong<Body>,
+    crafts:    &store::Strong<Craft>,
+    fuels:     &mut store::Strong<Fuel>,
+    loots:     &store::Strong<Loot>,
+    positions: &store::Strong<Position>,
+    ships:     &mut store::Strong<Ship>,
 ) {
     for (handle, loot) in loots {
         loot.collect(

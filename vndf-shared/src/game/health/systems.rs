@@ -2,7 +2,7 @@ use bach::EventSink;
 use log::warn;
 use toadster::{
     StrongHandle,
-    StrongStore,
+    store,
 };
 
 use crate::game::{
@@ -32,7 +32,7 @@ use super::{
 
 
 pub fn check_health(
-    healths: &StrongStore<Health>,
+    healths: &store::Strong<Health>,
     death:   &mut EventSink<Death>,
 ) {
     for (handle, health) in healths {
@@ -44,17 +44,17 @@ pub fn check_health(
 
 pub fn remove_entity(
     handle:     StrongHandle<Health>,
-    bodies:     &mut StrongStore<Body>,
-    crafts:     &mut StrongStore<Craft>,
-    directions: &mut StrongStore<Direction>,
-    fuels:      &mut StrongStore<Fuel>,
-    guidances:  &mut StrongStore<Guidance>,
-    healths:    &mut StrongStore<Health>,
-    missiles:   &mut StrongStore<Missile>,
-    positions:  &mut StrongStore<Position>,
-    ships:      &mut StrongStore<Ship>,
-    targets:    &mut StrongStore<Target>,
-    velocities: &mut StrongStore<Velocity>,
+    bodies:     &mut store::Strong<Body>,
+    crafts:     &mut store::Strong<Craft>,
+    directions: &mut store::Strong<Direction>,
+    fuels:      &mut store::Strong<Fuel>,
+    guidances:  &mut store::Strong<Guidance>,
+    healths:    &mut store::Strong<Health>,
+    missiles:   &mut store::Strong<Missile>,
+    positions:  &mut store::Strong<Position>,
+    ships:      &mut store::Strong<Ship>,
+    targets:    &mut store::Strong<Target>,
+    velocities: &mut store::Strong<Velocity>,
 )
     -> Option<()>
 {

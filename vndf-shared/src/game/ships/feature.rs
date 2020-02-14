@@ -1,4 +1,4 @@
-use toadster::StrongStore;
+use toadster::store;
 
 use crate::game::{
     crafts::Craft,
@@ -12,19 +12,19 @@ use super::{
 
 
 pub struct Feature {
-    pub ships: StrongStore<Ship>,
+    pub ships: store::Strong<Ship>,
 }
 
 impl Feature {
     pub fn new() -> Self {
         Self {
-            ships: StrongStore::new(),
+            ships: store::Strong::new(),
         }
     }
 
     pub fn on_update(&mut self,
-        bodies: &mut StrongStore<Body>,
-        crafts: &StrongStore<Craft>,
+        bodies: &mut store::Strong<Body>,
+        crafts: &store::Strong<Craft>,
     ) {
         update_ships(
             bodies,

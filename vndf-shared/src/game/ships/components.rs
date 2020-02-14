@@ -6,7 +6,7 @@ use serde::{
 };
 use toadster::{
     StrongHandle,
-    StrongStore,
+    store,
 };
 
 use crate::{
@@ -65,8 +65,8 @@ impl Ship {
     }
 
     pub fn apply_input(&mut self,
-        bodies:         &StrongStore<Body>,
-        crafts:         &mut StrongStore<Craft>,
+        bodies:         &store::Strong<Body>,
+        crafts:         &mut store::Strong<Craft>,
         missile_launch: &mut EventSink<MissileLaunch>,
         player:         &Player,
         action:         Action,
@@ -123,8 +123,8 @@ impl Ship {
     }
 
     pub fn update(&self,
-        bodies: &mut StrongStore<Body>,
-        crafts: &StrongStore<Craft>,
+        bodies: &mut store::Strong<Body>,
+        crafts: &store::Strong<Craft>,
     )
         -> Option<()>
     {
@@ -139,13 +139,13 @@ impl Ship {
 
     pub fn remove(
         handle:     StrongHandle<Ship>,
-        bodies:     &mut StrongStore<Body>,
-        crafts:     &mut StrongStore<Craft>,
-        directions: &mut StrongStore<Direction>,
-        fuels:      &mut StrongStore<Fuel>,
-        positions:  &mut StrongStore<Position>,
-        ships:      &mut StrongStore<Ship>,
-        velocities: &mut StrongStore<Velocity>,
+        bodies:     &mut store::Strong<Body>,
+        crafts:     &mut store::Strong<Craft>,
+        directions: &mut store::Strong<Direction>,
+        fuels:      &mut store::Strong<Fuel>,
+        positions:  &mut store::Strong<Position>,
+        ships:      &mut store::Strong<Ship>,
+        velocities: &mut store::Strong<Velocity>,
     )
         -> Option<()>
     {

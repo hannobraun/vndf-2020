@@ -2,6 +2,9 @@ pub mod strong;
 pub mod weak;
 
 
+pub use self::strong::Strong;
+
+
 use crate::StrongHandle;
 
 pub trait Store<T> {

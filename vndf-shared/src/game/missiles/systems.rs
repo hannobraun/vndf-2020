@@ -1,4 +1,4 @@
-use toadster::StrongStore;
+use toadster::store;
 
 use crate::game::{
     crafts::{
@@ -23,16 +23,16 @@ use super::{
 
 
 pub fn launch_missile(
-    bodies:     &mut StrongStore<Body>,
-    crafts:     &mut StrongStore<Craft>,
-    directions: &mut StrongStore<Direction>,
-    fuels:      &mut StrongStore<Fuel>,
-    guidances:  &mut StrongStore<Guidance>,
-    healths:    &mut StrongStore<Health>,
-    missiles:   &mut StrongStore<Missile>,
-    positions:  &mut StrongStore<Position>,
-    targets:    &mut StrongStore<Target>,
-    velocities: &mut StrongStore<Velocity>,
+    bodies:     &mut store::Strong<Body>,
+    crafts:     &mut store::Strong<Craft>,
+    directions: &mut store::Strong<Direction>,
+    fuels:      &mut store::Strong<Fuel>,
+    guidances:  &mut store::Strong<Guidance>,
+    healths:    &mut store::Strong<Health>,
+    missiles:   &mut store::Strong<Missile>,
+    positions:  &mut store::Strong<Position>,
+    targets:    &mut store::Strong<Target>,
+    velocities: &mut store::Strong<Velocity>,
     missile:    MissileEntity,
 ) {
     missile.create(
@@ -50,10 +50,10 @@ pub fn launch_missile(
 }
 
 pub fn update_targets(
-    bodies:    &StrongStore<Body>,
-    crafts:    &StrongStore<Craft>,
-    positions: &StrongStore<Position>,
-    targets:   &mut StrongStore<Target>,
+    bodies:    &store::Strong<Body>,
+    crafts:    &store::Strong<Craft>,
+    positions: &store::Strong<Position>,
+    targets:   &mut store::Strong<Target>,
 ) {
     for target in targets.values_mut() {
         let potential_targets = crafts.values()
@@ -68,13 +68,13 @@ pub fn update_targets(
 }
 
 pub fn update_guidances(
-    bodies:     &mut StrongStore<Body>,
-    crafts:     &StrongStore<Craft>,
-    directions: &mut StrongStore<Direction>,
-    guidances:  &mut StrongStore<Guidance>,
-    positions:  &StrongStore<Position>,
-    targets:    &StrongStore<Target>,
-    velocities: &StrongStore<Velocity>,
+    bodies:     &mut store::Strong<Body>,
+    crafts:     &store::Strong<Craft>,
+    directions: &mut store::Strong<Direction>,
+    guidances:  &mut store::Strong<Guidance>,
+    positions:  &store::Strong<Position>,
+    targets:    &store::Strong<Target>,
+    velocities: &store::Strong<Velocity>,
 ) {
     for guidance in guidances.values_mut() {
         guidance.update_guidance(
@@ -89,13 +89,13 @@ pub fn update_guidances(
 }
 
 pub fn explode_missiles(
-    bodies:    &StrongStore<Body>,
-    crafts:    &StrongStore<Craft>,
-    fuels:     &StrongStore<Fuel>,
-    guidances: &StrongStore<Guidance>,
-    healths:   &mut StrongStore<Health>,
-    positions: &StrongStore<Position>,
-    targets:   &StrongStore<Target>,
+    bodies:    &store::Strong<Body>,
+    crafts:    &store::Strong<Craft>,
+    fuels:     &store::Strong<Fuel>,
+    guidances: &store::Strong<Guidance>,
+    healths:   &mut store::Strong<Health>,
+    positions: &store::Strong<Position>,
+    targets:   &store::Strong<Target>,
 ) {
     for guidance in guidances.values() {
         guidance.explode_if_ready(

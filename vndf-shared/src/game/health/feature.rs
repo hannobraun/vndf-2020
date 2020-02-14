@@ -1,5 +1,5 @@
 use bach::EventBuf;
-use toadster::StrongStore;
+use toadster::store;
 
 use crate::game::{
     crafts::{
@@ -29,14 +29,14 @@ use super::{
 
 
 pub struct Feature {
-    pub healths: StrongStore<Health>,
+    pub healths: store::Strong<Health>,
     pub death:   EventBuf<Death>,
 }
 
 impl Feature {
     pub fn new() -> Self {
         Self {
-            healths: StrongStore::new(),
+            healths: store::Strong::new(),
             death:   EventBuf::new(),
         }
     }
@@ -50,16 +50,16 @@ impl Feature {
 
     pub fn on_death(&mut self,
         event:      &Death,
-        bodies:     &mut StrongStore<Body>,
-        crafts:     &mut StrongStore<Craft>,
-        directions: &mut StrongStore<Direction>,
-        fuels:      &mut StrongStore<Fuel>,
-        guidances:  &mut StrongStore<Guidance>,
-        missiles:   &mut StrongStore<Missile>,
-        positions:  &mut StrongStore<Position>,
-        ships:      &mut StrongStore<Ship>,
-        targets:    &mut StrongStore<Target>,
-        velocities: &mut StrongStore<Velocity>,
+        bodies:     &mut store::Strong<Body>,
+        crafts:     &mut store::Strong<Craft>,
+        directions: &mut store::Strong<Direction>,
+        fuels:      &mut store::Strong<Fuel>,
+        guidances:  &mut store::Strong<Guidance>,
+        missiles:   &mut store::Strong<Missile>,
+        positions:  &mut store::Strong<Position>,
+        ships:      &mut store::Strong<Ship>,
+        targets:    &mut store::Strong<Target>,
+        velocities: &mut store::Strong<Velocity>,
     ) {
         remove_entity(
             event.handle,

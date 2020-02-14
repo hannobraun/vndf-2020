@@ -1,4 +1,4 @@
-use toadster::StrongStore;
+use toadster::store;
 
 use crate::game::{
     crafts::Craft,
@@ -9,9 +9,9 @@ use super::Ship;
 
 
 pub fn update_ships(
-    bodies: &mut StrongStore<Body>,
-    crafts: &StrongStore<Craft>,
-    ships:  &mut StrongStore<Ship>,
+    bodies: &mut store::Strong<Body>,
+    crafts: &store::Strong<Craft>,
+    ships:  &mut store::Strong<Ship>,
 ) {
     for ship in ships.values() {
         ship.update(bodies, crafts);

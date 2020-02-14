@@ -16,13 +16,13 @@ use crate::{
 };
 
 
-pub struct StrongStore<T> {
+pub struct Strong<T> {
     inner:     DenseSlotMap<DefaultKey, T>,
     changes:   Cell<Changes<T>>,
     removed:   EventBuf<StrongHandle<T>>,
 }
 
-impl<T> StrongStore<T> {
+impl<T> Strong<T> {
     pub fn new() -> Self {
         Self {
             inner:   DenseSlotMap::new(),
@@ -92,7 +92,7 @@ impl<T> StrongStore<T> {
     }
 }
 
-impl<T> Store<T> for StrongStore<T> {
+impl<T> Store<T> for Strong<T> {
     fn get(&self, handle: &StrongHandle<T>) -> Option<&T> {
         self.get(handle)
     }
@@ -102,7 +102,7 @@ impl<T> Store<T> for StrongStore<T> {
     }
 }
 
-impl<'a, T> IntoIterator for &'a StrongStore<T> {
+impl<'a, T> IntoIterator for &'a Strong<T> {
     type Item     = (StrongHandle<T>, &'a T);
     type IntoIter = Iter<'a, T>;
 
@@ -111,7 +111,7 @@ impl<'a, T> IntoIterator for &'a StrongStore<T> {
     }
 }
 
-impl<'a, T> IntoIterator for &'a mut StrongStore<T> {
+impl<'a, T> IntoIterator for &'a mut Strong<T> {
     type Item     = (StrongHandle<T>, &'a mut T);
     type IntoIter = IterMut<'a, T>;
 
@@ -166,12 +166,12 @@ impl<T> Default for Changes<T> {
 
 #[cfg(test)]
 mod tests {
-    use super::StrongStore;
+    use crate::store;
 
 
     #[test]
     fn it_should_remove_values_later() {
-        let mut store = StrongStore::new();
+        let mut store = store::Strong::new();
 
         store.insert(());
         store.insert(());
@@ -189,7 +189,7 @@ mod tests {
 
     #[test]
     fn it_should_emit_remove_events() {
-        let mut store = StrongStore::new();
+        let mut store = store::Strong::new();
 
         let handle = store.insert(());
 

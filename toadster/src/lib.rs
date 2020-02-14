@@ -6,7 +6,6 @@ pub use self::{
     handle::StrongHandle,
     store::{
         Store,
-        strong::StrongStore,
         weak::WeakStore,
     },
 };

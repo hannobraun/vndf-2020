@@ -5,7 +5,7 @@ use serde::{
 use toadster::{
     Store,
     StrongHandle,
-    StrongStore,
+    store,
 };
 
 use crate::math::{
@@ -129,10 +129,10 @@ impl Body {
 
     pub fn remove(
         handle:     StrongHandle<Body>,
-        bodies:     &mut StrongStore<Body>,
-        directions: &mut StrongStore<Direction>,
-        positions:  &mut StrongStore<Position>,
-        velocities: &mut StrongStore<Velocity>,
+        bodies:     &mut store::Strong<Body>,
+        directions: &mut store::Strong<Direction>,
+        positions:  &mut store::Strong<Position>,
+        velocities: &mut store::Strong<Velocity>,
     )
         -> Option<()>
     {

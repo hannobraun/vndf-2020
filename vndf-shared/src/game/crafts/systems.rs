@@ -1,4 +1,4 @@
-use toadster::StrongStore;
+use toadster::store;
 
 use crate::{
     game::physics::{
@@ -14,10 +14,10 @@ use super::{
 
 
 pub fn update_crafts(
-    bodies:     &mut StrongStore<Body>,
-    crafts:     &mut StrongStore<Craft>,
-    directions: &StrongStore<Direction>,
-    fuels:      &mut StrongStore<Fuel>,
+    bodies:     &mut store::Strong<Body>,
+    crafts:     &mut store::Strong<Craft>,
+    directions: &store::Strong<Direction>,
+    fuels:      &mut store::Strong<Fuel>,
     dt:         f32,
 ) {
     for craft in crafts.values_mut() {

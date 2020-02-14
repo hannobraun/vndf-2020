@@ -1,4 +1,4 @@
-use toadster::StrongStore;
+use toadster::store;
 
 use crate::game::base::Update;
 
@@ -12,19 +12,19 @@ use super::{
 
 
 pub struct Feature {
-    pub bodies:     StrongStore<Body>,
-    pub directions: StrongStore<Direction>,
-    pub positions:  StrongStore<Position>,
-    pub velocities: StrongStore<Velocity>,
+    pub bodies:     store::Strong<Body>,
+    pub directions: store::Strong<Direction>,
+    pub positions:  store::Strong<Position>,
+    pub velocities: store::Strong<Velocity>,
 }
 
 impl Feature {
     pub fn new() -> Self {
         Self {
-            bodies:     StrongStore::new(),
-            directions: StrongStore::new(),
-            positions:  StrongStore::new(),
-            velocities: StrongStore::new(),
+            bodies:     store::Strong::new(),
+            directions: store::Strong::new(),
+            positions:  store::Strong::new(),
+            velocities: store::Strong::new(),
         }
     }
 

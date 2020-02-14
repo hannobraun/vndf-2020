@@ -1,4 +1,4 @@
-use toadster::StrongStore;
+use toadster::store;
 
 use crate::game::{
     base::Update,
@@ -28,25 +28,25 @@ use super::{
 
 
 pub struct Feature {
-    pub loots: StrongStore<Loot>,
+    pub loots: store::Strong<Loot>,
 }
 
 impl Feature {
     pub fn new() -> Self {
         Self {
-            loots: StrongStore::new(),
+            loots: store::Strong::new(),
         }
     }
 
     pub fn on_update(&mut self,
         event:      &Update,
-        bodies:     &mut StrongStore<Body>,
-        crafts:     &StrongStore<Craft>,
-        directions: &mut StrongStore<Direction>,
-        fuels:      &mut StrongStore<Fuel>,
-        positions:  &mut StrongStore<Position>,
-        ships:      &mut StrongStore<Ship>,
-        velocities: &mut StrongStore<Velocity>,
+        bodies:     &mut store::Strong<Body>,
+        crafts:     &store::Strong<Craft>,
+        directions: &mut store::Strong<Direction>,
+        fuels:      &mut store::Strong<Fuel>,
+        positions:  &mut store::Strong<Position>,
+        ships:      &mut store::Strong<Ship>,
+        velocities: &mut store::Strong<Velocity>,
     ) {
         self.loots.apply_changes();
 
@@ -70,14 +70,14 @@ impl Feature {
 
     pub fn on_death(&mut self,
         event:      &Death,
-        bodies:     &mut StrongStore<Body>,
-        crafts:     &StrongStore<Craft>,
-        directions: &mut StrongStore<Direction>,
-        fuels:      &StrongStore<Fuel>,
-        healths:    &StrongStore<Health>,
-        positions:  &mut StrongStore<Position>,
-        ships:      &StrongStore<Ship>,
-        velocities: &mut StrongStore<Velocity>,
+        bodies:     &mut store::Strong<Body>,
+        crafts:     &store::Strong<Craft>,
+        directions: &mut store::Strong<Direction>,
+        fuels:      &store::Strong<Fuel>,
+        healths:    &store::Strong<Health>,
+        positions:  &mut store::Strong<Position>,
+        ships:      &store::Strong<Ship>,
+        velocities: &mut store::Strong<Velocity>,
     ) {
         spawn_death_loot(
             &event.handle,

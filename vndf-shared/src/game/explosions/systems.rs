@@ -1,7 +1,7 @@
 use bach::EventSink;
 use toadster::{
     StrongHandle,
-    StrongStore,
+    store,
 };
 
 use crate::game::{
@@ -25,8 +25,8 @@ use super::{
 
 pub fn explode_entity(
     handle:  &StrongHandle<Health>,
-    bodies:  &StrongStore<Body>,
-    healths: &StrongStore<Health>,
+    bodies:  &store::Strong<Body>,
+    healths: &store::Strong<Health>,
 )
     -> Option<ExplosionEntity>
 {
@@ -55,11 +55,11 @@ pub fn explode_entity(
 }
 
 pub fn create_explosion(
-    bodies:             &mut StrongStore<Body>,
-    directions:         &mut StrongStore<Direction>,
-    explosions:         &mut StrongStore<Explosion>,
-    positions:          &mut StrongStore<Position>,
-    velocities:         &mut StrongStore<Velocity>,
+    bodies:             &mut store::Strong<Body>,
+    directions:         &mut store::Strong<Direction>,
+    explosions:         &mut store::Strong<Explosion>,
+    positions:          &mut store::Strong<Position>,
+    velocities:         &mut store::Strong<Velocity>,
     explosion_imminent: &mut EventSink<ExplosionImminent>,
     explosion:          ExplosionEntity,
 ) {
@@ -77,10 +77,10 @@ pub fn create_explosion(
 
 pub fn damage_nearby(
     handle:     &StrongHandle<Explosion>,
-    bodies:     &StrongStore<Body>,
-    explosions: &StrongStore<Explosion>,
-    healths:    &mut StrongStore<Health>,
-    positions:  &StrongStore<Position>,
+    bodies:     &store::Strong<Body>,
+    explosions: &store::Strong<Explosion>,
+    healths:    &mut store::Strong<Health>,
+    positions:  &store::Strong<Position>,
 )
     -> Option<()>
 {
@@ -101,7 +101,7 @@ pub fn damage_nearby(
 }
 
 pub fn update_explosions(
-    explosions:      &mut StrongStore<Explosion>,
+    explosions:      &mut store::Strong<Explosion>,
     dt:              f32,
     explosion_faded: &mut EventSink<ExplosionFaded>,
 ) {
@@ -114,11 +114,11 @@ pub fn update_explosions(
 
 pub fn remove_explosion(
     handle:     StrongHandle<Explosion>,
-    bodies:     &mut StrongStore<Body>,
-    directions: &mut StrongStore<Direction>,
-    explosions: &mut StrongStore<Explosion>,
-    positions:  &mut StrongStore<Position>,
-    velocities: &mut StrongStore<Velocity>,
+    bodies:     &mut store::Strong<Body>,
+    directions: &mut store::Strong<Direction>,
+    explosions: &mut store::Strong<Explosion>,
+    positions:  &mut store::Strong<Position>,
+    velocities: &mut store::Strong<Velocity>,
 )
     -> Option<()>
 {

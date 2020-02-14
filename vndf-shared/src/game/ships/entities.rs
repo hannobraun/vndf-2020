@@ -1,4 +1,4 @@
-use toadster::StrongStore;
+use toadster::store;
 
 use crate::game::{
     base::ComponentHandle,
@@ -26,14 +26,14 @@ pub struct ShipEntity {
 
 impl ShipEntity {
     pub fn create(&self,
-        bodies:     &mut StrongStore<Body>,
-        crafts:     &mut StrongStore<Craft>,
-        directions: &mut StrongStore<Direction>,
-        fuels:      &mut StrongStore<Fuel>,
-        healths:    &mut StrongStore<Health>,
-        positions:  &mut StrongStore<Position>,
-        ships:      &mut StrongStore<Ship>,
-        velocities: &mut StrongStore<Velocity>,
+        bodies:     &mut store::Strong<Body>,
+        crafts:     &mut store::Strong<Craft>,
+        directions: &mut store::Strong<Direction>,
+        fuels:      &mut store::Strong<Fuel>,
+        healths:    &mut store::Strong<Health>,
+        positions:  &mut store::Strong<Position>,
+        ships:      &mut store::Strong<Ship>,
+        velocities: &mut store::Strong<Velocity>,
     ) {
         const THRUST: f32 =    2.5;
         const FUEL:   f32 = 1200.0;

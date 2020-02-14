@@ -5,7 +5,7 @@ use serde::{
 };
 use toadster::{
     StrongHandle,
-    StrongStore,
+    store,
 };
 
 use crate::{
@@ -55,15 +55,15 @@ impl Missile {
 
     pub fn remove(
         handle:     StrongHandle<Missile>,
-        bodies:     &mut StrongStore<Body>,
-        crafts:     &mut StrongStore<Craft>,
-        directions: &mut StrongStore<Direction>,
-        fuels:      &mut StrongStore<Fuel>,
-        guidances:  &mut StrongStore<Guidance>,
-        missiles:   &mut StrongStore<Missile>,
-        positions:  &mut StrongStore<Position>,
-        targets:    &mut StrongStore<Target>,
-        velocities: &mut StrongStore<Velocity>,
+        bodies:     &mut store::Strong<Body>,
+        crafts:     &mut store::Strong<Craft>,
+        directions: &mut store::Strong<Direction>,
+        fuels:      &mut store::Strong<Fuel>,
+        guidances:  &mut store::Strong<Guidance>,
+        missiles:   &mut store::Strong<Missile>,
+        positions:  &mut store::Strong<Position>,
+        targets:    &mut store::Strong<Target>,
+        velocities: &mut store::Strong<Velocity>,
     )
         -> Option<()>
     {
@@ -124,12 +124,12 @@ impl Guidance {
     }
 
     pub fn update_guidance(&mut self,
-        bodies:     &mut StrongStore<Body>,
-        crafts:     &StrongStore<Craft>,
-        directions: &mut StrongStore<Direction>,
-        positions:  &StrongStore<Position>,
-        targets:    &StrongStore<Target>,
-        velocities: &StrongStore<Velocity>,
+        bodies:     &mut store::Strong<Body>,
+        crafts:     &store::Strong<Craft>,
+        directions: &mut store::Strong<Direction>,
+        positions:  &store::Strong<Position>,
+        targets:    &store::Strong<Target>,
+        velocities: &store::Strong<Velocity>,
     )
         -> Option<()>
     {
@@ -168,12 +168,12 @@ impl Guidance {
     }
 
     pub fn explode_if_ready(&self,
-        bodies:    &StrongStore<Body>,
-        crafts:    &StrongStore<Craft>,
-        fuels:     &StrongStore<Fuel>,
-        healths:   &mut StrongStore<Health>,
-        positions: &StrongStore<Position>,
-        targets:   &StrongStore<Target>,
+        bodies:    &store::Strong<Body>,
+        crafts:    &store::Strong<Craft>,
+        fuels:     &store::Strong<Fuel>,
+        healths:   &mut store::Strong<Health>,
+        positions: &store::Strong<Position>,
+        targets:   &store::Strong<Target>,
     )
         -> Option<()>
     {
@@ -205,7 +205,7 @@ pub struct Target {
 
 impl Target {
     pub fn update(&mut self,
-        crafts:  &StrongStore<Craft>,
+        crafts:  &store::Strong<Craft>,
         targets: impl IntoIterator<Item=(Position, Craft)>,
     )
         -> Option<()>

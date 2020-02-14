@@ -6,7 +6,7 @@ use serde::{
 };
 use toadster::{
     StrongHandle,
-    StrongStore,
+    store,
 };
 
 use crate::{
@@ -35,12 +35,12 @@ pub struct Loot {
 impl Loot {
     pub fn collect(&self,
         handle:    StrongHandle<Loot>,
-        bodies:    &StrongStore<Body>,
-        crafts:    &StrongStore<Craft>,
-        fuels:     &mut StrongStore<Fuel>,
-        loots:     &StrongStore<Loot>,
-        positions: &StrongStore<Position>,
-        ships:     &mut StrongStore<Ship>,
+        bodies:    &store::Strong<Body>,
+        crafts:    &store::Strong<Craft>,
+        fuels:     &mut store::Strong<Fuel>,
+        loots:     &store::Strong<Loot>,
+        positions: &store::Strong<Position>,
+        ships:     &mut store::Strong<Ship>,
     ) {
         let mut min_distance = f32::INFINITY;
         let mut nearest_ship = None;
@@ -71,9 +71,9 @@ impl Loot {
 
     fn distance(&self,
         craft:     &StrongHandle<Craft>,
-        bodies:    &StrongStore<Body>,
-        crafts:    &StrongStore<Craft>,
-        positions: &StrongStore<Position>,
+        bodies:    &store::Strong<Body>,
+        crafts:    &store::Strong<Craft>,
+        positions: &store::Strong<Position>,
     )
         -> Option<f32>
     {
@@ -90,9 +90,9 @@ impl Loot {
 
     fn add_to_ship(&self,
         ship:   &StrongHandle<Ship>,
-        crafts: &StrongStore<Craft>,
-        fuels:  &mut StrongStore<Fuel>,
-        ships:  &mut StrongStore<Ship>,
+        crafts: &store::Strong<Craft>,
+        fuels:  &mut store::Strong<Fuel>,
+        ships:  &mut store::Strong<Ship>,
     )
         -> Option<()>
     {
