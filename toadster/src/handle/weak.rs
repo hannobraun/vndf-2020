@@ -33,6 +33,12 @@ impl<T> From<&handle::Strong<T>> for Weak<T> {
     }
 }
 
+impl<T> From<&handle::Weak<T>> for Weak<T> {
+    fn from(handle: &handle::Weak<T>) -> Self {
+        *handle
+    }
+}
+
 impl<T> Clone for Weak<T> {
     fn clone(&self) -> Self {
         Self::new(self.0.clone())
