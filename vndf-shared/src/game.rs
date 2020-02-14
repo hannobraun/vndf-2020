@@ -235,7 +235,7 @@ impl State {
         let healths = self.health.healths.iter()
             .map(|(handle, c)| Component::Health(handle, c.clone()));
         let loots = self.loot.loots.iter()
-            .map(|(handle, &c)| Component::Loot(handle, c));
+            .map(|(handle, c)| Component::Loot(handle, c.clone()));
         let missiles = self.missiles.missiles.iter()
             .map(|(handle, &c)| Component::Missile(handle, c));
         let positions = self.physics.positions.iter()
