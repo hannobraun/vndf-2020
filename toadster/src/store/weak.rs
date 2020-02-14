@@ -10,9 +10,9 @@ use crate::{
 };
 
 
-pub struct WeakStore<T>(SparseSecondaryMap<DefaultKey, T>);
+pub struct Weak<T>(SparseSecondaryMap<DefaultKey, T>);
 
-impl<T> WeakStore<T> {
+impl<T> Weak<T> {
     pub fn new() -> Self {
         Self(SparseSecondaryMap::new())
     }
@@ -50,7 +50,7 @@ impl<T> WeakStore<T> {
     }
 }
 
-impl<T> Store<T> for WeakStore<T> {
+impl<T> Store<T> for Weak<T> {
     fn get(&self, handle: &StrongHandle<T>) -> Option<&T> {
         self.get(handle)
     }
@@ -60,7 +60,7 @@ impl<T> Store<T> for WeakStore<T> {
     }
 }
 
-impl<'a, T> IntoIterator for &'a WeakStore<T> {
+impl<'a, T> IntoIterator for &'a Weak<T> {
     type Item     = (StrongHandle<T>, &'a T);
     type IntoIter = Iter<'a, T>;
 
