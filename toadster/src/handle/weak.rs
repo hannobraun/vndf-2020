@@ -1,4 +1,7 @@
-use std::marker::PhantomData;
+use std::{
+    fmt,
+    marker::PhantomData,
+};
 
 use serde::{
     Deserialize,
@@ -21,6 +24,16 @@ impl<T> Weak<T> {
 impl<T> From<&handle::Strong<T>> for Weak<T> {
     fn from(handle: &handle::Strong<T>) -> Self {
         Self::new(handle.key)
+    }
+}
+
+impl<T> fmt::Debug for Weak<T> {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "handle::Weak<T>(")?;
+        self.0.fmt(f)?;
+        write!(f, ", PhantomData)")?;
+
+        Ok(())
     }
 }
 
