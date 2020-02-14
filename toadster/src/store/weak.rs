@@ -71,7 +71,7 @@ impl<T> Store<T> for Weak<T> {
 }
 
 impl<'a, T> IntoIterator for &'a Weak<T> {
-    type Item     = (handle::Strong<T>, &'a T);
+    type Item     = (handle::Weak<T>, &'a T);
     type IntoIter = Iter<'a, T>;
 
     fn into_iter(self) -> Self::IntoIter {
@@ -83,10 +83,10 @@ impl<'a, T> IntoIterator for &'a Weak<T> {
 pub struct Iter<'a, T>(sparse_secondary::Iter<'a, DefaultKey, T>);
 
 impl<'a, T> Iterator for Iter<'a, T> {
-    type Item = (handle::Strong<T>, &'a T);
+    type Item = (handle::Weak<T>, &'a T);
 
     fn next(&mut self) -> Option<Self::Item> {
         self.0.next()
-            .map(|(key, value)| (handle::Strong::new(key), value))
+            .map(|(key, value)| (handle::Weak::new(key), value))
     }
 }
