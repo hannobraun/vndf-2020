@@ -1,4 +1,7 @@
-use std::cell::Cell;
+use std::sync::{
+    Arc,
+    Mutex,
+};
 
 use bach::{
     EventBuf,
@@ -18,7 +21,7 @@ use crate::{
 
 pub struct Strong<T> {
     inner:     DenseSlotMap<DefaultKey, T>,
-    changes:   Cell<Changes<T>>,
+    changes:   Arc<Mutex<Changes<T>>>,
     removed:   EventBuf<handle::Strong<T>>,
 }
 
@@ -26,7 +29,7 @@ impl<T> Strong<T> {
     pub fn new() -> Self {
         Self {
             inner:   DenseSlotMap::new(),
-            changes: Cell::new(Changes::new()),
+            changes: Arc::new(Mutex::new(Changes::new())),
             removed: EventBuf::new(),
         }
     }
@@ -50,9 +53,8 @@ impl<T> Strong<T> {
     }
 
     pub fn remove_later(&self, handle: handle::Strong<T>) {
-        let mut changes = self.changes.take();
+        let mut changes = self.changes.lock().unwrap();
         changes.remove.push(handle);
-        self.changes.set(changes);
     }
 
     pub fn get(&self, handle: &handle::Strong<T>) -> Option<&T> {
@@ -80,11 +82,14 @@ impl<T> Strong<T> {
     }
 
     pub fn apply_changes(&mut self) {
-        let mut changes = self.changes.take();
+        let mut changes = self.changes.lock().unwrap();
         for handle in changes.remove.drain(..) {
-            self.remove(handle);
+            let result = self.inner.remove(handle.key);
+
+            if result.is_some() {
+                self.removed.sink().push(handle)
+            }
         }
-        self.changes.set(changes);
     }
 
     pub fn removed(&mut self) -> EventSource<handle::Strong<T>> {
