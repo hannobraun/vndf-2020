@@ -234,8 +234,8 @@ impl State {
             );
         let directions = self.physics.directions
             .iter()
-            .map(|(handle, &c)|
-                Component::Direction(handle, c)
+            .map(|(handle, c)|
+                Component::Direction(handle, c.clone())
             );
         let explosions = self.explosions.explosions
             .iter()
@@ -244,8 +244,8 @@ impl State {
             );
         let fuels = self.crafts.fuels
             .iter()
-            .map(|(handle, &c)|
-                Component::Fuel(handle, c)
+            .map(|(handle, c)|
+                Component::Fuel(handle, c.clone())
             );
         let healths = self.health.healths
             .iter()
@@ -264,8 +264,8 @@ impl State {
             );
         let positions = self.physics.positions
             .iter()
-            .map(|(handle, &c)|
-                Component::Position(handle, c)
+            .map(|(handle, c)|
+                Component::Position(handle, c.clone())
             );
         let ships = self.ships.ships
             .iter()
@@ -279,8 +279,8 @@ impl State {
             );
         let velocities = self.physics.velocities
             .iter()
-            .map(|(handle, &c)|
-                Component::Velocity(handle, c)
+            .map(|(handle, c)|
+                Component::Velocity(handle, c.clone())
             );
 
         bodies
