@@ -1,3 +1,4 @@
+use bach::EventSink;
 use toadster::{
     StrongHandle,
     StrongStore,
@@ -59,7 +60,7 @@ pub fn create_explosion(
     explosions:         &mut StrongStore<Explosion>,
     positions:          &mut StrongStore<Position>,
     velocities:         &mut StrongStore<Velocity>,
-    explosion_imminent: &mut bach::Sink<ExplosionImminent>,
+    explosion_imminent: &mut EventSink<ExplosionImminent>,
     explosion:          ExplosionEntity,
 ) {
     let handle = explosion.create(
@@ -102,7 +103,7 @@ pub fn damage_nearby(
 pub fn update_explosions(
     explosions:      &mut StrongStore<Explosion>,
     dt:              f32,
-    explosion_faded: &mut bach::Sink<ExplosionFaded>,
+    explosion_faded: &mut EventSink<ExplosionFaded>,
 ) {
     for (handle, explosion) in explosions {
         if explosion.update(dt) {

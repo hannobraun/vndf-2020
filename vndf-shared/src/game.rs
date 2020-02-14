@@ -9,6 +9,7 @@ pub mod players;
 pub mod ships;
 
 
+use bach::EventSink;
 use serde::{
     Deserialize,
     Serialize,
@@ -65,19 +66,19 @@ impl State {
         }
     }
 
-    pub fn player_connected(&mut self) -> bach::Sink<PlayerConnected> {
+    pub fn player_connected(&mut self) -> EventSink<PlayerConnected> {
         self.players.player_connected.sink()
     }
 
-    pub fn player_disconnected(&mut self) -> bach::Sink<PlayerDisconnected> {
+    pub fn player_disconnected(&mut self) -> EventSink<PlayerDisconnected> {
         self.players.player_disconnected.sink()
     }
 
-    pub fn player_input(&mut self) -> bach::Sink<PlayerInput> {
+    pub fn player_input(&mut self) -> EventSink<PlayerInput> {
         self.players.player_input.sink()
     }
 
-    pub fn update(&mut self) -> bach::Sink<Update> {
+    pub fn update(&mut self) -> EventSink<Update> {
         self.base.update.sink()
     }
 

@@ -8,8 +8,8 @@ impl<T> EventBuf<T> {
         Self(VecDeque::new())
     }
 
-    pub fn sink(&mut self) -> Sink<T> {
-        Sink(self)
+    pub fn sink(&mut self) -> EventSink<T> {
+        EventSink(self)
     }
 
     pub fn source(&mut self) -> Source<T> {
@@ -18,9 +18,9 @@ impl<T> EventBuf<T> {
 }
 
 
-pub struct Sink<'r, T>(&'r mut EventBuf<T>);
+pub struct EventSink<'r, T>(&'r mut EventBuf<T>);
 
-impl<T> Sink<'_, T> {
+impl<T> EventSink<'_, T> {
     pub fn push(&mut self, event: T) {
         (self.0).0.push_back(event);
     }

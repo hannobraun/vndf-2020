@@ -1,3 +1,4 @@
+use bach::EventSink;
 use log::warn;
 use serde::{
     Deserialize,
@@ -66,7 +67,7 @@ impl Ship {
     pub fn apply_input(&mut self,
         bodies:         &StrongStore<Body>,
         crafts:         &mut StrongStore<Craft>,
-        missile_launch: &mut bach::Sink<MissileLaunch>,
+        missile_launch: &mut EventSink<MissileLaunch>,
         player:         &Player,
         action:         Action,
     )

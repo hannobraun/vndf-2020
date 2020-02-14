@@ -3,6 +3,7 @@ use std::{
     net::SocketAddr,
 };
 
+use bach::EventSink;
 use log::warn;
 use toadster::{
     StrongHandle,
@@ -49,7 +50,7 @@ pub fn connect_player(
     positions:      &mut StrongStore<Position>,
     ships:          &mut StrongStore<Ship>,
     velocities:     &mut StrongStore<Velocity>,
-    player_created: &mut bach::Sink<PlayerCreated>,
+    player_created: &mut EventSink<PlayerCreated>,
     index:          &mut HashMap<SocketAddr, StrongHandle<Player>>,
     id:             PlayerId,
     addr:           SocketAddr,
@@ -90,8 +91,8 @@ pub fn handle_input(
     crafts:         &mut StrongStore<Craft>,
     players:        &StrongStore<Player>,
     ships:          &mut StrongStore<Ship>,
-    missile_launch: &mut bach::Sink<MissileLaunch>,
-    input_handled:  &mut bach::Sink<InputHandled>,
+    missile_launch: &mut EventSink<MissileLaunch>,
+    input_handled:  &mut EventSink<InputHandled>,
     index:          &mut HashMap<SocketAddr, StrongHandle<Player>>,
 )
     -> Option<()>

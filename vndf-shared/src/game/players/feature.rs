@@ -3,7 +3,10 @@ use std::{
     net::SocketAddr,
 };
 
-use bach::EventBuf;
+use bach::{
+    EventBuf,
+    EventSink,
+};
 use serde::{
     Deserialize,
     Serialize,
@@ -113,7 +116,7 @@ impl Feature {
         bodies:         &StrongStore<Body>,
         crafts:         &mut StrongStore<Craft>,
         ships:          &mut StrongStore<Ship>,
-        missile_launch: &mut bach::Sink<MissileLaunch>,
+        missile_launch: &mut EventSink<MissileLaunch>,
     ) {
         handle_input(
             event.addr,

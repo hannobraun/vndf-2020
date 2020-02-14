@@ -1,3 +1,4 @@
+use bach::EventSink;
 use log::warn;
 use toadster::{
     StrongHandle,
@@ -32,7 +33,7 @@ use super::{
 
 pub fn check_health(
     healths: &StrongStore<Health>,
-    death:   &mut bach::Sink<Death>,
+    death:   &mut EventSink<Death>,
 ) {
     for (handle, health) in healths {
         if health.is_dead() {
