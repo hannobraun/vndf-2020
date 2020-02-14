@@ -249,9 +249,9 @@ impl Graphics {
         let pos = *get!(state.data.positions,  &body.pos);
         let vel = *get!(state.data.velocities, &body.vel);
 
-        let mut directions = OneStore { handle: body.dir.clone(), data: dir };
-        let mut positions  = OneStore { handle: body.pos.clone(), data: pos };
-        let mut velocities = OneStore { handle: body.vel.clone(), data: vel };
+        let mut directions = OneStore { handle: (&body.dir).into(), data: dir };
+        let mut positions  = OneStore { handle: (&body.pos).into(), data: pos };
+        let mut velocities = OneStore { handle: (&body.vel).into(), data: vel };
 
         let mut previous = pos.0;
 
@@ -507,13 +507,13 @@ Heavy Missiles: {}",
 
 
 struct OneStore<T> {
-    pub handle: handle::Strong<T>,
+    pub handle: handle::Weak<T>,
     pub data:   T
 }
 
 impl<T> Store<T> for OneStore<T> {
-    fn get(&self, handle: &handle::Strong<T>) -> Option<&T> {
-        if handle == &self.handle {
+    fn get(&self, handle: impl Into<handle::Weak<T>>) -> Option<&T> {
+        if handle.into() == self.handle {
             Some(&self.data)
         }
         else {
@@ -521,8 +521,10 @@ impl<T> Store<T> for OneStore<T> {
         }
     }
 
-    fn get_mut(&mut self, handle: &handle::Strong<T>) -> Option<&mut T> {
-        if handle == &self.handle {
+    fn get_mut(&mut self, handle: impl Into<handle::Weak<T>>)
+        -> Option<&mut T>
+    {
+        if handle.into() == self.handle {
             Some(&mut self.data)
         }
         else {

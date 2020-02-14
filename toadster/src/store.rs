@@ -11,6 +11,8 @@ pub use self::{
 use crate::handle;
 
 pub trait Store<T> {
-    fn get(&self, handle: &handle::Strong<T>) -> Option<&T>;
-    fn get_mut(&mut self, handle: &handle::Strong<T>) -> Option<&mut T>;
+    fn get(&self, handle: impl Into<handle::Weak<T>>)
+        -> Option<&T>;
+    fn get_mut(&mut self, handle: impl Into<handle::Weak<T>>)
+        -> Option<&mut T>;
 }

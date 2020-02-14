@@ -57,12 +57,16 @@ impl<T> Strong<T> {
         changes.remove.push(handle);
     }
 
-    pub fn get(&self, handle: &handle::Strong<T>) -> Option<&T> {
-        self.inner.get(handle.key)
+    pub fn get(&self, handle: impl Into<handle::Weak<T>>)
+        -> Option<&T>
+    {
+        self.inner.get(handle.into().0)
     }
 
-    pub fn get_mut(&mut self, handle: &handle::Strong<T>) -> Option<&mut T> {
-        self.inner.get_mut(handle.key)
+    pub fn get_mut(&mut self, handle: impl Into<handle::Weak<T>>)
+        -> Option<&mut T>
+    {
+        self.inner.get_mut(handle.into().0)
     }
 
     pub fn iter(&self) -> Iter<T> {
@@ -98,11 +102,15 @@ impl<T> Strong<T> {
 }
 
 impl<T> Store<T> for Strong<T> {
-    fn get(&self, handle: &handle::Strong<T>) -> Option<&T> {
+    fn get(&self, handle: impl Into<handle::Weak<T>>)
+        -> Option<&T>
+    {
         self.get(handle)
     }
 
-    fn get_mut(&mut self, handle: &handle::Strong<T>) -> Option<&mut T> {
+    fn get_mut(&mut self, handle: impl Into<handle::Weak<T>>)
+        -> Option<&mut T>
+    {
         self.get_mut(handle)
     }
 }
