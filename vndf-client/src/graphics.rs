@@ -242,7 +242,7 @@ impl Graphics {
     )
         -> GameResult<bool>
     {
-        let mut body = *get!(state.data.bodies, body);
+        let mut body = get!(state.data.bodies, body).clone();
         body.acc = Vec2::zero();
 
         let dir = *get!(state.data.directions, &body.dir);

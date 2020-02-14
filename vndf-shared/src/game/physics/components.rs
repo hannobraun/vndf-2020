@@ -51,7 +51,7 @@ impl Direction {
 /// derived from other data in `Body`, changes regularly, and thus is lends
 /// itself to being interpolated client-side, is kept in separate components, so
 /// it can be sent separately, at different rates.
-#[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Body {
     pub pos: StrongHandle<Position>,
     pub vel: StrongHandle<Velocity>,

@@ -51,7 +51,7 @@ pub fn explode_entity(
         strength += 6.0;
     }
 
-    Some(ExplosionEntity { exploding: *body, strength })
+    Some(ExplosionEntity { exploding: body.clone(), strength })
 }
 
 pub fn create_explosion(

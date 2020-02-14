@@ -223,7 +223,7 @@ impl State {
 
     pub fn updates(&mut self) -> impl Iterator<Item=Component> + '_ {
         let bodies = self.physics.bodies.iter()
-            .map(|(handle, &c)| Component::Body(handle, c));
+            .map(|(handle, c)| Component::Body(handle, c.clone()));
         let crafts = self.crafts.crafts.iter()
             .map(|(handle, c)| Component::Craft(handle, c.clone()));
         let directions = self.physics.directions.iter()

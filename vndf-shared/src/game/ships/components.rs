@@ -115,7 +115,7 @@ impl Ship {
     {
         if self.missiles > 0 {
             self.missiles -= 1;
-            Some(MissileEntity { owner, origin: *body, target })
+            Some(MissileEntity { owner, origin: body.clone(), target })
         }
         else {
             None
