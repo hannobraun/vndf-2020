@@ -12,8 +12,8 @@ impl<T> EventBuf<T> {
         EventSink(self)
     }
 
-    pub fn source(&mut self) -> Source<T> {
-        Source(self)
+    pub fn source(&mut self) -> EventSource<T> {
+        EventSource(self)
     }
 }
 
@@ -27,9 +27,9 @@ impl<T> EventSink<'_, T> {
 }
 
 
-pub struct Source<'r, T>(&'r mut EventBuf<T>);
+pub struct EventSource<'r, T>(&'r mut EventBuf<T>);
 
-impl<T> Source<'_, T> {
+impl<T> EventSource<'_, T> {
     pub fn next(&mut self) -> Option<T> {
         (self.0).0.pop_front()
     }

@@ -1,6 +1,9 @@
 use std::cell::Cell;
 
-use bach::EventBuf;
+use bach::{
+    EventBuf,
+    EventSource,
+};
 use slotmap::{
     DefaultKey,
     DenseSlotMap,
@@ -84,7 +87,7 @@ impl<T> StrongStore<T> {
         self.changes.set(changes);
     }
 
-    pub fn removed(&mut self) -> bach::Source<StrongHandle<T>> {
+    pub fn removed(&mut self) -> EventSource<StrongHandle<T>> {
         self.removed.source()
     }
 }

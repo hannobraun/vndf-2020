@@ -9,7 +9,10 @@ pub mod players;
 pub mod ships;
 
 
-use bach::EventSink;
+use bach::{
+    EventSink,
+    EventSource,
+};
 use serde::{
     Deserialize,
     Serialize,
@@ -258,7 +261,7 @@ impl State {
             .chain(velocities)
     }
 
-    pub fn removals(&mut self) -> bach::Source<ComponentRemoved> {
+    pub fn removals(&mut self) -> EventSource<ComponentRemoved> {
         for handle in self.physics.bodies.removed().ready() {
             let handle = ComponentHandle::Body(handle);
             let event  = ComponentRemoved { handle };
@@ -323,11 +326,11 @@ impl State {
         self.base.component_removed.source()
     }
 
-    pub fn player_created(&mut self) -> bach::Source<PlayerCreated> {
+    pub fn player_created(&mut self) -> EventSource<PlayerCreated> {
         self.players.player_created.source()
     }
 
-    pub fn input_handled(&mut self) -> bach::Source<InputHandled> {
+    pub fn input_handled(&mut self) -> EventSource<InputHandled> {
         self.players.input_handled.source()
     }
 
