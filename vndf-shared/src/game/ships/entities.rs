@@ -59,6 +59,6 @@ impl ShipEntity {
 
         let ship = ships.insert(Ship::new(craft, self.color));
         healths.get_mut(&health).unwrap().parent =
-            Some(ComponentHandle::Ship(ship));
+            Some(ComponentHandle::Ship(ship.into()));
     }
 }

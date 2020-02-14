@@ -47,7 +47,7 @@ macro_rules! components {
 
         #[derive(Clone, Debug, Deserialize, Serialize, Eq, PartialEq, Hash)]
         pub enum ComponentHandle {
-            $($component(handle::Strong<$component>),)*
+            $($component(handle::Weak<$component>),)*
         }
 
         impl ComponentHandle {
@@ -55,7 +55,7 @@ macro_rules! components {
                 match component {
                     $(
                         Component::$component(handle, _) =>
-                            ComponentHandle::$component(handle.clone()),
+                            ComponentHandle::$component(handle.into()),
                     )*
                 }
             }

@@ -63,7 +63,7 @@ pub fn remove_entity(
     match health.parent? {
         ComponentHandle::Missile(handle) => {
             Missile::remove(
-                handle,
+                handle.upgrade(),
                 bodies,
                 crafts,
                 directions,
@@ -77,7 +77,7 @@ pub fn remove_entity(
         }
         ComponentHandle::Ship(handle) => {
             Ship::remove(
-                handle,
+                handle.upgrade(),
                 bodies,
                 crafts,
                 directions,

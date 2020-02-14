@@ -299,62 +299,62 @@ impl State {
 
     pub fn removals(&mut self) -> EventSource<ComponentRemoved> {
         for handle in self.physics.bodies.removed().ready() {
-            let handle = ComponentHandle::Body(handle);
+            let handle = ComponentHandle::Body(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }
         for handle in self.crafts.crafts.removed().ready() {
-            let handle = ComponentHandle::Craft(handle);
+            let handle = ComponentHandle::Craft(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }
         for handle in self.physics.directions.removed().ready() {
-            let handle = ComponentHandle::Direction(handle);
+            let handle = ComponentHandle::Direction(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }
         for handle in self.explosions.explosions.removed().ready() {
-            let handle = ComponentHandle::Explosion(handle);
+            let handle = ComponentHandle::Explosion(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }
         for handle in self.crafts.fuels.removed().ready() {
-            let handle = ComponentHandle::Fuel(handle);
+            let handle = ComponentHandle::Fuel(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }
         for handle in self.health.healths.removed().ready() {
-            let handle = ComponentHandle::Health(handle);
+            let handle = ComponentHandle::Health(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }
         for handle in self.loot.loots.removed().ready() {
-            let handle = ComponentHandle::Loot(handle);
+            let handle = ComponentHandle::Loot(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }
         for handle in self.missiles.missiles.removed().ready() {
-            let handle = ComponentHandle::Missile(handle);
+            let handle = ComponentHandle::Missile(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }
         for handle in self.physics.positions.removed().ready() {
-            let handle = ComponentHandle::Position(handle);
+            let handle = ComponentHandle::Position(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }
         for handle in self.ships.ships.removed().ready() {
-            let handle = ComponentHandle::Ship(handle);
+            let handle = ComponentHandle::Ship(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }
         for handle in self.missiles.targets.removed().ready() {
-            let handle = ComponentHandle::Target(handle);
+            let handle = ComponentHandle::Target(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }
         for handle in self.physics.velocities.removed().ready() {
-            let handle = ComponentHandle::Velocity(handle);
+            let handle = ComponentHandle::Velocity(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }
