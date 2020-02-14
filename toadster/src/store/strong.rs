@@ -20,9 +20,9 @@ use crate::{
 
 
 pub struct Strong<T> {
-    inner:     DenseSlotMap<DefaultKey, T>,
-    changes:   Arc<Mutex<Changes<T>>>,
-    removed:   EventBuf<handle::Strong<T>>,
+    inner:   DenseSlotMap<DefaultKey, T>,
+    changes: Arc<Mutex<Changes<T>>>,
+    removed: EventBuf<handle::Strong<T>>,
 }
 
 impl<T> Strong<T> {
