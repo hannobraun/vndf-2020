@@ -1,5 +1,9 @@
 use std::{
     fmt,
+    hash::{
+        Hash,
+        Hasher,
+    },
     marker::PhantomData,
 };
 
@@ -66,5 +70,11 @@ impl<T> Eq for Weak<T> {}
 impl<T> PartialEq for Weak<T> {
     fn eq(&self, other: &Self) -> bool {
         self.0.eq(&other.0)
+    }
+}
+
+impl<T> Hash for Weak<T> {
+    fn hash<H>(&self, state: &mut H) where H: Hasher {
+        self.0.hash(state)
     }
 }
