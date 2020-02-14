@@ -33,6 +33,14 @@ impl<T> From<&handle::Strong<T>> for Weak<T> {
     }
 }
 
+impl<T> Clone for Weak<T> {
+    fn clone(&self) -> Self {
+        Self::new(self.0.clone())
+    }
+}
+
+impl<T> Copy for Weak<T> {}
+
 impl<T> fmt::Debug for Weak<T> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "handle::Weak<T>(")?;
