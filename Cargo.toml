@@ -1,6 +1,7 @@
 [workspace]
 members = [
     "bach",
+    "toadster",
     "vndf-client",
     "vndf-launcher",
     "vndf-server",
@@ -9,6 +10,7 @@ members = [
 ]
 default-members = [
     "bach",
+    "toadster",
     "vndf-client",
     "vndf-shared",
     "vndf-tests",
