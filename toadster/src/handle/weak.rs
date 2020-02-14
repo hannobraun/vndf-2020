@@ -12,9 +12,15 @@ use crate::handle;
 #[derive(Deserialize, Serialize)]
 pub struct Weak<T>(pub(crate) DefaultKey, PhantomData<T>);
 
+impl<T> Weak<T> {
+    pub(crate) fn new(key: DefaultKey) -> Self {
+        Self(key, PhantomData)
+    }
+}
+
 impl<T> From<&handle::Strong<T>> for Weak<T> {
     fn from(handle: &handle::Strong<T>) -> Self {
-        Self(handle.key, PhantomData)
+        Self::new(handle.key)
     }
 }
 
