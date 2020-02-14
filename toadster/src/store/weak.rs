@@ -21,8 +21,10 @@ impl<T> Weak<T> {
         self.0.len()
     }
 
-    pub fn insert(&mut self, handle: handle::Strong<T>, value: T) -> Option<T> {
-        self.0.insert(handle.key, value)
+    pub fn insert(&mut self, handle: impl Into<handle::Weak<T>>, value: T)
+        -> Option<T>
+    {
+        self.0.insert(handle.into().0, value)
     }
 
     pub fn remove(&mut self, handle: &handle::Strong<T>) -> Option<T> {

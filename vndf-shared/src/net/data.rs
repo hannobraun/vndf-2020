@@ -46,7 +46,7 @@ macro_rules! data {
                     $(
                         Component::$ty(handle, value) => {
                             let previous = self.$name.insert(
-                                handle,
+                                &handle,
                                 value.clone(),
                             );
                             Some(value) != previous
