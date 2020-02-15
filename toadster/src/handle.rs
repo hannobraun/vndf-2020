@@ -7,6 +7,15 @@ pub use self::{
 };
 
 
+use std::{
+    fmt,
+    hash::{
+        Hash,
+        Hasher,
+    }
+};
+
+
 /// A handle that can be either strong or weak
 ///
 /// There are situations where you might want to support using either a strong
@@ -47,4 +56,54 @@ pub use self::{
 pub enum Handle<T> {
     Strong(Strong<T>),
     Weak(Weak<T>),
+}
+
+impl<T> Clone for Handle<T> {
+    fn clone(&self) -> Self {
+        match self {
+            Self::Strong(handle) => Self::Strong(handle.clone()),
+            Self::Weak(handle)   => Self::Weak(*handle),
+        }
+    }
+}
+
+impl<T> fmt::Debug for Handle<T> {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Self::Strong(handle) => {
+                write!(f, "Handle::Strong(")?;
+                handle.fmt(f)?;
+                write!(f, ")")?;
+            }
+            Self::Weak(handle) => {
+                write!(f, "Handle::Weak(")?;
+                handle.fmt(f)?;
+                write!(f, ")")?;
+            }
+        }
+
+        Ok(())
+    }
+}
+
+impl<T> Eq for Handle<T> {}
+
+impl<T> PartialEq for Handle<T> {
+    fn eq(&self, other: &Self) -> bool {
+        match (self, other) {
+            (Self::Strong(a), Self::Strong(b)) => a.eq(b),
+            (Self::Weak(a), Self::Weak(b))     => a.eq(b),
+
+            _ => false,
+        }
+    }
+}
+
+impl<T> Hash for Handle<T> {
+    fn hash<H>(&self, state: &mut H) where H: Hasher {
+        match self {
+            Self::Strong(handle) => handle.hash(state),
+            Self::Weak(handle)   => handle.hash(state),
+        }
+    }
 }
