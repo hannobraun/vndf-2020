@@ -53,9 +53,11 @@ pub struct Ship {
 
 impl Ship {
     pub fn new(
-        craft:  handle::Strong<Craft>,
-        color:  [f32; 3],
-    ) -> Self {
+        craft: handle::Strong<Craft>,
+        color: [f32; 3],
+    )
+        -> Self
+    {
         Self {
             craft,
             rotation: Rotation::None,
