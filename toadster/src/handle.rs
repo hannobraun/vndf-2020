@@ -58,6 +58,18 @@ pub enum Handle<T> {
     Weak(Weak<T>),
 }
 
+impl<T> From<Strong<T>> for Handle<T> {
+    fn from(handle: Strong<T>) -> Self {
+        Handle::Strong(handle)
+    }
+}
+
+impl<T> From<Weak<T>> for Handle<T> {
+    fn from(handle: Weak<T>) -> Self {
+        Handle::Weak(handle)
+    }
+}
+
 impl<T> Clone for Handle<T> {
     fn clone(&self) -> Self {
         match self {
