@@ -16,6 +16,8 @@ use std::{
 };
 
 use serde::{
+    Deserialize,
+    Deserializer,
     Serialize,
     Serializer,
 };
@@ -160,5 +162,14 @@ impl<T> Serialize for Handle<T> {
             Self::Strong(_)    => panic!("Can't serialize strong handle"),
             Self::Weak(handle) => handle.serialize(serializer),
         }
+    }
+}
+
+impl<'de, T> Deserialize<'de> for Handle<T> {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+        where D: Deserializer<'de>
+    {
+        let handle = Weak::deserialize(deserializer)?;
+        Ok(Self::Weak(handle))
     }
 }
