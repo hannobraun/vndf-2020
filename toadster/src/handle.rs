@@ -85,6 +85,18 @@ impl<T> From<Weak<T>> for Handle<T> {
     }
 }
 
+impl<T> From<Handle<T>> for Weak<T> {
+    fn from(handle: Handle<T>) -> Self {
+        handle.weak()
+    }
+}
+
+impl<T> From<&Handle<T>> for Weak<T> {
+    fn from(handle: &Handle<T>) -> Self {
+        handle.weak()
+    }
+}
+
 impl<T> Clone for Handle<T> {
     fn clone(&self) -> Self {
         match self {
