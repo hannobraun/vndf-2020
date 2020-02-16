@@ -59,6 +59,12 @@ pub enum Handle<T> {
 }
 
 impl<T> Handle<T> {
+    pub fn strong(self) -> Strong<T> {
+        match self {
+            Self::Strong(handle) => handle,
+            Self::Weak(_)        => panic!("Expected strong handle; was weak"),
+        }
+    }
     pub fn weak(&self) -> Weak<T> {
         match self {
             Self::Strong(handle) => handle.into(),
