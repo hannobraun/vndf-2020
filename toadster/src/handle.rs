@@ -158,10 +158,7 @@ impl<T> Serialize for Handle<T> {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
         where S: Serializer
     {
-        match self {
-            Self::Strong(_)    => panic!("Can't serialize strong handle"),
-            Self::Weak(handle) => handle.serialize(serializer),
-        }
+        self.weak().serialize(serializer)
     }
 }
 
