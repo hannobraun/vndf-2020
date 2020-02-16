@@ -15,6 +15,11 @@ use std::{
     }
 };
 
+use serde::{
+    Serialize,
+    Serializer,
+};
+
 
 /// A handle that can be either strong or weak
 ///
@@ -143,6 +148,17 @@ impl<T> Hash for Handle<T> {
         match self {
             Self::Strong(handle) => handle.hash(state),
             Self::Weak(handle)   => handle.hash(state),
+        }
+    }
+}
+
+impl<T> Serialize for Handle<T> {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+        where S: Serializer
+    {
+        match self {
+            Self::Strong(_)    => panic!("Can't serialize strong handle"),
+            Self::Weak(handle) => handle.serialize(serializer),
         }
     }
 }
