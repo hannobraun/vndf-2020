@@ -70,7 +70,7 @@ impl Loot {
     }
 
     fn distance(&self,
-        craft:     &handle::Strong<Craft>,
+        craft:     impl Into<handle::Weak<Craft>>,
         bodies:    &store::Strong<Body>,
         crafts:    &store::Strong<Craft>,
         positions: &store::Strong<Position>,
