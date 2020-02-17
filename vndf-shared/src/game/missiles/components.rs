@@ -55,7 +55,7 @@ impl Missile {
     }
 
     pub fn remove(
-        handle:     handle::Strong<Missile>,
+        handle:     impl Into<handle::Weak<Missile>>,
         bodies:     &mut store::Strong<Body>,
         crafts:     &mut store::Strong<Craft>,
         directions: &mut store::Strong<Direction>,
