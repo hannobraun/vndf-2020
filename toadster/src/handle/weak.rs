@@ -20,15 +20,21 @@ use crate::handle::{
 
 
 #[derive(Deserialize, Serialize)]
-pub struct Weak<T>(DefaultKey, PhantomData<T>);
+pub struct Weak<T> {
+    inner: DefaultKey,
+    _data: PhantomData<T>,
+}
 
 impl<T> Weak<T> {
     pub(crate) fn new(key: DefaultKey) -> Self {
-        Self(key, PhantomData)
+        Self {
+            inner: key,
+            _data: PhantomData,
+        }
     }
 
     pub(crate) fn key(&self) -> DefaultKey {
-        self.0
+        self.inner
     }
 
     pub fn into_untyped(self) -> Weak<Untyped> {
