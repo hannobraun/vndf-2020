@@ -42,11 +42,12 @@ impl<T> Strong<T> {
         handle::Strong::new(self.inner.insert(value))
     }
 
-    pub fn remove(&mut self, handle: handle::Strong<T>) -> Option<T> {
-        let result = self.inner.remove(handle.key);
+    pub fn remove(&mut self, handle: impl Into<handle::Weak<T>>) -> Option<T> {
+        let handle = handle.into();
+        let result = self.inner.remove(handle.0);
 
         if result.is_some() {
-            self.removed.sink().push((&handle).into())
+            self.removed.sink().push(handle)
         }
 
         result
