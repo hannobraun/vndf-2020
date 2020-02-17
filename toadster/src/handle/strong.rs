@@ -33,8 +33,14 @@ impl<T> Strong<T> {
     pub(crate) fn from_key(key: DefaultKey, changes: Arc<Mutex<Changes<T>>>)
         -> Self
     {
+        Self::from_handle(Weak::new(key), changes)
+    }
+
+    pub(crate) fn from_handle(inner:Weak<T>, changes: Arc<Mutex<Changes<T>>>)
+        -> Self
+    {
         Self {
-            inner: Weak::new(key),
+            inner,
             changes,
             _data: PhantomData,
         }
