@@ -7,14 +7,9 @@ use std::{
     marker::PhantomData,
 };
 
-use serde::{
-    Deserialize,
-    Serialize,
-};
 use slotmap::DefaultKey;
 
 
-#[derive(Deserialize, Serialize)]
 pub struct Strong<T> {
     pub(crate) key: DefaultKey,
 
