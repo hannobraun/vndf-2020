@@ -2,5 +2,8 @@ pub mod handle;
 pub mod store;
 
 
-pub use self::store::Store;
+pub use self::{
+    handle::Handle,
+    store::Store,
+};
 
