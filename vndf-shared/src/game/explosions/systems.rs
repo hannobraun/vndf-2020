@@ -124,7 +124,7 @@ pub fn remove_explosion(
 {
     let explosion = explosions.remove(handle)?;
     Body::remove(
-        explosion.body,
+        explosion.body.strong(),
         bodies,
         directions,
         positions,
