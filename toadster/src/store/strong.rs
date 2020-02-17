@@ -58,7 +58,7 @@ impl<T> Strong<T> {
 
     pub fn remove_later(&self, handle: handle::Strong<T>) {
         let mut changes = self.changes.lock().unwrap();
-        changes.remove.push(handle);
+        changes.remove.push(handle.into());
     }
 
     pub fn get(&self, handle: impl Into<handle::Weak<T>>)
@@ -100,7 +100,7 @@ impl<T> Strong<T> {
     pub fn apply_changes(&mut self) {
         let mut changes = self.changes.lock().unwrap();
         for handle in changes.remove.drain(..) {
-            let result = self.inner.remove(handle.key);
+            let result = self.inner.remove(handle.0);
 
             if result.is_some() {
                 self.removed.sink().push((&handle).into())
@@ -160,7 +160,7 @@ impl<T> Entry<T> {
 
 
 pub(crate) struct Changes<T> {
-    remove: Vec<handle::Strong<T>>,
+    remove: Vec<handle::Weak<T>>,
 }
 
 impl<T> Changes<T> {
