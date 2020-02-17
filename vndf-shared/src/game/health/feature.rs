@@ -32,17 +32,17 @@ use super::{
 
 
 pub struct Feature {
-    pub healths:  store::Strong<Health>,
-    pub death:    EventBuf<Death>,
-    pub entities: HashSet<ComponentHandle>,
+    pub healths: store::Strong<Health>,
+    pub death:   EventBuf<Death>,
+    pub index:   HashSet<ComponentHandle>,
 }
 
 impl Feature {
     pub fn new() -> Self {
         Self {
-            healths:  store::Strong::new(),
-            death:    EventBuf::new(),
-            entities: HashSet::new(),
+            healths: store::Strong::new(),
+            death:   EventBuf::new(),
+            index:   HashSet::new(),
         }
     }
 
