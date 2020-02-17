@@ -2,7 +2,7 @@ use serde::{
     Deserialize,
     Serialize,
 };
-use toadster::handle;
+use toadster::Handle;
 
 use crate::game::{
     base::ComponentHandle,
@@ -13,15 +13,15 @@ use crate::game::{
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Health {
     pub parent: Option<ComponentHandle>,
-    pub body:   handle::Strong<Body>,
+    pub body:   Handle<Body>,
     pub value:  f32,
 }
 
 impl Health {
-    pub fn new(body: handle::Strong<Body>, value: f32) -> Self {
+    pub fn new(body: impl Into<Handle<Body>>, value: f32) -> Self {
         Health {
             parent: None,
-            body,
+            body:   body.into(),
             value
         }
     }
