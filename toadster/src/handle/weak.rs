@@ -34,13 +34,13 @@ impl<T> Weak<T> {
 
 impl<T> From<handle::Strong<T>> for Weak<T> {
     fn from(handle: handle::Strong<T>) -> Self {
-        Self::new(handle.key)
+        Self::new(*handle.key())
     }
 }
 
 impl<T> From<&handle::Strong<T>> for Weak<T> {
     fn from(handle: &handle::Strong<T>) -> Self {
-        Self::new(handle.key)
+        Self::new(*handle.key())
     }
 }
 

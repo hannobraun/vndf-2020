@@ -37,6 +37,10 @@ impl<T> Strong<T> {
         }
     }
 
+    pub(crate) fn key(&self) -> &DefaultKey {
+        &self.key
+    }
+
     pub fn into_untyped(self) -> Strong<Untyped> {
         Strong {
             key:     self.key,
