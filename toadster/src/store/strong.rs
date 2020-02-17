@@ -20,7 +20,7 @@ use crate::{
 
 
 pub struct Strong<T> {
-    inner:   DenseSlotMap<DefaultKey, T>,
+    inner:   DenseSlotMap<DefaultKey, Entry<T>>,
     changes: Arc<Mutex<Changes<T>>>,
     removed: EventBuf<handle::Weak<T>>,
 }
@@ -40,7 +40,7 @@ impl<T> Strong<T> {
 
     pub fn insert(&mut self, value: T) -> handle::Strong<T> {
         handle::Strong::new(
-            self.inner.insert(value),
+            self.inner.insert(Entry::new(value)),
             self.changes.clone(),
         )
     }
@@ -53,7 +53,7 @@ impl<T> Strong<T> {
             self.removed.sink().push(handle)
         }
 
-        result
+        result.map(|entry| entry.value)
     }
 
     pub fn remove_later(&self, handle: handle::Strong<T>) {
@@ -65,12 +65,14 @@ impl<T> Strong<T> {
         -> Option<&T>
     {
         self.inner.get(handle.into().0)
+            .map(|entry| &entry.value)
     }
 
     pub fn get_mut(&mut self, handle: impl Into<handle::Weak<T>>)
         -> Option<&mut T>
     {
         self.inner.get_mut(handle.into().0)
+            .map(|entry| &mut entry.value)
     }
 
     pub fn iter(&self) -> Iter<T> {
@@ -144,6 +146,19 @@ impl<'a, T> IntoIterator for &'a mut Strong<T> {
 }
 
 
+struct Entry<T> {
+    value: T,
+}
+
+impl<T> Entry<T> {
+    fn new(value: T) -> Self {
+        Self {
+            value,
+        }
+    }
+}
+
+
 pub(crate) struct Changes<T> {
     remove: Vec<handle::Strong<T>>,
 }
@@ -164,7 +179,7 @@ impl<T> Default for Changes<T> {
 
 
 pub struct Iter<'a, T> {
-    inner:   dense::Iter<'a, DefaultKey, T>,
+    inner:   dense::Iter<'a, DefaultKey, Entry<T>>,
     changes: Arc<Mutex<Changes<T>>>,
 }
 
@@ -173,15 +188,18 @@ impl<'a, T> Iterator for Iter<'a, T> {
 
     fn next(&mut self) -> Option<Self::Item> {
         self.inner.next()
-            .map(|(key, value)|
-                (handle::Strong::new(key, self.changes.clone()), value)
-            )
+            .map(|(key, entry)| {
+                let handle = handle::Strong::new(key, self.changes.clone());
+                let value  = &entry.value;
+
+                (handle, value)
+            })
     }
 }
 
 
 pub struct IterMut<'a, T> {
-    inner:   dense::IterMut<'a, DefaultKey, T>,
+    inner:   dense::IterMut<'a, DefaultKey, Entry<T>>,
     changes: Arc<Mutex<Changes<T>>>,
 }
 
@@ -190,31 +208,36 @@ impl<'a, T> Iterator for IterMut<'a, T> {
 
     fn next(&mut self) -> Option<Self::Item> {
         self.inner.next()
-            .map(|(key, value)|
-                (handle::Strong::new(key, self.changes.clone()), value)
-            )
+            .map(|(key, entry)| {
+                let handle = handle::Strong::new(key, self.changes.clone());
+                let value  = &mut entry.value;
+
+                (handle, value)
+            })
     }
 }
 
 
-pub struct Values<'a, T>(dense::Values<'a, DefaultKey, T>);
+pub struct Values<'a, T>(dense::Values<'a, DefaultKey, Entry<T>>);
 
 impl<'a, T> Iterator for Values<'a, T> {
     type Item = &'a T;
 
     fn next(&mut self) -> Option<Self::Item> {
         self.0.next()
+            .map(|entry| &entry.value)
     }
 }
 
 
-pub struct ValuesMut<'a, T>(dense::ValuesMut<'a, DefaultKey, T>);
+pub struct ValuesMut<'a, T>(dense::ValuesMut<'a, DefaultKey, Entry<T>>);
 
 impl<'a, T> Iterator for ValuesMut<'a, T> {
     type Item = &'a mut T;
 
     fn next(&mut self) -> Option<Self::Item> {
         self.0.next()
+            .map(|entry| &mut entry.value)
     }
 }
 
