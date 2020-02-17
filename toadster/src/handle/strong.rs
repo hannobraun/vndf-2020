@@ -20,8 +20,7 @@ use crate::{
 
 
 pub struct Strong<T> {
-    pub(crate) key: DefaultKey,
-
+    key:     DefaultKey,
     changes: Arc<Mutex<Changes<T>>>,
     _data:   PhantomData<T>,
 }
