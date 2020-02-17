@@ -39,7 +39,7 @@ impl<T> Strong<T> {
     }
 
     pub fn insert(&mut self, value: T) -> handle::Strong<T> {
-        handle::Strong::new(
+        handle::Strong::from_key(
             self.inner.insert(Entry::new(value)),
             self.changes.clone(),
         )
@@ -184,10 +184,12 @@ impl<'a, T> Iterator for Iter<'a, T> {
     fn next(&mut self) -> Option<Self::Item> {
         self.inner.next()
             .map(|(key, entry)| {
-                let handle = handle::Strong::new(key, self.changes.clone());
-                let value  = &entry.value;
+                let handle = handle::Strong::from_key(
+                    key,
+                    self.changes.clone(),
+                );
 
-                (handle, value)
+                (handle, &entry.value)
             })
     }
 }
@@ -204,10 +206,11 @@ impl<'a, T> Iterator for IterMut<'a, T> {
     fn next(&mut self) -> Option<Self::Item> {
         self.inner.next()
             .map(|(key, entry)| {
-                let handle = handle::Strong::new(key, self.changes.clone());
-                let value  = &mut entry.value;
-
-                (handle, value)
+                let handle = handle::Strong::from_key(
+                    key,
+                    self.changes.clone(),
+                );
+                (handle, &mut entry.value)
             })
     }
 }

@@ -30,7 +30,7 @@ pub struct Strong<T> {
 }
 
 impl<T> Strong<T> {
-    pub(crate) fn new(key: DefaultKey, changes: Arc<Mutex<Changes<T>>>)
+    pub(crate) fn from_key(key: DefaultKey, changes: Arc<Mutex<Changes<T>>>)
         -> Self
     {
         Self {
@@ -57,7 +57,7 @@ impl<T> Strong<T> {
 
 impl<T> Clone for Strong<T> {
     fn clone(&self) -> Self {
-        Self::new(self.inner.key(), self.changes.clone())
+        Self::from_key(self.inner.key(), self.changes.clone())
     }
 }
 
