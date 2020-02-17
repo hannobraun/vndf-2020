@@ -60,6 +60,14 @@ macro_rules! components {
                 }
             }
 
+            pub fn is_strong(&self) -> bool {
+                match self {
+                    $(
+                        Self::$component(handle) => handle.is_strong(),
+                    )*
+                }
+            }
+
             pub fn into_weak(self) -> Self {
                 match self {
                     $(
