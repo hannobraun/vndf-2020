@@ -74,6 +74,13 @@ impl<T> Handle<T> {
             Self::Weak(handle)   => *handle,
         }
     }
+
+    pub fn into_weak(self) -> Self {
+        match self {
+            Self::Strong(handle) => Self::Weak(handle.into()),
+            Self::Weak(handle)   => Self::Weak(handle),
+        }
+    }
 }
 
 impl<T> From<Strong<T>> for Handle<T> {
