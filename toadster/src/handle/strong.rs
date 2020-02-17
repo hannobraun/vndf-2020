@@ -40,8 +40,8 @@ impl<T> Strong<T> {
         }
     }
 
-    pub(crate) fn key(&self) -> &DefaultKey {
-        &self.inner.0
+    pub(crate) fn key(&self) -> DefaultKey {
+        self.inner.0
     }
 
     pub fn into_untyped(self) -> Strong<Untyped> {
