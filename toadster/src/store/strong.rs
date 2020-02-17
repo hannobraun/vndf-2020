@@ -56,7 +56,7 @@ impl<T> Strong<T> {
         result.map(|entry| entry.value)
     }
 
-    pub fn remove_later(&self, handle: handle::Strong<T>) {
+    pub fn remove_later(&self, handle: impl Into<handle::Weak<T>>) {
         let mut changes = self.changes.lock().unwrap();
         changes.remove.push(handle.into());
     }
