@@ -14,13 +14,16 @@ use std::{
 use slotmap::DefaultKey;
 
 use crate::{
-    handle::Untyped,
+    handle::{
+        Untyped,
+        Weak,
+    },
     store::strong::Changes,
 };
 
 
 pub struct Strong<T> {
-    key:     DefaultKey,
+    inner:   Weak<T>,
     changes: Arc<Mutex<Changes<T>>>,
     _data:   PhantomData<T>,
 }
@@ -30,19 +33,19 @@ impl<T> Strong<T> {
         -> Self
     {
         Self {
-            key,
+            inner: Weak::new(key),
             changes,
             _data: PhantomData,
         }
     }
 
     pub(crate) fn key(&self) -> &DefaultKey {
-        &self.key
+        &self.inner.0
     }
 
     pub fn into_untyped(self) -> Strong<Untyped> {
         Strong {
-            key:     self.key,
+            inner: Weak::new(self.inner.0),
             // This is a short-term hack. It makes no difference right now, and
             // the type parameter will be gone from `Changes` shortly.
             changes: unsafe { std::mem::transmute(self.changes) },
@@ -53,14 +56,14 @@ impl<T> Strong<T> {
 
 impl<T> Clone for Strong<T> {
     fn clone(&self) -> Self {
-        Self::new(self.key.clone(), self.changes.clone())
+        Self::new(self.inner.0, self.changes.clone())
     }
 }
 
 impl<T> fmt::Debug for Strong<T> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "handle::Strong<T>(")?;
-        self.key.fmt(f)?;
+        self.inner.0.fmt(f)?;
         write!(f, ", PhantomData)")?;
 
         Ok(())
@@ -71,12 +74,12 @@ impl<T> Eq for Strong<T> {}
 
 impl<T> PartialEq for Strong<T> {
     fn eq(&self, other: &Self) -> bool {
-        self.key.eq(&other.key)
+        self.inner.0.eq(&other.inner.0)
     }
 }
 
 impl<T> Hash for Strong<T> {
     fn hash<H>(&self, state: &mut H) where H: Hasher {
-        self.key.hash(state)
+        self.inner.0.hash(state)
     }
 }
