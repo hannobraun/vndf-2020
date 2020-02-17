@@ -48,8 +48,6 @@ impl Feature {
         ships:      &mut store::Strong<Ship>,
         velocities: &mut store::Strong<Velocity>,
     ) {
-        self.loots.apply_changes();
-
         spawn_random_loot(
             event.dt,
             bodies,

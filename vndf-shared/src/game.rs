@@ -87,6 +87,21 @@ impl State {
 
     pub fn dispatch(&mut self) {
         for event in self.base.update.source().ready() {
+            self.crafts.crafts.apply_changes();
+            self.crafts.fuels.apply_changes();
+            self.explosions.explosions.apply_changes();
+            self.health.healths.apply_changes();
+            self.loot.loots.apply_changes();
+            self.missiles.guidances.apply_changes();
+            self.missiles.missiles.apply_changes();
+            self.missiles.targets.apply_changes();
+            self.physics.bodies.apply_changes();
+            self.physics.directions.apply_changes();
+            self.physics.positions.apply_changes();
+            self.physics.velocities.apply_changes();
+            self.players.players.apply_changes();
+            self.ships.ships.apply_changes();
+
             self.crafts.on_update(
                 &event,
                 &mut self.physics.bodies,
