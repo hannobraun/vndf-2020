@@ -1,4 +1,5 @@
 use std::{
+    any::TypeId,
     fmt,
     hash::{
         Hash,
@@ -23,6 +24,7 @@ use crate::handle::{
 
 pub struct Weak<T> {
     inner: DefaultKey,
+    kind:  Option<TypeId>,
     _data: PhantomData<T>,
 }
 
@@ -30,6 +32,7 @@ impl<T> Weak<T> {
     pub(crate) fn new(key: DefaultKey) -> Self {
         Self {
             inner: key,
+            kind:  None,
             _data: PhantomData,
         }
     }
@@ -38,8 +41,16 @@ impl<T> Weak<T> {
         self.inner
     }
 
-    pub fn into_untyped(self) -> Weak<Untyped> {
-        Weak::new(self.key())
+    pub fn into_untyped(self) -> Weak<Untyped> where T: 'static {
+        let mut handle = Weak::new(self.key());
+
+        // Let's make sure there's something to distinguish handles of different
+        // types. The whole point of untyped handles is being able to mix
+        // handles of originally different types, but if they end up being equal
+        // to each other, that's no good.
+        handle.kind = Some(TypeId::of::<T>());
+
+        handle
     }
 }
 
@@ -83,13 +94,14 @@ impl<T> Eq for Weak<T> {}
 
 impl<T> PartialEq for Weak<T> {
     fn eq(&self, other: &Self) -> bool {
-        self.key().eq(&other.key())
+        self.key().eq(&other.key()) && self.kind.eq(&other.kind)
     }
 }
 
 impl<T> Hash for Weak<T> {
     fn hash<H>(&self, state: &mut H) where H: Hasher {
-        self.key().hash(state)
+        self.key().hash(state);
+        self.kind.hash(state);
     }
 }
 
