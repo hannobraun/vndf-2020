@@ -71,11 +71,11 @@ impl<T> Strong<T> {
     }
 
     pub fn iter(&self) -> Iter<T> {
-        Iter(self.inner.iter())
+        Iter { inner: self.inner.iter() }
     }
 
     pub fn iter_mut(&mut self) -> IterMut<T> {
-        IterMut(self.inner.iter_mut())
+        IterMut { inner: self.inner.iter_mut() }
     }
 
     pub fn values(&self) -> dense::Values<DefaultKey, T> {
@@ -135,25 +135,29 @@ impl<'a, T> IntoIterator for &'a mut Strong<T> {
 }
 
 
-pub struct Iter<'a, T>(dense::Iter<'a, DefaultKey, T>);
+pub struct Iter<'a, T> {
+    inner: dense::Iter<'a, DefaultKey, T>,
+}
 
 impl<'a, T> Iterator for Iter<'a, T> {
     type Item = (handle::Strong<T>, &'a T);
 
     fn next(&mut self) -> Option<Self::Item> {
-        self.0.next()
+        self.inner.next()
             .map(|(key, value)| (handle::Strong::new(key), value))
     }
 }
 
 
-pub struct IterMut<'a, T>(dense::IterMut<'a, DefaultKey, T>);
+pub struct IterMut<'a, T> {
+    inner: dense::IterMut<'a, DefaultKey, T>,
+}
 
 impl<'a, T> Iterator for IterMut<'a, T> {
     type Item = (handle::Strong<T>, &'a mut T);
 
     fn next(&mut self) -> Option<Self::Item> {
-        self.0.next()
+        self.inner.next()
             .map(|(key, value)| (handle::Strong::new(key), value))
     }
 }
