@@ -63,7 +63,7 @@ impl<T> Strong<T> {
 
 impl<T> Clone for Strong<T> {
     fn clone(&self) -> Self {
-        Self::from_key(self.inner.key(), self.changes.clone())
+        Self::from_handle(self.inner, self.changes.clone())
     }
 }
 
