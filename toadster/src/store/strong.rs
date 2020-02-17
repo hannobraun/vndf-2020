@@ -171,12 +171,6 @@ impl<T> Changes<T> {
     }
 }
 
-impl<T> Default for Changes<T> {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
 
 pub struct Iter<'a, T> {
     inner:   dense::Iter<'a, DefaultKey, Entry<T>>,
