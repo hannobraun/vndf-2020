@@ -26,6 +26,10 @@ impl Health {
         }
     }
 
+    pub fn finalize(&mut self, parent: ComponentHandle) {
+        self.parent = Some(parent);
+    }
+
     pub fn parent(self) -> Option<ComponentHandle> {
         self.parent
     }
