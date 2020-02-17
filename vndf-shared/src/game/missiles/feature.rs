@@ -105,6 +105,7 @@ impl Feature {
         velocities: &mut store::Strong<Velocity>,
     ) {
         launch_missile(
+            event.missile,
             bodies,
             crafts,
             directions,
@@ -115,7 +116,6 @@ impl Feature {
             positions,
             &mut self.targets,
             velocities,
-            event.missile,
         );
     }
 }

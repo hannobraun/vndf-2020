@@ -23,6 +23,7 @@ use super::{
 
 
 pub fn launch_missile(
+    missile:    MissileEntity,
     bodies:     &mut store::Strong<Body>,
     crafts:     &mut store::Strong<Craft>,
     directions: &mut store::Strong<Direction>,
@@ -33,7 +34,6 @@ pub fn launch_missile(
     positions:  &mut store::Strong<Position>,
     targets:    &mut store::Strong<Target>,
     velocities: &mut store::Strong<Velocity>,
-    missile:    MissileEntity,
 ) {
     missile.create(
         bodies,
