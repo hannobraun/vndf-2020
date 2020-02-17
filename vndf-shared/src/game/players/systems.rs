@@ -9,13 +9,15 @@ use std::{
 use log::warn;
 use rinnsal::EventSink;
 use toadster::{
-    handle,
+    handle::{
+        self,
+        Untyped,
+    },
     store,
 };
 
 use crate::{
     game::{
-        base::ComponentHandle,
         crafts::{
             Craft,
             Fuel,
@@ -59,7 +61,7 @@ pub fn connect_player(
     velocities:     &mut store::Strong<Velocity>,
     player_created: &mut EventSink<PlayerCreated>,
     index:          &mut HashMap<SocketAddr, handle::Strong<Player>>,
-    entities:       &mut HashSet<ComponentHandle>,
+    entities:       &mut HashSet<handle::Strong<Untyped>>,
 ) {
     let handle = players.insert(Player::new(id, addr));
     index.insert(addr, handle);

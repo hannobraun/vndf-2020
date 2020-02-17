@@ -1,6 +1,12 @@
 use std::collections::HashSet;
 
-use toadster::store;
+use toadster::{
+    handle::{
+        self,
+        Untyped,
+    },
+    store,
+};
 
 use crate::game::{
     base::ComponentHandle,
@@ -36,7 +42,7 @@ impl ShipEntity {
         positions:  &mut store::Strong<Position>,
         ships:      &mut store::Strong<Ship>,
         velocities: &mut store::Strong<Velocity>,
-        entities:   &mut HashSet<ComponentHandle>,
+        entities:   &mut HashSet<handle::Strong<Untyped>>,
     ) {
         const THRUST: f32 =    2.5;
         const FUEL:   f32 = 1200.0;

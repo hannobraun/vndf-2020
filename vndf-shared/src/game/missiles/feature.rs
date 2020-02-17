@@ -1,13 +1,16 @@
 use std::collections::HashSet;
 
 use rinnsal::EventBuf;
-use toadster::store;
+use toadster::{
+    handle::{
+        self,
+        Untyped,
+    },
+    store,
+};
 
 use crate::game::{
-    base::{
-        ComponentHandle,
-        Update,
-    },
+    base::Update,
     crafts::{
         Craft,
         Fuel,
@@ -108,7 +111,7 @@ impl Feature {
         healths:    &mut store::Strong<Health>,
         positions:  &mut store::Strong<Position>,
         velocities: &mut store::Strong<Velocity>,
-        entities:   &mut HashSet<ComponentHandle>,
+        entities:   &mut HashSet<handle::Strong<Untyped>>,
     ) {
         launch_missile(
             event.missile,

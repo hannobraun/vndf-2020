@@ -15,12 +15,14 @@ use serde::{
     Serialize,
 };
 use toadster::{
-    handle,
+    handle::{
+        self,
+        Untyped,
+    },
     store,
 };
 
 use crate::game::{
-    base::ComponentHandle,
     crafts::{
         Craft,
         Fuel,
@@ -88,7 +90,7 @@ impl Feature {
         positions:  &mut store::Strong<Position>,
         ships:      &mut store::Strong<Ship>,
         velocities: &mut store::Strong<Velocity>,
-        entities:   &mut HashSet<ComponentHandle>,
+        entities:   &mut HashSet<handle::Strong<Untyped>>,
     ) {
         connect_player(
             self.next_id.increment(),

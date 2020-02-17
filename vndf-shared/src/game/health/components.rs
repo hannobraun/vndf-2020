@@ -4,7 +4,13 @@ use serde::{
     Deserialize,
     Serialize,
 };
-use toadster::Handle;
+use toadster::{
+    Handle,
+    handle::{
+        self,
+        Untyped,
+    },
+};
 
 use crate::game::{
     base::ComponentHandle,
@@ -31,15 +37,10 @@ impl Health {
 
     pub fn finalize(&mut self,
         parent:   ComponentHandle,
-        entities: &mut HashSet<ComponentHandle>,
+        entities: &mut HashSet<handle::Strong<Untyped>>,
     ) {
-        // The handle we add to the index needs to be strong (to keep the
-        // entities therein alive), but we need a weak handle to the parent, as
-        // to prevent a memory leak through the resulting loop.
-        assert!(parent.is_strong());
-
         self.parent = Some(parent.as_weak());
-        entities.insert(parent);
+        entities.insert(parent.into_strong_untyped());
     }
 
     pub fn parent(self) -> Option<ComponentHandle> {

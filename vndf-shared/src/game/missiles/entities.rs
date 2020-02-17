@@ -1,6 +1,12 @@
 use std::collections::HashSet;
 
-use toadster::store;
+use toadster::{
+    handle::{
+        self,
+        Untyped,
+    },
+    store,
+};
 
 use crate::{
     game::{
@@ -50,7 +56,7 @@ impl MissileEntity {
         positions:  &mut store::Strong<Position>,
         targets:    &mut store::Strong<Target>,
         velocities: &mut store::Strong<Velocity>,
-        entities:   &mut HashSet<ComponentHandle>,
+        entities:   &mut HashSet<handle::Strong<Untyped>>,
     )
         -> Option<()>
     {
