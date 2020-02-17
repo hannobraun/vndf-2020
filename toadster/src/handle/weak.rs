@@ -27,6 +27,10 @@ impl<T> Weak<T> {
         Self(key, PhantomData)
     }
 
+    pub(crate) fn key(&self) -> DefaultKey {
+        self.0
+    }
+
     pub fn into_untyped(self) -> Weak<Untyped> {
         Weak::new(self.0)
     }

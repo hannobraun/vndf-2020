@@ -47,7 +47,7 @@ impl<T> Strong<T> {
 
     pub fn remove(&mut self, handle: impl Into<handle::Weak<T>>) -> Option<T> {
         let handle = handle.into();
-        let result = self.inner.remove(handle.0);
+        let result = self.inner.remove(handle.key());
 
         if result.is_some() {
             self.removed.sink().push(handle)
@@ -64,14 +64,14 @@ impl<T> Strong<T> {
     pub fn get(&self, handle: impl Into<handle::Weak<T>>)
         -> Option<&T>
     {
-        self.inner.get(handle.into().0)
+        self.inner.get(handle.into().key())
             .map(|entry| &entry.value)
     }
 
     pub fn get_mut(&mut self, handle: impl Into<handle::Weak<T>>)
         -> Option<&mut T>
     {
-        self.inner.get_mut(handle.into().0)
+        self.inner.get_mut(handle.into().key())
             .map(|entry| &mut entry.value)
     }
 
@@ -100,7 +100,7 @@ impl<T> Strong<T> {
     pub fn apply_changes(&mut self) {
         let mut changes = self.changes.lock().unwrap();
         for handle in changes.remove.drain(..) {
-            let result = self.inner.remove(handle.0);
+            let result = self.inner.remove(handle.key());
 
             if result.is_some() {
                 self.removed.sink().push((&handle).into())

@@ -41,12 +41,12 @@ impl<T> Strong<T> {
     }
 
     pub(crate) fn key(&self) -> DefaultKey {
-        self.inner.0
+        self.inner.key()
     }
 
     pub fn into_untyped(self) -> Strong<Untyped> {
         Strong {
-            inner: Weak::new(self.inner.0),
+            inner: Weak::new(self.inner.key()),
             // This is a short-term hack. It makes no difference right now, and
             // the type parameter will be gone from `Changes` shortly.
             changes: unsafe { std::mem::transmute(self.changes) },
@@ -57,14 +57,14 @@ impl<T> Strong<T> {
 
 impl<T> Clone for Strong<T> {
     fn clone(&self) -> Self {
-        Self::new(self.inner.0, self.changes.clone())
+        Self::new(self.inner.key(), self.changes.clone())
     }
 }
 
 impl<T> fmt::Debug for Strong<T> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "handle::Strong<T>(")?;
-        self.inner.0.fmt(f)?;
+        self.inner.key().fmt(f)?;
         write!(f, ", PhantomData)")?;
 
         Ok(())
@@ -75,7 +75,7 @@ impl<T> Eq for Strong<T> {}
 
 impl<T> PartialEq for Strong<T> {
     fn eq(&self, other: &Self) -> bool {
-        self.inner.0.eq(&other.inner.0)
+        self.inner.key().eq(&other.inner.key())
     }
 }
 
