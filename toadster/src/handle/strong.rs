@@ -5,21 +5,31 @@ use std::{
         Hasher,
     },
     marker::PhantomData,
+    sync::{
+        Arc,
+        Mutex,
+    },
 };
 
 use slotmap::DefaultKey;
+
+use crate::store::strong::Changes;
 
 
 pub struct Strong<T> {
     pub(crate) key: DefaultKey,
 
-    _data: PhantomData<T>,
+    changes: Arc<Mutex<Changes<T>>>,
+    _data:   PhantomData<T>,
 }
 
 impl<T> Strong<T> {
-    pub(crate) fn new(key: DefaultKey) -> Self {
+    pub(crate) fn new(key: DefaultKey, changes: Arc<Mutex<Changes<T>>>)
+        -> Self
+    {
         Self {
             key,
+            changes,
             _data: PhantomData,
         }
     }
@@ -27,7 +37,7 @@ impl<T> Strong<T> {
 
 impl<T> Clone for Strong<T> {
     fn clone(&self) -> Self {
-        Self::new(self.key.clone())
+        Self::new(self.key.clone(), self.changes.clone())
     }
 }
 

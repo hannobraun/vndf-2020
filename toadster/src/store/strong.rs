@@ -39,7 +39,10 @@ impl<T> Strong<T> {
     }
 
     pub fn insert(&mut self, value: T) -> handle::Strong<T> {
-        handle::Strong::new(self.inner.insert(value))
+        handle::Strong::new(
+            self.inner.insert(value),
+            self.changes.clone(),
+        )
     }
 
     pub fn remove(&mut self, handle: impl Into<handle::Weak<T>>) -> Option<T> {
@@ -71,11 +74,17 @@ impl<T> Strong<T> {
     }
 
     pub fn iter(&self) -> Iter<T> {
-        Iter { inner: self.inner.iter() }
+        Iter {
+            inner:   self.inner.iter(),
+            changes: self.changes.clone(),
+        }
     }
 
     pub fn iter_mut(&mut self) -> IterMut<T> {
-        IterMut { inner: self.inner.iter_mut() }
+        IterMut {
+            inner:   self.inner.iter_mut(),
+            changes: self.changes.clone(),
+        }
     }
 
     pub fn values(&self) -> dense::Values<DefaultKey, T> {
@@ -136,7 +145,8 @@ impl<'a, T> IntoIterator for &'a mut Strong<T> {
 
 
 pub struct Iter<'a, T> {
-    inner: dense::Iter<'a, DefaultKey, T>,
+    inner:   dense::Iter<'a, DefaultKey, T>,
+    changes: Arc<Mutex<Changes<T>>>,
 }
 
 impl<'a, T> Iterator for Iter<'a, T> {
@@ -144,13 +154,16 @@ impl<'a, T> Iterator for Iter<'a, T> {
 
     fn next(&mut self) -> Option<Self::Item> {
         self.inner.next()
-            .map(|(key, value)| (handle::Strong::new(key), value))
+            .map(|(key, value)|
+                (handle::Strong::new(key, self.changes.clone()), value)
+            )
     }
 }
 
 
 pub struct IterMut<'a, T> {
-    inner: dense::IterMut<'a, DefaultKey, T>,
+    inner:   dense::IterMut<'a, DefaultKey, T>,
+    changes: Arc<Mutex<Changes<T>>>,
 }
 
 impl<'a, T> Iterator for IterMut<'a, T> {
@@ -158,7 +171,9 @@ impl<'a, T> Iterator for IterMut<'a, T> {
 
     fn next(&mut self) -> Option<Self::Item> {
         self.inner.next()
-            .map(|(key, value)| (handle::Strong::new(key), value))
+            .map(|(key, value)|
+                (handle::Strong::new(key, self.changes.clone()), value)
+            )
     }
 }
 
