@@ -5,6 +5,7 @@ use serde::{
     Serialize,
 };
 use toadster::{
+    Handle,
     handle,
     store,
 };
@@ -27,7 +28,7 @@ use crate::{
 
 #[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
 pub struct Loot {
-    pub body:     handle::Strong<Body>,
+    pub body:     Handle<Body>,
     pub fuel:     f32,
     pub missiles: u64,
 }

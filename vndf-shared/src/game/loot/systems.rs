@@ -68,7 +68,7 @@ pub fn spawn_death_loot(
         let body = bodies.insert(Body::new(pos, vel, dir));
 
         let loot = Loot {
-            body,
+            body:     body.into(),
             fuel:     fuel.0 / 10.0,
             missiles: ship.missiles / 10,
         };
@@ -110,7 +110,7 @@ pub fn spawn_random_loot(
         let body = bodies.insert(Body::new(pos, vel, dir));
 
         let loot = Loot {
-            body,
+            body:     body.into(),
             fuel:     thread_rng().gen_range(15.0, 100.0),
             missiles: thread_rng().gen_range(1, 5),
         };
