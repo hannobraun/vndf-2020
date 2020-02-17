@@ -33,7 +33,9 @@ impl Health {
         parent:   ComponentHandle,
         entities: &mut HashSet<ComponentHandle>,
     ) {
+        assert!(parent.is_strong());
         let parent = parent.into_weak();
+
         self.parent = Some(parent.clone());
         entities.insert(parent);
     }
