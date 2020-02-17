@@ -100,6 +100,15 @@ macro_rules! components {
                     )*
                 }
             }
+
+            pub fn into_weak_untyped(self) -> handle::Weak<Untyped> {
+                match self {
+                    $(
+                        Self::$component(handle) =>
+                            handle.weak().into_untyped(),
+                    )*
+                }
+            }
         }
     };
 }
