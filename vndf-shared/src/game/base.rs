@@ -59,6 +59,15 @@ macro_rules! components {
                     )*
                 }
             }
+
+            pub fn into_weak(self) -> Self {
+                match self {
+                    $(
+                        Self::$component(handle) =>
+                            Self::$component(handle.into_weak()),
+                    )*
+                }
+            }
         }
     };
 }
