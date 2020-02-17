@@ -26,6 +26,14 @@ impl Health {
         }
     }
 
+    pub fn parent(self) -> Option<ComponentHandle> {
+        self.parent
+    }
+
+    pub fn parent_ref(&self) -> Option<&ComponentHandle> {
+        self.parent.as_ref()
+    }
+
     pub fn is_dead(&self) -> bool {
         self.value <= 0.0
     }

@@ -47,7 +47,7 @@ pub fn spawn_death_loot(
 {
     let health = healths.get(handle)?;
 
-    if let ComponentHandle::Ship(handle) = health.parent.as_ref()? {
+    if let ComponentHandle::Ship(handle) = health.parent_ref()? {
         let ship  = ships.get(handle)?;
         let craft = crafts.get(&ship.craft)?;
         let fuel  = fuels.get(&craft.fuel)?;

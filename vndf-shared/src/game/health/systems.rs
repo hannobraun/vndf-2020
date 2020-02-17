@@ -60,7 +60,7 @@ pub fn remove_entity(
 {
     let health = healths.remove(handle)?;
 
-    match health.parent? {
+    match health.parent()? {
         ComponentHandle::Missile(handle) => {
             Missile::remove(
                 handle,
