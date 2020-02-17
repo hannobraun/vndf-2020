@@ -23,10 +23,6 @@ impl<T> Weak<T> {
     pub(crate) fn new(key: DefaultKey) -> Self {
         Self(key, PhantomData)
     }
-
-    pub fn upgrade(self) -> handle::Strong<T> {
-        handle::Strong::new(self.0)
-    }
 }
 
 impl<T> From<handle::Strong<T>> for Weak<T> {
