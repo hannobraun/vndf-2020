@@ -141,7 +141,7 @@ impl Ship {
     }
 
     pub fn remove(
-        handle:     handle::Strong<Ship>,
+        handle:     impl Into<handle::Weak<Ship>>,
         bodies:     &mut store::Strong<Body>,
         crafts:     &mut store::Strong<Craft>,
         directions: &mut store::Strong<Direction>,
