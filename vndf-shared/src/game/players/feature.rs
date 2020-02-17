@@ -1,5 +1,8 @@
 use std::{
-    collections::HashMap,
+    collections::{
+        HashMap,
+        HashSet,
+    },
     net::SocketAddr,
 };
 
@@ -17,6 +20,7 @@ use toadster::{
 };
 
 use crate::game::{
+    base::ComponentHandle,
     crafts::{
         Craft,
         Fuel,
@@ -84,6 +88,7 @@ impl Feature {
         positions:  &mut store::Strong<Position>,
         ships:      &mut store::Strong<Ship>,
         velocities: &mut store::Strong<Velocity>,
+        entities:   &mut HashSet<ComponentHandle>,
     ) {
         connect_player(
             self.next_id.increment(),
@@ -100,6 +105,7 @@ impl Feature {
             velocities,
             &mut self.player_created.sink(),
             &mut self.players_by_address,
+            entities,
         );
     }
 

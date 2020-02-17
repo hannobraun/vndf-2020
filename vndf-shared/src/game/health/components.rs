@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 use serde::{
     Deserialize,
     Serialize,
@@ -27,8 +29,13 @@ impl Health {
         }
     }
 
-    pub fn finalize(&mut self, parent: ComponentHandle) {
-        self.parent = Some(parent);
+    pub fn finalize(&mut self,
+        parent:   ComponentHandle,
+        entities: &mut HashSet<ComponentHandle>,
+    ) {
+        let parent = parent.into_weak();
+        self.parent = Some(parent.clone());
+        entities.insert(parent);
     }
 
     pub fn parent(self) -> Option<ComponentHandle> {

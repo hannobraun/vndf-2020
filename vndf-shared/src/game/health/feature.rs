@@ -1,7 +1,10 @@
+use std::collections::HashSet;
+
 use rinnsal::EventBuf;
 use toadster::store;
 
 use crate::game::{
+    base::ComponentHandle,
     crafts::{
         Craft,
         Fuel,
@@ -29,15 +32,17 @@ use super::{
 
 
 pub struct Feature {
-    pub healths: store::Strong<Health>,
-    pub death:   EventBuf<Death>,
+    pub healths:  store::Strong<Health>,
+    pub death:    EventBuf<Death>,
+    pub entities: HashSet<ComponentHandle>,
 }
 
 impl Feature {
     pub fn new() -> Self {
         Self {
-            healths: store::Strong::new(),
-            death:   EventBuf::new(),
+            healths:  store::Strong::new(),
+            death:    EventBuf::new(),
+            entities: HashSet::new(),
         }
     }
 

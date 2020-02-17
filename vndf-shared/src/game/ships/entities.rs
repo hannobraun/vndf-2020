@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 use toadster::store;
 
 use crate::game::{
@@ -34,6 +36,7 @@ impl ShipEntity {
         positions:  &mut store::Strong<Position>,
         ships:      &mut store::Strong<Ship>,
         velocities: &mut store::Strong<Velocity>,
+        entities:   &mut HashSet<ComponentHandle>,
     ) {
         const THRUST: f32 =    2.5;
         const FUEL:   f32 = 1200.0;
@@ -60,6 +63,7 @@ impl ShipEntity {
         let ship = ships.insert(Ship::new(craft, self.color));
         healths.get_mut(&health).unwrap().finalize(
             ComponentHandle::Ship(ship.into()),
+            entities,
         );
     }
 }

@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 use toadster::store;
 
 use crate::{
@@ -48,6 +50,7 @@ impl MissileEntity {
         positions:  &mut store::Strong<Position>,
         targets:    &mut store::Strong<Target>,
         velocities: &mut store::Strong<Velocity>,
+        entities:   &mut HashSet<ComponentHandle>,
     )
         -> Option<()>
     {
@@ -96,6 +99,7 @@ impl MissileEntity {
         let missile = missiles.insert(Missile::new(craft, guidance, target));
         healths.get_mut(&health).unwrap().finalize(
             ComponentHandle::Missile(missile.into()),
+            entities,
         );
 
         Some(())

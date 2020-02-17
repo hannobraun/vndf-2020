@@ -1,5 +1,8 @@
 use std::{
-    collections::HashMap,
+    collections::{
+        HashMap,
+        HashSet,
+    },
     net::SocketAddr,
 };
 
@@ -12,6 +15,7 @@ use toadster::{
 
 use crate::{
     game::{
+        base::ComponentHandle,
         crafts::{
             Craft,
             Fuel,
@@ -55,6 +59,7 @@ pub fn connect_player(
     velocities:     &mut store::Strong<Velocity>,
     player_created: &mut EventSink<PlayerCreated>,
     index:          &mut HashMap<SocketAddr, handle::Strong<Player>>,
+    entities:       &mut HashSet<ComponentHandle>,
 ) {
     let handle = players.insert(Player::new(id, addr));
     index.insert(addr, handle);
@@ -68,6 +73,7 @@ pub fn connect_player(
         positions,
         ships,
         velocities,
+        entities,
     );
     player_created.push(PlayerCreated { id, addr });
 }

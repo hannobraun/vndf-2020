@@ -151,6 +151,7 @@ impl State {
                 &mut self.physics.positions,
                 &mut self.ships.ships,
                 &mut self.physics.velocities,
+                &mut self.health.entities,
             );
         }
         while let Some(event) =
@@ -177,6 +178,7 @@ impl State {
                 &mut self.health.healths,
                 &mut self.physics.positions,
                 &mut self.physics.velocities,
+                &mut self.health.entities,
             );
         }
         while let Some(event) = self.health.death.source().next() {

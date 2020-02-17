@@ -1,6 +1,9 @@
+use std::collections::HashSet;
+
 use toadster::store;
 
 use crate::game::{
+    base::ComponentHandle,
     crafts::{
         Craft,
         Fuel,
@@ -34,6 +37,7 @@ pub fn launch_missile(
     positions:  &mut store::Strong<Position>,
     targets:    &mut store::Strong<Target>,
     velocities: &mut store::Strong<Velocity>,
+    entities:   &mut HashSet<ComponentHandle>,
 ) {
     missile.create(
         bodies,
@@ -46,6 +50,7 @@ pub fn launch_missile(
         positions,
         targets,
         velocities,
+        entities,
     );
 }
 
