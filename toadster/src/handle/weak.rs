@@ -82,9 +82,11 @@ impl<T> Copy for Weak<T> {}
 
 impl<T> fmt::Debug for Weak<T> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "handle::Weak<T>(")?;
+        write!(f, "handle::Weak<T> {{ inner: ")?;
         self.key().fmt(f)?;
-        write!(f, ", PhantomData)")?;
+        write!(f, ", kind: ")?;
+        self.kind.fmt(f)?;
+        write!(f, ", data: PhantomData }}")?;
 
         Ok(())
     }
