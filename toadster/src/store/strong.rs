@@ -161,23 +161,6 @@ impl<'a, T> Iterator for Iter<'a, T> {
 }
 
 
-pub struct IterMut<'a, T> {
-    inner:   dense::IterMut<'a, DefaultKey, T>,
-    changes: Arc<Mutex<Changes<T>>>,
-}
-
-impl<'a, T> Iterator for IterMut<'a, T> {
-    type Item = (handle::Strong<T>, &'a mut T);
-
-    fn next(&mut self) -> Option<Self::Item> {
-        self.inner.next()
-            .map(|(key, value)|
-                (handle::Strong::new(key, self.changes.clone()), value)
-            )
-    }
-}
-
-
 pub(crate) struct Changes<T> {
     remove: Vec<handle::Strong<T>>,
 }
@@ -193,6 +176,23 @@ impl<T> Changes<T> {
 impl<T> Default for Changes<T> {
     fn default() -> Self {
         Self::new()
+    }
+}
+
+
+pub struct IterMut<'a, T> {
+    inner:   dense::IterMut<'a, DefaultKey, T>,
+    changes: Arc<Mutex<Changes<T>>>,
+}
+
+impl<'a, T> Iterator for IterMut<'a, T> {
+    type Item = (handle::Strong<T>, &'a mut T);
+
+    fn next(&mut self) -> Option<Self::Item> {
+        self.inner.next()
+            .map(|(key, value)|
+                (handle::Strong::new(key, self.changes.clone()), value)
+            )
     }
 }
 
