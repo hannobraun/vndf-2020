@@ -91,8 +91,8 @@ impl<T> Strong<T> {
         Values(self.inner.values())
     }
 
-    pub fn values_mut(&mut self) -> dense::ValuesMut<DefaultKey, T> {
-        self.inner.values_mut()
+    pub fn values_mut(&mut self) -> ValuesMut<T> {
+        ValuesMut(self.inner.values_mut())
     }
 
     pub fn apply_changes(&mut self) {
@@ -201,6 +201,17 @@ pub struct Values<'a, T>(dense::Values<'a, DefaultKey, T>);
 
 impl<'a, T> Iterator for Values<'a, T> {
     type Item = &'a T;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        self.0.next()
+    }
+}
+
+
+pub struct ValuesMut<'a, T>(dense::ValuesMut<'a, DefaultKey, T>);
+
+impl<'a, T> Iterator for ValuesMut<'a, T> {
+    type Item = &'a mut T;
 
     fn next(&mut self) -> Option<Self::Item> {
         self.0.next()
