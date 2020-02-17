@@ -13,7 +13,10 @@ use serde::{
 };
 use slotmap::DefaultKey;
 
-use crate::handle;
+use crate::handle::{
+    self,
+    Untyped,
+};
 
 
 #[derive(Deserialize, Serialize)]
@@ -22,6 +25,10 @@ pub struct Weak<T>(pub(crate) DefaultKey, PhantomData<T>);
 impl<T> Weak<T> {
     pub(crate) fn new(key: DefaultKey) -> Self {
         Self(key, PhantomData)
+    }
+
+    pub fn into_untyped(self) -> Weak<Untyped> {
+        Weak(self.0, PhantomData)
     }
 }
 
