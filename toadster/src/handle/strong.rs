@@ -1,4 +1,5 @@
 use std::{
+    borrow::Borrow,
     fmt,
     hash::{
         Hash,
@@ -78,8 +79,16 @@ impl<T> PartialEq for Strong<T> {
     }
 }
 
+// Most only rely on the inner `Weak`, to make sure the `Hash` and `Borrow`
+// implementations interact well with collections.
 impl<T> Hash for Strong<T> {
     fn hash<H>(&self, state: &mut H) where H: Hasher {
-        self.inner.0.hash(state)
+        self.inner.hash(state)
+    }
+}
+
+impl<T> Borrow<Weak<T>> for Strong<T> {
+    fn borrow(&self) -> &Weak<T> {
+        &self.inner
     }
 }
