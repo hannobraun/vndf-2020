@@ -20,7 +20,7 @@ use crate::handle::{
 
 
 #[derive(Deserialize, Serialize)]
-pub struct Weak<T>(pub(crate) DefaultKey, PhantomData<T>);
+pub struct Weak<T>(DefaultKey, PhantomData<T>);
 
 impl<T> Weak<T> {
     pub(crate) fn new(key: DefaultKey) -> Self {
