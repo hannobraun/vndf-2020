@@ -46,7 +46,7 @@ impl<T> Strong<T> {
 
     pub fn into_untyped(self) -> Strong<Untyped> {
         Strong {
-            inner: Weak::new(self.inner.key()),
+            inner: self.inner.into_untyped(),
             // This is a short-term hack. It makes no difference right now, and
             // the type parameter will be gone from `Changes` shortly.
             changes: unsafe { std::mem::transmute(self.changes) },
