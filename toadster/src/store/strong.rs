@@ -159,6 +159,7 @@ impl<T> Entry<T> {
 }
 
 
+#[derive(Debug)]
 pub(crate) struct Changes<T> {
     remove: Vec<handle::Weak<T>>,
 }
