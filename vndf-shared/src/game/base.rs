@@ -68,6 +68,15 @@ macro_rules! components {
                 }
             }
 
+            pub fn as_weak(&self) -> Self {
+                match self {
+                    $(
+                        Self::$component(handle) =>
+                            Self::$component(handle.as_weak()),
+                    )*
+                }
+            }
+
             pub fn into_weak(self) -> Self {
                 match self {
                     $(
