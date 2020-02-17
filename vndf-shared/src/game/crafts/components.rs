@@ -3,6 +3,7 @@ use serde::{
     Serialize,
 };
 use toadster::{
+    Handle,
     Store,
     handle,
     store,
@@ -28,9 +29,9 @@ use crate::{
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Craft {
-    pub body:   handle::Strong<Body>,
-    pub fuel:   handle::Strong<Fuel>,
-    pub health: handle::Strong<Health>,
+    pub body:   Handle<Body>,
+    pub fuel:   Handle<Fuel>,
+    pub health: Handle<Health>,
 
     pub engine_on: bool,
     pub thrust:    f32,
@@ -75,13 +76,13 @@ impl Craft {
         let craft = crafts.remove(handle)?;
 
         Body::remove(
-            craft.body,
+            craft.body.strong(),
             bodies,
             directions,
             positions,
             velocities,
         );
-        fuels.remove(craft.fuel);
+        fuels.remove(craft.fuel.strong());
 
         Some(())
     }

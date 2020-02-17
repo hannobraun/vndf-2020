@@ -77,9 +77,9 @@ impl MissileEntity {
         let health = healths.insert(Health::new(body.clone(), HEALTH));
 
         let craft = Craft {
-            body,
-            fuel,
-            health: health.clone(),
+            body:   body.into(),
+            fuel:   fuel.into(),
+            health: health.clone().into(),
 
             engine_on: true,
             thrust:    THRUST,
