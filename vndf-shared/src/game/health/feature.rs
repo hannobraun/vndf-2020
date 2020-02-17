@@ -70,7 +70,14 @@ impl Feature {
         ships:      &mut store::Strong<Ship>,
         targets:    &mut store::Strong<Target>,
         velocities: &mut store::Strong<Velocity>,
-    ) {
+    )
+        -> Option<()>
+    {
+        let health = self.healths.get(&event.handle)?;
+        let parent = health.parent_ref().unwrap().clone().into_weak_untyped();
+
+        self.index.remove(&parent);
+
         remove_entity(
             event.handle.clone(),
             bodies,
@@ -85,5 +92,7 @@ impl Feature {
             targets,
             velocities,
         );
+
+        Some(())
     }
 }
