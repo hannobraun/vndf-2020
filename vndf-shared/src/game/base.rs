@@ -12,7 +12,13 @@ use serde::{
     Deserialize,
     Serialize,
 };
-use toadster::Handle;
+use toadster::{
+    Handle,
+    handle::{
+        self,
+        Untyped,
+    },
+};
 
 use crate::{
     game::{
@@ -82,6 +88,15 @@ macro_rules! components {
                     $(
                         Self::$component(handle) =>
                             Self::$component(handle.into_weak()),
+                    )*
+                }
+            }
+
+            pub fn into_strong_untyped(self) -> handle::Strong<Untyped> {
+                match self {
+                    $(
+                        Self::$component(handle) =>
+                            handle.strong().into_untyped(),
                     )*
                 }
             }
