@@ -12,7 +12,8 @@ use crate::game::{
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Health {
-    pub parent: Option<ComponentHandle>,
+    parent: Option<ComponentHandle>,
+
     pub body:   Handle<Body>,
     pub value:  f32,
 }
