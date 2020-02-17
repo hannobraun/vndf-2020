@@ -38,7 +38,7 @@ impl Health {
         // to prevent a memory leak through the resulting loop.
         assert!(parent.is_strong());
 
-        self.parent = Some(parent.clone().into_weak());
+        self.parent = Some(parent.as_weak());
         entities.insert(parent);
     }
 
