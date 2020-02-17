@@ -87,7 +87,7 @@ impl MissileEntity {
         };
         let craft = crafts.insert(craft);
 
-        let target = Target { craft: craft.clone(), value: self.target };
+        let target = Target { craft: craft.clone().into(), value: self.target };
         let target = targets.insert(target);
 
         let guidance = Guidance::new(craft.clone(), target.clone());

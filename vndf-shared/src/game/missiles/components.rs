@@ -200,7 +200,7 @@ impl Guidance {
 
 #[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
 pub struct Target {
-    pub craft: handle::Strong<Craft>,
+    pub craft: Handle<Craft>,
     pub value: Pnt2,
 }
 
