@@ -62,6 +62,13 @@ pub enum Handle<T> {
 }
 
 impl<T> Handle<T> {
+    pub fn is_strong(&self) -> bool {
+        match self {
+            Self::Strong(_) => true,
+            Self::Weak(_)   => false,
+        }
+    }
+
     pub fn strong(self) -> Strong<T> {
         match self {
             Self::Strong(handle) => handle,
