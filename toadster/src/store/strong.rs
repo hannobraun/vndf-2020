@@ -163,7 +163,7 @@ impl<'a, T> Iterator for IterMut<'a, T> {
 }
 
 
-struct Changes<T> {
+pub(crate) struct Changes<T> {
     remove: Vec<handle::Strong<T>>,
 }
 
