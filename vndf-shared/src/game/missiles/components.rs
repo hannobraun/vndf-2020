@@ -4,6 +4,7 @@ use serde::{
     Serialize,
 };
 use toadster::{
+    Handle,
     handle,
     store,
 };
@@ -33,23 +34,23 @@ use crate::{
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Missile {
-    pub craft:    handle::Strong<Craft>,
-    pub guidance: handle::Strong<Guidance>,
-    pub target:   handle::Strong<Target>,
+    pub craft:    Handle<Craft>,
+    pub guidance: Handle<Guidance>,
+    pub target:   Handle<Target>,
 }
 
 impl Missile {
     pub fn new(
-        craft:    handle::Strong<Craft>,
-        guidance: handle::Strong<Guidance>,
-        target:   handle::Strong<Target>,
+        craft:    impl Into<Handle<Craft>>,
+        guidance: impl Into<Handle<Guidance>>,
+        target:   impl Into<Handle<Target>>,
     )
         -> Self
     {
         Self {
-            craft,
-            guidance,
-            target,
+            craft:    craft.into(),
+            guidance: guidance.into(),
+            target:   target.into(),
         }
     }
 
@@ -70,7 +71,7 @@ impl Missile {
         let missile = missiles.remove(handle)?;
 
         Craft::remove(
-            missile.craft,
+            missile.craft.strong(),
             bodies,
             crafts,
             directions,
@@ -78,8 +79,8 @@ impl Missile {
             positions,
             velocities,
         );
-        guidances.remove(missile.guidance);
-        targets.remove(missile.target);
+        guidances.remove(missile.guidance.strong());
+        targets.remove(missile.target.strong());
 
         Some(())
     }
