@@ -86,6 +86,9 @@ impl Feature {
         velocities: &mut store::Strong<Velocity>,
     ) {
         connect_player(
+            self.next_id.increment(),
+            event.addr,
+            event.color,
             bodies,
             crafts,
             directions,
@@ -97,9 +100,6 @@ impl Feature {
             velocities,
             &mut self.player_created.sink(),
             &mut self.players_by_address,
-            self.next_id.increment(),
-            event.addr,
-            event.color,
         );
     }
 

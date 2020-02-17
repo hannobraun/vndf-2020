@@ -41,6 +41,9 @@ use super::{
 
 
 pub fn connect_player(
+    id:             PlayerId,
+    addr:           SocketAddr,
+    color:          [f32; 3],
     bodies:         &mut store::Strong<Body>,
     crafts:         &mut store::Strong<Craft>,
     directions:     &mut store::Strong<Direction>,
@@ -52,9 +55,6 @@ pub fn connect_player(
     velocities:     &mut store::Strong<Velocity>,
     player_created: &mut EventSink<PlayerCreated>,
     index:          &mut HashMap<SocketAddr, handle::Strong<Player>>,
-    id:             PlayerId,
-    addr:           SocketAddr,
-    color:          [f32; 3],
 ) {
     let handle = players.insert(Player::new(id, addr));
     index.insert(addr, handle);
