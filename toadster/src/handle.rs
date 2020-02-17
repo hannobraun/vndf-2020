@@ -7,3 +7,6 @@ pub use self::{
     strong::Strong,
     weak::Weak,
 };
+
+
+pub enum Untyped {}
