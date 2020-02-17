@@ -9,7 +9,9 @@ use std::{
 
 use serde::{
     Deserialize,
+    Deserializer,
     Serialize,
+    Serializer,
 };
 use slotmap::DefaultKey;
 
@@ -19,7 +21,6 @@ use crate::handle::{
 };
 
 
-#[derive(Deserialize, Serialize)]
 pub struct Weak<T> {
     inner: DefaultKey,
     _data: PhantomData<T>,
@@ -89,5 +90,22 @@ impl<T> PartialEq for Weak<T> {
 impl<T> Hash for Weak<T> {
     fn hash<H>(&self, state: &mut H) where H: Hasher {
         self.key().hash(state)
+    }
+}
+
+impl<T> Serialize for Weak<T> {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+        where S: Serializer
+    {
+        self.key().serialize(serializer)
+    }
+}
+
+impl<'de, T> Deserialize<'de> for Weak<T> {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+        where D: Deserializer<'de>
+    {
+        let key = DefaultKey::deserialize(deserializer)?;
+        Ok(Self::new(key))
     }
 }
