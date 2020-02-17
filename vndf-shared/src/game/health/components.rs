@@ -33,10 +33,12 @@ impl Health {
         parent:   ComponentHandle,
         entities: &mut HashSet<ComponentHandle>,
     ) {
+        // The handle we add to the index needs to be strong (to keep the
+        // entities therein alive), but we need a weak handle to the parent, as
+        // to prevent a memory leak through the resulting loop.
         assert!(parent.is_strong());
-        let parent = parent.into_weak();
 
-        self.parent = Some(parent.clone());
+        self.parent = Some(parent.clone().into_weak());
         entities.insert(parent);
     }
 
