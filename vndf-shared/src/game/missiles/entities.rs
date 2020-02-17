@@ -65,9 +65,9 @@ impl MissileEntity {
         let dir = directions.insert(Direction(to_target));
 
         let body = Body {
-            pos,
-            vel,
-            dir,
+            pos: pos.into(),
+            vel: vel.into(),
+            dir: dir.into(),
             rot: Rad::zero(),
             .. self.origin
         };

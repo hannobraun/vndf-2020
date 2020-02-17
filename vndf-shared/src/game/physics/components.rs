@@ -3,6 +3,7 @@ use serde::{
     Serialize,
 };
 use toadster::{
+    Handle,
     Store,
     handle,
     store,
@@ -53,28 +54,28 @@ impl Direction {
 /// it can be sent separately, at different rates.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Body {
-    pub pos: handle::Strong<Position>,
-    pub vel: handle::Strong<Velocity>,
+    pub pos: Handle<Position>,
+    pub vel: Handle<Velocity>,
     pub acc: Vec2,
 
-    pub dir: handle::Strong<Direction>,
+    pub dir: Handle<Direction>,
     pub rot: Rad,
 }
 
 impl Body {
     pub fn new(
-        pos: handle::Strong<Position>,
-        vel: handle::Strong<Velocity>,
-        dir: handle::Strong<Direction>,
+        pos: impl Into<Handle<Position>>,
+        vel: impl Into<Handle<Velocity>>,
+        dir: impl Into<Handle<Direction>>,
     )
         -> Self
     {
         Self {
-            pos,
-            vel,
+            pos: pos.into(),
+            vel: vel.into(),
             acc: Vec2::zero(),
 
-            dir,
+            dir: dir.into(),
             rot: Rad::zero(),
         }
     }
@@ -138,9 +139,9 @@ impl Body {
     {
         let body = bodies.remove(handle)?;
 
-        directions.remove(body.dir);
-        positions.remove(body.pos);
-        velocities.remove(body.vel);
+        directions.remove(body.dir.strong());
+        positions.remove(body.pos.strong());
+        velocities.remove(body.vel.strong());
 
         Some(())
     }
