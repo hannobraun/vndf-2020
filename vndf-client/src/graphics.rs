@@ -237,7 +237,7 @@ impl Graphics {
 
     fn draw_projected_course(&self,
         context: &mut Context,
-        body:    &handle::Strong<Body>,
+        body:    impl Into<handle::Weak<Body>>,
         state:   &State,
     )
         -> GameResult<bool>
