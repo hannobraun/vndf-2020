@@ -28,7 +28,7 @@ impl<T> Weak<T> {
     }
 
     pub fn into_untyped(self) -> Weak<Untyped> {
-        Weak(self.0, PhantomData)
+        Weak::new(self.0)
     }
 }
 
