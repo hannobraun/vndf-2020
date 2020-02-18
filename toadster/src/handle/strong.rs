@@ -50,6 +50,10 @@ impl<T> Strong<T> {
         self.inner.key()
     }
 
+    pub fn into_weak(&self) -> Weak<T> {
+        self.inner.into()
+    }
+
     pub fn into_untyped(self) -> Strong<Untyped> where T: 'static {
         Strong {
             inner: self.inner.into_untyped(),
