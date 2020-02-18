@@ -55,13 +55,10 @@ impl<T> Strong<T> {
     }
 
     pub fn into_untyped(self) -> Strong<Untyped> where T: 'static {
-        Strong {
-            inner: self.inner.into_untyped(),
-            // This is a short-term hack. It makes no difference right now, and
-            // the type parameter will be gone from `Changes` shortly.
-            changes: unsafe { std::mem::transmute(self.changes) },
-            _data:   PhantomData,
-        }
+        // This is a short-term hack. It makes no difference right now, and the
+        // type parameter will be gone from `Changes` shortly.
+        let changes = unsafe { std::mem::transmute(self.changes) };
+        Strong::from_handle(self.inner.into_untyped(), changes)
     }
 }
 
