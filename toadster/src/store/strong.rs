@@ -19,6 +19,7 @@ use crate::{
 };
 
 
+#[derive(Debug)]
 pub struct Strong<T> {
     inner:   DenseSlotMap<DefaultKey, Entry<T>>,
     changes: Arc<Mutex<Changes<T>>>,
@@ -146,6 +147,7 @@ impl<'a, T> IntoIterator for &'a mut Strong<T> {
 }
 
 
+#[derive(Debug)]
 struct Entry<T> {
     value: T,
 }
