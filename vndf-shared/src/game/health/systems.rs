@@ -1,7 +1,12 @@
+use std::collections::HashSet;
+
 use log::warn;
 use rinnsal::EventSink;
 use toadster::{
-    handle,
+    handle::{
+        self,
+        Untyped,
+    },
     store,
 };
 
@@ -35,9 +40,17 @@ use super::{
 pub fn check_health(
     healths: &store::Strong<Health>,
     death:   &mut EventSink<Death>,
+    index:   &mut HashSet<handle::Strong<Untyped>>,
 ) {
     for (handle, health) in healths {
         if health.is_dead() {
+            let parent = health
+                .parent_ref()
+                .unwrap()
+                .clone()
+                .into_weak_untyped();
+            index.remove(&parent);
+
             death.push(Death { handle });
         }
     }

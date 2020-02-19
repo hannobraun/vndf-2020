@@ -56,6 +56,7 @@ impl Feature {
         check_health(
             &self.healths,
             &mut self.death.sink(),
+            &mut self.index,
         );
     }
 
@@ -75,11 +76,6 @@ impl Feature {
     )
         -> Option<()>
     {
-        let health = self.healths.get(&event.handle)?;
-        let parent = health.parent_ref().unwrap().clone().into_weak_untyped();
-
-        self.index.remove(&parent);
-
         remove_entity(
             event.handle.clone(),
             bodies,
