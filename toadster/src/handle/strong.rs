@@ -25,18 +25,18 @@ use crate::{
 
 pub struct Strong<T> {
     inner:   Weak<T>,
-    changes: Arc<Mutex<Changes<T>>>,
+    changes: Arc<Mutex<Changes>>,
     _data:   PhantomData<T>,
 }
 
 impl<T> Strong<T> {
-    pub(crate) fn from_key(key: DefaultKey, changes: Arc<Mutex<Changes<T>>>)
+    pub(crate) fn from_key(key: DefaultKey, changes: Arc<Mutex<Changes>>)
         -> Self
     {
         Self::from_handle(Weak::new(key), changes)
     }
 
-    pub(crate) fn from_handle(inner: Weak<T>, changes: Arc<Mutex<Changes<T>>>)
+    pub(crate) fn from_handle(inner: Weak<T>, changes: Arc<Mutex<Changes>>)
         -> Self
     {
         Self {

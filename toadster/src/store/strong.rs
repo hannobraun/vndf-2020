@@ -22,7 +22,7 @@ use crate::{
 #[derive(Debug)]
 pub struct Strong<T> {
     inner:   DenseSlotMap<DefaultKey, Entry<T>>,
-    changes: Arc<Mutex<Changes<T>>>,
+    changes: Arc<Mutex<Changes>>,
     removed: EventBuf<handle::Weak<T>>,
 }
 
@@ -59,7 +59,7 @@ impl<T> Strong<T> {
 
     pub fn remove_later(&self, handle: impl Into<handle::Weak<T>>) {
         let mut changes = self.changes.lock().unwrap();
-        changes.remove.push(handle.into());
+        changes.remove.push(handle.into().key());
     }
 
     pub fn get(&self, handle: impl Into<handle::Weak<T>>)
@@ -100,11 +100,11 @@ impl<T> Strong<T> {
 
     pub fn apply_changes(&mut self) {
         let mut changes = self.changes.lock().unwrap();
-        for handle in changes.remove.drain(..) {
-            let result = self.inner.remove(handle.key());
+        for key in changes.remove.drain(..) {
+            let result = self.inner.remove(key);
 
             if result.is_some() {
-                self.removed.sink().push((&handle).into())
+                self.removed.sink().push(handle::Weak::new(key))
             }
         }
     }
@@ -162,11 +162,11 @@ impl<T> Entry<T> {
 
 
 #[derive(Debug)]
-pub(crate) struct Changes<T> {
-    remove: Vec<handle::Weak<T>>,
+pub(crate) struct Changes {
+    remove: Vec<DefaultKey>,
 }
 
-impl<T> Changes<T> {
+impl Changes {
     pub fn new() -> Self {
         Self {
             remove: Vec::new(),
@@ -177,7 +177,7 @@ impl<T> Changes<T> {
 
 pub struct Iter<'a, T> {
     inner:   dense::Iter<'a, DefaultKey, Entry<T>>,
-    changes: Arc<Mutex<Changes<T>>>,
+    changes: Arc<Mutex<Changes>>,
 }
 
 impl<'a, T> Iterator for Iter<'a, T> {
@@ -199,7 +199,7 @@ impl<'a, T> Iterator for Iter<'a, T> {
 
 pub struct IterMut<'a, T> {
     inner:   dense::IterMut<'a, DefaultKey, Entry<T>>,
-    changes: Arc<Mutex<Changes<T>>>,
+    changes: Arc<Mutex<Changes>>,
 }
 
 impl<'a, T> Iterator for IterMut<'a, T> {
