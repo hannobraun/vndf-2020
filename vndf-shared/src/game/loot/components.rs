@@ -37,7 +37,7 @@ pub struct Loot {
 
 impl Loot {
     pub fn collect(&self,
-        handle:    handle::Strong<Loot>,
+        handle:    impl Into<handle::Weak<Loot>>,
         bodies:    &store::Strong<Body>,
         crafts:    &store::Strong<Craft>,
         fuels:     &mut store::Strong<Fuel>,
