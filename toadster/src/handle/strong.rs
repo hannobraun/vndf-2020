@@ -79,9 +79,11 @@ impl<T> Drop for Strong<T> {
 
 impl<T> fmt::Debug for Strong<T> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "handle::Strong<T>(")?;
-        self.inner.key().fmt(f)?;
-        write!(f, ", PhantomData)")?;
+        write!(f, "handle::Strong<T> {{ inner: ")?;
+        self.inner.fmt(f)?;
+        write!(f, ", changes: ")?;
+        self.changes.fmt(f)?;
+        write!(f, ", _data: PhantomData }}")?;
 
         Ok(())
     }
