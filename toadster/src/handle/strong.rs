@@ -55,10 +55,7 @@ impl<T> Strong<T> {
     }
 
     pub fn into_untyped(self) -> Strong<Untyped> where T: 'static {
-        // This is a short-term hack. It makes no difference right now, and the
-        // type parameter will be gone from `Changes` shortly.
-        let changes = unsafe { std::mem::transmute(self.changes) };
-        Strong::from_handle(self.inner.into_untyped(), changes)
+        Strong::from_handle(self.inner.into_untyped(), self.changes.clone())
     }
 }
 
