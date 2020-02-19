@@ -3,6 +3,7 @@ use std::sync::{
     Mutex,
 };
 
+use log::debug;
 use rinnsal::{
     EventBuf,
     EventSource,
@@ -107,13 +108,24 @@ impl<T> Strong<T> {
                 self.removed.sink().push(handle::Weak::new(key))
             }
         }
+        for key in changes.track.drain(..) {
+            if let Some(entry) = self.inner.get_mut(key) {
+                entry.track = true;
+            }
+        }
         for key in changes.inc_count.drain(..) {
             if let Some(entry) = self.inner.get_mut(key) {
+                if entry.track {
+                    debug!("inc: {:?} ({})", key, entry.count);
+                }
                 entry.count += 1;
             }
         }
         for key in changes.dec_count.drain(..) {
             if let Some(entry) = self.inner.get_mut(key) {
+                if entry.track {
+                    debug!("dec: {:?} ({})", key, entry.count);
+                }
                 if entry.count > 0 { entry.count -= 1; }
             }
         }
@@ -161,6 +173,7 @@ impl<'a, T> IntoIterator for &'a mut Strong<T> {
 struct Entry<T> {
     value: T,
     count: u64,
+    track: bool,
 }
 
 impl<T> Entry<T> {
@@ -168,6 +181,7 @@ impl<T> Entry<T> {
         Self {
             value,
             count: 0,
+            track: false,
         }
     }
 }
@@ -179,6 +193,7 @@ pub(crate) struct Changes {
 
     pub(crate) inc_count: Vec<DefaultKey>,
     pub(crate) dec_count: Vec<DefaultKey>,
+    pub(crate) track:     Vec<DefaultKey>,
 }
 
 impl Changes {
@@ -188,6 +203,7 @@ impl Changes {
 
             inc_count: Vec::new(),
             dec_count: Vec::new(),
+            track:     Vec::new(),
         }
     }
 }

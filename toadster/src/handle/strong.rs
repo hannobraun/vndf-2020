@@ -55,6 +55,11 @@ impl<T> Strong<T> {
         self.inner.key()
     }
 
+    pub fn track(&self) {
+        let mut changes = self.changes.lock().unwrap();
+        changes.track.push(self.key());
+    }
+
     pub fn into_weak(&self) -> Weak<T> {
         self.inner.into()
     }
