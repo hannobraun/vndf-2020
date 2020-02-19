@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 use toadster::{
     handle,
     store,
@@ -25,6 +27,7 @@ impl ExplosionEntity {
         explosions: &mut store::Strong<Explosion>,
         positions:  &mut store::Strong<Position>,
         velocities: &mut store::Strong<Velocity>,
+        index:      &mut HashSet<handle::Strong<Explosion>>,
     )
         -> Option<handle::Strong<Explosion>>
     {
@@ -40,6 +43,7 @@ impl ExplosionEntity {
         let body = bodies.insert(body);
 
         let explosion = explosions.insert(Explosion::new(body, self.strength));
+        index.insert(explosion.clone());
         Some(explosion)
     }
 }

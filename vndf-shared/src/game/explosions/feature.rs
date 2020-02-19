@@ -1,5 +1,10 @@
+use std::collections::HashSet;
+
 use rinnsal::EventBuf;
-use toadster::store;
+use toadster::{
+    handle,
+    store,
+};
 
 use crate::game::{
     base::Update,
@@ -32,6 +37,8 @@ pub struct Feature {
 
     pub explosion_faded:    EventBuf<ExplosionFaded>,
     pub explosion_imminent: EventBuf<ExplosionImminent>,
+
+    pub index: HashSet<handle::Strong<Explosion>>,
 }
 
 impl Feature {
@@ -41,6 +48,8 @@ impl Feature {
 
             explosion_faded:    EventBuf::new(),
             explosion_imminent: EventBuf::new(),
+
+            index: HashSet::new(),
         }
     }
 
@@ -74,6 +83,7 @@ impl Feature {
                 positions,
                 velocities,
                 &mut self.explosion_imminent.sink(),
+                &mut self.index,
             );
         }
     }
@@ -108,5 +118,6 @@ impl Feature {
             positions,
             velocities,
         );
+        self.index.remove(&event.handle);
     }
 }

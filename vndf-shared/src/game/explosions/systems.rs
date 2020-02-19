@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 use rinnsal::EventSink;
 use toadster::{
     handle,
@@ -62,6 +64,7 @@ pub fn create_explosion(
     positions:          &mut store::Strong<Position>,
     velocities:         &mut store::Strong<Velocity>,
     explosion_imminent: &mut EventSink<ExplosionImminent>,
+    index:              &mut HashSet<handle::Strong<Explosion>>,
 ) {
     let handle = explosion.create(
         bodies,
@@ -69,6 +72,7 @@ pub fn create_explosion(
         explosions,
         positions,
         velocities,
+        index,
     );
     if let Some(handle) = handle {
         explosion_imminent.push(ExplosionImminent { handle });
