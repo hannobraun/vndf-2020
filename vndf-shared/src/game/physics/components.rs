@@ -24,6 +24,10 @@ impl Position {
     pub fn new() -> Self {
         Self(Pnt2::new(0.0, 0.0))
     }
+
+    pub fn to_weak(&self) -> Self {
+        Self(self.0.clone())
+    }
 }
 
 
@@ -34,6 +38,10 @@ impl Velocity {
     pub fn new() -> Self {
         Self(Vec2::new(0.0, 0.0))
     }
+
+    pub fn to_weak(&self) -> Self {
+        Self(self.0.clone())
+    }
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
@@ -42,6 +50,10 @@ pub struct Direction(pub Vec2);
 impl Direction {
     pub fn new() -> Self {
         Self(Vec2::unit_x())
+    }
+
+    pub fn to_weak(&self) -> Self {
+        Self(self.0.clone())
     }
 }
 
@@ -77,6 +89,16 @@ impl Body {
 
             dir: dir.into(),
             rot: Rad::zero(),
+        }
+    }
+
+    pub fn to_weak(&self) -> Self {
+        Self {
+            pos: self.pos.as_weak(),
+            vel: self.vel.as_weak(),
+            acc: self.acc.clone(),
+            dir: self.dir.as_weak(),
+            rot: self.rot.clone(),
         }
     }
 

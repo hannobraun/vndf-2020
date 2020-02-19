@@ -39,6 +39,17 @@ pub struct Craft {
 }
 
 impl Craft {
+    pub fn to_weak(&self) -> Self {
+        Self {
+            body:      self.body.as_weak(),
+            fuel:      self.fuel.as_weak(),
+            health:    self.health.as_weak(),
+            engine_on: self.engine_on.clone(),
+            thrust:    self.thrust.clone(),
+            owner:     self.owner.clone(),
+        }
+    }
+
     pub fn apply_thrust(&mut self,
         dt:     f32,
         bodies:     &mut impl Store<Body>,
@@ -91,3 +102,9 @@ impl Craft {
 
 #[derive(Clone, Copy, Debug, Deserialize, Serialize, PartialEq)]
 pub struct Fuel(pub f32);
+
+impl Fuel {
+    pub fn to_weak(&self) -> Self {
+        Self(self.0.clone())
+    }
+}

@@ -39,6 +39,14 @@ impl Explosion {
         }
     }
 
+    pub fn to_weak(&self) -> Self {
+        Self {
+            body:           self.body.as_weak(),
+            strength_total: self.strength_total.clone(),
+            strength_left:  self.strength_left.clone(),
+        }
+    }
+
     pub fn damage_nearby<'r, P, H>(&self,
         pos:    &Position,
         nearby: impl IntoIterator<Item=(P, H)>,

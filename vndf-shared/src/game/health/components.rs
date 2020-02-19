@@ -43,6 +43,14 @@ impl Health {
         entities.insert(parent.into_strong_untyped());
     }
 
+    pub fn to_weak(&self) -> Self {
+        Self {
+            parent: self.parent.clone(),
+            body:   self.body.as_weak(),
+            value:  self.value.clone(),
+        }
+    }
+
     pub fn parent(self) -> Option<ComponentHandle> {
         self.parent
     }

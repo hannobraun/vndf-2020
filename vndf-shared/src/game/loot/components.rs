@@ -36,6 +36,15 @@ pub struct Loot {
 }
 
 impl Loot {
+    pub fn to_weak(&self) -> Self {
+        Self {
+            body:     self.body.as_weak(),
+            health:   self.health.as_weak(),
+            fuel:     self.fuel.clone(),
+            missiles: self.missiles.clone(),
+        }
+    }
+
     pub fn collect(&self,
         handle:    impl Into<handle::Weak<Loot>>,
         bodies:    &store::Strong<Body>,

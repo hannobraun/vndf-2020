@@ -54,6 +54,14 @@ impl Missile {
         }
     }
 
+    pub fn to_weak(&self) -> Self {
+        Self {
+            craft:    self.craft.as_weak(),
+            guidance: self.guidance.as_weak(),
+            target:   self.target.as_weak(),
+        }
+    }
+
     pub fn remove(
         handle:     impl Into<handle::Weak<Missile>>,
         bodies:     &mut store::Strong<Body>,
@@ -205,6 +213,13 @@ pub struct Target {
 }
 
 impl Target {
+    pub fn to_weak(&self) -> Self {
+        Self {
+            craft: self.craft.as_weak(),
+            value: self.value.clone(),
+        }
+    }
+
     pub fn update(&mut self,
         crafts:  &store::Strong<Craft>,
         targets: impl IntoIterator<Item=(Position, Craft)>,

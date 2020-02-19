@@ -67,6 +67,15 @@ impl Ship {
         }
     }
 
+    pub fn to_weak(&self) -> Self {
+        Self {
+            craft:    self.craft.as_weak(),
+            rotation: self.rotation.clone(),
+            missiles: self.missiles.clone(),
+            color:    self.color.clone(),
+        }
+    }
+
     pub fn apply_input(&mut self,
         bodies:         &store::Strong<Body>,
         crafts:         &mut store::Strong<Craft>,
