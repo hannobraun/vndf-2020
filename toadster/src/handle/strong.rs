@@ -12,6 +12,8 @@ use std::{
     },
 };
 
+use backtrace::Backtrace;
+use log::trace;
 use slotmap::DefaultKey;
 
 use crate::{
@@ -26,19 +28,32 @@ use crate::{
 pub struct Strong<T> {
     inner:   Weak<T>,
     changes: Arc<Mutex<Changes>>,
+    track:   bool,
     _data:   PhantomData<T>,
 }
 
 impl<T> Strong<T> {
-    pub(crate) fn from_key(key: DefaultKey, changes: Arc<Mutex<Changes>>)
+    pub(crate) fn from_key(
+        key:     DefaultKey,
+        changes: Arc<Mutex<Changes>>,
+        track:   bool,
+    )
         -> Self
     {
-        Self::from_handle(Weak::new(key), changes)
+        Self::from_handle(Weak::new(key), changes, track)
     }
 
-    pub(crate) fn from_handle(inner: Weak<T>, changes: Arc<Mutex<Changes>>)
+    pub(crate) fn from_handle(
+        inner:   Weak<T>,
+        changes: Arc<Mutex<Changes>>,
+        track:   bool,
+    )
         -> Self
     {
+        if track {
+            trace!("inc: {:?} {:?}", inner.key(), Backtrace::new());
+        }
+
         {
             let mut changes = changes.lock().unwrap();
             changes.inc_count.push(inner.key());
@@ -47,6 +62,7 @@ impl<T> Strong<T> {
         Self {
             inner,
             changes,
+            track,
             _data: PhantomData,
         }
     }
@@ -55,9 +71,8 @@ impl<T> Strong<T> {
         self.inner.key()
     }
 
-    pub fn track(&self) {
-        let mut changes = self.changes.lock().unwrap();
-        changes.track.push(self.key());
+    pub fn track(&mut self) {
+        self.track = true;
     }
 
     pub fn into_weak(&self) -> Weak<T> {
@@ -65,18 +80,30 @@ impl<T> Strong<T> {
     }
 
     pub fn into_untyped(self) -> Strong<Untyped> where T: 'static {
-        Strong::from_handle(self.inner.into_untyped(), self.changes.clone())
+        Strong::from_handle(
+            self.inner.into_untyped(),
+            self.changes.clone(),
+            self.track,
+        )
     }
 }
 
 impl<T> Clone for Strong<T> {
     fn clone(&self) -> Self {
-        Self::from_handle(self.inner, self.changes.clone())
+        Self::from_handle(
+            self.inner,
+            self.changes.clone(),
+            self.track,
+        )
     }
 }
 
 impl<T> Drop for Strong<T> {
     fn drop(&mut self) {
+        if self.track {
+            trace!("dec: {:?} {:?}", self.inner.key(), Backtrace::new());
+        }
+
         let mut changes = self.changes.lock().unwrap();
         changes.dec_count.push(self.inner.key());
     }

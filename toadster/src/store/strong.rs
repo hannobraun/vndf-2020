@@ -44,6 +44,7 @@ impl<T> Strong<T> {
         handle::Strong::from_key(
             self.inner.insert(Entry::new(value)),
             self.changes.clone(),
+            false,
         )
     }
 
@@ -247,6 +248,7 @@ impl<'a, T> Iterator for IterStrong<'a, T> {
                 let handle = handle::Strong::from_handle(
                     handle,
                     self.inner.changes.clone(),
+                    false,
                 );
                 (handle, value)
             })
@@ -292,6 +294,7 @@ impl<'a, T> Iterator for IterMutStrong<'a, T> {
                 let handle = handle::Strong::from_handle(
                     handle,
                     self.inner.changes.clone(),
+                    false,
                 );
                 (handle, value)
             })
