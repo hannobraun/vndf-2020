@@ -16,6 +16,7 @@ use crate::{
             Craft,
             Fuel,
         },
+        health::Health,
         physics::{
             Body,
             Position,
@@ -29,6 +30,7 @@ use crate::{
 #[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
 pub struct Loot {
     pub body:     Handle<Body>,
+    pub health:   Handle<Health>,
     pub fuel:     f32,
     pub missiles: u64,
 }

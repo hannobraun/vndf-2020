@@ -14,6 +14,7 @@ use crate::game::{
         Craft,
         Fuel,
     },
+    loot::Loot,
     missiles::{
         Guidance,
         Missile,
@@ -65,6 +66,7 @@ impl Feature {
         directions: &mut store::Strong<Direction>,
         fuels:      &mut store::Strong<Fuel>,
         guidances:  &mut store::Strong<Guidance>,
+        loots:      &mut store::Strong<Loot>,
         missiles:   &mut store::Strong<Missile>,
         positions:  &mut store::Strong<Position>,
         ships:      &mut store::Strong<Ship>,
@@ -86,6 +88,7 @@ impl Feature {
             fuels,
             guidances,
             &mut self.healths,
+            loots,
             missiles,
             positions,
             ships,

@@ -1,10 +1,15 @@
+use std::collections::HashSet;
+
 use rand::{
     prelude::*,
     random,
     thread_rng,
 };
 use toadster::{
-    handle,
+    handle::{
+        self,
+        Untyped,
+    },
     store,
 };
 
@@ -37,11 +42,12 @@ pub fn spawn_death_loot(
     crafts:     &store::Strong<Craft>,
     directions: &mut store::Strong<Direction>,
     fuels:      &store::Strong<Fuel>,
-    healths:    &store::Strong<Health>,
+    healths:    &mut store::Strong<Health>,
     loots:      &mut store::Strong<Loot>,
     positions:  &mut store::Strong<Position>,
     ships:      &store::Strong<Ship>,
     velocities: &mut store::Strong<Velocity>,
+    index:      &mut HashSet<handle::Strong<Untyped>>,
 )
     -> Option<()>
 {
@@ -67,13 +73,20 @@ pub fn spawn_death_loot(
 
         let body = bodies.insert(Body::new(pos, vel, dir));
 
+        let health = healths.insert(Health::new(body.clone(), 1.0));
+
         let loot = Loot {
             body:     body.into(),
+            health:   health.clone().into(),
             fuel:     fuel.0 / 10.0,
             missiles: ship.missiles / 10,
         };
 
-        loots.insert(loot);
+        let loot = loots.insert(loot);
+        healths.get_mut(health).unwrap().finalize(
+            ComponentHandle::Loot(loot.into()),
+            index,
+        );
     }
 
     Some(())
@@ -83,9 +96,11 @@ pub fn spawn_random_loot(
     dt:         f32,
     bodies:     &mut store::Strong<Body>,
     directions: &mut store::Strong<Direction>,
+    healths:    &mut store::Strong<Health>,
     loots:      &mut store::Strong<Loot>,
     positions:  &mut store::Strong<Position>,
     velocities: &mut store::Strong<Velocity>,
+    index:      &mut HashSet<handle::Strong<Untyped>>,
 ) {
     const CHANCE_PER_S: f32   = 1.0 / 30.0;
     const MAX_LOOTS:    usize = 10;
@@ -109,13 +124,20 @@ pub fn spawn_random_loot(
 
         let body = bodies.insert(Body::new(pos, vel, dir));
 
+        let health = healths.insert(Health::new(body.clone(), 1.0));
+
         let loot = Loot {
             body:     body.into(),
+            health:   health.clone().into(),
             fuel:     thread_rng().gen_range(15.0, 100.0),
             missiles: thread_rng().gen_range(1, 5),
         };
 
-        loots.insert(loot);
+        let loot = loots.insert(loot);
+        healths.get_mut(health).unwrap().finalize(
+            ComponentHandle::Loot(loot.into()),
+            index,
+        );
     }
 }
 

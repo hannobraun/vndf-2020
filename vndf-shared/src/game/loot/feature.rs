@@ -1,4 +1,12 @@
-use toadster::store;
+use std::collections::HashSet;
+
+use toadster::{
+    handle::{
+        self,
+        Untyped,
+    },
+    store,
+};
 
 use crate::game::{
     base::Update,
@@ -44,17 +52,21 @@ impl Feature {
         crafts:     &store::Strong<Craft>,
         directions: &mut store::Strong<Direction>,
         fuels:      &mut store::Strong<Fuel>,
+        healths:    &mut store::Strong<Health>,
         positions:  &mut store::Strong<Position>,
         ships:      &mut store::Strong<Ship>,
         velocities: &mut store::Strong<Velocity>,
+        index:      &mut HashSet<handle::Strong<Untyped>>,
     ) {
         spawn_random_loot(
             event.dt,
             bodies,
             directions,
+            healths,
             &mut self.loots,
             positions,
             velocities,
+            index,
         );
         collect_loot(
             bodies,
@@ -72,10 +84,11 @@ impl Feature {
         crafts:     &store::Strong<Craft>,
         directions: &mut store::Strong<Direction>,
         fuels:      &store::Strong<Fuel>,
-        healths:    &store::Strong<Health>,
+        healths:    &mut store::Strong<Health>,
         positions:  &mut store::Strong<Position>,
         ships:      &store::Strong<Ship>,
         velocities: &mut store::Strong<Velocity>,
+        index:      &mut HashSet<handle::Strong<Untyped>>,
     ) {
         spawn_death_loot(
             &event.handle,
@@ -88,6 +101,7 @@ impl Feature {
             positions,
             ships,
             velocities,
+            index,
         );
     }
 }

@@ -135,9 +135,11 @@ impl State {
                 &self.crafts.crafts,
                 &mut self.physics.directions,
                 &mut self.crafts.fuels,
+                &mut self.health.healths,
                 &mut self.physics.positions,
                 &mut self.ships.ships,
                 &mut self.physics.velocities,
+                &mut self.health.index,
             );
         }
         while let Some(event) = self.players.player_connected.source().next() {
@@ -196,10 +198,11 @@ impl State {
                 &self.crafts.crafts,
                 &mut self.physics.directions,
                 &self.crafts.fuels,
-                &self.health.healths,
+                &mut self.health.healths,
                 &mut self.physics.positions,
                 &self.ships.ships,
                 &mut self.physics.velocities,
+                &mut self.health.index,
             );
             self.health.on_death(
                 &event,
@@ -208,6 +211,7 @@ impl State {
                 &mut self.physics.directions,
                 &mut self.crafts.fuels,
                 &mut self.missiles.guidances,
+                &mut self.loot.loots,
                 &mut self.missiles.missiles,
                 &mut self.physics.positions,
                 &mut self.ships.ships,
