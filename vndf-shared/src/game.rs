@@ -86,22 +86,8 @@ impl State {
     }
 
     pub fn dispatch(&mut self) {
+        self.apply_changes();
         for event in self.base.update.source().ready() {
-            self.crafts.crafts.apply_changes();
-            self.crafts.fuels.apply_changes();
-            self.explosions.explosions.apply_changes();
-            self.health.healths.apply_changes();
-            self.loot.loots.apply_changes();
-            self.missiles.guidances.apply_changes();
-            self.missiles.missiles.apply_changes();
-            self.missiles.targets.apply_changes();
-            self.physics.bodies.apply_changes();
-            self.physics.directions.apply_changes();
-            self.physics.positions.apply_changes();
-            self.physics.velocities.apply_changes();
-            self.players.players.apply_changes();
-            self.ships.ships.apply_changes();
-
             self.crafts.on_update(
                 &event,
                 &mut self.physics.bodies,
@@ -142,6 +128,7 @@ impl State {
                 &mut self.health.index,
             );
         }
+        self.apply_changes();
         while let Some(event) = self.players.player_connected.source().next() {
             self.players.on_player_connected(
                 &event,
@@ -156,11 +143,13 @@ impl State {
                 &mut self.health.index,
             );
         }
+        self.apply_changes();
         while let Some(event) =
             self.players.player_disconnected.source().next()
         {
             self.players.on_player_disconnected(&event);
         }
+        self.apply_changes();
         while let Some(event) = self.players.player_input.source().next() {
             self.players.on_player_input(
                 &event,
@@ -170,6 +159,7 @@ impl State {
                 &mut self.missiles.missile_launch.sink(),
             );
         }
+        self.apply_changes();
         while let Some(event) = self.missiles.missile_launch.source().next() {
             self.missiles.on_missile_launch(
                 event,
@@ -183,6 +173,7 @@ impl State {
                 &mut self.health.index,
             );
         }
+        self.apply_changes();
         while let Some(event) = self.health.death.source().next() {
             self.explosions.on_death(
                 &event,
@@ -219,6 +210,7 @@ impl State {
                 &mut self.physics.velocities,
             );
         }
+        self.apply_changes();
         while let Some(event) =
             self.explosions.explosion_imminent.source().next()
         {
@@ -229,6 +221,7 @@ impl State {
                 &self.physics.positions,
             )
         }
+        self.apply_changes();
         while let Some(event) =
             self.explosions.explosion_faded.source().next()
         {
@@ -240,6 +233,23 @@ impl State {
                 &mut self.physics.velocities,
             );
         }
+    }
+
+    fn apply_changes(&mut self) {
+        self.crafts.crafts.apply_changes();
+        self.crafts.fuels.apply_changes();
+        self.explosions.explosions.apply_changes();
+        self.health.healths.apply_changes();
+        self.loot.loots.apply_changes();
+        self.missiles.guidances.apply_changes();
+        self.missiles.missiles.apply_changes();
+        self.missiles.targets.apply_changes();
+        self.physics.bodies.apply_changes();
+        self.physics.directions.apply_changes();
+        self.physics.positions.apply_changes();
+        self.physics.velocities.apply_changes();
+        self.players.players.apply_changes();
+        self.ships.ships.apply_changes();
     }
 
     pub fn updates(&mut self) -> impl Iterator<Item=Component> + '_ {
