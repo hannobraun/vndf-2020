@@ -107,6 +107,16 @@ impl<T> Strong<T> {
                 self.removed.sink().push(handle::Weak::new(key))
             }
         }
+        for key in changes.inc_count.drain(..) {
+            if let Some(entry) = self.inner.get_mut(key) {
+                entry.count += 1;
+            }
+        }
+        for key in changes.dec_count.drain(..) {
+            if let Some(entry) = self.inner.get_mut(key) {
+                if entry.count > 0 { entry.count -= 1; }
+            }
+        }
     }
 
     pub fn removed(&mut self) -> EventSource<handle::Weak<T>> {
@@ -150,12 +160,14 @@ impl<'a, T> IntoIterator for &'a mut Strong<T> {
 #[derive(Debug)]
 struct Entry<T> {
     value: T,
+    count: u64,
 }
 
 impl<T> Entry<T> {
     fn new(value: T) -> Self {
         Self {
             value,
+            count: 0,
         }
     }
 }
@@ -164,12 +176,18 @@ impl<T> Entry<T> {
 #[derive(Debug)]
 pub(crate) struct Changes {
     remove: Vec<DefaultKey>,
+
+    pub(crate) inc_count: Vec<DefaultKey>,
+    pub(crate) dec_count: Vec<DefaultKey>,
 }
 
 impl Changes {
     pub fn new() -> Self {
         Self {
             remove: Vec::new(),
+
+            inc_count: Vec::new(),
+            dec_count: Vec::new(),
         }
     }
 }
@@ -258,7 +276,7 @@ mod tests {
         store.insert(());
 
         for (handle, _) in &store {
-            store.remove_later(handle);
+            store.remove_later(handle.into_weak());
         }
 
         assert_eq!(store.len(), 2);

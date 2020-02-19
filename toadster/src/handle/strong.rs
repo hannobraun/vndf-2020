@@ -39,6 +39,11 @@ impl<T> Strong<T> {
     pub(crate) fn from_handle(inner: Weak<T>, changes: Arc<Mutex<Changes>>)
         -> Self
     {
+        {
+            let mut changes = changes.lock().unwrap();
+            changes.inc_count.push(inner.key());
+        }
+
         Self {
             inner,
             changes,
@@ -62,6 +67,13 @@ impl<T> Strong<T> {
 impl<T> Clone for Strong<T> {
     fn clone(&self) -> Self {
         Self::from_handle(self.inner, self.changes.clone())
+    }
+}
+
+impl<T> Drop for Strong<T> {
+    fn drop(&mut self) {
+        let mut changes = self.changes.lock().unwrap();
+        changes.dec_count.push(self.inner.key());
     }
 }
 
