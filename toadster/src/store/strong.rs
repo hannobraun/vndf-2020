@@ -151,7 +151,7 @@ impl<T> Store<T> for Strong<T> {
 }
 
 impl<'a, T> IntoIterator for &'a Strong<T> {
-    type Item     = (handle::Strong<T>, &'a T);
+    type Item     = (handle::Weak<T>, &'a T);
     type IntoIter = Iter<'a, T>;
 
     fn into_iter(self) -> Self::IntoIter {
@@ -160,7 +160,7 @@ impl<'a, T> IntoIterator for &'a Strong<T> {
 }
 
 impl<'a, T> IntoIterator for &'a mut Strong<T> {
-    type Item     = (handle::Strong<T>, &'a mut T);
+    type Item     = (handle::Weak<T>, &'a mut T);
     type IntoIter = IterMut<'a, T>;
 
     fn into_iter(self) -> Self::IntoIter {
@@ -214,18 +214,41 @@ pub struct Iter<'a, T> {
     changes: Arc<Mutex<Changes>>,
 }
 
+impl<'a, T> Iter<'a, T> {
+    pub fn strong(self) -> IterStrong<'a, T> {
+        IterStrong {
+            inner: self,
+        }
+    }
+}
+
 impl<'a, T> Iterator for Iter<'a, T> {
-    type Item = (handle::Strong<T>, &'a T);
+    type Item = (handle::Weak<T>, &'a T);
 
     fn next(&mut self) -> Option<Self::Item> {
         self.inner.next()
             .map(|(key, entry)| {
-                let handle = handle::Strong::from_key(
-                    key,
-                    self.changes.clone(),
-                );
+                (handle::Weak::new(key), &entry.value)
+            })
+    }
+}
 
-                (handle, &entry.value)
+
+pub struct IterStrong<'a, T> {
+    inner: Iter<'a, T>,
+}
+
+impl<'a, T> Iterator for IterStrong<'a, T> {
+    type Item = (handle::Strong<T>, &'a T);
+
+    fn next(&mut self) -> Option<Self::Item> {
+        self.inner.next()
+            .map(|(handle, value)| {
+                let handle = handle::Strong::from_handle(
+                    handle,
+                    self.inner.changes.clone(),
+                );
+                (handle, value)
             })
     }
 }
@@ -236,17 +259,41 @@ pub struct IterMut<'a, T> {
     changes: Arc<Mutex<Changes>>,
 }
 
+impl<'a, T> IterMut<'a, T> {
+    pub fn strong(self) -> IterMutStrong<'a, T> {
+        IterMutStrong {
+            inner: self,
+        }
+    }
+}
+
 impl<'a, T> Iterator for IterMut<'a, T> {
-    type Item = (handle::Strong<T>, &'a mut T);
+    type Item = (handle::Weak<T>, &'a mut T);
 
     fn next(&mut self) -> Option<Self::Item> {
         self.inner.next()
             .map(|(key, entry)| {
-                let handle = handle::Strong::from_key(
-                    key,
-                    self.changes.clone(),
+                (handle::Weak::new(key), &mut entry.value)
+            })
+    }
+}
+
+
+pub struct IterMutStrong<'a, T> {
+    inner: IterMut<'a, T>,
+}
+
+impl<'a, T> Iterator for IterMutStrong<'a, T> {
+    type Item = (handle::Strong<T>, &'a mut T);
+
+    fn next(&mut self) -> Option<Self::Item> {
+        self.inner.next()
+            .map(|(handle, value)| {
+                let handle = handle::Strong::from_handle(
+                    handle,
+                    self.inner.changes.clone(),
                 );
-                (handle, &mut entry.value)
+                (handle, value)
             })
     }
 }
@@ -292,7 +339,7 @@ mod tests {
         store.insert(());
 
         for (handle, _) in &store {
-            store.remove_later(handle.into_weak());
+            store.remove_later(handle);
         }
 
         assert_eq!(store.len(), 2);

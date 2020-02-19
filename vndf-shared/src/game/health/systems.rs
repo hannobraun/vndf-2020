@@ -42,7 +42,7 @@ pub fn check_health(
     death:   &mut EventSink<Death>,
     index:   &mut HashSet<handle::Strong<Untyped>>,
 ) {
-    for (handle, health) in healths {
+    for (handle, health) in healths.iter().strong() {
         if health.is_dead() {
             let parent = health
                 .parent_ref()

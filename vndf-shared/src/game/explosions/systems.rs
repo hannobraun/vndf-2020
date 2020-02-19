@@ -109,7 +109,7 @@ pub fn update_explosions(
     dt:              f32,
     explosion_faded: &mut EventSink<ExplosionFaded>,
 ) {
-    for (handle, explosion) in explosions {
+    for (handle, explosion) in explosions.iter_mut().strong() {
         if explosion.update(dt) {
             explosion_faded.push(ExplosionFaded { handle });
         }
