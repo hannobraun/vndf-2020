@@ -81,15 +81,10 @@ pub fn connect_player(
 }
 
 pub fn disconnect_player(
-    players: &mut store::Strong<Player>,
     index:   &mut HashMap<SocketAddr, handle::Strong<Player>>,
     address: SocketAddr,
 ) {
-    // It's possible that we're getting multiple disconnect events per player,
-    // so the ship could have been removed already.
-    if let Some(handle) = index.remove(&address) {
-        players.remove(handle);
-    }
+    index.remove(&address);
 }
 
 pub fn handle_input(

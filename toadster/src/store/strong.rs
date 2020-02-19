@@ -48,22 +48,6 @@ impl<T> Strong<T> {
         )
     }
 
-    pub fn remove(&mut self, handle: impl Into<handle::Weak<T>>) -> Option<T> {
-        let handle = handle.into();
-        let result = self.inner.remove(handle.key());
-
-        if result.is_some() {
-            self.removed.sink().push(handle)
-        }
-
-        result.map(|entry| entry.value)
-    }
-
-    pub fn remove_later(&self, handle: impl Into<handle::Weak<T>>) {
-        let mut changes = self.changes.lock().unwrap();
-        changes.remove.push(handle.into().key());
-    }
-
     pub fn get(&self, handle: impl Into<handle::Weak<T>>)
         -> Option<&T>
     {
@@ -102,32 +86,35 @@ impl<T> Strong<T> {
 
     pub fn apply_changes(&mut self) {
         let mut changes = self.changes.lock().unwrap();
-        for key in changes.remove.drain(..) {
-            let result = self.inner.remove(key);
 
-            if result.is_some() {
-                self.removed.sink().push(handle::Weak::new(key))
-            }
-        }
         for key in changes.track.drain(..) {
-            if let Some(entry) = self.inner.get_mut(key) {
-                entry.track = true;
-            }
+            let entry = self.inner.get_mut(key).unwrap();
+            entry.track = true;
         }
         for key in changes.inc_count.drain(..) {
-            if let Some(entry) = self.inner.get_mut(key) {
-                if entry.track {
-                    debug!("inc: {:?} ({})", key, entry.count);
-                }
-                entry.count += 1;
+            let entry = self.inner.get_mut(key).unwrap();
+
+            if entry.track {
+                debug!("inc: {:?} ({})", key, entry.count);
             }
+
+            entry.count += 1;
         }
         for key in changes.dec_count.drain(..) {
-            if let Some(entry) = self.inner.get_mut(key) {
+            let entry = self.inner.get_mut(key).unwrap();
+
+            if entry.track {
+                debug!("dec: {:?} ({})", key, entry.count);
+            }
+
+            entry.count -= 1;
+            if entry.count == 0 {
                 if entry.track {
-                    debug!("dec: {:?} ({})", key, entry.count);
+                    debug!("del: {:?}", key);
                 }
-                if entry.count > 0 { entry.count -= 1; }
+
+                self.inner.remove(key);
+                self.removed.sink().push(handle::Weak::new(key));
             }
         }
     }
@@ -190,8 +177,6 @@ impl<T> Entry<T> {
 
 #[derive(Debug)]
 pub(crate) struct Changes {
-    remove: Vec<DefaultKey>,
-
     pub(crate) inc_count: Vec<DefaultKey>,
     pub(crate) dec_count: Vec<DefaultKey>,
     pub(crate) track:     Vec<DefaultKey>,
@@ -200,8 +185,6 @@ pub(crate) struct Changes {
 impl Changes {
     pub fn new() -> Self {
         Self {
-            remove: Vec::new(),
-
             inc_count: Vec::new(),
             dec_count: Vec::new(),
             track:     Vec::new(),
@@ -335,18 +318,14 @@ mod tests {
 
 
     #[test]
-    fn it_should_remove_values_later() {
+    fn it_should_remove_component_when_all_handles_are_dropped() {
         let mut store = store::Strong::new();
 
-        store.insert(());
-        store.insert(());
+        let handle = store.insert(());
 
-        for (handle, _) in &store {
-            store.remove_later(handle);
-        }
+        assert_eq!(store.len(), 1);
 
-        assert_eq!(store.len(), 2);
-
+        drop(handle);
         store.apply_changes();
 
         assert_eq!(store.len(), 0);
@@ -362,7 +341,8 @@ mod tests {
         let removed: Vec<_> = store.removed().ready().collect();
         assert_eq!(removed.len(), 0);
 
-        store.remove(strong_handle);
+        drop(strong_handle);
+        store.apply_changes();
 
         let removed: Vec<_> = store.removed().ready().collect();
         assert_eq!(removed, vec![weak_handle]);

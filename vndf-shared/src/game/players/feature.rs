@@ -113,7 +113,6 @@ impl Feature {
 
     pub fn on_player_disconnected(&mut self, event: &PlayerDisconnected) {
         disconnect_player(
-            &mut self.players,
             &mut self.players_by_address,
             event.addr,
         );

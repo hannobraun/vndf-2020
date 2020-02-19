@@ -27,7 +27,6 @@ use super::{
     create_explosion,
     damage_nearby,
     explode_entity,
-    remove_explosion,
     update_explosions,
 };
 
@@ -103,21 +102,7 @@ impl Feature {
         );
     }
 
-    pub fn on_explosion_faded(&mut self,
-        event:      &ExplosionFaded,
-        bodies:     &mut store::Strong<Body>,
-        directions: &mut store::Strong<Direction>,
-        positions:  &mut store::Strong<Position>,
-        velocities: &mut store::Strong<Velocity>,
-    ) {
-        remove_explosion(
-            event.handle.clone(),
-            bodies,
-            directions,
-            &mut self.explosions,
-            positions,
-            velocities,
-        );
+    pub fn on_explosion_faded(&mut self, event: &ExplosionFaded) {
         self.index.remove(&event.handle);
     }
 }

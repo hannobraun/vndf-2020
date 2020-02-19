@@ -78,10 +78,7 @@ impl Loot {
 
         if let Some(ship) = nearest_ship {
             if min_distance < 10.0 {
-                let handle = handle.into();
-
                 self.add_to_ship(&ship, crafts, fuels, ships);
-                loots.remove_later(handle);
 
                 // Make sure entity gets removed.
                 let loot   = loots.get(handle)?;

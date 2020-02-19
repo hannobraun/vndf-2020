@@ -5,8 +5,6 @@ use serde::{
 use toadster::{
     Handle,
     Store,
-    handle,
-    store,
 };
 
 use crate::math::{
@@ -146,24 +144,6 @@ impl Body {
         if pos.0.y <= -boundary && vel.0.y < 0.0 {
             vel.0.y *= -1.0;
         }
-
-        Some(())
-    }
-
-    pub fn remove(
-        handle:     handle::Strong<Body>,
-        bodies:     &mut store::Strong<Body>,
-        directions: &mut store::Strong<Direction>,
-        positions:  &mut store::Strong<Position>,
-        velocities: &mut store::Strong<Velocity>,
-    )
-        -> Option<()>
-    {
-        let body = bodies.remove(handle)?;
-
-        directions.remove(body.dir.strong());
-        positions.remove(body.pos.strong());
-        velocities.remove(body.vel.strong());
 
         Some(())
     }

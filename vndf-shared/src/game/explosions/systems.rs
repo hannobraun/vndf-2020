@@ -115,24 +115,3 @@ pub fn update_explosions(
         }
     }
 }
-
-pub fn remove_explosion(
-    handle:     handle::Strong<Explosion>,
-    bodies:     &mut store::Strong<Body>,
-    directions: &mut store::Strong<Direction>,
-    explosions: &mut store::Strong<Explosion>,
-    positions:  &mut store::Strong<Position>,
-    velocities: &mut store::Strong<Velocity>,
-)
-    -> Option<()>
-{
-    let explosion = explosions.remove(handle)?;
-    Body::remove(
-        explosion.body.strong(),
-        bodies,
-        directions,
-        positions,
-        velocities,
-    );
-    Some(())
-}

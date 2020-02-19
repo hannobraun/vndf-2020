@@ -5,8 +5,6 @@ use serde::{
 use toadster::{
     Handle,
     Store,
-    handle,
-    store,
 };
 
 use crate::{
@@ -15,8 +13,6 @@ use crate::{
         physics::{
             Body,
             Direction,
-            Position,
-            Velocity,
         },
         players::PlayerId,
     },
@@ -69,31 +65,6 @@ impl Craft {
         else {
             Vec2::zero()
         };
-
-        Some(())
-    }
-
-    pub fn remove(
-        handle:     handle::Strong<Craft>,
-        bodies:     &mut store::Strong<Body>,
-        crafts:     &mut store::Strong<Craft>,
-        directions: &mut store::Strong<Direction>,
-        fuels:      &mut store::Strong<Fuel>,
-        positions:  &mut store::Strong<Position>,
-        velocities: &mut store::Strong<Velocity>,
-    )
-        -> Option<()>
-    {
-        let craft = crafts.remove(handle)?;
-
-        Body::remove(
-            craft.body.strong(),
-            bodies,
-            directions,
-            positions,
-            velocities,
-        );
-        fuels.remove(craft.fuel.strong());
 
         Some(())
     }

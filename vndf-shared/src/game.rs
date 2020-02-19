@@ -195,20 +195,6 @@ impl State {
                 &mut self.physics.velocities,
                 &mut self.health.index,
             );
-            self.health.on_death(
-                &event,
-                &mut self.physics.bodies,
-                &mut self.crafts.crafts,
-                &mut self.physics.directions,
-                &mut self.crafts.fuels,
-                &mut self.missiles.guidances,
-                &mut self.loot.loots,
-                &mut self.missiles.missiles,
-                &mut self.physics.positions,
-                &mut self.ships.ships,
-                &mut self.missiles.targets,
-                &mut self.physics.velocities,
-            );
         }
         self.apply_changes();
         while let Some(event) =
@@ -225,13 +211,7 @@ impl State {
         while let Some(event) =
             self.explosions.explosion_faded.source().next()
         {
-            self.explosions.on_explosion_faded(
-                &event,
-                &mut self.physics.bodies,
-                &mut self.physics.directions,
-                &mut self.physics.positions,
-                &mut self.physics.velocities,
-            );
+            self.explosions.on_explosion_faded(&event);
         }
     }
 

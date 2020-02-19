@@ -6,26 +6,17 @@ use serde::{
 };
 use toadster::{
     Handle,
-    handle,
     store,
 };
 
 use crate::{
     game::{
-        crafts::{
-            Craft,
-            Fuel,
-        },
+        crafts::Craft,
         missiles::{
             MissileEntity,
             MissileLaunch,
         },
-        physics::{
-            Body,
-            Direction,
-            Position,
-            Velocity,
-        },
+        physics::Body,
         players::{
             Player,
             PlayerId,
@@ -147,29 +138,5 @@ impl Ship {
         body.rot = Rad::full_turn() * 0.6 * rotation;
 
         Some(())
-    }
-
-    pub fn remove(
-        handle:     impl Into<handle::Weak<Ship>>,
-        bodies:     &mut store::Strong<Body>,
-        crafts:     &mut store::Strong<Craft>,
-        directions: &mut store::Strong<Direction>,
-        fuels:      &mut store::Strong<Fuel>,
-        positions:  &mut store::Strong<Position>,
-        ships:      &mut store::Strong<Ship>,
-        velocities: &mut store::Strong<Velocity>,
-    )
-        -> Option<()>
-    {
-        let ship = ships.remove(handle)?;
-        Craft::remove(
-            ship.craft.strong(),
-            bodies,
-            crafts,
-            directions,
-            fuels,
-            positions,
-            velocities,
-        )
     }
 }

@@ -61,37 +61,6 @@ impl Missile {
             target:   self.target.as_weak(),
         }
     }
-
-    pub fn remove(
-        handle:     impl Into<handle::Weak<Missile>>,
-        bodies:     &mut store::Strong<Body>,
-        crafts:     &mut store::Strong<Craft>,
-        directions: &mut store::Strong<Direction>,
-        fuels:      &mut store::Strong<Fuel>,
-        guidances:  &mut store::Strong<Guidance>,
-        missiles:   &mut store::Strong<Missile>,
-        positions:  &mut store::Strong<Position>,
-        targets:    &mut store::Strong<Target>,
-        velocities: &mut store::Strong<Velocity>,
-    )
-        -> Option<()>
-    {
-        let missile = missiles.remove(handle)?;
-
-        Craft::remove(
-            missile.craft.strong(),
-            bodies,
-            crafts,
-            directions,
-            fuels,
-            positions,
-            velocities,
-        );
-        guidances.remove(missile.guidance.strong());
-        targets.remove(missile.target.strong());
-
-        Some(())
-    }
 }
 
 

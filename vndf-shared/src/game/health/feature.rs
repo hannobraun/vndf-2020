@@ -9,31 +9,10 @@ use toadster::{
     store,
 };
 
-use crate::game::{
-    crafts::{
-        Craft,
-        Fuel,
-    },
-    loot::Loot,
-    missiles::{
-        Guidance,
-        Missile,
-        Target,
-    },
-    physics::{
-        Body,
-        Direction,
-        Position,
-        Velocity,
-    },
-    ships::Ship,
-};
-
 use super::{
     Death,
     Health,
     check_health,
-    remove_entity,
 };
 
 
@@ -58,40 +37,5 @@ impl Feature {
             &mut self.death.sink(),
             &mut self.index,
         );
-    }
-
-    pub fn on_death(&mut self,
-        event:      &Death,
-        bodies:     &mut store::Strong<Body>,
-        crafts:     &mut store::Strong<Craft>,
-        directions: &mut store::Strong<Direction>,
-        fuels:      &mut store::Strong<Fuel>,
-        guidances:  &mut store::Strong<Guidance>,
-        loots:      &mut store::Strong<Loot>,
-        missiles:   &mut store::Strong<Missile>,
-        positions:  &mut store::Strong<Position>,
-        ships:      &mut store::Strong<Ship>,
-        targets:    &mut store::Strong<Target>,
-        velocities: &mut store::Strong<Velocity>,
-    )
-        -> Option<()>
-    {
-        remove_entity(
-            event.handle.clone(),
-            bodies,
-            crafts,
-            directions,
-            fuels,
-            guidances,
-            &mut self.healths,
-            loots,
-            missiles,
-            positions,
-            ships,
-            targets,
-            velocities,
-        );
-
-        Some(())
     }
 }
