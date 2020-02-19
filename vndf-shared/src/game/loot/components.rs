@@ -92,7 +92,7 @@ impl Loot {
     }
 
     fn add_to_ship(&self,
-        ship:   &handle::Strong<Ship>,
+        ship:   impl Into<handle::Weak<Ship>>,
         crafts: &store::Strong<Craft>,
         fuels:  &mut store::Strong<Fuel>,
         ships:  &mut store::Strong<Ship>,
