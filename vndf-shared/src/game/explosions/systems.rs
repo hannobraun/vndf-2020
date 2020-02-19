@@ -55,13 +55,13 @@ pub fn explode_entity(
 }
 
 pub fn create_explosion(
+    explosion:          ExplosionEntity,
     bodies:             &mut store::Strong<Body>,
     directions:         &mut store::Strong<Direction>,
     explosions:         &mut store::Strong<Explosion>,
     positions:          &mut store::Strong<Position>,
     velocities:         &mut store::Strong<Velocity>,
     explosion_imminent: &mut EventSink<ExplosionImminent>,
-    explosion:          ExplosionEntity,
 ) {
     let handle = explosion.create(
         bodies,

@@ -67,13 +67,13 @@ impl Feature {
         );
         if let Some(explosion) = explosion {
             create_explosion(
+                explosion,
                 bodies,
                 directions,
                 &mut self.explosions,
                 positions,
                 velocities,
                 &mut self.explosion_imminent.sink(),
-                explosion,
             );
         }
     }
