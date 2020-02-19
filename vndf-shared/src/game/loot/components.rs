@@ -50,10 +50,13 @@ impl Loot {
         bodies:    &store::Strong<Body>,
         crafts:    &store::Strong<Craft>,
         fuels:     &mut store::Strong<Fuel>,
+        healths:   &mut store::Strong<Health>,
         loots:     &store::Strong<Loot>,
         positions: &store::Strong<Position>,
         ships:     &mut store::Strong<Ship>,
-    ) {
+    )
+        -> Option<()>
+    {
         let mut min_distance = f32::INFINITY;
         let mut nearest_ship = None;
 
@@ -75,10 +78,19 @@ impl Loot {
 
         if let Some(ship) = nearest_ship {
             if min_distance < 10.0 {
+                let handle = handle.into();
+
                 self.add_to_ship(&ship, crafts, fuels, ships);
                 loots.remove_later(handle);
+
+                // Make sure entity gets removed.
+                let loot   = loots.get(handle)?;
+                let health = healths.get_mut(&loot.health)?;
+                health.value = 0.0;
             }
         }
+
+        Some(())
     }
 
     fn distance(&self,

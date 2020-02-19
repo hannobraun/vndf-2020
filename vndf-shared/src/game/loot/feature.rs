@@ -72,6 +72,7 @@ impl Feature {
             bodies,
             crafts,
             fuels,
+            healths,
             &mut self.loots,
             positions,
             ships,
