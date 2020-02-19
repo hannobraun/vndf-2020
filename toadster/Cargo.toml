@@ -6,8 +6,9 @@ edition = "2018"
 
 
 [dependencies]
-log   = "*"
-serde = "*"
+backtrace = "*"
+log       = "*"
+serde     = "*"
 
 [dependencies.rinnsal]
 path = "../rinnsal"
