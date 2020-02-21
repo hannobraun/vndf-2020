@@ -5,6 +5,7 @@ pub mod health;
 pub mod loot;
 pub mod missiles;
 pub mod physics;
+pub mod planet;
 pub mod players;
 pub mod ships;
 
