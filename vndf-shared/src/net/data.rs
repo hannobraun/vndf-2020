@@ -22,6 +22,7 @@ use crate::game::{
         Position,
         Velocity,
     },
+    planet::Planet,
     ships::Ship,
 };
 
@@ -77,6 +78,7 @@ data!(
     healths,    Health;
     loots,      Loot;
     missiles,   Missile;
+    planets,    Planet;
     positions,  Position;
     ships,      Ship;
     targets,    Target;

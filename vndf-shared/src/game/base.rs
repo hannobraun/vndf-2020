@@ -39,6 +39,7 @@ use crate::{
             Position,
             Velocity,
         },
+        planet::Planet,
         ships::Ship,
     },
 };
@@ -122,6 +123,7 @@ components!(
     Health,
     Loot,
     Missile,
+    Planet,
     Position,
     Ship,
     Target,
