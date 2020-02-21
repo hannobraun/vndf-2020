@@ -186,7 +186,6 @@ impl State {
             self.explosions.on_death(
                 &event,
                 &mut self.physics.bodies,
-                &mut self.physics.directions,
                 &self.health.healths,
                 &mut self.physics.positions,
                 &mut self.physics.velocities,

@@ -11,7 +11,6 @@ use crate::game::{
     health::Health,
     physics::{
         Body,
-        Direction,
         Position,
         Velocity,
     },
@@ -58,8 +57,6 @@ pub fn explode_entity(
 
 pub fn create_explosion(
     explosion:          ExplosionEntity,
-    bodies:             &mut store::Strong<Body>,
-    directions:         &mut store::Strong<Direction>,
     explosions:         &mut store::Strong<Explosion>,
     positions:          &mut store::Strong<Position>,
     velocities:         &mut store::Strong<Velocity>,
@@ -67,8 +64,6 @@ pub fn create_explosion(
     index:              &mut HashSet<handle::Strong<Explosion>>,
 ) {
     let handle = explosion.create(
-        bodies,
-        directions,
         explosions,
         positions,
         velocities,
@@ -89,8 +84,7 @@ pub fn damage_nearby(
     -> Option<()>
 {
     let explosion = explosions.get(handle)?;
-    let body      = bodies.get(&explosion.body)?;
-    let position  = positions.get(&body.pos)?;
+    let position  = positions.get(&explosion.pos)?;
 
     let nearby = healths.values_mut()
         .into_iter()

@@ -13,8 +13,8 @@ use crate::{
     game::{
         health::Health,
         physics::{
-            Body,
             Position,
+            Velocity,
         },
     },
     math::prelude::*,
@@ -23,16 +23,24 @@ use crate::{
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Explosion {
-    pub body: Handle<Body>,
+    pub pos: Handle<Position>,
+    pub vel: Handle<Velocity>,
 
     pub strength_total: f32,
     pub strength_left:  f32,
 }
 
 impl Explosion {
-    pub fn new(body: impl Into<Handle<Body>>, strength: f32) -> Self {
+    pub fn new(
+        pos:      impl Into<Handle<Position>>,
+        vel:      impl Into<Handle<Velocity>>,
+        strength: f32,
+    )
+        -> Self
+    {
         Self {
-            body: body.into(),
+            pos: pos.into(),
+            vel: vel.into(),
 
             strength_total: strength,
             strength_left:  strength,
@@ -41,7 +49,8 @@ impl Explosion {
 
     pub fn to_weak(&self) -> Self {
         Self {
-            body:           self.body.as_weak(),
+            pos:            self.pos.as_weak(),
+            vel:            self.vel.as_weak(),
             strength_total: self.strength_total.clone(),
             strength_left:  self.strength_left.clone(),
         }

@@ -306,8 +306,7 @@ impl Graphics {
     )
         -> GameResult<bool>
     {
-        let body = get!(state.data.bodies, &explosion.body);
-        let pos  = get!(state.data.positions, &body.pos);
+        let pos = get!(state.data.positions, &explosion.pos);
 
         let alpha = explosion.strength_left / explosion.strength_total;
         let size  = explosion.strength_total * 2.0;

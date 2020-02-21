@@ -14,7 +14,6 @@ use crate::game::{
     },
     physics::{
         Body,
-        Direction,
         Position,
         Velocity,
     },
@@ -63,7 +62,6 @@ impl Feature {
     pub fn on_death(&mut self,
         event:      &Death,
         bodies:     &mut store::Strong<Body>,
-        directions: &mut store::Strong<Direction>,
         healths:    &store::Strong<Health>,
         positions:  &mut store::Strong<Position>,
         velocities: &mut store::Strong<Velocity>,
@@ -76,8 +74,6 @@ impl Feature {
         if let Some(explosion) = explosion {
             create_explosion(
                 explosion,
-                bodies,
-                directions,
                 &mut self.explosions,
                 positions,
                 velocities,
