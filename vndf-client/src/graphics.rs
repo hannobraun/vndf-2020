@@ -25,6 +25,7 @@ use crate::{
             loot::Loot,
             missiles::Missile,
             physics::Body,
+            planet::Planet,
             ships::Ship,
         },
         math::{
@@ -139,8 +140,10 @@ impl Graphics {
         transforms::activate_world_coordinate_system(context)?;
 
         self.draw_boundary(context)?;
-        self.draw_planet(context)?;
 
+        for planet in state.data.planets.values() {
+            self.draw_planet(context, planet)?;
+        }
         for loot in state.data.loots.values() {
             self.draw_loot(context, loot, state)?;
         }
@@ -168,14 +171,14 @@ impl Graphics {
         Ok(())
     }
 
-    fn draw_planet(&self, context: &mut Context) -> GameResult {
-        let size = 100.0;
-
+    fn draw_planet(&self, context: &mut Context, planet: &Planet)
+        -> GameResult
+    {
         graphics::draw(
             context,
             &self.circle,
             DrawParam::new()
-                .scale([size, size])
+                .scale([planet.size, planet.size])
         )?;
 
         Ok(())
