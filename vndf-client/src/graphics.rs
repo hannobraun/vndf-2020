@@ -139,6 +139,7 @@ impl Graphics {
         transforms::activate_world_coordinate_system(context)?;
 
         self.draw_boundary(context)?;
+        self.draw_planet(context)?;
 
         for loot in state.data.loots.values() {
             self.draw_loot(context, loot, state)?;
@@ -162,6 +163,19 @@ impl Graphics {
             &self.boundary,
             DrawParam::new()
                 .scale([WORLD_SIZE, WORLD_SIZE])
+        )?;
+
+        Ok(())
+    }
+
+    fn draw_planet(&self, context: &mut Context) -> GameResult {
+        let size = 100.0;
+
+        graphics::draw(
+            context,
+            &self.circle,
+            DrawParam::new()
+                .scale([size, size])
         )?;
 
         Ok(())
