@@ -47,11 +47,11 @@ macro_rules! get {
 
 
 pub struct Graphics {
-    boundary:  Mesh,
-    explosion: Mesh,
-    ship:      Mesh,
-    square:    Mesh,
-    pointer:   Mesh,
+    boundary: Mesh,
+    circle:   Mesh,
+    ship:     Mesh,
+    square:   Mesh,
+    pointer:  Mesh,
 }
 
 impl Graphics {
@@ -67,7 +67,7 @@ impl Graphics {
             ],
             [1.0, 1.0, 1.0, 1.0].into(),
         )?;
-        let explosion = Mesh::new_circle(
+        let circle = Mesh::new_circle(
             context,
             DrawMode::fill(),
             [0.0, 0.0],
@@ -111,7 +111,7 @@ impl Graphics {
         Ok(
             Graphics {
                 boundary,
-                explosion,
+                circle,
                 ship,
                 square,
                 pointer,
@@ -296,7 +296,7 @@ impl Graphics {
 
         graphics::draw(
             context,
-            &self.explosion,
+            &self.circle,
             DrawParam::new()
                 .dest(pos.0)
                 .scale([size, size])
