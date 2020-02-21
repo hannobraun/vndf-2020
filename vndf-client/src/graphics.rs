@@ -51,8 +51,7 @@ pub struct Graphics {
     explosion: Mesh,
     ship:      Mesh,
     square:    Mesh,
-
-    pointer: Mesh,
+    pointer:   Mesh,
 }
 
 impl Graphics {
@@ -98,7 +97,6 @@ impl Graphics {
             ],
             [1.0, 1.0, 1.0, 1.0].into(),
         )?;
-
         let pointer = Mesh::new_polygon(
             context,
             DrawMode::stroke(0.2),
@@ -116,7 +114,6 @@ impl Graphics {
                 explosion,
                 ship,
                 square,
-
                 pointer,
             }
         )
