@@ -146,15 +146,12 @@ impl Graphics {
         for loot in state.data.loots.values() {
             self.draw_loot(context, loot, state)?;
         }
-
         for ship in state.data.ships.values() {
             self.draw_ship(context, ship, state)?;
         }
-
         for (_, missile) in &state.data.missiles {
             self.draw_missile(context, missile, state)?;
         }
-
         for (_, explosion) in &state.data.explosions {
             self.draw_explosion(context, explosion, state)?;
         }
