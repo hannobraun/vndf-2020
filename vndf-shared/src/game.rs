@@ -51,6 +51,7 @@ pub struct State {
     loot:       loot::Feature,
     missiles:   missiles::Feature,
     physics:    physics::Feature,
+    planet:     planet::Feature,
     players:    players::Feature,
     ships:      ships::Feature,
 }
@@ -65,6 +66,7 @@ impl State {
             loot:       loot::Feature::new(),
             missiles:   missiles::Feature::new(),
             physics:    physics::Feature::new(),
+            planet:     planet::Feature::new(),
             players:    players::Feature::new(),
             ships:      ships::Feature::new(),
         }
@@ -274,6 +276,11 @@ impl State {
             .map(|(handle, c)|
                 Component::Missile(handle.into(), c.to_weak())
             );
+        let planets = self.planet.planets
+            .iter()
+            .map(|(handle, c)|
+                Component::Planet(handle.into(), c.to_weak())
+            );
         let positions = self.physics.positions
             .iter()
             .map(|(handle, c)|
@@ -303,6 +310,7 @@ impl State {
             .chain(healths)
             .chain(loots)
             .chain(missiles)
+            .chain(planets)
             .chain(positions)
             .chain(ships)
             .chain(targets)
