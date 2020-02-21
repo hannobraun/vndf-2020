@@ -58,7 +58,7 @@ impl Craft {
         let dir  = directions.get(&body.dir)?;
         let fuel = fuels.get_mut(&self.fuel)?;
 
-        body.acc = if self.engine_on && fuel.0 > 0.0 {
+        body.acc += if self.engine_on && fuel.0 > 0.0 {
             fuel.0 -= self.thrust * dt;
             dir.0.normalize() * self.thrust
         }

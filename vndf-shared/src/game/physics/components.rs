@@ -117,6 +117,8 @@ impl Body {
         vel.0 += self.acc * dt;
         pos.0 += vel.0 * dt;
 
+        self.acc = Vec2::zero();
+
         Some(())
     }
 
