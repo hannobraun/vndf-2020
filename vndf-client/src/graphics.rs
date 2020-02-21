@@ -149,10 +149,10 @@ impl Graphics {
         for ship in state.data.ships.values() {
             self.draw_ship(context, ship, state)?;
         }
-        for (_, missile) in &state.data.missiles {
+        for missile in state.data.missiles.values() {
             self.draw_missile(context, missile, state)?;
         }
-        for (_, explosion) in &state.data.explosions {
+        for explosion in state.data.explosions.values() {
             self.draw_explosion(context, explosion, state)?;
         }
 
