@@ -1,5 +1,9 @@
 use std::collections::HashSet;
 
+use rand::{
+    prelude::*,
+    thread_rng,
+};
 use toadster::{
     handle::{
         self,
@@ -8,20 +12,27 @@ use toadster::{
     store,
 };
 
-use crate::game::{
-    base::ComponentHandle,
-    crafts::{
-        Craft,
-        Fuel,
+use crate::{
+    game::{
+        base::ComponentHandle,
+        crafts::{
+            Craft,
+            Fuel,
+        },
+        health::Health,
+        physics::{
+            Body,
+            Direction,
+            Position,
+            Velocity,
+        },
+        players::PlayerId,
     },
-    health::Health,
-    physics::{
-        Body,
-        Direction,
-        Position,
-        Velocity,
+    math::{
+        prelude::*,
+        Pnt2,
+        Rad,
     },
-    players::PlayerId,
 };
 
 use super::Ship;
@@ -48,7 +59,16 @@ impl ShipEntity {
         const FUEL:   f32 = 1200.0;
         const HEALTH: f32 =   10.0;
 
-        let pos    = positions.insert(Position::new());
+        let distance = 400.0;
+        let angle = cgmath::Rad(
+            thread_rng().gen_range(0.0, Rad::full_turn().0),
+        );
+        let position = Pnt2::new(
+            angle.sin() * distance,
+            angle.cos() * distance,
+        );
+
+        let pos    = positions.insert(Position(position));
         let vel    = velocities.insert(Velocity::new());
         let dir    = directions.insert(Direction::new());
         let body   = bodies.insert(Body::new(pos, vel, dir));
