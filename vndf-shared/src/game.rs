@@ -130,6 +130,10 @@ impl State {
                 &mut self.physics.velocities,
                 &mut self.health.index,
             );
+            self.planet.on_update(
+                &mut self.physics.bodies,
+                &self.physics.positions,
+            );
         }
         self.apply_changes();
         while let Some(event) = self.players.player_connected.source().next() {

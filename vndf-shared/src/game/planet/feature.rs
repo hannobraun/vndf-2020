@@ -1,8 +1,17 @@
 use toadster::store;
 
-use crate::math::Pnt2;
+use crate::{
+    game::physics::components::{
+        Body,
+        Position,
+    },
+    math::Pnt2,
+};
 
-use super::Planet;
+use super::{
+    Planet,
+    apply_gravitation,
+};
 
 
 pub struct Feature {
@@ -21,5 +30,16 @@ impl Feature {
         Self {
             planets,
         }
+    }
+
+    pub fn on_update(&self,
+        bodies:    &mut store::Strong<Body>,
+        positions: &store::Strong<Position>,
+    ) {
+        apply_gravitation(
+            bodies,
+            &self.planets,
+            positions,
+        );
     }
 }
