@@ -178,6 +178,7 @@ impl Graphics {
             context,
             &self.circle,
             DrawParam::new()
+                .dest(planet.pos)
                 .scale([planet.size, planet.size])
         )?;
 
