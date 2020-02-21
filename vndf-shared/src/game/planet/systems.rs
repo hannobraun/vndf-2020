@@ -3,9 +3,12 @@ use std::f32::consts::PI;
 use toadster::store;
 
 use crate::{
-    game::physics::{
-        Body,
-        Position,
+    game::{
+        health::Health,
+        physics::{
+            Body,
+            Position,
+        },
     },
     math::prelude::*,
 };
@@ -33,6 +36,28 @@ pub fn apply_gravitation(
 
             let acc = (planet.pos - pos.0).normalize() * acc;
             body.acc += acc;
+        }
+    }
+
+    Some(())
+}
+
+pub fn check_collision(
+    bodies:    &store::Strong<Body>,
+    healths:   &mut store::Strong<Health>,
+    planets:   &store::Strong<Planet>,
+    positions: &store::Strong<Position>,
+)
+    -> Option<()>
+{
+    for planet in planets.values() {
+        for health in healths.values_mut() {
+            let body = bodies.get(&health.body)?;
+            let pos  = positions.get(&body.pos)?;
+
+            if pos.0.distance(planet.pos) <= planet.size {
+                health.value = 0.0;
+            }
         }
     }
 

@@ -1,9 +1,12 @@
 use toadster::store;
 
 use crate::{
-    game::physics::components::{
-        Body,
-        Position,
+    game::{
+        health::Health,
+        physics::components::{
+            Body,
+            Position,
+        },
     },
     math::Pnt2,
 };
@@ -11,6 +14,7 @@ use crate::{
 use super::{
     Planet,
     apply_gravitation,
+    check_collision,
 };
 
 
@@ -34,10 +38,17 @@ impl Feature {
 
     pub fn on_update(&self,
         bodies:    &mut store::Strong<Body>,
+        healths:   &mut store::Strong<Health>,
         positions: &store::Strong<Position>,
     ) {
         apply_gravitation(
             bodies,
+            &self.planets,
+            positions,
+        );
+        check_collision(
+            bodies,
+            healths,
             &self.planets,
             positions,
         );

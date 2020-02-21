@@ -132,6 +132,7 @@ impl State {
             );
             self.planet.on_update(
                 &mut self.physics.bodies,
+                &mut self.health.healths,
                 &self.physics.positions,
             );
         }
