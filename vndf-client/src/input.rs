@@ -12,7 +12,10 @@ use ggez::{
     Context,
     input::keyboard::is_key_repeated,
 };
-use time::Time;
+use time::{
+    OffsetDateTime,
+    Time,
+};
 
 use crate::{
     config::{
@@ -125,7 +128,7 @@ impl Events {
                 seq: self.next_seq,
                 kind,
             },
-            entered: Time::now(),
+            entered: OffsetDateTime::now().time(),
             sent:    None,
             handled: None,
         };
@@ -163,7 +166,7 @@ impl Events {
 
     pub fn handled(&mut self, seq: u64) {
         if let Some(event) = self.sent.get_mut(&seq) {
-            event.handled = Some(Time::now());
+            event.handled = Some(OffsetDateTime::now().time());
         }
     }
 }
@@ -244,7 +247,7 @@ impl<'r> Iterator for Unsent<'r> {
     fn next(&mut self) -> Option<Self::Item> {
         self.inner.next()
             .map(|mut event| {
-                event.sent = Some(Time::now());
+                event.sent = Some(OffsetDateTime::now().time());
                 self.sent.insert(event.inner.seq, event);
                 event.inner
             })
