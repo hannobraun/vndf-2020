@@ -115,7 +115,16 @@ impl Body {
 
         dir.0 = rotate(dir.0, self.rot * dt);
 
-        math::integrate(dt, &mut pos.0, &mut vel.0, &mut self.acc);
+        math::integrate(
+            dt,
+            &mut pos.0,
+            &mut vel.0,
+            |_pos| {
+                // Ignoring the position argument right now. Need to incorporate
+                // it in order to provide more accurate integration.
+                self.acc
+            }
+        );
         self.acc = Vec2::zero();
 
         Some(())
