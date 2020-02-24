@@ -42,6 +42,12 @@ impl State {
         self.statistics.update();
 
         for body in self.data.bodies.values_mut() {
+            for planet in self.data.planets.values() {
+                planet.apply_gravitation(
+                    body,
+                    &mut self.data.positions,
+                );
+            }
             body.enforce_boundary(
                 WORLD_SIZE,
                 &self.data.positions,
