@@ -14,6 +14,7 @@ use crate::{
     math::{
         prelude::*,
         Pnt2,
+        Vec2,
     },
 };
 
@@ -36,17 +37,19 @@ impl Planet {
         -> Option<()>
     {
         let pos = positions.get(&body.pos)?;
+        body.acc += self.gravitation_at(pos.0);
 
+        Some(())
+    }
+
+    pub fn gravitation_at(&self, pos: Pnt2) -> Vec2 {
         // The gravitational constant of our universe. Completely made up.
         const G: f32 = 5.0;
 
-        let dist = pos.0.distance(self.pos);
+        let dist = pos.distance(self.pos);
         let mass = PI * self.size.powi(2);
         let acc  = G * mass / dist.powi(2);
 
-        let acc = (self.pos - pos.0).normalize() * acc;
-        body.acc += acc;
-
-        Some(())
+        (self.pos - pos).normalize() * acc
     }
 }
