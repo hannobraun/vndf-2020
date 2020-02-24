@@ -99,6 +99,11 @@ impl State {
             self.explosions.on_update(
                 &event,
             );
+            self.planet.on_update(
+                &mut self.physics.bodies,
+                &mut self.health.healths,
+                &self.physics.positions,
+            );
             self.physics.on_update(
                 &event,
                 WORLD_SIZE,
@@ -129,11 +134,6 @@ impl State {
                 &mut self.ships.ships,
                 &mut self.physics.velocities,
                 &mut self.health.index,
-            );
-            self.planet.on_update(
-                &mut self.physics.bodies,
-                &mut self.health.healths,
-                &self.physics.positions,
             );
         }
         self.apply_changes();
