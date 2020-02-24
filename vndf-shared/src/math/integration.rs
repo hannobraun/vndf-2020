@@ -1,3 +1,10 @@
+/// Collection of symplectic numerical integrators
+///
+/// Only one is used in the game, but the others are kept around for quick
+/// comparison. Since orbital mechanics are being simulated, only symplectic
+/// integrators are useful.
+
+
 use crate::math::{
     Pnt2,
     Vec2,
