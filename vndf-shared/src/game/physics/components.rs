@@ -9,6 +9,7 @@ use toadster::{
 
 use crate::math::{
     prelude::*,
+    self,
     Pnt2,
     Rad,
     Vec2,
@@ -114,9 +115,7 @@ impl Body {
 
         dir.0 = rotate(dir.0, self.rot * dt);
 
-        vel.0 += self.acc * dt;
-        pos.0 += vel.0 * dt;
-
+        math::integrate(dt, &mut pos.0, &mut vel.0, &mut self.acc);
         self.acc = Vec2::zero();
 
         Some(())

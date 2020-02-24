@@ -1,3 +1,8 @@
+pub mod integration;
+
+pub use integration::integrate;
+
+
 use cgmath::{
     self,
     prelude::*,
