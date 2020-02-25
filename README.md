@@ -4,6 +4,8 @@
 
 Von Neumann Defense Force is a game about spaceships. It is the continuation of [an earlier project](https://github.com/hannobraun/vndf-2016) of the same name.
 
+![a screenshot from the game](screenshot_2020-02-25.png)
+
 The project is in development, and might well stay there forever. As the next section details, a lot of things are in a rough state. Pull requests are still very welcome, however.
 
 ## Status
