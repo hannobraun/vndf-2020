@@ -7,11 +7,11 @@ use std::{
 };
 
 use vndf_shared::{
+    data::ClientData,
     game::base::{
         Component,
         ComponentHandle,
     },
-    net::data::ClientData,
 };
 
 

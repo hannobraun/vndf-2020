@@ -1,6 +1,5 @@
 pub mod client;
 pub mod conn;
-pub mod data;
 pub mod msg;
 pub mod result;
 

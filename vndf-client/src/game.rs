@@ -6,6 +6,7 @@ use time::{
 };
 
 use crate::shared::{
+    data::ClientData,
     game::{
         WORLD_SIZE,
         Diagnostics,
@@ -15,7 +16,6 @@ use crate::shared::{
         },
         players::PlayerId,
     },
-    net::data::ClientData,
 };
 
 
