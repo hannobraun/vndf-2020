@@ -28,9 +28,9 @@ use crate::game::{
 
 
 macro_rules! components {
-    ($($component_name:ident, $ty:ident;)*) => {
+    ($($component_name:ident, $component_ty:ident;)*) => {
         pub struct Data {
-            $(pub $component_name: store::Weak<$ty>,)*
+            $(pub $component_name: store::Weak<$component_ty>,)*
         }
 
         impl Data {
@@ -45,7 +45,7 @@ macro_rules! components {
             {
                 match component {
                     $(
-                        Component::$ty(handle, value) => {
+                        Component::$component_ty(handle, value) => {
                             let previous = self.$component_name.insert(
                                 &handle,
                                 value.clone(),
@@ -59,7 +59,7 @@ macro_rules! components {
             pub fn remove(&mut self, handle: &ComponentHandle) {
                 match handle {
                     $(
-                        ComponentHandle::$ty(handle) => {
+                        ComponentHandle::$component_ty(handle) => {
                             self.$component_name.remove(handle);
                         }
                     )*
