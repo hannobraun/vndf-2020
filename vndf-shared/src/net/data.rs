@@ -28,12 +28,16 @@ use crate::game::{
 
 
 macro_rules! components {
-    ($($component_name:ident, $component_ty:ident;)*) => {
-        pub struct Data {
+    (
+        $name:ident {
+            $($component_name:ident, $component_ty:ident;)*
+        }
+    ) => {
+        pub struct $name {
             $(pub $component_name: store::Weak<$component_ty>,)*
         }
 
-        impl Data {
+        impl $name {
             pub fn new() -> Self {
                 Self {
                     $($component_name: store::Weak::new(),)*
@@ -70,17 +74,19 @@ macro_rules! components {
 }
 
 components!(
-    bodies,     Body;
-    crafts,     Craft;
-    directions, Direction;
-    explosions, Explosion;
-    fuels,      Fuel;
-    healths,    Health;
-    loots,      Loot;
-    missiles,   Missile;
-    planets,    Planet;
-    positions,  Position;
-    ships,      Ship;
-    targets,    Target;
-    velocities, Velocity;
+    Data {
+        bodies,     Body;
+        crafts,     Craft;
+        directions, Direction;
+        explosions, Explosion;
+        fuels,      Fuel;
+        healths,    Health;
+        loots,      Loot;
+        missiles,   Missile;
+        planets,    Planet;
+        positions,  Position;
+        ships,      Ship;
+        targets,    Target;
+        velocities, Velocity;
+    }
 );
