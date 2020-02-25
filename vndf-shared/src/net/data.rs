@@ -27,7 +27,7 @@ use crate::game::{
 };
 
 
-macro_rules! data {
+macro_rules! components {
     ($($name:ident, $ty:ident;)*) => {
         pub struct Data {
             $(pub $name: store::Weak<$ty>,)*
@@ -69,7 +69,7 @@ macro_rules! data {
     };
 }
 
-data!(
+components!(
     bodies,     Body;
     crafts,     Craft;
     directions, Direction;
