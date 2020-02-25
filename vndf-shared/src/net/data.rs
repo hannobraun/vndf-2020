@@ -74,7 +74,7 @@ macro_rules! components {
 }
 
 components!(
-    Data {
+    ClientData {
         bodies,     Body;
         crafts,     Craft;
         directions, Direction;

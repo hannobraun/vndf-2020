@@ -11,19 +11,19 @@ use vndf_shared::{
         Component,
         ComponentHandle,
     },
-    net::data::Data,
+    net::data::ClientData,
 };
 
 
 pub struct Client {
-    data:    Data,
+    data:    ClientData,
     updates: HashMap<ComponentHandle, Instant>,
 }
 
 impl Client {
     pub fn new() -> Self {
         Self {
-            data:    Data::new(),
+            data:    ClientData::new(),
             updates: HashMap::new(),
         }
     }

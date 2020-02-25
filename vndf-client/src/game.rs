@@ -15,7 +15,7 @@ use crate::shared::{
         },
         players::PlayerId,
     },
-    net::data::Data,
+    net::data::ClientData,
 };
 
 
@@ -23,7 +23,7 @@ pub struct State {
     pub own_id:      Option<PlayerId>,
     pub diagnostics: Option<Diagnostics>,
     pub statistics:  Statistics,
-    pub data:        Data,
+    pub data:        ClientData,
     pub frame_time:  FrameTime,
 }
 
@@ -33,7 +33,7 @@ impl State {
             own_id:      None,
             diagnostics: None,
             statistics:  Statistics::new(),
-            data:        Data::new(),
+            data:        ClientData::new(),
             frame_time:  FrameTime::new(),
         }
     }
