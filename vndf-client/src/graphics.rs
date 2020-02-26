@@ -193,7 +193,7 @@ impl Graphics {
         let pos   = get!(state.data.positions, &body.pos);
         let dir   = get!(state.data.directions, &body.dir);
 
-        self.draw_projected_course(context, &craft.body, ship.color, state)?;
+        self.draw_projected_path(context, &craft.body, ship.color, state)?;
 
         graphics::draw(
             context,
@@ -247,7 +247,7 @@ impl Graphics {
         Ok(true)
     }
 
-    fn draw_projected_course(&self,
+    fn draw_projected_path(&self,
         context: &mut Context,
         body:    impl Into<handle::Weak<Body>>,
         color:   [f32; 3],
