@@ -193,7 +193,7 @@ impl Graphics {
         let pos   = get!(state.data.positions, &body.pos);
         let dir   = get!(state.data.directions, &body.dir);
 
-        self.draw_projected_course(context, &craft.body, state)?;
+        self.draw_projected_course(context, &craft.body, ship.color, state)?;
 
         graphics::draw(
             context,
@@ -250,6 +250,7 @@ impl Graphics {
     fn draw_projected_course(&self,
         context: &mut Context,
         body:    impl Into<handle::Weak<Body>>,
+        color:   [f32; 3],
         state:   &State,
     )
         -> GameResult<bool>
@@ -291,7 +292,7 @@ impl Graphics {
                 context,
                 &[previous, current],
                 1.5,
-                [1.0, 1.0, 1.0, 0.5].into(),
+                [color[0], color[1], color[2], 0.5].into(),
             )?;
             graphics::draw(
                 context,
