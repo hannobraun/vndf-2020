@@ -29,18 +29,18 @@ use crate::game::{
 
 macro_rules! components {
     (
-        $components:ident($store:ident) {
+        $components:ident($store_type:ident) {
             $($component_name:ident, $component_ty:ident;)*
         }
     ) => {
         pub struct $components {
-            $(pub $component_name: store::$store<$component_ty>,)*
+            $(pub $component_name: store::$store_type<$component_ty>,)*
         }
 
         impl $components {
             pub fn new() -> Self {
                 Self {
-                    $($component_name: store::$store::new(),)*
+                    $($component_name: store::$store_type::new(),)*
                 }
             }
 
