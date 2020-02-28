@@ -1,5 +1,8 @@
 use toadster::{
-    handle,
+    handle::{
+        self,
+        Handle,
+    },
     store,
 };
 
@@ -49,7 +52,7 @@ pub trait Remove<T> {
 
 macro_rules! components {
     (
-        $components:ident($store_type:ident) {
+        $components:ident($store_type:ident), $handle:ident {
             $($store_name:ident, $component_ty:ident;)*
         }
     ) => {
@@ -120,11 +123,35 @@ macro_rules! components {
                 }
             }
         )*
+
+
+        pub enum $handle {
+            $(
+                $component_ty(Handle<$component_ty>),
+            )*
+        }
+
+        impl $handle {
+            pub fn remove<T>(&self, components: &mut T)
+                where T: Components $(+ Remove<$component_ty>)*
+            {
+                match self {
+                    $(
+                        Self::$component_ty(handle) => {
+                            <T as Remove<$component_ty>>::remove(
+                                components,
+                                handle,
+                            );
+                        }
+                    )*
+                }
+            }
+        }
     };
 }
 
 components!(
-    ClientData(Weak) {
+    ClientData(Weak), ClientHandle {
         bodies,     Body;
         crafts,     Craft;
         directions, Direction;
