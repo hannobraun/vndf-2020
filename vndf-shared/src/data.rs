@@ -52,7 +52,7 @@ pub trait Remove<T> {
 
 macro_rules! components {
     (
-        $components:ident($store_type:ident), $handle:ident {
+        $components:ident($store_type:ident), $handle:ident, $component:ident {
             $($store_name:ident, $component_ty:ident;)*
         }
     ) => {
@@ -147,11 +147,36 @@ macro_rules! components {
                 }
             }
         }
+
+
+        pub enum $component {
+            $(
+                $component_ty(Handle<$component_ty>, $component_ty),
+            )*
+        }
+
+        impl $component {
+            pub fn update<T>(self, components: &mut T)
+                where T: Components $(+ Update<$component_ty>)*
+            {
+                match self {
+                    $(
+                        Self::$component_ty(handle, value) => {
+                            <T as Update<$component_ty>>::update(
+                                components,
+                                handle,
+                                value,
+                            );
+                        }
+                    )*
+                }
+            }
+        }
     };
 }
 
 components!(
-    ClientData(Weak), ClientHandle {
+    ClientData(Weak), ClientHandle, ClientComponent {
         bodies,     Body;
         crafts,     Craft;
         directions, Direction;
