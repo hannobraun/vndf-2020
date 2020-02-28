@@ -1,4 +1,7 @@
-use toadster::store;
+use toadster::{
+    handle,
+    store,
+};
 
 use crate::game::{
     base::{
@@ -25,6 +28,23 @@ use crate::game::{
     planet::Planet,
     ships::Ship,
 };
+
+
+/// Implemented for all generated collections of component stores
+///
+/// This trait doesn't do anything, but a trait is needed to make the generated
+/// syntax in the macro work.
+pub trait Components {}
+
+/// Update component of a specific type from a collection of component stores
+pub trait Update<T> {
+    fn update(&mut self, handle: impl Into<handle::Weak<T>>, value: T) -> bool;
+}
+
+/// Remove component of a specific type from a collection of component stores
+pub trait Remove<T> {
+    fn remove(&mut self, handle: impl Into<handle::Weak<T>>);
+}
 
 
 macro_rules! components {
@@ -70,6 +90,36 @@ macro_rules! components {
                 }
             }
         }
+
+        impl Components for $components {}
+
+        $(
+            impl Update<$component_ty> for $components {
+                fn update(&mut self,
+                    handle: impl Into<handle::Weak<$component_ty>>,
+                    value:  $component_ty,
+                )
+                    -> bool
+                {
+                    let previous = self.$store_name.insert(
+                        handle,
+                        value.clone(),
+                    );
+                    Some(value) != previous
+                }
+            }
+
+            // This is currently generated for all store types, but will only
+            // compile for weak stores. Once the macro invocation is extended to
+            // generate strong stores, we'll have to be a bit smarter here.
+            impl Remove<$component_ty> for $components {
+                fn remove(&mut self,
+                    handle: impl Into<handle::Weak<$component_ty>>,
+                ) {
+                    self.$store_name.remove(handle);
+                }
+            }
+        )*
     };
 }
 
