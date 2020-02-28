@@ -30,17 +30,17 @@ use crate::game::{
 macro_rules! components {
     (
         $components:ident($store_type:ident) {
-            $($component_name:ident, $component_ty:ident;)*
+            $($store_name:ident, $component_ty:ident;)*
         }
     ) => {
         pub struct $components {
-            $(pub $component_name: store::$store_type<$component_ty>,)*
+            $(pub $store_name: store::$store_type<$component_ty>,)*
         }
 
         impl $components {
             pub fn new() -> Self {
                 Self {
-                    $($component_name: store::$store_type::new(),)*
+                    $($store_name: store::$store_type::new(),)*
                 }
             }
 
@@ -50,7 +50,7 @@ macro_rules! components {
                 match component {
                     $(
                         Component::$component_ty(handle, value) => {
-                            let previous = self.$component_name.insert(
+                            let previous = self.$store_name.insert(
                                 &handle,
                                 value.clone(),
                             );
@@ -64,7 +64,7 @@ macro_rules! components {
                 match handle {
                     $(
                         ComponentHandle::$component_ty(handle) => {
-                            self.$component_name.remove(handle);
+                            self.$store_name.remove(handle);
                         }
                     )*
                 }
