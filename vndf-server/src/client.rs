@@ -34,10 +34,10 @@ impl Client {
     }
 
     pub fn update(&mut self, component: Component) -> bool {
-        let component_handle = ComponentHandle::from_component(&component);
+        let handle = ComponentHandle::from_component(&component);
 
         let recently_updated = self.updates
-            .get(&component_handle)
+            .get(&handle)
             .map(|last_update|
                 last_update.elapsed() < Duration::from_secs(1)
             )
@@ -67,7 +67,7 @@ impl Client {
         };
 
         if should_update {
-            self.updates.insert(component_handle, Instant::now());
+            self.updates.insert(handle, Instant::now());
         }
 
         should_update
