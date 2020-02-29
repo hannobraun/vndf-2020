@@ -137,6 +137,15 @@ macro_rules! components {
         }
 
         impl $handle {
+            pub fn from_component(component: &$component) -> Self {
+                match component {
+                    $(
+                        $component::$component_ty(handle, _) =>
+                            Self::$component_ty(handle.clone()),
+                    )*
+                }
+            }
+
             pub fn remove<T>(&self, components: &mut T)
                 where T: Components $(+ Remove<$component_ty>)*
             {
