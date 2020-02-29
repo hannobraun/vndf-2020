@@ -21,6 +21,10 @@ use toadster::{
 };
 
 use crate::{
+    data::{
+        ClientComponent,
+        ClientHandle,
+    },
     game::{
         crafts::{
             Craft,
@@ -107,6 +111,28 @@ macro_rules! components {
                     $(
                         Self::$component(handle) =>
                             handle.weak().into_untyped(),
+                    )*
+                }
+            }
+        }
+
+        impl From<Component> for ClientComponent {
+            fn from(from: Component) -> Self {
+                match from {
+                    $(
+                        Component::$component(handle, value) =>
+                            Self::$component(handle, value),
+                    )*
+                }
+            }
+        }
+
+        impl From<ComponentHandle> for ClientHandle {
+            fn from(from: ComponentHandle) -> Self {
+                match from {
+                    $(
+                        ComponentHandle::$component(handle) =>
+                            Self::$component(handle),
                     )*
                 }
             }
