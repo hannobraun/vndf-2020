@@ -14,7 +14,6 @@ use crate::shared::{
     game::{
         WORLD_SIZE,
         Diagnostics,
-        base::Component,
         players::PlayerId,
     },
 };
@@ -74,10 +73,8 @@ impl State {
         }
     }
 
-    pub fn update_component(&mut self, component: Component) {
+    pub fn update_component(&mut self, component: ClientComponent) {
         self.statistics.updates.push_back(Instant::now());
-
-        let component: ClientComponent = component.into();
         component.update(&mut self.data);
     }
 
