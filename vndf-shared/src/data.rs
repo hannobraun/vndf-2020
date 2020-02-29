@@ -1,3 +1,7 @@
+use serde::{
+    Deserialize,
+    Serialize,
+};
 use toadster::{
     handle::{
         self,
@@ -125,6 +129,7 @@ macro_rules! components {
         )*
 
 
+        #[derive(Clone, Debug, Deserialize, Serialize, Eq, PartialEq, Hash)]
         pub enum $handle {
             $(
                 $component_ty(Handle<$component_ty>),
