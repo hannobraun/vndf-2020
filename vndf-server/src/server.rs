@@ -139,7 +139,9 @@ impl Server {
                 if should_update {
                     self.network.send(
                         addr,
-                        msg::FromServer::UpdateComponent(component.clone()),
+                        msg::FromServer::UpdateComponent(
+                            component.clone().into()
+                        ),
                     );
                 }
             }
