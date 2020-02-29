@@ -171,7 +171,7 @@ macro_rules! components {
         }
 
         impl $component {
-            pub fn update<T>(self, components: &mut T)
+            pub fn update<T>(self, components: &mut T) -> bool
                 where T: Components $(+ Update<$component_ty>)*
             {
                 match self {
@@ -181,7 +181,7 @@ macro_rules! components {
                                 components,
                                 handle,
                                 value,
-                            );
+                            )
                         }
                     )*
                 }
