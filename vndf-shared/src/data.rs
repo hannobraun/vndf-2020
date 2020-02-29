@@ -154,6 +154,7 @@ macro_rules! components {
         }
 
 
+        #[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
         pub enum $component {
             $(
                 $component_ty(Handle<$component_ty>, $component_ty),
