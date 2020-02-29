@@ -7,7 +7,10 @@ use std::{
 };
 
 use vndf_shared::{
-    data::ClientData,
+    data::{
+        ClientData,
+        ClientHandle,
+    },
     game::base::{
         Component,
         ComponentHandle,
@@ -29,8 +32,10 @@ impl Client {
     }
 
     pub fn remove(&mut self, handle: &ComponentHandle) {
-        self.data.remove(handle);
         self.updates.remove(handle);
+
+        let handle: ClientHandle = handle.clone().into();
+        handle.remove(&mut self.data);
     }
 
     pub fn update(&mut self, component: Component) -> bool {
