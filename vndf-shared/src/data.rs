@@ -11,10 +11,6 @@ use toadster::{
 };
 
 use crate::game::{
-    base::{
-        Component,
-        ComponentHandle,
-    },
     crafts::{
         Craft,
         Fuel,
@@ -68,32 +64,6 @@ macro_rules! components {
             pub fn new() -> Self {
                 Self {
                     $($store_name: store::$store_type::new(),)*
-                }
-            }
-
-            pub fn update(&mut self, component: Component)
-                -> bool
-            {
-                match component {
-                    $(
-                        Component::$component_ty(handle, value) => {
-                            let previous = self.$store_name.insert(
-                                &handle,
-                                value.clone(),
-                            );
-                            Some(value) != previous
-                        }
-                    )*
-                }
-            }
-
-            pub fn remove(&mut self, handle: &ComponentHandle) {
-                match handle {
-                    $(
-                        ComponentHandle::$component_ty(handle) => {
-                            self.$store_name.remove(handle);
-                        }
-                    )*
                 }
             }
         }
