@@ -9,8 +9,8 @@ use toadster::{
 };
 
 use crate::{
+    data::ClientHandle,
     game::{
-        base::ComponentHandle,
         crafts::{
             Craft,
             Fuel,
@@ -104,7 +104,7 @@ impl MissileEntity {
 
         let missile = missiles.insert(Missile::new(craft, guidance, target));
         healths.get_mut(&health).unwrap().finalize(
-            ComponentHandle::Missile(missile.into()),
+            ClientHandle::Missile(missile.into()),
             entities,
         );
 

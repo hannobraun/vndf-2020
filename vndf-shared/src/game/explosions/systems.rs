@@ -6,13 +6,15 @@ use toadster::{
     store,
 };
 
-use crate::game::{
-    base::ComponentHandle,
-    health::Health,
-    physics::{
-        Body,
-        Position,
-        Velocity,
+use crate::{
+    data::ClientHandle,
+    game::{
+        health::Health,
+        physics::{
+            Body,
+            Position,
+            Velocity,
+        },
     },
 };
 
@@ -35,12 +37,12 @@ pub fn explode_entity(
     let body   = bodies.get(&health.body)?;
 
     let mut is_missile = false;
-    if let ComponentHandle::Missile(_) = health.parent_ref()? {
+    if let ClientHandle::Missile(_) = health.parent_ref()? {
         is_missile = true;
     }
 
     let mut is_ship = false;
-    if let ComponentHandle::Ship(_) = health.parent_ref()? {
+    if let ClientHandle::Ship(_) = health.parent_ref()? {
         is_ship = true;
     }
 
