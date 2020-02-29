@@ -121,13 +121,13 @@ impl Server {
         }
 
         for event in self.state.removals().ready() {
-            let handle = event.handle.clone().into();
+            let handle = event.handle.into();
 
             for (&addr, client) in &mut self.clients {
                 client.remove(&handle);
                 self.network.send(
                     addr,
-                    msg::FromServer::RemoveComponent(event.handle.clone()),
+                    msg::FromServer::RemoveComponent(handle.clone()),
                 );
             }
         }
