@@ -6,15 +6,10 @@ use std::{
     },
 };
 
-use vndf_shared::{
-    data::{
-        ClientData,
-        ClientHandle,
-    },
-    game::base::{
-        Component,
-        ComponentHandle,
-    },
+use vndf_shared::data::{
+    ClientComponent,
+    ClientData,
+    ClientHandle,
 };
 
 
@@ -36,9 +31,8 @@ impl Client {
         handle.remove(&mut self.data);
     }
 
-    pub fn update(&mut self, component: Component) -> bool {
-        let handle = ComponentHandle::from_component(&component);
-        let handle: ClientHandle = handle.into();
+    pub fn update(&mut self, component: ClientComponent) -> bool {
+        let handle = ClientHandle::from_component(&component);
 
         let recently_updated = self.updates
             .get(&handle)
@@ -47,7 +41,7 @@ impl Client {
             )
             .unwrap_or(false);
 
-        use Component::*;
+        use ClientComponent::*;
         let is_interpolated = match component {
             // These components are interpolated client-side.
             Direction(_, _)
@@ -61,7 +55,7 @@ impl Client {
                 false,
         };
 
-        let data_changed = self.data.update(component);
+        let data_changed = component.update(&mut self.data);
 
         let should_update = if is_interpolated {
             data_changed && !recently_updated

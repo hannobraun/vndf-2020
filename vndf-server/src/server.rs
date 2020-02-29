@@ -134,7 +134,7 @@ impl Server {
 
         for component in self.state.updates() {
             for (&addr, client) in &mut self.clients {
-                let should_update = client.update(component.clone());
+                let should_update = client.update(component.clone().into());
 
                 if should_update {
                     self.network.send(
