@@ -20,7 +20,7 @@ use vndf_shared::{
 
 pub struct Client {
     data:    ClientData,
-    updates: HashMap<ComponentHandle, Instant>,
+    updates: HashMap<ClientHandle, Instant>,
 }
 
 impl Client {
@@ -32,14 +32,15 @@ impl Client {
     }
 
     pub fn remove(&mut self, handle: &ComponentHandle) {
-        self.updates.remove(handle);
-
         let handle: ClientHandle = handle.clone().into();
+
+        self.updates.remove(&handle);
         handle.remove(&mut self.data);
     }
 
     pub fn update(&mut self, component: Component) -> bool {
         let handle = ComponentHandle::from_component(&component);
+        let handle: ClientHandle = handle.into();
 
         let recently_updated = self.updates
             .get(&handle)
