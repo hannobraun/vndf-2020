@@ -1,8 +1,8 @@
-use super::ComponentHandle;
+use crate::data::ClientHandle;
 
 
 pub struct ComponentRemoved {
-    pub handle: ComponentHandle,
+    pub handle: ClientHandle,
 }
 
 pub struct Update {
