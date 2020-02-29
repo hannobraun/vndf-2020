@@ -31,10 +31,8 @@ impl Client {
         }
     }
 
-    pub fn remove(&mut self, handle: &ComponentHandle) {
-        let handle: ClientHandle = handle.clone().into();
-
-        self.updates.remove(&handle);
+    pub fn remove(&mut self, handle: &ClientHandle) {
+        self.updates.remove(handle);
         handle.remove(&mut self.data);
     }
 
