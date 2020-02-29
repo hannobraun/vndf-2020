@@ -6,6 +6,7 @@ use toadster::{
     handle::{
         self,
         Handle,
+        Untyped,
     },
     store,
 };
@@ -112,6 +113,33 @@ macro_rules! components {
                     $(
                         $component::$component_ty(handle, _) =>
                             Self::$component_ty(handle.clone()),
+                    )*
+                }
+            }
+
+            pub fn as_weak(&self) -> Self {
+                match self {
+                    $(
+                        Self::$component_ty(handle) =>
+                            Self::$component_ty(handle.as_weak()),
+                    )*
+                }
+            }
+
+            pub fn into_strong_untyped(self) -> handle::Strong<Untyped> {
+                match self {
+                    $(
+                        Self::$component_ty(handle) =>
+                            handle.strong().into_untyped(),
+                    )*
+                }
+            }
+
+            pub fn into_weak_untyped(self) -> handle::Weak<Untyped> {
+                match self {
+                    $(
+                        Self::$component_ty(handle) =>
+                            handle.weak().into_untyped(),
                     )*
                 }
             }
