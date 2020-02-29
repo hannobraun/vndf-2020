@@ -9,14 +9,12 @@ use crate::shared::{
     data::{
         ClientComponent,
         ClientData,
+        ClientHandle,
     },
     game::{
         WORLD_SIZE,
         Diagnostics,
-        base::{
-            Component,
-            ComponentHandle,
-        },
+        base::Component,
         players::PlayerId,
     },
 };
@@ -83,9 +81,9 @@ impl State {
         component.update(&mut self.data);
     }
 
-    pub fn remove_component(&mut self, handle: &ComponentHandle) {
+    pub fn remove_component(&mut self, handle: &ClientHandle) {
         self.statistics.removals.push_back(Instant::now());
-        self.data.remove(handle);
+        handle.remove(&mut self.data);
     }
 }
 
