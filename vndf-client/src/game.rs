@@ -6,7 +6,10 @@ use time::{
 };
 
 use crate::shared::{
-    data::ClientData,
+    data::{
+        ClientComponent,
+        ClientData,
+    },
     game::{
         WORLD_SIZE,
         Diagnostics,
@@ -75,7 +78,9 @@ impl State {
 
     pub fn update_component(&mut self, component: Component) {
         self.statistics.updates.push_back(Instant::now());
-        self.data.update(component);
+
+        let component: ClientComponent = component.into();
+        component.update(&mut self.data);
     }
 
     pub fn remove_component(&mut self, handle: &ComponentHandle) {
