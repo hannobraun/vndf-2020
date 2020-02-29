@@ -19,9 +19,10 @@ use serde::{
     Serialize,
 };
 
+use crate::data::ClientComponent;
+
 use self::{
     base::{
-        Component,
         ComponentHandle,
         ComponentRemoved,
         Update,
@@ -239,71 +240,71 @@ impl State {
         self.ships.ships.apply_changes();
     }
 
-    pub fn updates(&mut self) -> impl Iterator<Item=Component> + '_ {
+    pub fn updates(&mut self) -> impl Iterator<Item=ClientComponent> + '_ {
         let bodies = self.physics.bodies
             .iter()
             .map(|(handle, c)|
-                Component::Body(handle.into(), c.to_weak())
+                ClientComponent::Body(handle.into(), c.to_weak())
             );
         let crafts = self.crafts.crafts
             .iter()
             .map(|(handle, c)|
-                Component::Craft(handle.into(), c.to_weak())
+                ClientComponent::Craft(handle.into(), c.to_weak())
             );
         let directions = self.physics.directions
             .iter()
             .map(|(handle, c)|
-                Component::Direction(handle.into(), c.to_weak())
+                ClientComponent::Direction(handle.into(), c.to_weak())
             );
         let explosions = self.explosions.explosions
             .iter()
             .map(|(handle, c)|
-                Component::Explosion(handle.into(), c.to_weak())
+                ClientComponent::Explosion(handle.into(), c.to_weak())
             );
         let fuels = self.crafts.fuels
             .iter()
             .map(|(handle, c)|
-                Component::Fuel(handle.into(), c.to_weak())
+                ClientComponent::Fuel(handle.into(), c.to_weak())
             );
         let healths = self.health.healths
             .iter()
             .map(|(handle, c)|
-                Component::Health(handle.into(), c.to_weak())
+                ClientComponent::Health(handle.into(), c.to_weak())
             );
         let loots = self.loot.loots
             .iter()
             .map(|(handle, c)|
-                Component::Loot(handle.into(), c.to_weak())
+                ClientComponent::Loot(handle.into(), c.to_weak())
             );
         let missiles = self.missiles.missiles
             .iter()
             .map(|(handle, c)|
-                Component::Missile(handle.into(), c.to_weak())
+                ClientComponent::Missile(handle.into(), c.to_weak())
             );
         let planets = self.planet.planets
             .iter()
             .map(|(handle, c)|
-                Component::Planet(handle.into(), c.to_weak())
+                ClientComponent::Planet(handle.into(), c.to_weak())
             );
         let positions = self.physics.positions
             .iter()
             .map(|(handle, c)|
-                Component::Position(handle.into(), c.to_weak())
+                ClientComponent::Position(handle.into(), c.to_weak())
             );
         let ships = self.ships.ships
             .iter()
             .map(|(handle, c)|
-                Component::Ship(handle.into(), c.to_weak())
+                ClientComponent::Ship(handle.into(), c.to_weak())
             );
         let targets = self.missiles.targets
             .iter()
             .map(|(handle, c)|
-                Component::Target(handle.into(), c.to_weak())
+                ClientComponent::Target(handle.into(), c.to_weak())
             );
         let velocities = self.physics.velocities
             .iter()
             .map(|(handle, c)|
-                Component::Velocity(handle.into(), c.to_weak())
+                ClientComponent::Velocity(handle.into(), c.to_weak())
             );
 
         bodies
