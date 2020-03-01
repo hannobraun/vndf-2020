@@ -64,31 +64,11 @@ macro_rules! components {
         }
 
         $(
-            impl Update<$component_ty> for $components {
-                fn update(&mut self,
-                    handle: impl Into<handle::Weak<$component_ty>>,
-                    value:  $component_ty,
-                )
-                    -> bool
-                {
-                    let previous = self.$store_name.insert(
-                        handle,
-                        value.clone(),
-                    );
-                    Some(value) != previous
-                }
-            }
-
-            // This is currently generated for all store types, but will only
-            // compile for weak stores. Once the macro invocation is extended to
-            // generate strong stores, we'll have to be a bit smarter here.
-            impl Remove<$component_ty> for $components {
-                fn remove(&mut self,
-                    handle: impl Into<handle::Weak<$component_ty>>,
-                ) {
-                    self.$store_name.remove(handle);
-                }
-            }
+            components!(@gen_update_remove, $store_type,
+                $component_ty,
+                $components,
+                $store_name,
+            );
         )*
 
 
@@ -193,6 +173,43 @@ macro_rules! components {
                 }
             }
         )*
+    };
+
+    (@gen_update_remove, Weak,
+        $component_ty:ident,
+        $components:ident,
+        $store_name:ident,
+    ) => {
+        impl Update<$component_ty> for $components {
+            fn update(&mut self,
+                handle: impl Into<handle::Weak<$component_ty>>,
+                value:  $component_ty,
+            )
+                -> bool
+            {
+                let previous = self.$store_name.insert(
+                    handle,
+                    value.clone(),
+                );
+                Some(value) != previous
+            }
+        }
+
+        impl Remove<$component_ty> for $components {
+            fn remove(&mut self,
+                handle: impl Into<handle::Weak<$component_ty>>,
+            ) {
+                self.$store_name.remove(handle);
+            }
+        }
+    };
+
+    (@gen_update_remove, Strong,
+        $component_ty:ident,
+        $components:ident,
+        $store_name:ident,
+    ) => {
+        // Don't need to generate those for strong stores.
     };
 }
 
