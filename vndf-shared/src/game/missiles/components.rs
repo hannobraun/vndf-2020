@@ -5,7 +5,6 @@ use serde::{
 };
 use toadster::{
     Handle,
-    handle,
     store,
 };
 
@@ -66,14 +65,14 @@ impl Missile {
 
 pub struct Guidance {
     pub craft:    Handle<Craft>,
-    pub target:   handle::Strong<Target>,
+    pub target:   Handle<Target>,
     pub guidance: Pid<f32>,
 }
 
 impl Guidance {
     pub fn new(
         craft:  impl Into<Handle<Craft>>,
-        target: handle::Strong<Target>,
+        target: impl Into<Handle<Target>>,
     )
         -> Self
     {
@@ -95,8 +94,8 @@ impl Guidance {
         );
 
         Self {
-            craft: craft.into(),
-            target,
+            craft:  craft.into(),
+            target: target.into(),
             guidance,
         }
     }
