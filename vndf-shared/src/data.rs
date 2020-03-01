@@ -230,6 +230,7 @@ components!(
         players,    Player;
         positions,  Position;
         ships,      Ship;
+        targets,    Target;
     }
 );
 

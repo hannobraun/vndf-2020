@@ -139,6 +139,7 @@ impl State {
                 &mut self.data.guidances,
                 &mut self.data.healths,
                 &self.data.positions,
+                &mut self.data.targets,
                 &self.physics.velocities,
             );
             self.ships.on_update(
@@ -205,6 +206,7 @@ impl State {
                 &mut self.data.healths,
                 &mut self.data.missiles,
                 &mut self.data.positions,
+                &mut self.data.targets,
                 &mut self.physics.velocities,
                 &mut self.health.index,
             );
@@ -261,7 +263,7 @@ impl State {
         self.data.loots.apply_changes();
         self.data.guidances.apply_changes();
         self.data.missiles.apply_changes();
-        self.missiles.targets.apply_changes();
+        self.data.targets.apply_changes();
         self.data.bodies.apply_changes();
         self.data.directions.apply_changes();
         self.data.positions.apply_changes();
@@ -326,7 +328,7 @@ impl State {
             .map(|(handle, c)|
                 ClientComponent::Ship(handle.into(), c.to_weak())
             );
-        let targets = self.missiles.targets
+        let targets = self.data.targets
             .iter()
             .map(|(handle, c)|
                 ClientComponent::Target(handle.into(), c.to_weak())
@@ -403,7 +405,7 @@ impl State {
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }
-        for handle in self.missiles.targets.removed().ready() {
+        for handle in self.data.targets.removed().ready() {
             let handle = ClientHandle::Target(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
@@ -439,7 +441,7 @@ impl State {
             num_missiles:   self.data.missiles.len()     as u64,
             num_positions:  self.data.positions.len()     as u64,
             num_ships:      self.data.ships.len()           as u64,
-            num_targets:    self.missiles.targets.len()      as u64,
+            num_targets:    self.data.targets.len()      as u64,
             num_velocities: self.physics.velocities.len()    as u64,
         }
     }
