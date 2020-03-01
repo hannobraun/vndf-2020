@@ -223,6 +223,7 @@ components!(
         fuels,      Fuel;
         guidances,  Guidance;
         healths,    Health;
+        loots,      Loot;
     }
 );
 

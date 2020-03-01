@@ -35,15 +35,11 @@ use super::{
 };
 
 
-pub struct Feature {
-    pub loots: store::Strong<Loot>,
-}
+pub struct Feature;
 
 impl Feature {
     pub fn new() -> Self {
-        Self {
-            loots: store::Strong::new(),
-        }
+        Self
     }
 
     pub fn on_update(&mut self,
@@ -53,6 +49,7 @@ impl Feature {
         directions: &mut store::Strong<Direction>,
         fuels:      &mut store::Strong<Fuel>,
         healths:    &mut store::Strong<Health>,
+        loots:      &mut store::Strong<Loot>,
         positions:  &mut store::Strong<Position>,
         ships:      &mut store::Strong<Ship>,
         velocities: &mut store::Strong<Velocity>,
@@ -63,7 +60,7 @@ impl Feature {
             bodies,
             directions,
             healths,
-            &mut self.loots,
+            loots,
             positions,
             velocities,
             index,
@@ -73,7 +70,7 @@ impl Feature {
             crafts,
             fuels,
             healths,
-            &mut self.loots,
+            loots,
             positions,
             ships,
         );
@@ -86,6 +83,7 @@ impl Feature {
         directions: &mut store::Strong<Direction>,
         fuels:      &store::Strong<Fuel>,
         healths:    &mut store::Strong<Health>,
+        loots:      &mut store::Strong<Loot>,
         positions:  &mut store::Strong<Position>,
         ships:      &store::Strong<Ship>,
         velocities: &mut store::Strong<Velocity>,
@@ -98,7 +96,7 @@ impl Feature {
             directions,
             fuels,
             healths,
-            &mut self.loots,
+            loots,
             positions,
             ships,
             velocities,

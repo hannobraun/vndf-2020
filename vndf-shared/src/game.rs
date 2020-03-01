@@ -146,6 +146,7 @@ impl State {
                 &mut self.data.directions,
                 &mut self.data.fuels,
                 &mut self.data.healths,
+                &mut self.data.loots,
                 &mut self.physics.positions,
                 &mut self.ships.ships,
                 &mut self.physics.velocities,
@@ -215,6 +216,7 @@ impl State {
                 &mut self.data.directions,
                 &self.data.fuels,
                 &mut self.data.healths,
+                &mut self.data.loots,
                 &mut self.physics.positions,
                 &self.ships.ships,
                 &mut self.physics.velocities,
@@ -246,7 +248,7 @@ impl State {
         self.data.fuels.apply_changes();
         self.data.explosions.apply_changes();
         self.data.healths.apply_changes();
-        self.loot.loots.apply_changes();
+        self.data.loots.apply_changes();
         self.data.guidances.apply_changes();
         self.missiles.missiles.apply_changes();
         self.missiles.targets.apply_changes();
@@ -289,7 +291,7 @@ impl State {
             .map(|(handle, c)|
                 ClientComponent::Health(handle.into(), c.to_weak())
             );
-        let loots = self.loot.loots
+        let loots = self.data.loots
             .iter()
             .map(|(handle, c)|
                 ClientComponent::Loot(handle.into(), c.to_weak())
@@ -371,7 +373,7 @@ impl State {
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }
-        for handle in self.loot.loots.removed().ready() {
+        for handle in self.data.loots.removed().ready() {
             let handle = ClientHandle::Loot(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
@@ -422,7 +424,7 @@ impl State {
             num_fuels:      self.data.fuels.len()          as u64,
             num_guidances:  self.data.guidances.len()    as u64,
             num_healths:    self.data.healths.len()        as u64,
-            num_loots:      self.loot.loots.len()            as u64,
+            num_loots:      self.data.loots.len()            as u64,
             num_players:    self.players.players.len()       as u64,
             num_missiles:   self.missiles.missiles.len()     as u64,
             num_positions:  self.physics.positions.len()     as u64,
