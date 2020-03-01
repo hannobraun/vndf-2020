@@ -218,6 +218,7 @@ components!(
         bodies,     Body;
         crafts,     Craft;
         directions, Direction;
+        explosions, Explosion;
     }
 );
 
