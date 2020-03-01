@@ -167,6 +167,7 @@ impl State {
                 &mut self.data.directions,
                 &mut self.data.fuels,
                 &mut self.data.healths,
+                &mut self.data.players,
                 &mut self.physics.positions,
                 &mut self.ships.ships,
                 &mut self.physics.velocities,
@@ -185,6 +186,7 @@ impl State {
                 &event,
                 &self.data.bodies,
                 &mut self.data.crafts,
+                &self.data.players,
                 &mut self.ships.ships,
                 &mut self.missiles.missile_launch.sink(),
             );
@@ -262,7 +264,7 @@ impl State {
         self.data.directions.apply_changes();
         self.physics.positions.apply_changes();
         self.physics.velocities.apply_changes();
-        self.players.players.apply_changes();
+        self.data.players.apply_changes();
         self.ships.ships.apply_changes();
     }
 
@@ -431,7 +433,7 @@ impl State {
             num_guidances:  self.data.guidances.len()    as u64,
             num_healths:    self.data.healths.len()        as u64,
             num_loots:      self.data.loots.len()            as u64,
-            num_players:    self.players.players.len()       as u64,
+            num_players:    self.data.players.len()       as u64,
             num_missiles:   self.data.missiles.len()     as u64,
             num_positions:  self.physics.positions.len()     as u64,
             num_ships:      self.ships.ships.len()           as u64,

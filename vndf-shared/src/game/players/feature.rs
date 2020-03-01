@@ -55,8 +55,6 @@ pub struct Feature {
     next_id:            PlayerId,
     players_by_address: HashMap<SocketAddr, handle::Strong<Player>>,
 
-    pub players: store::Strong<Player>,
-
     pub input_handled:       EventBuf<InputHandled>,
     pub player_connected:    EventBuf<PlayerConnected>,
     pub player_created:      EventBuf<PlayerCreated>,
@@ -69,8 +67,6 @@ impl Feature {
         Self {
             next_id:            PlayerId::first(),
             players_by_address: HashMap::new(),
-
-            players: store::Strong::new(),
 
             input_handled:       EventBuf::new(),
             player_connected:    EventBuf::new(),
@@ -87,6 +83,7 @@ impl Feature {
         directions: &mut store::Strong<Direction>,
         fuels:      &mut store::Strong<Fuel>,
         healths:    &mut store::Strong<Health>,
+        players:    &mut store::Strong<Player>,
         positions:  &mut store::Strong<Position>,
         ships:      &mut store::Strong<Ship>,
         velocities: &mut store::Strong<Velocity>,
@@ -101,7 +98,7 @@ impl Feature {
             directions,
             fuels,
             healths,
-            &mut self.players,
+            players,
             positions,
             ships,
             velocities,
@@ -122,6 +119,7 @@ impl Feature {
         event:          &PlayerInput,
         bodies:         &store::Strong<Body>,
         crafts:         &mut store::Strong<Craft>,
+        players:        &store::Strong<Player>,
         ships:          &mut store::Strong<Ship>,
         missile_launch: &mut EventSink<MissileLaunch>,
     ) {
@@ -130,7 +128,7 @@ impl Feature {
             event.action,
             bodies,
             crafts,
-            &self.players,
+            players,
             ships,
             missile_launch,
             &mut self.input_handled.sink(),

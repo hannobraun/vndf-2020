@@ -31,6 +31,7 @@ use crate::game::{
         Velocity,
     },
     planet::Planet,
+    players::Player,
     ships::Ship,
 };
 
@@ -226,6 +227,7 @@ components!(
         loots,      Loot;
         missiles,   Missile;
         planets,    Planet;
+        players,    Player;
     }
 );
 
