@@ -103,7 +103,7 @@ impl State {
                 &event,
                 &mut self.data.bodies,
                 &mut self.data.crafts,
-                &self.physics.directions,
+                &self.data.directions,
             );
             self.explosions.on_update(
                 &event,
@@ -117,13 +117,14 @@ impl State {
                 &event,
                 WORLD_SIZE,
                 &mut self.data.bodies,
+                &mut self.data.directions,
             );
             self.health.on_update();
             self.missiles.on_update(
                 &event,
                 &mut self.data.bodies,
                 &self.data.crafts,
-                &mut self.physics.directions,
+                &mut self.data.directions,
                 &self.crafts.fuels,
                 &mut self.health.healths,
                 &self.physics.positions,
@@ -137,7 +138,7 @@ impl State {
                 &event,
                 &mut self.data.bodies,
                 &self.data.crafts,
-                &mut self.physics.directions,
+                &mut self.data.directions,
                 &mut self.crafts.fuels,
                 &mut self.health.healths,
                 &mut self.physics.positions,
@@ -152,7 +153,7 @@ impl State {
                 &event,
                 &mut self.data.bodies,
                 &mut self.data.crafts,
-                &mut self.physics.directions,
+                &mut self.data.directions,
                 &mut self.crafts.fuels,
                 &mut self.health.healths,
                 &mut self.physics.positions,
@@ -183,7 +184,7 @@ impl State {
                 event,
                 &mut self.data.bodies,
                 &mut self.data.crafts,
-                &mut self.physics.directions,
+                &mut self.data.directions,
                 &mut self.crafts.fuels,
                 &mut self.health.healths,
                 &mut self.physics.positions,
@@ -204,7 +205,7 @@ impl State {
                 &event,
                 &mut self.data.bodies,
                 &self.data.crafts,
-                &mut self.physics.directions,
+                &mut self.data.directions,
                 &self.crafts.fuels,
                 &mut self.health.healths,
                 &mut self.physics.positions,
@@ -242,7 +243,7 @@ impl State {
         self.missiles.missiles.apply_changes();
         self.missiles.targets.apply_changes();
         self.data.bodies.apply_changes();
-        self.physics.directions.apply_changes();
+        self.data.directions.apply_changes();
         self.physics.positions.apply_changes();
         self.physics.velocities.apply_changes();
         self.players.players.apply_changes();
@@ -260,7 +261,7 @@ impl State {
             .map(|(handle, c)|
                 ClientComponent::Craft(handle.into(), c.to_weak())
             );
-        let directions = self.physics.directions
+        let directions = self.data.directions
             .iter()
             .map(|(handle, c)|
                 ClientComponent::Direction(handle.into(), c.to_weak())
@@ -342,7 +343,7 @@ impl State {
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }
-        for handle in self.physics.directions.removed().ready() {
+        for handle in self.data.directions.removed().ready() {
             let handle = ClientHandle::Direction(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
@@ -408,7 +409,7 @@ impl State {
         Diagnostics {
             num_bodies:     self.data.bodies.len()        as u64,
             num_crafts:     self.data.crafts.len()         as u64,
-            num_directions: self.physics.directions.len()    as u64,
+            num_directions: self.data.directions.len()    as u64,
             num_explosions: self.explosions.explosions.len() as u64,
             num_fuels:      self.crafts.fuels.len()          as u64,
             num_guidances:  self.missiles.guidances.len()    as u64,

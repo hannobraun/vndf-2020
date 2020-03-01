@@ -215,8 +215,9 @@ macro_rules! components {
 
 components!(
     ServerData(Strong), ServerHandle, ServerComponent {
-        bodies, Body;
-        crafts, Craft;
+        bodies,     Body;
+        crafts,     Craft;
+        directions, Direction;
     }
 );
 

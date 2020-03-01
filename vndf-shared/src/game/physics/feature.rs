@@ -12,7 +12,6 @@ use super::{
 
 
 pub struct Feature {
-    pub directions: store::Strong<Direction>,
     pub positions:  store::Strong<Position>,
     pub velocities: store::Strong<Velocity>,
 }
@@ -20,7 +19,6 @@ pub struct Feature {
 impl Feature {
     pub fn new() -> Self {
         Self {
-            directions: store::Strong::new(),
             positions:  store::Strong::new(),
             velocities: store::Strong::new(),
         }
@@ -30,10 +28,11 @@ impl Feature {
         event:      &Update,
         world_size: f32,
         bodies:     &mut store::Strong<Body>,
+        directions: &mut store::Strong<Direction>,
     ) {
         update_bodies(
             bodies,
-            &mut self.directions,
+            directions,
             &mut self.positions,
             &mut self.velocities,
             world_size,
