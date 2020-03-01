@@ -117,6 +117,14 @@ macro_rules! components {
             }
         }
 
+        $(
+            impl From<(Handle<$component_ty>, $component_ty)> for $component {
+                fn from(from: (Handle<$component_ty>, $component_ty)) -> Self {
+                    Self::$component_ty(from.0, from.1)
+                }
+            }
+        )*
+
 
         #[derive(Clone, Debug, Deserialize, Serialize, Eq, PartialEq, Hash)]
         pub enum $handle {
@@ -177,6 +185,14 @@ macro_rules! components {
                 }
             }
         }
+
+        $(
+            impl From<(Handle<$component_ty>, $component_ty)> for $handle {
+                fn from(from: (Handle<$component_ty>, $component_ty)) -> Self {
+                    Self::$component_ty(from.0)
+                }
+            }
+        )*
     };
 }
 
