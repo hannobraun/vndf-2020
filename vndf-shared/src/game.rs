@@ -104,6 +104,7 @@ impl State {
                 &mut self.data.bodies,
                 &mut self.data.crafts,
                 &self.data.directions,
+                &mut self.data.fuels,
             );
             self.explosions.on_update(
                 &event,
@@ -126,7 +127,7 @@ impl State {
                 &mut self.data.bodies,
                 &self.data.crafts,
                 &mut self.data.directions,
-                &self.crafts.fuels,
+                &self.data.fuels,
                 &mut self.health.healths,
                 &self.physics.positions,
                 &self.physics.velocities,
@@ -140,7 +141,7 @@ impl State {
                 &mut self.data.bodies,
                 &self.data.crafts,
                 &mut self.data.directions,
-                &mut self.crafts.fuels,
+                &mut self.data.fuels,
                 &mut self.health.healths,
                 &mut self.physics.positions,
                 &mut self.ships.ships,
@@ -155,7 +156,7 @@ impl State {
                 &mut self.data.bodies,
                 &mut self.data.crafts,
                 &mut self.data.directions,
-                &mut self.crafts.fuels,
+                &mut self.data.fuels,
                 &mut self.health.healths,
                 &mut self.physics.positions,
                 &mut self.ships.ships,
@@ -186,7 +187,7 @@ impl State {
                 &mut self.data.bodies,
                 &mut self.data.crafts,
                 &mut self.data.directions,
-                &mut self.crafts.fuels,
+                &mut self.data.fuels,
                 &mut self.health.healths,
                 &mut self.physics.positions,
                 &mut self.physics.velocities,
@@ -208,7 +209,7 @@ impl State {
                 &mut self.data.bodies,
                 &self.data.crafts,
                 &mut self.data.directions,
-                &self.crafts.fuels,
+                &self.data.fuels,
                 &mut self.health.healths,
                 &mut self.physics.positions,
                 &self.ships.ships,
@@ -238,7 +239,7 @@ impl State {
 
     fn apply_changes(&mut self) {
         self.data.crafts.apply_changes();
-        self.crafts.fuels.apply_changes();
+        self.data.fuels.apply_changes();
         self.data.explosions.apply_changes();
         self.health.healths.apply_changes();
         self.loot.loots.apply_changes();
@@ -274,7 +275,7 @@ impl State {
             .map(|(handle, c)|
                 ClientComponent::Explosion(handle.into(), c.to_weak())
             );
-        let fuels = self.crafts.fuels
+        let fuels = self.data.fuels
             .iter()
             .map(|(handle, c)|
                 ClientComponent::Fuel(handle.into(), c.to_weak())
@@ -356,7 +357,7 @@ impl State {
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }
-        for handle in self.crafts.fuels.removed().ready() {
+        for handle in self.data.fuels.removed().ready() {
             let handle = ClientHandle::Fuel(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
@@ -414,7 +415,7 @@ impl State {
             num_crafts:     self.data.crafts.len()         as u64,
             num_directions: self.data.directions.len()    as u64,
             num_explosions: self.data.explosions.len() as u64,
-            num_fuels:      self.crafts.fuels.len()          as u64,
+            num_fuels:      self.data.fuels.len()          as u64,
             num_guidances:  self.missiles.guidances.len()    as u64,
             num_healths:    self.health.healths.len()        as u64,
             num_loots:      self.loot.loots.len()            as u64,

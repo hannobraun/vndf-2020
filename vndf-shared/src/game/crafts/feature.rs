@@ -15,15 +15,11 @@ use super::{
 };
 
 
-pub struct Feature {
-    pub fuels: store::Strong<Fuel>,
-}
+pub struct Feature;
 
 impl Feature {
     pub fn new() -> Self {
-        Self {
-            fuels: store::Strong::new(),
-        }
+        Self
     }
 
     pub fn on_update(&mut self,
@@ -31,12 +27,13 @@ impl Feature {
         bodies:     &mut store::Strong<Body>,
         crafts:     &mut store::Strong<Craft>,
         directions: &store::Strong<Direction>,
+        fuels:      &mut store::Strong<Fuel>,
     ) {
         update_crafts(
             bodies,
             crafts,
             directions,
-            &mut self.fuels,
+            fuels,
             event.dt,
         );
     }

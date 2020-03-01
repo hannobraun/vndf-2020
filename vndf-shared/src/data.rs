@@ -219,6 +219,7 @@ components!(
         crafts,     Craft;
         directions, Direction;
         explosions, Explosion;
+        fuels,      Fuel;
     }
 );
 
