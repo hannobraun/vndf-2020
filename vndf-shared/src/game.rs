@@ -126,6 +126,7 @@ impl State {
                 &mut self.data.bodies,
                 &mut self.data.directions,
                 &mut self.data.positions,
+                &mut self.data.velocities,
             );
             self.health.on_update(
                 &self.data.healths,
@@ -140,7 +141,7 @@ impl State {
                 &mut self.data.healths,
                 &self.data.positions,
                 &mut self.data.targets,
-                &self.physics.velocities,
+                &self.data.velocities,
             );
             self.ships.on_update(
                 &mut self.data.bodies,
@@ -157,7 +158,7 @@ impl State {
                 &mut self.data.loots,
                 &mut self.data.positions,
                 &mut self.data.ships,
-                &mut self.physics.velocities,
+                &mut self.data.velocities,
                 &mut self.health.index,
             );
         }
@@ -173,7 +174,7 @@ impl State {
                 &mut self.data.players,
                 &mut self.data.positions,
                 &mut self.data.ships,
-                &mut self.physics.velocities,
+                &mut self.data.velocities,
                 &mut self.health.index,
             );
         }
@@ -207,7 +208,7 @@ impl State {
                 &mut self.data.missiles,
                 &mut self.data.positions,
                 &mut self.data.targets,
-                &mut self.physics.velocities,
+                &mut self.data.velocities,
                 &mut self.health.index,
             );
         }
@@ -219,7 +220,7 @@ impl State {
                 &mut self.data.explosions,
                 &self.data.healths,
                 &mut self.data.positions,
-                &mut self.physics.velocities,
+                &mut self.data.velocities,
             );
             self.loot.on_death(
                 &event,
@@ -231,7 +232,7 @@ impl State {
                 &mut self.data.loots,
                 &mut self.data.positions,
                 &self.data.ships,
-                &mut self.physics.velocities,
+                &mut self.data.velocities,
                 &mut self.health.index,
             );
         }
@@ -267,7 +268,7 @@ impl State {
         self.data.bodies.apply_changes();
         self.data.directions.apply_changes();
         self.data.positions.apply_changes();
-        self.physics.velocities.apply_changes();
+        self.data.velocities.apply_changes();
         self.data.players.apply_changes();
         self.data.ships.apply_changes();
     }
@@ -333,7 +334,7 @@ impl State {
             .map(|(handle, c)|
                 ClientComponent::Target(handle.into(), c.to_weak())
             );
-        let velocities = self.physics.velocities
+        let velocities = self.data.velocities
             .iter()
             .map(|(handle, c)|
                 ClientComponent::Velocity(handle.into(), c.to_weak())
@@ -410,7 +411,7 @@ impl State {
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }
-        for handle in self.physics.velocities.removed().ready() {
+        for handle in self.data.velocities.removed().ready() {
             let handle = ClientHandle::Velocity(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
@@ -442,7 +443,7 @@ impl State {
             num_positions:  self.data.positions.len()     as u64,
             num_ships:      self.data.ships.len()           as u64,
             num_targets:    self.data.targets.len()      as u64,
-            num_velocities: self.physics.velocities.len()    as u64,
+            num_velocities: self.data.velocities.len()    as u64,
         }
     }
 }

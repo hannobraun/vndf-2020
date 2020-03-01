@@ -11,15 +11,11 @@ use super::{
 };
 
 
-pub struct Feature {
-    pub velocities: store::Strong<Velocity>,
-}
+pub struct Feature;
 
 impl Feature {
     pub fn new() -> Self {
-        Self {
-            velocities: store::Strong::new(),
-        }
+        Self
     }
 
     pub fn on_update(&mut self,
@@ -28,12 +24,13 @@ impl Feature {
         bodies:     &mut store::Strong<Body>,
         directions: &mut store::Strong<Direction>,
         positions:  &mut store::Strong<Position>,
+        velocities: &mut store::Strong<Velocity>,
     ) {
         update_bodies(
             bodies,
             directions,
             positions,
-            &mut self.velocities,
+            velocities,
             world_size,
             event.dt,
         );

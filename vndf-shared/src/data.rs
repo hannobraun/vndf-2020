@@ -231,6 +231,7 @@ components!(
         positions,  Position;
         ships,      Ship;
         targets,    Target;
+        velocities, Velocity;
     }
 );
 
