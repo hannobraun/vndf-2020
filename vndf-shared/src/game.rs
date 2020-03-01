@@ -118,13 +118,14 @@ impl State {
                 &mut self.data.bodies,
                 &mut self.data.healths,
                 &self.data.planets,
-                &self.physics.positions,
+                &self.data.positions,
             );
             self.physics.on_update(
                 &event,
                 WORLD_SIZE,
                 &mut self.data.bodies,
                 &mut self.data.directions,
+                &mut self.data.positions,
             );
             self.health.on_update(
                 &self.data.healths,
@@ -137,7 +138,7 @@ impl State {
                 &self.data.fuels,
                 &mut self.data.guidances,
                 &mut self.data.healths,
-                &self.physics.positions,
+                &self.data.positions,
                 &self.physics.velocities,
             );
             self.ships.on_update(
@@ -152,7 +153,7 @@ impl State {
                 &mut self.data.fuels,
                 &mut self.data.healths,
                 &mut self.data.loots,
-                &mut self.physics.positions,
+                &mut self.data.positions,
                 &mut self.ships.ships,
                 &mut self.physics.velocities,
                 &mut self.health.index,
@@ -168,7 +169,7 @@ impl State {
                 &mut self.data.fuels,
                 &mut self.data.healths,
                 &mut self.data.players,
-                &mut self.physics.positions,
+                &mut self.data.positions,
                 &mut self.ships.ships,
                 &mut self.physics.velocities,
                 &mut self.health.index,
@@ -202,7 +203,7 @@ impl State {
                 &mut self.data.guidances,
                 &mut self.data.healths,
                 &mut self.data.missiles,
-                &mut self.physics.positions,
+                &mut self.data.positions,
                 &mut self.physics.velocities,
                 &mut self.health.index,
             );
@@ -214,7 +215,7 @@ impl State {
                 &mut self.data.bodies,
                 &mut self.data.explosions,
                 &self.data.healths,
-                &mut self.physics.positions,
+                &mut self.data.positions,
                 &mut self.physics.velocities,
             );
             self.loot.on_death(
@@ -225,7 +226,7 @@ impl State {
                 &self.data.fuels,
                 &mut self.data.healths,
                 &mut self.data.loots,
-                &mut self.physics.positions,
+                &mut self.data.positions,
                 &self.ships.ships,
                 &mut self.physics.velocities,
                 &mut self.health.index,
@@ -240,7 +241,7 @@ impl State {
                 &self.data.bodies,
                 &self.data.explosions,
                 &mut self.data.healths,
-                &self.physics.positions,
+                &self.data.positions,
             )
         }
         self.apply_changes();
@@ -262,7 +263,7 @@ impl State {
         self.missiles.targets.apply_changes();
         self.data.bodies.apply_changes();
         self.data.directions.apply_changes();
-        self.physics.positions.apply_changes();
+        self.data.positions.apply_changes();
         self.physics.velocities.apply_changes();
         self.data.players.apply_changes();
         self.ships.ships.apply_changes();
@@ -314,7 +315,7 @@ impl State {
             .map(|(handle, c)|
                 ClientComponent::Planet(handle.into(), c.to_weak())
             );
-        let positions = self.physics.positions
+        let positions = self.data.positions
             .iter()
             .map(|(handle, c)|
                 ClientComponent::Position(handle.into(), c.to_weak())
@@ -391,7 +392,7 @@ impl State {
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }
-        for handle in self.physics.positions.removed().ready() {
+        for handle in self.data.positions.removed().ready() {
             let handle = ClientHandle::Position(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
@@ -435,7 +436,7 @@ impl State {
             num_loots:      self.data.loots.len()            as u64,
             num_players:    self.data.players.len()       as u64,
             num_missiles:   self.data.missiles.len()     as u64,
-            num_positions:  self.physics.positions.len()     as u64,
+            num_positions:  self.data.positions.len()     as u64,
             num_ships:      self.ships.ships.len()           as u64,
             num_targets:    self.missiles.targets.len()      as u64,
             num_velocities: self.physics.velocities.len()    as u64,

@@ -228,6 +228,7 @@ components!(
         missiles,   Missile;
         planets,    Planet;
         players,    Player;
+        positions,  Position;
     }
 );
 
