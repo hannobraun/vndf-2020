@@ -100,6 +100,32 @@ macro_rules! components {
         )*
 
 
+        #[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
+        pub enum $component {
+            $(
+                $component_ty(Handle<$component_ty>, $component_ty),
+            )*
+        }
+
+        impl $component {
+            pub fn update<T>(self, components: &mut T) -> bool
+                where T: Components $(+ Update<$component_ty>)*
+            {
+                match self {
+                    $(
+                        Self::$component_ty(handle, value) => {
+                            <T as Update<$component_ty>>::update(
+                                components,
+                                handle,
+                                value,
+                            )
+                        }
+                    )*
+                }
+            }
+        }
+
+
         #[derive(Clone, Debug, Deserialize, Serialize, Eq, PartialEq, Hash)]
         pub enum $handle {
             $(
@@ -154,32 +180,6 @@ macro_rules! components {
                                 components,
                                 handle,
                             );
-                        }
-                    )*
-                }
-            }
-        }
-
-
-        #[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
-        pub enum $component {
-            $(
-                $component_ty(Handle<$component_ty>, $component_ty),
-            )*
-        }
-
-        impl $component {
-            pub fn update<T>(self, components: &mut T) -> bool
-                where T: Components $(+ Update<$component_ty>)*
-            {
-                match self {
-                    $(
-                        Self::$component_ty(handle, value) => {
-                            <T as Update<$component_ty>>::update(
-                                components,
-                                handle,
-                                value,
-                            )
                         }
                     )*
                 }
