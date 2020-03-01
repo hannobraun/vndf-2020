@@ -20,6 +20,7 @@ use crate::game::{
     health::Health,
     loot::Loot,
     missiles::{
+        Guidance,
         Missile,
         Target,
     },
@@ -220,6 +221,7 @@ components!(
         directions, Direction;
         explosions, Explosion;
         fuels,      Fuel;
+        guidances,  Guidance;
     }
 );
 

@@ -37,9 +37,8 @@ use super::{
 
 
 pub struct Feature {
-    pub guidances: store::Strong<Guidance>,
-    pub missiles:  store::Strong<Missile>,
-    pub targets:   store::Strong<Target>,
+    pub missiles: store::Strong<Missile>,
+    pub targets:  store::Strong<Target>,
 
     pub missile_launch: EventBuf<MissileLaunch>,
 
@@ -49,9 +48,8 @@ pub struct Feature {
 impl Feature {
     pub fn new() -> Self {
         Self {
-            guidances: store::Strong::new(),
-            missiles:  store::Strong::new(),
-            targets:   store::Strong::new(),
+            missiles: store::Strong::new(),
+            targets:  store::Strong::new(),
 
             missile_launch: EventBuf::new(),
 
@@ -65,6 +63,7 @@ impl Feature {
         crafts:     &store::Strong<Craft>,
         directions: &mut store::Strong<Direction>,
         fuels:      &store::Strong<Fuel>,
+        guidances:  &mut store::Strong<Guidance>,
         healths:    &mut store::Strong<Health>,
         positions:  &store::Strong<Position>,
         velocities: &store::Strong<Velocity>,
@@ -85,7 +84,7 @@ impl Feature {
                 bodies,
                 crafts,
                 directions,
-                &mut self.guidances,
+                guidances,
                 positions,
                 &self.targets,
                 velocities,
@@ -95,7 +94,7 @@ impl Feature {
             bodies,
             crafts,
             fuels,
-            &self.guidances,
+            guidances,
             healths,
             positions,
             &self.targets,
@@ -108,6 +107,7 @@ impl Feature {
         crafts:     &mut store::Strong<Craft>,
         directions: &mut store::Strong<Direction>,
         fuels:      &mut store::Strong<Fuel>,
+        guidances:  &mut store::Strong<Guidance>,
         healths:    &mut store::Strong<Health>,
         positions:  &mut store::Strong<Position>,
         velocities: &mut store::Strong<Velocity>,
@@ -119,7 +119,7 @@ impl Feature {
             crafts,
             directions,
             fuels,
-            &mut self.guidances,
+            guidances,
             healths,
             &mut self.missiles,
             positions,

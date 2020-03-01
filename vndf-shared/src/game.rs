@@ -128,6 +128,7 @@ impl State {
                 &self.data.crafts,
                 &mut self.data.directions,
                 &self.data.fuels,
+                &mut self.data.guidances,
                 &mut self.health.healths,
                 &self.physics.positions,
                 &self.physics.velocities,
@@ -188,6 +189,7 @@ impl State {
                 &mut self.data.crafts,
                 &mut self.data.directions,
                 &mut self.data.fuels,
+                &mut self.data.guidances,
                 &mut self.health.healths,
                 &mut self.physics.positions,
                 &mut self.physics.velocities,
@@ -243,7 +245,7 @@ impl State {
         self.data.explosions.apply_changes();
         self.health.healths.apply_changes();
         self.loot.loots.apply_changes();
-        self.missiles.guidances.apply_changes();
+        self.data.guidances.apply_changes();
         self.missiles.missiles.apply_changes();
         self.missiles.targets.apply_changes();
         self.data.bodies.apply_changes();
@@ -416,7 +418,7 @@ impl State {
             num_directions: self.data.directions.len()    as u64,
             num_explosions: self.data.explosions.len() as u64,
             num_fuels:      self.data.fuels.len()          as u64,
-            num_guidances:  self.missiles.guidances.len()    as u64,
+            num_guidances:  self.data.guidances.len()    as u64,
             num_healths:    self.health.healths.len()        as u64,
             num_loots:      self.loot.loots.len()            as u64,
             num_players:    self.players.players.len()       as u64,
