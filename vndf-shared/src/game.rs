@@ -102,6 +102,7 @@ impl State {
             self.crafts.on_update(
                 &event,
                 &mut self.data.bodies,
+                &mut self.data.crafts,
                 &self.physics.directions,
             );
             self.explosions.on_update(
@@ -121,7 +122,7 @@ impl State {
             self.missiles.on_update(
                 &event,
                 &mut self.data.bodies,
-                &self.crafts.crafts,
+                &self.data.crafts,
                 &mut self.physics.directions,
                 &self.crafts.fuels,
                 &mut self.health.healths,
@@ -130,12 +131,12 @@ impl State {
             );
             self.ships.on_update(
                 &mut self.data.bodies,
-                &self.crafts.crafts,
+                &self.data.crafts,
             );
             self.loot.on_update(
                 &event,
                 &mut self.data.bodies,
-                &self.crafts.crafts,
+                &self.data.crafts,
                 &mut self.physics.directions,
                 &mut self.crafts.fuels,
                 &mut self.health.healths,
@@ -150,7 +151,7 @@ impl State {
             self.players.on_player_connected(
                 &event,
                 &mut self.data.bodies,
-                &mut self.crafts.crafts,
+                &mut self.data.crafts,
                 &mut self.physics.directions,
                 &mut self.crafts.fuels,
                 &mut self.health.healths,
@@ -171,7 +172,7 @@ impl State {
             self.players.on_player_input(
                 &event,
                 &self.data.bodies,
-                &mut self.crafts.crafts,
+                &mut self.data.crafts,
                 &mut self.ships.ships,
                 &mut self.missiles.missile_launch.sink(),
             );
@@ -181,7 +182,7 @@ impl State {
             self.missiles.on_missile_launch(
                 event,
                 &mut self.data.bodies,
-                &mut self.crafts.crafts,
+                &mut self.data.crafts,
                 &mut self.physics.directions,
                 &mut self.crafts.fuels,
                 &mut self.health.healths,
@@ -202,7 +203,7 @@ impl State {
             self.loot.on_death(
                 &event,
                 &mut self.data.bodies,
-                &self.crafts.crafts,
+                &self.data.crafts,
                 &mut self.physics.directions,
                 &self.crafts.fuels,
                 &mut self.health.healths,
@@ -232,7 +233,7 @@ impl State {
     }
 
     fn apply_changes(&mut self) {
-        self.crafts.crafts.apply_changes();
+        self.data.crafts.apply_changes();
         self.crafts.fuels.apply_changes();
         self.explosions.explosions.apply_changes();
         self.health.healths.apply_changes();
@@ -254,7 +255,7 @@ impl State {
             .map(|(handle, c)|
                 ClientComponent::Body(handle.into(), c.to_weak())
             );
-        let crafts = self.crafts.crafts
+        let crafts = self.data.crafts
             .iter()
             .map(|(handle, c)|
                 ClientComponent::Craft(handle.into(), c.to_weak())
@@ -336,7 +337,7 @@ impl State {
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }
-        for handle in self.crafts.crafts.removed().ready() {
+        for handle in self.data.crafts.removed().ready() {
             let handle = ClientHandle::Craft(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
@@ -406,7 +407,7 @@ impl State {
     pub fn diagnostics(&self) -> Diagnostics {
         Diagnostics {
             num_bodies:     self.data.bodies.len()        as u64,
-            num_crafts:     self.crafts.crafts.len()         as u64,
+            num_crafts:     self.data.crafts.len()         as u64,
             num_directions: self.physics.directions.len()    as u64,
             num_explosions: self.explosions.explosions.len() as u64,
             num_fuels:      self.crafts.fuels.len()          as u64,
