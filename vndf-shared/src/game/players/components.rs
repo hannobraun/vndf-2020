@@ -1,9 +1,14 @@
 use std::net::SocketAddr;
 
+use serde::{
+    Deserialize,
+    Serialize,
+};
+
 use crate::game::players::PlayerId;
 
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Player {
     pub id:   PlayerId,
     pub addr: SocketAddr,
