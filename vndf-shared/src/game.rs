@@ -64,8 +64,12 @@ pub struct State {
 
 impl State {
     pub fn new() -> Self {
+        let mut data = ServerData::new();
+
+        let planet = planet::Feature::new(&mut data.planets);
+
         Self {
-            data: ServerData::new(),
+            data,
 
             base:       base::Feature::new(),
             crafts:     crafts::Feature::new(),
@@ -74,7 +78,7 @@ impl State {
             loot:       loot::Feature::new(),
             missiles:   missiles::Feature::new(),
             physics:    physics::Feature::new(),
-            planet:     planet::Feature::new(),
+            planet:     planet,
             players:    players::Feature::new(),
             ships:      ships::Feature::new(),
         }
@@ -113,6 +117,7 @@ impl State {
             self.planet.on_update(
                 &mut self.data.bodies,
                 &mut self.data.healths,
+                &self.data.planets,
                 &self.physics.positions,
             );
             self.physics.on_update(
@@ -302,7 +307,7 @@ impl State {
             .map(|(handle, c)|
                 ClientComponent::Missile(handle.into(), c.to_weak())
             );
-        let planets = self.planet.planets
+        let planets = self.data.planets
             .iter()
             .map(|(handle, c)|
                 ClientComponent::Planet(handle.into(), c.to_weak())

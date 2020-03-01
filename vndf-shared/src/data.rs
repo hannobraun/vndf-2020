@@ -225,6 +225,7 @@ components!(
         healths,    Health;
         loots,      Loot;
         missiles,   Missile;
+        planets,    Planet;
     }
 );
 
