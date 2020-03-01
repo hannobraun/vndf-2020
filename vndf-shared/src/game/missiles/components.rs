@@ -63,6 +63,7 @@ impl Missile {
 }
 
 
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
 pub struct Guidance {
     pub craft:    Handle<Craft>,
     pub target:   Handle<Target>,
