@@ -34,12 +34,6 @@ use crate::game::{
 };
 
 
-/// Implemented for all generated collections of component stores
-///
-/// This trait doesn't do anything, but a trait is needed to make the generated
-/// syntax in the macro work.
-pub trait Components {}
-
 /// Update component of a specific type from a collection of component stores
 pub trait Update<T> {
     fn update(&mut self, handle: impl Into<handle::Weak<T>>, value: T) -> bool;
@@ -68,8 +62,6 @@ macro_rules! components {
                 }
             }
         }
-
-        impl Components for $components {}
 
         $(
             impl Update<$component_ty> for $components {
@@ -109,7 +101,7 @@ macro_rules! components {
 
         impl $component {
             pub fn update<T>(self, components: &mut T) -> bool
-                where T: Components $(+ Update<$component_ty>)*
+                where T: $(Update<$component_ty> +)*
             {
                 match self {
                     $(
@@ -171,7 +163,7 @@ macro_rules! components {
             }
 
             pub fn remove<T>(&self, components: &mut T)
-                where T: Components $(+ Remove<$component_ty>)*
+                where T: $(Remove<$component_ty> +)*
             {
                 match self {
                     $(
