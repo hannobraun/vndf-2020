@@ -65,14 +65,14 @@ impl Missile {
 
 
 pub struct Guidance {
-    pub craft:    handle::Strong<Craft>,
+    pub craft:    Handle<Craft>,
     pub target:   handle::Strong<Target>,
     pub guidance: Pid<f32>,
 }
 
 impl Guidance {
     pub fn new(
-        craft: handle::Strong<Craft>,
+        craft:  impl Into<Handle<Craft>>,
         target: handle::Strong<Target>,
     )
         -> Self
@@ -95,7 +95,7 @@ impl Guidance {
         );
 
         Self {
-            craft,
+            craft: craft.into(),
             target,
             guidance,
         }
