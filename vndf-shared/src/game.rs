@@ -22,6 +22,7 @@ use serde::{
 use crate::data::{
     ClientComponent,
     ClientHandle,
+    ServerData,
 };
 
 use self::{
@@ -47,6 +48,8 @@ pub const FRAME_TIME: f32 = 1.0 / TARGET_FPS as f32;
 
 
 pub struct State {
+    data: ServerData,
+
     base:       base::Feature,
     crafts:     crafts::Feature,
     explosions: explosions::Feature,
@@ -62,6 +65,8 @@ pub struct State {
 impl State {
     pub fn new() -> Self {
         Self {
+            data: ServerData::new(),
+
             base:       base::Feature::new(),
             crafts:     crafts::Feature::new(),
             explosions: explosions::Feature::new(),
@@ -96,25 +101,26 @@ impl State {
         for event in self.base.update.source().ready() {
             self.crafts.on_update(
                 &event,
-                &mut self.physics.bodies,
+                &mut self.data.bodies,
                 &self.physics.directions,
             );
             self.explosions.on_update(
                 &event,
             );
             self.planet.on_update(
-                &mut self.physics.bodies,
+                &mut self.data.bodies,
                 &mut self.health.healths,
                 &self.physics.positions,
             );
             self.physics.on_update(
                 &event,
                 WORLD_SIZE,
+                &mut self.data.bodies,
             );
             self.health.on_update();
             self.missiles.on_update(
                 &event,
-                &mut self.physics.bodies,
+                &mut self.data.bodies,
                 &self.crafts.crafts,
                 &mut self.physics.directions,
                 &self.crafts.fuels,
@@ -123,12 +129,12 @@ impl State {
                 &self.physics.velocities,
             );
             self.ships.on_update(
-                &mut self.physics.bodies,
+                &mut self.data.bodies,
                 &self.crafts.crafts,
             );
             self.loot.on_update(
                 &event,
-                &mut self.physics.bodies,
+                &mut self.data.bodies,
                 &self.crafts.crafts,
                 &mut self.physics.directions,
                 &mut self.crafts.fuels,
@@ -143,7 +149,7 @@ impl State {
         while let Some(event) = self.players.player_connected.source().next() {
             self.players.on_player_connected(
                 &event,
-                &mut self.physics.bodies,
+                &mut self.data.bodies,
                 &mut self.crafts.crafts,
                 &mut self.physics.directions,
                 &mut self.crafts.fuels,
@@ -164,7 +170,7 @@ impl State {
         while let Some(event) = self.players.player_input.source().next() {
             self.players.on_player_input(
                 &event,
-                &self.physics.bodies,
+                &self.data.bodies,
                 &mut self.crafts.crafts,
                 &mut self.ships.ships,
                 &mut self.missiles.missile_launch.sink(),
@@ -174,7 +180,7 @@ impl State {
         while let Some(event) = self.missiles.missile_launch.source().next() {
             self.missiles.on_missile_launch(
                 event,
-                &mut self.physics.bodies,
+                &mut self.data.bodies,
                 &mut self.crafts.crafts,
                 &mut self.physics.directions,
                 &mut self.crafts.fuels,
@@ -188,14 +194,14 @@ impl State {
         while let Some(event) = self.health.death.source().next() {
             self.explosions.on_death(
                 &event,
-                &mut self.physics.bodies,
+                &mut self.data.bodies,
                 &self.health.healths,
                 &mut self.physics.positions,
                 &mut self.physics.velocities,
             );
             self.loot.on_death(
                 &event,
-                &mut self.physics.bodies,
+                &mut self.data.bodies,
                 &self.crafts.crafts,
                 &mut self.physics.directions,
                 &self.crafts.fuels,
@@ -212,7 +218,7 @@ impl State {
         {
             self.explosions.on_explosion_imminent(
                 &event,
-                &self.physics.bodies,
+                &self.data.bodies,
                 &mut self.health.healths,
                 &self.physics.positions,
             )
@@ -234,7 +240,7 @@ impl State {
         self.missiles.guidances.apply_changes();
         self.missiles.missiles.apply_changes();
         self.missiles.targets.apply_changes();
-        self.physics.bodies.apply_changes();
+        self.data.bodies.apply_changes();
         self.physics.directions.apply_changes();
         self.physics.positions.apply_changes();
         self.physics.velocities.apply_changes();
@@ -243,7 +249,7 @@ impl State {
     }
 
     pub fn updates(&mut self) -> impl Iterator<Item=ClientComponent> + '_ {
-        let bodies = self.physics.bodies
+        let bodies = self.data.bodies
             .iter()
             .map(|(handle, c)|
                 ClientComponent::Body(handle.into(), c.to_weak())
@@ -325,7 +331,7 @@ impl State {
     }
 
     pub fn removals(&mut self) -> EventSource<ComponentRemoved> {
-        for handle in self.physics.bodies.removed().ready() {
+        for handle in self.data.bodies.removed().ready() {
             let handle = ClientHandle::Body(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
@@ -399,7 +405,7 @@ impl State {
 
     pub fn diagnostics(&self) -> Diagnostics {
         Diagnostics {
-            num_bodies:     self.physics.bodies.len()        as u64,
+            num_bodies:     self.data.bodies.len()        as u64,
             num_crafts:     self.crafts.crafts.len()         as u64,
             num_directions: self.physics.directions.len()    as u64,
             num_explosions: self.explosions.explosions.len() as u64,

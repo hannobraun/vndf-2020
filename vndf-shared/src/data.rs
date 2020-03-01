@@ -214,6 +214,12 @@ macro_rules! components {
 }
 
 components!(
+    ServerData(Strong), ServerHandle, ServerComponent {
+        bodies, Body;
+    }
+);
+
+components!(
     ClientData(Weak), ClientHandle, ClientComponent {
         bodies,     Body;
         crafts,     Craft;
