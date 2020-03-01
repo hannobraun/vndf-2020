@@ -222,6 +222,7 @@ components!(
         explosions, Explosion;
         fuels,      Fuel;
         guidances,  Guidance;
+        healths,    Health;
     }
 );
 
