@@ -37,8 +37,7 @@ use super::{
 
 
 pub struct Feature {
-    pub missiles: store::Strong<Missile>,
-    pub targets:  store::Strong<Target>,
+    pub targets: store::Strong<Target>,
 
     pub missile_launch: EventBuf<MissileLaunch>,
 
@@ -48,8 +47,7 @@ pub struct Feature {
 impl Feature {
     pub fn new() -> Self {
         Self {
-            missiles: store::Strong::new(),
-            targets:  store::Strong::new(),
+            targets: store::Strong::new(),
 
             missile_launch: EventBuf::new(),
 
@@ -109,6 +107,7 @@ impl Feature {
         fuels:      &mut store::Strong<Fuel>,
         guidances:  &mut store::Strong<Guidance>,
         healths:    &mut store::Strong<Health>,
+        missiles:   &mut store::Strong<Missile>,
         positions:  &mut store::Strong<Position>,
         velocities: &mut store::Strong<Velocity>,
         entities:   &mut HashSet<handle::Strong<Untyped>>,
@@ -121,7 +120,7 @@ impl Feature {
             fuels,
             guidances,
             healths,
-            &mut self.missiles,
+            missiles,
             positions,
             &mut self.targets,
             velocities,

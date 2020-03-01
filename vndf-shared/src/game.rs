@@ -194,6 +194,7 @@ impl State {
                 &mut self.data.fuels,
                 &mut self.data.guidances,
                 &mut self.data.healths,
+                &mut self.data.missiles,
                 &mut self.physics.positions,
                 &mut self.physics.velocities,
                 &mut self.health.index,
@@ -250,7 +251,7 @@ impl State {
         self.data.healths.apply_changes();
         self.data.loots.apply_changes();
         self.data.guidances.apply_changes();
-        self.missiles.missiles.apply_changes();
+        self.data.missiles.apply_changes();
         self.missiles.targets.apply_changes();
         self.data.bodies.apply_changes();
         self.data.directions.apply_changes();
@@ -296,7 +297,7 @@ impl State {
             .map(|(handle, c)|
                 ClientComponent::Loot(handle.into(), c.to_weak())
             );
-        let missiles = self.missiles.missiles
+        let missiles = self.data.missiles
             .iter()
             .map(|(handle, c)|
                 ClientComponent::Missile(handle.into(), c.to_weak())
@@ -378,7 +379,7 @@ impl State {
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }
-        for handle in self.missiles.missiles.removed().ready() {
+        for handle in self.data.missiles.removed().ready() {
             let handle = ClientHandle::Missile(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
@@ -426,7 +427,7 @@ impl State {
             num_healths:    self.data.healths.len()        as u64,
             num_loots:      self.data.loots.len()            as u64,
             num_players:    self.players.players.len()       as u64,
-            num_missiles:   self.missiles.missiles.len()     as u64,
+            num_missiles:   self.data.missiles.len()     as u64,
             num_positions:  self.physics.positions.len()     as u64,
             num_ships:      self.ships.ships.len()           as u64,
             num_targets:    self.missiles.targets.len()      as u64,

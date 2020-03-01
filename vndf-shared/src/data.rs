@@ -224,6 +224,7 @@ components!(
         guidances,  Guidance;
         healths,    Health;
         loots,      Loot;
+        missiles,   Missile;
     }
 );
 
