@@ -11,25 +11,22 @@ use super::{
 };
 
 
-pub struct Feature {
-    pub ships: store::Strong<Ship>,
-}
+pub struct Feature;
 
 impl Feature {
     pub fn new() -> Self {
-        Self {
-            ships: store::Strong::new(),
-        }
+        Self
     }
 
     pub fn on_update(&mut self,
         bodies: &mut store::Strong<Body>,
         crafts: &store::Strong<Craft>,
+        ships:  &mut store::Strong<Ship>,
     ) {
         update_ships(
             bodies,
             crafts,
-            &mut self.ships,
+            ships,
         );
     }
 }

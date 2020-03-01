@@ -229,6 +229,7 @@ components!(
         planets,    Planet;
         players,    Player;
         positions,  Position;
+        ships,      Ship;
     }
 );
 

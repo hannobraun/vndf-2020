@@ -144,6 +144,7 @@ impl State {
             self.ships.on_update(
                 &mut self.data.bodies,
                 &self.data.crafts,
+                &mut self.data.ships,
             );
             self.loot.on_update(
                 &event,
@@ -154,7 +155,7 @@ impl State {
                 &mut self.data.healths,
                 &mut self.data.loots,
                 &mut self.data.positions,
-                &mut self.ships.ships,
+                &mut self.data.ships,
                 &mut self.physics.velocities,
                 &mut self.health.index,
             );
@@ -170,7 +171,7 @@ impl State {
                 &mut self.data.healths,
                 &mut self.data.players,
                 &mut self.data.positions,
-                &mut self.ships.ships,
+                &mut self.data.ships,
                 &mut self.physics.velocities,
                 &mut self.health.index,
             );
@@ -188,7 +189,7 @@ impl State {
                 &self.data.bodies,
                 &mut self.data.crafts,
                 &self.data.players,
-                &mut self.ships.ships,
+                &mut self.data.ships,
                 &mut self.missiles.missile_launch.sink(),
             );
         }
@@ -227,7 +228,7 @@ impl State {
                 &mut self.data.healths,
                 &mut self.data.loots,
                 &mut self.data.positions,
-                &self.ships.ships,
+                &self.data.ships,
                 &mut self.physics.velocities,
                 &mut self.health.index,
             );
@@ -266,7 +267,7 @@ impl State {
         self.data.positions.apply_changes();
         self.physics.velocities.apply_changes();
         self.data.players.apply_changes();
-        self.ships.ships.apply_changes();
+        self.data.ships.apply_changes();
     }
 
     pub fn updates(&mut self) -> impl Iterator<Item=ClientComponent> + '_ {
@@ -320,7 +321,7 @@ impl State {
             .map(|(handle, c)|
                 ClientComponent::Position(handle.into(), c.to_weak())
             );
-        let ships = self.ships.ships
+        let ships = self.data.ships
             .iter()
             .map(|(handle, c)|
                 ClientComponent::Ship(handle.into(), c.to_weak())
@@ -397,7 +398,7 @@ impl State {
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }
-        for handle in self.ships.ships.removed().ready() {
+        for handle in self.data.ships.removed().ready() {
             let handle = ClientHandle::Ship(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
@@ -437,7 +438,7 @@ impl State {
             num_players:    self.data.players.len()       as u64,
             num_missiles:   self.data.missiles.len()     as u64,
             num_positions:  self.data.positions.len()     as u64,
-            num_ships:      self.ships.ships.len()           as u64,
+            num_ships:      self.data.ships.len()           as u64,
             num_targets:    self.missiles.targets.len()      as u64,
             num_velocities: self.physics.velocities.len()    as u64,
         }
