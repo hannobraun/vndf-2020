@@ -80,8 +80,8 @@ macro_rules! components {
 
             $(
                 components!(@gen_update_remove, $store_type,
-                    $component_ty,
                     $store_name,
+                    $component_ty,
                 );
             )*
 
@@ -220,8 +220,8 @@ macro_rules! components {
     };
 
     (@gen_update_remove, Weak,
-        $component_ty:ident,
         $store_name:ident,
+        $component_ty:ident,
     ) => {
         impl Update<$component_ty> for Components {
             fn update(&mut self,
