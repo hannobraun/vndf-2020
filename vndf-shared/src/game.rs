@@ -14,10 +14,6 @@ use rinnsal::{
     EventSink,
     EventSource,
 };
-use serde::{
-    Deserialize,
-    Serialize,
-};
 
 use crate::data;
 
@@ -426,41 +422,7 @@ impl State {
         self.players.input_handled.source()
     }
 
-    pub fn diagnostics(&self) -> Diagnostics {
-        Diagnostics {
-            num_bodies:     self.data.bodies.len()        as u64,
-            num_crafts:     self.data.crafts.len()         as u64,
-            num_directions: self.data.directions.len()    as u64,
-            num_explosions: self.data.explosions.len() as u64,
-            num_fuels:      self.data.fuels.len()          as u64,
-            num_guidances:  self.data.guidances.len()    as u64,
-            num_healths:    self.data.healths.len()        as u64,
-            num_loots:      self.data.loots.len()            as u64,
-            num_players:    self.data.players.len()       as u64,
-            num_missiles:   self.data.missiles.len()     as u64,
-            num_positions:  self.data.positions.len()     as u64,
-            num_ships:      self.data.ships.len()           as u64,
-            num_targets:    self.data.targets.len()      as u64,
-            num_velocities: self.data.velocities.len()    as u64,
-        }
+    pub fn diagnostics(&self) -> data::server::Diagnostics {
+        (&self.data).into()
     }
-}
-
-
-#[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
-pub struct Diagnostics {
-    pub num_bodies:     u64,
-    pub num_crafts:     u64,
-    pub num_directions: u64,
-    pub num_explosions: u64,
-    pub num_fuels:      u64,
-    pub num_guidances:  u64,
-    pub num_healths:    u64,
-    pub num_loots:      u64,
-    pub num_players:    u64,
-    pub num_missiles:   u64,
-    pub num_positions:  u64,
-    pub num_ships:      u64,
-    pub num_targets:    u64,
-    pub num_velocities: u64,
 }

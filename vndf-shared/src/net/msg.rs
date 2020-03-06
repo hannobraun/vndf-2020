@@ -9,10 +9,7 @@ use serde::{
 
 use crate::{
     data,
-    game::{
-        Diagnostics,
-        players::PlayerId,
-    },
+    game::players::PlayerId,
     input::Action,
 };
 
@@ -60,7 +57,7 @@ pub enum FromServer {
     UpdateComponent(data::client::Component),
     RemoveComponent(data::client::Handle),
     InputHandled { seq: u64 },
-    Diagnostics(Diagnostics),
+    Diagnostics(data::server::Diagnostics),
 }
 
 

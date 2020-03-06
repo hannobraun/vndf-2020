@@ -9,7 +9,6 @@ use crate::shared::{
     data,
     game::{
         WORLD_SIZE,
-        Diagnostics,
         players::PlayerId,
     },
 };
@@ -17,7 +16,7 @@ use crate::shared::{
 
 pub struct State {
     pub own_id:      Option<PlayerId>,
-    pub diagnostics: Option<Diagnostics>,
+    pub diagnostics: Option<data::server::Diagnostics>,
     pub statistics:  Statistics,
     pub data:        data::client::Components,
     pub frame_time:  FrameTime,

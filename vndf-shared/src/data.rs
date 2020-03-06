@@ -202,6 +202,20 @@ macro_rules! components {
                     }
                 }
             )*
+
+
+            #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
+            pub struct Diagnostics {
+                $(pub $store_name: u64,)*
+            }
+
+            impl From<&Components> for Diagnostics {
+                fn from(components: &Components) -> Self {
+                    Self {
+                        $($store_name: components.$store_name.len() as u64,)*
+                    }
+                }
+            }
         }
     };
 
