@@ -6,11 +6,7 @@ use time::{
 };
 
 use crate::shared::{
-    data::{
-        ClientComponent,
-        ClientData,
-        ClientHandle,
-    },
+    data,
     game::{
         WORLD_SIZE,
         Diagnostics,
@@ -23,7 +19,7 @@ pub struct State {
     pub own_id:      Option<PlayerId>,
     pub diagnostics: Option<Diagnostics>,
     pub statistics:  Statistics,
-    pub data:        ClientData,
+    pub data:        data::client::Components,
     pub frame_time:  FrameTime,
 }
 
@@ -33,7 +29,7 @@ impl State {
             own_id:      None,
             diagnostics: None,
             statistics:  Statistics::new(),
-            data:        ClientData::new(),
+            data:        data::client::Components::new(),
             frame_time:  FrameTime::new(),
         }
     }
@@ -73,12 +69,12 @@ impl State {
         }
     }
 
-    pub fn update_component(&mut self, component: ClientComponent) {
+    pub fn update_component(&mut self, component: data::client::Component) {
         self.statistics.updates.push_back(Instant::now());
         component.update(&mut self.data);
     }
 
-    pub fn remove_component(&mut self, handle: &ClientHandle) {
+    pub fn remove_component(&mut self, handle: &data::client::Handle) {
         self.statistics.removals.push_back(Instant::now());
         handle.remove(&mut self.data);
     }

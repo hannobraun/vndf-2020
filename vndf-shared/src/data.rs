@@ -1,15 +1,4 @@
-use serde::{
-    Deserialize,
-    Serialize,
-};
-use toadster::{
-    handle::{
-        self,
-        Handle,
-        Untyped,
-    },
-    store,
-};
+use toadster::handle;
 
 use crate::game::{
     crafts::{
@@ -49,140 +38,178 @@ pub trait Remove<T> {
 
 macro_rules! components {
     (
-        $components:ident($store_type:ident), $handle:ident, $component:ident {
+        mod $module:ident($store_type:ident) {
             $($store_name:ident, $component_ty:ident;)*
         }
     ) => {
-        pub struct $components {
-            $(pub $store_name: store::$store_type<$component_ty>,)*
-        }
+        pub mod $module {
+            use serde::{
+                Deserialize,
+                Serialize,
+            };
+            use toadster::{
+                handle::{
+                    self,
+                    Untyped,
+                },
+                store,
+            };
 
-        impl $components {
-            pub fn new() -> Self {
-                Self {
-                    $($store_name: store::$store_type::new(),)*
+            use super::{
+                Remove,
+                Update,
+            };
+
+            // Import all types passed to the macro into this module.
+            $(
+                use super::$component_ty;
+            )*
+
+
+            pub struct Components {
+                $(pub $store_name: store::$store_type<$component_ty>,)*
+            }
+
+            impl Components {
+                pub fn new() -> Self {
+                    Self {
+                        $($store_name: store::$store_type::new(),)*
+                    }
                 }
             }
-        }
 
-        $(
-            components!(@gen_update_remove, $store_type,
-                $component_ty,
-                $components,
-                $store_name,
-            );
-        )*
-
-
-        #[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
-        pub enum $component {
             $(
-                $component_ty(Handle<$component_ty>, $component_ty),
+                components!(@gen_update_remove, $store_type,
+                    $component_ty,
+                    $store_name,
+                );
+            )*
+
+
+            #[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
+            pub enum Component {
+                $(
+                    $component_ty(
+                        toadster::Handle<$component_ty>,
+                        $component_ty,
+                    ),
+                )*
+            }
+
+            impl Component {
+                pub fn update<T>(self, components: &mut T) -> bool
+                    where T: $(Update<$component_ty> +)*
+                {
+                    match self {
+                        $(
+                            Self::$component_ty(handle, value) => {
+                                <T as Update<$component_ty>>::update(
+                                    components,
+                                    handle,
+                                    value,
+                                )
+                            }
+                        )*
+                    }
+                }
+            }
+
+            $(
+                impl From<(toadster::Handle<$component_ty>, $component_ty)>
+                    for Component
+                {
+                    fn from(from:
+                        (toadster::Handle<$component_ty>, $component_ty),
+                    )
+                        -> Self
+                    {
+                        Self::$component_ty(from.0, from.1)
+                    }
+                }
+            )*
+
+
+            #[derive(Clone, Debug, Deserialize, Serialize, Eq, PartialEq, Hash)]
+            pub enum Handle {
+                $(
+                    $component_ty(toadster::Handle<$component_ty>),
+                )*
+            }
+
+            impl Handle {
+                pub fn from_component(component: &Component) -> Self {
+                    match component {
+                        $(
+                            Component::$component_ty(handle, _) =>
+                                Self::$component_ty(handle.clone()),
+                        )*
+                    }
+                }
+
+                pub fn as_weak(&self) -> Self {
+                    match self {
+                        $(
+                            Self::$component_ty(handle) =>
+                                Self::$component_ty(handle.as_weak()),
+                        )*
+                    }
+                }
+
+                pub fn into_strong_untyped(self) -> handle::Strong<Untyped> {
+                    match self {
+                        $(
+                            Self::$component_ty(handle) =>
+                                handle.strong().into_untyped(),
+                        )*
+                    }
+                }
+
+                pub fn into_weak_untyped(self) -> handle::Weak<Untyped> {
+                    match self {
+                        $(
+                            Self::$component_ty(handle) =>
+                                handle.weak().into_untyped(),
+                        )*
+                    }
+                }
+
+                pub fn remove<T>(&self, components: &mut T)
+                    where T: $(Remove<$component_ty> +)*
+                {
+                    match self {
+                        $(
+                            Self::$component_ty(handle) => {
+                                <T as Remove<$component_ty>>::remove(
+                                    components,
+                                    handle,
+                                );
+                            }
+                        )*
+                    }
+                }
+            }
+
+            $(
+                impl From<(toadster::Handle<$component_ty>, $component_ty)>
+                    for Handle
+                {
+                    fn from(
+                        from: (toadster::Handle<$component_ty>, $component_ty),
+                    )
+                        -> Self
+                    {
+                        Self::$component_ty(from.0)
+                    }
+                }
             )*
         }
-
-        impl $component {
-            pub fn update<T>(self, components: &mut T) -> bool
-                where T: $(Update<$component_ty> +)*
-            {
-                match self {
-                    $(
-                        Self::$component_ty(handle, value) => {
-                            <T as Update<$component_ty>>::update(
-                                components,
-                                handle,
-                                value,
-                            )
-                        }
-                    )*
-                }
-            }
-        }
-
-        $(
-            impl From<(Handle<$component_ty>, $component_ty)> for $component {
-                fn from(from: (Handle<$component_ty>, $component_ty)) -> Self {
-                    Self::$component_ty(from.0, from.1)
-                }
-            }
-        )*
-
-
-        #[derive(Clone, Debug, Deserialize, Serialize, Eq, PartialEq, Hash)]
-        pub enum $handle {
-            $(
-                $component_ty(Handle<$component_ty>),
-            )*
-        }
-
-        impl $handle {
-            pub fn from_component(component: &$component) -> Self {
-                match component {
-                    $(
-                        $component::$component_ty(handle, _) =>
-                            Self::$component_ty(handle.clone()),
-                    )*
-                }
-            }
-
-            pub fn as_weak(&self) -> Self {
-                match self {
-                    $(
-                        Self::$component_ty(handle) =>
-                            Self::$component_ty(handle.as_weak()),
-                    )*
-                }
-            }
-
-            pub fn into_strong_untyped(self) -> handle::Strong<Untyped> {
-                match self {
-                    $(
-                        Self::$component_ty(handle) =>
-                            handle.strong().into_untyped(),
-                    )*
-                }
-            }
-
-            pub fn into_weak_untyped(self) -> handle::Weak<Untyped> {
-                match self {
-                    $(
-                        Self::$component_ty(handle) =>
-                            handle.weak().into_untyped(),
-                    )*
-                }
-            }
-
-            pub fn remove<T>(&self, components: &mut T)
-                where T: $(Remove<$component_ty> +)*
-            {
-                match self {
-                    $(
-                        Self::$component_ty(handle) => {
-                            <T as Remove<$component_ty>>::remove(
-                                components,
-                                handle,
-                            );
-                        }
-                    )*
-                }
-            }
-        }
-
-        $(
-            impl From<(Handle<$component_ty>, $component_ty)> for $handle {
-                fn from(from: (Handle<$component_ty>, $component_ty)) -> Self {
-                    Self::$component_ty(from.0)
-                }
-            }
-        )*
     };
 
     (@gen_update_remove, Weak,
         $component_ty:ident,
-        $components:ident,
         $store_name:ident,
     ) => {
-        impl Update<$component_ty> for $components {
+        impl Update<$component_ty> for Components {
             fn update(&mut self,
                 handle: impl Into<handle::Weak<$component_ty>>,
                 value:  $component_ty,
@@ -197,7 +224,7 @@ macro_rules! components {
             }
         }
 
-        impl Remove<$component_ty> for $components {
+        impl Remove<$component_ty> for Components {
             fn remove(&mut self,
                 handle: impl Into<handle::Weak<$component_ty>>,
             ) {
@@ -208,7 +235,6 @@ macro_rules! components {
 
     (@gen_update_remove, Strong,
         $component_ty:ident,
-        $components:ident,
         $store_name:ident,
     ) => {
         // Don't need to generate those for strong stores.
@@ -216,7 +242,7 @@ macro_rules! components {
 }
 
 components!(
-    ServerData(Strong), ServerHandle, ServerComponent {
+    mod server(Strong) {
         bodies,     Body;
         crafts,     Craft;
         directions, Direction;
@@ -236,7 +262,7 @@ components!(
 );
 
 components!(
-    ClientData(Weak), ClientHandle, ClientComponent {
+    mod client(Weak) {
         bodies,     Body;
         crafts,     Craft;
         directions, Direction;

@@ -6,33 +6,29 @@ use std::{
     },
 };
 
-use vndf_shared::data::{
-    ClientComponent,
-    ClientData,
-    ClientHandle,
-};
+use vndf_shared::data;
 
 
 pub struct Client {
-    data:    ClientData,
-    updates: HashMap<ClientHandle, Instant>,
+    data:    data::client::Components,
+    updates: HashMap<data::client::Handle, Instant>,
 }
 
 impl Client {
     pub fn new() -> Self {
         Self {
-            data:    ClientData::new(),
+            data:    data::client::Components::new(),
             updates: HashMap::new(),
         }
     }
 
-    pub fn remove(&mut self, handle: &ClientHandle) {
+    pub fn remove(&mut self, handle: &data::client::Handle) {
         self.updates.remove(handle);
         handle.remove(&mut self.data);
     }
 
-    pub fn update(&mut self, component: ClientComponent) -> bool {
-        let handle = ClientHandle::from_component(&component);
+    pub fn update(&mut self, component: data::client::Component) -> bool {
+        let handle = data::client::Handle::from_component(&component);
 
         let recently_updated = self.updates
             .get(&handle)
@@ -41,7 +37,7 @@ impl Client {
             )
             .unwrap_or(false);
 
-        use ClientComponent::*;
+        use data::client::Component::*;
         let is_interpolated = match component {
             // These components are interpolated client-side.
             Direction(_, _)

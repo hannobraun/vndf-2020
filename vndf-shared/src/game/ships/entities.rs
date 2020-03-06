@@ -13,7 +13,7 @@ use toadster::{
 };
 
 use crate::{
-    data::ClientHandle,
+    data,
     game::{
         crafts::{
             Craft,
@@ -88,7 +88,7 @@ impl ShipEntity {
 
         let ship = ships.insert(Ship::new(craft, self.color));
         healths.get_mut(&health).unwrap().finalize(
-            ClientHandle::Ship(ship.into()),
+            data::client::Handle::Ship(ship.into()),
             entities,
         );
     }

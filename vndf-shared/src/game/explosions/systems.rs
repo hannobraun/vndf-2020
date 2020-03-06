@@ -7,7 +7,7 @@ use toadster::{
 };
 
 use crate::{
-    data::ClientHandle,
+    data,
     game::{
         health::Health,
         physics::{
@@ -37,12 +37,12 @@ pub fn explode_entity(
     let body   = bodies.get(&health.body)?;
 
     let mut is_missile = false;
-    if let ClientHandle::Missile(_) = health.parent_ref()? {
+    if let data::client::Handle::Missile(_) = health.parent_ref()? {
         is_missile = true;
     }
 
     let mut is_ship = false;
-    if let ClientHandle::Ship(_) = health.parent_ref()? {
+    if let data::client::Handle::Ship(_) = health.parent_ref()? {
         is_ship = true;
     }
 

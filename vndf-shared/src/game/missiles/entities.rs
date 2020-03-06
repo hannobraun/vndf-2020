@@ -9,7 +9,7 @@ use toadster::{
 };
 
 use crate::{
-    data::ClientHandle,
+    data,
     game::{
         crafts::{
             Craft,
@@ -104,7 +104,7 @@ impl MissileEntity {
 
         let missile = missiles.insert(Missile::new(craft, guidance, target));
         healths.get_mut(&health).unwrap().finalize(
-            ClientHandle::Missile(missile.into()),
+            data::client::Handle::Missile(missile.into()),
             entities,
         );
 

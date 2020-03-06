@@ -19,11 +19,7 @@ use serde::{
     Serialize,
 };
 
-use crate::data::{
-    ClientComponent,
-    ClientHandle,
-    ServerData,
-};
+use crate::data;
 
 use self::{
     base::{
@@ -48,7 +44,7 @@ pub const FRAME_TIME: f32 = 1.0 / TARGET_FPS as f32;
 
 
 pub struct State {
-    data: ServerData,
+    data: data::server::Components,
 
     base:       base::Feature,
     crafts:     crafts::Feature,
@@ -64,7 +60,7 @@ pub struct State {
 
 impl State {
     pub fn new() -> Self {
-        let mut data = ServerData::new();
+        let mut data = data::server::Components::new();
 
         let planet = planet::Feature::new(&mut data.planets);
 
@@ -273,71 +269,73 @@ impl State {
         self.data.ships.apply_changes();
     }
 
-    pub fn updates(&mut self) -> impl Iterator<Item=ClientComponent> + '_ {
+    pub fn updates(&mut self)
+        -> impl Iterator<Item=data::client::Component> + '_
+    {
         let bodies = self.data.bodies
             .iter()
             .map(|(handle, c)|
-                ClientComponent::Body(handle.into(), c.to_weak())
+                data::client::Component::Body(handle.into(), c.to_weak())
             );
         let crafts = self.data.crafts
             .iter()
             .map(|(handle, c)|
-                ClientComponent::Craft(handle.into(), c.to_weak())
+                data::client::Component::Craft(handle.into(), c.to_weak())
             );
         let directions = self.data.directions
             .iter()
             .map(|(handle, c)|
-                ClientComponent::Direction(handle.into(), c.to_weak())
+                data::client::Component::Direction(handle.into(), c.to_weak())
             );
         let explosions = self.data.explosions
             .iter()
             .map(|(handle, c)|
-                ClientComponent::Explosion(handle.into(), c.to_weak())
+                data::client::Component::Explosion(handle.into(), c.to_weak())
             );
         let fuels = self.data.fuels
             .iter()
             .map(|(handle, c)|
-                ClientComponent::Fuel(handle.into(), c.to_weak())
+                data::client::Component::Fuel(handle.into(), c.to_weak())
             );
         let healths = self.data.healths
             .iter()
             .map(|(handle, c)|
-                ClientComponent::Health(handle.into(), c.to_weak())
+                data::client::Component::Health(handle.into(), c.to_weak())
             );
         let loots = self.data.loots
             .iter()
             .map(|(handle, c)|
-                ClientComponent::Loot(handle.into(), c.to_weak())
+                data::client::Component::Loot(handle.into(), c.to_weak())
             );
         let missiles = self.data.missiles
             .iter()
             .map(|(handle, c)|
-                ClientComponent::Missile(handle.into(), c.to_weak())
+                data::client::Component::Missile(handle.into(), c.to_weak())
             );
         let planets = self.data.planets
             .iter()
             .map(|(handle, c)|
-                ClientComponent::Planet(handle.into(), c.to_weak())
+                data::client::Component::Planet(handle.into(), c.to_weak())
             );
         let positions = self.data.positions
             .iter()
             .map(|(handle, c)|
-                ClientComponent::Position(handle.into(), c.to_weak())
+                data::client::Component::Position(handle.into(), c.to_weak())
             );
         let ships = self.data.ships
             .iter()
             .map(|(handle, c)|
-                ClientComponent::Ship(handle.into(), c.to_weak())
+                data::client::Component::Ship(handle.into(), c.to_weak())
             );
         let targets = self.data.targets
             .iter()
             .map(|(handle, c)|
-                ClientComponent::Target(handle.into(), c.to_weak())
+                data::client::Component::Target(handle.into(), c.to_weak())
             );
         let velocities = self.data.velocities
             .iter()
             .map(|(handle, c)|
-                ClientComponent::Velocity(handle.into(), c.to_weak())
+                data::client::Component::Velocity(handle.into(), c.to_weak())
             );
 
         bodies
@@ -357,62 +355,62 @@ impl State {
 
     pub fn removals(&mut self) -> EventSource<ComponentRemoved> {
         for handle in self.data.bodies.removed().ready() {
-            let handle = ClientHandle::Body(handle.into());
+            let handle = data::client::Handle::Body(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }
         for handle in self.data.crafts.removed().ready() {
-            let handle = ClientHandle::Craft(handle.into());
+            let handle = data::client::Handle::Craft(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }
         for handle in self.data.directions.removed().ready() {
-            let handle = ClientHandle::Direction(handle.into());
+            let handle = data::client::Handle::Direction(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }
         for handle in self.data.explosions.removed().ready() {
-            let handle = ClientHandle::Explosion(handle.into());
+            let handle = data::client::Handle::Explosion(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }
         for handle in self.data.fuels.removed().ready() {
-            let handle = ClientHandle::Fuel(handle.into());
+            let handle = data::client::Handle::Fuel(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }
         for handle in self.data.healths.removed().ready() {
-            let handle = ClientHandle::Health(handle.into());
+            let handle = data::client::Handle::Health(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }
         for handle in self.data.loots.removed().ready() {
-            let handle = ClientHandle::Loot(handle.into());
+            let handle = data::client::Handle::Loot(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }
         for handle in self.data.missiles.removed().ready() {
-            let handle = ClientHandle::Missile(handle.into());
+            let handle = data::client::Handle::Missile(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }
         for handle in self.data.positions.removed().ready() {
-            let handle = ClientHandle::Position(handle.into());
+            let handle = data::client::Handle::Position(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }
         for handle in self.data.ships.removed().ready() {
-            let handle = ClientHandle::Ship(handle.into());
+            let handle = data::client::Handle::Ship(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }
         for handle in self.data.targets.removed().ready() {
-            let handle = ClientHandle::Target(handle.into());
+            let handle = data::client::Handle::Target(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }
         for handle in self.data.velocities.removed().ready() {
-            let handle = ClientHandle::Velocity(handle.into());
+            let handle = data::client::Handle::Velocity(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }

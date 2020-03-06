@@ -14,7 +14,7 @@ use toadster::{
 };
 
 use crate::{
-    data::ClientHandle,
+    data,
     game::{
         WORLD_SIZE,
         crafts::{
@@ -53,7 +53,7 @@ pub fn spawn_death_loot(
 {
     let health = healths.get(handle)?;
 
-    if let ClientHandle::Ship(handle) = health.parent_ref()? {
+    if let data::client::Handle::Ship(handle) = health.parent_ref()? {
         let ship  = ships.get(handle)?;
         let craft = crafts.get(&ship.craft)?;
         let fuel  = fuels.get(&craft.fuel)?;
@@ -84,7 +84,7 @@ pub fn spawn_death_loot(
 
         let loot = loots.insert(loot);
         healths.get_mut(health).unwrap().finalize(
-            ClientHandle::Loot(loot.into()),
+            data::client::Handle::Loot(loot.into()),
             index,
         );
     }
@@ -135,7 +135,7 @@ pub fn spawn_random_loot(
 
         let loot = loots.insert(loot);
         healths.get_mut(health).unwrap().finalize(
-            ClientHandle::Loot(loot.into()),
+            data::client::Handle::Loot(loot.into()),
             index,
         );
     }

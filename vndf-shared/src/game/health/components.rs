@@ -13,14 +13,14 @@ use toadster::{
 };
 
 use crate::{
-    data::ClientHandle,
+    data,
     game::physics::Body,
 };
 
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Health {
-    parent: Option<ClientHandle>,
+    parent: Option<data::client::Handle>,
 
     pub body:   Handle<Body>,
     pub value:  f32,
@@ -36,7 +36,7 @@ impl Health {
     }
 
     pub fn finalize(&mut self,
-        parent:   ClientHandle,
+        parent:   data::client::Handle,
         entities: &mut HashSet<handle::Strong<Untyped>>,
     ) {
         self.parent = Some(parent.as_weak());
@@ -51,11 +51,11 @@ impl Health {
         }
     }
 
-    pub fn parent(self) -> Option<ClientHandle> {
+    pub fn parent(self) -> Option<data::client::Handle> {
         self.parent
     }
 
-    pub fn parent_ref(&self) -> Option<&ClientHandle> {
+    pub fn parent_ref(&self) -> Option<&data::client::Handle> {
         self.parent.as_ref()
     }
 
