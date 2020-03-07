@@ -16,7 +16,6 @@ use crate::game::{
     health::Health,
     physics::{
         Body,
-        Direction,
         Position,
         Velocity,
     },
@@ -34,7 +33,6 @@ pub fn launch_missile(
     missile:    MissileEntity,
     bodies:     &mut store::Strong<Body>,
     crafts:     &mut store::Strong<Craft>,
-    directions: &mut store::Strong<Direction>,
     fuels:      &mut store::Strong<Fuel>,
     guidances:  &mut store::Strong<Guidance>,
     healths:    &mut store::Strong<Health>,
@@ -47,7 +45,6 @@ pub fn launch_missile(
     missile.create(
         bodies,
         crafts,
-        directions,
         fuels,
         guidances,
         healths,
@@ -80,7 +77,6 @@ pub fn update_targets(
 pub fn update_guidances(
     bodies:     &mut store::Strong<Body>,
     crafts:     &store::Strong<Craft>,
-    directions: &mut store::Strong<Direction>,
     guidances:  &mut store::Strong<Guidance>,
     positions:  &store::Strong<Position>,
     targets:    &store::Strong<Target>,
@@ -90,7 +86,6 @@ pub fn update_guidances(
         guidance.update_guidance(
             bodies,
             crafts,
-            directions,
             positions,
             targets,
             velocities,

@@ -40,8 +40,7 @@ impl Client {
         use data::client::Component::*;
         let is_interpolated = match component {
             // These components are interpolated client-side.
-            Direction(_, _)
-                | Position(_, _)
+            Position(_, _)
                 | Velocity(_, _)
                 | Explosion(_, _)
                 | Fuel(_, _)

@@ -15,7 +15,6 @@ use crate::game::{
     },
     physics::{
         Body,
-        Direction,
         Position,
         Velocity,
     },
@@ -259,7 +258,6 @@ components!(
     mod server(Strong) {
         bodies,     Body;
         crafts,     Craft;
-        directions, Direction;
         explosions, Explosion;
         fuels,      Fuel;
         guidances,  Guidance;
@@ -279,7 +277,6 @@ components!(
     mod client(Weak) {
         bodies,     Body;
         crafts,     Craft;
-        directions, Direction;
         explosions, Explosion;
         fuels,      Fuel;
         healths,    Health;

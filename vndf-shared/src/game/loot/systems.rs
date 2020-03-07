@@ -24,7 +24,6 @@ use crate::{
         health::Health,
         physics::{
             Body,
-            Direction,
             Position,
             Velocity,
         },
@@ -40,7 +39,6 @@ pub fn spawn_death_loot(
     handle:     &handle::Strong<Health>,
     bodies:     &mut store::Strong<Body>,
     crafts:     &store::Strong<Craft>,
-    directions: &mut store::Strong<Direction>,
     fuels:      &store::Strong<Fuel>,
     healths:    &mut store::Strong<Health>,
     loots:      &mut store::Strong<Loot>,
@@ -60,7 +58,6 @@ pub fn spawn_death_loot(
         let body  = bodies.get(&craft.body)?;
         let pos   = positions.get(&body.pos)?;
         let vel   = velocities.get(&body.vel)?;
-        let dir   = directions.get(&body.dir)?;
 
         let pos = *pos;
         let pos = positions.insert(pos);
@@ -68,10 +65,7 @@ pub fn spawn_death_loot(
         let vel = *vel;
         let vel = velocities.insert(vel);
 
-        let dir = *dir;
-        let dir = directions.insert(dir);
-
-        let body = bodies.insert(Body::new(pos, vel, dir));
+        let body = bodies.insert(Body::new(pos, vel));
 
         let health = healths.insert(Health::new(body.clone(), 1.0));
 
@@ -95,7 +89,6 @@ pub fn spawn_death_loot(
 pub fn spawn_random_loot(
     dt:         f32,
     bodies:     &mut store::Strong<Body>,
-    directions: &mut store::Strong<Direction>,
     healths:    &mut store::Strong<Health>,
     loots:      &mut store::Strong<Loot>,
     positions:  &mut store::Strong<Position>,
@@ -120,9 +113,8 @@ pub fn spawn_random_loot(
 
         let pos = positions.insert(pos);
         let vel = velocities.insert(Velocity::new());
-        let dir = directions.insert(Direction::new());
 
-        let body = bodies.insert(Body::new(pos, vel, dir));
+        let body = bodies.insert(Body::new(pos, vel));
 
         let health = healths.insert(Health::new(body.clone(), 1.0));
 

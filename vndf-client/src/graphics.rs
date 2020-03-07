@@ -191,7 +191,6 @@ impl Graphics {
         let craft = get!(state.data.crafts, &ship.craft);
         let body  = get!(state.data.bodies, &craft.body);
         let pos   = get!(state.data.positions, &body.pos);
-        let dir   = get!(state.data.directions, &body.dir);
 
         self.draw_projected_path(context, &craft.body, ship.color, state)?;
 
@@ -200,7 +199,7 @@ impl Graphics {
             &self.ship,
             DrawParam::new()
                 .dest(pos.0)
-                .rotation(Vec2::unit_x().angle(dir.0).0)
+                .rotation(Vec2::unit_x().angle(body.dir).0)
                 .scale([30.0, 30.0])
                 .color(
                     [ship.color[0], ship.color[1], ship.color[2], 1.0]
@@ -258,11 +257,9 @@ impl Graphics {
         let mut body = get!(state.data.bodies, body).clone();
         body.acc = Vec2::zero();
 
-        let dir = *get!(state.data.directions, &body.dir);
         let pos = *get!(state.data.positions,  &body.pos);
         let vel = *get!(state.data.velocities, &body.vel);
 
-        let mut directions = OneStore { handle: (&body.dir).into(), data: dir };
         let mut positions  = OneStore { handle: (&body.pos).into(), data: pos };
         let mut velocities = OneStore { handle: (&body.vel).into(), data: vel };
 
@@ -277,7 +274,6 @@ impl Graphics {
             }
             body.update(
                 1.0,
-                &mut directions,
                 &mut positions,
                 &mut velocities,
             );
@@ -407,7 +403,6 @@ End game - Escape",
 "Components:
 Bodies: {}/{}
 Crafts: {}/{}
-Directions: {}/{}
 Explosions: {}/{}
 Fuels: {}/{}
 Guidances: {}/-
@@ -424,7 +419,6 @@ Updates per s: {}
 Removals per s: {}",
                     diagnostics.bodies, state.data.bodies.len(),
                     diagnostics.crafts, state.data.crafts.len(),
-                    diagnostics.directions, state.data.directions.len(),
                     diagnostics.explosions, state.data.explosions.len(),
                     diagnostics.fuels, state.data.fuels.len(),
                     diagnostics.guidances,

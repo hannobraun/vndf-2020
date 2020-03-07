@@ -18,7 +18,6 @@ use crate::{
         health::Health,
         physics::{
             Body,
-            Direction,
             Position,
             Velocity,
         },
@@ -48,7 +47,6 @@ impl MissileEntity {
     pub fn create(&self,
         bodies:     &mut store::Strong<Body>,
         crafts:     &mut store::Strong<Craft>,
-        directions: &mut store::Strong<Direction>,
         fuels:      &mut store::Strong<Fuel>,
         guidances:  &mut store::Strong<Guidance>,
         healths:    &mut store::Strong<Health>,
@@ -71,12 +69,10 @@ impl MissileEntity {
         let vel = *velocities.get(&self.origin.vel)?;
         let vel = velocities.insert(vel);
 
-        let dir = directions.insert(Direction(to_target));
-
         let body = Body {
             pos: pos.into(),
             vel: vel.into(),
-            dir: dir.into(),
+            dir: to_target,
             rot: Rad::zero(),
             .. self.origin
         };

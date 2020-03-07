@@ -31,7 +31,6 @@ use crate::game::{
     missiles::MissileLaunch,
     physics::{
         Body,
-        Direction,
         Position,
         Velocity,
     },
@@ -80,7 +79,6 @@ impl Feature {
         event:      &PlayerConnected,
         bodies:     &mut store::Strong<Body>,
         crafts:     &mut store::Strong<Craft>,
-        directions: &mut store::Strong<Direction>,
         fuels:      &mut store::Strong<Fuel>,
         healths:    &mut store::Strong<Health>,
         players:    &mut store::Strong<Player>,
@@ -95,7 +93,6 @@ impl Feature {
             event.color,
             bodies,
             crafts,
-            directions,
             fuels,
             healths,
             players,

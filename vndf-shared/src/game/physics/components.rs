@@ -43,19 +43,6 @@ impl Velocity {
     }
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
-pub struct Direction(pub Vec2);
-
-impl Direction {
-    pub fn new() -> Self {
-        Self(Vec2::unit_x())
-    }
-
-    pub fn to_weak(&self) -> Self {
-        Self(self.0.clone())
-    }
-}
-
 
 /// A physical body
 ///
@@ -69,7 +56,7 @@ pub struct Body {
     pub vel: Handle<Velocity>,
     pub acc: Vec2,
 
-    pub dir: Handle<Direction>,
+    pub dir: Vec2,
     pub rot: Rad,
 }
 
@@ -77,7 +64,6 @@ impl Body {
     pub fn new(
         pos: impl Into<Handle<Position>>,
         vel: impl Into<Handle<Velocity>>,
-        dir: impl Into<Handle<Direction>>,
     )
         -> Self
     {
@@ -86,7 +72,7 @@ impl Body {
             vel: vel.into(),
             acc: Vec2::zero(),
 
-            dir: dir.into(),
+            dir: Vec2::unit_x(),
             rot: Rad::zero(),
         }
     }
@@ -96,14 +82,13 @@ impl Body {
             pos: self.pos.as_weak(),
             vel: self.vel.as_weak(),
             acc: self.acc.clone(),
-            dir: self.dir.as_weak(),
+            dir: self.dir.clone(),
             rot: self.rot.clone(),
         }
     }
 
     pub fn update(&mut self,
         dt:         f32,
-        directions: &mut impl Store<Direction>,
         positions:  &mut impl Store<Position>,
         velocities: &mut impl Store<Velocity>,
     )
@@ -111,9 +96,8 @@ impl Body {
     {
         let vel = velocities.get_mut(&self.vel)?;
         let pos = positions.get_mut(&self.pos)?;
-        let dir = directions.get_mut(&self.dir)?;
 
-        dir.0 = rotate(dir.0, self.rot * dt);
+        self.dir = rotate(self.dir, self.rot * dt);
 
         math::integrate(
             dt,

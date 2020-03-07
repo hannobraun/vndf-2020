@@ -26,7 +26,6 @@ use crate::{
         missiles::MissileLaunch,
         physics::{
             Body,
-            Direction,
             Position,
             Velocity,
         },
@@ -52,7 +51,6 @@ pub fn connect_player(
     color:          [f32; 3],
     bodies:         &mut store::Strong<Body>,
     crafts:         &mut store::Strong<Craft>,
-    directions:     &mut store::Strong<Direction>,
     fuels:          &mut store::Strong<Fuel>,
     healths:        &mut store::Strong<Health>,
     players:        &mut store::Strong<Player>,
@@ -69,7 +67,6 @@ pub fn connect_player(
     ShipEntity { owner: id, color }.create(
         bodies,
         crafts,
-        directions,
         fuels,
         healths,
         positions,

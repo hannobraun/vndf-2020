@@ -2,10 +2,7 @@ use toadster::store;
 
 use crate::game::{
     base::Update,
-    physics::{
-        Body,
-        Direction,
-    },
+    physics::Body,
 };
 
 use super::{
@@ -23,16 +20,14 @@ impl Feature {
     }
 
     pub fn on_update(&mut self,
-        event:      &Update,
-        bodies:     &mut store::Strong<Body>,
-        crafts:     &mut store::Strong<Craft>,
-        directions: &store::Strong<Direction>,
-        fuels:      &mut store::Strong<Fuel>,
+        event:  &Update,
+        bodies: &mut store::Strong<Body>,
+        crafts: &mut store::Strong<Craft>,
+        fuels:  &mut store::Strong<Fuel>,
     ) {
         update_crafts(
             bodies,
             crafts,
-            directions,
             fuels,
             event.dt,
         );

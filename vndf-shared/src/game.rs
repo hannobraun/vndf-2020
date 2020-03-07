@@ -99,7 +99,6 @@ impl State {
                 &event,
                 &mut self.data.bodies,
                 &mut self.data.crafts,
-                &self.data.directions,
                 &mut self.data.fuels,
             );
             self.explosions.on_update(
@@ -116,7 +115,6 @@ impl State {
                 &event,
                 WORLD_SIZE,
                 &mut self.data.bodies,
-                &mut self.data.directions,
                 &mut self.data.positions,
                 &mut self.data.velocities,
             );
@@ -127,7 +125,6 @@ impl State {
                 &event,
                 &mut self.data.bodies,
                 &self.data.crafts,
-                &mut self.data.directions,
                 &self.data.fuels,
                 &mut self.data.guidances,
                 &mut self.data.healths,
@@ -144,7 +141,6 @@ impl State {
                 &event,
                 &mut self.data.bodies,
                 &self.data.crafts,
-                &mut self.data.directions,
                 &mut self.data.fuels,
                 &mut self.data.healths,
                 &mut self.data.loots,
@@ -160,7 +156,6 @@ impl State {
                 &event,
                 &mut self.data.bodies,
                 &mut self.data.crafts,
-                &mut self.data.directions,
                 &mut self.data.fuels,
                 &mut self.data.healths,
                 &mut self.data.players,
@@ -193,7 +188,6 @@ impl State {
                 event,
                 &mut self.data.bodies,
                 &mut self.data.crafts,
-                &mut self.data.directions,
                 &mut self.data.fuels,
                 &mut self.data.guidances,
                 &mut self.data.healths,
@@ -218,7 +212,6 @@ impl State {
                 &event,
                 &mut self.data.bodies,
                 &self.data.crafts,
-                &mut self.data.directions,
                 &self.data.fuels,
                 &mut self.data.healths,
                 &mut self.data.loots,
@@ -258,7 +251,6 @@ impl State {
         self.data.missiles.apply_changes();
         self.data.targets.apply_changes();
         self.data.bodies.apply_changes();
-        self.data.directions.apply_changes();
         self.data.positions.apply_changes();
         self.data.velocities.apply_changes();
         self.data.players.apply_changes();
@@ -277,11 +269,6 @@ impl State {
             .iter()
             .map(|(handle, c)|
                 data::client::Component::Craft(handle.into(), c.to_weak())
-            );
-        let directions = self.data.directions
-            .iter()
-            .map(|(handle, c)|
-                data::client::Component::Direction(handle.into(), c.to_weak())
             );
         let explosions = self.data.explosions
             .iter()
@@ -336,7 +323,6 @@ impl State {
 
         bodies
             .chain(crafts)
-            .chain(directions)
             .chain(explosions)
             .chain(fuels)
             .chain(healths)
@@ -357,11 +343,6 @@ impl State {
         }
         for handle in self.data.crafts.removed().ready() {
             let handle = data::client::Handle::Craft(handle.into());
-            let event  = ComponentRemoved { handle };
-            self.base.component_removed.sink().push(event);
-        }
-        for handle in self.data.directions.removed().ready() {
-            let handle = data::client::Handle::Direction(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }

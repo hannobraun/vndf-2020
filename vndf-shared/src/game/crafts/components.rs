@@ -10,10 +10,7 @@ use toadster::{
 use crate::{
     game::{
         health::Health,
-        physics::{
-            Body,
-            Direction,
-        },
+        physics::Body,
         players::PlayerId,
     },
     math::{
@@ -47,15 +44,13 @@ impl Craft {
     }
 
     pub fn apply_thrust(&mut self,
-        dt:         f32,
-        bodies:     &mut impl Store<Body>,
-        directions: &impl Store<Direction>,
-        fuels:      &mut impl Store<Fuel>,
+        dt:     f32,
+        bodies: &mut impl Store<Body>,
+        fuels:  &mut impl Store<Fuel>,
     )
         -> Option<()>
     {
         let body = bodies.get_mut(&self.body)?;
-        let dir  = directions.get(&body.dir)?;
         let fuel = fuels.get_mut(&self.fuel)?;
 
         body.acc += if self.engine_on && fuel.0 > 0.0 {
@@ -63,7 +58,7 @@ impl Craft {
             let fuel_used     = f32::min(max_fuel_used, fuel.0);
 
             fuel.0 -= fuel_used;
-            dir.0.normalize() * self.thrust * fuel_used / max_fuel_used
+            body.dir.normalize() * self.thrust * fuel_used / max_fuel_used
         }
         else {
             Vec2::zero()

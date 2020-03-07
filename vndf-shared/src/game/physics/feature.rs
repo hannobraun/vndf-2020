@@ -4,7 +4,6 @@ use crate::game::base::Update;
 
 use super::{
     Body,
-    Direction,
     Position,
     Velocity,
     update_bodies,
@@ -22,13 +21,11 @@ impl Feature {
         event:      &Update,
         world_size: f32,
         bodies:     &mut store::Strong<Body>,
-        directions: &mut store::Strong<Direction>,
         positions:  &mut store::Strong<Position>,
         velocities: &mut store::Strong<Velocity>,
     ) {
         update_bodies(
             bodies,
-            directions,
             positions,
             velocities,
             world_size,
