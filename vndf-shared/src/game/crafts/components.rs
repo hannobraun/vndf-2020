@@ -47,7 +47,7 @@ impl Craft {
     }
 
     pub fn apply_thrust(&mut self,
-        dt:     f32,
+        dt:         f32,
         bodies:     &mut impl Store<Body>,
         directions: &impl Store<Direction>,
         fuels:      &mut impl Store<Fuel>,
