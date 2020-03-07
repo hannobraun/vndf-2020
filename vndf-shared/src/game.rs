@@ -49,7 +49,7 @@ pub struct State {
     loot:       loot::Feature,
     missiles:   missiles::Feature,
     physics:    physics::Feature,
-    planet:     planets::Feature,
+    planets:    planets::Feature,
     players:    players::Feature,
     ships:      ships::Feature,
 }
@@ -58,7 +58,7 @@ impl State {
     pub fn new() -> Self {
         let mut data = data::server::Components::new();
 
-        let planet = planets::Feature::new(&mut data.planets);
+        let planets = planets::Feature::new(&mut data.planets);
 
         Self {
             data,
@@ -70,7 +70,7 @@ impl State {
             loot:       loot::Feature::new(),
             missiles:   missiles::Feature::new(),
             physics:    physics::Feature::new(),
-            planet,
+            planets,
             players:    players::Feature::new(),
             ships:      ships::Feature::new(),
         }
@@ -106,7 +106,7 @@ impl State {
                 &event,
                 &mut self.data.explosions,
             );
-            self.planet.on_update(
+            self.planets.on_update(
                 &mut self.data.bodies,
                 &mut self.data.healths,
                 &self.data.planets,
