@@ -5,7 +5,7 @@ pub mod health;
 pub mod loot;
 pub mod missiles;
 pub mod physics;
-pub mod planet;
+pub mod planets;
 pub mod players;
 pub mod ships;
 
@@ -49,7 +49,7 @@ pub struct State {
     loot:       loot::Feature,
     missiles:   missiles::Feature,
     physics:    physics::Feature,
-    planet:     planet::Feature,
+    planet:     planets::Feature,
     players:    players::Feature,
     ships:      ships::Feature,
 }
@@ -58,7 +58,7 @@ impl State {
     pub fn new() -> Self {
         let mut data = data::server::Components::new();
 
-        let planet = planet::Feature::new(&mut data.planets);
+        let planet = planets::Feature::new(&mut data.planets);
 
         Self {
             data,

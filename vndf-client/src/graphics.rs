@@ -25,7 +25,7 @@ use crate::{
             loot::Loot,
             missiles::Missile,
             physics::Body,
-            planet::Planet,
+            planets::Planet,
             ships::Ship,
         },
         math::{

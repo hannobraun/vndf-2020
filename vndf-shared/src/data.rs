@@ -19,7 +19,7 @@ use crate::game::{
         Position,
         Velocity,
     },
-    planet::Planet,
+    planets::Planet,
     players::Player,
     ships::Ship,
 };
