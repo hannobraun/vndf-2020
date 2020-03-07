@@ -59,8 +59,11 @@ impl Craft {
         let fuel = fuels.get_mut(&self.fuel)?;
 
         body.acc += if self.engine_on && fuel.0 > 0.0 {
-            fuel.0 -= self.thrust * dt;
-            dir.0.normalize() * self.thrust
+            let max_fuel_used = self.thrust * dt;
+            let fuel_used     = f32::min(max_fuel_used, fuel.0);
+
+            fuel.0 -= fuel_used;
+            dir.0.normalize() * self.thrust * fuel_used / max_fuel_used
         }
         else {
             Vec2::zero()
