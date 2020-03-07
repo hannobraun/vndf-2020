@@ -70,7 +70,7 @@ impl State {
             loot:       loot::Feature::new(),
             missiles:   missiles::Feature::new(),
             physics:    physics::Feature::new(),
-            planet:     planet,
+            planet,
             players:    players::Feature::new(),
             ships:      ships::Feature::new(),
         }
