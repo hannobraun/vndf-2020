@@ -5,8 +5,8 @@ use slotmap::{
 };
 
 use crate::{
-    Store,
     handle,
+    store,
 };
 
 
@@ -56,7 +56,7 @@ impl<T> Weak<T> {
     }
 }
 
-impl<T> Store<T> for Weak<T> {
+impl<T> store::Get<T> for Weak<T> {
     fn get(&self, handle: impl Into<handle::Weak<T>>)
         -> Option<&T>
     {

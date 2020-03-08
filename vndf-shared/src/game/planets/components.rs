@@ -4,7 +4,7 @@ use serde::{
     Deserialize,
     Serialize,
 };
-use toadster::store::Store;
+use toadster::store;
 
 use crate::{
     game::physics::{
@@ -32,7 +32,7 @@ impl Planet {
 
     pub fn apply_gravitation(&self,
         body:      &mut Body,
-        positions: &impl Store<Position>,
+        positions: &impl store::Get<Position>,
     )
         -> Option<()>
     {

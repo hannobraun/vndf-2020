@@ -10,7 +10,7 @@ pub use self::{
 use crate::handle;
 
 
-pub trait Store<T> {
+pub trait Get<T> {
     fn get(&self, handle: impl Into<handle::Weak<T>>)
         -> Option<&T>;
     fn get_mut(&mut self, handle: impl Into<handle::Weak<T>>)

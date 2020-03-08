@@ -4,7 +4,7 @@ use serde::{
 };
 use toadster::{
     Handle,
-    Store,
+    store,
 };
 
 use crate::math::{
@@ -89,8 +89,8 @@ impl Body {
 
     pub fn update(&mut self,
         dt:         f32,
-        positions:  &mut impl Store<Position>,
-        velocities: &mut impl Store<Velocity>,
+        positions:  &mut impl store::Get<Position>,
+        velocities: &mut impl store::Get<Velocity>,
     )
         -> Option<()>
     {
@@ -116,8 +116,8 @@ impl Body {
 
     pub fn enforce_boundary(&mut self,
         world_size: f32,
-        positions:  &impl Store<Position>,
-        velocities: &mut impl Store<Velocity>,
+        positions:  &impl store::Get<Position>,
+        velocities: &mut impl store::Get<Velocity>,
     )
         -> Option<()>
     {

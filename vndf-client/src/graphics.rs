@@ -11,8 +11,8 @@ use ggez::{
     input::mouse,
 };
 use toadster::{
-    Store,
     handle,
+    store,
 };
 
 use crate::{
@@ -523,7 +523,7 @@ struct OneStore<T> {
     pub data:   T
 }
 
-impl<T> Store<T> for OneStore<T> {
+impl<T> store::Get<T> for OneStore<T> {
     fn get(&self, handle: impl Into<handle::Weak<T>>) -> Option<&T> {
         if handle.into() == self.handle {
             Some(&self.data)

@@ -4,7 +4,7 @@ use serde::{
 };
 use toadster::{
     Handle,
-    Store,
+    store,
 };
 
 use crate::{
@@ -45,8 +45,8 @@ impl Craft {
 
     pub fn apply_thrust(&mut self,
         dt:     f32,
-        bodies: &mut impl Store<Body>,
-        fuels:  &mut impl Store<Fuel>,
+        bodies: &mut impl store::Get<Body>,
+        fuels:  &mut impl store::Get<Fuel>,
     )
         -> Option<()>
     {
