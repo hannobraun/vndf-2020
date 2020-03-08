@@ -7,8 +7,8 @@ pub use self::{
     weak::Weak,
 };
 
-
 use crate::handle;
+
 
 pub trait Store<T> {
     fn get(&self, handle: impl Into<handle::Weak<T>>)
