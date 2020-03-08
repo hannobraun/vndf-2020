@@ -16,3 +16,12 @@ pub trait Get<T> {
     fn get_mut(&mut self, handle: impl Into<handle::Weak<T>>)
         -> Option<&mut T>;
 }
+
+
+pub trait Values<'r, T: 'r> {
+    type Values:    Iterator<Item=&'r T>;
+    type ValuesMut: Iterator<Item=&'r mut T>;
+
+    fn values(&'r self) -> Self::Values;
+    fn values_mut(&'r mut self) -> Self::ValuesMut;
+}

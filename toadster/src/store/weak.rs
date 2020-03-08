@@ -70,6 +70,19 @@ impl<T> store::Get<T> for Weak<T> {
     }
 }
 
+impl<'r, T: 'r> store::Values<'r, T> for Weak<T> {
+    type Values    = sparse_secondary::Values<'r, DefaultKey, T>;
+    type ValuesMut = sparse_secondary::ValuesMut<'r, DefaultKey, T>;
+
+    fn values(&'r self) -> Self::Values {
+        self.values()
+    }
+
+    fn values_mut(&'r mut self) -> Self::ValuesMut {
+        self.values_mut()
+    }
+}
+
 impl<'a, T> IntoIterator for &'a Weak<T> {
     type Item     = (handle::Weak<T>, &'a T);
     type IntoIter = Iter<'a, T>;
