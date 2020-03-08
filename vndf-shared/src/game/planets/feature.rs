@@ -8,7 +8,6 @@ use crate::{
             Position,
         },
     },
-    math::Pnt2,
 };
 
 use super::{
@@ -21,12 +20,7 @@ use super::{
 pub struct Feature;
 
 impl Feature {
-    pub fn new(planets: &mut store::Strong<Planet>) -> Self {
-        planets.insert(Planet {
-            pos:  Pnt2::new(0.0, 0.0),
-            size: 100.0,
-        });
-
+    pub fn new() -> Self {
         Self
     }
 

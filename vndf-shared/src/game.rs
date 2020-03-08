@@ -15,13 +15,17 @@ use rinnsal::{
     EventSource,
 };
 
-use crate::data;
+use crate::{
+    data,
+    math::Pnt2,
+};
 
 use self::{
     base::{
         ComponentRemoved,
         Update,
     },
+    planets::Planet,
     players::{
         InputHandled,
         PlayerConnected,
@@ -58,7 +62,10 @@ impl State {
     pub fn new() -> Self {
         let mut data = data::server::Components::new();
 
-        let planets = planets::Feature::new(&mut data.planets);
+        data.planets.insert(Planet {
+            pos:  Pnt2::new(0.0, 0.0),
+            size: 100.0,
+        });
 
         Self {
             data,
@@ -70,7 +77,7 @@ impl State {
             loot:       loot::Feature::new(),
             missiles:   missiles::Feature::new(),
             physics:    physics::Feature::new(),
-            planets,
+            planets:    planets::Feature::new(),
             players:    players::Feature::new(),
             ships:      ships::Feature::new(),
         }
