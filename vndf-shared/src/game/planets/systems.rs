@@ -17,7 +17,7 @@ use super::Planet;
 pub fn apply_gravitation(
     bodies:    &mut store::Strong<Body>,
     planets:   &store::Strong<Planet>,
-    positions: &store::Strong<Position>,
+    positions: &impl store::Get<Position>,
 )
     -> Option<()>
 {
