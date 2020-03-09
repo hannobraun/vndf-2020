@@ -62,31 +62,11 @@ impl<T> store::Get<T> for Weak<T> {
     }
 }
 
-impl<T> store::Get<T> for &'_ Weak<T> {
-    fn get(&self, handle: impl Into<handle::Weak<T>>) -> Option<&T> {
-        Weak::get(self, handle)
-    }
-}
-
-impl<T> store::Get<T> for &'_ mut Weak<T> {
-    fn get(&self, handle: impl Into<handle::Weak<T>>) -> Option<&T> {
-        Weak::get(self, handle)
-    }
-}
-
 impl<T> store::GetMut<T> for Weak<T> {
     fn get_mut(&mut self, handle: impl Into<handle::Weak<T>>)
         -> Option<&mut T>
     {
         self.get_mut(handle)
-    }
-}
-
-impl<T> store::GetMut<T> for &'_ mut Weak<T> {
-    fn get_mut(&mut self, handle: impl Into<handle::Weak<T>>)
-        -> Option<&mut T>
-    {
-        Weak::get_mut(self, handle)
     }
 }
 
@@ -98,35 +78,11 @@ impl<'r, T: 'r> store::Values<'r, T> for Weak<T> {
     }
 }
 
-impl<'r, T: 'r> store::Values<'r, T> for &'_ Weak<T> {
-    type Values = sparse_secondary::Values<'r, DefaultKey, T>;
-
-    fn values(&'r self) -> Self::Values {
-        Weak::values(self)
-    }
-}
-
-impl<'r, T: 'r> store::Values<'r, T> for &'_ mut Weak<T> {
-    type Values = sparse_secondary::Values<'r, DefaultKey, T>;
-
-    fn values(&'r self) -> Self::Values {
-        Weak::values(self)
-    }
-}
-
 impl<'r, T: 'r> store::ValuesMut<'r, T> for Weak<T> {
     type ValuesMut = sparse_secondary::ValuesMut<'r, DefaultKey, T>;
 
     fn values_mut(&'r mut self) -> Self::ValuesMut {
         self.values_mut()
-    }
-}
-
-impl<'r, T: 'r> store::ValuesMut<'r, T> for &'_ mut Weak<T> {
-    type ValuesMut = sparse_secondary::ValuesMut<'r, DefaultKey, T>;
-
-    fn values_mut(&'r mut self) -> Self::ValuesMut {
-        Weak::values_mut(self)
     }
 }
 

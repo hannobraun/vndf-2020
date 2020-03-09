@@ -130,31 +130,11 @@ impl<T> store::Get<T> for Strong<T> {
     }
 }
 
-impl<T> store::Get<T> for &'_ Strong<T> {
-    fn get(&self, handle: impl Into<handle::Weak<T>>) -> Option<&T> {
-        Strong::get(self, handle)
-    }
-}
-
-impl<T> store::Get<T> for &'_ mut Strong<T> {
-    fn get(&self, handle: impl Into<handle::Weak<T>>) -> Option<&T> {
-        Strong::get(self, handle)
-    }
-}
-
 impl<T> store::GetMut<T> for Strong<T> {
     fn get_mut(&mut self, handle: impl Into<handle::Weak<T>>)
         -> Option<&mut T>
     {
         self.get_mut(handle)
-    }
-}
-
-impl<T> store::GetMut<T> for &'_ mut Strong<T> {
-    fn get_mut(&mut self, handle: impl Into<handle::Weak<T>>)
-        -> Option<&mut T>
-    {
-        Strong::get_mut(self, handle)
     }
 }
 
@@ -166,35 +146,11 @@ impl<'r, T: 'r> store::Values<'r, T> for Strong<T> {
     }
 }
 
-impl<'r, T: 'r> store::Values<'r, T> for &'_ Strong<T> {
-    type Values = Values<'r, T>;
-
-    fn values(&'r self) -> Self::Values {
-        Strong::values(self)
-    }
-}
-
-impl<'r, T: 'r> store::Values<'r, T> for &'_ mut Strong<T> {
-    type Values = Values<'r, T>;
-
-    fn values(&'r self) -> Self::Values {
-        Strong::values(self)
-    }
-}
-
 impl<'r, T: 'r> store::ValuesMut<'r, T> for Strong<T> {
     type ValuesMut = ValuesMut<'r, T>;
 
     fn values_mut(&'r mut self) -> Self::ValuesMut {
         self.values_mut()
-    }
-}
-
-impl<'r, T: 'r> store::ValuesMut<'r, T> for &'_ mut Strong<T> {
-    type ValuesMut = ValuesMut<'r, T>;
-
-    fn values_mut(&'r mut self) -> Self::ValuesMut {
-        Strong::values_mut(self)
     }
 }
 
