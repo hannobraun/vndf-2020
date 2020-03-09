@@ -125,9 +125,7 @@ impl<T> Strong<T> {
 }
 
 impl<T> store::Get<T> for Strong<T> {
-    fn get(&self, handle: impl Into<handle::Weak<T>>)
-        -> Option<&T>
-    {
+    fn get(&self, handle: impl Into<handle::Weak<T>>) -> Option<&T> {
         self.get(handle)
     }
 }
