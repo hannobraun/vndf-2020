@@ -139,12 +139,15 @@ impl<T> store::GetMut<T> for Strong<T> {
 }
 
 impl<'r, T: 'r> store::Values<'r, T> for Strong<T> {
-    type Values    = Values<'r, T>;
-    type ValuesMut = ValuesMut<'r, T>;
+    type Values = Values<'r, T>;
 
     fn values(&'r self) -> Self::Values {
         self.values()
     }
+}
+
+impl<'r, T: 'r> store::ValuesMut<'r, T> for Strong<T> {
+    type ValuesMut = ValuesMut<'r, T>;
 
     fn values_mut(&'r mut self) -> Self::ValuesMut {
         self.values_mut()

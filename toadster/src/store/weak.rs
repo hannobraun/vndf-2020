@@ -71,12 +71,15 @@ impl<T> store::GetMut<T> for Weak<T> {
 }
 
 impl<'r, T: 'r> store::Values<'r, T> for Weak<T> {
-    type Values    = sparse_secondary::Values<'r, DefaultKey, T>;
-    type ValuesMut = sparse_secondary::ValuesMut<'r, DefaultKey, T>;
+    type Values = sparse_secondary::Values<'r, DefaultKey, T>;
 
     fn values(&'r self) -> Self::Values {
         self.values()
     }
+}
+
+impl<'r, T: 'r> store::ValuesMut<'r, T> for Weak<T> {
+    type ValuesMut = sparse_secondary::ValuesMut<'r, DefaultKey, T>;
 
     fn values_mut(&'r mut self) -> Self::ValuesMut {
         self.values_mut()

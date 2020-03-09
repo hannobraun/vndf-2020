@@ -20,9 +20,13 @@ pub trait GetMut<T> {
 
 
 pub trait Values<'r, T: 'r> {
-    type Values:    Iterator<Item=&'r T>;
-    type ValuesMut: Iterator<Item=&'r mut T>;
+    type Values: Iterator<Item=&'r T>;
 
     fn values(&'r self) -> Self::Values;
+}
+
+pub trait ValuesMut<'r, T: 'r> {
+    type ValuesMut: Iterator<Item=&'r mut T>;
+
     fn values_mut(&'r mut self) -> Self::ValuesMut;
 }
