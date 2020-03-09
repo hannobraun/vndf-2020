@@ -532,7 +532,9 @@ impl<T> store::Get<T> for OneStore<T> {
             None
         }
     }
+}
 
+impl<T> store::GetMut<T> for OneStore<T> {
     fn get_mut(&mut self, handle: impl Into<handle::Weak<T>>)
         -> Option<&mut T>
     {

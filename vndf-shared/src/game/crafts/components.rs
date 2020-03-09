@@ -45,8 +45,8 @@ impl Craft {
 
     pub fn apply_thrust(&mut self,
         dt:     f32,
-        bodies: &mut impl store::Get<Body>,
-        fuels:  &mut impl store::Get<Fuel>,
+        bodies: &mut impl store::GetMut<Body>,
+        fuels:  &mut impl store::GetMut<Fuel>,
     )
         -> Option<()>
     {

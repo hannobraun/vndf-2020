@@ -62,7 +62,9 @@ impl<T> store::Get<T> for Weak<T> {
     {
         self.get(handle)
     }
+}
 
+impl<T> store::GetMut<T> for Weak<T> {
     fn get_mut(&mut self, handle: impl Into<handle::Weak<T>>)
         -> Option<&mut T>
     {

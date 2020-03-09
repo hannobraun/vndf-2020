@@ -11,10 +11,11 @@ use crate::handle;
 
 
 pub trait Get<T> {
-    fn get(&self, handle: impl Into<handle::Weak<T>>)
-        -> Option<&T>;
-    fn get_mut(&mut self, handle: impl Into<handle::Weak<T>>)
-        -> Option<&mut T>;
+    fn get(&self, handle: impl Into<handle::Weak<T>>) -> Option<&T>;
+}
+
+pub trait GetMut<T> {
+    fn get_mut(&mut self, handle: impl Into<handle::Weak<T>>) -> Option<&mut T>;
 }
 
 

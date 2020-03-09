@@ -89,8 +89,8 @@ impl Body {
 
     pub fn update(&mut self,
         dt:         f32,
-        positions:  &mut impl store::Get<Position>,
-        velocities: &mut impl store::Get<Velocity>,
+        positions:  &mut impl store::GetMut<Position>,
+        velocities: &mut impl store::GetMut<Velocity>,
     )
         -> Option<()>
     {
@@ -117,7 +117,7 @@ impl Body {
     pub fn enforce_boundary(&mut self,
         world_size: f32,
         positions:  &impl store::Get<Position>,
-        velocities: &mut impl store::Get<Velocity>,
+        velocities: &mut impl store::GetMut<Velocity>,
     )
         -> Option<()>
     {
