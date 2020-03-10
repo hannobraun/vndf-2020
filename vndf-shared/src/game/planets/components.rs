@@ -32,7 +32,7 @@ impl Planet {
 
     pub fn apply_gravitation(&self,
         body:      &mut Body,
-        positions: &impl store::Get<Position>,
+        positions: impl store::Get<Position>,
     )
         -> Option<()>
     {
