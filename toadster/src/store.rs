@@ -14,15 +14,15 @@ pub trait Get<T> {
     fn get(&self, handle: impl Into<handle::Weak<T>>) -> Option<&T>;
 }
 
-impl<T> Get<T> for &'_ T where T: Get<T> {
+impl<G, T> Get<T> for &'_ G where G: Get<T> {
     fn get(&self, handle: impl Into<handle::Weak<T>>) -> Option<&T> {
-        T::get(self, handle)
+        G::get(self, handle)
     }
 }
 
-impl<T> Get<T> for &'_ mut T where T: Get<T> {
+impl<G, T> Get<T> for &'_ mut G where G: Get<T> {
     fn get(&self, handle: impl Into<handle::Weak<T>>) -> Option<&T> {
-        T::get(self, handle)
+        G::get(self, handle)
     }
 }
 
@@ -31,11 +31,11 @@ pub trait GetMut<T> {
     fn get_mut(&mut self, handle: impl Into<handle::Weak<T>>) -> Option<&mut T>;
 }
 
-impl<T> GetMut<T> for &'_ mut T where T: GetMut<T> {
+impl<G, T> GetMut<T> for &'_ mut G where G: GetMut<T> {
     fn get_mut(&mut self, handle: impl Into<handle::Weak<T>>)
         -> Option<&mut T>
     {
-        T::get_mut(self, handle)
+        G::get_mut(self, handle)
     }
 }
 
@@ -46,19 +46,19 @@ pub trait Values<'r, T: 'r> {
     fn values(&'r self) -> Self::Values;
 }
 
-impl<'r, T: 'r> Values<'r, T> for &'_ T where T: Values<'r, T> {
-    type Values = T::Values;
+impl<'r, V, T: 'r> Values<'r, T> for &'_ V where V: Values<'r, T> {
+    type Values = V::Values;
 
     fn values(&'r self) -> Self::Values {
-        T::values(self)
+        V::values(self)
     }
 }
 
-impl<'r, T: 'r> Values<'r, T> for &'_ mut T where T: Values<'r, T> {
-    type Values = T::Values;
+impl<'r, V, T: 'r> Values<'r, T> for &'_ mut V where V: Values<'r, T> {
+    type Values = V::Values;
 
     fn values(&'r self) -> Self::Values {
-        T::values(self)
+        V::values(self)
     }
 }
 
@@ -69,10 +69,10 @@ pub trait ValuesMut<'r, T: 'r> {
     fn values_mut(&'r mut self) -> Self::ValuesMut;
 }
 
-impl<'r, T: 'r> ValuesMut<'r, T> for &'_ mut T where T: ValuesMut<'r, T> {
-    type ValuesMut = T::ValuesMut;
+impl<'r, V, T: 'r> ValuesMut<'r, T> for &'_ mut V where V: ValuesMut<'r, T> {
+    type ValuesMut = V::ValuesMut;
 
     fn values_mut(&'r mut self) -> Self::ValuesMut {
-        T::values_mut(self)
+        V::values_mut(self)
     }
 }
