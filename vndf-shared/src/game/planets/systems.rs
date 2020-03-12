@@ -17,13 +17,13 @@ use super::Planet;
 pub fn apply_gravitation(
     bodies:    &mut store::Strong<Body>,
     planets:   &store::Strong<Planet>,
-    positions: &impl store::Get<Position>,
+    positions: impl store::Get<Position>,
 )
     -> Option<()>
 {
     for planet in planets.values() {
         for body in bodies.values_mut() {
-            planet.apply_gravitation(body, positions);
+            planet.apply_gravitation(body, &positions);
         }
     }
 
