@@ -11,6 +11,7 @@ use crate::{
     math::{
         prelude::*,
         Pnt2,
+        Vec2,
     },
 };
 
@@ -66,12 +67,20 @@ impl<S> Planets<S>
         -> Option<()>
         where P: store::Get<Position>
     {
-        for planet in self.0.values() {
-            let pos = positions.get(&body.pos)?;
-            body.acc += planet.gravitation_at(pos.0);
-        }
+        let pos = positions.get(&body.pos)?;
+        body.acc += self.gravitation_at(pos.0);
 
         Some(())
+    }
+
+    pub fn gravitation_at(&self, pos: Pnt2) -> Vec2 {
+        let mut acc = Vec2::zero();
+
+        for planet in self.0.values() {
+            acc += planet.gravitation_at(pos);
+        }
+
+        acc
     }
 
     pub fn check_collision(&self, pos: Pnt2) -> bool {
