@@ -14,14 +14,20 @@ use crate::{
 use super::Planet;
 
 
-pub struct Feature<'r> {
-    pub bodies:    &'r mut store::Strong<Body>,
-    pub healths:   &'r mut store::Strong<Health>,
-    pub planets:   &'r store::Strong<Planet>,
-    pub positions: &'r store::Strong<Position>,
+pub struct Feature<Bodies, Healths, Planets, Positions> {
+    pub bodies:    Bodies,
+    pub healths:   Healths,
+    pub planets:   Planets,
+    pub positions: Positions,
 }
 
-impl Feature<'_> {
+impl<B, H, Pl, Po> Feature<B, H, Pl, Po>
+    where
+        B:  store::Get<Body> + for<'r> store::ValuesMut<'r, Body>,
+        H:  for<'r> store::ValuesMut<'r, Health>,
+        Pl: for<'r> store::Values<'r, Planet>,
+        Po: store::Get<Position>,
+{
     pub fn on_update(&mut self) {
         self.apply_gravitation();
         self.check_collision();
@@ -32,7 +38,7 @@ impl Feature<'_> {
         let planets = self.planets.values();
 
         for (body, planet) in bodies.zip(planets) {
-            planet.apply_gravitation(body, self.positions);
+            planet.apply_gravitation(body, &self.positions);
         }
 
         Some(())
