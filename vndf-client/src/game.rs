@@ -9,6 +9,7 @@ use crate::shared::{
     data,
     game::{
         WORLD_SIZE,
+        planets,
         players::PlayerId,
     },
 };
@@ -36,13 +37,15 @@ impl State {
     pub fn update(&mut self, dt: f32) {
         self.statistics.update();
 
+        let mut planets = planets::Systems {
+            bodies:    &mut self.data.bodies,
+            healths:   &mut self.data.healths,
+            planets:   &self.data.planets,
+            positions: &self.data.positions,
+        };
+        planets.apply_gravitation();
+
         for body in self.data.bodies.values_mut() {
-            for planet in self.data.planets.values() {
-                planet.apply_gravitation(
-                    body,
-                    &mut self.data.positions,
-                );
-            }
             body.enforce_boundary(
                 WORLD_SIZE,
                 &self.data.positions,
