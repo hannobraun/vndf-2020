@@ -25,7 +25,10 @@ use crate::{
             loot::Loot,
             missiles::Missile,
             physics::Body,
-            planets::Planet,
+            planets::{
+                Planet,
+                Planets,
+            },
             ships::Ship,
         },
         math::{
@@ -266,12 +269,9 @@ impl Graphics {
         let mut previous = pos.0;
 
         for _ in 0 .. 100 {
-            for planet in state.data.planets.values() {
-                planet.apply_gravitation(
-                    &mut body,
-                    &mut positions,
-                );
-            }
+            let planets = Planets(&state.data.planets);
+            planets.apply_gravitation(&mut body, &mut positions);
+
             body.update(
                 1.0,
                 &mut positions,
