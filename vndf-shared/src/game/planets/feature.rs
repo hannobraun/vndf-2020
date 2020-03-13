@@ -14,14 +14,14 @@ use crate::{
 use super::Planet;
 
 
-pub struct Feature<Bodies, Healths, Planets, Positions> {
+pub struct Systems<Bodies, Healths, Planets, Positions> {
     pub bodies:    Bodies,
     pub healths:   Healths,
     pub planets:   Planets,
     pub positions: Positions,
 }
 
-impl<B, H, Pl, Po> Feature<B, H, Pl, Po>
+impl<B, H, Pl, Po> Systems<B, H, Pl, Po>
     where
         B:  store::Get<Body> + for<'r> store::ValuesMut<'r, Body>,
         H:  for<'r> store::ValuesMut<'r, Health>,

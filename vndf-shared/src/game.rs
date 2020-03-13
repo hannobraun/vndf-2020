@@ -111,7 +111,7 @@ impl State {
                 &mut self.data.explosions,
             );
 
-            let mut planets = planets::Feature {
+            let mut planets = planets::Systems {
                 bodies:    &mut self.data.bodies,
                 healths:   &mut self.data.healths,
                 planets:   &self.data.planets,
