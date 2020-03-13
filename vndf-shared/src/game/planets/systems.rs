@@ -37,11 +37,8 @@ impl<B, H, Pl, Po> Systems<B, H, Pl, Po>
     }
 
     pub fn apply_gravitation(&mut self) -> Option<()> {
-        let bodies  = self.bodies.values_mut();
-        let planets = self.planets.0.values();
-
-        for (body, planet) in bodies.zip(planets) {
-            planet.apply_gravitation(body, &self.positions);
+        for body in self.bodies.values_mut() {
+            self.planets.apply_gravitation(body, &self.positions);
         }
 
         Some(())
@@ -67,6 +64,14 @@ pub struct Planets<S>(pub S);
 impl<S> Planets<S>
     where S: for<'r> store::Values<'r, Planet>
 {
+    pub fn apply_gravitation<P>(&self, body: &mut Body, positions: P)
+        where P: store::Get<Position>
+    {
+        for planet in self.0.values() {
+            planet.apply_gravitation(body, &positions);
+        }
+    }
+
     pub fn check_collision(&self, pos: Pnt2) -> bool {
         for planet in self.0.values() {
             if pos.distance(planet.pos) <= planet.size {
