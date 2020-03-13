@@ -45,11 +45,11 @@ impl<B, H, Pl, Po> Systems<B, H, Pl, Po>
     }
 
     pub fn check_collision(&mut self) -> Option<()> {
-        for planet in self.planets.values() {
-            for health in self.healths.values_mut() {
-                let body = self.bodies.get(&health.body)?;
-                let pos  = self.positions.get(&body.pos)?;
+        for health in self.healths.values_mut() {
+            let body = self.bodies.get(&health.body)?;
+            let pos  = self.positions.get(&body.pos)?;
 
+            for planet in self.planets.values() {
                 if pos.0.distance(planet.pos) <= planet.size {
                     health.value = 0.0;
                 }
