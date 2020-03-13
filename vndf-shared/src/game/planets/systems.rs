@@ -36,12 +36,10 @@ impl<B, H, Pl, Po> Systems<B, H, Pl, Po>
         self.check_collisions();
     }
 
-    pub fn apply_gravitation(&mut self) -> Option<()> {
+    pub fn apply_gravitation(&mut self) {
         for body in self.bodies.values_mut() {
             self.planets.apply_gravitation(body, &self.positions);
         }
-
-        Some(())
     }
 
     pub fn check_collisions(&mut self) -> Option<()> {
