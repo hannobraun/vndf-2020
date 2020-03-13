@@ -4,18 +4,11 @@ use serde::{
     Deserialize,
     Serialize,
 };
-use toadster::store;
 
-use crate::{
-    game::physics::{
-        Body,
-        Position,
-    },
-    math::{
-        prelude::*,
-        Pnt2,
-        Vec2,
-    },
+use crate::math::{
+    prelude::*,
+    Pnt2,
+    Vec2,
 };
 
 
@@ -28,18 +21,6 @@ pub struct Planet {
 impl Planet {
     pub fn to_weak(&self) -> Self {
         self.clone()
-    }
-
-    pub fn apply_gravitation(&self,
-        body:      &mut Body,
-        positions: impl store::Get<Position>,
-    )
-        -> Option<()>
-    {
-        let pos = positions.get(&body.pos)?;
-        body.acc += self.gravitation_at(pos.0);
-
-        Some(())
     }
 
     pub fn gravitation_at(&self, pos: Pnt2) -> Vec2 {

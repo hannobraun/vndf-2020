@@ -63,11 +63,15 @@ impl<S> Planets<S>
     where S: for<'r> store::Values<'r, Planet>
 {
     pub fn apply_gravitation<P>(&self, body: &mut Body, positions: P)
+        -> Option<()>
         where P: store::Get<Position>
     {
         for planet in self.0.values() {
-            planet.apply_gravitation(body, &positions);
+            let pos = positions.get(&body.pos)?;
+            body.acc += planet.gravitation_at(pos.0);
         }
+
+        Some(())
     }
 
     pub fn check_collision(&self, pos: Pnt2) -> bool {
