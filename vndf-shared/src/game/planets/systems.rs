@@ -30,7 +30,7 @@ impl<B, H, Pl, Po> Systems<B, H, Pl, Po>
 {
     pub fn on_update(&mut self) {
         self.apply_gravitation();
-        self.check_collision();
+        self.check_collisions();
     }
 
     pub fn apply_gravitation(&mut self) -> Option<()> {
@@ -44,7 +44,7 @@ impl<B, H, Pl, Po> Systems<B, H, Pl, Po>
         Some(())
     }
 
-    pub fn check_collision(&mut self) -> Option<()> {
+    pub fn check_collisions(&mut self) -> Option<()> {
         for health in self.healths.values_mut() {
             let body = self.bodies.get(&health.body)?;
             let pos  = self.positions.get(&body.pos)?;
