@@ -88,9 +88,9 @@ impl Body {
     }
 
     pub fn update(&mut self,
-        dt:         f32,
-        positions:  &mut impl store::GetMut<Position>,
-        velocities: &mut impl store::GetMut<Velocity>,
+            dt:         f32,
+        mut positions:  impl store::GetMut<Position>,
+        mut velocities: impl store::GetMut<Velocity>,
     )
         -> Option<()>
     {
