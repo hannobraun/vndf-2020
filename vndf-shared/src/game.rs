@@ -111,13 +111,13 @@ impl State {
                 &mut self.data.explosions,
             );
 
-            let planets = planets::Feature;
-            planets.on_update(
-                &mut self.data.bodies,
-                &mut self.data.healths,
-                &self.data.planets,
-                &self.data.positions,
-            );
+            let mut planets = planets::Feature {
+                bodies:    &mut self.data.bodies,
+                healths:   &mut self.data.healths,
+                planets:   &self.data.planets,
+                positions: &self.data.positions,
+            };
+            planets.on_update();
 
             self.physics.on_update(
                 &event,

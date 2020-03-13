@@ -17,25 +17,25 @@ use super::{
 };
 
 
-pub struct Feature;
+pub struct Feature<'r> {
+    pub bodies:    &'r mut store::Strong<Body>,
+    pub healths:   &'r mut store::Strong<Health>,
+    pub planets:   &'r store::Strong<Planet>,
+    pub positions: &'r store::Strong<Position>,
+}
 
-impl Feature {
-    pub fn on_update(&self,
-        bodies:    &mut store::Strong<Body>,
-        healths:   &mut store::Strong<Health>,
-        planets:   &store::Strong<Planet>,
-        positions: &store::Strong<Position>,
-    ) {
+impl Feature<'_> {
+    pub fn on_update(&mut self) {
         apply_gravitation(
-            bodies,
-            planets,
-            positions,
+            self.bodies,
+            self.planets,
+            self.positions,
         );
         check_collision(
-            bodies,
-            healths,
-            planets,
-            positions,
+            self.bodies,
+            self.healths,
+            self.planets,
+            self.positions,
         );
     }
 }
