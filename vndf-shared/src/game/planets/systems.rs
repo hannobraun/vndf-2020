@@ -14,11 +14,11 @@ use crate::{
 use super::Planet;
 
 
-pub struct Systems<Bodies, Healths, Planets, Positions> {
-    pub bodies:    Bodies,
-    pub healths:   Healths,
-    pub planets:   Planets,
-    pub positions: Positions,
+pub struct Systems<B, H, Pl, Po> {
+    pub bodies:    B,
+    pub healths:   H,
+    pub planets:   Pl,
+    pub positions: Po,
 }
 
 impl<B, H, Pl, Po> Systems<B, H, Pl, Po>
