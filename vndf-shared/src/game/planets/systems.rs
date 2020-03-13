@@ -21,7 +21,10 @@ pub fn apply_gravitation(
 )
     -> Option<()>
 {
-    for (body, planet) in bodies.values_mut().zip(planets.values()) {
+    let bodies  = bodies.values_mut();
+    let planets = planets.values();
+
+    for (body, planet) in bodies.zip(planets) {
         planet.apply_gravitation(body, &positions);
     }
 
