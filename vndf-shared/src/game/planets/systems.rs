@@ -8,7 +8,10 @@ use crate::{
             Position,
         },
     },
-    math::prelude::*,
+    math::{
+        prelude::*,
+        Pnt2,
+    },
 };
 
 use super::Planet;
@@ -49,10 +52,8 @@ impl<B, H, Pl, Po> Systems<B, H, Pl, Po>
             let body = self.bodies.get(&health.body)?;
             let pos  = self.positions.get(&body.pos)?;
 
-            for planet in self.planets.0.values() {
-                if pos.0.distance(planet.pos) <= planet.size {
-                    health.value = 0.0;
-                }
+            if self.planets.check_collision(pos.0) {
+                health.value = 0.0;
             }
         }
 
@@ -62,3 +63,17 @@ impl<B, H, Pl, Po> Systems<B, H, Pl, Po>
 
 
 pub struct Planets<S>(pub S);
+
+impl<S> Planets<S>
+    where S: for<'r> store::Values<'r, Planet>
+{
+    pub fn check_collision(&self, pos: Pnt2) -> bool {
+        for planet in self.0.values() {
+            if pos.distance(planet.pos) <= planet.size {
+                return true;
+            }
+        }
+
+        false
+    }
+}
