@@ -25,7 +25,10 @@ use self::{
         ComponentRemoved,
         Update,
     },
-    planets::Planet,
+    planets::{
+        Planet,
+        Planets,
+    },
     players::{
         InputHandled,
         PlayerConnected,
@@ -114,7 +117,7 @@ impl State {
             let mut planets = planets::Systems {
                 bodies:    &mut self.data.bodies,
                 healths:   &mut self.data.healths,
-                planets:   &self.data.planets,
+                planets:   Planets(&self.data.planets),
                 positions: &self.data.positions,
             };
             planets.on_update();

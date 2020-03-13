@@ -9,7 +9,10 @@ use crate::shared::{
     data,
     game::{
         WORLD_SIZE,
-        planets,
+        planets::{
+            self,
+            Planets,
+        },
         players::PlayerId,
     },
 };
@@ -40,7 +43,7 @@ impl State {
         let mut planets = planets::Systems {
             bodies:    &mut self.data.bodies,
             healths:   &mut self.data.healths,
-            planets:   &self.data.planets,
+            planets:   Planets(&self.data.planets),
             positions: &self.data.positions,
         };
         planets.apply_gravitation();
