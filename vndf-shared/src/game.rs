@@ -111,7 +111,7 @@ impl State {
                 &mut self.data.explosions,
             );
 
-            let planets = planets::Feature::new();
+            let planets = planets::Feature;
             planets.on_update(
                 &mut self.data.bodies,
                 &mut self.data.healths,

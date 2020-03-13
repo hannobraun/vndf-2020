@@ -20,10 +20,6 @@ use super::{
 pub struct Feature;
 
 impl Feature {
-    pub fn new() -> Self {
-        Self
-    }
-
     pub fn on_update(&self,
         bodies:    &mut store::Strong<Body>,
         healths:   &mut store::Strong<Health>,
