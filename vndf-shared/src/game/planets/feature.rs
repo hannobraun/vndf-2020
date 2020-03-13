@@ -24,12 +24,7 @@ pub struct Feature<'r> {
 impl Feature<'_> {
     pub fn on_update(&mut self) {
         self.apply_gravitation();
-        Self::check_collision(
-            self.bodies,
-            self.healths,
-            self.planets,
-            self.positions,
-        );
+        self.check_collision();
     }
 
     pub fn apply_gravitation(&mut self) -> Option<()> {
@@ -43,18 +38,11 @@ impl Feature<'_> {
         Some(())
     }
 
-    pub fn check_collision(
-        bodies:    &store::Strong<Body>,
-        healths:   &mut store::Strong<Health>,
-        planets:   &store::Strong<Planet>,
-        positions: &store::Strong<Position>,
-    )
-        -> Option<()>
-    {
-        for planet in planets.values() {
-            for health in healths.values_mut() {
-                let body = bodies.get(&health.body)?;
-                let pos  = positions.get(&body.pos)?;
+    pub fn check_collision(&mut self) -> Option<()> {
+        for planet in self.planets.values() {
+            for health in self.healths.values_mut() {
+                let body = self.bodies.get(&health.body)?;
+                let pos  = self.positions.get(&body.pos)?;
 
                 if pos.0.distance(planet.pos) <= planet.size {
                     health.value = 0.0;
