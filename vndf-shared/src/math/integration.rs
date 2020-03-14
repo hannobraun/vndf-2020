@@ -57,3 +57,11 @@ pub fn velocity_verlet(
     let acc_t_plus_dt = acc(*pos);
     *vel += (acc_t + acc_t_plus_dt) * 0.5 * dt;
 }
+
+
+// I found a helpful page that lists a bunch of symplectic integrators:
+// https://docs.juliadiffeq.org/latest/solvers/dynamical_solve/#Symplectic-Integrators-1
+//
+// The list on that page has a not for each of the integrators listed. If more
+// accuracy is desired, it might make sense to go through the higher-order
+// integrators in that list, and see if they can be applied here.
