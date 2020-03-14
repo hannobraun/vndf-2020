@@ -17,10 +17,16 @@ pub fn integrate(
     vel: &mut Vec2,
     acc: impl Fn(Pnt2) -> Vec2,
 ) {
-    semi_implicit_euler(dt, pos, vel, acc)
+    velocity_verlet(dt, pos, vel, acc)
 }
 
+
 /// Semi-implicit Euler method
+///
+/// Pretty simple, but doesn't provide good enough accuracy when integrating
+/// with a bigger time step, as is done when computing the projected path. As a
+/// result, the projected path is inaccurate, and varies according to the
+/// current position in the orbit.
 pub fn semi_implicit_euler(
     dt:  f32,
     pos: &mut Pnt2,
@@ -29,4 +35,25 @@ pub fn semi_implicit_euler(
 ) {
     *vel += acc(*pos) * dt;
     *pos += *vel * dt;
+}
+
+/// Velocity Verlet method
+///
+/// A bit more complex than semi-implicit Euler, but much more accurate (it's a
+/// second-order method, while semi-implicit Euler is first-order, whatever that
+/// actually means).
+///
+/// In principle, it shows the same problems as semi-implicit Euler in regards
+/// to the path projection (as can be expected), but the improved accuracy makes
+/// it good enough for now.
+pub fn velocity_verlet(
+    dt:  f32,
+    pos: &mut Pnt2,
+    vel: &mut Vec2,
+    acc: impl Fn(Pnt2) -> Vec2,
+) {
+    let acc_t = acc(*pos);
+    *pos += *vel * dt + 0.5 * acc_t * dt*dt;
+    let acc_t_plus_dt = acc(*pos);
+    *vel += (acc_t + acc_t_plus_dt) * 0.5 * dt;
 }
