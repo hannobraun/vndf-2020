@@ -269,11 +269,9 @@ impl Graphics {
         let mut previous = pos.0;
 
         for _ in 0 .. 100 {
-            let planets = Planets(&state.data.planets);
-            planets.apply_gravitation(&mut body, &mut positions);
-
             body.update(
                 1.0,
+                Planets(&state.data.planets),
                 &mut positions,
                 &mut velocities,
             );

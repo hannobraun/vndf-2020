@@ -126,6 +126,7 @@ impl State {
                 &event,
                 WORLD_SIZE,
                 &mut self.data.bodies,
+                &self.data.planets,
                 &mut self.data.positions,
                 &mut self.data.velocities,
             );

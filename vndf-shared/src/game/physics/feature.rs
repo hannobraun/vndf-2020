@@ -1,6 +1,9 @@
 use toadster::store;
 
-use crate::game::base::Update;
+use crate::game::{
+    base::Update,
+    planets::Planet,
+};
 
 use super::{
     Body,
@@ -21,11 +24,13 @@ impl Feature {
         event:      &Update,
         world_size: f32,
         bodies:     &mut store::Strong<Body>,
+        planets:    &store::Strong<Planet>,
         positions:  &mut store::Strong<Position>,
         velocities: &mut store::Strong<Velocity>,
     ) {
         update_bodies(
             bodies,
+            planets,
             positions,
             velocities,
             world_size,

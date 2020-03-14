@@ -7,13 +7,19 @@ use toadster::{
     store,
 };
 
-use crate::math::{
-    prelude::*,
-    self,
-    Pnt2,
-    Rad,
-    Vec2,
-    rotate,
+use crate::{
+    game::planets::{
+        Planet,
+        Planets,
+    },
+    math::{
+        prelude::*,
+        self,
+        Pnt2,
+        Rad,
+        Vec2,
+        rotate,
+    },
 };
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
@@ -89,6 +95,7 @@ impl Body {
 
     pub fn update(&mut self,
             dt:         f32,
+            planets:    Planets<impl for<'r> store::Values<'r, Planet>>,
         mut positions:  impl store::GetMut<Position>,
         mut velocities: impl store::GetMut<Velocity>,
     )
@@ -103,11 +110,7 @@ impl Body {
             dt,
             &mut pos.0,
             &mut vel.0,
-            |_pos| {
-                // Ignoring the position argument right now. Need to incorporate
-                // it in order to provide more accurate integration.
-                self.acc
-            }
+            |pos| self.acc + planets.gravitation_at(pos),
         );
         self.acc = Vec2::zero();
 

@@ -33,14 +33,20 @@ impl<B, H, Pl, Po> Systems<B, H, Pl, Po>
         Po: store::Get<Position>,
 {
     pub fn on_update(&mut self) {
-        self.apply_gravitation();
         self.check_collisions();
-    }
 
-    pub fn apply_gravitation(&mut self) {
-        for body in self.bodies.values_mut() {
-            self.planets.apply_gravitation(body, &self.positions);
-        }
+        // You might expect code here that simulates the gravitational pull of
+        // the planets and updates all bodies accordingly. This can't be handled
+        // here though, unless a very basic numerical integration method is used
+        // for the physics simulation, like an Euler variant.
+        //
+        // More advanced numerical integration methods need to sample the
+        // acceleration acting on a body at multiple points, not just at the
+        // frame boundary. This means, we can't just compute it here once and be
+        // done with it.
+        //
+        // Acceleration due to gravitational pull is applied in the core physics
+        // update code, where the numerical integration is handled.
     }
 
     pub fn check_collisions(&mut self) -> Option<()> {
@@ -63,16 +69,6 @@ pub struct Planets<S>(pub S);
 impl<S> Planets<S>
     where S: for<'r> store::Values<'r, Planet>
 {
-    pub fn apply_gravitation<P>(&self, body: &mut Body, positions: P)
-        -> Option<()>
-        where P: store::Get<Position>
-    {
-        let pos = positions.get(&body.pos)?;
-        body.acc += self.gravitation_at(pos.0);
-
-        Some(())
-    }
-
     pub fn gravitation_at(&self, pos: Pnt2) -> Vec2 {
         let mut acc = Vec2::zero();
 
