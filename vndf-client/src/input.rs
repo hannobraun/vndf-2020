@@ -47,6 +47,7 @@ impl Input {
     pub fn new(config: Config) -> Self {
         Self {
             config,
+
             pointer_screen: Pnt2::new(0.0, 0.0),
             pointer_world:  None,
 
