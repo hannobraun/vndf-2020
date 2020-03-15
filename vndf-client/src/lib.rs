@@ -157,6 +157,14 @@ impl EventHandler for Game {
         self.input.mouse_motion(context, x, y);
     }
 
+    fn mouse_wheel_event(&mut self,
+        _:  &mut Context,
+        _x: f32,
+        y:  f32,
+    ) {
+        self.input.mouse_wheel(y);
+    }
+
     fn key_down_event(&mut self,
         context:  &mut Context,
         key_code: KeyCode,

@@ -69,6 +69,13 @@ impl Input {
         );
     }
 
+    pub fn mouse_wheel(&mut self, y: f32) {
+        self.zoom += y * 0.1;
+
+        self.zoom = f32::min(self.zoom, 10.0);
+        self.zoom = f32::max(self.zoom,  0.1);
+    }
+
     pub fn key_down(&mut self, context: &Context, key: Key) {
         if is_key_repeated(context) {
             return;
