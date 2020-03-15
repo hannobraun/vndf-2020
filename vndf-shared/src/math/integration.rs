@@ -17,6 +17,7 @@ pub fn integrate(
     vel: &mut Vec2,
     acc: impl Fn(Pnt2) -> Vec2,
 ) {
+    // semi_implicit_euler(dt, pos, vel, acc)
     velocity_verlet(dt, pos, vel, acc)
 }
 
