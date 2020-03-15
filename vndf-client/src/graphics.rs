@@ -142,7 +142,7 @@ impl Graphics {
     fn draw_world(&self, context: &mut Context, input: &Input, state: &State)
         -> GameResult
     {
-        transforms::activate_world_coordinate_system(context, input)?;
+        transforms::activate_world_coordinate_system(context, input.zoom)?;
 
         self.draw_boundary(context)?;
 

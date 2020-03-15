@@ -7,14 +7,11 @@ use ggez::{
     },
 };
 
-use crate::{
-    input::Input,
-    shared::{
-        game::WORLD_SIZE,
-        math::{
-            Pnt2,
-            Vec2,
-        },
+use crate::shared::{
+    game::WORLD_SIZE,
+    math::{
+        Pnt2,
+        Vec2,
     },
 };
 
@@ -41,14 +38,14 @@ pub fn screen_to_world(context: &mut Context, point: Pnt2) -> Option<Pnt2> {
 }
 
 
-pub fn activate_world_coordinate_system(context: &mut Context, input: &Input)
+pub fn activate_world_coordinate_system(context: &mut Context, zoom: f32)
     -> GameResult
 {
     let size = world_rect(context);
 
     let size = [
-        size[0] / input.zoom,
-        size[1] / input.zoom,
+        size[0] / zoom,
+        size[1] / zoom,
     ];
 
     graphics::set_screen_coordinates(
