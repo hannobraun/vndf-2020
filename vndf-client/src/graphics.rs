@@ -132,15 +132,17 @@ impl Graphics {
     {
         graphics::clear(context, [0.0, 0.0, 0.15, 1.0].into());
 
-        self.draw_world(context, state)?;
+        self.draw_world(context, input, state)?;
         self.draw_ui(context, input, state)?;
 
         graphics::present(context)?;
         Ok(())
     }
 
-    fn draw_world(&self, context: &mut Context, state: &State) -> GameResult {
-        transforms::activate_world_coordinate_system(context)?;
+    fn draw_world(&self, context: &mut Context, input: &Input, state: &State)
+        -> GameResult
+    {
+        transforms::activate_world_coordinate_system(context, input)?;
 
         self.draw_boundary(context)?;
 

@@ -40,6 +40,8 @@ pub struct Input {
     pub pointer_screen: Pnt2,
     pub pointer_world:  Option<Pnt2>,
 
+    pub zoom: f32,
+
     pub events: Events,
 }
 
@@ -50,6 +52,8 @@ impl Input {
 
             pointer_screen: Pnt2::new(0.0, 0.0),
             pointer_world:  None,
+
+            zoom: 1.0,
 
             events: Events::new(),
         }
