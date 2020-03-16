@@ -38,7 +38,7 @@ pub struct Input {
     pub config: Config,
 
     pub pointer_screen: Pnt2,
-    pub pointer_world:  Option<Pnt2>,
+    pub pointer_world:  Pnt2,
 
     pub zoom: f32,
 
@@ -51,7 +51,7 @@ impl Input {
             config,
 
             pointer_screen: Pnt2::new(0.0, 0.0),
-            pointer_world:  None,
+            pointer_world:  Pnt2::new(0.0, 0.0),
 
             zoom: 1.0,
 
@@ -92,9 +92,9 @@ impl Input {
                 self.events.push(EventKind::Thrust(true))
             }
             k if k == self.config.input.launch => {
-                if let Some(target) = self.pointer_world {
-                    self.events.push(EventKind::LaunchMissile { target })
-                }
+                self.events.push(
+                    EventKind::LaunchMissile { target: self.pointer_world }
+                )
             }
 
             _ => (),

@@ -483,17 +483,15 @@ Removals per s: {}",
             }
         }
 
-        if input.pointer_world.is_some() {
-            graphics::draw(
-                context,
-                &self.pointer,
-                DrawParam::new()
-                    .dest(input.pointer_screen)
-                    .scale([10.0, 10.0])
-            )?;
-        }
+        graphics::draw(
+            context,
+            &self.pointer,
+            DrawParam::new()
+                .dest(input.pointer_screen)
+                .scale([10.0, 10.0])
+        )?;
 
-        mouse::set_cursor_hidden(context, input.pointer_world.is_some());
+        mouse::set_cursor_hidden(context, true);
 
         Ok(())
     }

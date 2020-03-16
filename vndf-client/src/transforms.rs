@@ -16,7 +16,7 @@ use crate::shared::{
 };
 
 
-pub fn screen_to_world(context: &mut Context, point: Pnt2) -> Option<Pnt2> {
+pub fn screen_to_world(context: &mut Context, point: Pnt2) -> Pnt2 {
     let (width, height) = graphics::drawable_size(context);
     let middle_centered = point - Vec2::new(width / 2.0, height / 2.0);
 
@@ -26,15 +26,7 @@ pub fn screen_to_world(context: &mut Context, point: Pnt2) -> Option<Pnt2> {
         middle_centered.y * world_rect[1] / height,
     );
 
-    let in_bounds = point_world.x.abs() < WORLD_SIZE / 2.0
-        && point_world.y.abs() < WORLD_SIZE / 2.0;
-
-    if in_bounds {
-        Some(point_world)
-    }
-    else {
-        None
-    }
+    point_world
 }
 
 
