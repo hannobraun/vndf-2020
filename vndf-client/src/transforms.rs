@@ -13,6 +13,12 @@ use crate::shared::math::{
 };
 
 
+pub struct Camera {
+    pub center: Pnt2,
+    pub zoom:   f32,
+}
+
+
 pub fn screen_to_world(context: &mut Context, point: Pnt2) -> Pnt2 {
     let (width, height) = graphics::drawable_size(context);
     let middle_centered = point - Vec2::new(width / 2.0, height / 2.0);
@@ -29,23 +35,22 @@ pub fn screen_to_world(context: &mut Context, point: Pnt2) -> Pnt2 {
 
 pub fn activate_world_coordinate_system(
     context: &mut Context,
-    center:  Pnt2,
-    zoom:    f32,
+    camera:  &Camera,
 )
     -> GameResult
 {
     let size = world_rect(context);
 
     let size = [
-        size[0] / zoom,
-        size[1] / zoom,
+        size[0] / camera.zoom,
+        size[1] / camera.zoom,
     ];
 
     graphics::set_screen_coordinates(
         context,
         Rect {
-            x: center.x - size[0] / 2.0,
-            y: center.y - size[1] / 2.0,
+            x: camera.center.x - size[0] / 2.0,
+            y: camera.center.y - size[1] / 2.0,
             w: size[0],
             h: size[1],
         },

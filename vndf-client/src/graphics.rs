@@ -36,7 +36,10 @@ use crate::{
             Vec2,
         }
     },
-    transforms,
+    transforms::{
+        self,
+        Camera,
+    },
 };
 
 
@@ -143,8 +146,10 @@ impl Graphics {
 
         transforms::activate_world_coordinate_system(
             context,
-            self.last_own_pos,
-            input.zoom,
+            &Camera {
+                center: self.last_own_pos,
+                zoom:   input.zoom,
+            },
         )?;
 
         for planet in state.data.planets.values() {
