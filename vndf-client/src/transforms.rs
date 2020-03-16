@@ -84,8 +84,8 @@ pub fn activate_ui_coordinate_system(context: &mut Context) -> GameResult {
 
 
 fn default_world_size_on_screen(context: &mut Context) -> Vec2 {
-    let (width, height) = graphics::drawable_size(context);
-    let aspect_ratio = width / height;
+    let (screen_width, screen_height) = graphics::drawable_size(context);
+    let aspect_ratio = screen_width / screen_height;
 
     let default_size = 1000.0;
 
