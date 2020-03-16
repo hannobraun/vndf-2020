@@ -87,12 +87,18 @@ fn default_world_size_on_screen(context: &mut Context) -> Vec2 {
     let (screen_width, screen_height) = graphics::drawable_size(context);
     let aspect_ratio = screen_width / screen_height;
 
-    let default_size = 1000.0;
+    let min_world_size_on_screen = 1000.0;
 
     if aspect_ratio >= 1.0 {
-        Vec2::new(default_size * aspect_ratio, default_size)
+        Vec2::new(
+            min_world_size_on_screen * aspect_ratio,
+            min_world_size_on_screen,
+        )
     }
     else {
-        Vec2::new(default_size, default_size / aspect_ratio)
+        Vec2::new(
+            min_world_size_on_screen,
+            min_world_size_on_screen / aspect_ratio,
+        )
     }
 }
