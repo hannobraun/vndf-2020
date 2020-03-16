@@ -109,7 +109,7 @@ impl Graphics {
         )
     }
 
-    pub fn draw(&mut self,
+    pub fn draw(&self,
         context: &mut Context,
         input:   &Input,
         state:   &State,
@@ -125,7 +125,7 @@ impl Graphics {
         Ok(())
     }
 
-    fn draw_world(&mut self,
+    fn draw_world(&self,
         context: &mut Context,
         state:   &State,
     )
