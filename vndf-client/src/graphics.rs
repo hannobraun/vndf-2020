@@ -33,6 +33,7 @@ use crate::{
         },
         math::{
             prelude::*,
+            Pnt2,
             Vec2,
         }
     },
@@ -56,6 +57,8 @@ pub struct Graphics {
     ship:     Mesh,
     square:   Mesh,
     pointer:  Mesh,
+
+    last_own_pos: Pnt2,
 }
 
 impl Graphics {
@@ -119,11 +122,13 @@ impl Graphics {
                 ship,
                 square,
                 pointer,
+
+                last_own_pos: Pnt2::new(0.0, 0.0),
             }
         )
     }
 
-    pub fn draw(&self,
+    pub fn draw(&mut self,
         context: &mut Context,
         input:   &Input,
         state:   &State,
@@ -139,10 +144,22 @@ impl Graphics {
         Ok(())
     }
 
-    fn draw_world(&self, context: &mut Context, input: &Input, state: &State)
+    fn draw_world(&mut self,
+        context: &mut Context,
+        input:   &Input,
+        state:   &State,
+    )
         -> GameResult
     {
-        transforms::activate_world_coordinate_system(context, input.zoom)?;
+        if let Some(own_pos) = state.own_pos() {
+            self.last_own_pos = own_pos;
+        }
+
+        transforms::activate_world_coordinate_system(
+            context,
+            self.last_own_pos,
+            input.zoom,
+        )?;
 
         self.draw_boundary(context)?;
 

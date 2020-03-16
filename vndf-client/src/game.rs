@@ -12,6 +12,7 @@ use crate::shared::{
         planets::Planets,
         players::PlayerId,
     },
+    math::Pnt2,
 };
 
 
@@ -70,6 +71,20 @@ impl State {
     pub fn remove_component(&mut self, handle: &data::client::Handle) {
         self.statistics.removals.push_back(Instant::now());
         handle.remove(&mut self.data);
+    }
+
+    pub fn own_pos(&self) -> Option<Pnt2> {
+        for ship in self.data.ships.values() {
+            let craft = self.data.crafts.get(&ship.craft)?;
+            let body  = self.data.bodies.get(&craft.body)?;
+            let pos   = self.data.positions.get(&body.pos)?;
+
+            if Some(craft.owner) == self.own_id {
+                return Some(pos.0);
+            }
+        }
+
+        None
     }
 }
 

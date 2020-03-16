@@ -38,7 +38,11 @@ pub fn screen_to_world(context: &mut Context, point: Pnt2) -> Option<Pnt2> {
 }
 
 
-pub fn activate_world_coordinate_system(context: &mut Context, zoom: f32)
+pub fn activate_world_coordinate_system(
+    context: &mut Context,
+    center:  Pnt2,
+    zoom:    f32,
+)
     -> GameResult
 {
     let size = world_rect(context);
@@ -51,8 +55,8 @@ pub fn activate_world_coordinate_system(context: &mut Context, zoom: f32)
     graphics::set_screen_coordinates(
         context,
         Rect {
-            x: -size[0] / 2.0,
-            y: -size[1] / 2.0,
+            x: center.x - size[0] / 2.0,
+            y: center.y - size[1] / 2.0,
             w: size[0],
             h: size[1],
         },
