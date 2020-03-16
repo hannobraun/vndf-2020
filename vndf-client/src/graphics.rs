@@ -32,14 +32,10 @@ use crate::{
         },
         math::{
             prelude::*,
-            Pnt2,
             Vec2,
         }
     },
-    transforms::{
-        self,
-        Camera,
-    },
+    transforms,
 };
 
 
@@ -58,8 +54,6 @@ pub struct Graphics {
     ship:     Mesh,
     square:   Mesh,
     pointer:  Mesh,
-
-    last_own_pos: Pnt2,
 }
 
 impl Graphics {
@@ -111,8 +105,6 @@ impl Graphics {
                 ship,
                 square,
                 pointer,
-
-                last_own_pos: Pnt2::new(0.0, 0.0),
             }
         )
     }
@@ -126,7 +118,7 @@ impl Graphics {
     {
         graphics::clear(context, [0.0, 0.0, 0.15, 1.0].into());
 
-        self.draw_world(context, input, state)?;
+        self.draw_world(context, state)?;
         self.draw_ui(context, input, state)?;
 
         graphics::present(context)?;
@@ -135,21 +127,13 @@ impl Graphics {
 
     fn draw_world(&mut self,
         context: &mut Context,
-        input:   &Input,
         state:   &State,
     )
         -> GameResult
     {
-        if let Some(own_pos) = state.own_pos() {
-            self.last_own_pos = own_pos;
-        }
-
         transforms::activate_world_coordinate_system(
             context,
-            &Camera {
-                center: self.last_own_pos,
-                zoom:   input.zoom,
-            },
+            &state.camera,
         )?;
 
         for planet in state.data.planets.values() {

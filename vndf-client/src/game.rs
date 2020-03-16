@@ -5,13 +5,17 @@ use time::{
     Instant,
 };
 
-use crate::shared::{
-    data,
-    game::{
-        planets::Planets,
-        players::PlayerId,
+use crate::{
+    input::Input,
+    shared::{
+        data,
+        game::{
+            planets::Planets,
+            players::PlayerId,
+        },
+        math::Pnt2,
     },
-    math::Pnt2,
+    transforms::Camera,
 };
 
 
@@ -21,6 +25,7 @@ pub struct State {
     pub statistics:  Statistics,
     pub data:        data::client::Components,
     pub frame_time:  FrameTime,
+    pub camera:      Camera,
 }
 
 impl State {
@@ -31,11 +36,17 @@ impl State {
             statistics:  Statistics::new(),
             data:        data::client::Components::new(),
             frame_time:  FrameTime::new(),
+            camera:      Camera::new(),
         }
     }
 
-    pub fn update(&mut self, dt: f32) {
+    pub fn update(&mut self, dt: f32, input: &Input) {
         self.statistics.update();
+
+        self.camera.zoom = input.zoom;
+        if let Some(own_pos) = self.own_pos() {
+            self.camera.center = own_pos;
+        }
 
         for body in self.data.bodies.values_mut() {
             body.update(

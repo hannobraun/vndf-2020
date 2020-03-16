@@ -232,7 +232,7 @@ impl EventHandler for Game {
         self.input.events.limit();
 
         let dt = timer::duration_to_f64(dt) as f32;
-        self.state.update(dt);
+        self.state.update(dt, &self.input);
 
         self.graphics.draw(context, &self.input, &self.state)
     }
