@@ -32,7 +32,7 @@ pub fn screen_to_world(context: &mut Context, point: Pnt2) -> Pnt2 {
     let (width, height) = graphics::drawable_size(context);
     let middle_centered = point - Vec2::new(width / 2.0, height / 2.0);
 
-    let world_rect = world_rect(context);
+    let world_rect = default_world_size_on_screen(context);
     let point_world = Pnt2::new(
         middle_centered.x * world_rect[0] / width,
         middle_centered.y * world_rect[1] / height,
@@ -48,7 +48,7 @@ pub fn activate_world_coordinate_system(
 )
     -> GameResult
 {
-    let size = world_rect(context);
+    let size = default_world_size_on_screen(context);
 
     let size = [
         size[0] / camera.zoom,
@@ -85,7 +85,7 @@ pub fn activate_ui_coordinate_system(context: &mut Context) -> GameResult {
 }
 
 
-fn world_rect(context: &mut Context) -> [f32; 2] {
+fn default_world_size_on_screen(context: &mut Context) -> [f32; 2] {
     let (width, height) = graphics::drawable_size(context);
     let aspect_ratio = width / height;
 
