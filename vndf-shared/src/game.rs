@@ -150,7 +150,6 @@ impl State {
                 &mut self.data.ships,
             );
             self.loot.on_update(
-                &event,
                 &mut self.data.bodies,
                 &self.data.crafts,
                 &mut self.data.fuels,
@@ -158,8 +157,6 @@ impl State {
                 &mut self.data.loots,
                 &mut self.data.positions,
                 &mut self.data.ships,
-                &mut self.data.velocities,
-                &mut self.health.index,
             );
         }
         self.apply_changes();

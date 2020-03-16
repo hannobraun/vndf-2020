@@ -1,10 +1,5 @@
 use std::collections::HashSet;
 
-use rand::{
-    prelude::*,
-    random,
-    thread_rng,
-};
 use toadster::{
     handle::{
         self,
@@ -16,7 +11,6 @@ use toadster::{
 use crate::{
     data,
     game::{
-        WORLD_SIZE,
         crafts::{
             Craft,
             Fuel,
@@ -29,7 +23,6 @@ use crate::{
         },
         ships::Ship,
     },
-    math::Pnt2,
 };
 
 use super::Loot;
@@ -84,53 +77,6 @@ pub fn spawn_death_loot(
     }
 
     Some(())
-}
-
-pub fn spawn_random_loot(
-    dt:         f32,
-    bodies:     &mut store::Strong<Body>,
-    healths:    &mut store::Strong<Health>,
-    loots:      &mut store::Strong<Loot>,
-    positions:  &mut store::Strong<Position>,
-    velocities: &mut store::Strong<Velocity>,
-    index:      &mut HashSet<handle::Strong<Untyped>>,
-) {
-    const CHANCE_PER_S: f32   = 1.0 / 30.0;
-    const MAX_LOOTS:    usize = 10;
-
-    let left_to_spawn = MAX_LOOTS - loots.len();
-    let num_loots_mod = left_to_spawn as f32 / MAX_LOOTS as f32;
-    let chance        = CHANCE_PER_S * dt * num_loots_mod;
-
-    let r = random::<f32>();
-    if r <= chance {
-        let pos = Position(
-            Pnt2::new(
-                thread_rng().gen_range(-WORLD_SIZE / 2.0, WORLD_SIZE / 2.0),
-                thread_rng().gen_range(-WORLD_SIZE / 2.0, WORLD_SIZE / 2.0),
-            ),
-        );
-
-        let pos = positions.insert(pos);
-        let vel = velocities.insert(Velocity::new());
-
-        let body = bodies.insert(Body::new(pos, vel));
-
-        let health = healths.insert(Health::new(body.clone(), 1.0));
-
-        let loot = Loot {
-            body:     body.into(),
-            health:   health.clone().into(),
-            fuel:     thread_rng().gen_range(15.0, 100.0),
-            missiles: thread_rng().gen_range(1, 5),
-        };
-
-        let loot = loots.insert(loot);
-        healths.get_mut(health).unwrap().finalize(
-            data::client::Handle::Loot(loot.into()),
-            index,
-        );
-    }
 }
 
 pub fn collect_loot(
