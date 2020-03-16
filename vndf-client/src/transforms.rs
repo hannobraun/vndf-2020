@@ -7,12 +7,9 @@ use ggez::{
     },
 };
 
-use crate::shared::{
-    game::WORLD_SIZE,
-    math::{
-        Pnt2,
-        Vec2,
-    },
+use crate::shared::math::{
+    Pnt2,
+    Vec2,
 };
 
 
@@ -78,10 +75,12 @@ fn world_rect(context: &mut Context) -> [f32; 2] {
     let (width, height) = graphics::drawable_size(context);
     let aspect_ratio = width / height;
 
+    let default_size = 1000.0;
+
     if aspect_ratio >= 1.0 {
-        [WORLD_SIZE * aspect_ratio, WORLD_SIZE]
+        [default_size * aspect_ratio, default_size]
     }
     else {
-        [WORLD_SIZE, WORLD_SIZE / aspect_ratio]
+        [default_size, default_size / aspect_ratio]
     }
 }

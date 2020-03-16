@@ -8,7 +8,6 @@ use time::{
 use crate::shared::{
     data,
     game::{
-        WORLD_SIZE,
         planets::Planets,
         players::PlayerId,
     },
@@ -39,11 +38,6 @@ impl State {
         self.statistics.update();
 
         for body in self.data.bodies.values_mut() {
-            body.enforce_boundary(
-                WORLD_SIZE,
-                &self.data.positions,
-                &mut self.data.velocities,
-            );
             body.update(
                 dt,
                 Planets(&self.data.planets),

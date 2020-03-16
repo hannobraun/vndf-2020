@@ -20,7 +20,6 @@ use crate::{
     input::Input,
     shared::{
         game::{
-            WORLD_SIZE,
             explosions::Explosion,
             loot::Loot,
             missiles::Missile,
@@ -52,7 +51,6 @@ macro_rules! get {
 
 
 pub struct Graphics {
-    boundary: Mesh,
     circle:   Mesh,
     ship:     Mesh,
     square:   Mesh,
@@ -63,17 +61,6 @@ pub struct Graphics {
 
 impl Graphics {
     pub fn new(context: &mut Context) -> GameResult<Self> {
-        let boundary = Mesh::new_polygon(
-            context,
-            DrawMode::stroke(3.0 / WORLD_SIZE),
-            &[
-                [ 0.5,  0.5],
-                [ 0.5, -0.5],
-                [-0.5, -0.5],
-                [-0.5,  0.5],
-            ],
-            [1.0, 1.0, 1.0, 1.0].into(),
-        )?;
         let circle = Mesh::new_circle(
             context,
             DrawMode::fill(),
@@ -117,7 +104,6 @@ impl Graphics {
 
         Ok(
             Graphics {
-                boundary,
                 circle,
                 ship,
                 square,
@@ -161,8 +147,6 @@ impl Graphics {
             input.zoom,
         )?;
 
-        self.draw_boundary(context)?;
-
         for planet in state.data.planets.values() {
             self.draw_planet(context, planet)?;
         }
@@ -178,17 +162,6 @@ impl Graphics {
         for explosion in state.data.explosions.values() {
             self.draw_explosion(context, explosion, state)?;
         }
-
-        Ok(())
-    }
-
-    fn draw_boundary(&self, context: &mut Context) -> GameResult {
-        graphics::draw(
-            context,
-            &self.boundary,
-            DrawParam::new()
-                .scale([WORLD_SIZE, WORLD_SIZE])
-        )?;
 
         Ok(())
     }

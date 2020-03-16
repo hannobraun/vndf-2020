@@ -22,7 +22,6 @@ impl Feature {
 
     pub fn on_update(&mut self,
         event:      &Update,
-        world_size: f32,
         bodies:     &mut store::Strong<Body>,
         planets:    &store::Strong<Planet>,
         positions:  &mut store::Strong<Position>,
@@ -33,7 +32,6 @@ impl Feature {
             planets,
             positions,
             velocities,
-            world_size,
             event.dt,
         );
     }

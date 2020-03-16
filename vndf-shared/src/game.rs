@@ -40,8 +40,6 @@ use self::{
 };
 
 
-pub const WORLD_SIZE: f32 = 1000.0;
-
 pub const TARGET_FPS: u32 = 60;
 pub const FRAME_TIME: f32 = 1.0 / TARGET_FPS as f32;
 
@@ -124,7 +122,6 @@ impl State {
 
             self.physics.on_update(
                 &event,
-                WORLD_SIZE,
                 &mut self.data.bodies,
                 &self.data.planets,
                 &mut self.data.positions,

@@ -116,32 +116,4 @@ impl Body {
 
         Some(())
     }
-
-    pub fn enforce_boundary(&mut self,
-        world_size: f32,
-        positions:  &impl store::Get<Position>,
-        velocities: &mut impl store::GetMut<Velocity>,
-    )
-        -> Option<()>
-    {
-        let boundary = world_size / 2.0;
-
-        let pos = positions.get(&self.pos)?;
-        let vel = velocities.get_mut(&self.vel)?;
-
-        if pos.0.x >= boundary && vel.0.x > 0.0 {
-            vel.0.x *= -1.0;
-        }
-        if pos.0.x <= -boundary && vel.0.x < 0.0 {
-            vel.0.x *= -1.0;
-        }
-        if pos.0.y >= boundary && vel.0.y > 0.0 {
-            vel.0.y *= -1.0;
-        }
-        if pos.0.y <= -boundary && vel.0.y < 0.0 {
-            vel.0.y *= -1.0;
-        }
-
-        Some(())
-    }
 }
