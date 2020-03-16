@@ -48,12 +48,8 @@ pub fn activate_world_coordinate_system(
 )
     -> GameResult
 {
-    let size = default_world_size_on_screen(context);
-
-    let size = [
-        size[0] / camera.zoom,
-        size[1] / camera.zoom,
-    ];
+    let size = default_world_size_on_screen(context)
+        / camera.zoom;
 
     graphics::set_screen_coordinates(
         context,
