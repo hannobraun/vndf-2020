@@ -30,7 +30,10 @@ use crate::{
         },
         math::Pnt2,
     },
-    transforms,
+    transforms::{
+        self,
+        Camera,
+    },
 };
 
 
@@ -59,13 +62,19 @@ impl Input {
         }
     }
 
-    pub fn mouse_motion(&mut self, context: &mut Context, x: f32, y: f32) {
+    pub fn mouse_motion(&mut self,
+        context: &mut Context,
+        x:       f32,
+        y:       f32,
+        camera:  &Camera,
+    ) {
         self.pointer_screen.x = x;
         self.pointer_screen.y = y;
 
         self.pointer_world = transforms::screen_to_world(
             context,
             self.pointer_screen,
+            camera,
         );
     }
 

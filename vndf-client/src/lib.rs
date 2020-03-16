@@ -154,7 +154,7 @@ impl EventHandler for Game {
         _dx:     f32,
         _dy:     f32,
     ) {
-        self.input.mouse_motion(context, x, y);
+        self.input.mouse_motion(context, x, y, &self.state.camera);
     }
 
     fn mouse_wheel_event(&mut self,

@@ -8,6 +8,7 @@ use ggez::{
 };
 
 use crate::shared::math::{
+    prelude::*,
     Pnt2,
     Vec2,
 };
@@ -32,18 +33,24 @@ impl Camera {
 }
 
 
-pub fn screen_to_world(context: &mut Context, screen_point: Pnt2) -> Pnt2 {
+pub fn screen_to_world(
+    context:      &mut Context,
+    screen_point: Pnt2,
+    camera:       &Camera,
+)
+    -> Pnt2
+{
     let (screen_width, screen_height) = graphics::drawable_size(context);
     let middle_centered_screen_point =
         screen_point - Vec2::new(screen_width / 2.0, screen_height / 2.0);
 
-    let world_rect = default_world_size_on_screen(context);
+    let world_rect = camera.world_size_on_screen(context);
     let point_world = Pnt2::new(
         middle_centered_screen_point.x * world_rect[0] / screen_width,
         middle_centered_screen_point.y * world_rect[1] / screen_height,
     );
 
-    point_world
+    point_world + camera.center.to_vec()
 }
 
 
