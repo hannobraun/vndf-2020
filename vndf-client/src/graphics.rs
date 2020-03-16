@@ -382,6 +382,7 @@ Turn left - {}
 Turn right - {}
 Accelerate - {}
 Shoot - {} (aim with mouse)
+Zoom Camera - Mouse Wheel
 End game - Escape",
             input.config.input.left,
             input.config.input.right,
