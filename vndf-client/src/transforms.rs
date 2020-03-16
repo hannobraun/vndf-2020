@@ -58,8 +58,8 @@ pub fn activate_world_coordinate_system(
         Rect {
             x: upper_left.x,
             y: upper_left.y,
-            w: size[0],
-            h: size[1],
+            w: size.x,
+            h: size.y,
         },
     )?;
 
