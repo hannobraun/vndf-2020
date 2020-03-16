@@ -25,6 +25,10 @@ impl Camera {
             zoom:   1.0,
         }
     }
+
+    pub fn world_size_on_screen(&self, context: &Context) -> Vec2 {
+        default_world_size_on_screen(context) / self.zoom
+    }
 }
 
 
@@ -48,9 +52,7 @@ pub fn activate_world_coordinate_system(
 )
     -> GameResult
 {
-    let size = default_world_size_on_screen(context)
-        / camera.zoom;
-
+    let size       = camera.world_size_on_screen(context);
     let upper_left = camera.center - size / 2.0;
 
     graphics::set_screen_coordinates(
