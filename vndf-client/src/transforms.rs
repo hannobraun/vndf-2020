@@ -51,11 +51,13 @@ pub fn activate_world_coordinate_system(
     let size = default_world_size_on_screen(context)
         / camera.zoom;
 
+    let upper_left = camera.center - size / 2.0;
+
     graphics::set_screen_coordinates(
         context,
         Rect {
-            x: camera.center.x - size[0] / 2.0,
-            y: camera.center.y - size[1] / 2.0,
+            x: upper_left.x,
+            y: upper_left.y,
             w: size[0],
             h: size[1],
         },
