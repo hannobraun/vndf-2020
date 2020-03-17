@@ -1,4 +1,5 @@
 mod config;
+mod draw;
 mod game;
 mod graphics;
 mod input;

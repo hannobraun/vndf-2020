@@ -16,6 +16,7 @@ use toadster::{
 };
 
 use crate::{
+    draw::draw,
     game::State,
     input::Input,
     shared::{
@@ -158,7 +159,7 @@ impl Graphics {
     fn draw_planet(&self, context: &mut Context, planet: &Planet)
         -> GameResult
     {
-        graphics::draw(
+        draw(
             context,
             &self.circle,
             DrawParam::new()
@@ -182,7 +183,7 @@ impl Graphics {
 
         let pos = state.camera.world_to_screen(context, pos.0);
 
-        graphics::draw(
+        draw(
             context,
             &self.ship,
             DrawParam::new()
@@ -210,7 +211,7 @@ impl Graphics {
         let body   = get!(state.data.bodies, &craft.body);
         let pos    = get!(state.data.positions, &body.pos);
 
-        graphics::draw(
+        draw(
             context,
             &self.square,
             DrawParam::new()
@@ -225,7 +226,7 @@ impl Graphics {
             [0.0, 1.0, 0.0, 1.0].into(),
         )?;
 
-        graphics::draw(
+        draw(
             context,
             &line,
             DrawParam::new(),
@@ -273,7 +274,7 @@ impl Graphics {
                 1.5,
                 [color[0], color[1], color[2], 0.5].into(),
             )?;
-            graphics::draw(
+            draw(
                 context,
                 &line,
                 DrawParam::new(),
@@ -297,7 +298,7 @@ impl Graphics {
         let alpha = explosion.strength_left / explosion.strength_total;
         let size  = explosion.strength_total * 2.0;
 
-        graphics::draw(
+        draw(
             context,
             &self.circle,
             DrawParam::new()
@@ -321,7 +322,7 @@ impl Graphics {
         let body = get!(state.data.bodies,    &loot.body);
         let pos  = get!(state.data.positions, &body.pos);
 
-        graphics::draw(
+        draw(
             context,
             &self.square,
             DrawParam::new()
@@ -356,7 +357,7 @@ End game - Escape",
             input.config.input.launch,
         );
 
-        graphics::draw(
+        draw(
             context,
             &Text::new(instructions),
             DrawParam::new()
@@ -373,7 +374,7 @@ End game - Escape",
                 report.avg_3.whole_milliseconds(),
             );
 
-            graphics::draw(
+            draw(
                 context,
                 &Text::new(frame_time),
                 DrawParam::new()
@@ -418,7 +419,7 @@ Removals per s: {}",
                     state.statistics.removals.len(),
                 );
 
-                graphics::draw(
+                draw(
                     context,
                     &Text::new(diagnostics),
                     DrawParam::new()
@@ -433,7 +434,7 @@ Removals per s: {}",
                 input_events.push_str(&format!("{}\n", event));
             }
 
-            graphics::draw(
+            draw(
                 context,
                 &Text::new(input_events),
                 DrawParam::new()
@@ -449,7 +450,7 @@ Removals per s: {}",
             }
         }
 
-        graphics::draw(
+        draw(
             context,
             &self.pointer,
             DrawParam::new()
@@ -488,7 +489,7 @@ Heavy Missiles: {}",
             ship.missiles,
         );
 
-        graphics::draw(
+        draw(
             context,
             &Text::new(status),
             DrawParam::new()
