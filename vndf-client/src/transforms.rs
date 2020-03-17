@@ -147,29 +147,39 @@ impl Transform for WorldTransform<'_> {
 }
 
 
-#[derive(Clone, Copy)]
-pub struct Screen<T>(pub T);
+macro_rules! coord_wrappers {
+    ($($name:ident,)*) => {
+        $(
+            #[derive(Clone, Copy)]
+            pub struct $name<T>(pub T);
 
-impl Add<Screen<Vec2>> for Screen<Pnt2> {
-    type Output = Self;
+            impl Add<$name<Vec2>> for $name<Pnt2> {
+                type Output = Self;
 
-    fn add(self, rhs: Screen<Vec2>) -> Self::Output {
-        Screen(self.0 + rhs.0)
-    }
+                fn add(self, rhs: $name<Vec2>) -> Self::Output {
+                    $name(self.0 + rhs.0)
+                }
+            }
+
+            impl Sub<$name<Vec2>> for $name<Pnt2> {
+                type Output = Self;
+
+                fn sub(self, rhs: $name<Vec2>) -> Self::Output {
+                    $name(self.0 - rhs.0)
+                }
+            }
+
+            impl Div<f32> for $name<Vec2> {
+                type Output = Self;
+
+                fn div(self, rhs: f32) -> Self::Output {
+                    $name(self.0 / rhs)
+                }
+            }
+        )*
+    };
 }
 
-impl Sub<Screen<Vec2>> for Screen<Pnt2> {
-    type Output = Self;
-
-    fn sub(self, rhs: Screen<Vec2>) -> Self::Output {
-        Screen(self.0 - rhs.0)
-    }
-}
-
-impl Div<f32> for Screen<Vec2> {
-    type Output = Self;
-
-    fn div(self, rhs: f32) -> Self::Output {
-        Screen(self.0 / rhs)
-    }
-}
+coord_wrappers!(
+    Screen,
+);
