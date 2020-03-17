@@ -413,6 +413,7 @@ Fuels: {}/{}
 Guidances: {}/-
 Healths: {}/{}
 Loots: {}/{}
+Planets: {}/{}
 Players: {}/-
 Missiles: {}/{}
 Positions: {}/{}
@@ -429,6 +430,7 @@ Removals per s: {}",
                     diagnostics.guidances,
                     diagnostics.healths, state.data.healths.len(),
                     diagnostics.loots, state.data.loots.len(),
+                    diagnostics.planets, state.data.planets.len(),
                     diagnostics.players,
                     diagnostics.missiles, state.data.missiles.len(),
                     diagnostics.positions, state.data.positions.len(),
