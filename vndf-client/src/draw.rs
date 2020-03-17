@@ -69,8 +69,8 @@ impl<P> DrawParam<P>
     where
         P: Into<mint::Point2<f32>>
 {
-    pub fn dest(self, dest: P) -> Self {
-        Self(self.0.dest(dest), PhantomData)
+    pub fn dest(self, dest: impl Into<P>) -> Self {
+        Self(self.0.dest(dest.into()), PhantomData)
     }
 
     pub fn scale(self, scale: Vec2) -> Self {
