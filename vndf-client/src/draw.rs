@@ -9,15 +9,15 @@ use ggez::{
 };
 
 
-pub fn draw<D, T>(
+pub fn draw<D, P>(
     context: &mut Context,
     drawable: &D,
-    params:   T
+    params:   P
 )
     -> GameResult
     where
         D: Drawable,
-        T: Into<DrawParam>,
+        P: Into<DrawParam>,
 {
     graphics::draw(
         context,
