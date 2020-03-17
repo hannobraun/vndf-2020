@@ -375,6 +375,14 @@ End game - Escape",
                 .dest(Screen(Pnt2::new(20.0, 20.0)))
         )?;
 
+        draw(
+            context,
+            &ScreenTransform,
+            &Text::new(format!("Zoom: {:.3}x", input.zoom)),
+            DrawParam::screen()
+                .dest(Screen(Pnt2::new(20.0, 150.0))),
+        )?;
+
         if input.config.diagnostics.frame_time {
             let report = state.frame_time.report();
             let frame_time = format!(
@@ -390,7 +398,7 @@ End game - Escape",
                 &ScreenTransform,
                 &Text::new(frame_time),
                 DrawParam::screen()
-                    .dest(Screen(Pnt2::new(20.0, 150.0)))
+                    .dest(Screen(Pnt2::new(20.0, 180.0)))
             )?;
         }
 
