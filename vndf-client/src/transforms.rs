@@ -24,14 +24,14 @@ use crate::{
 
 
 pub struct Camera {
-    pub center: Pnt2,
+    pub center: World<Pnt2>,
     pub zoom:   f32,
 }
 
 impl Camera {
     pub fn new() -> Self {
         Self {
-            center: Pnt2::new(0.0, 0.0),
+            center: World(Pnt2::new(0.0, 0.0)),
             zoom:   1.0,
         }
     }
@@ -40,7 +40,7 @@ impl Camera {
         context:      &mut Context,
         point_screen: Screen<Pnt2>,
     )
-        -> Pnt2
+        -> World<Pnt2>
     {
         let (screen_width, screen_height) = graphics::drawable_size(context);
         let screen_size = Screen(Vec2::new(screen_width, screen_height));
@@ -48,9 +48,15 @@ impl Camera {
         let point_screen_origin_centered = point_screen - screen_size / 2.0;
 
         let world_rect = self.world_size_on_screen(context);
-        let point_world = Pnt2::new(
-            point_screen_origin_centered.0.x * world_rect.x / screen_width,
-            point_screen_origin_centered.0.y * world_rect.y / screen_height,
+        let point_world = World(
+            Pnt2::new(
+                point_screen_origin_centered.0.x
+                    * world_rect.0.x
+                    / screen_width,
+                point_screen_origin_centered.0.y
+                    * world_rect.0.y
+                    / screen_height,
+            )
         );
 
         point_world + self.center.to_vec()
@@ -58,7 +64,7 @@ impl Camera {
 
     pub fn world_to_screen(&self,
         context:     &mut Context,
-        point_world: Pnt2,
+        point_world: World<Pnt2>,
     )
         -> Screen<Pnt2>
     {
@@ -70,32 +76,34 @@ impl Camera {
         let world_rect = self.world_size_on_screen(context);
         let point_screen_origin_centered = Screen(
             Pnt2::new(
-                point_camera.x * screen_width  / world_rect.x,
-                point_camera.y * screen_height / world_rect.y,
+                point_camera.0.x * screen_width  / world_rect.0.x,
+                point_camera.0.y * screen_height / world_rect.0.y,
             )
         );
 
         point_screen_origin_centered + screen_size / 2.0
     }
 
-    pub fn world_size_on_screen(&self, context: &Context) -> Vec2 {
+    pub fn world_size_on_screen(&self, context: &Context) -> World<Vec2> {
         let (screen_width, screen_height) = graphics::drawable_size(context);
         let aspect_ratio = screen_width / screen_height;
 
         let min_world_size_on_screen = 1000.0;
 
-        let default_world_size_on_screen = if aspect_ratio >= 1.0 {
-            Vec2::new(
-                min_world_size_on_screen * aspect_ratio,
-                min_world_size_on_screen,
-            )
-        }
-        else {
-            Vec2::new(
-                min_world_size_on_screen,
-                min_world_size_on_screen / aspect_ratio,
-            )
-        };
+        let default_world_size_on_screen = World(
+            if aspect_ratio >= 1.0 {
+                Vec2::new(
+                    min_world_size_on_screen * aspect_ratio,
+                    min_world_size_on_screen,
+                )
+            }
+            else {
+                Vec2::new(
+                    min_world_size_on_screen,
+                    min_world_size_on_screen / aspect_ratio,
+                )
+            }
+        );
 
         default_world_size_on_screen / self.zoom
     }
@@ -135,10 +143,10 @@ impl Transform for WorldTransform<'_> {
         graphics::set_screen_coordinates(
             context,
             Rect {
-                x: upper_left.x,
-                y: upper_left.y,
-                w: size.x,
-                h: size.y,
+                x: upper_left.0.x,
+                y: upper_left.0.y,
+                w: size.0.x,
+                h: size.0.y,
             },
         )?;
 
@@ -152,6 +160,18 @@ macro_rules! coord_wrappers {
         $(
             #[derive(Clone, Copy)]
             pub struct $name<T>(pub T);
+
+            impl $name<Pnt2> {
+                pub fn to_vec(self) -> $name<Vec2> {
+                    $name(self.0.to_vec())
+                }
+            }
+
+            impl From<Pnt2> for $name<Pnt2> {
+                fn from(from: Pnt2) -> Self {
+                    Self(from)
+                }
+            }
 
             impl Add<$name<Vec2>> for $name<Pnt2> {
                 type Output = Self;
@@ -182,4 +202,5 @@ macro_rules! coord_wrappers {
 
 coord_wrappers!(
     Screen,
+    World,
 );

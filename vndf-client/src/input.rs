@@ -33,6 +33,7 @@ use crate::{
     transforms::{
         Camera,
         Screen,
+        World,
     },
 };
 
@@ -41,7 +42,7 @@ pub struct Input {
     pub config: Config,
 
     pub pointer_screen: Screen<Pnt2>,
-    pub pointer_world:  Pnt2,
+    pub pointer_world:  World<Pnt2>,
 
     pub zoom: f32,
 
@@ -54,7 +55,7 @@ impl Input {
             config,
 
             pointer_screen: Screen(Pnt2::new(0.0, 0.0)),
-            pointer_world:  Pnt2::new(0.0, 0.0),
+            pointer_world:  World(Pnt2::new(0.0, 0.0)),
 
             zoom: 1.0,
 
@@ -101,7 +102,7 @@ impl Input {
             }
             k if k == self.config.input.launch => {
                 self.events.push(
-                    EventKind::LaunchMissile { target: self.pointer_world }
+                    EventKind::LaunchMissile { target: self.pointer_world.0 }
                 )
             }
 

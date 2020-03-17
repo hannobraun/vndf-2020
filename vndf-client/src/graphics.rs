@@ -178,7 +178,7 @@ impl Graphics {
 
         self.draw_projected_path(context, &craft.body, ship.color, state)?;
 
-        let pos = state.camera.world_to_screen(context, pos.0);
+        let pos = state.camera.world_to_screen(context, pos.0.into());
 
         draw(
             context,

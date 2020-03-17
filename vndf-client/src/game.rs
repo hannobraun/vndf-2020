@@ -15,7 +15,10 @@ use crate::{
         },
         math::Pnt2,
     },
-    transforms::Camera,
+    transforms::{
+        Camera,
+        World,
+    },
 };
 
 
@@ -45,7 +48,7 @@ impl State {
 
         self.camera.zoom = input.zoom;
         if let Some(own_pos) = self.own_pos() {
-            self.camera.center = own_pos;
+            self.camera.center = World(own_pos);
         }
 
         for body in self.data.bodies.values_mut() {
