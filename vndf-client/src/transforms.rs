@@ -98,7 +98,19 @@ pub struct ScreenTransform;
 
 impl Transform for ScreenTransform {
     fn enable(&self, context: &mut Context) -> GameResult {
-        activate_screen_coordinate_system(context)
+        let (width, height) = graphics::drawable_size(context);
+
+        graphics::set_screen_coordinates(
+            context,
+            Rect {
+                x: 0.0,
+                y: 0.0,
+                w: width,
+                h: height,
+            },
+        )?;
+
+        Ok(())
     }
 }
 
@@ -124,21 +136,4 @@ impl Transform for WorldTransform<'_> {
 
         Ok(())
     }
-}
-
-
-pub fn activate_screen_coordinate_system(context: &mut Context) -> GameResult {
-    let (width, height) = graphics::drawable_size(context);
-
-    graphics::set_screen_coordinates(
-        context,
-        Rect {
-            x: 0.0,
-            y: 0.0,
-            w: width,
-            h: height,
-        },
-    )?;
-
-    Ok(())
 }
