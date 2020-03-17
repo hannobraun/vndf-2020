@@ -1,3 +1,9 @@
+use core::ops::{
+    Add,
+    Div,
+    Sub,
+};
+
 use ggez::{
     Context,
     GameResult,
@@ -32,19 +38,19 @@ impl Camera {
 
     pub fn screen_to_world(&self,
         context:      &mut Context,
-        point_screen: Pnt2,
+        point_screen: Screen<Pnt2>,
     )
         -> Pnt2
     {
         let (screen_width, screen_height) = graphics::drawable_size(context);
-        let screen_size = Vec2::new(screen_width, screen_height);
+        let screen_size = Screen(Vec2::new(screen_width, screen_height));
 
         let point_screen_origin_centered = point_screen - screen_size / 2.0;
 
         let world_rect = self.world_size_on_screen(context);
         let point_world = Pnt2::new(
-            point_screen_origin_centered.x * world_rect.x / screen_width,
-            point_screen_origin_centered.y * world_rect.y / screen_height,
+            point_screen_origin_centered.0.x * world_rect.x / screen_width,
+            point_screen_origin_centered.0.y * world_rect.y / screen_height,
         );
 
         point_world + self.center.to_vec()
@@ -54,17 +60,19 @@ impl Camera {
         context:     &mut Context,
         point_world: Pnt2,
     )
-        -> Pnt2
+        -> Screen<Pnt2>
     {
         let (screen_width, screen_height) = graphics::drawable_size(context);
-        let screen_size = Vec2::new(screen_width, screen_height);
+        let screen_size = Screen(Vec2::new(screen_width, screen_height));
 
         let point_camera = point_world - self.center.to_vec();
 
         let world_rect = self.world_size_on_screen(context);
-        let point_screen_origin_centered = Pnt2::new(
-            point_camera.x * screen_width  / world_rect.x,
-            point_camera.y * screen_height / world_rect.y,
+        let point_screen_origin_centered = Screen(
+            Pnt2::new(
+                point_camera.x * screen_width  / world_rect.x,
+                point_camera.y * screen_height / world_rect.y,
+            )
         );
 
         point_screen_origin_centered + screen_size / 2.0
@@ -135,5 +143,33 @@ impl Transform for WorldTransform<'_> {
         )?;
 
         Ok(())
+    }
+}
+
+
+#[derive(Clone, Copy)]
+pub struct Screen<T>(pub T);
+
+impl Add<Screen<Vec2>> for Screen<Pnt2> {
+    type Output = Self;
+
+    fn add(self, rhs: Screen<Vec2>) -> Self::Output {
+        Screen(self.0 + rhs.0)
+    }
+}
+
+impl Sub<Screen<Vec2>> for Screen<Pnt2> {
+    type Output = Self;
+
+    fn sub(self, rhs: Screen<Vec2>) -> Self::Output {
+        Screen(self.0 - rhs.0)
+    }
+}
+
+impl Div<f32> for Screen<Vec2> {
+    type Output = Self;
+
+    fn div(self, rhs: f32) -> Self::Output {
+        Screen(self.0 / rhs)
     }
 }

@@ -185,7 +185,7 @@ impl Graphics {
             &ScreenTransform,
             &self.ship,
             DrawParam::new()
-                .dest(pos)
+                .dest(pos.0)
                 .rotation(Vec2::unit_x().angle(body.dir).0)
                 .scale([30.0, 30.0])
                 .color(
@@ -460,7 +460,7 @@ Removals per s: {}",
             &ScreenTransform,
             &self.pointer,
             DrawParam::new()
-                .dest(input.pointer_screen)
+                .dest(input.pointer_screen.0)
                 .scale([10.0, 10.0])
         )?;
 

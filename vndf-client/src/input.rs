@@ -30,14 +30,17 @@ use crate::{
         },
         math::Pnt2,
     },
-    transforms::Camera,
+    transforms::{
+        Camera,
+        Screen,
+    },
 };
 
 
 pub struct Input {
     pub config: Config,
 
-    pub pointer_screen: Pnt2,
+    pub pointer_screen: Screen<Pnt2>,
     pub pointer_world:  Pnt2,
 
     pub zoom: f32,
@@ -50,7 +53,7 @@ impl Input {
         Self {
             config,
 
-            pointer_screen: Pnt2::new(0.0, 0.0),
+            pointer_screen: Screen(Pnt2::new(0.0, 0.0)),
             pointer_world:  Pnt2::new(0.0, 0.0),
 
             zoom: 1.0,
@@ -65,8 +68,8 @@ impl Input {
         y:       f32,
         camera:  &Camera,
     ) {
-        self.pointer_screen.x = x;
-        self.pointer_screen.y = y;
+        self.pointer_screen.0.x = x;
+        self.pointer_screen.0.y = y;
 
         self.pointer_world = camera.screen_to_world(
             context,
