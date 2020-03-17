@@ -4,7 +4,6 @@ use ggez::{
     graphics::{
         self,
         DrawMode,
-        DrawParam,
         Mesh,
         Text,
     },
@@ -16,7 +15,10 @@ use toadster::{
 };
 
 use crate::{
-    draw::draw,
+    draw::{
+        draw,
+        DrawParam,
+    },
     game::State,
     input::Input,
     shared::{
