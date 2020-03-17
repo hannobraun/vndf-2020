@@ -42,7 +42,6 @@ use crate::{
     transforms::{
         Screen,
         ScreenTransform,
-        World,
         WorldTransform,
     },
 };
@@ -167,7 +166,7 @@ impl Graphics {
             &WorldTransform(&state.camera),
             &self.circle,
             DrawParam::world()
-                .dest(World(planet.pos))
+                .dest(planet.pos)
                 .scale(Vec2::new(planet.size, planet.size))
         )?;
 
@@ -216,7 +215,7 @@ impl Graphics {
             &WorldTransform(&state.camera),
             &self.square,
             DrawParam::world()
-                .dest(World(pos.0))
+                .dest(pos)
                 .scale(Vec2::new(4.0, 4.0))
         )?;
 
@@ -306,7 +305,7 @@ impl Graphics {
             &WorldTransform(&state.camera),
             &self.circle,
             DrawParam::world()
-                .dest(World(pos.0))
+                .dest(pos)
                 .scale(Vec2::new(size, size))
                 .color([1.0, 1.0, 1.0, alpha])
         )?;
@@ -331,7 +330,7 @@ impl Graphics {
             &WorldTransform(&state.camera),
             &self.square,
             DrawParam::world()
-                .dest(World(pos.0))
+                .dest(pos)
                 .scale(Vec2::new(size, size))
                 .color([1.0, 1.0, 1.0, 1.0])
         )?;

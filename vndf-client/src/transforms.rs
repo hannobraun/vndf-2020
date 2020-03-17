@@ -16,10 +16,13 @@ use ggez::{
 
 use crate::{
     draw::Transform,
-    shared::math::{
-        prelude::*,
-        Pnt2,
-        Vec2,
+    shared::{
+        game::physics::Position,
+        math::{
+            prelude::*,
+            Pnt2,
+            Vec2,
+        },
     },
 };
 
@@ -215,3 +218,9 @@ coord_wrappers!(
     Screen,
     World,
 );
+
+impl From<&'_ Position> for World<Pnt2> {
+    fn from(from: &Position) -> Self {
+        Self(from.0)
+    }
+}
