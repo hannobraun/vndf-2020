@@ -39,8 +39,8 @@ impl Camera {
 
         let world_rect = self.world_size_on_screen(context);
         let point_world = Pnt2::new(
-            point_screen_origin_centered.x * world_rect[0] / screen_width,
-            point_screen_origin_centered.y * world_rect[1] / screen_height,
+            point_screen_origin_centered.x * world_rect.x / screen_width,
+            point_screen_origin_centered.y * world_rect.y / screen_height,
         );
 
         point_world + self.center.to_vec()
