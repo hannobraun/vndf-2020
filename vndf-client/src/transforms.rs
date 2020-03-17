@@ -28,7 +28,25 @@ impl Camera {
     }
 
     pub fn world_size_on_screen(&self, context: &Context) -> Vec2 {
-        default_world_size_on_screen(context) / self.zoom
+        let (screen_width, screen_height) = graphics::drawable_size(context);
+        let aspect_ratio = screen_width / screen_height;
+
+        let min_world_size_on_screen = 1000.0;
+
+        let default_world_size_on_screen = if aspect_ratio >= 1.0 {
+            Vec2::new(
+                min_world_size_on_screen * aspect_ratio,
+                min_world_size_on_screen,
+            )
+        }
+        else {
+            Vec2::new(
+                min_world_size_on_screen,
+                min_world_size_on_screen / aspect_ratio,
+            )
+        };
+
+        default_world_size_on_screen / self.zoom
     }
 }
 
@@ -90,25 +108,4 @@ pub fn activate_ui_coordinate_system(context: &mut Context) -> GameResult {
     )?;
 
     Ok(())
-}
-
-
-fn default_world_size_on_screen(context: &Context) -> Vec2 {
-    let (screen_width, screen_height) = graphics::drawable_size(context);
-    let aspect_ratio = screen_width / screen_height;
-
-    let min_world_size_on_screen = 1000.0;
-
-    if aspect_ratio >= 1.0 {
-        Vec2::new(
-            min_world_size_on_screen * aspect_ratio,
-            min_world_size_on_screen,
-        )
-    }
-    else {
-        Vec2::new(
-            min_world_size_on_screen,
-            min_world_size_on_screen / aspect_ratio,
-        )
-    }
 }
