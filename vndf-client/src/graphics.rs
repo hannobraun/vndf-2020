@@ -40,7 +40,9 @@ use crate::{
         }
     },
     transforms::{
+        Screen,
         ScreenTransform,
+        World,
         WorldTransform,
     },
 };
@@ -164,8 +166,8 @@ impl Graphics {
             context,
             &WorldTransform(&state.camera),
             &self.circle,
-            DrawParam::new()
-                .dest(planet.pos)
+            DrawParam::world()
+                .dest(World(planet.pos))
                 .scale(Vec2::new(planet.size, planet.size))
         )?;
 
@@ -187,8 +189,8 @@ impl Graphics {
             context,
             &ScreenTransform,
             &self.ship,
-            DrawParam::new()
-                .dest(pos.0)
+            DrawParam::screen()
+                .dest(pos)
                 .rotation(Vec2::unit_x().angle(body.dir).0)
                 .scale(Vec2::new(30.0, 30.0))
                 .color([ship.color[0], ship.color[1], ship.color[2], 1.0]),
@@ -213,8 +215,8 @@ impl Graphics {
             context,
             &WorldTransform(&state.camera),
             &self.square,
-            DrawParam::new()
-                .dest(pos.0)
+            DrawParam::world()
+                .dest(World(pos.0))
                 .scale(Vec2::new(4.0, 4.0))
         )?;
 
@@ -229,7 +231,7 @@ impl Graphics {
             context,
             &WorldTransform(&state.camera),
             &line,
-            DrawParam::new(),
+            DrawParam::world(),
         )?;
 
         Ok(true)
@@ -278,7 +280,7 @@ impl Graphics {
                 context,
                 &WorldTransform(&state.camera),
                 &line,
-                DrawParam::new(),
+                DrawParam::world(),
             )?;
 
             previous = current;
@@ -303,8 +305,8 @@ impl Graphics {
             context,
             &WorldTransform(&state.camera),
             &self.circle,
-            DrawParam::new()
-                .dest(pos.0)
+            DrawParam::world()
+                .dest(World(pos.0))
                 .scale(Vec2::new(size, size))
                 .color([1.0, 1.0, 1.0, alpha])
         )?;
@@ -328,8 +330,8 @@ impl Graphics {
             context,
             &WorldTransform(&state.camera),
             &self.square,
-            DrawParam::new()
-                .dest(pos.0)
+            DrawParam::world()
+                .dest(World(pos.0))
                 .scale(Vec2::new(size, size))
                 .color([1.0, 1.0, 1.0, 1.0])
         )?;
@@ -362,8 +364,8 @@ End game - Escape",
             context,
             &ScreenTransform,
             &Text::new(instructions),
-            DrawParam::new()
-                .dest(Pnt2::new(20.0, 20.0))
+            DrawParam::screen()
+                .dest(Screen(Pnt2::new(20.0, 20.0)))
         )?;
 
         if input.config.diagnostics.frame_time {
@@ -380,8 +382,8 @@ End game - Escape",
                 context,
                 &ScreenTransform,
                 &Text::new(frame_time),
-                DrawParam::new()
-                    .dest(Pnt2::new(20.0, 150.0))
+                DrawParam::screen()
+                    .dest(Screen(Pnt2::new(20.0, 150.0)))
             )?;
         }
 
@@ -426,8 +428,8 @@ Removals per s: {}",
                     context,
                     &ScreenTransform,
                     &Text::new(diagnostics),
-                    DrawParam::new()
-                        .dest(Pnt2::new(20.0, 220.0))
+                    DrawParam::screen()
+                        .dest(Screen(Pnt2::new(20.0, 220.0)))
                 )?;
             }
         }
@@ -442,8 +444,8 @@ Removals per s: {}",
                 context,
                 &ScreenTransform,
                 &Text::new(input_events),
-                DrawParam::new()
-                    .dest(Pnt2::new(20.0, 520.0))
+                DrawParam::screen()
+                    .dest(Screen(Pnt2::new(20.0, 520.0)))
             )?;
         }
 
@@ -459,8 +461,8 @@ Removals per s: {}",
             context,
             &ScreenTransform,
             &self.pointer,
-            DrawParam::new()
-                .dest(input.pointer_screen.0)
+            DrawParam::screen()
+                .dest(input.pointer_screen)
                 .scale(Vec2::new(10.0, 10.0))
         )?;
 
@@ -499,8 +501,8 @@ Heavy Missiles: {}",
             context,
             &ScreenTransform,
             &Text::new(status),
-            DrawParam::new()
-                .dest(Pnt2::new(width - 200.0, 20.0))
+            DrawParam::screen()
+                .dest(Screen(Pnt2::new(width - 200.0, 20.0)))
         )?;
 
         Ok(true)

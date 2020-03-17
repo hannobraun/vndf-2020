@@ -11,6 +11,7 @@ use ggez::{
         self,
         Rect,
     },
+    mint,
 };
 
 use crate::{
@@ -113,6 +114,8 @@ impl Camera {
 pub struct ScreenTransform;
 
 impl Transform for ScreenTransform {
+    type Point = Screen<Pnt2>;
+
     fn enable(&self, context: &mut Context) -> GameResult {
         let (width, height) = graphics::drawable_size(context);
 
@@ -134,6 +137,8 @@ impl Transform for ScreenTransform {
 pub struct WorldTransform<'r>(pub &'r Camera);
 
 impl Transform for WorldTransform<'_> {
+    type Point = World<Pnt2>;
+
     fn enable(&self, context: &mut Context) -> GameResult {
         let camera = self.0;
 
@@ -170,6 +175,12 @@ macro_rules! coord_wrappers {
             impl From<Pnt2> for $name<Pnt2> {
                 fn from(from: Pnt2) -> Self {
                     Self(from)
+                }
+            }
+
+            impl From<$name<Pnt2>> for mint::Point2<f32> {
+                fn from(from: $name<Pnt2>) -> Self {
+                    from.0.into()
                 }
             }
 

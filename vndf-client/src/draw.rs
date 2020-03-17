@@ -11,9 +11,15 @@ use ggez::{
     mint,
 };
 
-use crate::shared::math::{
-    Pnt2,
-    Vec2,
+use crate::{
+    shared::math::{
+        Pnt2,
+        Vec2,
+    },
+    transforms::{
+        Screen,
+        World,
+    },
 };
 
 
@@ -21,7 +27,7 @@ pub fn draw<T, D>(
     context:   &mut Context,
     transform: &T,
     drawable:  &D,
-    params:    DrawParam<Pnt2>,
+    params:    DrawParam<T::Point>,
 )
     -> GameResult
     where
@@ -39,14 +45,22 @@ pub fn draw<T, D>(
 
 
 pub trait Transform {
+    type Point;
+
     fn enable(&self, _: &mut Context) -> GameResult;
 }
 
 
 pub struct DrawParam<P>(graphics::DrawParam, PhantomData<P>);
 
-impl DrawParam<Pnt2> {
-    pub fn new() -> Self {
+impl DrawParam<Screen<Pnt2>> {
+    pub fn screen() -> Self {
+        Self(graphics::DrawParam::new(), PhantomData)
+    }
+}
+
+impl DrawParam<World<Pnt2>> {
+    pub fn world() -> Self {
         Self(graphics::DrawParam::new(), PhantomData)
     }
 }
