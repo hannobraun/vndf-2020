@@ -107,32 +107,25 @@ pub struct WorldTransform<'r>(pub &'r Camera);
 
 impl Transform for WorldTransform<'_> {
     fn enable(&self, context: &mut Context) -> GameResult {
-        activate_world_coordinate_system(context, self.0)
+        let camera = self.0;
+
+        let size       = camera.world_size_on_screen(context);
+        let upper_left = camera.center - size / 2.0;
+
+        graphics::set_screen_coordinates(
+            context,
+            Rect {
+                x: upper_left.x,
+                y: upper_left.y,
+                w: size.x,
+                h: size.y,
+            },
+        )?;
+
+        Ok(())
     }
 }
 
-
-pub fn activate_world_coordinate_system(
-    context: &mut Context,
-    camera:  &Camera,
-)
-    -> GameResult
-{
-    let size       = camera.world_size_on_screen(context);
-    let upper_left = camera.center - size / 2.0;
-
-    graphics::set_screen_coordinates(
-        context,
-        Rect {
-            x: upper_left.x,
-            y: upper_left.y,
-            w: size.x,
-            h: size.y,
-        },
-    )?;
-
-    Ok(())
-}
 
 pub fn activate_screen_coordinate_system(context: &mut Context) -> GameResult {
     let (width, height) = graphics::drawable_size(context);
