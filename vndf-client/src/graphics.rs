@@ -336,7 +336,7 @@ impl Graphics {
     )
         -> GameResult
     {
-        transforms::activate_ui_coordinate_system(context)?;
+        transforms::activate_screen_coordinate_system(context)?;
 
         let instructions = format!(
 "Instructions:

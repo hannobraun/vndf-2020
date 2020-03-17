@@ -92,7 +92,7 @@ pub fn activate_world_coordinate_system(
     Ok(())
 }
 
-pub fn activate_ui_coordinate_system(context: &mut Context) -> GameResult {
+pub fn activate_screen_coordinate_system(context: &mut Context) -> GameResult {
     let (width, height) = graphics::drawable_size(context);
 
     graphics::set_screen_coordinates(
