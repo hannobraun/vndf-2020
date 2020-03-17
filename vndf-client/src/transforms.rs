@@ -221,6 +221,12 @@ coord_wrappers!(
     World,
 );
 
+impl From<Position> for World<Pnt2> {
+    fn from(from: Position) -> Self {
+        Self(from.0)
+    }
+}
+
 impl From<&'_ Position> for World<Pnt2> {
     fn from(from: &Position) -> Self {
         Self(from.0)

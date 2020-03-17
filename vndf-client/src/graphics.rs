@@ -256,7 +256,7 @@ impl Graphics {
         let mut positions  = OneStore { handle: (&body.pos).into(), data: pos };
         let mut velocities = OneStore { handle: (&body.vel).into(), data: vel };
 
-        let mut previous = pos.0;
+        let mut previous = pos;
 
         for _ in 0 .. 100 {
             body.update(
@@ -266,23 +266,26 @@ impl Graphics {
                 &mut velocities,
             );
 
-            let current = positions.data.0;
+            let current = positions.data;
 
             if previous == current {
                 break;
             }
 
+            let previous_s = state.camera.world_to_screen(context, previous);
+            let current_s  = state.camera.world_to_screen(context, current);
+
             let line = Mesh::new_line(
                 context,
-                &[previous, current],
+                &[previous_s.0, current_s.0],
                 1.5,
                 [color[0], color[1], color[2], 0.5].into(),
             )?;
             draw(
                 context,
-                &WorldTransform(&state.camera),
+                &ScreenTransform,
                 &line,
-                DrawParam::world(),
+                DrawParam::screen(),
             )?;
 
             previous = current;
