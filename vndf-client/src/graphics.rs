@@ -210,27 +210,30 @@ impl Graphics {
         let body   = get!(state.data.bodies, &craft.body);
         let pos    = get!(state.data.positions, &body.pos);
 
+        let pos    = state.camera.world_to_screen(context, pos);
+        let target = state.camera.world_to_screen(context, target.value);
+
         draw(
             context,
-            &WorldTransform(&state.camera),
+            &ScreenTransform,
             &self.square,
-            DrawParam::world()
+            DrawParam::screen()
                 .dest(pos)
                 .scale(Vec2::new(4.0, 4.0))
         )?;
 
         let line = Mesh::new_line(
             context,
-            &[pos.0, target.value],
+            &[pos.0, target.0],
             1.5,
             [0.0, 1.0, 0.0, 1.0].into(),
         )?;
 
         draw(
             context,
-            &WorldTransform(&state.camera),
+            &ScreenTransform,
             &line,
-            DrawParam::world(),
+            DrawParam::screen(),
         )?;
 
         Ok(true)
