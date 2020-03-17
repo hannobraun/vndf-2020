@@ -30,10 +30,7 @@ use crate::{
         },
         math::Pnt2,
     },
-    transforms::{
-        self,
-        Camera,
-    },
+    transforms::Camera,
 };
 
 
@@ -71,10 +68,9 @@ impl Input {
         self.pointer_screen.x = x;
         self.pointer_screen.y = y;
 
-        self.pointer_world = transforms::screen_to_world(
+        self.pointer_world = camera.screen_to_world(
             context,
             self.pointer_screen,
-            camera,
         );
     }
 

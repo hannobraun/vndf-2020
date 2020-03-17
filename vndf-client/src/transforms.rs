@@ -27,6 +27,25 @@ impl Camera {
         }
     }
 
+    pub fn screen_to_world(&self,
+        context:      &mut Context,
+        screen_point: Pnt2,
+    )
+        -> Pnt2
+    {
+        let (screen_width, screen_height) = graphics::drawable_size(context);
+        let middle_centered_screen_point =
+            screen_point - Vec2::new(screen_width / 2.0, screen_height / 2.0);
+
+        let world_rect = self.world_size_on_screen(context);
+        let point_world = Pnt2::new(
+            middle_centered_screen_point.x * world_rect[0] / screen_width,
+            middle_centered_screen_point.y * world_rect[1] / screen_height,
+        );
+
+        point_world + self.center.to_vec()
+    }
+
     pub fn world_size_on_screen(&self, context: &Context) -> Vec2 {
         let (screen_width, screen_height) = graphics::drawable_size(context);
         let aspect_ratio = screen_width / screen_height;
@@ -48,27 +67,6 @@ impl Camera {
 
         default_world_size_on_screen / self.zoom
     }
-}
-
-
-pub fn screen_to_world(
-    context:      &mut Context,
-    screen_point: Pnt2,
-    camera:       &Camera,
-)
-    -> Pnt2
-{
-    let (screen_width, screen_height) = graphics::drawable_size(context);
-    let middle_centered_screen_point =
-        screen_point - Vec2::new(screen_width / 2.0, screen_height / 2.0);
-
-    let world_rect = camera.world_size_on_screen(context);
-    let point_world = Pnt2::new(
-        middle_centered_screen_point.x * world_rect[0] / screen_width,
-        middle_centered_screen_point.y * world_rect[1] / screen_height,
-    );
-
-    point_world + camera.center.to_vec()
 }
 
 
