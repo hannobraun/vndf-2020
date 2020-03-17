@@ -59,7 +59,7 @@ impl DrawParam {
         Self(self.0.rotation(rotation))
     }
 
-    pub fn color(self, color: Color) -> Self {
+    pub fn color(self, color: impl Into<Color>) -> Self {
         Self(self.0.color(color.into()))
     }
 }

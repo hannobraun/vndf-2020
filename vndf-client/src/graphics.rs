@@ -191,10 +191,7 @@ impl Graphics {
                 .dest(pos.0)
                 .rotation(Vec2::unit_x().angle(body.dir).0)
                 .scale(Vec2::new(30.0, 30.0))
-                .color(
-                    [ship.color[0], ship.color[1], ship.color[2], 1.0]
-                        .into(),
-                ),
+                .color([ship.color[0], ship.color[1], ship.color[2], 1.0]),
         )?;
 
         Ok(true)
@@ -309,7 +306,7 @@ impl Graphics {
             DrawParam::new()
                 .dest(pos.0)
                 .scale(Vec2::new(size, size))
-                .color([1.0, 1.0, 1.0, alpha].into())
+                .color([1.0, 1.0, 1.0, alpha])
         )?;
 
         Ok(true)
@@ -334,7 +331,7 @@ impl Graphics {
             DrawParam::new()
                 .dest(pos.0)
                 .scale(Vec2::new(size, size))
-                .color([1.0, 1.0, 1.0, 1.0].into())
+                .color([1.0, 1.0, 1.0, 1.0])
         )?;
 
         Ok(true)
