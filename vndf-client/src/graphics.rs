@@ -33,6 +33,7 @@ use crate::{
         },
         math::{
             prelude::*,
+            Pnt2,
             Vec2,
         }
     },
@@ -163,7 +164,7 @@ impl Graphics {
             &self.circle,
             DrawParam::new()
                 .dest(planet.pos)
-                .scale([planet.size, planet.size])
+                .scale(Vec2::new(planet.size, planet.size))
         )?;
 
         Ok(())
@@ -187,7 +188,7 @@ impl Graphics {
             DrawParam::new()
                 .dest(pos.0)
                 .rotation(Vec2::unit_x().angle(body.dir).0)
-                .scale([30.0, 30.0])
+                .scale(Vec2::new(30.0, 30.0))
                 .color(
                     [ship.color[0], ship.color[1], ship.color[2], 1.0]
                         .into(),
@@ -215,7 +216,7 @@ impl Graphics {
             &self.square,
             DrawParam::new()
                 .dest(pos.0)
-                .scale([4.0, 4.0])
+                .scale(Vec2::new(4.0, 4.0))
         )?;
 
         let line = Mesh::new_line(
@@ -305,7 +306,7 @@ impl Graphics {
             &self.circle,
             DrawParam::new()
                 .dest(pos.0)
-                .scale([size, size])
+                .scale(Vec2::new(size, size))
                 .color([1.0, 1.0, 1.0, alpha].into())
         )?;
 
@@ -330,7 +331,7 @@ impl Graphics {
             &self.square,
             DrawParam::new()
                 .dest(pos.0)
-                .scale([size, size])
+                .scale(Vec2::new(size, size))
                 .color([1.0, 1.0, 1.0, 1.0].into())
         )?;
 
@@ -363,7 +364,7 @@ End game - Escape",
             &ScreenTransform,
             &Text::new(instructions),
             DrawParam::new()
-                .dest([20.0, 20.0])
+                .dest(Pnt2::new(20.0, 20.0))
         )?;
 
         if input.config.diagnostics.frame_time {
@@ -381,7 +382,7 @@ End game - Escape",
                 &ScreenTransform,
                 &Text::new(frame_time),
                 DrawParam::new()
-                    .dest([20.0, 150.0])
+                    .dest(Pnt2::new(20.0, 150.0))
             )?;
         }
 
@@ -427,7 +428,7 @@ Removals per s: {}",
                     &ScreenTransform,
                     &Text::new(diagnostics),
                     DrawParam::new()
-                        .dest([20.0, 220.0])
+                        .dest(Pnt2::new(20.0, 220.0))
                 )?;
             }
         }
@@ -443,7 +444,7 @@ Removals per s: {}",
                 &ScreenTransform,
                 &Text::new(input_events),
                 DrawParam::new()
-                    .dest([20.0, 520.0])
+                    .dest(Pnt2::new(20.0, 520.0))
             )?;
         }
 
@@ -461,7 +462,7 @@ Removals per s: {}",
             &self.pointer,
             DrawParam::new()
                 .dest(input.pointer_screen.0)
-                .scale([10.0, 10.0])
+                .scale(Vec2::new(10.0, 10.0))
         )?;
 
         mouse::set_cursor_hidden(context, true);
@@ -500,7 +501,7 @@ Heavy Missiles: {}",
             &ScreenTransform,
             &Text::new(status),
             DrawParam::new()
-                .dest([width - 200.0, 20.0])
+                .dest(Pnt2::new(width - 200.0, 20.0))
         )?;
 
         Ok(true)
