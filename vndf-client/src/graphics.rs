@@ -36,7 +36,10 @@ use crate::{
             Vec2,
         }
     },
-    transforms,
+    transforms::{
+        ScreenTransform,
+        WorldTransform,
+    },
 };
 
 
@@ -132,13 +135,8 @@ impl Graphics {
     )
         -> GameResult
     {
-        transforms::activate_world_coordinate_system(
-            context,
-            &state.camera,
-        )?;
-
         for planet in state.data.planets.values() {
-            self.draw_planet(context, planet)?;
+            self.draw_planet(context, planet, state)?;
         }
         for loot in state.data.loots.values() {
             self.draw_loot(context, loot, state)?;
@@ -156,11 +154,12 @@ impl Graphics {
         Ok(())
     }
 
-    fn draw_planet(&self, context: &mut Context, planet: &Planet)
+    fn draw_planet(&self, context: &mut Context, planet: &Planet, state: &State)
         -> GameResult
     {
         draw(
             context,
+            &WorldTransform(&state.camera),
             &self.circle,
             DrawParam::new()
                 .dest(planet.pos)
@@ -179,12 +178,11 @@ impl Graphics {
 
         self.draw_projected_path(context, &craft.body, ship.color, state)?;
 
-        transforms::activate_screen_coordinate_system(context)?;
-
         let pos = state.camera.world_to_screen(context, pos.0);
 
         draw(
             context,
+            &ScreenTransform,
             &self.ship,
             DrawParam::new()
                 .dest(pos)
@@ -213,6 +211,7 @@ impl Graphics {
 
         draw(
             context,
+            &WorldTransform(&state.camera),
             &self.square,
             DrawParam::new()
                 .dest(pos.0)
@@ -228,6 +227,7 @@ impl Graphics {
 
         draw(
             context,
+            &WorldTransform(&state.camera),
             &line,
             DrawParam::new(),
         )?;
@@ -276,6 +276,7 @@ impl Graphics {
             )?;
             draw(
                 context,
+                &WorldTransform(&state.camera),
                 &line,
                 DrawParam::new(),
             )?;
@@ -300,6 +301,7 @@ impl Graphics {
 
         draw(
             context,
+            &WorldTransform(&state.camera),
             &self.circle,
             DrawParam::new()
                 .dest(pos.0)
@@ -324,6 +326,7 @@ impl Graphics {
 
         draw(
             context,
+            &WorldTransform(&state.camera),
             &self.square,
             DrawParam::new()
                 .dest(pos.0)
@@ -341,8 +344,6 @@ impl Graphics {
     )
         -> GameResult
     {
-        transforms::activate_screen_coordinate_system(context)?;
-
         let instructions = format!(
 "Instructions:
 Turn left - {}
@@ -359,6 +360,7 @@ End game - Escape",
 
         draw(
             context,
+            &ScreenTransform,
             &Text::new(instructions),
             DrawParam::new()
                 .dest([20.0, 20.0])
@@ -376,6 +378,7 @@ End game - Escape",
 
             draw(
                 context,
+                &ScreenTransform,
                 &Text::new(frame_time),
                 DrawParam::new()
                     .dest([20.0, 150.0])
@@ -421,6 +424,7 @@ Removals per s: {}",
 
                 draw(
                     context,
+                    &ScreenTransform,
                     &Text::new(diagnostics),
                     DrawParam::new()
                         .dest([20.0, 220.0])
@@ -436,6 +440,7 @@ Removals per s: {}",
 
             draw(
                 context,
+                &ScreenTransform,
                 &Text::new(input_events),
                 DrawParam::new()
                     .dest([20.0, 520.0])
@@ -452,6 +457,7 @@ Removals per s: {}",
 
         draw(
             context,
+            &ScreenTransform,
             &self.pointer,
             DrawParam::new()
                 .dest(input.pointer_screen)
@@ -491,6 +497,7 @@ Heavy Missiles: {}",
 
         draw(
             context,
+            &ScreenTransform,
             &Text::new(status),
             DrawParam::new()
                 .dest([width - 200.0, 20.0])

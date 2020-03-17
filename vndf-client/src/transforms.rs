@@ -7,10 +7,13 @@ use ggez::{
     },
 };
 
-use crate::shared::math::{
-    prelude::*,
-    Pnt2,
-    Vec2,
+use crate::{
+    draw::Transform,
+    shared::math::{
+        prelude::*,
+        Pnt2,
+        Vec2,
+    },
 };
 
 
@@ -87,6 +90,24 @@ impl Camera {
         };
 
         default_world_size_on_screen / self.zoom
+    }
+}
+
+
+pub struct ScreenTransform;
+
+impl Transform for ScreenTransform {
+    fn enable(&self, context: &mut Context) -> GameResult {
+        activate_screen_coordinate_system(context)
+    }
+}
+
+
+pub struct WorldTransform<'r>(pub &'r Camera);
+
+impl Transform for WorldTransform<'_> {
+    fn enable(&self, context: &mut Context) -> GameResult {
+        activate_world_coordinate_system(context, self.0)
     }
 }
 
