@@ -34,8 +34,9 @@ impl Camera {
         -> Pnt2
     {
         let (screen_width, screen_height) = graphics::drawable_size(context);
-        let point_screen_origin_centered =
-            point_screen - Vec2::new(screen_width / 2.0, screen_height / 2.0);
+        let screen_size = Vec2::new(screen_width, screen_height);
+
+        let point_screen_origin_centered = point_screen - screen_size / 2.0;
 
         let world_rect = self.world_size_on_screen(context);
         let point_world = Pnt2::new(
