@@ -178,11 +178,15 @@ impl Graphics {
 
         self.draw_projected_path(context, &craft.body, ship.color, state)?;
 
+        transforms::activate_screen_coordinate_system(context)?;
+
+        let pos = state.camera.world_to_screen(context, pos.0);
+
         graphics::draw(
             context,
             &self.ship,
             DrawParam::new()
-                .dest(pos.0)
+                .dest(pos)
                 .rotation(Vec2::unit_x().angle(body.dir).0)
                 .scale([30.0, 30.0])
                 .color(
