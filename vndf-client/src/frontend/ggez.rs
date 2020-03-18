@@ -1,7 +1,6 @@
 use std::{
     convert::TryInto as _,
     env,
-    io,
 };
 
 use ggez::{
@@ -35,10 +34,7 @@ use log::{
 use crate::{
     game::{
         Game,
-        config::{
-            self,
-            Key,
-        },
+        config::Key,
         input::Input,
         state::State,
     },
@@ -226,27 +222,13 @@ impl EventHandler for Handler {
 
 #[derive(Debug)]
 pub enum Error {
-    Config(config::Error),
     Ggez(GameError),
-    Io(io::Error),
     Net(net::Error),
-}
-
-impl From<config::Error> for Error {
-    fn from(err: config::Error) -> Self {
-        Self::Config(err)
-    }
 }
 
 impl From<GameError> for Error {
     fn from(err: GameError) -> Self {
         Self::Ggez(err)
-    }
-}
-
-impl From<io::Error> for Error {
-    fn from(err: io::Error) -> Self {
-        Self::Io(err)
     }
 }
 
