@@ -34,12 +34,14 @@ use log::{
 };
 
 use crate::{
-    config::{
-        self,
-        Config,
-        Key,
+    game::{
+        State,
+        config::{
+            self,
+            Config,
+            Key,
+        },
     },
-    game::State,
     graphics::Graphics,
     input::Input,
     shared::net::{

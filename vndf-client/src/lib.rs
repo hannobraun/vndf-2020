@@ -1,4 +1,3 @@
-mod config;
 mod draw;
 mod game;
 mod frontend;

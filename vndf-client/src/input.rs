@@ -18,7 +18,7 @@ use time::{
 };
 
 use crate::{
-    config::{
+    game::config::{
         Config,
         Key,
     },
