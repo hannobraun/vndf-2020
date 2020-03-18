@@ -103,7 +103,7 @@ impl Handler {
                 conn:     game.conn,
                 input:    game.input,
                 graphics: Graphics::new(context)?,
-                state:    State::new(),
+                state:    game.state,
             }
         )
     }
