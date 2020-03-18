@@ -3,6 +3,8 @@ pub mod input;
 pub mod state;
 
 
+use std::io;
+
 use crate::shared::net::client::Conn;
 
 use self::{
@@ -17,4 +19,11 @@ pub struct Game {
     pub conn:   Conn,
     pub input:  Input,
     pub state:  State,
+}
+
+
+#[derive(Debug)]
+pub enum Error {
+    Config(config::Error),
+    Io(io::Error),
 }
