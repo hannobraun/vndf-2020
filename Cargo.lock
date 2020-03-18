@@ -2437,6 +2437,7 @@ dependencies = [
  "ggez",
  "log",
  "serde",
+ "structopt",
  "time",
  "toadster",
  "toml",

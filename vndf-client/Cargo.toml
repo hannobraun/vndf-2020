@@ -10,6 +10,7 @@ env_logger = "*"
 ggez       = "*"
 log        = "*"
 serde      = "*"
+structopt  = "*"
 time       = "*"
 toml       = "*"
 
