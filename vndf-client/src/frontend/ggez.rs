@@ -2,7 +2,6 @@ use std::{
     convert::TryInto as _,
     env,
     io,
-    net::ToSocketAddrs,
 };
 
 use ggez::{
@@ -38,7 +37,6 @@ use crate::{
         Game,
         config::{
             self,
-            Config,
             Key,
         },
         input::Input,
@@ -53,12 +51,10 @@ use crate::{
 };
 
 
-pub fn start<A: ToSocketAddrs>(addr: A) -> Result<(), Error> {
+pub fn start(game: Game) -> Result<(), Error> {
     // Force X11 backend to prevent panic.
     // See https://github.com/ggez/ggez/issues/579
     env::set_var("WINIT_UNIX_BACKEND", "x11");
-
-    let config = Config::load()?;
 
     let (mut context, mut event_loop) =
         ContextBuilder::new("vndf", "Hanno Braun")
@@ -76,12 +72,7 @@ pub fn start<A: ToSocketAddrs>(addr: A) -> Result<(), Error> {
             )
             .build()?;
 
-    let input = Input::new(config);
-
-    let     conn    = Conn::connect(addr)?;
-    let     game    = Game { config, conn, input, };
     let mut handler = Handler::new(game, &mut context)?;
-
     run(&mut context, &mut event_loop, &mut handler)?;
 
     Ok(())

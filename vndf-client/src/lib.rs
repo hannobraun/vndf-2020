@@ -8,16 +8,41 @@ mod transforms;
 pub use vndf_shared as shared;
 
 
-use std::net::ToSocketAddrs;
+use std::{
+    io,
+    net::ToSocketAddrs,
+};
+
+use crate::{
+    game::{
+        Game,
+        config::{
+            self,
+            Config,
+        },
+        input::Input,
+    },
+    shared::net::client::Conn,
+};
 
 
 pub fn start<A: ToSocketAddrs>(addr: A) -> Result<(), Error> {
-    frontend::ggez::start(addr)
+    let config = Config::load()
+        .map_err(|err| Error::Config(err))?;
+    let conn = Conn::connect(addr)
+        .map_err(|err| Error::Io(err))?;
+    let input = Input::new(config);
+
+    let game = Game { config, conn, input, };
+
+    frontend::ggez::start(game)
         .map_err(|err| Error::Ggez(err))
 }
 
 
 #[derive(Debug)]
 pub enum Error {
+    Config(config::Error),
     Ggez(frontend::ggez::Error),
+    Io(io::Error),
 }
