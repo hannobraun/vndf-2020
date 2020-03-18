@@ -13,12 +13,23 @@ use std::net::ToSocketAddrs;
 use crate::game::Game;
 
 
-pub fn start<A: ToSocketAddrs>(addr: A) -> Result<(), Error> {
+pub fn start<A: ToSocketAddrs>(addr: A, frontend: Frontend)
+    -> Result<(), Error>
+{
     let game = Game::init(addr)
         .map_err(Error::Game)?;
 
-    frontend::ggez::start(game)
-        .map_err(|err| Error::Ggez(err))
+    match frontend {
+        Frontend::Ggez => {
+            frontend::ggez::start(game)
+                .map_err(|err| Error::Ggez(err))
+        }
+    }
+}
+
+
+pub enum Frontend {
+    Ggez,
 }
 
 

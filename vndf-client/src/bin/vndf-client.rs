@@ -19,7 +19,7 @@ fn main() -> Result<(), Error> {
     let     addr   = server.addr();
 
     thread::spawn(move || main_loop(|| server.update()));
-    client::start(addr)
+    client::start(addr, client::Frontend::Ggez)
         .map_err(|err| Error::Run(err))
 }
 
