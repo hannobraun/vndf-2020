@@ -112,7 +112,7 @@ impl Game {
         conn.send(msg::FromClient::Hello { color })?;
 
         Ok(
-            Game {
+            Self {
                 conn,
                 input,
                 graphics: Graphics::new(context)?,
