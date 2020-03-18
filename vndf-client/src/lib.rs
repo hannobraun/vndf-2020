@@ -9,12 +9,15 @@ mod transforms;
 
 pub use vndf_shared as shared;
 
-pub use self::frontend::ggez::Error;
-
 
 use std::net::ToSocketAddrs;
 
 
 pub fn start<A: ToSocketAddrs>(addr: A) -> Result<(), Error> {
     frontend::ggez::start(addr)
+        .map_err(|err| Error(err))
 }
+
+
+#[derive(Debug)]
+pub struct Error(frontend::ggez::Error);
