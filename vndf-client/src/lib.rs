@@ -13,9 +13,11 @@ use std::net::ToSocketAddrs;
 
 pub fn start<A: ToSocketAddrs>(addr: A) -> Result<(), Error> {
     frontend::ggez::start(addr)
-        .map_err(|err| Error(err))
+        .map_err(|err| Error::Ggez(err))
 }
 
 
 #[derive(Debug)]
-pub struct Error(frontend::ggez::Error);
+pub enum Error {
+    Ggez(frontend::ggez::Error),
+}
