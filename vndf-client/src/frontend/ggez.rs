@@ -77,10 +77,10 @@ pub fn start<A: ToSocketAddrs>(addr: A) -> Result<(), Error> {
 
     let input = Input::new(config);
 
-    let     conn = Conn::connect(addr)?;
-    let mut game = Handler::new(conn, input, config, &mut context)?;
+    let     conn    = Conn::connect(addr)?;
+    let mut handler = Handler::new(conn, input, config, &mut context)?;
 
-    run(&mut context, &mut event_loop, &mut game)?;
+    run(&mut context, &mut event_loop, &mut handler)?;
 
     Ok(())
 }
