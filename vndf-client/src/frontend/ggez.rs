@@ -35,6 +35,7 @@ use log::{
 
 use crate::{
     game::{
+        Game,
         config::{
             self,
             Config,
@@ -78,7 +79,8 @@ pub fn start<A: ToSocketAddrs>(addr: A) -> Result<(), Error> {
     let input = Input::new(config);
 
     let     conn    = Conn::connect(addr)?;
-    let mut handler = Handler::new(conn, input, config, &mut context)?;
+    let     game    = Game { config, conn, input, };
+    let mut handler = Handler::new(game, &mut context)?;
 
     run(&mut context, &mut event_loop, &mut handler)?;
 
@@ -95,26 +97,24 @@ pub struct Handler {
 
 impl Handler {
     pub fn new(
-        conn:    Conn,
-        input:   Input,
-        config:  Config,
+        game:    Game,
         context: &mut Context,
     )
         -> Result<Self, Error>
     {
-        let mut conn = conn;
+        let mut game = game;
 
         let color = [
-            config.color.r,
-            config.color.g,
-            config.color.b,
+            game.config.color.r,
+            game.config.color.g,
+            game.config.color.b,
         ];
-        conn.send(msg::FromClient::Hello { color })?;
+        game.conn.send(msg::FromClient::Hello { color })?;
 
         Ok(
             Self {
-                conn,
-                input,
+                conn:     game.conn,
+                input:    game.input,
                 graphics: Graphics::new(context)?,
                 state:    State::new(),
             }
