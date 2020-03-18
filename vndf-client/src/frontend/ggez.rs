@@ -40,10 +40,10 @@ use crate::{
             Config,
             Key,
         },
+        input::Input,
         state::State,
     },
     graphics::Graphics,
-    input::Input,
     shared::net::{
         self,
         client::Conn,

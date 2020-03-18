@@ -6,7 +6,7 @@ use time::{
 };
 
 use crate::{
-    input::Input,
+    game::input::Input,
     shared::{
         data,
         game::{

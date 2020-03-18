@@ -19,8 +19,10 @@ use crate::{
         draw,
         DrawParam,
     },
-    game::state::State,
-    input::Input,
+    game::{
+        input::Input,
+        state::State,
+    },
     shared::{
         game::{
             explosions::Explosion,

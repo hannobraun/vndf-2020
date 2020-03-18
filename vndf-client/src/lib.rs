@@ -2,7 +2,6 @@ mod draw;
 mod game;
 mod frontend;
 mod graphics;
-mod input;
 mod transforms;
 
 
