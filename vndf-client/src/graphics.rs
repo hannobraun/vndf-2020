@@ -19,7 +19,7 @@ use crate::{
         draw,
         DrawParam,
     },
-    game::State,
+    game::state::State,
     input::Input,
     shared::{
         game::{

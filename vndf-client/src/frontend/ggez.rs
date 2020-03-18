@@ -35,12 +35,12 @@ use log::{
 
 use crate::{
     game::{
-        State,
         config::{
             self,
             Config,
             Key,
         },
+        state::State,
     },
     graphics::Graphics,
     input::Input,
