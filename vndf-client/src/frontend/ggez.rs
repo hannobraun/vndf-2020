@@ -78,7 +78,7 @@ pub fn start<A: ToSocketAddrs>(addr: A) -> Result<(), Error> {
     let input = Input::new(config);
 
     let     conn = Conn::connect(addr)?;
-    let mut game = Game::new(conn, input, config, &mut context)?;
+    let mut game = Handler::new(conn, input, config, &mut context)?;
 
     run(&mut context, &mut event_loop, &mut game)?;
 
@@ -86,14 +86,14 @@ pub fn start<A: ToSocketAddrs>(addr: A) -> Result<(), Error> {
 }
 
 
-pub struct Game {
+pub struct Handler {
     conn:     Conn,
     graphics: Graphics,
     input:    Input,
     state:    State,
 }
 
-impl Game {
+impl Handler {
     pub fn new(
         conn:    Conn,
         input:   Input,
@@ -122,7 +122,7 @@ impl Game {
     }
 }
 
-impl EventHandler for Game {
+impl EventHandler for Handler {
     fn mouse_button_down_event(&mut self,
         context: &mut Context,
         button:  MouseButton,
