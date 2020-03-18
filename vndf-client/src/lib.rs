@@ -24,7 +24,8 @@ pub fn start<A: ToSocketAddrs>(addr: A, frontend: Frontend)
 
     match frontend {
         Frontend::Bespoke => {
-            Ok(frontend::bespoke::start(game))
+            frontend::bespoke::start(game)
+                .map_err(Error::Bespoke)
         }
         Frontend::Ggez => {
             frontend::ggez::start(game)
@@ -54,6 +55,7 @@ impl FromStr for Frontend {
 
 #[derive(Debug)]
 pub enum Error {
+    Bespoke(frontend::bespoke::Error),
     Game(game::Error),
     Ggez(frontend::ggez::Error),
 }
