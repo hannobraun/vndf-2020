@@ -20,6 +20,9 @@ pub fn start<A: ToSocketAddrs>(addr: A, frontend: Frontend)
         .map_err(Error::Game)?;
 
     match frontend {
+        Frontend::Bespoke => {
+            Ok(frontend::bespoke::start(game))
+        }
         Frontend::Ggez => {
             frontend::ggez::start(game)
                 .map_err(|err| Error::Ggez(err))
@@ -29,6 +32,7 @@ pub fn start<A: ToSocketAddrs>(addr: A, frontend: Frontend)
 
 
 pub enum Frontend {
+    Bespoke,
     Ggez,
 }
 
