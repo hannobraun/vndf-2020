@@ -35,13 +35,10 @@ use crate::{
     game::{
         Game,
         config::Key,
-        input::Input,
-        state::State,
     },
     graphics::Graphics,
     shared::net::{
         self,
-        client::Conn,
         msg,
     },
 };
@@ -76,10 +73,8 @@ pub fn start(game: Game) -> Result<(), Error> {
 
 
 pub struct Handler {
-    conn:     Conn,
+    game:     Game,
     graphics: Graphics,
-    input:    Input,
-    state:    State,
 }
 
 impl Handler {
@@ -100,10 +95,8 @@ impl Handler {
 
         Ok(
             Self {
-                conn:     game.conn,
-                input:    game.input,
+                game,
                 graphics: Graphics::new(context)?,
-                state:    game.state,
             }
         )
     }
@@ -116,7 +109,7 @@ impl EventHandler for Handler {
         _x:      f32,
         _y:      f32,
     ) {
-        self.input.key_down(context, Key::Mouse(button));
+        self.game.input.key_down(context, Key::Mouse(button));
     }
 
     fn mouse_button_up_event(&mut self,
@@ -125,7 +118,7 @@ impl EventHandler for Handler {
         _x:     f32,
         _y:     f32,
     ) {
-        self.input.key_up(Key::Mouse(button));
+        self.game.input.key_up(Key::Mouse(button));
     }
 
     fn mouse_motion_event(&mut self,
@@ -135,7 +128,7 @@ impl EventHandler for Handler {
         _dx:     f32,
         _dy:     f32,
     ) {
-        self.input.mouse_motion(context, x, y, &self.state.camera);
+        self.game.input.mouse_motion(context, x, y, &self.game.state.camera);
     }
 
     fn mouse_wheel_event(&mut self,
@@ -143,7 +136,7 @@ impl EventHandler for Handler {
         _x: f32,
         y:  f32,
     ) {
-        self.input.mouse_wheel(y);
+        self.game.input.mouse_wheel(y);
     }
 
     fn key_down_event(&mut self,
@@ -156,7 +149,7 @@ impl EventHandler for Handler {
             quit(context);
         }
 
-        self.input.key_down(context, Key::Keyboard(key_code));
+        self.game.input.key_down(context, Key::Keyboard(key_code));
     }
 
     fn key_up_event(&mut self,
@@ -164,36 +157,36 @@ impl EventHandler for Handler {
         key_code: KeyCode,
         _:        KeyMods,
     ) {
-        self.input.key_up(Key::Keyboard(key_code));
+        self.game.input.key_up(Key::Keyboard(key_code));
     }
 
     fn update(&mut self, context: &mut Context) -> GameResult {
-        for event in self.input.events.unsent() {
-            self.conn.send(msg::FromClient::Action(event))
+        for event in self.game.input.events.unsent() {
+            self.game.conn.send(msg::FromClient::Action(event))
                 .expect("Failed to send input event");
         }
 
-        for message in self.conn.incoming() {
+        for message in self.game.conn.incoming() {
             match message {
                 Ok(msg::FromServer::Ping) => {
                     // This message is just for testing purposes. Nothing to do
                     // here.
                 }
                 Ok(msg::FromServer::Welcome(id)) => {
-                    self.state.own_id = Some(id);
+                    self.game.state.own_id = Some(id);
                 }
                 Ok(msg::FromServer::UpdateComponent(component)) => {
                     debug!("Update component: {:?}", component);
-                    self.state.update_component(component);
+                    self.game.state.update_component(component);
                 }
                 Ok(msg::FromServer::RemoveComponent(handle)) => {
-                    self.state.remove_component(&handle);
+                    self.game.state.remove_component(&handle);
                 }
                 Ok(msg::FromServer::InputHandled { seq }) => {
-                    self.input.events.handled(seq);
+                    self.game.input.events.handled(seq);
                 }
                 Ok(msg::FromServer::Diagnostics(diagnostics)) => {
-                    self.state.diagnostics = Some(diagnostics);
+                    self.game.state.diagnostics = Some(diagnostics);
                 }
                 Err(err) => {
                     error!("Connection error: {:?}", err);
@@ -208,14 +201,14 @@ impl EventHandler for Handler {
 
     fn draw(&mut self, context: &mut Context) -> GameResult {
         let dt = timer::delta(context);
-        self.state.frame_time.push(dt.try_into().unwrap());
+        self.game.state.frame_time.push(dt.try_into().unwrap());
 
-        self.input.events.limit();
+        self.game.input.events.limit();
 
         let dt = timer::duration_to_f64(dt) as f32;
-        self.state.update(dt, &self.input);
+        self.game.state.update(dt, &self.game.input);
 
-        self.graphics.draw(context, &self.input, &self.state)
+        self.graphics.draw(context, &self.game.input, &self.game.state)
     }
 }
 
