@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-SHADERS=vndf-client/src/frontend/bespoke/shaders
+SHADERS=vndf-client/src/frontends/bespoke/shaders
 
 glslc \
     -fshader-stage=vertex \
