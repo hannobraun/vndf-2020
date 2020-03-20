@@ -5,6 +5,9 @@ use vndf_client as client;
 
 #[derive(StructOpt)]
 struct Options {
+    #[structopt(default_value = "ggez", short, long)]
+    frontend: client::Frontend,
+
     #[structopt(short, long)]
     local: bool,
 }
@@ -27,5 +30,5 @@ fn main() -> Result<(), client::Error> {
         "reineke.hannobraun.de"
     };
 
-    client::start((addr, 34480))
+    client::start((addr, 34480), options.frontend)
 }
