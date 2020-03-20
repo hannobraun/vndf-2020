@@ -1,6 +1,6 @@
 mod draw;
 mod game;
-mod frontend;
+mod frontends;
 mod graphics;
 mod transforms;
 
@@ -24,11 +24,11 @@ pub fn start<A: ToSocketAddrs>(addr: A, frontend: Frontend)
 
     match frontend {
         Frontend::Bespoke => {
-            frontend::bespoke::start(game)
+            frontends::bespoke::start(game)
                 .map_err(Error::Bespoke)
         }
         Frontend::Ggez => {
-            frontend::ggez::start(game)
+            frontends::ggez::start(game)
                 .map_err(|err| Error::Ggez(err))
         }
     }
@@ -55,7 +55,7 @@ impl FromStr for Frontend {
 
 #[derive(Debug)]
 pub enum Error {
-    Bespoke(frontend::bespoke::Error),
+    Bespoke(frontends::bespoke::Error),
     Game(game::Error),
-    Ggez(frontend::ggez::Error),
+    Ggez(frontends::ggez::Error),
 }
