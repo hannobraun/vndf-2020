@@ -12,10 +12,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Install ALSA (required by ggez dependency)
-      run: sudo apt-get install libasound2-dev
-    - name: Install libudev (required by ggez dependency)
-      run: sudo apt-get install libudev-dev
+    - name: Install dependencies required by ggez
+      run: sudo apt-get install libasound2-dev libudev-dev
     - uses: actions/checkout@v2
     - name: Build code and run tests
       run: ./scripts/build-all-and-test.sh
