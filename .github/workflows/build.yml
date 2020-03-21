@@ -12,6 +12,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Install ALSA
+      run: apt install libasound2-dev
     - uses: actions/checkout@v2
     - name: Build code and run tests
       run: ./scripts/build-all-and-test.sh
