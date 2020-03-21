@@ -13,7 +13,7 @@ jobs:
 
     steps:
     - name: Install ALSA
-      run: apt-get install libasound2-dev
+      run: sudo apt-get install libasound2-dev
     - uses: actions/checkout@v2
     - name: Build code and run tests
       run: ./scripts/build-all-and-test.sh
