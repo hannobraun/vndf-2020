@@ -13,8 +13,14 @@ serde      = "*"
 structopt  = "*"
 time       = "*"
 toml       = "*"
-wgpu       = "*"
-winit      = "*"
+
+[dependencies.wgpu]
+version  = "*"
+optional = true
+
+[dependencies.winit]
+version  = "*"
+optional = true
 
 [dependencies.toadster]
 path = "../toadster"
@@ -24,3 +30,7 @@ path = "../vndf-server"
 
 [dependencies.vndf-shared]
 path = "../vndf-shared"
+
+
+[features]
+bespoke = ["wgpu", "winit"]

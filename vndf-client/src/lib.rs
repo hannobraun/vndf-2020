@@ -23,6 +23,7 @@ pub fn start<A: ToSocketAddrs>(addr: A, frontend: Frontend)
         .map_err(Error::Game)?;
 
     match frontend {
+        #[cfg(feature = "bespoke")]
         Frontend::Bespoke => {
             frontends::bespoke::start(game)
                 .map_err(Error::Bespoke)
@@ -36,6 +37,7 @@ pub fn start<A: ToSocketAddrs>(addr: A, frontend: Frontend)
 
 
 pub enum Frontend {
+    #[cfg(feature = "bespoke")]
     Bespoke,
     Ggez,
 }
@@ -45,6 +47,7 @@ impl FromStr for Frontend {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
+            #[cfg(feature = "bespoke")]
             "bespoke" => Ok(Self::Bespoke),
             "ggez"    => Ok(Self::Ggez),
             s         => Err(format!("`{}` is not a valid frontend", s)),
@@ -55,6 +58,7 @@ impl FromStr for Frontend {
 
 #[derive(Debug)]
 pub enum Error {
+    #[cfg(feature = "bespoke")]
     Bespoke(frontends::bespoke::Error),
     Game(game::Error),
     Ggez(frontends::ggez::Error),
