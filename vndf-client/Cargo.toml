@@ -14,13 +14,9 @@ structopt  = "*"
 time       = "*"
 toml       = "*"
 
-[dependencies.wgpu]
-version  = "*"
-optional = true
-
-[dependencies.winit]
-version  = "*"
-optional = true
+[target.'cfg(not(windows))'.dependencies]
+wgpu  = "*"
+winit = "*"
 
 [dependencies.toadster]
 path = "../toadster"
@@ -30,7 +26,3 @@ path = "../vndf-server"
 
 [dependencies.vndf-shared]
 path = "../vndf-shared"
-
-
-[features]
-bespoke = ["wgpu", "winit"]
