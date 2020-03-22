@@ -1,4 +1,4 @@
-# Von Neumann Defense Force ![.github/workflows/build-test-release-deploy.yml](https://github.com/hannobraun/vndf/workflows/.github/workflows/build-test-release-deploy.yml/badge.svg)
+# Von Neumann Defense Force ![Build, Test, Release, Deploy](https://github.com/hannobraun/vndf/workflows/Build,%20Test,%20Release,%20Deploy/badge.svg)
 
 ## About
 
