@@ -53,3 +53,27 @@ jobs:
         asset_path: target/release-binaries/vndf-launcher-x86_64-unknown-linux-gnu.bin
         asset_name: Linux Client (x86_64)
         asset_content_type: application/octet-stream
+
+  deploy_windows_client:
+    runs-on: windows-latest
+    needs: build_test_release
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/download-artifact@v1
+      with:
+        name: upload-url
+    - run: echo "::set-env name=UPLOAD_URL::$(cat upload-url/upload-url)"
+      shell: bash
+    - name: Build Windows client
+      run: ./scripts/build-windows-client.sh
+      shell: bash
+    - name: Add Windows client to release
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ env.UPLOAD_URL }}
+        asset_path: target/release-binaries/vndf-launcher-x86_64-pc-windows-msvc.exe
+        asset_name: Windows Client (x86_64)
+        asset_content_type: application/octet-stream
