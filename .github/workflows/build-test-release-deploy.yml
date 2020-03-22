@@ -27,7 +27,7 @@ jobs:
         tag_name: ${{ env.VERSION }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - run: echo "::set-env name=UPLOAD_URL::${{ steps.create-release.outputs.upload_url }})"
+    - run: echo "::set-env name=UPLOAD_URL::${{ steps.create-release.outputs.upload_url }}"
 
   deploy_linux_client:
     runs-on: ubuntu-latest
