@@ -6,9 +6,6 @@ on:
   pull_request:
     branches: [ master ]
 
-env:
-  UPLOAD_URL: "" # will be set when the release is created
-
 jobs:
   build_test_release:
     runs-on: ubuntu-latest
@@ -27,7 +24,11 @@ jobs:
         tag_name: ${{ env.VERSION }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - run: echo "::set-env name=UPLOAD_URL::${{ steps.create-release.outputs.upload_url }}"
+    - run:  echo "${{ steps.create-release.outputs.upload_url }}" > target/upload_url
+    - uses: actions/upload-artifact@v1
+      with:
+        name: upload-url
+        path: target/upload-url
 
   deploy_linux_client:
     runs-on: ubuntu-latest
@@ -36,6 +37,10 @@ jobs:
     - name: Install dependencies required by ggez
       run: sudo apt-get install libasound2-dev libudev-dev
     - uses: actions/checkout@v2
+    - uses: actions/download-artifact@v1
+      with:
+        name: upload-url
+    - run: echo "::set-env name=UPLOAD_URL::$(cat upload-url)"
     - name: Build Linux client
       run: ./scripts/build-linux-client.sh
     - name: Add Linux client to release
