@@ -24,7 +24,7 @@ jobs:
         tag_name: ${{ env.VERSION }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - run:  echo "${{ steps.create-release.outputs.upload_url }}" > target/upload_url
+    - run:  echo "${{ steps.create-release.outputs.upload_url }}" > target/upload-url
     - uses: actions/upload-artifact@v1
       with:
         name: upload-url
