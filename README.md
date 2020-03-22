@@ -1,4 +1,4 @@
-# Von Neumann Defense Force
+# Von Neumann Defense Force ![Build, Test, Release](https://github.com/hannobraun/vndf/workflows/Build,%20Test,%20Release/badge.svg)
 
 ## About
 
