@@ -1,0 +1,26 @@
+name: Deploy clients
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  deploy_linux_client:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Install dependencies required by ggez
+      run: sudo apt-get install libasound2-dev libudev-dev
+    - uses: actions/checkout@v2
+    - name: Build Linux client
+      run: ./scripts/build-linux-client.sh
+    - name: Add Linux client to release
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ${{ env.LINUX_CLIENT }}
+        asset_name: vndf-launcher-x86_64-unknown-linux-gnu.bin
