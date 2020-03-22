@@ -2,7 +2,7 @@ name: Deploy clients
 
 on:
   release:
-    types: [created]
+    types: [ published ]
 
 jobs:
   deploy_linux_client:
