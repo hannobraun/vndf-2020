@@ -40,7 +40,7 @@ jobs:
     - uses: actions/download-artifact@v1
       with:
         name: upload-url
-    - run: echo "::set-env name=UPLOAD_URL::$(cat upload-url)"
+    - run: echo "::set-env name=UPLOAD_URL::$(cat upload-url/upload-url)"
     - name: Build Linux client
       run: ./scripts/build-linux-client.sh
     - name: Add Linux client to release
