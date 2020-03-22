@@ -6,10 +6,10 @@ on:
   pull_request:
     branches: [ master ]
 
-jobs:
-  env:
-    UPLOAD_URL: "" # will be set when the release is created
+env:
+  UPLOAD_URL: "" # will be set when the release is created
 
+jobs:
   build_test_release:
     runs-on: ubuntu-latest
     steps:
