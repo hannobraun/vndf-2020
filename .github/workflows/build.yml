@@ -17,3 +17,11 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build code and run tests
       run: ./scripts/build-all-and-test.sh
+    - name: Generate version name for release
+      run: echo "::set-env name=VERSION::v$(date --utc +%Y%m%d-%H%M%S)"
+    - name: Create tag and release
+      uses: avakar/tag-and-release@v1
+      with:
+        tag_name: ${{ env.VERSION }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
