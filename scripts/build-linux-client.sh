@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 set -e
 
-cargo build --release --package=vndf-launcher
-echo "::set-env name=LINUX_CLIENT::target/release/vndf-launcher"
+TARGET=x86_64-unknown-linux-gnu
+
+cargo build --release --package=vndf-launcher --target=$TARGET
+
+mkdir -p target/release-binaries
+mv target/release/vndf-launcher \
+    target/release-binaries/vndf-launcher-$TARGET.bin
