@@ -6,5 +6,5 @@ TARGET=x86_64-unknown-linux-gnu
 cargo build --release --package=vndf-launcher --target=$TARGET
 
 mkdir -p target/release-binaries
-mv target/release/vndf-launcher \
+mv target/$TARGET/release/vndf-launcher \
     target/release-binaries/vndf-launcher-$TARGET.bin
