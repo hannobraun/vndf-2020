@@ -51,7 +51,7 @@ jobs:
       with:
         upload_url: ${{ env.UPLOAD_URL }}
         asset_path: target/release-binaries/vndf-launcher-x86_64-unknown-linux-gnu.bin
-        asset_name: Linux Client (x86_64)
+        asset_name: vndf-launcher-x86_64-unknown-linux-gnu.bin
         asset_content_type: application/octet-stream
 
   deploy_windows_client:
@@ -75,5 +75,5 @@ jobs:
       with:
         upload_url: ${{ env.UPLOAD_URL }}
         asset_path: target/release-binaries/vndf-launcher-x86_64-pc-windows-msvc.exe
-        asset_name: Windows Client (x86_64)
+        asset_name: vndf-launcher-x86_64-pc-windows-msvc.exe
         asset_content_type: application/octet-stream
