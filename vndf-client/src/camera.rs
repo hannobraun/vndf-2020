@@ -56,10 +56,10 @@ impl Camera {
             Pnt2::new(
                 point_screen_origin_centered.0.x
                     * world_rect.0.x
-                    / screen_width,
+                    / screen_size.0.x,
                 point_screen_origin_centered.0.y
                     * world_rect.0.y
-                    / screen_height,
+                    / screen_size.0.y,
             )
         );
 
@@ -82,8 +82,8 @@ impl Camera {
         let world_rect = self.world_size_on_screen(context);
         let point_screen_origin_centered = Screen(
             Pnt2::new(
-                point_camera.0.x * screen_width  / world_rect.0.x,
-                point_camera.0.y * screen_height / world_rect.0.y,
+                point_camera.0.x * screen_size.0.x / world_rect.0.x,
+                point_camera.0.y * screen_size.0.y / world_rect.0.y,
             )
         );
 
