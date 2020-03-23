@@ -2,7 +2,6 @@ use ggez::{
     Context,
     GameResult,
     graphics::{
-        self,
         DrawMode,
         Mesh,
         Text,
@@ -126,12 +125,12 @@ impl Graphics {
     )
         -> GameResult
     {
-        graphics::clear(context, [0.0, 0.0, 0.15, 1.0].into());
+        ggez::graphics::clear(context, [0.0, 0.0, 0.15, 1.0].into());
 
         self.draw_world(context, state)?;
         self.draw_ui(context, input, state)?;
 
-        graphics::present(context)?;
+        ggez::graphics::present(context)?;
         Ok(())
     }
 
@@ -505,7 +504,7 @@ Removals per s: {}",
             return Ok(false);
         }
 
-        let (width, _) = graphics::drawable_size(context);
+        let (width, _) = ggez::graphics::drawable_size(context);
 
         let status = format!("Ship Status
 Structural Integrity: {:.2}
