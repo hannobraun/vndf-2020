@@ -22,6 +22,7 @@ use crate::{
         input::Input,
         state::State,
     },
+    graphics,
     shared::{
         game::{
             explosions::Explosion,
@@ -125,7 +126,9 @@ impl Graphics {
     )
         -> GameResult
     {
-        ggez::graphics::clear(context, [0.0, 0.0, 0.15, 1.0].into());
+        let c = graphics::BACKGROUND_COLOR;
+        let c = [c.r as f32, c.g as f32, c.b as f32, c.a as f32];
+        ggez::graphics::clear(context, c.into());
 
         self.draw_world(context, state)?;
         self.draw_ui(context, input, state)?;

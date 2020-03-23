@@ -15,7 +15,10 @@ use winit::{
     window::WindowBuilder,
 };
 
-use crate::game::Game;
+use crate::{
+    game::Game,
+    graphics,
+};
 
 
 pub fn start(_: Game) -> Result<(), Error> {
@@ -148,12 +151,6 @@ pub fn start(_: Game) -> Result<(), Error> {
                 );
 
                 {
-                    let background_color = wgpu::Color {
-                        r: 0.0,
-                        g: 0.0,
-                        b: 0.15,
-                        a: 1.0,
-                    };
                     let mut render_pass = encoder.begin_render_pass(
                         &wgpu::RenderPassDescriptor {
                             color_attachments: &[
@@ -162,7 +159,7 @@ pub fn start(_: Game) -> Result<(), Error> {
                                     resolve_target: None,
                                     load_op:        wgpu::LoadOp::Clear,
                                     store_op:       wgpu::StoreOp::Store,
-                                    clear_color:    background_color,
+                                    clear_color:    graphics::BACKGROUND_COLOR,
                                 }
                             ],
                             depth_stencil_attachment: None,
