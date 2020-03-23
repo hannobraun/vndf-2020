@@ -1,3 +1,6 @@
+mod graphics;
+
+
 use std::{
     convert::TryInto as _,
     env,
@@ -36,12 +39,13 @@ use crate::{
         Game,
         config::Key,
     },
-    graphics::Graphics,
     shared::net::{
         self,
         msg,
     },
 };
+
+use self::graphics::Graphics;
 
 
 pub fn start(game: Game) -> Result<(), Error> {
