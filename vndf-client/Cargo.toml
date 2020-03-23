@@ -13,10 +13,8 @@ serde      = "*"
 structopt  = "*"
 time       = "*"
 toml       = "*"
-
-[target.'cfg(not(windows))'.dependencies]
-wgpu  = "*"
-winit = "*"
+wgpu       = "*"
+winit      = "*"
 
 [dependencies.toadster]
 path = "../toadster"
