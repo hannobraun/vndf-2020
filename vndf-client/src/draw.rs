@@ -12,13 +12,13 @@ use ggez::{
 };
 
 use crate::{
+    camera::{
+        Screen,
+        World,
+    },
     shared::math::{
         Pnt2,
         Vec2,
-    },
-    transforms::{
-        Screen,
-        World,
     },
 };
 

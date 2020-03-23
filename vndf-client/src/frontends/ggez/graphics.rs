@@ -14,6 +14,11 @@ use toadster::{
 };
 
 use crate::{
+    camera::{
+        Screen,
+        ScreenTransform,
+        WorldTransform,
+    },
     draw::{
         draw,
         DrawParam,
@@ -40,11 +45,6 @@ use crate::{
             Pnt2,
             Vec2,
         }
-    },
-    transforms::{
-        Screen,
-        ScreenTransform,
-        WorldTransform,
     },
 };
 

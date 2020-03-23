@@ -18,6 +18,11 @@ use time::{
 };
 
 use crate::{
+    camera::{
+        Camera,
+        Screen,
+        World,
+    },
     game::config::{
         Config,
         Key,
@@ -29,11 +34,6 @@ use crate::{
             Rotation,
         },
         math::Pnt2,
-    },
-    transforms::{
-        Camera,
-        Screen,
-        World,
     },
 };
 
