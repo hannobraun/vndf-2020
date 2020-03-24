@@ -10,6 +10,7 @@ use std::{
 
 use ggez::{
     Context,
+    graphics,
     input::keyboard::is_key_repeated,
 };
 use time::{
@@ -33,7 +34,10 @@ use crate::{
             EventKind,
             Rotation,
         },
-        math::Pnt2,
+        math::{
+            Pnt2,
+            Vec2,
+        },
     },
 };
 
@@ -72,8 +76,11 @@ impl Input {
         self.pointer_screen.0.x = x;
         self.pointer_screen.0.y = y;
 
+        let (screen_width, screen_height) = graphics::drawable_size(context);
+        let screen_size = Screen(Vec2::new(screen_width, screen_height));
+
         self.pointer_world = camera.screen_to_world(
-            context,
+            screen_size,
             self.pointer_screen,
         );
     }
