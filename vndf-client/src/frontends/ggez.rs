@@ -230,7 +230,7 @@ impl EventHandler for Handler {
         let dt = timer::duration_to_f64(dt) as f32;
         self.game.state.update(dt, &self.game.input);
 
-        self.graphics.draw(context, &self.game.input, &self.game.state)
+        self.graphics.draw(context, &self.game)
     }
 }
 

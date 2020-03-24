@@ -23,10 +23,7 @@ use crate::{
         draw,
         DrawParam,
     },
-    game::{
-        input,
-        state::State,
-    },
+    game::Game,
     graphics,
     shared::{
         game::{
@@ -121,8 +118,7 @@ impl Graphics {
 
     pub fn draw(&self,
         context: &mut Context,
-        input:   &input::Handler,
-        state:   &State,
+        game:    &Game,
     )
         -> GameResult
     {
@@ -130,8 +126,8 @@ impl Graphics {
         let c = [c.r as f32, c.g as f32, c.b as f32, c.a as f32];
         ggez::graphics::clear(context, c.into());
 
-        self.draw_world(context, state)?;
-        self.draw_ui(context, input, state)?;
+        self.draw_world(context, game)?;
+        self.draw_ui(context, game)?;
 
         ggez::graphics::present(context)?;
         Ok(())
@@ -139,35 +135,35 @@ impl Graphics {
 
     fn draw_world(&self,
         context: &mut Context,
-        state:   &State,
+        game:    &Game,
     )
         -> GameResult
     {
-        for planet in state.data.planets.values() {
-            self.draw_planet(context, planet, state)?;
+        for planet in game.state.data.planets.values() {
+            self.draw_planet(context, planet, game)?;
         }
-        for loot in state.data.loots.values() {
-            self.draw_loot(context, loot, state)?;
+        for loot in game.state.data.loots.values() {
+            self.draw_loot(context, loot, game)?;
         }
-        for ship in state.data.ships.values() {
-            self.draw_ship(context, ship, state)?;
+        for ship in game.state.data.ships.values() {
+            self.draw_ship(context, ship, game)?;
         }
-        for missile in state.data.missiles.values() {
-            self.draw_missile(context, missile, state)?;
+        for missile in game.state.data.missiles.values() {
+            self.draw_missile(context, missile, game)?;
         }
-        for explosion in state.data.explosions.values() {
-            self.draw_explosion(context, explosion, state)?;
+        for explosion in game.state.data.explosions.values() {
+            self.draw_explosion(context, explosion, game)?;
         }
 
         Ok(())
     }
 
-    fn draw_planet(&self, context: &mut Context, planet: &Planet, state: &State)
+    fn draw_planet(&self, context: &mut Context, planet: &Planet, game: &Game)
         -> GameResult
     {
         draw(
             context,
-            &WorldTransform(&state.camera),
+            &WorldTransform(&game.state.camera),
             &self.circle,
             DrawParam::world()
                 .dest(planet.pos)
@@ -177,16 +173,16 @@ impl Graphics {
         Ok(())
     }
 
-    fn draw_ship(&self, context: &mut Context, ship: &Ship, state: &State)
+    fn draw_ship(&self, context: &mut Context, ship: &Ship, game: &Game)
         -> GameResult<bool>
     {
-        let craft = get!(state.data.crafts, &ship.craft);
-        let body  = get!(state.data.bodies, &craft.body);
-        let pos   = get!(state.data.positions, &body.pos);
+        let craft = get!(game.state.data.crafts, &ship.craft);
+        let body  = get!(game.state.data.bodies, &craft.body);
+        let pos   = get!(game.state.data.positions, &body.pos);
 
-        self.draw_projected_path(context, &craft.body, ship.color, state)?;
+        self.draw_projected_path(context, &craft.body, ship.color, game)?;
 
-        let pos = state.camera.world_to_screen(
+        let pos = game.state.camera.world_to_screen(
             screen_size(context),
             pos,
         );
@@ -208,20 +204,20 @@ impl Graphics {
     fn draw_missile(&self,
         context: &mut Context,
         missile: &Missile,
-        state:   &State,
+        game:    &Game,
     )
         -> GameResult<bool>
     {
-        let craft  = get!(state.data.crafts, &missile.craft);
-        let target = get!(state.data.targets, &missile.target);
-        let body   = get!(state.data.bodies, &craft.body);
-        let pos    = get!(state.data.positions, &body.pos);
+        let craft  = get!(game.state.data.crafts, &missile.craft);
+        let target = get!(game.state.data.targets, &missile.target);
+        let body   = get!(game.state.data.bodies, &craft.body);
+        let pos    = get!(game.state.data.positions, &body.pos);
 
-        let pos = state.camera.world_to_screen(
+        let pos = game.state.camera.world_to_screen(
             screen_size(context),
             pos,
         );
-        let target = state.camera.world_to_screen(
+        let target = game.state.camera.world_to_screen(
             screen_size(context),
             target.value,
         );
@@ -256,15 +252,15 @@ impl Graphics {
         context: &mut Context,
         body:    impl Into<handle::Weak<Body>>,
         color:   [f32; 3],
-        state:   &State,
+        game:    &Game,
     )
         -> GameResult<bool>
     {
-        let mut body = get!(state.data.bodies, body).clone();
+        let mut body = get!(game.state.data.bodies, body).clone();
         body.acc = Vec2::zero();
 
-        let pos = *get!(state.data.positions,  &body.pos);
-        let vel = *get!(state.data.velocities, &body.vel);
+        let pos = *get!(game.state.data.positions,  &body.pos);
+        let vel = *get!(game.state.data.velocities, &body.vel);
 
         let mut positions  = OneStore { handle: (&body.pos).into(), data: pos };
         let mut velocities = OneStore { handle: (&body.vel).into(), data: vel };
@@ -274,7 +270,7 @@ impl Graphics {
         for _ in 0 .. 100 {
             body.update(
                 1.0,
-                Planets(&state.data.planets),
+                Planets(&game.state.data.planets),
                 &mut positions,
                 &mut velocities,
             );
@@ -285,11 +281,11 @@ impl Graphics {
                 break;
             }
 
-            let previous_s = state.camera.world_to_screen(
+            let previous_s = game.state.camera.world_to_screen(
                 screen_size(context),
                 previous,
             );
-            let current_s = state.camera.world_to_screen(
+            let current_s = game.state.camera.world_to_screen(
                 screen_size(context),
                 current,
             );
@@ -316,16 +312,16 @@ impl Graphics {
     fn draw_explosion(&self,
         context:   &mut Context,
         explosion: &Explosion,
-        state:     &State,
+        game:      &Game,
     )
         -> GameResult<bool>
     {
-        let pos = get!(state.data.positions, &explosion.pos);
+        let pos = get!(game.state.data.positions, &explosion.pos);
 
         let alpha = explosion.strength_left / explosion.strength_total;
         let size  = explosion.strength_total * 2.0;
 
-        let pos = state.camera.world_to_screen(
+        let pos = game.state.camera.world_to_screen(
             screen_size(context),
             pos,
         );
@@ -346,18 +342,18 @@ impl Graphics {
     pub fn draw_loot(&self,
         context: &mut Context,
         loot:    &Loot,
-        state:   &State,
+        game:    &Game,
     )
         -> GameResult<bool>
     {
         let size = 10.0;
 
-        let body = get!(state.data.bodies,    &loot.body);
-        let pos  = get!(state.data.positions, &body.pos);
+        let body = get!(game.state.data.bodies,    &loot.body);
+        let pos  = get!(game.state.data.positions, &body.pos);
 
         draw(
             context,
-            &WorldTransform(&state.camera),
+            &WorldTransform(&game.state.camera),
             &self.square,
             DrawParam::world()
                 .dest(pos)
@@ -370,8 +366,7 @@ impl Graphics {
 
     fn draw_ui(&self,
         context: &mut Context,
-        input:   &input::Handler,
-        state:   &State,
+        game:    &Game,
     )
         -> GameResult
     {
@@ -383,10 +378,10 @@ Accelerate - {}
 Shoot - {} (aim with mouse)
 Zoom Camera - Mouse Wheel
 End game - Escape",
-            input.config.input.left,
-            input.config.input.right,
-            input.config.input.thrust,
-            input.config.input.launch,
+            game.input.config.input.left,
+            game.input.config.input.right,
+            game.input.config.input.thrust,
+            game.input.config.input.launch,
         );
 
         draw(
@@ -400,13 +395,13 @@ End game - Escape",
         draw(
             context,
             &ScreenTransform,
-            &Text::new(format!("Zoom: {:.3}x", input.zoom)),
+            &Text::new(format!("Zoom: {:.3}x", game.input.zoom)),
             DrawParam::screen()
                 .dest(Screen(Pnt2::new(20.0, 150.0))),
         )?;
 
-        if input.config.diagnostics.frame_time {
-            let report = state.frame_time.report();
+        if game.input.config.diagnostics.frame_time {
+            let report = game.state.frame_time.report();
             let frame_time = format!(
                 "Frame time:\n{} ms (avg {}/{}/{})",
                 report.latest.whole_milliseconds(),
@@ -424,8 +419,8 @@ End game - Escape",
             )?;
         }
 
-        if input.config.diagnostics.components {
-            if let Some(diagnostics) = state.diagnostics {
+        if game.input.config.diagnostics.components {
+            if let Some(diagnostics) = game.state.diagnostics {
                 let diagnostics = format!(
 "Components:
 Bodies: {}/{}
@@ -445,22 +440,22 @@ Velocities: {}/{}
 ---
 Updates per s: {}
 Removals per s: {}",
-                    diagnostics.bodies, state.data.bodies.len(),
-                    diagnostics.crafts, state.data.crafts.len(),
-                    diagnostics.explosions, state.data.explosions.len(),
-                    diagnostics.fuels, state.data.fuels.len(),
+                    diagnostics.bodies, game.state.data.bodies.len(),
+                    diagnostics.crafts, game.state.data.crafts.len(),
+                    diagnostics.explosions, game.state.data.explosions.len(),
+                    diagnostics.fuels, game.state.data.fuels.len(),
                     diagnostics.guidances,
-                    diagnostics.healths, state.data.healths.len(),
-                    diagnostics.loots, state.data.loots.len(),
-                    diagnostics.planets, state.data.planets.len(),
+                    diagnostics.healths, game.state.data.healths.len(),
+                    diagnostics.loots, game.state.data.loots.len(),
+                    diagnostics.planets, game.state.data.planets.len(),
                     diagnostics.players,
-                    diagnostics.missiles, state.data.missiles.len(),
-                    diagnostics.positions, state.data.positions.len(),
-                    diagnostics.ships, state.data.ships.len(),
-                    diagnostics.targets, state.data.targets.len(),
-                    diagnostics.velocities, state.data.velocities.len(),
-                    state.statistics.updates.len(),
-                    state.statistics.removals.len(),
+                    diagnostics.missiles, game.state.data.missiles.len(),
+                    diagnostics.positions, game.state.data.positions.len(),
+                    diagnostics.ships, game.state.data.ships.len(),
+                    diagnostics.targets, game.state.data.targets.len(),
+                    diagnostics.velocities, game.state.data.velocities.len(),
+                    game.state.statistics.updates.len(),
+                    game.state.statistics.removals.len(),
                 );
 
                 draw(
@@ -473,9 +468,9 @@ Removals per s: {}",
             }
         }
 
-        if input.config.diagnostics.input {
+        if game.input.config.diagnostics.input {
             let mut input_events = String::from("Input:\n");
-            for event in input.events.iter().rev() {
+            for event in game.input.events.iter().rev() {
                 input_events.push_str(&format!("{}\n", event));
             }
 
@@ -488,8 +483,8 @@ Removals per s: {}",
             )?;
         }
 
-        for ship in state.data.ships.values() {
-            if self.draw_ship_status(context, ship, state)? {
+        for ship in game.state.data.ships.values() {
+            if self.draw_ship_status(context, ship, game)? {
                 // There should only be one ship owned by the local player, so
                 // let's quit.
                 break;
@@ -501,7 +496,7 @@ Removals per s: {}",
             &ScreenTransform,
             &self.pointer,
             DrawParam::screen()
-                .dest(input.pointer_screen)
+                .dest(game.input.pointer_screen)
                 .scale(Vec2::new(10.0, 10.0))
         )?;
 
@@ -513,15 +508,15 @@ Removals per s: {}",
     fn draw_ship_status(&self,
         context: &mut Context,
         ship:    &Ship,
-        state:   &State,
+        game:    &Game,
     )
         -> GameResult<bool>
     {
-        let craft  = get!(state.data.crafts, &ship.craft);
-        let fuel   = get!(state.data.fuels, &craft.fuel);
-        let health = get!(state.data.healths, &craft.health);
+        let craft  = get!(game.state.data.crafts, &ship.craft);
+        let fuel   = get!(game.state.data.fuels, &craft.fuel);
+        let health = get!(game.state.data.healths, &craft.health);
 
-        if state.own_id != Some(craft.owner) {
+        if game.state.own_id != Some(craft.owner) {
             return Ok(false);
         }
 
