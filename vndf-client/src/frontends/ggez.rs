@@ -39,8 +39,8 @@ use crate::{
     game::{
         Game,
         config::Key,
+        coords::Screen,
         input::Input,
-        transforms::Screen,
     },
     shared::{
         math::{

@@ -8,8 +8,8 @@ use time::{
 use crate::{
     camera::Camera,
     game::{
+        coords::World,
         input,
-        transforms::World,
     },
     shared::{
         data,

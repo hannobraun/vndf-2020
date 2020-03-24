@@ -12,7 +12,7 @@ use ggez::{
 };
 
 use crate::{
-    game::transforms::{
+    game::coords::{
         Screen,
         World,
     },

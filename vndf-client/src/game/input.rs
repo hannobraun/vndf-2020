@@ -5,11 +5,11 @@ use crate::{
             Config,
             Key,
         },
-        net::input::Events,
-        transforms::{
+        coords::{
             Screen,
             World,
         },
+        net::input::Events,
     },
     shared::{
         input::{

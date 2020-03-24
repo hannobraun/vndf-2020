@@ -20,8 +20,8 @@ use crate::{
     },
     game::{
         Game,
+        coords::Screen,
         transforms::{
-            Screen,
             ScreenTransform,
             WorldTransform,
         },
