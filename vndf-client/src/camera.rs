@@ -51,7 +51,7 @@ impl Camera {
 
         let point_screen_origin_centered = point_screen - screen_size / 2.0;
 
-        let world_rect = self.world_size_on_screen(context);
+        let world_rect = self.world_size_on_screen(screen_size);
         let point_world = World(
             Pnt2::new(
                 point_screen_origin_centered.0.x
@@ -79,7 +79,7 @@ impl Camera {
 
         let point_camera = point_world - self.center.to_vec();
 
-        let world_rect = self.world_size_on_screen(context);
+        let world_rect = self.world_size_on_screen(screen_size);
         let point_screen_origin_centered = Screen(
             Pnt2::new(
                 point_camera.0.x * screen_size.0.x / world_rect.0.x,
@@ -90,9 +90,10 @@ impl Camera {
         point_screen_origin_centered + screen_size / 2.0
     }
 
-    pub fn world_size_on_screen(&self, context: &Context) -> World<Vec2> {
-        let (screen_width, screen_height) = graphics::drawable_size(context);
-        let aspect_ratio = screen_width / screen_height;
+    pub fn world_size_on_screen(&self, screen_size: Screen<Vec2>)
+        -> World<Vec2>
+    {
+        let aspect_ratio = screen_size.0.x / screen_size.0.y;
 
         let min_world_size_on_screen = 1000.0;
 
@@ -145,9 +146,12 @@ impl Transform for WorldTransform<'_> {
     type Point = World<Pnt2>;
 
     fn enable(&self, context: &mut Context) -> GameResult {
+        let (screen_width, screen_height) = graphics::drawable_size(context);
+        let screen_size = Screen(Vec2::new(screen_width, screen_height));
+
         let camera = self.0;
 
-        let size       = camera.world_size_on_screen(context);
+        let size       = camera.world_size_on_screen(screen_size);
         let upper_left = camera.center - size / 2.0;
 
         graphics::set_screen_coordinates(
