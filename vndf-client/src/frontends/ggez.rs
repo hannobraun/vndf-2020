@@ -119,7 +119,7 @@ impl EventHandler for Handler {
         _y:      f32,
     ) {
         if !is_key_repeated(context) {
-            self.game.input.key_down(Key::Mouse(button));
+            self.game.input.key_down(Key::Mouse(button), &mut self.game.events);
         }
     }
 
@@ -129,7 +129,7 @@ impl EventHandler for Handler {
         _x:     f32,
         _y:     f32,
     ) {
-        self.game.input.key_up(Key::Mouse(button));
+        self.game.input.key_up(Key::Mouse(button), &mut self.game.events);
     }
 
     fn mouse_motion_event(&mut self,
@@ -170,7 +170,10 @@ impl EventHandler for Handler {
         }
 
         if !is_key_repeated(context) {
-            self.game.input.key_down(Key::Keyboard(key_code));
+            self.game.input.key_down(
+                Key::Keyboard(key_code),
+                &mut self.game.events,
+            );
         }
     }
 
@@ -179,11 +182,11 @@ impl EventHandler for Handler {
         key_code: KeyCode,
         _:        KeyMods,
     ) {
-        self.game.input.key_up(Key::Keyboard(key_code));
+        self.game.input.key_up(Key::Keyboard(key_code), &mut self.game.events);
     }
 
     fn update(&mut self, context: &mut Context) -> GameResult {
-        for event in self.game.input.events.unsent() {
+        for event in self.game.events.unsent() {
             self.game.conn.send(msg::FromClient::Action(event))
                 .expect("Failed to send input event");
         }
@@ -205,7 +208,7 @@ impl EventHandler for Handler {
                     self.game.state.remove_component(&handle);
                 }
                 Ok(msg::FromServer::InputHandled { seq }) => {
-                    self.game.input.events.handled(seq);
+                    self.game.events.handled(seq);
                 }
                 Ok(msg::FromServer::Diagnostics(diagnostics)) => {
                     self.game.state.diagnostics = Some(diagnostics);
@@ -225,7 +228,7 @@ impl EventHandler for Handler {
         let dt = timer::delta(context);
         self.game.state.frame_time.push(dt.try_into().unwrap());
 
-        self.game.input.events.limit();
+        self.game.events.limit();
 
         let dt = timer::duration_to_f64(dt) as f32;
         self.game.state.update(dt, &self.game.input);

@@ -13,6 +13,7 @@ use crate::shared::net::client::Conn;
 
 use self::{
     config::Config,
+    net::input::Events,
     state::State,
 };
 
@@ -20,6 +21,7 @@ use self::{
 pub struct Game {
     pub config: Config,
     pub conn:   Conn,
+    pub events: Events,
     pub input:  input::Handler,
     pub state:  State,
 }
@@ -30,6 +32,7 @@ impl Game {
             .map_err(|err| Error::Config(err))?;
         let conn = Conn::connect(addr)
             .map_err(|err| Error::Io(err))?;
+        let events = Events::new();
         let input = input::Handler::new(config);
         let state = State::new();
 
@@ -37,6 +40,7 @@ impl Game {
             Self {
                 config,
                 conn,
+                events,
                 input,
                 state,
             }

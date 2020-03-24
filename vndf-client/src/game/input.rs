@@ -31,8 +31,6 @@ pub struct Handler {
     pub pointer_world:  World<Pnt2>,
 
     pub zoom: f32,
-
-    pub events: Events,
 }
 
 impl Handler {
@@ -44,8 +42,6 @@ impl Handler {
             pointer_world:  World(Pnt2::new(0.0, 0.0)),
 
             zoom: 1.0,
-
-            events: Events::new(),
         }
     }
 
@@ -71,19 +67,19 @@ impl Handler {
         self.zoom = f32::max(self.zoom,  0.1);
     }
 
-    pub fn key_down(&mut self, key: Key) {
+    pub fn key_down(&mut self, key: Key, events: &mut Events) {
         match key {
             k if k == self.config.input.left => {
-                self.events.push(EventKind::Rotate(Rotation::Left))
+                events.push(EventKind::Rotate(Rotation::Left))
             }
             k if k == self.config.input.right => {
-                self.events.push(EventKind::Rotate(Rotation::Right))
+                events.push(EventKind::Rotate(Rotation::Right))
             }
             k if k == self.config.input.thrust => {
-                self.events.push(EventKind::Thrust(true))
+                events.push(EventKind::Thrust(true))
             }
             k if k == self.config.input.launch => {
-                self.events.push(
+                events.push(
                     EventKind::LaunchMissile { target: self.pointer_world.0 }
                 )
             }
@@ -92,16 +88,16 @@ impl Handler {
         }
    }
 
-    pub fn key_up(&mut self, key: Key) {
+    pub fn key_up(&mut self, key: Key, events: &mut Events) {
         match key {
             k if k == self.config.input.left => {
-                self.events.push(EventKind::Rotate(Rotation::None))
+                events.push(EventKind::Rotate(Rotation::None))
             }
             k if k == self.config.input.right => {
-                self.events.push(EventKind::Rotate(Rotation::None))
+                events.push(EventKind::Rotate(Rotation::None))
             }
             k if k == self.config.input.thrust => {
-                self.events.push(EventKind::Thrust(false))
+                events.push(EventKind::Thrust(false))
             }
 
             _ => (),

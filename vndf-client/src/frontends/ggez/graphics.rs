@@ -470,7 +470,7 @@ Removals per s: {}",
 
         if game.input.config.diagnostics.input {
             let mut input_events = String::from("Input:\n");
-            for event in game.input.events.iter().rev() {
+            for event in game.events.iter().rev() {
                 input_events.push_str(&format!("{}\n", event));
             }
 
