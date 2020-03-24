@@ -64,15 +64,12 @@ impl Camera {
     }
 
     pub fn world_to_screen(&self,
-        context:     &mut Context,
+        screen_size: Screen<Vec2>,
         point_world: impl Into<World<Pnt2>>,
     )
         -> Screen<Pnt2>
     {
         let point_world = point_world.into();
-
-        let (screen_width, screen_height) = graphics::drawable_size(context);
-        let screen_size = Screen(Vec2::new(screen_width, screen_height));
 
         let point_camera = point_world - self.center.to_vec();
 

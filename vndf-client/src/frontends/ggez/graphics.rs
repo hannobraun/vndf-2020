@@ -186,7 +186,10 @@ impl Graphics {
 
         self.draw_projected_path(context, &craft.body, ship.color, state)?;
 
-        let pos = state.camera.world_to_screen(context, pos);
+        let pos = state.camera.world_to_screen(
+            screen_size(context),
+            pos,
+        );
 
         draw(
             context,
@@ -214,8 +217,14 @@ impl Graphics {
         let body   = get!(state.data.bodies, &craft.body);
         let pos    = get!(state.data.positions, &body.pos);
 
-        let pos    = state.camera.world_to_screen(context, pos);
-        let target = state.camera.world_to_screen(context, target.value);
+        let pos = state.camera.world_to_screen(
+            screen_size(context),
+            pos,
+        );
+        let target = state.camera.world_to_screen(
+            screen_size(context),
+            target.value,
+        );
 
         draw(
             context,
@@ -276,8 +285,14 @@ impl Graphics {
                 break;
             }
 
-            let previous_s = state.camera.world_to_screen(context, previous);
-            let current_s  = state.camera.world_to_screen(context, current);
+            let previous_s = state.camera.world_to_screen(
+                screen_size(context),
+                previous,
+            );
+            let current_s = state.camera.world_to_screen(
+                screen_size(context),
+                current,
+            );
 
             let line = Mesh::new_line(
                 context,
@@ -310,7 +325,10 @@ impl Graphics {
         let alpha = explosion.strength_left / explosion.strength_total;
         let size  = explosion.strength_total * 2.0;
 
-        let pos = state.camera.world_to_screen(context, pos);
+        let pos = state.camera.world_to_screen(
+            screen_size(context),
+            pos,
+        );
 
         draw(
             context,
@@ -528,6 +546,12 @@ Heavy Missiles: {}",
 
         Ok(true)
     }
+}
+
+
+fn screen_size(context: &Context) -> Screen<Vec2> {
+    let (screen_width, screen_height) = ggez::graphics::drawable_size(context);
+    Screen(Vec2::new(screen_width, screen_height))
 }
 
 
