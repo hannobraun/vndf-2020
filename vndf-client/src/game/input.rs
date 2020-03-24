@@ -24,7 +24,7 @@ use crate::{
 };
 
 
-pub struct Input {
+pub struct Handler {
     pub config: Config,
 
     pub pointer_screen: Screen<Pnt2>,
@@ -35,7 +35,7 @@ pub struct Input {
     pub events: Events,
 }
 
-impl Input {
+impl Handler {
     pub fn new(config: Config) -> Self {
         Self {
             config,

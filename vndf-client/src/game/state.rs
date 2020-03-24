@@ -10,7 +10,7 @@ use crate::{
         Camera,
         World,
     },
-    game::input::Input,
+    game::input,
     shared::{
         data,
         game::{
@@ -43,7 +43,7 @@ impl State {
         }
     }
 
-    pub fn update(&mut self, dt: f32, input: &Input) {
+    pub fn update(&mut self, dt: f32, input: &input::Handler) {
         self.statistics.update();
 
         self.camera.zoom = input.zoom;

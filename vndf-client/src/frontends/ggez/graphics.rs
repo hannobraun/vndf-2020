@@ -24,7 +24,7 @@ use crate::{
         DrawParam,
     },
     game::{
-        input::Input,
+        input,
         state::State,
     },
     graphics,
@@ -121,7 +121,7 @@ impl Graphics {
 
     pub fn draw(&self,
         context: &mut Context,
-        input:   &Input,
+        input:   &input::Handler,
         state:   &State,
     )
         -> GameResult
@@ -370,7 +370,7 @@ impl Graphics {
 
     fn draw_ui(&self,
         context: &mut Context,
-        input:   &Input,
+        input:   &input::Handler,
         state:   &State,
     )
         -> GameResult
