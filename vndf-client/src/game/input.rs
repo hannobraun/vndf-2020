@@ -45,19 +45,21 @@ impl Handler {
         }
     }
 
-    pub fn mouse_motion(&mut self,
-        screen_size: Screen<Vec2>,
-        x:           f32,
-        y:           f32,
+    pub fn handle(&mut self,
+        input:       Input,
         camera:      &Camera,
+        screen_size: Screen<Vec2>,
     ) {
-        self.pointer_screen.0.x = x;
-        self.pointer_screen.0.y = y;
+        match input {
+            Input::MouseMotion(pos) => {
+                self.pointer_screen = pos;
 
-        self.pointer_world = camera.screen_to_world(
-            screen_size,
-            self.pointer_screen,
-        );
+                self.pointer_world = camera.screen_to_world(
+                    screen_size,
+                    self.pointer_screen,
+                );
+            }
+        }
     }
 
     pub fn mouse_wheel(&mut self, y: f32) {
@@ -103,4 +105,9 @@ impl Handler {
             _ => (),
         }
     }
+}
+
+
+pub enum Input {
+    MouseMotion(Screen<Pnt2>),
 }

@@ -40,9 +40,13 @@ use crate::{
     game::{
         Game,
         config::Key,
+        input::Input,
     },
     shared::{
-        math::Vec2,
+        math::{
+            Pnt2,
+            Vec2,
+        },
         net::{
             self,
             msg,
@@ -143,11 +147,10 @@ impl EventHandler for Handler {
             ggez::graphics::drawable_size(context);
         let screen_size = Screen(Vec2::new(screen_width, screen_height));
 
-        self.game.input.mouse_motion(
-            screen_size,
-            x,
-            y,
+        self.game.input.handle(
+            Input::MouseMotion(Screen(Pnt2::new(x, y))),
             &self.game.state.camera,
+            screen_size,
         );
     }
 
