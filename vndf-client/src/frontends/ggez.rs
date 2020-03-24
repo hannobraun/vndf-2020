@@ -35,13 +35,17 @@ use log::{
 };
 
 use crate::{
+    camera::Screen,
     game::{
         Game,
         config::Key,
     },
-    shared::net::{
-        self,
-        msg,
+    shared::{
+        math::Vec2,
+        net::{
+            self,
+            msg,
+        },
     },
 };
 
@@ -132,7 +136,16 @@ impl EventHandler for Handler {
         _dx:     f32,
         _dy:     f32,
     ) {
-        self.game.input.mouse_motion(context, x, y, &self.game.state.camera);
+        let (screen_width, screen_height) =
+            ggez::graphics::drawable_size(context);
+        let screen_size = Screen(Vec2::new(screen_width, screen_height));
+
+        self.game.input.mouse_motion(
+            screen_size,
+            x,
+            y,
+            &self.game.state.camera,
+        );
     }
 
     fn mouse_wheel_event(&mut self,

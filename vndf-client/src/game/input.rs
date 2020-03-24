@@ -10,7 +10,6 @@ use std::{
 
 use ggez::{
     Context,
-    graphics,
     input::keyboard::is_key_repeated,
 };
 use time::{
@@ -68,16 +67,13 @@ impl Input {
     }
 
     pub fn mouse_motion(&mut self,
-        context: &mut Context,
-        x:       f32,
-        y:       f32,
-        camera:  &Camera,
+        screen_size: Screen<Vec2>,
+        x:           f32,
+        y:           f32,
+        camera:      &Camera,
     ) {
         self.pointer_screen.0.x = x;
         self.pointer_screen.0.y = y;
-
-        let (screen_width, screen_height) = graphics::drawable_size(context);
-        let screen_size = Screen(Vec2::new(screen_width, screen_height));
 
         self.pointer_world = camera.screen_to_world(
             screen_size,
