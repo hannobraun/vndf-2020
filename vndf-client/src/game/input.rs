@@ -8,10 +8,6 @@ use std::{
     fmt,
 };
 
-use ggez::{
-    Context,
-    input::keyboard::is_key_repeated,
-};
 use time::{
     OffsetDateTime,
     Time,
@@ -88,11 +84,7 @@ impl Input {
         self.zoom = f32::max(self.zoom,  0.1);
     }
 
-    pub fn key_down(&mut self, context: &Context, key: Key) {
-        if is_key_repeated(context) {
-            return;
-        }
-
+    pub fn key_down(&mut self, key: Key) {
         match key {
             k if k == self.config.input.left => {
                 self.events.push(EventKind::Rotate(Rotation::Left))

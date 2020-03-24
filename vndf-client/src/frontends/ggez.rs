@@ -26,6 +26,7 @@ use ggez::{
     input::keyboard::{
         KeyCode,
         KeyMods,
+        is_key_repeated,
     },
     timer,
 };
@@ -117,7 +118,9 @@ impl EventHandler for Handler {
         _x:      f32,
         _y:      f32,
     ) {
-        self.game.input.key_down(context, Key::Mouse(button));
+        if !is_key_repeated(context) {
+            self.game.input.key_down(Key::Mouse(button));
+        }
     }
 
     fn mouse_button_up_event(&mut self,
@@ -166,7 +169,9 @@ impl EventHandler for Handler {
             quit(context);
         }
 
-        self.game.input.key_down(context, Key::Keyboard(key_code));
+        if !is_key_repeated(context) {
+            self.game.input.key_down(Key::Keyboard(key_code));
+        }
     }
 
     fn key_up_event(&mut self,
