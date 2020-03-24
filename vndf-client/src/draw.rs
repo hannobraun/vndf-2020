@@ -12,7 +12,7 @@ use ggez::{
 };
 
 use crate::{
-    camera::{
+    game::transforms::{
         Screen,
         World,
     },

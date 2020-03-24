@@ -14,16 +14,18 @@ use toadster::{
 };
 
 use crate::{
-    camera::{
-        Screen,
-        ScreenTransform,
-        WorldTransform,
-    },
     draw::{
         draw,
         DrawParam,
     },
-    game::Game,
+    game::{
+        Game,
+        transforms::{
+            Screen,
+            ScreenTransform,
+            WorldTransform,
+        },
+    },
     graphics,
     shared::{
         game::{

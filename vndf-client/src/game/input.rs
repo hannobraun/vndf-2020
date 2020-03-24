@@ -1,15 +1,15 @@
 use crate::{
-    camera::{
-        Camera,
-        Screen,
-        World,
-    },
+    camera::Camera,
     game::{
         config::{
             Config,
             Key,
         },
         net::input::Events,
+        transforms::{
+            Screen,
+            World,
+        },
     },
     shared::{
         input::{

@@ -36,11 +36,11 @@ use log::{
 };
 
 use crate::{
-    camera::Screen,
     game::{
         Game,
         config::Key,
         input::Input,
+        transforms::Screen,
     },
     shared::{
         math::{
