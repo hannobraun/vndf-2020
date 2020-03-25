@@ -49,7 +49,9 @@ impl Handler {
         input:       Input,
         camera:      &Camera,
         screen_size: Screen<Vec2>,
-    ) {
+    )
+        -> Transition
+    {
         match input {
             Input::MouseMotion(pos) => {
                 self.pointer_screen = pos;
@@ -60,6 +62,8 @@ impl Handler {
                 );
             }
         }
+
+        Transition::None
     }
 
     pub fn mouse_wheel(&mut self, y: f32) {
@@ -110,4 +114,8 @@ impl Handler {
 
 pub enum Input {
     MouseMotion(Screen<Pnt2>),
+}
+
+pub enum Transition {
+    None
 }
