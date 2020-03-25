@@ -36,7 +36,8 @@ pub struct Input {
     pub left:   Key,
     pub right:  Key,
     pub thrust: Key,
-    pub launch: Key
+    pub launch: Key,
+    pub quit:   Key,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Serialize)]
@@ -86,6 +87,7 @@ impl Default for Config {
                 right:  Key::Keyboard(KeyCode::D),
                 thrust: Key::Keyboard(KeyCode::W),
                 launch: Key::Mouse(MouseButton::Left),
+                quit:   Key::Keyboard(KeyCode::Escape),
             },
             color: Color {
                 r: 1.0,

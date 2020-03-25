@@ -1,5 +1,3 @@
-use ggez::event::KeyCode;
-
 use crate::{
     camera::Camera,
     game::{
@@ -58,7 +56,7 @@ impl Handler {
         match input {
             Input::KeyDown(key) => {
                 match key {
-                    Key::Keyboard(KeyCode::Escape) => {
+                    k if k == self.config.input.quit => {
                         return Transition::Quit;
                     }
                     k if k == self.config.input.left => {
