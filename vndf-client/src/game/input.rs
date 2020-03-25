@@ -61,16 +61,15 @@ impl Handler {
                     self.pointer_screen,
                 );
             }
+            Input::MouseWheel(y) => {
+                self.zoom += y * 0.1;
+
+                self.zoom = f32::min(self.zoom, 10.0);
+                self.zoom = f32::max(self.zoom,  0.1);
+            }
         }
 
         Transition::None
-    }
-
-    pub fn mouse_wheel(&mut self, y: f32) {
-        self.zoom += y * 0.1;
-
-        self.zoom = f32::min(self.zoom, 10.0);
-        self.zoom = f32::max(self.zoom,  0.1);
     }
 
     pub fn key_down(&mut self, key: Key, events: &mut Events) {
@@ -114,6 +113,7 @@ impl Handler {
 
 pub enum Input {
     MouseMotion(Screen<Pnt2>),
+    MouseWheel(f32),
 }
 
 pub enum Transition {

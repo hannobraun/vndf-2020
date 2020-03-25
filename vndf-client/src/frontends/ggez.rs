@@ -155,11 +155,19 @@ impl EventHandler for Handler {
     }
 
     fn mouse_wheel_event(&mut self,
-        _:  &mut Context,
-        _x: f32,
-        y:  f32,
+        context: &mut Context,
+        _x:      f32,
+        y:       f32,
     ) {
-        self.game.input.mouse_wheel(y);
+        let (screen_width, screen_height) =
+            ggez::graphics::drawable_size(context);
+        let screen_size = Screen(Vec2::new(screen_width, screen_height));
+
+        self.game.input.handle(
+            Input::MouseWheel(y),
+            &self.game.state.camera,
+            screen_size,
+        );
     }
 
     fn key_down_event(&mut self,
