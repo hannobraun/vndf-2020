@@ -73,6 +73,20 @@ impl Handler {
                     _ => (),
                 }
             }
+            Input::KeyUp(key) => {
+                match key {
+                    k if k == self.config.input.left => {
+                        events.push(EventKind::Rotate(Rotation::None))
+                    }
+                    k if k == self.config.input.right => {
+                        events.push(EventKind::Rotate(Rotation::None))
+                    }
+                    k if k == self.config.input.thrust => {
+                        events.push(EventKind::Thrust(false))
+                    }
+                    _ => (),
+                }
+            }
             Input::MouseMotion(pos) => {
                 self.pointer_screen = pos;
 
@@ -91,27 +105,12 @@ impl Handler {
 
         Transition::None
     }
-
-    pub fn key_up(&mut self, key: Key, events: &mut Events) {
-        match key {
-            k if k == self.config.input.left => {
-                events.push(EventKind::Rotate(Rotation::None))
-            }
-            k if k == self.config.input.right => {
-                events.push(EventKind::Rotate(Rotation::None))
-            }
-            k if k == self.config.input.thrust => {
-                events.push(EventKind::Thrust(false))
-            }
-
-            _ => (),
-        }
-    }
 }
 
 
 pub enum Input {
     KeyDown(Key),
+    KeyUp(Key),
     MouseMotion(Screen<Pnt2>),
     MouseWheel(f32),
 }

@@ -137,12 +137,21 @@ impl EventHandler for Handler {
     }
 
     fn mouse_button_up_event(&mut self,
-        _:      &mut Context,
-        button: MouseButton,
-        _x:     f32,
-        _y:     f32,
+        context: &mut Context,
+        button:  MouseButton,
+        _x:      f32,
+        _y:      f32,
     ) {
-        self.game.input.key_up(Key::Mouse(button), &mut self.game.events);
+        let (screen_width, screen_height) =
+            ggez::graphics::drawable_size(context);
+        let screen_size = Screen(Vec2::new(screen_width, screen_height));
+
+        self.game.input.handle(
+            Input::KeyUp(Key::Mouse(button)),
+            &self.game.state.camera,
+            screen_size,
+            &mut self.game.events,
+        );
     }
 
     fn mouse_motion_event(&mut self,
@@ -206,11 +215,20 @@ impl EventHandler for Handler {
     }
 
     fn key_up_event(&mut self,
-        _:        &mut Context,
+        context:  &mut Context,
         key_code: KeyCode,
         _:        KeyMods,
     ) {
-        self.game.input.key_up(Key::Keyboard(key_code), &mut self.game.events);
+        let (screen_width, screen_height) =
+            ggez::graphics::drawable_size(context);
+        let screen_size = Screen(Vec2::new(screen_width, screen_height));
+
+        self.game.input.handle(
+            Input::KeyUp(Key::Keyboard(key_code)),
+            &self.game.state.camera,
+            screen_size,
+            &mut self.game.events,
+        );
     }
 
     fn update(&mut self, context: &mut Context) -> GameResult {
