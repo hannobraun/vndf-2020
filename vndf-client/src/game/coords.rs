@@ -19,7 +19,7 @@ use crate::shared::{
 macro_rules! coord_wrappers {
     ($($name:ident,)*) => {
         $(
-            #[derive(Clone, Copy)]
+            #[derive(Clone, Copy, Debug)]
             pub struct $name<T>(pub T);
 
             impl $name<Pnt2> {
