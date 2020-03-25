@@ -40,7 +40,10 @@ use crate::{
         Game,
         config::Key,
         coords::Screen,
-        input::Input,
+        input::{
+            Input,
+            Transition,
+        },
     },
     shared::{
         math::{
@@ -162,10 +165,6 @@ impl EventHandler for Handler {
         _:        KeyMods,
         _:        bool,
     ) {
-        if key_code == KeyCode::Escape {
-            quit(context);
-        }
-
         if !is_key_repeated(context) {
             self.input.push(Input::KeyDown(Key::Keyboard(key_code)));
         }
@@ -185,12 +184,16 @@ impl EventHandler for Handler {
         let screen_size = Screen(Vec2::new(screen_width, screen_height));
 
         for input in self.input.drain(..) {
-            self.game.input.handle(
+            let trans = self.game.input.handle(
                 input,
                 &self.game.state.camera,
                 screen_size,
                 &mut self.game.events,
             );
+
+            if trans == Transition::Quit {
+                quit(context);
+            }
         }
 
         for event in self.game.events.unsent() {

@@ -1,3 +1,5 @@
+use ggez::event::KeyCode;
+
 use crate::{
     camera::Camera,
     game::{
@@ -56,6 +58,9 @@ impl Handler {
         match input {
             Input::KeyDown(key) => {
                 match key {
+                    Key::Keyboard(KeyCode::Escape) => {
+                        return Transition::Quit;
+                    }
                     k if k == self.config.input.left => {
                         events.push(EventKind::Rotate(Rotation::Left))
                     }
@@ -118,5 +123,6 @@ pub enum Input {
 
 #[derive(Eq, PartialEq)]
 pub enum Transition {
-    None
+    None,
+    Quit,
 }
