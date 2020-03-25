@@ -123,7 +123,16 @@ impl EventHandler for Handler {
         _y:      f32,
     ) {
         if !is_key_repeated(context) {
-            self.game.input.key_down(Key::Mouse(button), &mut self.game.events);
+            let (screen_width, screen_height) =
+                ggez::graphics::drawable_size(context);
+            let screen_size = Screen(Vec2::new(screen_width, screen_height));
+
+            self.game.input.handle(
+                Input::KeyDown(Key::Mouse(button)),
+                &self.game.state.camera,
+                screen_size,
+                &mut self.game.events,
+            );
         }
     }
 
@@ -151,6 +160,7 @@ impl EventHandler for Handler {
             Input::MouseMotion(Screen(Pnt2::new(x, y))),
             &self.game.state.camera,
             screen_size,
+            &mut self.game.events,
         );
     }
 
@@ -167,6 +177,7 @@ impl EventHandler for Handler {
             Input::MouseWheel(y),
             &self.game.state.camera,
             screen_size,
+            &mut self.game.events,
         );
     }
 
@@ -176,13 +187,19 @@ impl EventHandler for Handler {
         _:        KeyMods,
         _:        bool,
     ) {
+        let (screen_width, screen_height) =
+            ggez::graphics::drawable_size(context);
+        let screen_size = Screen(Vec2::new(screen_width, screen_height));
+
         if key_code == KeyCode::Escape {
             quit(context);
         }
 
         if !is_key_repeated(context) {
-            self.game.input.key_down(
-                Key::Keyboard(key_code),
+            self.game.input.handle(
+                Input::KeyDown(Key::Keyboard(key_code)),
+                &self.game.state.camera,
+                screen_size,
                 &mut self.game.events,
             );
         }

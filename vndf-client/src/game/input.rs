@@ -49,10 +49,30 @@ impl Handler {
         input:       Input,
         camera:      &Camera,
         screen_size: Screen<Vec2>,
+        events:      &mut Events,
     )
         -> Transition
     {
         match input {
+            Input::KeyDown(key) => {
+                match key {
+                    k if k == self.config.input.left => {
+                        events.push(EventKind::Rotate(Rotation::Left))
+                    }
+                    k if k == self.config.input.right => {
+                        events.push(EventKind::Rotate(Rotation::Right))
+                    }
+                    k if k == self.config.input.thrust => {
+                        events.push(EventKind::Thrust(true))
+                    }
+                    k if k == self.config.input.launch => {
+                        events.push(
+                            EventKind::LaunchMissile { target: self.pointer_world.0 }
+                        )
+                    }
+                    _ => (),
+                }
+            }
             Input::MouseMotion(pos) => {
                 self.pointer_screen = pos;
 
@@ -71,27 +91,6 @@ impl Handler {
 
         Transition::None
     }
-
-    pub fn key_down(&mut self, key: Key, events: &mut Events) {
-        match key {
-            k if k == self.config.input.left => {
-                events.push(EventKind::Rotate(Rotation::Left))
-            }
-            k if k == self.config.input.right => {
-                events.push(EventKind::Rotate(Rotation::Right))
-            }
-            k if k == self.config.input.thrust => {
-                events.push(EventKind::Thrust(true))
-            }
-            k if k == self.config.input.launch => {
-                events.push(
-                    EventKind::LaunchMissile { target: self.pointer_world.0 }
-                )
-            }
-
-            _ => (),
-        }
-   }
 
     pub fn key_up(&mut self, key: Key, events: &mut Events) {
         match key {
@@ -112,6 +111,7 @@ impl Handler {
 
 
 pub enum Input {
+    KeyDown(Key),
     MouseMotion(Screen<Pnt2>),
     MouseWheel(f32),
 }
