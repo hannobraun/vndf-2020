@@ -88,6 +88,7 @@ pub fn start(game: Game) -> Result<(), Error> {
 pub struct Handler {
     game:     Game,
     graphics: Graphics,
+    input:    Vec<Input>,
 }
 
 impl Handler {
@@ -110,6 +111,7 @@ impl Handler {
             Self {
                 game,
                 graphics: Graphics::new(context)?,
+                input:    Vec::new(),
             }
         )
     }
@@ -123,71 +125,35 @@ impl EventHandler for Handler {
         _y:      f32,
     ) {
         if !is_key_repeated(context) {
-            let (screen_width, screen_height) =
-                ggez::graphics::drawable_size(context);
-            let screen_size = Screen(Vec2::new(screen_width, screen_height));
-
-            self.game.input.handle(
-                Input::KeyDown(Key::Mouse(button)),
-                &self.game.state.camera,
-                screen_size,
-                &mut self.game.events,
-            );
+            self.input.push(Input::KeyDown(Key::Mouse(button)));
         }
     }
 
     fn mouse_button_up_event(&mut self,
-        context: &mut Context,
-        button:  MouseButton,
-        _x:      f32,
-        _y:      f32,
+        _:      &mut Context,
+        button: MouseButton,
+        _x:     f32,
+        _y:     f32,
     ) {
-        let (screen_width, screen_height) =
-            ggez::graphics::drawable_size(context);
-        let screen_size = Screen(Vec2::new(screen_width, screen_height));
-
-        self.game.input.handle(
-            Input::KeyUp(Key::Mouse(button)),
-            &self.game.state.camera,
-            screen_size,
-            &mut self.game.events,
-        );
+        self.input.push(Input::KeyUp(Key::Mouse(button)));
     }
 
     fn mouse_motion_event(&mut self,
-        context: &mut Context,
-        x:       f32,
-        y:       f32,
-        _dx:     f32,
-        _dy:     f32,
+        _:   &mut Context,
+        x:   f32,
+        y:   f32,
+        _dx: f32,
+        _dy: f32,
     ) {
-        let (screen_width, screen_height) =
-            ggez::graphics::drawable_size(context);
-        let screen_size = Screen(Vec2::new(screen_width, screen_height));
-
-        self.game.input.handle(
-            Input::MouseMotion(Screen(Pnt2::new(x, y))),
-            &self.game.state.camera,
-            screen_size,
-            &mut self.game.events,
-        );
+        self.input.push(Input::MouseMotion(Screen(Pnt2::new(x, y))));
     }
 
     fn mouse_wheel_event(&mut self,
-        context: &mut Context,
-        _x:      f32,
-        y:       f32,
+        _:  &mut Context,
+        _x: f32,
+        y:  f32,
     ) {
-        let (screen_width, screen_height) =
-            ggez::graphics::drawable_size(context);
-        let screen_size = Screen(Vec2::new(screen_width, screen_height));
-
-        self.game.input.handle(
-            Input::MouseWheel(y),
-            &self.game.state.camera,
-            screen_size,
-            &mut self.game.events,
-        );
+        self.input.push(Input::MouseWheel(y));
     }
 
     fn key_down_event(&mut self,
@@ -196,42 +162,37 @@ impl EventHandler for Handler {
         _:        KeyMods,
         _:        bool,
     ) {
-        let (screen_width, screen_height) =
-            ggez::graphics::drawable_size(context);
-        let screen_size = Screen(Vec2::new(screen_width, screen_height));
-
         if key_code == KeyCode::Escape {
             quit(context);
         }
 
         if !is_key_repeated(context) {
+            self.input.push(Input::KeyDown(Key::Keyboard(key_code)));
+        }
+    }
+
+    fn key_up_event(&mut self,
+        _:        &mut Context,
+        key_code: KeyCode,
+        _:        KeyMods,
+    ) {
+        self.input.push(Input::KeyUp(Key::Keyboard(key_code)));
+    }
+
+    fn update(&mut self, context: &mut Context) -> GameResult {
+        let (screen_width, screen_height) =
+            ggez::graphics::drawable_size(context);
+        let screen_size = Screen(Vec2::new(screen_width, screen_height));
+
+        for input in self.input.drain(..) {
             self.game.input.handle(
-                Input::KeyDown(Key::Keyboard(key_code)),
+                input,
                 &self.game.state.camera,
                 screen_size,
                 &mut self.game.events,
             );
         }
-    }
 
-    fn key_up_event(&mut self,
-        context:  &mut Context,
-        key_code: KeyCode,
-        _:        KeyMods,
-    ) {
-        let (screen_width, screen_height) =
-            ggez::graphics::drawable_size(context);
-        let screen_size = Screen(Vec2::new(screen_width, screen_height));
-
-        self.game.input.handle(
-            Input::KeyUp(Key::Keyboard(key_code)),
-            &self.game.state.camera,
-            screen_size,
-            &mut self.game.events,
-        );
-    }
-
-    fn update(&mut self, context: &mut Context) -> GameResult {
         for event in self.game.events.unsent() {
             self.game.conn.send(msg::FromClient::Action(event))
                 .expect("Failed to send input event");
