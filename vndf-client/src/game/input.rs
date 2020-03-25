@@ -108,6 +108,7 @@ impl Handler {
 }
 
 
+#[derive(Debug)]
 pub enum Input {
     KeyDown(Key),
     KeyUp(Key),
