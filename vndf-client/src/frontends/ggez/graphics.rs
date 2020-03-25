@@ -379,11 +379,12 @@ Turn right - {}
 Accelerate - {}
 Shoot - {} (aim with mouse)
 Zoom Camera - Mouse Wheel
-End game - Escape",
+End game - {}",
             game.input.config.input.left,
             game.input.config.input.right,
             game.input.config.input.thrust,
             game.input.config.input.launch,
+            game.input.config.input.quit,
         );
 
         draw(
