@@ -9,7 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Install dependencies required by ggez
-      run: sudo apt-get install libasound2-dev libudev-dev
+      run: |
+        sudo apt-get update
+        sudo apt-get install libasound2-dev libudev-dev
     - uses: actions/checkout@v2
     - name: Build code and run tests
       run: ./scripts/build-all-and-test.sh
@@ -33,7 +35,9 @@ jobs:
     needs: build_test_release
     steps:
     - name: Install dependencies required by ggez
-      run: sudo apt-get install libasound2-dev libudev-dev
+      run: |
+        sudo apt-get update
+        sudo apt-get install libasound2-dev libudev-dev
     - uses: actions/checkout@v2
     - uses: actions/download-artifact@v1
       with:
