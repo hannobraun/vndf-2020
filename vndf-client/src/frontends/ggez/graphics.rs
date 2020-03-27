@@ -285,6 +285,10 @@ impl Graphics {
                 break;
             }
 
+            if planets.check_collision(current.0) {
+                break;
+            }
+
             let previous_s = game.state.camera.world_to_screen(
                 screen_size(context),
                 previous,
