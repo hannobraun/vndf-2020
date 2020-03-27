@@ -272,7 +272,7 @@ impl Graphics {
         for _ in 0 .. 100 {
             body.update(
                 1.0,
-                Planets(&game.state.data.planets),
+                &Planets(&game.state.data.planets),
                 &mut positions,
                 &mut velocities,
             );

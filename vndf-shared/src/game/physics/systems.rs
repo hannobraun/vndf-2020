@@ -20,6 +20,6 @@ pub fn update_bodies(
         dt:         f32,
 ) {
     for body in bodies.values_mut() {
-        body.update(dt, Planets(planets), &mut positions, &mut velocities);
+        body.update(dt, &Planets(planets), &mut positions, &mut velocities);
     }
 }

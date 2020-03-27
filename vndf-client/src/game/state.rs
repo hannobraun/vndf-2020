@@ -54,7 +54,7 @@ impl State {
         for body in self.data.bodies.values_mut() {
             body.update(
                 dt,
-                Planets(&self.data.planets),
+                &Planets(&self.data.planets),
                 &mut self.data.positions,
                 &mut self.data.velocities,
             );

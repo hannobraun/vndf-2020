@@ -95,7 +95,7 @@ impl Body {
 
     pub fn update(&mut self,
             dt:         f32,
-            planets:    Planets<impl for<'r> store::Values<'r, Planet>>,
+            planets:    &Planets<impl for<'r> store::Values<'r, Planet>>,
         mut positions:  impl store::GetMut<Position>,
         mut velocities: impl store::GetMut<Velocity>,
     )
