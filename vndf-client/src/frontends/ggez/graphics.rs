@@ -267,12 +267,14 @@ impl Graphics {
         let mut positions  = OneStore { handle: (&body.pos).into(), data: pos };
         let mut velocities = OneStore { handle: (&body.vel).into(), data: vel };
 
+        let planets = Planets(&game.state.data.planets);
+
         let mut previous = pos;
 
         for _ in 0 .. 100 {
             body.update(
                 1.0,
-                &Planets(&game.state.data.planets),
+                &planets,
                 &mut positions,
                 &mut velocities,
             );
