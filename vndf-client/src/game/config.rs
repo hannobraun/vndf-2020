@@ -151,7 +151,7 @@ macro_rules! keys {
                 #[allow(unused_parens)]
                 match value {
                     $($s => Ok($k),)*
-                    
+
                     _ =>
                         Err(
                             E::custom(
