@@ -166,7 +166,7 @@ impl EventHandler for Handler {
         _:        bool,
     ) {
         if !is_key_repeated(context) {
-            self.input.push(Input::KeyDown(Key::Keyboard(key_code)));
+            self.input.push(Input::KeyDown(key_code.into()));
         }
     }
 
@@ -175,7 +175,7 @@ impl EventHandler for Handler {
         key_code: KeyCode,
         _:        KeyMods,
     ) {
-        self.input.push(Input::KeyUp(Key::Keyboard(key_code)));
+        self.input.push(Input::KeyUp(key_code.into()));
     }
 
     fn update(&mut self, context: &mut Context) -> GameResult {

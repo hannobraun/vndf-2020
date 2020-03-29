@@ -8,10 +8,7 @@ use std::{
     path::Path,
 };
 
-use ggez::event::{
-    KeyCode,
-    MouseButton,
-};
+use ggez::event::MouseButton;
 use serde::{
     Deserialize,
     Deserializer,
@@ -22,6 +19,7 @@ use serde::{
         Visitor,
     },
 };
+use winit::event::VirtualKeyCode;
 
 use vndf_macros::keys;
 
@@ -85,11 +83,11 @@ impl Default for Config {
     fn default() -> Self {
         Self {
             input: Input {
-                left:   Key::Keyboard(KeyCode::A),
-                right:  Key::Keyboard(KeyCode::D),
-                thrust: Key::Keyboard(KeyCode::W),
+                left:   Key::Keyboard(VirtualKeyCode::A),
+                right:  Key::Keyboard(VirtualKeyCode::D),
+                thrust: Key::Keyboard(VirtualKeyCode::W),
                 launch: Key::Mouse(MouseButton::Left),
-                quit:   Key::Keyboard(KeyCode::Escape),
+                quit:   Key::Keyboard(VirtualKeyCode::Escape),
             },
             color: Color {
                 r: 1.0,
@@ -108,7 +106,7 @@ impl Default for Config {
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Key {
-    Keyboard(KeyCode),
+    Keyboard(VirtualKeyCode),
     Mouse(MouseButton),
 }
 

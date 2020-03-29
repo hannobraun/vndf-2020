@@ -43,6 +43,17 @@ pub fn keys(input: TokenStream) -> TokenStream {
         )
     });
 
+    let from_keycode_match = (&keys).into_iter().map(|Key { kind, key, .. }| {
+        if kind.to_string().as_str() == "Keyboard" {
+            quote!(
+                ggez::event::KeyCode::#key => VirtualKeyCode::#key,
+            )
+        }
+        else {
+            quote!()
+        }
+    });
+
     let tokens = quote!(
         impl Serialize for Key {
             fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
@@ -104,6 +115,16 @@ pub fn keys(input: TokenStream) -> TokenStream {
                 }
             }
         }
+
+        impl From<ggez::event::KeyCode> for Key {
+            fn from(key_code: ggez::event::KeyCode) -> Self {
+                let key_code = match key_code {
+                    #(#from_keycode_match)*
+                };
+
+                Self::Keyboard(key_code)
+            }
+        }
     );
 
     TokenStream::from(tokens)
@@ -153,7 +174,7 @@ impl Parse for Key {
 
 fn keyboard_or_mousebutton(kind: &Ident) -> proc_macro2::TokenStream {
     match kind.to_string().as_str() {
-        "Keyboard" => quote!(KeyCode),
+        "Keyboard" => quote!(VirtualKeyCode),
         "Mouse"    => quote!(MouseButton),
         kind       => panic!("Unexpected key kind `{}`", kind),
     }
