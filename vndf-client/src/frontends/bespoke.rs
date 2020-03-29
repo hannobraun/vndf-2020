@@ -40,17 +40,12 @@ pub fn start(mut game: Game) -> Result<(), Error> {
     let mut renderer = Renderer::new(&window)
         .map_err(|err| Error::Renderer(err))?;
 
-    let mut screen_size = window.size();
-
     event_loop.run(move |event, _, control_flow| {
         match event {
             Event::MainEventsCleared => {
                 window.0.request_redraw()
             }
             Event::WindowEvent { event: WindowEvent::Resized(size), .. } => {
-                screen_size.0.x = size.width  as f32;
-                screen_size.0.y = size.height as f32;
-
                 renderer.swap_chain_descriptor.width  = size.width;
                 renderer.swap_chain_descriptor.height = size.height;
 
@@ -105,7 +100,7 @@ pub fn start(mut game: Game) -> Result<(), Error> {
                             let trans = game.input.handle(
                                 input,
                                 &game.state.camera,
-                                screen_size,
+                                window.size(),
                                 &mut game.events,
                             );
 
