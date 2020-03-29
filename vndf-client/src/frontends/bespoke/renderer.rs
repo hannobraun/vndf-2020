@@ -3,6 +3,13 @@ use std::io::{
     Cursor,
 };
 
+use winit::event::{
+    Event,
+    WindowEvent,
+};
+
+use crate::graphics;
+
 use super::window::Window;
 
 
@@ -128,6 +135,50 @@ impl Renderer {
                 swap_chain,
             }
         )
+    }
+
+    pub fn handle_event(&mut self, event: &Event<()>) {
+        match event {
+            Event::RedrawRequested(_) => {
+                let frame = self.swap_chain.get_next_texture();
+
+                let mut encoder = self.device.create_command_encoder(
+                    &wgpu::CommandEncoderDescriptor { todo: 0 }
+                );
+
+                {
+                    let mut render_pass = encoder.begin_render_pass(
+                        &wgpu::RenderPassDescriptor {
+                            color_attachments: &[
+                                wgpu::RenderPassColorAttachmentDescriptor {
+                                    attachment:     &frame.view,
+                                    resolve_target: None,
+                                    load_op:        wgpu::LoadOp::Clear,
+                                    store_op:       wgpu::StoreOp::Store,
+                                    clear_color:    graphics::BACKGROUND_COLOR,
+                                }
+                            ],
+                            depth_stencil_attachment: None,
+                        },
+                    );
+                    render_pass.set_pipeline(&self.render_pipeline);
+                    render_pass.set_bind_group(0, &self.bind_group, &[]);
+                    render_pass.draw(0 .. 0, 0 .. 0);
+                }
+
+                self.queue.submit(&[encoder.finish()]);
+            }
+            Event::WindowEvent { event: WindowEvent::Resized(size), .. } => {
+                self.swap_chain_descriptor.width  = size.width;
+                self.swap_chain_descriptor.height = size.height;
+
+                self.swap_chain = self.device.create_swap_chain(
+                    &self.surface,
+                    &self.swap_chain_descriptor,
+                );
+            }
+            _ => (),
+        }
     }
 }
 

@@ -14,16 +14,13 @@ use winit::{
     },
 };
 
-use crate::{
-    game::{
-        Game,
-        config::Key,
-        input::{
-            Input,
-            Transition,
-        },
+use crate::game::{
+    Game,
+    config::Key,
+    input::{
+        Input,
+        Transition,
     },
-    graphics,
 };
 
 use self::{
@@ -42,46 +39,9 @@ pub fn start(mut game: Game) -> Result<(), Error> {
 
     event_loop.run(move |event, _, control_flow| {
         window.handle_event(&event);
+        renderer.handle_event(&event);
 
         match event {
-            Event::WindowEvent { event: WindowEvent::Resized(size), .. } => {
-                renderer.swap_chain_descriptor.width  = size.width;
-                renderer.swap_chain_descriptor.height = size.height;
-
-                renderer.swap_chain = renderer.device.create_swap_chain(
-                    &renderer.surface,
-                    &renderer.swap_chain_descriptor,
-                );
-            }
-            Event::RedrawRequested(_) => {
-                let frame = renderer.swap_chain.get_next_texture();
-
-                let mut encoder = renderer.device.create_command_encoder(
-                    &wgpu::CommandEncoderDescriptor { todo: 0 }
-                );
-
-                {
-                    let mut render_pass = encoder.begin_render_pass(
-                        &wgpu::RenderPassDescriptor {
-                            color_attachments: &[
-                                wgpu::RenderPassColorAttachmentDescriptor {
-                                    attachment:     &frame.view,
-                                    resolve_target: None,
-                                    load_op:        wgpu::LoadOp::Clear,
-                                    store_op:       wgpu::StoreOp::Store,
-                                    clear_color:    graphics::BACKGROUND_COLOR,
-                                }
-                            ],
-                            depth_stencil_attachment: None,
-                        },
-                    );
-                    render_pass.set_pipeline(&renderer.render_pipeline);
-                    render_pass.set_bind_group(0, &renderer.bind_group, &[]);
-                    render_pass.draw(0 .. 0, 0 .. 0);
-                }
-
-                renderer.queue.submit(&[encoder.finish()]);
-            }
             Event::WindowEvent { event: WindowEvent::CloseRequested, .. } => {
                 *control_flow = ControlFlow::Exit
             }
