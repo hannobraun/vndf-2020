@@ -41,10 +41,9 @@ pub fn start(mut game: Game) -> Result<(), Error> {
         .map_err(|err| Error::Renderer(err))?;
 
     event_loop.run(move |event, _, control_flow| {
+        window.handle_event(&event);
+
         match event {
-            Event::MainEventsCleared => {
-                window.0.request_redraw()
-            }
             Event::WindowEvent { event: WindowEvent::Resized(size), .. } => {
                 renderer.swap_chain_descriptor.width  = size.width;
                 renderer.swap_chain_descriptor.height = size.height;

@@ -1,5 +1,6 @@
 use winit::{
     error::OsError,
+    event::Event,
     event_loop::EventLoop,
     window::{
         Window as InnerWindow,
@@ -36,5 +37,15 @@ impl Window {
                 size.height as f32,
             )
         )
+    }
+
+    pub fn handle_event(&self, event: &Event<()>) {
+        match event {
+            Event::MainEventsCleared => {
+                self.0.request_redraw()
+            }
+
+            _ => (),
+        }
     }
 }
