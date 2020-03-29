@@ -285,10 +285,6 @@ impl Graphics {
                 break;
             }
 
-            if planets.check_collision(current.0) {
-                break;
-            }
-
             let previous_s = game.state.camera.world_to_screen(
                 screen_size(context),
                 previous,
@@ -310,6 +306,10 @@ impl Graphics {
                 &line,
                 DrawParam::screen(),
             )?;
+
+            if planets.check_collision(current.0) {
+                break;
+            }
 
             previous = current;
         }
