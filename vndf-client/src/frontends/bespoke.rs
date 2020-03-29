@@ -139,7 +139,12 @@ pub fn start(mut game: Game) -> Result<(), Error> {
         &swap_chain_descriptor,
     );
 
-    let mut screen_size = Screen(Vec2::new(0.0, 0.0));
+    let mut screen_size = Screen(
+        Vec2::new(
+            size.width  as f32,
+            size.height as f32,
+        )
+    );
 
     event_loop.run(move |event, _, control_flow| {
         match event {
