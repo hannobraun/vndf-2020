@@ -1,3 +1,6 @@
+mod window;
+
+
 use std::io::{
     self,
     Cursor,
@@ -13,7 +16,6 @@ use winit::{
         ControlFlow,
         EventLoop,
     },
-    window::WindowBuilder,
 };
 
 use crate::{
@@ -30,19 +32,16 @@ use crate::{
     shared::math::Vec2,
 };
 
+use self::window::Window;
+
 
 pub fn start(mut game: Game) -> Result<(), Error> {
     let event_loop = EventLoop::new();
-    let window = WindowBuilder::new()
-        .with_title("Von Neumann Defense Force")
-        .with_maximized(true)
-        .with_decorations(true)
-        .with_transparent(false)
-        .build(&event_loop)
-        .map_err(Error::Winit)?;
+    let window = Window::new(&event_loop)
+        .map_err(|err| Error::Winit(err))?;
 
-    let size    = window.inner_size();
-    let surface = wgpu::Surface::create(&window);
+    let size    = window.0.inner_size();
+    let surface = wgpu::Surface::create(&window.0);
 
     let adapter =
         wgpu::Adapter::request(
@@ -149,7 +148,7 @@ pub fn start(mut game: Game) -> Result<(), Error> {
     event_loop.run(move |event, _, control_flow| {
         match event {
             Event::MainEventsCleared => {
-                window.request_redraw()
+                window.0.request_redraw()
             }
             Event::WindowEvent { event: WindowEvent::Resized(size), .. } => {
                 screen_size.0.x = size.width  as f32;
