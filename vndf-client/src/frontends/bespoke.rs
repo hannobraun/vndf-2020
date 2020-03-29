@@ -18,14 +18,12 @@ use crate::{
     game::{
         Game,
         config::Key,
-        coords::Screen,
         input::{
             Input,
             Transition,
         },
     },
     graphics,
-    shared::math::Vec2,
 };
 
 use self::{
@@ -42,13 +40,7 @@ pub fn start(mut game: Game) -> Result<(), Error> {
     let mut renderer = Renderer::new(&window)
         .map_err(|err| Error::Renderer(err))?;
 
-    let size = window.0.inner_size();
-    let mut screen_size = Screen(
-        Vec2::new(
-            size.width  as f32,
-            size.height as f32,
-        )
-    );
+    let mut screen_size = window.size();
 
     event_loop.run(move |event, _, control_flow| {
         match event {

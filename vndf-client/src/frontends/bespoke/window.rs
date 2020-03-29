@@ -7,6 +7,11 @@ use winit::{
     },
 };
 
+use crate::{
+    game::coords::Screen,
+    shared::math::Vec2,
+};
+
 
 pub struct Window(pub InnerWindow);
 
@@ -20,5 +25,16 @@ impl Window {
             .build(event_loop)?;
 
         Ok(Self(inner))
+    }
+
+    pub fn size(&self) -> Screen<Vec2> {
+        let size = self.0.inner_size();
+
+        Screen(
+            Vec2::new(
+                size.width  as f32,
+                size.height as f32,
+            )
+        )
     }
 }
