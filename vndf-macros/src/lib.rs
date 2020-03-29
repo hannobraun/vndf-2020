@@ -54,6 +54,19 @@ pub fn keys(input: TokenStream) -> TokenStream {
         }
     });
 
+
+
+    let from_mousebutton_match = (&keys).into_iter().map(|Key { kind, key, .. }| {
+        if kind.to_string().as_str() == "Mouse" {
+            quote!(
+                ggez::event::MouseButton::#key => MouseButton::#key,
+            )
+        }
+        else {
+            quote!()
+        }
+    });
+
     let tokens = quote!(
         impl Serialize for Key {
             fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
@@ -123,6 +136,22 @@ pub fn keys(input: TokenStream) -> TokenStream {
                 };
 
                 Self::Keyboard(key_code)
+            }
+        }
+
+        impl std::convert::TryFrom<ggez::event::MouseButton> for Key {
+            type Error = ();
+
+            fn try_from(button: ggez::event::MouseButton)
+                -> Result<Self, Self::Error>
+            {
+                let button = match button {
+                    #(#from_mousebutton_match)*
+
+                    ggez::event::MouseButton::Other(_) => return Err(()),
+                };
+
+                Ok(Self::Mouse(button))
             }
         }
     );

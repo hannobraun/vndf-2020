@@ -38,7 +38,6 @@ use log::{
 use crate::{
     game::{
         Game,
-        config::Key,
         coords::Screen,
         input::{
             Input,
@@ -128,7 +127,9 @@ impl EventHandler for Handler {
         _y:      f32,
     ) {
         if !is_key_repeated(context) {
-            self.input.push(Input::KeyDown(Key::Mouse(button)));
+            if let Ok(key) = button.try_into() {
+                self.input.push(Input::KeyDown(key));
+            }
         }
     }
 
@@ -138,7 +139,9 @@ impl EventHandler for Handler {
         _x:     f32,
         _y:     f32,
     ) {
-        self.input.push(Input::KeyUp(Key::Mouse(button)));
+        if let Ok(key) = button.try_into() {
+            self.input.push(Input::KeyUp(key));
+        }
     }
 
     fn mouse_motion_event(&mut self,

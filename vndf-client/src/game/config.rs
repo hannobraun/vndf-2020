@@ -8,7 +8,6 @@ use std::{
     path::Path,
 };
 
-use ggez::event::MouseButton;
 use serde::{
     Deserialize,
     Deserializer,
@@ -19,7 +18,10 @@ use serde::{
         Visitor,
     },
 };
-use winit::event::VirtualKeyCode;
+use winit::event::{
+    MouseButton,
+    VirtualKeyCode,
+};
 
 use vndf_macros::keys;
 
