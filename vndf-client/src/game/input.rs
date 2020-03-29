@@ -119,6 +119,7 @@ pub enum Input {
     MouseWheel(f32),
 }
 
+#[must_use]
 #[derive(Eq, PartialEq)]
 pub enum Transition {
     None,
