@@ -4,6 +4,7 @@ members = [
     "toadster",
     "vndf-client",
     "vndf-launcher",
+    "vndf-macros",
     "vndf-server",
     "vndf-shared",
     "vndf-tests",
@@ -12,6 +13,7 @@ default-members = [
     "rinnsal",
     "toadster",
     "vndf-client",
+    "vndf-macros",
     "vndf-shared",
     "vndf-tests",
 ]

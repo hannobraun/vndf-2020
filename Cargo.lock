@@ -2910,6 +2910,7 @@ dependencies = [
  "time",
  "toadster",
  "toml",
+ "vndf-macros",
  "vndf-server",
  "vndf-shared",
  "wgpu",
@@ -2923,6 +2924,15 @@ dependencies = [
  "env_logger",
  "structopt",
  "vndf-client",
+]
+
+[[package]]
+name = "vndf-macros"
+version = "0.1.0"
+dependencies = [
+ "proc-macro2 0.4.30",
+ "quote 0.6.13",
+ "syn 0.15.44",
 ]
 
 [[package]]

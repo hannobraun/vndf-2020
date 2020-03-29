@@ -23,6 +23,8 @@ use serde::{
     },
 };
 
+use vndf_macros::keys;
+
 
 #[derive(Clone, Copy, Debug, Deserialize, Serialize)]
 pub struct Config {
@@ -110,237 +112,173 @@ pub enum Key {
     Mouse(MouseButton),
 }
 
-macro_rules! keys {
-    ($($s:tt, $type:ident, $type2:ident, $key:ident;)*) => {
-        impl Serialize for Key {
-            fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-                where S: Serializer
-            {
-                #[allow(unused_parens)]
-                let expr = match self {
-                    $(Key::$type($type2::$key) => $s,)*
-
-                    key => panic!("Variant not allowed: {:?}", key),
-                };
-
-                serializer.serialize_str(expr)
-            }
-        }
-
-        impl<'de> Deserialize<'de> for Key {
-            fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-                where D: Deserializer<'de>
-            {
-                deserializer.deserialize_str(KeyVisitor)
-            }
-        }
-
-
-        struct KeyVisitor;
-
-        impl<'de> Visitor<'de> for KeyVisitor {
-            type Value = Key;
-
-            fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
-                formatter.write_str("a key identifier")
-            }
-
-            fn visit_str<E>(self, value: &str) -> Result<Self::Value, E>
-                where E: de::Error,
-            {
-                #[allow(unused_parens)]
-                match value {
-                    $($s => Ok(Key::$type($type2::$key)),)*
-
-                    _ =>
-                        Err(
-                            E::custom(
-                                format!("not a key identifier: {}", value)
-                            )
-                        )
-                }
-            }
-        }
-
-        impl fmt::Display for Key {
-            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                #[allow(unused_parens)]
-                match self {
-                    $(Key::$type($type2::$key) => write!(f, "{}", $s),)*
-
-                    _ => write!(f, "Unknown key"),
-                }
-            }
-        }
-    };
-}
 
 keys!(
-    "Key1",             Keyboard, KeyCode, Key1;
-    "Key2",             Keyboard, KeyCode, Key2;
-    "Key3",             Keyboard, KeyCode, Key3;
-    "Key4",             Keyboard, KeyCode, Key4;
-    "Key5",             Keyboard, KeyCode, Key5;
-    "Key6",             Keyboard, KeyCode, Key6;
-    "Key7",             Keyboard, KeyCode, Key7;
-    "Key8",             Keyboard, KeyCode, Key8;
-    "Key9",             Keyboard, KeyCode, Key9;
-    "Key0",             Keyboard, KeyCode, Key0;
-    "A",                Keyboard, KeyCode, A;
-    "B",                Keyboard, KeyCode, B;
-    "C",                Keyboard, KeyCode, C;
-    "D",                Keyboard, KeyCode, D;
-    "E",                Keyboard, KeyCode, E;
-    "F",                Keyboard, KeyCode, F;
-    "G",                Keyboard, KeyCode, G;
-    "H",                Keyboard, KeyCode, H;
-    "I",                Keyboard, KeyCode, I;
-    "J",                Keyboard, KeyCode, J;
-    "K",                Keyboard, KeyCode, K;
-    "L",                Keyboard, KeyCode, L;
-    "M",                Keyboard, KeyCode, M;
-    "N",                Keyboard, KeyCode, N;
-    "O",                Keyboard, KeyCode, O;
-    "P",                Keyboard, KeyCode, P;
-    "Q",                Keyboard, KeyCode, Q;
-    "R",                Keyboard, KeyCode, R;
-    "S",                Keyboard, KeyCode, S;
-    "T",                Keyboard, KeyCode, T;
-    "U",                Keyboard, KeyCode, U;
-    "V",                Keyboard, KeyCode, V;
-    "W",                Keyboard, KeyCode, W;
-    "X",                Keyboard, KeyCode, X;
-    "Y",                Keyboard, KeyCode, Y;
-    "Z",                Keyboard, KeyCode, Z;
-    "Esc",              Keyboard, KeyCode, Escape;
-    "F1",               Keyboard, KeyCode, F1;
-    "F2",               Keyboard, KeyCode, F2;
-    "F3",               Keyboard, KeyCode, F3;
-    "F4",               Keyboard, KeyCode, F4;
-    "F5",               Keyboard, KeyCode, F5;
-    "F6",               Keyboard, KeyCode, F6;
-    "F7",               Keyboard, KeyCode, F7;
-    "F8",               Keyboard, KeyCode, F8;
-    "F9",               Keyboard, KeyCode, F9;
-    "F10",              Keyboard, KeyCode, F10;
-    "F11",              Keyboard, KeyCode, F11;
-    "F12",              Keyboard, KeyCode, F12;
-    "F13",              Keyboard, KeyCode, F13;
-    "F14",              Keyboard, KeyCode, F14;
-    "F15",              Keyboard, KeyCode, F15;
-    "F16",              Keyboard, KeyCode, F16;
-    "F17",              Keyboard, KeyCode, F17;
-    "F18",              Keyboard, KeyCode, F18;
-    "F19",              Keyboard, KeyCode, F19;
-    "F20",              Keyboard, KeyCode, F20;
-    "F21",              Keyboard, KeyCode, F21;
-    "F22",              Keyboard, KeyCode, F22;
-    "F23",              Keyboard, KeyCode, F23;
-    "F24",              Keyboard, KeyCode, F24;
-    "Snapshot",         Keyboard, KeyCode, Snapshot;
-    "Scroll",           Keyboard, KeyCode, Scroll;
-    "Pause",            Keyboard, KeyCode, Pause;
-    "Insert",           Keyboard, KeyCode, Insert;
-    "Home",             Keyboard, KeyCode, Home;
-    "Delete",           Keyboard, KeyCode, Delete;
-    "End",              Keyboard, KeyCode, End;
-    "PageDown",         Keyboard, KeyCode, PageDown;
-    "PageUp",           Keyboard, KeyCode, PageUp;
-    "Left",             Keyboard, KeyCode, Left;
-    "Up",               Keyboard, KeyCode, Up;
-    "Right",            Keyboard, KeyCode, Right;
-    "Down",             Keyboard, KeyCode, Down;
-    "Back",             Keyboard, KeyCode, Back;
-    "Return",           Keyboard, KeyCode, Return;
-    "Space",            Keyboard, KeyCode, Space;
-    "Compose",          Keyboard, KeyCode, Compose;
-    "Caret",            Keyboard, KeyCode, Caret;
-    "Numlock",          Keyboard, KeyCode, Numlock;
-    "Numpad0",          Keyboard, KeyCode, Numpad0;
-    "Numpad1",          Keyboard, KeyCode, Numpad1;
-    "Numpad2",          Keyboard, KeyCode, Numpad2;
-    "Numpad3",          Keyboard, KeyCode, Numpad3;
-    "Numpad4",          Keyboard, KeyCode, Numpad4;
-    "Numpad5",          Keyboard, KeyCode, Numpad5;
-    "Numpad6",          Keyboard, KeyCode, Numpad6;
-    "Numpad7",          Keyboard, KeyCode, Numpad7;
-    "Numpad8",          Keyboard, KeyCode, Numpad8;
-    "Numpad9",          Keyboard, KeyCode, Numpad9;
-    "AbntC1",           Keyboard, KeyCode, AbntC1;
-    "AbntC2",           Keyboard, KeyCode, AbntC2;
-    "Add",              Keyboard, KeyCode, Add;
-    "Apostrophe",       Keyboard, KeyCode, Apostrophe;
-    "Apps",             Keyboard, KeyCode, Apps;
-    "At",               Keyboard, KeyCode, At;
-    "Ax",               Keyboard, KeyCode, Ax;
-    "Backslash",        Keyboard, KeyCode, Backslash;
-    "Calculator",       Keyboard, KeyCode, Calculator;
-    "Capital",          Keyboard, KeyCode, Capital;
-    "Colon",            Keyboard, KeyCode, Colon;
-    "Comma",            Keyboard, KeyCode, Comma;
-    "Convert",          Keyboard, KeyCode, Convert;
-    "Decimal",          Keyboard, KeyCode, Decimal;
-    "Divide",           Keyboard, KeyCode, Divide;
-    "Equals",           Keyboard, KeyCode, Equals;
-    "Grave",            Keyboard, KeyCode, Grave;
-    "Kana",             Keyboard, KeyCode, Kana;
-    "Kanji",            Keyboard, KeyCode, Kanji;
-    "LAlt",             Keyboard, KeyCode, LAlt;
-    "LBracket",         Keyboard, KeyCode, LBracket;
-    "LControl",         Keyboard, KeyCode, LControl;
-    "LShift",           Keyboard, KeyCode, LShift;
-    "LWin",             Keyboard, KeyCode, LWin;
-    "Mail",             Keyboard, KeyCode, Mail;
-    "MediaSelect",      Keyboard, KeyCode, MediaSelect;
-    "MediaStop",        Keyboard, KeyCode, MediaStop;
-    "Minus",            Keyboard, KeyCode, Minus;
-    "Multiply",         Keyboard, KeyCode, Multiply;
-    "Mute",             Keyboard, KeyCode, Mute;
-    "MyComputer",       Keyboard, KeyCode, MyComputer;
-    "NavigateForward",  Keyboard, KeyCode, NavigateForward;
-    "NavigateBackward", Keyboard, KeyCode, NavigateBackward;
-    "NextTrack",        Keyboard, KeyCode, NextTrack;
-    "NoConvert",        Keyboard, KeyCode, NoConvert;
-    "NumpadComma",      Keyboard, KeyCode, NumpadComma;
-    "NumpadEnter",      Keyboard, KeyCode, NumpadEnter;
-    "NumpadEquals",     Keyboard, KeyCode, NumpadEquals;
-    "OEM102",           Keyboard, KeyCode, OEM102;
-    "Period",           Keyboard, KeyCode, Period;
-    "PlayPause",        Keyboard, KeyCode, PlayPause;
-    "Power",            Keyboard, KeyCode, Power;
-    "PrevTrack",        Keyboard, KeyCode, PrevTrack;
-    "RAlt",             Keyboard, KeyCode, RAlt;
-    "RBracket",         Keyboard, KeyCode, RBracket;
-    "RControl",         Keyboard, KeyCode, RControl;
-    "RShift",           Keyboard, KeyCode, RShift;
-    "RWin",             Keyboard, KeyCode, RWin;
-    "Semicolon",        Keyboard, KeyCode, Semicolon;
-    "Slash",            Keyboard, KeyCode, Slash;
-    "Sleep",            Keyboard, KeyCode, Sleep;
-    "Stop",             Keyboard, KeyCode, Stop;
-    "Subtract",         Keyboard, KeyCode, Subtract;
-    "Sysrq",            Keyboard, KeyCode, Sysrq;
-    "Tab",              Keyboard, KeyCode, Tab;
-    "Underline",        Keyboard, KeyCode, Underline;
-    "Unlabeled",        Keyboard, KeyCode, Unlabeled;
-    "VolumeDown",       Keyboard, KeyCode, VolumeDown;
-    "VolumeUp",         Keyboard, KeyCode, VolumeUp;
-    "Wake",             Keyboard, KeyCode, Wake;
-    "WebBack",          Keyboard, KeyCode, WebBack;
-    "WebFavorites",     Keyboard, KeyCode, WebFavorites;
-    "WebForward",       Keyboard, KeyCode, WebForward;
-    "WebHome",          Keyboard, KeyCode, WebHome;
-    "WebRefresh",       Keyboard, KeyCode, WebRefresh;
-    "WebSearch",        Keyboard, KeyCode, WebSearch;
-    "WebStop",          Keyboard, KeyCode, WebStop;
-    "Yen",              Keyboard, KeyCode, Yen;
-    "Copy",             Keyboard, KeyCode, Copy;
-    "Paste",            Keyboard, KeyCode, Paste;
-    "Cut",              Keyboard, KeyCode, Cut;
+    "Key1",             Keyboard, Key1;
+    "Key2",             Keyboard, Key2;
+    "Key3",             Keyboard, Key3;
+    "Key4",             Keyboard, Key4;
+    "Key5",             Keyboard, Key5;
+    "Key6",             Keyboard, Key6;
+    "Key7",             Keyboard, Key7;
+    "Key8",             Keyboard, Key8;
+    "Key9",             Keyboard, Key9;
+    "Key0",             Keyboard, Key0;
+    "A",                Keyboard, A;
+    "B",                Keyboard, B;
+    "C",                Keyboard, C;
+    "D",                Keyboard, D;
+    "E",                Keyboard, E;
+    "F",                Keyboard, F;
+    "G",                Keyboard, G;
+    "H",                Keyboard, H;
+    "I",                Keyboard, I;
+    "J",                Keyboard, J;
+    "K",                Keyboard, K;
+    "L",                Keyboard, L;
+    "M",                Keyboard, M;
+    "N",                Keyboard, N;
+    "O",                Keyboard, O;
+    "P",                Keyboard, P;
+    "Q",                Keyboard, Q;
+    "R",                Keyboard, R;
+    "S",                Keyboard, S;
+    "T",                Keyboard, T;
+    "U",                Keyboard, U;
+    "V",                Keyboard, V;
+    "W",                Keyboard, W;
+    "X",                Keyboard, X;
+    "Y",                Keyboard, Y;
+    "Z",                Keyboard, Z;
+    "Esc",              Keyboard, Escape;
+    "F1",               Keyboard, F1;
+    "F2",               Keyboard, F2;
+    "F3",               Keyboard, F3;
+    "F4",               Keyboard, F4;
+    "F5",               Keyboard, F5;
+    "F6",               Keyboard, F6;
+    "F7",               Keyboard, F7;
+    "F8",               Keyboard, F8;
+    "F9",               Keyboard, F9;
+    "F10",              Keyboard, F10;
+    "F11",              Keyboard, F11;
+    "F12",              Keyboard, F12;
+    "F13",              Keyboard, F13;
+    "F14",              Keyboard, F14;
+    "F15",              Keyboard, F15;
+    "F16",              Keyboard, F16;
+    "F17",              Keyboard, F17;
+    "F18",              Keyboard, F18;
+    "F19",              Keyboard, F19;
+    "F20",              Keyboard, F20;
+    "F21",              Keyboard, F21;
+    "F22",              Keyboard, F22;
+    "F23",              Keyboard, F23;
+    "F24",              Keyboard, F24;
+    "Snapshot",         Keyboard, Snapshot;
+    "Scroll",           Keyboard, Scroll;
+    "Pause",            Keyboard, Pause;
+    "Insert",           Keyboard, Insert;
+    "Home",             Keyboard, Home;
+    "Delete",           Keyboard, Delete;
+    "End",              Keyboard, End;
+    "PageDown",         Keyboard, PageDown;
+    "PageUp",           Keyboard, PageUp;
+    "Left",             Keyboard, Left;
+    "Up",               Keyboard, Up;
+    "Right",            Keyboard, Right;
+    "Down",             Keyboard, Down;
+    "Back",             Keyboard, Back;
+    "Return",           Keyboard, Return;
+    "Space",            Keyboard, Space;
+    "Compose",          Keyboard, Compose;
+    "Caret",            Keyboard, Caret;
+    "Numlock",          Keyboard, Numlock;
+    "Numpad0",          Keyboard, Numpad0;
+    "Numpad1",          Keyboard, Numpad1;
+    "Numpad2",          Keyboard, Numpad2;
+    "Numpad3",          Keyboard, Numpad3;
+    "Numpad4",          Keyboard, Numpad4;
+    "Numpad5",          Keyboard, Numpad5;
+    "Numpad6",          Keyboard, Numpad6;
+    "Numpad7",          Keyboard, Numpad7;
+    "Numpad8",          Keyboard, Numpad8;
+    "Numpad9",          Keyboard, Numpad9;
+    "AbntC1",           Keyboard, AbntC1;
+    "AbntC2",           Keyboard, AbntC2;
+    "Add",              Keyboard, Add;
+    "Apostrophe",       Keyboard, Apostrophe;
+    "Apps",             Keyboard, Apps;
+    "At",               Keyboard, At;
+    "Ax",               Keyboard, Ax;
+    "Backslash",        Keyboard, Backslash;
+    "Calculator",       Keyboard, Calculator;
+    "Capital",          Keyboard, Capital;
+    "Colon",            Keyboard, Colon;
+    "Comma",            Keyboard, Comma;
+    "Convert",          Keyboard, Convert;
+    "Decimal",          Keyboard, Decimal;
+    "Divide",           Keyboard, Divide;
+    "Equals",           Keyboard, Equals;
+    "Grave",            Keyboard, Grave;
+    "Kana",             Keyboard, Kana;
+    "Kanji",            Keyboard, Kanji;
+    "LAlt",             Keyboard, LAlt;
+    "LBracket",         Keyboard, LBracket;
+    "LControl",         Keyboard, LControl;
+    "LShift",           Keyboard, LShift;
+    "LWin",             Keyboard, LWin;
+    "Mail",             Keyboard, Mail;
+    "MediaSelect",      Keyboard, MediaSelect;
+    "MediaStop",        Keyboard, MediaStop;
+    "Minus",            Keyboard, Minus;
+    "Multiply",         Keyboard, Multiply;
+    "Mute",             Keyboard, Mute;
+    "MyComputer",       Keyboard, MyComputer;
+    "NavigateForward",  Keyboard, NavigateForward;
+    "NavigateBackward", Keyboard, NavigateBackward;
+    "NextTrack",        Keyboard, NextTrack;
+    "NoConvert",        Keyboard, NoConvert;
+    "NumpadComma",      Keyboard, NumpadComma;
+    "NumpadEnter",      Keyboard, NumpadEnter;
+    "NumpadEquals",     Keyboard, NumpadEquals;
+    "OEM102",           Keyboard, OEM102;
+    "Period",           Keyboard, Period;
+    "PlayPause",        Keyboard, PlayPause;
+    "Power",            Keyboard, Power;
+    "PrevTrack",        Keyboard, PrevTrack;
+    "RAlt",             Keyboard, RAlt;
+    "RBracket",         Keyboard, RBracket;
+    "RControl",         Keyboard, RControl;
+    "RShift",           Keyboard, RShift;
+    "RWin",             Keyboard, RWin;
+    "Semicolon",        Keyboard, Semicolon;
+    "Slash",            Keyboard, Slash;
+    "Sleep",            Keyboard, Sleep;
+    "Stop",             Keyboard, Stop;
+    "Subtract",         Keyboard, Subtract;
+    "Sysrq",            Keyboard, Sysrq;
+    "Tab",              Keyboard, Tab;
+    "Underline",        Keyboard, Underline;
+    "Unlabeled",        Keyboard, Unlabeled;
+    "VolumeDown",       Keyboard, VolumeDown;
+    "VolumeUp",         Keyboard, VolumeUp;
+    "Wake",             Keyboard, Wake;
+    "WebBack",          Keyboard, WebBack;
+    "WebFavorites",     Keyboard, WebFavorites;
+    "WebForward",       Keyboard, WebForward;
+    "WebHome",          Keyboard, WebHome;
+    "WebRefresh",       Keyboard, WebRefresh;
+    "WebSearch",        Keyboard, WebSearch;
+    "WebStop",          Keyboard, WebStop;
+    "Yen",              Keyboard, Yen;
+    "Copy",             Keyboard, Copy;
+    "Paste",            Keyboard, Paste;
+    "Cut",              Keyboard, Cut;
 
-    "MouseLeft",   Mouse, MouseButton, Left;
-    "MouseRight",  Mouse, MouseButton, Right;
-    "MouseMiddle", Mouse, MouseButton, Middle;
+    "MouseLeft",   Mouse, Left;
+    "MouseRight",  Mouse, Right;
+    "MouseMiddle", Mouse, Middle;
 );
 
 

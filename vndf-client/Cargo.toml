@@ -19,6 +19,9 @@ winit      = "*"
 [dependencies.toadster]
 path = "../toadster"
 
+[dependencies.vndf-macros]
+path = "../vndf-macros"
+
 [dependencies.vndf-server]
 path = "../vndf-server"
 
