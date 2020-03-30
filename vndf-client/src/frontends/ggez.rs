@@ -187,12 +187,7 @@ impl EventHandler for Handler {
         let screen_size = Screen(Vec2::new(screen_width, screen_height));
 
         for input in self.input.drain(..) {
-            let trans = self.game.input.handle(
-                input,
-                &self.game.state.camera,
-                screen_size,
-                &mut self.game.events,
-            );
+            let trans = self.game.handle_input(input, screen_size);
 
             if trans == Transition::Quit {
                 quit(context);

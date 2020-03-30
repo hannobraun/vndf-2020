@@ -11,10 +11,18 @@ use std::{
     net::ToSocketAddrs,
 };
 
-use crate::shared::net::client::Conn;
+use crate::shared::{
+    math::Vec2,
+    net::client::Conn,
+};
 
 use self::{
     config::Config,
+    coords::Screen,
+    input::{
+        Input,
+        Transition,
+    },
     net::input::Events,
     state::State,
 };
@@ -46,6 +54,20 @@ impl Game {
                 input,
                 state,
             }
+        )
+    }
+
+    pub fn handle_input(&mut self,
+        input:       Input,
+        screen_size: Screen<Vec2>,
+    )
+        -> Transition
+    {
+        self.input.handle(
+            input,
+            &self.state.camera,
+            screen_size,
+            &mut self.events,
         )
     }
 }
