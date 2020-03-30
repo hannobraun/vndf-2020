@@ -61,7 +61,7 @@ impl InputHandler {
                     &mut game.events,
                 );
 
-                if let Transition::Quit = trans {
+                if trans == Transition::Quit {
                     *control_flow = ControlFlow::Exit
                 }
             }
