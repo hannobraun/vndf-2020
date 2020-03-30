@@ -36,7 +36,10 @@ impl InputHandler {
                 *control_flow = ControlFlow::Exit
             }
             Event::WindowEvent {
-                event: WindowEvent::KeyboardInput { input, .. },
+                event: WindowEvent::KeyboardInput {
+                    input,
+                    ..
+                },
                 ..
             } => {
                 if let Some(key) = input.virtual_keycode {
