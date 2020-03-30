@@ -11,6 +11,11 @@ use std::{
     net::ToSocketAddrs,
 };
 
+use log::{
+    debug,
+    error,
+};
+
 use crate::shared::{
     math::Vec2,
     net::{
@@ -79,6 +84,39 @@ impl Game {
         }
 
         trans
+    }
+
+    pub fn handle_messages(&mut self) -> Result<(), ()> {
+        for message in self.conn.incoming() {
+            match message {
+                Ok(msg::FromServer::Ping) => {
+                    // This message is just for testing purposes. Nothing to do
+                    // here.
+                }
+                Ok(msg::FromServer::Welcome(id)) => {
+                    self.state.own_id = Some(id);
+                }
+                Ok(msg::FromServer::UpdateComponent(component)) => {
+                    debug!("Update component: {:?}", component);
+                    self.state.update_component(component);
+                }
+                Ok(msg::FromServer::RemoveComponent(handle)) => {
+                    self.state.remove_component(&handle);
+                }
+                Ok(msg::FromServer::InputHandled { seq }) => {
+                    self.events.handled(seq);
+                }
+                Ok(msg::FromServer::Diagnostics(diagnostics)) => {
+                    self.state.diagnostics = Some(diagnostics);
+                }
+                Err(err) => {
+                    error!("Connection error: {:?}", err);
+                    return Err(());
+                }
+            }
+        }
+
+        Ok(())
     }
 }
 

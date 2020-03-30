@@ -30,10 +30,6 @@ use ggez::{
     },
     timer,
 };
-use log::{
-    debug,
-    error,
-};
 
 use crate::{
     game::{
@@ -194,34 +190,8 @@ impl EventHandler for Handler {
             }
         }
 
-        for message in self.game.conn.incoming() {
-            match message {
-                Ok(msg::FromServer::Ping) => {
-                    // This message is just for testing purposes. Nothing to do
-                    // here.
-                }
-                Ok(msg::FromServer::Welcome(id)) => {
-                    self.game.state.own_id = Some(id);
-                }
-                Ok(msg::FromServer::UpdateComponent(component)) => {
-                    debug!("Update component: {:?}", component);
-                    self.game.state.update_component(component);
-                }
-                Ok(msg::FromServer::RemoveComponent(handle)) => {
-                    self.game.state.remove_component(&handle);
-                }
-                Ok(msg::FromServer::InputHandled { seq }) => {
-                    self.game.events.handled(seq);
-                }
-                Ok(msg::FromServer::Diagnostics(diagnostics)) => {
-                    self.game.state.diagnostics = Some(diagnostics);
-                }
-                Err(err) => {
-                    error!("Connection error: {:?}", err);
-                    quit(context);
-                    return Ok(());
-                }
-            }
+        if let Err(()) = self.game.handle_messages() {
+            quit(context);
         }
 
         Ok(())
