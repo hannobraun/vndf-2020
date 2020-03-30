@@ -54,12 +54,7 @@ impl InputHandler {
                     ElementState::Released => Input::KeyUp(key),
                 };
 
-                let trans = game.input.handle(
-                    input,
-                    &game.state.camera,
-                    window.size(),
-                    &mut game.events,
-                );
+                let trans = game.handle_input(input, window.size());
 
                 if trans == Transition::Quit {
                     *control_flow = ControlFlow::Exit
