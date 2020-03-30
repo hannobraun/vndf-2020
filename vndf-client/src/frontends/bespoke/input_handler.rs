@@ -55,7 +55,6 @@ impl InputHandler {
                 };
 
                 let trans = game.handle_input(input, window.size());
-
                 if trans == Transition::Quit {
                     *control_flow = ControlFlow::Exit
                 }
