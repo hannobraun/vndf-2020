@@ -190,7 +190,7 @@ impl EventHandler for Handler {
             }
         }
 
-        if let Err(()) = self.game.handle_messages() {
+        if let Err(()) = self.game.update() {
             quit(context);
         }
 

@@ -38,7 +38,7 @@ pub fn start(mut game: Game) -> Result<(), Error> {
 
         match event {
             Event::MainEventsCleared => {
-                if let Err(()) = game.handle_messages() {
+                if let Err(()) = game.update() {
                     *control_flow = ControlFlow::Exit;
                 }
             }

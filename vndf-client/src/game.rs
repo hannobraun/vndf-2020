@@ -86,7 +86,7 @@ impl Game {
         trans
     }
 
-    pub fn handle_messages(&mut self) -> Result<(), ()> {
+    pub fn update(&mut self) -> Result<(), ()> {
         for message in self.conn.incoming() {
             match message {
                 Ok(msg::FromServer::Ping) => {
