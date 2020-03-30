@@ -1,0 +1,67 @@
+use winit::{
+    event::{
+        ElementState,
+        Event,
+        WindowEvent,
+    },
+    event_loop::ControlFlow,
+};
+
+use crate::game::{
+    Game,
+    config::Key,
+    input::{
+        Input,
+        Transition,
+    },
+};
+
+use super::window::Window;
+
+pub struct InputHandler;
+
+impl InputHandler {
+    pub fn new() -> Self {
+        InputHandler
+    }
+
+    pub fn handle_event(&mut self,
+        event:        &Event<()>,
+        game:         &mut Game,
+        window:       &Window,
+        control_flow: &mut ControlFlow,
+    ) {
+        match event {
+            Event::WindowEvent { event: WindowEvent::CloseRequested, .. } => {
+                *control_flow = ControlFlow::Exit
+            }
+            Event::WindowEvent { event, .. } => {
+                match event {
+                    WindowEvent::KeyboardInput { input, .. } => {
+                        if let Some(key) = input.virtual_keycode {
+                            let key = Key::Keyboard(key);
+
+                            let input = match input.state {
+                                ElementState::Pressed  => Input::KeyDown(key),
+                                ElementState::Released => Input::KeyUp(key),
+                            };
+
+                            let trans = game.input.handle(
+                                input,
+                                &game.state.camera,
+                                window.size(),
+                                &mut game.events,
+                            );
+
+                            if let Transition::Quit = trans {
+                                *control_flow = ControlFlow::Exit
+                            }
+                        }
+                    },
+                    _ => (),
+                }
+            }
+            _ => {}
+        }
+    }
+}
