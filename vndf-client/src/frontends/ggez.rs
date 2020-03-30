@@ -194,11 +194,6 @@ impl EventHandler for Handler {
             }
         }
 
-        for event in self.game.events.unsent() {
-            self.game.conn.send(msg::FromClient::Action(event))
-                .expect("Failed to send input event");
-        }
-
         for message in self.game.conn.incoming() {
             match message {
                 Ok(msg::FromServer::Ping) => {

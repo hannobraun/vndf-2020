@@ -13,7 +13,10 @@ use std::{
 
 use crate::shared::{
     math::Vec2,
-    net::client::Conn,
+    net::{
+        client::Conn,
+        msg,
+    },
 };
 
 use self::{
@@ -63,12 +66,19 @@ impl Game {
     )
         -> Transition
     {
-        self.input.handle(
+        let trans = self.input.handle(
             input,
             &self.state.camera,
             screen_size,
             &mut self.events,
-        )
+        );
+
+        for event in self.events.unsent() {
+            self.conn.send(msg::FromClient::Action(event))
+                .expect("Failed to send input event");
+        }
+
+        trans
     }
 }
 
