@@ -3,7 +3,13 @@ mod renderer;
 mod window;
 
 
-use winit::event_loop::EventLoop;
+use winit::{
+    event::Event,
+    event_loop::{
+        ControlFlow,
+        EventLoop,
+    },
+};
 
 use crate::game::Game;
 
@@ -29,6 +35,16 @@ pub fn start(mut game: Game) -> Result<(), Error> {
             &window,
             control_flow,
         );
+
+        match event {
+            Event::MainEventsCleared => {
+                if let Err(()) = game.handle_messages() {
+                    *control_flow = ControlFlow::Exit;
+                }
+            }
+            _ => {}
+        }
+
         window.handle_event(&event);
         renderer.handle_event(&event);
     });
