@@ -2,6 +2,7 @@ use winit::{
     event::{
         ElementState,
         Event,
+        KeyboardInput,
         WindowEvent,
     },
     event_loop::ControlFlow,
@@ -37,29 +38,31 @@ impl InputHandler {
             }
             Event::WindowEvent {
                 event: WindowEvent::KeyboardInput {
-                    input,
+                    input: KeyboardInput {
+                        state,
+                        virtual_keycode: Some(key_code),
+                        ..
+                    },
                     ..
                 },
                 ..
             } => {
-                if let Some(key) = input.virtual_keycode {
-                    let key = Key::Keyboard(key);
+                let key = Key::Keyboard(*key_code);
 
-                    let input = match input.state {
-                        ElementState::Pressed  => Input::KeyDown(key),
-                        ElementState::Released => Input::KeyUp(key),
-                    };
+                let input = match state {
+                    ElementState::Pressed  => Input::KeyDown(key),
+                    ElementState::Released => Input::KeyUp(key),
+                };
 
-                    let trans = game.input.handle(
-                        input,
-                        &game.state.camera,
-                        window.size(),
-                        &mut game.events,
-                    );
+                let trans = game.input.handle(
+                    input,
+                    &game.state.camera,
+                    window.size(),
+                    &mut game.events,
+                );
 
-                    if let Transition::Quit = trans {
-                        *control_flow = ControlFlow::Exit
-                    }
+                if let Transition::Quit = trans {
+                    *control_flow = ControlFlow::Exit
                 }
             }
             _ => {}
