@@ -177,7 +177,7 @@ impl Renderer {
 
                 self.queue.submit(&[encoder.finish()]);
             }
-            _ => (),
+            _ => {}
         }
     }
 }
