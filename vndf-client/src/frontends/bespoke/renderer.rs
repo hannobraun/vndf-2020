@@ -139,6 +139,15 @@ impl Renderer {
 
     pub fn handle_event(&mut self, event: &Event<()>) {
         match event {
+            Event::WindowEvent { event: WindowEvent::Resized(size), .. } => {
+                self.swap_chain_descriptor.width  = size.width;
+                self.swap_chain_descriptor.height = size.height;
+
+                self.swap_chain = self.device.create_swap_chain(
+                    &self.surface,
+                    &self.swap_chain_descriptor,
+                );
+            }
             Event::RedrawRequested(_) => {
                 let frame = self.swap_chain.get_next_texture();
 
@@ -167,15 +176,6 @@ impl Renderer {
                 }
 
                 self.queue.submit(&[encoder.finish()]);
-            }
-            Event::WindowEvent { event: WindowEvent::Resized(size), .. } => {
-                self.swap_chain_descriptor.width  = size.width;
-                self.swap_chain_descriptor.height = size.height;
-
-                self.swap_chain = self.device.create_swap_chain(
-                    &self.surface,
-                    &self.swap_chain_descriptor,
-                );
             }
             _ => (),
         }
