@@ -177,7 +177,11 @@ impl EventHandler for Handler {
         self.input.push(Input::KeyUp(key_code.into()));
     }
 
-    fn update(&mut self, context: &mut Context) -> GameResult {
+    fn update(&mut self, _: &mut Context) -> GameResult {
+        Ok(())
+    }
+
+    fn draw(&mut self, context: &mut Context) -> GameResult {
         let (screen_width, screen_height) =
             ggez::graphics::drawable_size(context);
         let screen_size = Screen(Vec2::new(screen_width, screen_height));
@@ -194,10 +198,6 @@ impl EventHandler for Handler {
             quit(context);
         }
 
-        Ok(())
-    }
-
-    fn draw(&mut self, context: &mut Context) -> GameResult {
         let dt = timer::delta(context);
         self.game.state.frame_time.push(dt.try_into().unwrap());
 
