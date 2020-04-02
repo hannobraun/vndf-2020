@@ -184,7 +184,7 @@ impl Graphics {
 
         self.draw_projected_path(context, &craft.body, ship.color, game)?;
 
-        let pos = game.state.camera.world_to_screen(
+        let pos_s = game.state.camera.world_to_screen(
             screen_size(context),
             pos_w,
         );
@@ -194,7 +194,7 @@ impl Graphics {
             &ScreenTransform,
             &self.ship,
             DrawParam::screen()
-                .dest(pos)
+                .dest(pos_s)
                 .rotation(Vec2::unit_x().angle(body.dir).0)
                 .scale(Vec2::new(30.0, 30.0))
                 .color([ship.color[0], ship.color[1], ship.color[2], 1.0]),
