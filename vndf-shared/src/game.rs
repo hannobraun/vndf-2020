@@ -67,7 +67,7 @@ impl State {
         data.planets.insert(Planet {
             pos:  Pnt2::new(0.0, 0.0),
             size: 100.0,
-            mass: PI * 100.0f32.powi(2),
+            mass: PI * 100.0f32.powi(2) * 7.491e10,
         });
 
         Self {

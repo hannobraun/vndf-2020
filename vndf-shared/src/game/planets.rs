@@ -8,5 +8,5 @@ pub use self::{
 };
 
 
-/// The gravitational constant of our universe. Completely made up.
-pub const G: f32 = 5.0;
+/// The gravitational constant
+pub const G: f32 = 6.674e-11;
