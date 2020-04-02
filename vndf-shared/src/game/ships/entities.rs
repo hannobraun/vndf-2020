@@ -59,9 +59,9 @@ impl ShipEntity {
         velocities: &mut store::Strong<Velocity>,
         entities:   &mut HashSet<handle::Strong<Untyped>>,
     ) {
-        const THRUST: f32 =    2.5;
-        const FUEL:   f32 = 1200.0;
-        const HEALTH: f32 =   10.0;
+        const THRUST: f32 =   5_000.0;
+        const FUEL:   f32 = 300_000.0;
+        const HEALTH: f32 =      10.0;
 
         let distance = planet.size * 1.5;
         let angle = cgmath::Rad(
