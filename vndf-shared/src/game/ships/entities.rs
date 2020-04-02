@@ -63,7 +63,7 @@ impl ShipEntity {
         const FUEL:   f32 = 1200.0;
         const HEALTH: f32 =   10.0;
 
-        let distance = planet.size + 300.0;
+        let distance = planet.size * 1.5;
         let angle = cgmath::Rad(
             thread_rng().gen_range(0.0, Rad::full_turn().0),
         );
