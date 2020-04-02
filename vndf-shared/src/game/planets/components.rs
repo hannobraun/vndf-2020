@@ -1,5 +1,3 @@
-use std::f32::consts::PI;
-
 use serde::{
     Deserialize,
     Serialize,
@@ -16,6 +14,7 @@ use crate::math::{
 pub struct Planet {
     pub pos:  Pnt2,
     pub size: f32,
+    pub mass: f32,
 }
 
 impl Planet {
@@ -28,8 +27,7 @@ impl Planet {
         const G: f32 = 5.0;
 
         let dist = pos.distance(self.pos);
-        let mass = PI * self.size.powi(2);
-        let acc  = G * mass / dist.powi(2);
+        let acc  = G * self.mass / dist.powi(2);
 
         (self.pos - pos).normalize() * acc
     }
