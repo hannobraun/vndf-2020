@@ -181,6 +181,7 @@ impl Graphics {
         let craft = get!(game.state.data.crafts, &ship.craft);
         let body  = get!(game.state.data.bodies, &craft.body);
         let pos_w = get!(game.state.data.positions, &body.pos);
+        let vel   = get!(game.state.data.velocities, &body.vel);
 
         self.draw_projected_path(context, &craft.body, ship.color, game)?;
 
@@ -198,6 +199,23 @@ impl Graphics {
                 .rotation(Vec2::unit_x().angle(body.dir).0)
                 .scale(Vec2::new(30.0, 30.0))
                 .color([ship.color[0], ship.color[1], ship.color[2], 1.0]),
+        )?;
+
+        let pos_km = pos_w.0 / 1000.0;
+        let vel_km = vel.0 / 1000.0;
+
+        draw(
+            context,
+            &ScreenTransform,
+            &Text::new(
+                format!(
+                    "Pos: {:.3}/{:.3}\nVel: {:.3}/{:.3} ({:.3})",
+                    pos_km.x, pos_km.y,
+                    vel_km.x, vel_km.y, vel_km.magnitude(),
+                )
+            ),
+            DrawParam::screen()
+                .dest(pos_s + Screen(Vec2::new(20.0, -20.0))),
         )?;
 
         Ok(true)
