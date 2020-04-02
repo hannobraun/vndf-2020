@@ -62,12 +62,10 @@ impl State {
     pub fn new() -> Self {
         let mut data = data::server::Components::new();
 
-        // This is roughly the size and mass of Saturn (in m and kg
-        // respectively).
         data.planets.insert(Planet {
             pos:  Pnt2::new(0.0, 0.0),
-            size: 60_268_000.0,
-            mass: 5.6834e26,
+            size: 60_268_000.0,      // Size of Saturn (in m)
+            mass: 5.6834e26 * 100.0, // 100x density of Saturn (in kg)
         });
 
         Self {
