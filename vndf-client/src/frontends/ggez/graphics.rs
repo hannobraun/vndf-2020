@@ -209,7 +209,7 @@ impl Graphics {
             &ScreenTransform,
             &Text::new(
                 format!(
-                    "Pos: {:.3}/{:.3}\nVel: {:.3}/{:.3} ({:.3})",
+                    "Pos: {:.0}/{:.0}\nVel: {:.0}/{:.0} ({:.0})",
                     pos_km.x, pos_km.y,
                     vel_km.x, vel_km.y, vel_km.magnitude(),
                 )
