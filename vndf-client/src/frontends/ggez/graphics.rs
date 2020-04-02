@@ -180,13 +180,13 @@ impl Graphics {
     {
         let craft = get!(game.state.data.crafts, &ship.craft);
         let body  = get!(game.state.data.bodies, &craft.body);
-        let pos   = get!(game.state.data.positions, &body.pos);
+        let pos_w = get!(game.state.data.positions, &body.pos);
 
         self.draw_projected_path(context, &craft.body, ship.color, game)?;
 
         let pos = game.state.camera.world_to_screen(
             screen_size(context),
-            pos,
+            pos_w,
         );
 
         draw(
