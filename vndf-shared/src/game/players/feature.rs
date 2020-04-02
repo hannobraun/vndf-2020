@@ -34,6 +34,7 @@ use crate::game::{
         Position,
         Velocity,
     },
+    planets::Planet,
     ships::Ship,
 };
 
@@ -77,6 +78,7 @@ impl Feature {
 
     pub fn on_player_connected(&mut self,
         event:      &PlayerConnected,
+        planet:     &Planet,
         bodies:     &mut store::Strong<Body>,
         crafts:     &mut store::Strong<Craft>,
         fuels:      &mut store::Strong<Fuel>,
@@ -91,6 +93,7 @@ impl Feature {
             self.next_id.increment(),
             event.addr,
             event.color,
+            planet,
             bodies,
             crafts,
             fuels,

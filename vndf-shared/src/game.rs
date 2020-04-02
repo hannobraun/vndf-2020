@@ -161,8 +161,12 @@ impl State {
         }
         self.apply_changes();
         while let Some(event) = self.players.player_connected.source().next() {
+            // We only have one planet right now.
+            let planet = self.data.planets.iter().next().unwrap().1;
+
             self.players.on_player_connected(
                 &event,
+                planet,
                 &mut self.data.bodies,
                 &mut self.data.crafts,
                 &mut self.data.fuels,

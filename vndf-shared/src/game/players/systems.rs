@@ -29,6 +29,7 @@ use crate::{
             Position,
             Velocity,
         },
+        planets::Planet,
         players::PlayerId,
         ships::{
             Ship,
@@ -49,6 +50,7 @@ pub fn connect_player(
     id:             PlayerId,
     addr:           SocketAddr,
     color:          [f32; 3],
+    planet:         &Planet,
     bodies:         &mut store::Strong<Body>,
     crafts:         &mut store::Strong<Craft>,
     fuels:          &mut store::Strong<Fuel>,
@@ -65,6 +67,7 @@ pub fn connect_player(
     index.insert(addr, handle);
 
     ShipEntity { owner: id, color }.create(
+        planet,
         bodies,
         crafts,
         fuels,

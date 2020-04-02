@@ -25,12 +25,17 @@ use crate::{
             Position,
             Velocity,
         },
+        planets::{
+            G,
+            Planet,
+        },
         players::PlayerId,
     },
     math::{
         prelude::*,
         Pnt2,
         Rad,
+        rotate,
     },
 };
 
@@ -44,6 +49,7 @@ pub struct ShipEntity {
 
 impl ShipEntity {
     pub fn create(&self,
+        planet:     &Planet,
         bodies:     &mut store::Strong<Body>,
         crafts:     &mut store::Strong<Craft>,
         fuels:      &mut store::Strong<Fuel>,
@@ -66,8 +72,15 @@ impl ShipEntity {
             angle.cos() * distance,
         );
 
+        // Compute velocity for circular orbit at the given distance.
+        let speed = (G * planet.mass / distance).sqrt();
+        let velocity = rotate(
+            position.to_vec().normalize() * speed,
+            Rad::turn_div_4(),
+        );
+
         let pos    = positions.insert(Position(position));
-        let vel    = velocities.insert(Velocity::new());
+        let vel    = velocities.insert(Velocity(velocity));
         let body   = bodies.insert(Body::new(pos, vel));
         let fuel   = fuels.insert(Fuel(FUEL));
         let health = healths.insert(Health::new(body.clone(), HEALTH));
