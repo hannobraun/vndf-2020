@@ -10,8 +10,6 @@ pub mod players;
 pub mod ships;
 
 
-use std::f32::consts::PI;
-
 use rinnsal::{
     EventSink,
     EventSource,
@@ -64,10 +62,12 @@ impl State {
     pub fn new() -> Self {
         let mut data = data::server::Components::new();
 
+        // This is roughly the size and mass of Saturn (in m and kg
+        // respectively).
         data.planets.insert(Planet {
             pos:  Pnt2::new(0.0, 0.0),
-            size: 100.0,
-            mass: PI * 100.0f32.powi(2) * 7.491e10,
+            size: 60_268_000.0,
+            mass: 5.6834e26,
         });
 
         Self {
