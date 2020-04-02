@@ -9,6 +9,8 @@ use crate::math::{
     Vec2,
 };
 
+use super::G;
+
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Planet {
@@ -23,9 +25,6 @@ impl Planet {
     }
 
     pub fn gravitation_at(&self, pos: Pnt2) -> Vec2 {
-        // The gravitational constant of our universe. Completely made up.
-        const G: f32 = 5.0;
-
         let dist = pos.distance(self.pos);
         let acc  = G * self.mass / dist.powi(2);
 
