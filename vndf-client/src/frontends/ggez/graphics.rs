@@ -271,7 +271,7 @@ impl Graphics {
 
         let mut previous = pos;
 
-        for _ in 0 .. 100 {
+        for _ in 0 .. 120 {
             body.update(
                 1.0,
                 &planets,
