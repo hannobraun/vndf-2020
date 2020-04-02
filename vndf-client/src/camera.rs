@@ -74,7 +74,7 @@ impl Camera {
     {
         let aspect_ratio = screen_size.0.x / screen_size.0.y;
 
-        let min_world_size_on_screen = 1000.0;
+        let min_world_size_on_screen = 100_000_000.0; // m
 
         let default_world_size_on_screen = World(
             if aspect_ratio >= 1.0 {
