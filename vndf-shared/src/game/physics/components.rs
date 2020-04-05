@@ -64,6 +64,8 @@ pub struct Body {
 
     pub dir: Vec2,
     pub rot: Rad,
+
+    pub mass: f32,
 }
 
 impl Body {
@@ -80,16 +82,19 @@ impl Body {
 
             dir: Vec2::unit_x(),
             rot: Rad::zero(),
+
+            mass: 1.0,
         }
     }
 
     pub fn to_weak(&self) -> Self {
         Self {
-            pos: self.pos.as_weak(),
-            vel: self.vel.as_weak(),
-            acc: self.acc.clone(),
-            dir: self.dir.clone(),
-            rot: self.rot.clone(),
+            pos:  self.pos.as_weak(),
+            vel:  self.vel.as_weak(),
+            acc:  self.acc.clone(),
+            dir:  self.dir.clone(),
+            rot:  self.rot.clone(),
+            mass: self.mass.clone(),
         }
     }
 
