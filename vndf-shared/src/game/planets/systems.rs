@@ -69,7 +69,7 @@ pub struct Planets<S>(pub S);
 impl<S> Planets<S>
     where S: for<'r> store::Values<'r, Planet>
 {
-    pub fn gravitation_at(&self, pos: Pnt2) -> Vec2 {
+    pub fn acceleration_at(&self, pos: Pnt2) -> Vec2 {
         let mut acc = Vec2::zero();
 
         for planet in self.0.values() {

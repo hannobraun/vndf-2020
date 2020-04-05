@@ -115,7 +115,7 @@ impl Body {
             dt,
             &mut pos.0,
             &mut vel.0,
-            |pos| self.acc + planets.gravitation_at(pos),
+            |pos| self.acc + planets.acceleration_at(pos),
         );
         self.acc = Vec2::zero();
 
