@@ -24,7 +24,8 @@ impl Planet {
         self.clone()
     }
 
-    pub fn gravitation_at(&self, pos: Pnt2) -> Vec2 {
+    /// Acceleration of a body at the given position, due to gravity
+    pub fn acceleration_at(&self, pos: Pnt2) -> Vec2 {
         let dist = pos.distance(self.pos);
         let acc  = G * self.mass / dist.powi(2);
 

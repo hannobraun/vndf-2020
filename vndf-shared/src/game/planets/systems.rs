@@ -73,7 +73,7 @@ impl<S> Planets<S>
         let mut acc = Vec2::zero();
 
         for planet in self.0.values() {
-            acc += planet.gravitation_at(pos);
+            acc += planet.acceleration_at(pos);
         }
 
         acc
