@@ -88,4 +88,13 @@ impl<S> Planets<S>
 
         false
     }
+
+    /// Returns the planet whose gravity is dominant at the given position
+    pub fn dominant_at(&self, _pos: Pnt2) -> &Planet {
+        // At some point, we'd look at the closest planets and compare their
+        // gravitation pull, but for now there's just one planet in the game.
+        assert_eq!(self.0.values().count(), 1);
+
+        self.0.values().next().unwrap()
+    }
 }

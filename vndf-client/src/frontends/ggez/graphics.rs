@@ -34,6 +34,7 @@ use crate::{
             missiles::Missile,
             physics::Body,
             planets::{
+                G,
                 Planet,
                 Planets,
             },
@@ -282,55 +283,79 @@ impl Graphics {
         let pos = *get!(game.state.data.positions,  &body.pos);
         let vel = *get!(game.state.data.velocities, &body.vel);
 
-        let mut positions  = OneStore { handle: (&body.pos).into(), data: pos };
-        let mut velocities = OneStore { handle: (&body.vel).into(), data: vel };
-
         let planets = Planets(&game.state.data.planets);
+        let planet  = planets.dominant_at(pos.0);
 
-        let mut previous = pos;
+        // State vectors
+        let r = pos.0 - planet.pos;
+        let v = vel.0;
 
-        for _ in 0 .. 120 {
-            body.update(
-                1.0,
-                &planets,
-                &mut positions,
-                &mut velocities,
-            );
+        // Standard gravitational parameter
+        let mu = G * planet.mass;
 
-            let current = positions.data;
+        // Orbital eccentricity
+        let e =
+            r * (v.magnitude().powi(2) / mu - 1.0 / r.magnitude())
+            - v * r.dot(v) / mu;
 
-            if previous == current {
-                break;
-            }
+        // What we computed here is the eccentricity vector. It's magnitude is
+        // the eccentricity. The eccentricity tells us what kind of orbit we're
+        // dealing with:
+        // |e| == 0    => Circular
+        // 0 < |e| < 1 => Elliptical
+        // |e| == 1:   => Parabolic
+        // |e| > 1:    => Hyperbolic
 
-            let previous_s = game.state.camera.world_to_screen(
-                screen_size(context),
-                previous,
-            );
-            let current_s = game.state.camera.world_to_screen(
-                screen_size(context),
-                current,
-            );
-
-            let line = Mesh::new_line(
-                context,
-                &[previous_s.0, current_s.0],
-                1.5,
-                [color[0], color[1], color[2], 0.5].into(),
-            )?;
-            draw(
-                context,
-                &ScreenTransform,
-                &line,
-                DrawParam::screen(),
-            )?;
-
-            if planets.check_collision(current.0) {
-                break;
-            }
-
-            previous = current;
+        // For now, we're only dealing with circular and elliptical orbits.
+        if e.magnitude() >= 1.0 {
+            return Ok(true);
         }
+
+        // Specific orbital energy
+        let ep = v.magnitude().powi(2) / 2.0 - mu / r.magnitude();
+
+        // Semi-major axis
+        let a = -(mu / 2.0 / ep);
+
+        // Semi-minor axis
+        let b = a * (1.0 - e.magnitude().powi(2)).sqrt();
+
+        // Argument of periapsis
+        let w = f32::atan2(e.y, e.x);
+
+        // Pericenter (point of closest approach)
+        let pericenter = planet.pos + e.normalize() * (1.0 - e.magnitude()) * a;
+
+        // Center of ellipse
+        let pos_w = pericenter - e.normalize() * a;
+
+        let size_s          =      screen_size(context);
+        let pixels_per_unit = game.state.camera.pixels_per_unit(size_s);
+
+        // Ellipse in screen coordinates
+        let pos_s = game.state.camera.world_to_screen(size_s, pos_w);
+        let r1_s  = a * pixels_per_unit;
+        let r2_s  = b * pixels_per_unit;
+
+        let ellipse = Mesh::new_ellipse(
+            context,
+            DrawMode::stroke(2.0),
+            [0.0, 0.0],
+            r1_s,
+            r2_s,
+            0.5,
+            [color[0], color[1], color[2], 0.5].into(),
+        )?;
+
+        // Draw orbit
+        draw(
+            context,
+            &ScreenTransform,
+            &ellipse,
+            DrawParam::screen()
+                .dest(pos_s)
+                .rotation(w),
+        )?;
 
         Ok(true)
     }

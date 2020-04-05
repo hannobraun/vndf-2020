@@ -69,6 +69,11 @@ impl Camera {
         point_screen_origin_centered + screen_size / 2.0
     }
 
+    pub fn pixels_per_unit(&self, screen_size: Screen<Vec2>) -> f32 {
+        let world_size_on_screen = self.world_size_on_screen(screen_size);
+        screen_size.0.x / world_size_on_screen.0.x
+    }
+
     pub fn world_size_on_screen(&self, screen_size: Screen<Vec2>)
         -> World<Vec2>
     {
