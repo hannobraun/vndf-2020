@@ -326,6 +326,9 @@ impl Graphics {
         // Pericenter (point of closest approach)
         let pericenter = planet.pos + e.normalize() * (1.0 - e.magnitude()) * a;
 
+        // Apocenter (farthest point of orbit)
+        let apocenter = pericenter - e.normalize() * 2.0 * a;
+
         // Center of ellipse
         let pos_w = pericenter - e.normalize() * a;
 
@@ -356,6 +359,33 @@ impl Graphics {
                 .dest(pos_s)
                 .rotation(w),
         )?;
+
+        // Display periapsis and apoapsis
+        //
+        // If our orbit is nearly circular, the computed apses will jump around
+        // like crazy. Let's make sure we have a minimum of eccentricity, so
+        // they become well-defined.
+        if e.magnitude() > 0.01 {
+            let periapsis = (pericenter - planet.pos).magnitude() / 1000.0;
+            let apoapsis  = (apocenter  - planet.pos).magnitude() / 1000.0;
+
+            draw(
+                context,
+                &ScreenTransform,
+                &Text::new(format!("Periapsis: {:.0} km", periapsis)),
+                DrawParam::screen()
+                    .dest(
+                        game.state.camera.world_to_screen(size_s, pericenter)
+                    ),
+            )?;
+            draw(
+                context,
+                &ScreenTransform,
+                &Text::new(format!("Apoapsis: {:.0} km", apoapsis)),
+                DrawParam::screen()
+                    .dest(game.state.camera.world_to_screen(size_s, apocenter)),
+            )?;
+        }
 
         Ok(true)
     }
