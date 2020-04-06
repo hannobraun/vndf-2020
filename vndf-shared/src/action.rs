@@ -9,12 +9,12 @@ use crate::math::Pnt2;
 #[derive(Clone, Copy, Debug, Deserialize, Serialize, PartialEq)]
 pub struct Action {
     pub seq:  u64,
-    pub kind: EventKind,
+    pub kind: Kind,
 }
 
 
 #[derive(Clone, Copy, Debug, Deserialize, Serialize, PartialEq)]
-pub enum EventKind {
+pub enum Kind {
     Rotate(Rotation),
     Thrust(bool),
     LaunchMissile {

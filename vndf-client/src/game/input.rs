@@ -13,7 +13,7 @@ use crate::{
     },
     shared::{
         action::{
-            EventKind,
+            self,
             Rotation,
         },
         math::{
@@ -60,17 +60,17 @@ impl Handler {
                         return Transition::Quit;
                     }
                     k if k == self.config.input.left => {
-                        events.push(EventKind::Rotate(Rotation::Left))
+                        events.push(action::Kind::Rotate(Rotation::Left))
                     }
                     k if k == self.config.input.right => {
-                        events.push(EventKind::Rotate(Rotation::Right))
+                        events.push(action::Kind::Rotate(Rotation::Right))
                     }
                     k if k == self.config.input.thrust => {
-                        events.push(EventKind::Thrust(true))
+                        events.push(action::Kind::Thrust(true))
                     }
                     k if k == self.config.input.launch => {
                         events.push(
-                            EventKind::LaunchMissile { target: self.pointer_world.0 }
+                            action::Kind::LaunchMissile { target: self.pointer_world.0 }
                         )
                     }
                     _ => (),
@@ -79,13 +79,13 @@ impl Handler {
             Input::KeyUp(key) => {
                 match key {
                     k if k == self.config.input.left => {
-                        events.push(EventKind::Rotate(Rotation::None))
+                        events.push(action::Kind::Rotate(Rotation::None))
                     }
                     k if k == self.config.input.right => {
-                        events.push(EventKind::Rotate(Rotation::None))
+                        events.push(action::Kind::Rotate(Rotation::None))
                     }
                     k if k == self.config.input.thrust => {
-                        events.push(EventKind::Thrust(false))
+                        events.push(action::Kind::Thrust(false))
                     }
                     _ => (),
                 }

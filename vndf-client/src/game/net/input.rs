@@ -14,8 +14,8 @@ use time::{
 };
 
 use crate::shared::action::{
+    self,
     Action,
-    EventKind,
 };
 
 
@@ -34,7 +34,7 @@ impl Events {
         }
     }
 
-    pub fn push(&mut self, kind: EventKind) {
+    pub fn push(&mut self, kind: action::Kind) {
         let event = Event {
             inner: Action {
                 seq: self.next_seq,

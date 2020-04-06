@@ -92,13 +92,13 @@ impl Ship {
         }
 
         match action.kind {
-            action::EventKind::Rotate(rotation) => {
+            action::Kind::Rotate(rotation) => {
                 self.rotation = rotation;
             }
-            action::EventKind::Thrust(thrust) => {
+            action::Kind::Thrust(thrust) => {
                 craft.engine_on = thrust;
             }
-            action::EventKind::LaunchMissile { target } => {
+            action::Kind::LaunchMissile { target } => {
                 let missile = self.launch_missile(
                     craft.owner,
                     &body,
