@@ -184,7 +184,7 @@ impl Graphics {
         let pos_w = get!(game.state.data.positions, &body.pos);
         let vel   = get!(game.state.data.velocities, &body.vel);
 
-        self.draw_projected_path(context, &craft.body, ship.color, game)?;
+        self.draw_orbit(context, &craft.body, ship.color, game)?;
 
         let pos_s = game.state.camera.world_to_screen(
             screen_size(context),
@@ -269,7 +269,7 @@ impl Graphics {
         Ok(true)
     }
 
-    fn draw_projected_path(&self,
+    fn draw_orbit(&self,
         context: &mut Context,
         body:    impl Into<handle::Weak<Body>>,
         color:   [f32; 3],
