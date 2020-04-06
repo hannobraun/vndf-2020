@@ -12,7 +12,7 @@ use crate::{
         net::input::Events,
     },
     shared::{
-        input::{
+        action::{
             EventKind,
             Rotation,
         },

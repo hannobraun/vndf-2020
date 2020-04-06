@@ -10,6 +10,11 @@ use toadster::{
 };
 
 use crate::{
+    action::{
+        self,
+        Action,
+        Rotation,
+    },
     game::{
         crafts::Craft,
         missiles::{
@@ -21,11 +26,6 @@ use crate::{
             Player,
             PlayerId,
         },
-    },
-    input::{
-        self,
-        Action,
-        Rotation,
     },
     math::{
         prelude::*,
@@ -92,13 +92,13 @@ impl Ship {
         }
 
         match action.kind {
-            input::EventKind::Rotate(rotation) => {
+            action::EventKind::Rotate(rotation) => {
                 self.rotation = rotation;
             }
-            input::EventKind::Thrust(thrust) => {
+            action::EventKind::Thrust(thrust) => {
                 craft.engine_on = thrust;
             }
-            input::EventKind::LaunchMissile { target } => {
+            action::EventKind::LaunchMissile { target } => {
                 let missile = self.launch_missile(
                     craft.owner,
                     &body,

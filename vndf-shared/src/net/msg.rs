@@ -8,9 +8,9 @@ use serde::{
 };
 
 use crate::{
+    action::Action,
     data,
     game::players::PlayerId,
-    input::Action,
 };
 
 

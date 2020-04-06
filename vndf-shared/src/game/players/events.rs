@@ -1,8 +1,8 @@
 use std::net::SocketAddr;
 
 use crate::{
+    action::Action,
     game::PlayerId,
-    input::Action,
 };
 
 

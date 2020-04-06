@@ -17,6 +17,7 @@ use toadster::{
 };
 
 use crate::{
+    action::Action,
     game::{
         crafts::{
             Craft,
@@ -36,7 +37,6 @@ use crate::{
             ShipEntity,
         },
     },
-    input::Action,
 };
 
 use super::{

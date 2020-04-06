@@ -13,7 +13,7 @@ use time::{
     Time,
 };
 
-use crate::shared::input::{
+use crate::shared::action::{
     Action,
     EventKind,
 };
