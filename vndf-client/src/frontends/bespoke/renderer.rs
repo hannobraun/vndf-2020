@@ -24,24 +24,30 @@ pub struct Renderer {
 }
 
 impl Renderer {
-    pub fn new(window: &Window) -> Result<Self, Error> {
+    pub async fn new(window: &Window) -> Result<Self, Error> {
         let surface = wgpu::Surface::create(&window.0);
 
         let adapter =
             wgpu::Adapter::request(
                 &wgpu::RequestAdapterOptions {
-                    power_preference: wgpu::PowerPreference::Default,
-                    backends:         wgpu::BackendBit::all(),
+                    power_preference:   wgpu::PowerPreference::Default,
+                    compatible_surface: Some(&surface),
                 },
+                wgpu::BackendBit::all(),
             )
+            .await
             .ok_or(Error::AdapterRequest)?;
 
-        let (device, queue) = adapter.request_device(
-            &wgpu::DeviceDescriptor {
-                extensions: wgpu::Extensions { anisotropic_filtering: false },
-                limits:     wgpu::Limits::default(),
-            },
-        );
+        let (device, queue) = adapter
+            .request_device(
+                &wgpu::DeviceDescriptor {
+                    extensions: wgpu::Extensions {
+                        anisotropic_filtering: false,
+                    },
+                    limits: wgpu::Limits::default(),
+                },
+            )
+            .await;
 
         let vertex_shader = include_bytes!("shaders/shader.vert.spv");
         let vertex_module_module = device.create_shader_module(
@@ -54,12 +60,16 @@ impl Renderer {
         );
 
         let bind_group_layout = device.create_bind_group_layout(
-            &wgpu::BindGroupLayoutDescriptor { bindings: &[] },
+            &wgpu::BindGroupLayoutDescriptor {
+                bindings: &[],
+                label:    None,
+            },
         );
         let bind_group = device.create_bind_group(
             &wgpu::BindGroupDescriptor {
                 layout:   &bind_group_layout,
                 bindings: &[],
+                label:    None,
             },
         );
         let pipeline_layout = device.create_pipeline_layout(
@@ -99,10 +109,11 @@ impl Renderer {
                         write_mask:  wgpu::ColorWrite::ALL,
                     },
                 ],
-
-                depth_stencil_state:       None,
-                index_format:              wgpu::IndexFormat::Uint16,
-                vertex_buffers:            &[],
+                depth_stencil_state: None,
+                vertex_state: wgpu::VertexStateDescriptor {
+                    index_format:   wgpu::IndexFormat::Uint16,
+                    vertex_buffers: &[],
+                },
                 sample_count:              1,
                 sample_mask:               !0,
                 alpha_to_coverage_enabled: false,
@@ -116,7 +127,7 @@ impl Renderer {
             format:       wgpu::TextureFormat::Bgra8UnormSrgb,
             width:        size.width,
             height:       size.height,
-            present_mode: wgpu::PresentMode::Vsync,
+            present_mode: wgpu::PresentMode::Mailbox,
         };
 
         let swap_chain = device.create_swap_chain(
@@ -137,7 +148,9 @@ impl Renderer {
         )
     }
 
-    pub fn handle_event(&mut self, event: &Event<()>) {
+    pub fn handle_event(&mut self, event: &Event<()>)
+        -> Result<(), wgpu::TimeOut>
+    {
         match event {
             Event::WindowEvent { event: WindowEvent::Resized(size), .. } => {
                 self.swap_chain_descriptor.width  = size.width;
@@ -149,10 +162,10 @@ impl Renderer {
                 );
             }
             Event::RedrawRequested(_) => {
-                let frame = self.swap_chain.get_next_texture();
+                let frame = self.swap_chain.get_next_texture()?;
 
                 let mut encoder = self.device.create_command_encoder(
-                    &wgpu::CommandEncoderDescriptor { todo: 0 }
+                    &wgpu::CommandEncoderDescriptor { label: None }
                 );
 
                 {
@@ -179,6 +192,8 @@ impl Renderer {
             }
             _ => {}
         }
+
+        Ok(())
     }
 }
 

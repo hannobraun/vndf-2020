@@ -3,6 +3,8 @@ mod renderer;
 mod window;
 
 
+use futures::executor::block_on;
+use log::error;
 use winit::{
     event::Event,
     event_loop::{
@@ -24,7 +26,7 @@ pub fn start(mut game: Game) -> Result<(), Error> {
     let event_loop = EventLoop::new();
     let window = Window::new(&event_loop)
         .map_err(|err| Error::Winit(err))?;
-    let mut renderer = Renderer::new(&window)
+    let mut renderer = block_on(Renderer::new(&window))
         .map_err(|err| Error::Renderer(err))?;
     let mut input_handler = InputHandler::new();
 
@@ -46,7 +48,10 @@ pub fn start(mut game: Game) -> Result<(), Error> {
         }
 
         window.handle_event(&event);
-        renderer.handle_event(&event);
+        if let Err(err) = renderer.handle_event(&event) {
+            error!("Renderer error: {:?}", err);
+            *control_flow = ControlFlow::Exit;
+        }
     });
 }
 
