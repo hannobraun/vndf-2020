@@ -65,7 +65,7 @@ impl Handler {
                     k if k == self.config.input.right => {
                         events.push(action::Kind::Rotate(Rotation::Right))
                     }
-                    k if k == self.config.input.thrust => {
+                    k if k == self.config.input.thrust_on => {
                         events.push(action::Kind::Thrust(true))
                     }
                     k if k == self.config.input.launch => {
@@ -84,7 +84,7 @@ impl Handler {
                     k if k == self.config.input.right => {
                         events.push(action::Kind::Rotate(Rotation::None))
                     }
-                    k if k == self.config.input.thrust => {
+                    k if k == self.config.input.thrust_on => {
                         events.push(action::Kind::Thrust(false))
                     }
                     _ => (),

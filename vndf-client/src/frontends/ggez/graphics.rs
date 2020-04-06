@@ -461,7 +461,7 @@ Zoom Camera - Mouse Wheel
 End game - {}",
             game.input.config.input.left,
             game.input.config.input.right,
-            game.input.config.input.thrust,
+            game.input.config.input.thrust_on,
             game.input.config.input.launch,
             game.input.config.input.quit,
         );

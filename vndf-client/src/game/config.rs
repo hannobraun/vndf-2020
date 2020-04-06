@@ -35,11 +35,11 @@ pub struct Config {
 
 #[derive(Clone, Copy, Debug, Deserialize, Serialize)]
 pub struct Input {
-    pub left:   Key,
-    pub right:  Key,
-    pub thrust: Key,
-    pub launch: Key,
-    pub quit:   Key,
+    pub left:      Key,
+    pub right:     Key,
+    pub thrust_on: Key,
+    pub launch:    Key,
+    pub quit:      Key,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Serialize)]
@@ -85,11 +85,11 @@ impl Default for Config {
     fn default() -> Self {
         Self {
             input: Input {
-                left:   Key::Keyboard(VirtualKeyCode::A),
-                right:  Key::Keyboard(VirtualKeyCode::D),
-                thrust: Key::Keyboard(VirtualKeyCode::W),
-                launch: Key::Mouse(MouseButton::Left),
-                quit:   Key::Keyboard(VirtualKeyCode::Escape),
+                left:      Key::Keyboard(VirtualKeyCode::A),
+                right:     Key::Keyboard(VirtualKeyCode::D),
+                thrust_on: Key::Keyboard(VirtualKeyCode::W),
+                launch:    Key::Mouse(MouseButton::Left),
+                quit:      Key::Keyboard(VirtualKeyCode::Escape),
             },
             color: Color {
                 r: 1.0,
