@@ -64,8 +64,8 @@ impl State {
 
         data.planets.insert(Planet {
             pos:  Pnt2::new(0.0, 0.0),
-            size: 60_268_000.0,      // Size of Saturn (in m)
-            mass: 5.6834e26 * 100.0, // 100x density of Saturn (in kg)
+            size: 60_268_000.0, // Size of Saturn (in m)
+            mass: 5.6834e26,    // density of Saturn (in kg)
         });
 
         Self {
