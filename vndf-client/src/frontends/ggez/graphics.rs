@@ -33,8 +33,8 @@ use crate::{
             loot::Loot,
             missiles::Missile,
             physics::Body,
+            orbits::Orbit,
             planets::{
-                G,
                 Planet,
                 Planets,
             },
@@ -284,61 +284,22 @@ impl Graphics {
         let vel = *get!(game.state.data.velocities, &body.vel);
 
         let planets = Planets(&game.state.data.planets);
-        let planet  = planets.dominant_at(pos.0);
 
-        // State vectors
-        let r = pos.0 - planet.pos;
-        let v = vel.0;
+        let orbit = match Orbit::from_state_vectors(pos.0, vel.0, &planets) {
+            Some(orbit) => orbit,
+            None        => return Ok(true),
+        };
 
-        // Standard gravitational parameter
-        let mu = G * planet.mass;
-
-        // Orbital eccentricity
-        let e =
-            r * (v.magnitude().powi(2) / mu - 1.0 / r.magnitude())
-            - v * r.dot(v) / mu;
-
-        // What we computed here is the eccentricity vector. It's magnitude is
-        // the eccentricity. The eccentricity tells us what kind of orbit we're
-        // dealing with:
-        // |e| == 0    => Circular
-        // 0 < |e| < 1 => Elliptical
-        // |e| == 1:   => Parabolic
-        // |e| > 1:    => Hyperbolic
-
-        // For now, we're only dealing with circular and elliptical orbits.
-        if e.magnitude() >= 1.0 {
-            return Ok(true);
-        }
-
-        // Specific orbital energy
-        let ep = v.magnitude().powi(2) / 2.0 - mu / r.magnitude();
-
-        // Semi-major axis
-        let a = -(mu / 2.0 / ep);
-
-        // Semi-minor axis
-        let b = a * (1.0 - e.magnitude().powi(2)).sqrt();
-
-        // Argument of periapsis
-        let w = f32::atan2(e.y, e.x);
-
-        // Pericenter (point of closest approach)
-        let pericenter = planet.pos + e.normalize() * (1.0 - e.magnitude()) * a;
-
-        // Apocenter (farthest point of orbit)
-        let apocenter = pericenter - e.normalize() * 2.0 * a;
-
-        // Center of ellipse
-        let pos_w = pericenter - e.normalize() * a;
-
-        let size_s          =      screen_size(context);
+        let size_s          = screen_size(context);
         let pixels_per_unit = game.state.camera.pixels_per_unit(size_s);
 
         // Ellipse in screen coordinates
-        let pos_s = game.state.camera.world_to_screen(size_s, pos_w);
-        let r1_s  = a * pixels_per_unit;
-        let r2_s  = b * pixels_per_unit;
+        let pos_s = game.state.camera.world_to_screen(
+            size_s,
+            orbit.ellipse_pos,
+        );
+        let r1_s = orbit.semi_major_axis * pixels_per_unit;
+        let r2_s = orbit.semi_minor_axis * pixels_per_unit;
 
         let ellipse = Mesh::new_ellipse(
             context,
@@ -357,7 +318,7 @@ impl Graphics {
             &ellipse,
             DrawParam::screen()
                 .dest(pos_s)
-                .rotation(w),
+                .rotation(orbit.arg_of_periapsis.0),
         )?;
 
         // Display periapsis and apoapsis
@@ -365,25 +326,33 @@ impl Graphics {
         // If our orbit is nearly circular, the computed apses will jump around
         // like crazy. Let's make sure we have a minimum of eccentricity, so
         // they become well-defined.
-        if e.magnitude() > 0.01 {
-            let periapsis = (pericenter - planet.pos).magnitude() / 1000.0;
-            let apoapsis  = (apocenter  - planet.pos).magnitude() / 1000.0;
+        if orbit.eccentricity.magnitude() > 0.01 {
+            let periapsis_km = orbit.periapsis / 1000.0;
+            let apoapsis_km  = orbit.apoapsis  / 1000.0;
 
             draw(
                 context,
                 &ScreenTransform,
-                &Text::new(format!("Periapsis: {:.0} km", periapsis)),
+                &Text::new(format!("Periapsis: {:.0} km", periapsis_km)),
                 DrawParam::screen()
                     .dest(
-                        game.state.camera.world_to_screen(size_s, pericenter)
+                        game.state.camera.world_to_screen(
+                            size_s,
+                            orbit.pericenter,
+                        )
                     ),
             )?;
             draw(
                 context,
                 &ScreenTransform,
-                &Text::new(format!("Apoapsis: {:.0} km", apoapsis)),
+                &Text::new(format!("Apoapsis: {:.0} km", apoapsis_km)),
                 DrawParam::screen()
-                    .dest(game.state.camera.world_to_screen(size_s, apocenter)),
+                    .dest(
+                        game.state.camera.world_to_screen(
+                            size_s,
+                            orbit.apocenter,
+                        )
+                    ),
             )?;
         }
 

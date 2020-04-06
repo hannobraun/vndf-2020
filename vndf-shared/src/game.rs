@@ -4,6 +4,7 @@ pub mod explosions;
 pub mod health;
 pub mod loot;
 pub mod missiles;
+pub mod orbits;
 pub mod physics;
 pub mod planets;
 pub mod players;
