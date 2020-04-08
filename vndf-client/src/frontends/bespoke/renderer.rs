@@ -1,12 +1,16 @@
-use std::io::{
-    self,
-    Cursor,
+use std::{
+    io::{
+        self,
+        Cursor,
+    },
+    mem::size_of,
 };
 
 use winit::event::{
     Event,
     WindowEvent,
 };
+use zerocopy::AsBytes as _;
 
 use crate::graphics;
 
@@ -17,6 +21,8 @@ pub struct Renderer {
     pub surface:               wgpu::Surface,
     pub device:                wgpu::Device,
     pub queue:                 wgpu::Queue,
+    pub vertices:              Vec<Vertex>,
+    pub vertex_buffer:         wgpu::Buffer,
     pub bind_group:            wgpu::BindGroup,
     pub render_pipeline:       wgpu::RenderPipeline,
     pub swap_chain_descriptor: wgpu::SwapChainDescriptor,
@@ -48,6 +54,17 @@ impl Renderer {
                 },
             )
             .await;
+
+        let vertices = vec![
+            [-0.5, -0.5],
+            [ 0.5, -0.5],
+            [ 0.0,  0.5],
+        ];
+
+        let vertex_buffer = device.create_buffer_with_data(
+            vertices.as_bytes(),
+            wgpu::BufferUsage::VERTEX,
+        );
 
         let vertex_shader = include_bytes!("shaders/shader.vert.spv");
         let vertex_module_module = device.create_shader_module(
@@ -112,7 +129,19 @@ impl Renderer {
                 depth_stencil_state: None,
                 vertex_state: wgpu::VertexStateDescriptor {
                     index_format:   wgpu::IndexFormat::Uint16,
-                    vertex_buffers: &[],
+                    vertex_buffers: &[
+                        wgpu::VertexBufferDescriptor {
+                            stride: size_of::<Vertex>() as u64,
+                            step_mode: wgpu::InputStepMode::Vertex,
+                            attributes: &[
+                                wgpu::VertexAttributeDescriptor {
+                                    format: wgpu::VertexFormat::Float2,
+                                    offset: 0,
+                                    shader_location: 0,
+                                },
+                            ],
+                        },
+                    ],
                 },
                 sample_count:              1,
                 sample_mask:               !0,
@@ -140,6 +169,8 @@ impl Renderer {
                 surface,
                 device,
                 queue,
+                vertices,
+                vertex_buffer,
                 render_pipeline,
                 bind_group,
                 swap_chain_descriptor,
@@ -185,7 +216,8 @@ impl Renderer {
                     );
                     render_pass.set_pipeline(&self.render_pipeline);
                     render_pass.set_bind_group(0, &self.bind_group, &[]);
-                    render_pass.draw(0 .. 0, 0 .. 0);
+                    render_pass.set_vertex_buffer(0, &self.vertex_buffer, 0, 0);
+                    render_pass.draw(0 .. self.vertices.len() as u32, 0 .. 1);
                 }
 
                 self.queue.submit(&[encoder.finish()]);
@@ -196,6 +228,9 @@ impl Renderer {
         Ok(())
     }
 }
+
+
+type Vertex = [f32; 2];
 
 
 #[derive(Debug)]
