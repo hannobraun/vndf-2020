@@ -12,7 +12,10 @@ use winit::event::{
 };
 use zerocopy::AsBytes as _;
 
-use crate::graphics;
+use crate::graphics::{
+    self,
+    vertices::Vertex,
+};
 
 use super::window::Window;
 
@@ -228,9 +231,6 @@ impl Renderer {
         Ok(())
     }
 }
-
-
-type Vertex = [f32; 2];
 
 
 #[derive(Debug)]
