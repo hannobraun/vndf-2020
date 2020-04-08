@@ -3051,17 +3051,14 @@ checksum = "078775d0255232fb988e6fccf26ddc9d1ac274299aaedcedce21c6f72cc533ce"
 name = "vndf-client"
 version = "0.1.0"
 dependencies = [
- "env_logger",
  "futures",
  "ggez",
  "log",
  "serde",
- "structopt",
  "time",
  "toadster",
  "toml",
  "vndf-macros",
- "vndf-server",
  "vndf-shared",
  "wgpu",
  "winit 0.22.0",
@@ -3112,6 +3109,9 @@ dependencies = [
 name = "vndf-tests"
 version = "0.1.0"
 dependencies = [
+ "env_logger",
+ "structopt",
+ "vndf-client",
  "vndf-server",
  "vndf-shared",
 ]
