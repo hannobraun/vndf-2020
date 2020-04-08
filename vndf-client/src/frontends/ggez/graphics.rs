@@ -30,7 +30,6 @@ use crate::{
     shared::{
         game::{
             explosions::Explosion,
-            loot::Loot,
             missiles::Missile,
             physics::Body,
             orbits::Orbit,
@@ -144,9 +143,6 @@ impl Graphics {
     {
         for planet in game.state.data.planets.values() {
             self.draw_planet(context, planet, game)?;
-        }
-        for loot in game.state.data.loots.values() {
-            self.draw_loot(context, loot, game)?;
         }
         for ship in game.state.data.ships.values() {
             self.draw_ship(context, ship, game)?;
@@ -389,31 +385,6 @@ impl Graphics {
         Ok(true)
     }
 
-    pub fn draw_loot(&self,
-        context: &mut Context,
-        loot:    &Loot,
-        game:    &Game,
-    )
-        -> GameResult<bool>
-    {
-        let size = 10.0;
-
-        let body = get!(game.state.data.bodies,    &loot.body);
-        let pos  = get!(game.state.data.positions, &body.pos);
-
-        draw(
-            context,
-            &WorldTransform(&game.state.camera),
-            &self.square,
-            DrawParam::world()
-                .dest(pos)
-                .scale(Vec2::new(size, size))
-                .color([1.0, 1.0, 1.0, 1.0])
-        )?;
-
-        Ok(true)
-    }
-
     fn draw_ui(&self,
         context: &mut Context,
         game:    &Game,
@@ -482,7 +453,6 @@ Explosions: {}/{}
 Fuels: {}/{}
 Guidances: {}/-
 Healths: {}/{}
-Loots: {}/{}
 Planets: {}/{}
 Players: {}/-
 Missiles: {}/{}
@@ -499,7 +469,6 @@ Removals per s: {}",
                     diagnostics.fuels, game.state.data.fuels.len(),
                     diagnostics.guidances,
                     diagnostics.healths, game.state.data.healths.len(),
-                    diagnostics.loots, game.state.data.loots.len(),
                     diagnostics.planets, game.state.data.planets.len(),
                     diagnostics.players,
                     diagnostics.missiles, game.state.data.missiles.len(),

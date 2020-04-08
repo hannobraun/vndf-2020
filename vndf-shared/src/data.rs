@@ -7,7 +7,6 @@ use crate::game::{
     },
     explosions::Explosion,
     health::Health,
-    loot::Loot,
     missiles::{
         Guidance,
         Missile,
@@ -262,7 +261,6 @@ components!(
         fuels,      Fuel;
         guidances,  Guidance;
         healths,    Health;
-        loots,      Loot;
         missiles,   Missile;
         planets,    Planet;
         players,    Player;
@@ -280,7 +278,6 @@ components!(
         explosions, Explosion;
         fuels,      Fuel;
         healths,    Health;
-        loots,      Loot;
         missiles,   Missile;
         planets,    Planet;
         positions,  Position;

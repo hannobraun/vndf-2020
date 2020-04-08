@@ -2,7 +2,6 @@ pub mod base;
 pub mod crafts;
 pub mod explosions;
 pub mod health;
-pub mod loot;
 pub mod missiles;
 pub mod orbits;
 pub mod physics;
@@ -52,7 +51,6 @@ pub struct State {
     crafts:     crafts::Feature,
     explosions: explosions::Feature,
     health:     health::Feature,
-    loot:       loot::Feature,
     missiles:   missiles::Feature,
     physics:    physics::Feature,
     players:    players::Feature,
@@ -76,7 +74,6 @@ impl State {
             crafts:     crafts::Feature::new(),
             explosions: explosions::Feature::new(),
             health:     health::Feature::new(),
-            loot:       loot::Feature::new(),
             missiles:   missiles::Feature::new(),
             physics:    physics::Feature::new(),
             players:    players::Feature::new(),
@@ -148,15 +145,6 @@ impl State {
                 &self.data.crafts,
                 &mut self.data.ships,
             );
-            self.loot.on_update(
-                &mut self.data.bodies,
-                &self.data.crafts,
-                &mut self.data.fuels,
-                &mut self.data.healths,
-                &mut self.data.loots,
-                &mut self.data.positions,
-                &mut self.data.ships,
-            );
         }
         self.apply_changes();
         while let Some(event) = self.players.player_connected.source().next() {
@@ -220,18 +208,6 @@ impl State {
                 &mut self.data.positions,
                 &mut self.data.velocities,
             );
-            self.loot.on_death(
-                &event,
-                &mut self.data.bodies,
-                &self.data.crafts,
-                &self.data.fuels,
-                &mut self.data.healths,
-                &mut self.data.loots,
-                &mut self.data.positions,
-                &self.data.ships,
-                &mut self.data.velocities,
-                &mut self.health.index,
-            );
         }
         self.apply_changes();
         while let Some(event) =
@@ -258,7 +234,6 @@ impl State {
         self.data.fuels.apply_changes();
         self.data.explosions.apply_changes();
         self.data.healths.apply_changes();
-        self.data.loots.apply_changes();
         self.data.guidances.apply_changes();
         self.data.missiles.apply_changes();
         self.data.targets.apply_changes();
@@ -297,11 +272,6 @@ impl State {
             .map(|(handle, c)|
                 data::client::Component::Health(handle.into(), c.to_weak())
             );
-        let loots = self.data.loots
-            .iter()
-            .map(|(handle, c)|
-                data::client::Component::Loot(handle.into(), c.to_weak())
-            );
         let missiles = self.data.missiles
             .iter()
             .map(|(handle, c)|
@@ -338,7 +308,6 @@ impl State {
             .chain(explosions)
             .chain(fuels)
             .chain(healths)
-            .chain(loots)
             .chain(missiles)
             .chain(planets)
             .chain(positions)
@@ -370,11 +339,6 @@ impl State {
         }
         for handle in self.data.healths.removed().ready() {
             let handle = data::client::Handle::Health(handle.into());
-            let event  = ComponentRemoved { handle };
-            self.base.component_removed.sink().push(event);
-        }
-        for handle in self.data.loots.removed().ready() {
-            let handle = data::client::Handle::Loot(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }
