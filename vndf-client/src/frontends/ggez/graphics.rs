@@ -26,7 +26,10 @@ use crate::{
             WorldTransform,
         },
     },
-    graphics,
+    graphics::{
+        self,
+        vertices,
+    },
     shared::{
         game::{
             explosions::Explosion,
@@ -78,33 +81,19 @@ impl Graphics {
         let ship = Mesh::new_polygon(
             context,
             DrawMode::fill(),
-            &[
-                [ 0.6,  0.0],
-                [-0.4,  0.4],
-                [-0.1,  0.0],
-                [-0.4, -0.4],
-                ],
-                [1.0, 1.0, 1.0, 1.0].into(),
-            )?;
+            vertices::SHIP,
+            [1.0, 1.0, 1.0, 1.0].into(),
+        )?;
         let square = Mesh::new_polygon(
             context,
             DrawMode::fill(),
-            &[
-                [ 0.5,  0.5],
-                [ 0.5, -0.5],
-                [-0.5, -0.5],
-                [-0.5,  0.5],
-            ],
+            vertices::SQUARE,
             [1.0, 1.0, 1.0, 1.0].into(),
         )?;
         let pointer = Mesh::new_polygon(
             context,
             DrawMode::stroke(0.2),
-            &[
-                [ 0.5,  0.5],
-                [ 0.0, -0.5],
-                [-0.5,  0.5],
-            ],
+            vertices::POINTER,
             [1.0, 0.0, 0.0, 1.0].into(),
         )?;
 
