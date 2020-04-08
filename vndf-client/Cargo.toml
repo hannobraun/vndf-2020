@@ -6,14 +6,15 @@ edition = "2018"
 
 
 [dependencies]
-futures = "*"
-ggez    = "*"
-log     = "*"
-serde   = "*"
-time    = "*"
-toml    = "*"
-wgpu    = "*"
-winit   = "*"
+futures  = "*"
+ggez     = "*"
+log      = "*"
+serde    = "*"
+time     = "*"
+toml     = "*"
+wgpu     = "*"
+winit    = "*"
+zerocopy = "*"
 
 [dependencies.toadster]
 path = "../toadster"
