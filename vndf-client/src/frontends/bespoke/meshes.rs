@@ -13,6 +13,9 @@ use lyon::{
 use crate::graphics::vertices;
 
 
+pub type Vertex = [f32; 2];
+
+
 pub struct Meshes {
     pub ship: Mesh,
 }
@@ -29,7 +32,7 @@ impl Meshes {
 
 
 pub struct Mesh {
-    pub vertices: Vec<[f32; 2]>,
+    pub vertices: Vec<Vertex>,
     pub indices:  Vec<u16>,
 }
 
@@ -40,7 +43,7 @@ impl Mesh {
 
         let path = builder.build();
 
-        let mut buffers = VertexBuffers::<[f32; 2], u16>::new();
+        let mut buffers = VertexBuffers::<Vertex, u16>::new();
 
         let mut tesselator = FillTessellator::new();
         tesselator.tessellate(

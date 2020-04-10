@@ -12,15 +12,13 @@ use winit::event::{
 };
 use zerocopy::AsBytes as _;
 
-use crate::graphics::{
-    self,
-    vertices::Vertex,
-};
+use crate::graphics;
 
 use super::{
     meshes::{
         self,
         Meshes,
+        Vertex,
     },
     window::Window,
 };
