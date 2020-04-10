@@ -3125,6 +3125,7 @@ dependencies = [
  "ggez",
  "log",
  "lyon 0.15.6",
+ "mint",
  "serde",
  "time",
  "toadster",
