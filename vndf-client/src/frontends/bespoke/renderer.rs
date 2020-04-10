@@ -59,13 +59,17 @@ impl Renderer {
             .await;
 
         let vertices = vec![
-            [-0.5, -0.5],
-            [ 0.5, -0.5],
-            [ 0.0,  0.5],
+            Vertex::new(-0.5, -0.5),
+            Vertex::new( 0.5, -0.5),
+            Vertex::new( 0.0,  0.5),
         ];
+        let vertices_as_arrays: Vec<_> = vertices
+            .iter()
+            .map(|vertex| vertex.to_array())
+            .collect();
 
         let vertex_buffer = device.create_buffer_with_data(
-            vertices.as_bytes(),
+            vertices_as_arrays.as_bytes(),
             wgpu::BufferUsage::VERTEX,
         );
 

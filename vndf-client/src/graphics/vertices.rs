@@ -1,22 +1,28 @@
-pub type Vertex = [f32; 2];
+use euclid::{
+    Point2D,
+    UnknownUnit,
+};
+
+
+pub type Vertex = Point2D<f32, UnknownUnit>;
 
 
 pub const POINTER: &[Vertex] = &[
-    [ 0.5,  0.5],
-    [ 0.0, -0.5],
-    [-0.5,  0.5],
+    Vertex::new( 0.5,  0.5),
+    Vertex::new( 0.0, -0.5),
+    Vertex::new(-0.5,  0.5),
 ];
 
 pub const SHIP: &[Vertex] = &[
-    [ 0.6,  0.0],
-    [-0.4,  0.4],
-    [-0.1,  0.0],
-    [-0.4, -0.4],
+    Vertex::new( 0.6,  0.0),
+    Vertex::new(-0.4,  0.4),
+    Vertex::new(-0.1,  0.0),
+    Vertex::new(-0.4, -0.4),
 ];
 
 pub const SQUARE: &[Vertex] = &[
-    [ 0.5,  0.5],
-    [ 0.5, -0.5],
-    [-0.5, -0.5],
-    [-0.5,  0.5],
+    Vertex::new( 0.5,  0.5),
+    Vertex::new( 0.5, -0.5),
+    Vertex::new(-0.5, -0.5),
+    Vertex::new(-0.5,  0.5),
 ];
