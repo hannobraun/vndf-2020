@@ -17,21 +17,27 @@ use crate::graphics::{
     vertices::Vertex,
 };
 
-use super::window::Window;
+use super::{
+    meshes::{
+        self,
+        Meshes,
+    },
+    window::Window,
+};
 
 
 pub struct Renderer {
     pub surface:               wgpu::Surface,
     pub device:                wgpu::Device,
     pub queue:                 wgpu::Queue,
-    pub vertices:              Vec<Vertex>,
-    pub indices:               Vec<u16>,
     pub vertex_buffer:         wgpu::Buffer,
     pub index_buffer:          wgpu::Buffer,
     pub bind_group:            wgpu::BindGroup,
     pub render_pipeline:       wgpu::RenderPipeline,
     pub swap_chain_descriptor: wgpu::SwapChainDescriptor,
     pub swap_chain:            wgpu::SwapChain,
+
+    meshes: Meshes,
 }
 
 impl Renderer {
@@ -60,28 +66,15 @@ impl Renderer {
             )
             .await;
 
-        let vertices = vec![
-            Vertex::new(-0.5, -0.5),
-            Vertex::new( 0.5, -0.5),
-            Vertex::new( 0.0,  0.5),
-        ];
-        let vertices_as_arrays: Vec<_> = vertices
-            .iter()
-            .map(|vertex| vertex.to_array())
-            .collect();
-
-        let indices = vec![
-            0,
-            1,
-            2,
-        ];
+        let meshes = Meshes::new()
+            .map_err(|err| Error::Meshes(err))?;
 
         let vertex_buffer = device.create_buffer_with_data(
-            vertices_as_arrays.as_bytes(),
+            meshes.ship.vertices.as_bytes(),
             wgpu::BufferUsage::VERTEX,
         );
         let index_buffer = device.create_buffer_with_data(
-            indices.as_bytes(),
+            meshes.ship.indices.as_bytes(),
             wgpu::BufferUsage::INDEX,
         );
 
@@ -188,14 +181,14 @@ impl Renderer {
                 surface,
                 device,
                 queue,
-                vertices,
-                indices,
                 vertex_buffer,
                 index_buffer,
                 render_pipeline,
                 bind_group,
                 swap_chain_descriptor,
                 swap_chain,
+
+                meshes,
             }
         )
     }
@@ -241,7 +234,7 @@ impl Renderer {
                     render_pass.set_index_buffer(&self.index_buffer, 0, 0);
 
                     render_pass.draw_indexed(
-                        0 .. self.indices.len() as u32,
+                        0 .. self.meshes.ship.indices.len() as u32,
                         0,
                         0 .. 1,
                     );
@@ -261,6 +254,7 @@ impl Renderer {
 pub enum Error {
     AdapterRequest,
     Io(io::Error),
+    Meshes(meshes::Error),
 }
 
 impl From<io::Error> for Error {
