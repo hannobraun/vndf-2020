@@ -10,10 +10,7 @@ use lyon::{
     },
 };
 
-use crate::graphics::vertices::{
-    self,
-    Vertex,
-};
+use crate::graphics::vertices;
 
 
 pub struct Meshes {
@@ -37,7 +34,7 @@ pub struct Mesh {
 }
 
 impl Mesh {
-    pub fn new(vertices: &[Vertex]) -> Result<Self, Error> {
+    pub fn new(vertices: &[vertices::Vertex]) -> Result<Self, Error> {
         let mut builder = path::Builder::new();
         builder.polygon(vertices);
 
@@ -51,7 +48,7 @@ impl Mesh {
             &FillOptions::default(),
             &mut BuffersBuilder::new(
                 &mut buffers,
-                |point: Vertex, _: FillAttributes| point.to_array(),
+                |point: vertices::Vertex, _: FillAttributes| point.to_array(),
             )
         )?;
 
