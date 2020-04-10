@@ -14,6 +14,7 @@ use crate::graphics::vertices;
 
 
 pub type Vertex = [f32; 2];
+pub type Index  = u16;
 
 
 pub struct Meshes {
@@ -33,7 +34,7 @@ impl Meshes {
 
 pub struct Mesh {
     pub vertices: Vec<Vertex>,
-    pub indices:  Vec<u16>,
+    pub indices:  Vec<Index>,
 }
 
 impl Mesh {
@@ -43,7 +44,7 @@ impl Mesh {
 
         let path = builder.build();
 
-        let mut buffers = VertexBuffers::<Vertex, u16>::new();
+        let mut buffers = VertexBuffers::<Vertex, Index>::new();
 
         let mut tesselator = FillTessellator::new();
         tesselator.tessellate(
