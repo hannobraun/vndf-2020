@@ -6,7 +6,6 @@ edition = "2018"
 
 
 [dependencies]
-euclid   = "*"
 futures  = "*"
 ggez     = "*"
 log      = "*"
@@ -18,6 +17,10 @@ toml     = "*"
 wgpu     = "*"
 winit    = "*"
 zerocopy = "*"
+
+[dependencies.euclid]
+version  = "*"
+features = ["mint"]
 
 [dependencies.toadster]
 path = "../toadster"
