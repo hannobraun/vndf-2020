@@ -25,7 +25,9 @@ pub struct Renderer {
     pub device:                wgpu::Device,
     pub queue:                 wgpu::Queue,
     pub vertices:              Vec<Vertex>,
+    pub indices:               Vec<u16>,
     pub vertex_buffer:         wgpu::Buffer,
+    pub index_buffer:          wgpu::Buffer,
     pub bind_group:            wgpu::BindGroup,
     pub render_pipeline:       wgpu::RenderPipeline,
     pub swap_chain_descriptor: wgpu::SwapChainDescriptor,
@@ -68,9 +70,19 @@ impl Renderer {
             .map(|vertex| vertex.to_array())
             .collect();
 
+        let indices = vec![
+            0,
+            1,
+            2,
+        ];
+
         let vertex_buffer = device.create_buffer_with_data(
             vertices_as_arrays.as_bytes(),
             wgpu::BufferUsage::VERTEX,
+        );
+        let index_buffer = device.create_buffer_with_data(
+            indices.as_bytes(),
+            wgpu::BufferUsage::INDEX,
         );
 
         let vertex_shader = include_bytes!("shaders/shader.vert.spv");
@@ -177,7 +189,9 @@ impl Renderer {
                 device,
                 queue,
                 vertices,
+                indices,
                 vertex_buffer,
+                index_buffer,
                 render_pipeline,
                 bind_group,
                 swap_chain_descriptor,
@@ -224,7 +238,13 @@ impl Renderer {
                     render_pass.set_pipeline(&self.render_pipeline);
                     render_pass.set_bind_group(0, &self.bind_group, &[]);
                     render_pass.set_vertex_buffer(0, &self.vertex_buffer, 0, 0);
-                    render_pass.draw(0 .. self.vertices.len() as u32, 0 .. 1);
+                    render_pass.set_index_buffer(&self.index_buffer, 0, 0);
+
+                    render_pass.draw_indexed(
+                        0 .. self.indices.len() as u32,
+                        0,
+                        0 .. 1,
+                    );
                 }
 
                 self.queue.submit(&[encoder.finish()]);
