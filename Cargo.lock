@@ -3169,6 +3169,7 @@ name = "vndf-shared"
 version = "0.1.0"
 dependencies = [
  "cgmath",
+ "euclid 0.20.10",
  "log",
  "pid",
  "postcard",
