@@ -26,11 +26,13 @@ use crate::{
         world::{
             self,
             FRAME_TIME,
-            base::Update,
-            players::{
-                PlayerConnected,
-                PlayerDisconnected,
-                PlayerInput,
+            behavior::{
+                base::Update,
+                players::{
+                    PlayerConnected,
+                    PlayerDisconnected,
+                    PlayerInput,
+                },
             },
         },
     },

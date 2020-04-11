@@ -31,19 +31,21 @@ use crate::{
         vertices,
     },
     shared::world::{
-        explosions::Explosion,
-        missiles::Missile,
-        physics::Body,
+        behavior::{
+            explosions::Explosion,
+            missiles::Missile,
+            physics::Body,
+            orbits::Orbit,
+            planets::{
+                Planet,
+                Planets,
+            },
+            ships::Ship,
+        },
         math::{
             Pnt2,
             Vec2,
         },
-        orbits::Orbit,
-        planets::{
-            Planet,
-            Planets,
-        },
-        ships::Ship,
     },
 };
 

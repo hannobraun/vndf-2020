@@ -10,7 +10,7 @@ use serde::{
 use crate::{
     action::Action,
     data,
-    world::players::PlayerId,
+    world::behavior::players::PlayerId,
 };
 
 

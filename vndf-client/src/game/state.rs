@@ -15,8 +15,10 @@ use crate::{
         data,
         world::{
             math::Pnt2,
-            planets::Planets,
-            players::PlayerId,
+            behavior::{
+                planets::Planets,
+                players::PlayerId,
+            },
         },
     },
 };

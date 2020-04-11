@@ -1,6 +1,6 @@
 use toadster::handle;
 
-use crate::world::{
+use crate::world::behavior::{
     crafts::{
         Craft,
         Fuel,

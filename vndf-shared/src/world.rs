@@ -1,14 +1,5 @@
-pub mod base;
-pub mod crafts;
-pub mod explosions;
-pub mod health;
+pub mod behavior;
 pub mod math;
-pub mod missiles;
-pub mod orbits;
-pub mod physics;
-pub mod planets;
-pub mod players;
-pub mod ships;
 
 
 pub use self::math::{
@@ -25,16 +16,24 @@ use rinnsal::{
 
 use crate::data;
 
-use self::{
+use self::behavior::{
     base::{
+        self,
         ComponentRemoved,
         Update,
     },
+    crafts,
+    explosions,
+    health,
+    missiles,
+    physics,
     planets::{
+        self,
         Planet,
         Planets,
     },
     players::{
+        self,
         InputHandled,
         PlayerConnected,
         PlayerCreated,
@@ -42,6 +41,7 @@ use self::{
         PlayerId,
         PlayerInput,
     },
+    ships,
 };
 
 
