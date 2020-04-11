@@ -150,7 +150,7 @@ impl Graphics {
             &self.circle,
             DrawParam::world()
                 .dest(planet.pos)
-                .scale(world::Vec2::new(planet.size, planet.size))
+                .scale(world::Vec2::from_lengths(planet.size, planet.size))
         )?;
 
         Ok(())
@@ -289,8 +289,8 @@ impl Graphics {
             context,
             DrawMode::stroke(2.0),
             [0.0, 0.0],
-            r1_s,
-            r2_s,
+            r1_s.0,
+            r2_s.0,
             0.5,
             [color[0], color[1], color[2], 0.5].into(),
         )?;

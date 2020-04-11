@@ -3,6 +3,7 @@ use toadster::store;
 use crate::world::{
     math::{
         Angle,
+        Length,
         Pnt2,
         Vec2,
     },
@@ -16,15 +17,15 @@ use crate::world::{
 pub struct Orbit {
     pub center:                  Pnt2,
     pub eccentricity:            Vec2,
-    pub semi_major_axis:         f32,
-    pub semi_minor_axis:         f32,
+    pub semi_major_axis:         Length,
+    pub semi_minor_axis:         Length,
     pub arg_of_periapsis:        Angle,
     pub pericenter:              Pnt2,
     pub apocenter:               Pnt2,
-    pub periapsis:               f32,
-    pub apoapsis:                f32,
-    pub periapsis_above_surface: f32,
-    pub apoapsis_above_surface:  f32,
+    pub periapsis:               Length,
+    pub apoapsis:                Length,
+    pub periapsis_above_surface: Length,
+    pub apoapsis_above_surface:  Length,
     pub ellipse_pos:             Pnt2,
 }
 
@@ -77,11 +78,11 @@ impl Orbit {
 
         // Pericenter (point of closest approach)
         let pericenter = planet.pos + e.normalize() * (1.0 - e.length()) * a;
-        let periapsis  = (pericenter - planet.pos).length();
+        let periapsis  = Length::new((pericenter - planet.pos).length());
 
         // Apocenter (farthest point of orbit)
         let apocenter = pericenter - e.normalize() * 2.0 * a;
-        let apoapsis  = (apocenter - planet.pos).length();
+        let apoapsis  = Length::new((apocenter - planet.pos).length());
 
         // Distance of periapsis and apoapsis above surface
         let periapsis_above_surface = periapsis - planet.size;
@@ -94,8 +95,8 @@ impl Orbit {
             Self {
                 center:           planet.pos,
                 eccentricity:     e,
-                semi_major_axis:  a,
-                semi_minor_axis:  b,
+                semi_major_axis:  Length::new(a),
+                semi_minor_axis:  Length::new(b),
                 arg_of_periapsis: Angle::radians(w),
                 pericenter,
                 apocenter,

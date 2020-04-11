@@ -11,6 +11,8 @@ pub enum Meter {}
 
 pub type Angle = euclid::Angle<f32>;
 
+pub type Length = euclid::Length<f32, Meter>;
+
 pub type Pnt2 = euclid::Point2D<f32, Meter>;
 pub type Vec2 = euclid::Vector2D<f32, Meter>;
 

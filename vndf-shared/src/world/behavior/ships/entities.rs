@@ -68,12 +68,12 @@ impl ShipEntity {
         );
         let (sin, cos) = angle.sin_cos();
         let position = Pnt2::new(
-            sin * distance,
-            cos * distance,
+            sin * distance.0,
+            cos * distance.0,
         );
 
         // Compute velocity for circular orbit at the given distance.
-        let speed = (G * planet.mass / distance).sqrt();
+        let speed = (G * planet.mass / distance.0).sqrt();
         let velocity = rotate(
             position.to_vector().normalize() * speed,
             Angle::frac_pi_2(),

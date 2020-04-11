@@ -4,6 +4,7 @@ use serde::{
 };
 
 use crate::world::math::{
+    Length,
     Pnt2,
     Vec2,
 };
@@ -14,7 +15,7 @@ use super::G;
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Planet {
     pub pos:  Pnt2,
-    pub size: f32,
+    pub size: Length,
     pub mass: f32,
 }
 

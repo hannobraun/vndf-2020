@@ -4,6 +4,7 @@ pub mod math;
 
 pub use self::math::{
     Angle,
+    Length,
     Pnt2,
     Vec2,
 };
@@ -68,8 +69,8 @@ impl State {
 
         data.planets.insert(Planet {
             pos:  Pnt2::new(0.0, 0.0),
-            size: 60_268_000.0, // Size of Saturn (in m)
-            mass: 5.6834e26,    // density of Saturn (in kg)
+            size: Length::new(60_268_000.0), // Size of Saturn
+            mass: 5.6834e26,                 // density of Saturn (in kg)
         });
 
         Self {
