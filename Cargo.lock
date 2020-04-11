@@ -709,6 +709,7 @@ checksum = "0c6a5b0c779cd0b744c73a1d2083faf181080d696903cdad99a3b03d015d7030"
 dependencies = [
  "mint",
  "num-traits 0.2.11",
+ "serde",
 ]
 
 [[package]]

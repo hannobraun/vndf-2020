@@ -6,7 +6,6 @@ edition = "2018"
 
 
 [dependencies]
-euclid   = "*"
 log      = "*"
 postcard = "*"
 rand     = "*"
@@ -15,6 +14,10 @@ serde    = "*"
 [dependencies.cgmath]
 version  = "*"
 features = ["mint", "serde"]
+
+[dependencies.euclid]
+version  = "*"
+features = ["serde"]
 
 [dependencies.pid]
 version  = "*"
