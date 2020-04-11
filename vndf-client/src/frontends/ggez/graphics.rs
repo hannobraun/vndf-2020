@@ -20,7 +20,6 @@ use crate::{
     },
     game::{
         Game,
-        coords::Screen,
         transforms::{
             ScreenTransform,
             WorldTransform,
@@ -31,6 +30,7 @@ use crate::{
         vertices,
     },
     shared::world::{
+        self,
         behavior::{
             explosions::Explosion,
             missiles::Missile,
@@ -41,10 +41,6 @@ use crate::{
                 Planets,
             },
             ships::Ship,
-        },
-        math::{
-            Pnt2,
-            Vec2,
         },
     },
 };
@@ -154,7 +150,7 @@ impl Graphics {
             &self.circle,
             DrawParam::world()
                 .dest(planet.pos)
-                .scale(Vec2::new(planet.size, planet.size))
+                .scale(world::Vec2::new(planet.size, planet.size))
         )?;
 
         Ok(())
@@ -172,7 +168,7 @@ impl Graphics {
 
         let pos_s = game.state.camera.world_to_screen(
             screen_size(context),
-            pos_w,
+            pos_w.0,
         );
 
         draw(
@@ -181,8 +177,12 @@ impl Graphics {
             &self.ship,
             DrawParam::screen()
                 .dest(pos_s)
-                .rotation(Vec2::new(1.0, 0.0).angle_to(body.dir).radians)
-                .scale(Vec2::new(30.0, 30.0))
+                .rotation(
+                    graphics::Vec2::new(1.0, 0.0)
+                        .angle_to(body.dir.cast_unit())
+                        .radians
+                )
+                .scale(graphics::Vec2::new(30.0, 30.0))
                 .color([ship.color[0], ship.color[1], ship.color[2], 1.0]),
         )?;
 
@@ -200,7 +200,7 @@ impl Graphics {
                 )
             ),
             DrawParam::screen()
-                .dest(pos_s + Screen(Vec2::new(20.0, -20.0))),
+                .dest(pos_s + graphics::Vec2::new(20.0, -20.0)),
         )?;
 
         Ok(true)
@@ -220,7 +220,7 @@ impl Graphics {
 
         let pos = game.state.camera.world_to_screen(
             screen_size(context),
-            pos,
+            pos.0,
         );
         let target = game.state.camera.world_to_screen(
             screen_size(context),
@@ -233,12 +233,12 @@ impl Graphics {
             &self.square,
             DrawParam::screen()
                 .dest(pos)
-                .scale(Vec2::new(4.0, 4.0))
+                .scale(graphics::Vec2::new(4.0, 4.0))
         )?;
 
         let line = Mesh::new_line(
             context,
-            &[pos.0, target.0],
+            &[pos, target],
             1.5,
             [0.0, 1.0, 0.0, 1.0].into(),
         )?;
@@ -262,7 +262,7 @@ impl Graphics {
         -> GameResult<bool>
     {
         let mut body = get!(game.state.data.bodies, body).clone();
-        body.acc = Vec2::zero();
+        body.acc = world::Vec2::zero();
 
         let pos = *get!(game.state.data.positions,  &body.pos);
         let vel = *get!(game.state.data.velocities, &body.vel);
@@ -357,7 +357,7 @@ impl Graphics {
 
         let pos = game.state.camera.world_to_screen(
             screen_size(context),
-            pos,
+            pos.0,
         );
 
         draw(
@@ -366,7 +366,7 @@ impl Graphics {
             &self.circle,
             DrawParam::screen()
                 .dest(pos)
-                .scale(Vec2::new(size, size))
+                .scale(graphics::Vec2::new(size, size))
                 .color([1.0, 1.0, 1.0, alpha])
         )?;
 
@@ -401,7 +401,7 @@ End game - {}",
             &ScreenTransform,
             &Text::new(instructions),
             DrawParam::screen()
-                .dest(Screen(Pnt2::new(20.0, 20.0)))
+                .dest(graphics::Pnt2::new(20.0, 20.0))
         )?;
 
         draw(
@@ -409,7 +409,7 @@ End game - {}",
             &ScreenTransform,
             &Text::new(format!("Zoom: {:.3}x", game.input.zoom)),
             DrawParam::screen()
-                .dest(Screen(Pnt2::new(20.0, 150.0))),
+                .dest(graphics::Pnt2::new(20.0, 150.0)),
         )?;
 
         if game.input.config.diagnostics.frame_time {
@@ -427,7 +427,7 @@ End game - {}",
                 &ScreenTransform,
                 &Text::new(frame_time),
                 DrawParam::screen()
-                    .dest(Screen(Pnt2::new(20.0, 180.0)))
+                    .dest(graphics::Pnt2::new(20.0, 180.0))
             )?;
         }
 
@@ -473,7 +473,7 @@ Removals per s: {}",
                     &ScreenTransform,
                     &Text::new(diagnostics),
                     DrawParam::screen()
-                        .dest(Screen(Pnt2::new(20.0, 220.0)))
+                        .dest(graphics::Pnt2::new(20.0, 220.0))
                 )?;
             }
         }
@@ -489,7 +489,7 @@ Removals per s: {}",
                 &ScreenTransform,
                 &Text::new(input_events),
                 DrawParam::screen()
-                    .dest(Screen(Pnt2::new(20.0, 520.0)))
+                    .dest(graphics::Pnt2::new(20.0, 520.0))
             )?;
         }
 
@@ -507,7 +507,7 @@ Removals per s: {}",
             &self.pointer,
             DrawParam::screen()
                 .dest(game.input.pointer_screen)
-                .scale(Vec2::new(10.0, 10.0))
+                .scale(graphics::Vec2::new(10.0, 10.0))
         )?;
 
         mouse::set_cursor_hidden(context, true);
@@ -546,7 +546,7 @@ Heavy Missiles: {}",
             &ScreenTransform,
             &Text::new(status),
             DrawParam::screen()
-                .dest(Screen(Pnt2::new(width - 200.0, 20.0)))
+                .dest(graphics::Pnt2::new(width - 200.0, 20.0))
         )?;
 
         Ok(true)
@@ -554,9 +554,9 @@ Heavy Missiles: {}",
 }
 
 
-fn screen_size(context: &Context) -> Screen<Vec2> {
+fn screen_size(context: &Context) -> graphics::Vec2 {
     let (screen_width, screen_height) = ggez::graphics::drawable_size(context);
-    Screen(Vec2::new(screen_width, screen_height))
+    graphics::Vec2::new(screen_width, screen_height)
 }
 
 

@@ -34,21 +34,14 @@ use ggez::{
 use crate::{
     game::{
         Game,
-        coords::Screen,
         input::{
             Input,
             Transition,
         },
     },
-    shared::{
-        net::{
-            self,
-            msg,
-        },
-        world::math::{
-            Pnt2,
-            Vec2,
-        },
+    shared::net::{
+        self,
+        msg,
     },
 };
 
@@ -147,7 +140,7 @@ impl EventHandler for Handler {
         _dx: f32,
         _dy: f32,
     ) {
-        self.input.push(Input::MouseMotion(Screen(Pnt2::new(x, y))));
+        self.input.push(Input::MouseMotion(crate::graphics::Pnt2::new(x, y)));
     }
 
     fn mouse_wheel_event(&mut self,
@@ -184,7 +177,10 @@ impl EventHandler for Handler {
     fn draw(&mut self, context: &mut Context) -> GameResult {
         let (screen_width, screen_height) =
             ggez::graphics::drawable_size(context);
-        let screen_size = Screen(Vec2::new(screen_width, screen_height));
+        let screen_size = crate::graphics::Vec2::new(
+            screen_width,
+            screen_height,
+        );
 
         for input in self.input.drain(..) {
             let trans = self.game.handle_input(input, screen_size);

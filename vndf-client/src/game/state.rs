@@ -7,14 +7,11 @@ use time::{
 
 use crate::{
     camera::Camera,
-    game::{
-        coords::World,
-        input,
-    },
+    game::input,
     shared::{
         data,
         world::{
-            math::Pnt2,
+            self,
             behavior::{
                 planets::Planets,
                 players::PlayerId,
@@ -50,7 +47,7 @@ impl State {
 
         self.camera.zoom = input.zoom;
         if let Some(own_pos) = self.own_pos() {
-            self.camera.center = World(own_pos);
+            self.camera.center = own_pos;
         }
 
         for body in self.data.bodies.values_mut() {
@@ -83,7 +80,7 @@ impl State {
         handle.remove(&mut self.data);
     }
 
-    pub fn own_pos(&self) -> Option<Pnt2> {
+    pub fn own_pos(&self) -> Option<world::Pnt2> {
         for ship in self.data.ships.values() {
             let craft = self.data.crafts.get(&ship.craft)?;
             let body  = self.data.bodies.get(&craft.body)?;

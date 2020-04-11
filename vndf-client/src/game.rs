@@ -16,17 +16,16 @@ use log::{
     error,
 };
 
-use crate::shared::{
-    net::{
+use crate::{
+    graphics,
+    shared::net::{
         client::Conn,
         msg,
     },
-    world::math::Vec2,
 };
 
 use self::{
     config::Config,
-    coords::Screen,
     input::{
         Input,
         Transition,
@@ -67,7 +66,7 @@ impl Game {
 
     pub fn handle_input(&mut self,
         input:       Input,
-        screen_size: Screen<Vec2>,
+        screen_size: graphics::Vec2,
     )
         -> Transition
     {

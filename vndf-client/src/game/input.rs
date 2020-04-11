@@ -5,21 +5,15 @@ use crate::{
             Config,
             Key,
         },
-        coords::{
-            Screen,
-            World,
-        },
         net::input::Events,
     },
+    graphics,
     shared::{
         action::{
             self,
             Rotation,
         },
-        world::math::{
-            Pnt2,
-            Vec2,
-        },
+        world,
     },
 };
 
@@ -27,8 +21,8 @@ use crate::{
 pub struct Handler {
     pub config: Config,
 
-    pub pointer_screen: Screen<Pnt2>,
-    pub pointer_world:  World<Pnt2>,
+    pub pointer_screen: graphics::Pnt2,
+    pub pointer_world:  world::Pnt2,
 
     pub zoom: f32,
 }
@@ -38,8 +32,8 @@ impl Handler {
         Self {
             config,
 
-            pointer_screen: Screen(Pnt2::new(0.0, 0.0)),
-            pointer_world:  World(Pnt2::new(0.0, 0.0)),
+            pointer_screen: graphics::Pnt2::new(0.0, 0.0),
+            pointer_world:  world::Pnt2::new(0.0, 0.0),
 
             zoom: 1.0,
         }
@@ -48,7 +42,7 @@ impl Handler {
     pub fn handle(&mut self,
         input:       Input,
         camera:      &Camera,
-        screen_size: Screen<Vec2>,
+        screen_size: graphics::Vec2,
         events:      &mut Events,
     )
         -> Transition
@@ -74,7 +68,7 @@ impl Handler {
                     k if k == self.config.input.launch => {
                         events.push(
                             action::Kind::LaunchMissile {
-                                target: self.pointer_world.0
+                                target: self.pointer_world
                             }
                         )
                     }
@@ -117,7 +111,7 @@ impl Handler {
 pub enum Input {
     KeyDown(Key),
     KeyUp(Key),
-    MouseMotion(Screen<Pnt2>),
+    MouseMotion(graphics::Pnt2),
     MouseWheel(f32),
 }
 

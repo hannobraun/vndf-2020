@@ -11,14 +11,8 @@ use ggez::{
 };
 
 use crate::{
-    game::coords::{
-        Screen,
-        World,
-    },
-    shared::world::math::{
-        Pnt2,
-        Vec2,
-    },
+    graphics,
+    shared::world,
 };
 
 
@@ -26,7 +20,7 @@ pub fn draw<T, D>(
     context:   &mut Context,
     transform: &T,
     drawable:  &D,
-    params:    DrawParam<T::Point>,
+    params:    DrawParam<T::Point, T::Vector>,
 )
     -> GameResult
     where
@@ -45,48 +39,54 @@ pub fn draw<T, D>(
 
 pub trait Transform {
     type Point;
+    type Vector;
 
     fn enable(&self, _: &mut Context) -> GameResult;
 }
 
 
-pub struct DrawParam<P>(ggez::graphics::DrawParam, PhantomData<P>);
+pub struct DrawParam<P, V>(
+    ggez::graphics::DrawParam,
+    PhantomData<P>,
+    PhantomData<V>,
+);
 
-impl DrawParam<Screen<Pnt2>> {
+impl DrawParam<graphics::Pnt2, graphics::Vec2> {
     pub fn screen() -> Self {
-        Self(ggez::graphics::DrawParam::new(), PhantomData)
+        Self(ggez::graphics::DrawParam::new(), PhantomData, PhantomData)
     }
 }
 
-impl DrawParam<World<Pnt2>> {
+impl DrawParam<world::Pnt2, world::Vec2> {
     pub fn world() -> Self {
-        Self(ggez::graphics::DrawParam::new(), PhantomData)
+        Self(ggez::graphics::DrawParam::new(), PhantomData, PhantomData)
     }
 }
 
-impl<P> DrawParam<P>
+impl<P, V> DrawParam<P, V>
     where
-        P: Into<mint::Point2<f32>>
+        P: Into<mint::Point2<f32>>,
+        V: Into<mint::Vector2<f32>>,
 {
     pub fn dest(self, dest: impl Into<P>) -> Self {
-        Self(self.0.dest(dest.into()), PhantomData)
+        Self(self.0.dest(dest.into()), PhantomData, PhantomData)
     }
 
-    pub fn scale(self, scale: Vec2) -> Self {
-        Self(self.0.scale(scale), PhantomData)
+    pub fn scale(self, scale: impl Into<V>) -> Self {
+        Self(self.0.scale(scale.into()), PhantomData, PhantomData)
     }
 
     pub fn rotation(self, rotation: f32) -> Self {
-        Self(self.0.rotation(rotation), PhantomData)
+        Self(self.0.rotation(rotation), PhantomData, PhantomData)
     }
 
     pub fn color(self, color: impl Into<Color>) -> Self {
-        Self(self.0.color(color.into()), PhantomData)
+        Self(self.0.color(color.into()), PhantomData, PhantomData)
     }
 }
 
-impl<P> From<DrawParam<P>> for ggez::graphics::DrawParam {
-    fn from(from: DrawParam<P>) -> Self {
+impl<P, V> From<DrawParam<P, V>> for ggez::graphics::DrawParam {
+    fn from(from: DrawParam<P, V>) -> Self {
         from.0
     }
 }

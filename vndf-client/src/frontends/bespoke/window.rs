@@ -8,10 +8,7 @@ use winit::{
     },
 };
 
-use crate::{
-    game::coords::Screen,
-    shared::world::math::Vec2,
-};
+use crate::graphics;
 
 
 pub struct Window(pub InnerWindow);
@@ -28,14 +25,12 @@ impl Window {
         Ok(Self(inner))
     }
 
-    pub fn size(&self) -> Screen<Vec2> {
+    pub fn size(&self) -> graphics::Vec2 {
         let size = self.0.inner_size();
 
-        Screen(
-            Vec2::new(
-                size.width  as f32,
-                size.height as f32,
-            )
+        graphics::Vec2::new(
+            size.width  as f32,
+            size.height as f32,
         )
     }
 
