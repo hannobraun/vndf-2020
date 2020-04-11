@@ -314,10 +314,21 @@ impl Graphics {
             let periapsis_km = orbit.periapsis / 1000.0;
             let apoapsis_km  = orbit.apoapsis  / 1000.0;
 
+            let periapsis_above_surface_km =
+                orbit.periapsis_above_surface / 1000.0;
+            let apoapsis_above_surface_km =
+                orbit.apoapsis_above_surface / 1000.0;
+
             draw(
                 context,
                 &ScreenTransform,
-                &Text::new(format!("Periapsis:\n{:.0} km", periapsis_km)),
+                &Text::new(
+                    format!(
+                        "Periapsis:\nfrom center: {:.0} km\nabove surface:{:.0} km",
+                        periapsis_km,
+                        periapsis_above_surface_km,
+                    )
+                ),
                 DrawParam::screen()
                     .dest(
                         game.state.camera.world_to_screen(
@@ -329,7 +340,13 @@ impl Graphics {
             draw(
                 context,
                 &ScreenTransform,
-                &Text::new(format!("Apoapsis:\n{:.0} km", apoapsis_km)),
+                &Text::new(
+                    format!(
+                        "Apoapsis:\nfrom center: {:.0} km\nabove surface:{:.0} km",
+                        apoapsis_km,
+                        apoapsis_above_surface_km,
+                    )
+                ),
                 DrawParam::screen()
                     .dest(
                         game.state.camera.world_to_screen(
