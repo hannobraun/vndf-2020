@@ -318,7 +318,7 @@ impl Graphics {
             draw(
                 context,
                 &ScreenTransform,
-                &Text::new(format!("Periapsis: {:.0} km", periapsis_km)),
+                &Text::new(format!("Periapsis:\n{:.0} km", periapsis_km)),
                 DrawParam::screen()
                     .dest(
                         game.state.camera.world_to_screen(
@@ -330,7 +330,7 @@ impl Graphics {
             draw(
                 context,
                 &ScreenTransform,
-                &Text::new(format!("Apoapsis: {:.0} km", apoapsis_km)),
+                &Text::new(format!("Apoapsis:\n{:.0} km", apoapsis_km)),
                 DrawParam::screen()
                     .dest(
                         game.state.camera.world_to_screen(
