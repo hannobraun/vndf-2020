@@ -24,8 +24,8 @@ use crate::{
         players::PlayerId,
     },
     math::{
+        Angle,
         Pnt2,
-        Rad,
     },
 };
 
@@ -72,7 +72,7 @@ impl MissileEntity {
             pos: pos.into(),
             vel: vel.into(),
             dir: to_target,
-            rot: Rad::zero(),
+            rot: Angle::zero(),
             .. self.origin
         };
         let body = bodies.insert(body);

@@ -32,8 +32,8 @@ use crate::{
         players::PlayerId,
     },
     math::{
+        Angle,
         Pnt2,
-        Rad,
         rotate,
     },
 };
@@ -63,8 +63,8 @@ impl ShipEntity {
         const HEALTH: f32 =    10.0;
 
         let distance = planet.size * 1.5;
-        let angle = Rad::radians(
-            thread_rng().gen_range(0.0, Rad::two_pi().radians),
+        let angle = Angle::radians(
+            thread_rng().gen_range(0.0, Angle::two_pi().radians),
         );
         let (sin, cos) = angle.sin_cos();
         let position = Pnt2::new(
@@ -76,7 +76,7 @@ impl ShipEntity {
         let speed = (G * planet.mass / distance).sqrt();
         let velocity = rotate(
             position.to_vector().normalize() * speed,
-            Rad::frac_pi_2(),
+            Angle::frac_pi_2(),
         );
 
         let pos    = positions.insert(Position(position));

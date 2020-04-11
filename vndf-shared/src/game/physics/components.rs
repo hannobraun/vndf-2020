@@ -14,8 +14,8 @@ use crate::{
     },
     math::{
         self,
+        Angle,
         Pnt2,
-        Rad,
         Vec2,
         rotate,
     },
@@ -62,7 +62,7 @@ pub struct Body {
     pub acc: Vec2,
 
     pub dir: Vec2,
-    pub rot: Rad,
+    pub rot: Angle,
 
     pub mass: f32,
 }
@@ -80,7 +80,7 @@ impl Body {
             acc: Vec2::zero(),
 
             dir: Vec2::new(1.0, 0.0),
-            rot: Rad::zero(),
+            rot: Angle::zero(),
 
             mass: 1.0,
         }

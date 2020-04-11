@@ -22,8 +22,8 @@ use crate::{
         },
     },
     math::{
+        Angle,
         Pnt2,
-        Rad,
         rotate,
     },
 };
@@ -83,7 +83,7 @@ impl Guidance {
             // Derivative gain
             0.0,
             // Proportional limit
-            Rad::frac_pi_2().radians,
+            Angle::frac_pi_2().radians,
             // Integral limit
             0.0,
             // Derivative limit
@@ -136,7 +136,7 @@ impl Guidance {
         let error = rejection.length() * error_dir;
 
         let control_output = self.guidance.next_control_output(error);
-        body.dir = rotate(to_target, Rad::radians(control_output.output));
+        body.dir = rotate(to_target, Angle::radians(control_output.output));
 
         Some(())
     }

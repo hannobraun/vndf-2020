@@ -7,8 +7,8 @@ use crate::{
         Planets,
     },
     math::{
+        Angle,
         Pnt2,
-        Rad,
         Vec2,
     },
 };
@@ -18,7 +18,7 @@ pub struct Orbit {
     pub eccentricity:     Vec2,
     pub semi_major_axis:  f32,
     pub semi_minor_axis:  f32,
-    pub arg_of_periapsis: Rad,
+    pub arg_of_periapsis: Angle,
     pub pericenter:       Pnt2,
     pub apocenter:        Pnt2,
     pub periapsis:        f32,
@@ -90,7 +90,7 @@ impl Orbit {
                 eccentricity:     e,
                 semi_major_axis:  a,
                 semi_minor_axis:  b,
-                arg_of_periapsis: Rad::radians(w),
+                arg_of_periapsis: Angle::radians(w),
                 pericenter,
                 apocenter,
                 periapsis,
