@@ -18,13 +18,7 @@ use crate::{
         draw,
         DrawParam,
     },
-    game::{
-        Game,
-        transforms::{
-            ScreenTransform,
-            WorldTransform,
-        },
-    },
+    game::Game,
     graphics::{
         self,
         vertices,
@@ -43,6 +37,11 @@ use crate::{
             ships::Ship,
         },
     },
+};
+
+use super::transforms::{
+    ScreenTransform,
+    WorldTransform,
 };
 
 
