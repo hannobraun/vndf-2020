@@ -4,7 +4,6 @@ use ggez::{
     Context,
     GameResult,
     graphics::{
-        self,
         Color,
         Drawable,
     },
@@ -36,7 +35,7 @@ pub fn draw<T, D>(
 {
     transform.enable(context)?;
 
-    graphics::draw(
+    ggez::graphics::draw(
         context,
         drawable,
         params,
@@ -51,17 +50,17 @@ pub trait Transform {
 }
 
 
-pub struct DrawParam<P>(graphics::DrawParam, PhantomData<P>);
+pub struct DrawParam<P>(ggez::graphics::DrawParam, PhantomData<P>);
 
 impl DrawParam<Screen<Pnt2>> {
     pub fn screen() -> Self {
-        Self(graphics::DrawParam::new(), PhantomData)
+        Self(ggez::graphics::DrawParam::new(), PhantomData)
     }
 }
 
 impl DrawParam<World<Pnt2>> {
     pub fn world() -> Self {
-        Self(graphics::DrawParam::new(), PhantomData)
+        Self(ggez::graphics::DrawParam::new(), PhantomData)
     }
 }
 
@@ -86,7 +85,7 @@ impl<P> DrawParam<P>
     }
 }
 
-impl<P> From<DrawParam<P>> for graphics::DrawParam {
+impl<P> From<DrawParam<P>> for ggez::graphics::DrawParam {
     fn from(from: DrawParam<P>) -> Self {
         from.0
     }
