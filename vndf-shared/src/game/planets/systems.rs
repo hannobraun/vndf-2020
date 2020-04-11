@@ -9,7 +9,6 @@ use crate::{
         },
     },
     math::{
-        prelude::*,
         Pnt2,
         Vec2,
     },
@@ -81,7 +80,7 @@ impl<S> Planets<S>
 
     pub fn check_collision(&self, pos: Pnt2) -> bool {
         for planet in self.0.values() {
-            if pos.distance(planet.pos) <= planet.size {
+            if (pos - planet.pos).length() <= planet.size {
                 return true;
             }
         }

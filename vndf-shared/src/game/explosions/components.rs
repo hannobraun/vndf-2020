@@ -17,7 +17,6 @@ use crate::{
             Velocity,
         },
     },
-    math::prelude::*,
 };
 
 
@@ -65,7 +64,7 @@ impl Explosion {
             H: DerefMut<Target=Health>,
     {
         for (nearby_pos, mut health) in nearby {
-            let distance = (nearby_pos.0 - pos.0).magnitude();
+            let distance = (nearby_pos.0 - pos.0).length();
 
             if distance <= 20.0 {
                 health.value -= self.strength_total;

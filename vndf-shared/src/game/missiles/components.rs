@@ -22,7 +22,6 @@ use crate::{
         },
     },
     math::{
-        prelude::*,
         Pnt2,
         Rad,
         rotate,
@@ -84,7 +83,7 @@ impl Guidance {
             // Derivative gain
             0.0,
             // Proportional limit
-            Rad::turn_div_4().0,
+            Rad::frac_pi_2().radians,
             // Integral limit
             0.0,
             // Derivative limit
@@ -117,7 +116,7 @@ impl Guidance {
 
         let to_target = target.value - pos.0;
 
-        let projection = vel.0.project_on(to_target);
+        let projection = vel.0.project_onto_vector(to_target);
         let rejection  = vel.0 - projection;
 
         let error_dir = {
@@ -134,10 +133,10 @@ impl Guidance {
                 _ => 0.0,
             }
         };
-        let error = rejection.magnitude() * error_dir;
+        let error = rejection.length() * error_dir;
 
         let control_output = self.guidance.next_control_output(error);
-        body.dir = rotate(to_target, cgmath::Rad(control_output.output));
+        body.dir = rotate(to_target, Rad::radians(control_output.output));
 
         Some(())
     }
@@ -160,7 +159,7 @@ impl Guidance {
         let     fuel   = fuels.get(&craft.fuel)?;
 
         let no_fuel_left   = fuel.0 <= 0.0;
-        let near_target    = (pos.0 - target.value).magnitude() <= 10.0;
+        let near_target    = (pos.0 - target.value).length() <= 10.0;
         let should_explode = no_fuel_left || near_target;
 
         if should_explode {
@@ -202,7 +201,7 @@ impl Target {
                 continue;
             }
 
-            let distance  = (self.value - target_pos.0).magnitude();
+            let distance  = (self.value - target_pos.0).length();
             let threshold = 100.0;
             let rating    = 1.0 / (threshold - distance);
 

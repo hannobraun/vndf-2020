@@ -54,7 +54,7 @@ pub fn velocity_verlet(
     acc: impl Fn(Pnt2) -> Vec2,
 ) {
     let acc_t = acc(*pos);
-    *pos += *vel * dt + 0.5 * acc_t * dt*dt;
+    *pos += *vel * dt + acc_t * 0.5 * dt*dt;
     let acc_t_plus_dt = acc(*pos);
     *vel += (acc_t + acc_t_plus_dt) * 0.5 * dt;
 }

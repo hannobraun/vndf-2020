@@ -4,7 +4,6 @@ use serde::{
 };
 
 use crate::math::{
-    prelude::*,
     Pnt2,
     Vec2,
 };
@@ -26,7 +25,7 @@ impl Planet {
 
     /// Acceleration of a body at the given position, due to gravity
     pub fn acceleration_at(&self, pos: Pnt2) -> Vec2 {
-        let dist = pos.distance(self.pos);
+        let dist = (pos - self.pos).length();
         let acc  = G * self.mass / dist.powi(2);
 
         (self.pos - pos).normalize() * acc

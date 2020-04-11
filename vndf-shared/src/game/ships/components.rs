@@ -28,7 +28,6 @@ use crate::{
         },
     },
     math::{
-        prelude::*,
         Pnt2,
         Rad,
     },
@@ -135,7 +134,7 @@ impl Ship {
         let mut body  = bodies.get_mut(&craft.body)?;
 
         let rotation = self.rotation as i32 as f32;
-        body.rot = Rad::full_turn() * 0.6 * rotation;
+        body.rot = Rad::two_pi() * 0.6 * rotation;
 
         Some(())
     }

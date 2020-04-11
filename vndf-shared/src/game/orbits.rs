@@ -7,7 +7,6 @@ use crate::{
         Planets,
     },
     math::{
-        prelude::*,
         Pnt2,
         Rad,
         Vec2,
@@ -46,7 +45,7 @@ impl Orbit {
 
         // Orbital eccentricity
         let e =
-            r * (v.magnitude().powi(2) / mu - 1.0 / r.magnitude())
+            r * (v.length().powi(2) / mu - 1.0 / r.length())
             - v * r.dot(v) / mu;
 
         // What we computed here is the eccentricity vector. It's magnitude is
@@ -58,29 +57,29 @@ impl Orbit {
         // |e| > 1:    => Hyperbolic
 
         // For now, we're only dealing with circular and elliptical orbits.
-        if e.magnitude() >= 1.0 {
+        if e.length() >= 1.0 {
             return None;
         }
 
         // Specific orbital energy
-        let ep = v.magnitude().powi(2) / 2.0 - mu / r.magnitude();
+        let ep = v.length().powi(2) / 2.0 - mu / r.length();
 
         // Semi-major axis
         let a = -(mu / 2.0 / ep);
 
         // Semi-minor axis
-        let b = a * (1.0 - e.magnitude().powi(2)).sqrt();
+        let b = a * (1.0 - e.length().powi(2)).sqrt();
 
         // Argument of periapsis
         let w = f32::atan2(e.y, e.x);
 
         // Pericenter (point of closest approach)
-        let pericenter = planet.pos + e.normalize() * (1.0 - e.magnitude()) * a;
-        let periapsis  = (pericenter - planet.pos).magnitude();
+        let pericenter = planet.pos + e.normalize() * (1.0 - e.length()) * a;
+        let periapsis  = (pericenter - planet.pos).length();
 
         // Apocenter (farthest point of orbit)
         let apocenter = pericenter - e.normalize() * 2.0 * a;
-        let apoapsis  = (apocenter - planet.pos).magnitude();
+        let apoapsis  = (apocenter - planet.pos).length();
 
         // Center of ellipse
         let ellipse_pos = pericenter - e.normalize() * a;
@@ -91,7 +90,7 @@ impl Orbit {
                 eccentricity:     e,
                 semi_major_axis:  a,
                 semi_minor_axis:  b,
-                arg_of_periapsis: cgmath::Rad(w),
+                arg_of_periapsis: Rad::radians(w),
                 pericenter,
                 apocenter,
                 periapsis,

@@ -9,7 +9,6 @@ use ggez::mint;
 use crate::shared::{
     game::physics::Position,
     math::{
-        prelude::*,
         Pnt2,
         Vec2,
     },
@@ -24,7 +23,7 @@ macro_rules! coord_wrappers {
 
             impl $name<Pnt2> {
                 pub fn to_vec(self) -> $name<Vec2> {
-                    $name(self.0.to_vec())
+                    $name(self.0.to_vector())
                 }
             }
 

@@ -13,10 +13,7 @@ use crate::{
         physics::Body,
         players::PlayerId,
     },
-    math::{
-        prelude::*,
-        Vec2,
-    },
+    math::Vec2,
 };
 
 

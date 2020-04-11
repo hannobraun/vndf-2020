@@ -43,7 +43,6 @@ use crate::{
             ships::Ship,
         },
         math::{
-            prelude::*,
             Pnt2,
             Vec2,
         }
@@ -182,7 +181,7 @@ impl Graphics {
             &self.ship,
             DrawParam::screen()
                 .dest(pos_s)
-                .rotation(Vec2::unit_x().angle(body.dir).0)
+                .rotation(Vec2::new(1.0, 0.0).angle_to(body.dir).radians)
                 .scale(Vec2::new(30.0, 30.0))
                 .color([ship.color[0], ship.color[1], ship.color[2], 1.0]),
         )?;
@@ -197,7 +196,7 @@ impl Graphics {
                 format!(
                     "Pos: {:.0}/{:.0}\nVel: {:.0}/{:.0} ({:.0})",
                     pos_km.x, pos_km.y,
-                    vel_km.x, vel_km.y, vel_km.magnitude(),
+                    vel_km.x, vel_km.y, vel_km.length(),
                 )
             ),
             DrawParam::screen()
@@ -303,7 +302,7 @@ impl Graphics {
             &ellipse,
             DrawParam::screen()
                 .dest(pos_s)
-                .rotation(orbit.arg_of_periapsis.0),
+                .rotation(orbit.arg_of_periapsis.radians),
         )?;
 
         // Display periapsis and apoapsis
@@ -311,7 +310,7 @@ impl Graphics {
         // If our orbit is nearly circular, the computed apses will jump around
         // like crazy. Let's make sure we have a minimum of eccentricity, so
         // they become well-defined.
-        if orbit.eccentricity.magnitude() > 0.01 {
+        if orbit.eccentricity.length() > 0.01 {
             let periapsis_km = orbit.periapsis / 1000.0;
             let apoapsis_km  = orbit.apoapsis  / 1000.0;
 

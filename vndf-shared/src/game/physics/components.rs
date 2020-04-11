@@ -13,7 +13,6 @@ use crate::{
         Planets,
     },
     math::{
-        prelude::*,
         self,
         Pnt2,
         Rad,
@@ -80,7 +79,7 @@ impl Body {
             vel: vel.into(),
             acc: Vec2::zero(),
 
-            dir: Vec2::unit_x(),
+            dir: Vec2::new(1.0, 0.0),
             rot: Rad::zero(),
 
             mass: 1.0,
