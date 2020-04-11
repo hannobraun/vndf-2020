@@ -11,6 +11,13 @@ pub mod players;
 pub mod ships;
 
 
+pub use self::math::{
+    Angle,
+    Pnt2,
+    Vec2,
+};
+
+
 use rinnsal::{
     EventSink,
     EventSource,
@@ -23,7 +30,6 @@ use self::{
         ComponentRemoved,
         Update,
     },
-    math::Pnt2,
     planets::{
         Planet,
         Planets,
