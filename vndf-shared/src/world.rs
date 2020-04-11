@@ -70,7 +70,7 @@ impl State {
         data.planets.insert(Planet {
             pos:  Pnt2::new(0.0, 0.0),
             size: Length::new(60_268_000.0), // Size of Saturn
-            mass: 5.6834e26,                 // density of Saturn (in kg)
+            mass: 5.6834e26,                 // mass of Saturn (in kg)
         });
 
         Self {
