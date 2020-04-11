@@ -11,10 +11,6 @@ postcard = "*"
 rand     = "*"
 serde    = "*"
 
-[dependencies.cgmath]
-version  = "*"
-features = ["mint", "serde"]
-
 [dependencies.euclid]
 version  = "*"
 features = ["serde"]

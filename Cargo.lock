@@ -315,19 +315,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "cgmath"
-version = "0.17.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "283944cdecc44bf0b8dd010ec9af888d3b4f142844fdbe026c20ef68148d6fe7"
-dependencies = [
- "approx",
- "mint",
- "num-traits 0.2.11",
- "rand 0.6.5",
- "serde",
-]
-
-[[package]]
 name = "clang-sys"
 version = "0.29.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3169,7 +3156,6 @@ dependencies = [
 name = "vndf-shared"
 version = "0.1.0"
 dependencies = [
- "cgmath",
  "euclid 0.20.10",
  "log",
  "pid",
