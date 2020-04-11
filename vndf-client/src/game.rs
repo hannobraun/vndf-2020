@@ -1,5 +1,4 @@
 pub mod config;
-pub mod coords;
 pub mod input;
 pub mod net;
 pub mod state;
