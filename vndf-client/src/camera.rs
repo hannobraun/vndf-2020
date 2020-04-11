@@ -3,11 +3,9 @@ use crate::{
         Screen,
         World,
     },
-    shared::{
-        math::{
-            Pnt2,
-            Vec2,
-        },
+    shared::world::math::{
+        Pnt2,
+        Vec2,
     },
 };
 

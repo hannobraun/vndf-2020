@@ -8,23 +8,21 @@ use toadster::{
     store,
 };
 
-use crate::{
+use crate::world::{
+    crafts::{
+        Craft,
+        Fuel,
+    },
+    health::Health,
     math::{
         Angle,
         Pnt2,
         rotate,
     },
-    world::{
-        crafts::{
-            Craft,
-            Fuel,
-        },
-        health::Health,
-        physics::{
-            Body,
-            Position,
-            Velocity,
-        },
+    physics::{
+        Body,
+        Position,
+        Velocity,
     },
 };
 

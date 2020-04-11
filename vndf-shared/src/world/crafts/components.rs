@@ -7,13 +7,11 @@ use toadster::{
     store,
 };
 
-use crate::{
+use crate::world::{
+    health::Health,
     math::Vec2,
-    world::{
-        health::Health,
-        physics::Body,
-        players::PlayerId,
-    },
+    physics::Body,
+    players::PlayerId,
 };
 
 

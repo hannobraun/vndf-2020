@@ -7,7 +7,7 @@ use toadster::{
     store,
 };
 
-use crate::{
+use crate::world::{
     math::{
         self,
         Angle,
@@ -15,7 +15,7 @@ use crate::{
         Vec2,
         rotate,
     },
-    world::planets::{
+    planets::{
         Planet,
         Planets,
     },

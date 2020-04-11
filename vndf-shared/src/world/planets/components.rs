@@ -3,7 +3,7 @@ use serde::{
     Serialize,
 };
 
-use crate::math::{
+use crate::world::math::{
     Pnt2,
     Vec2,
 };

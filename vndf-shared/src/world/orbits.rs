@@ -1,12 +1,12 @@
 use toadster::store;
 
-use crate::{
+use crate::world::{
     math::{
         Angle,
         Pnt2,
         Vec2,
     },
-    world::planets::{
+    planets::{
         G,
         Planet,
         Planets,

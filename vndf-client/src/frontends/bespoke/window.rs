@@ -10,7 +10,7 @@ use winit::{
 
 use crate::{
     game::coords::Screen,
-    shared::math::Vec2,
+    shared::world::math::Vec2,
 };
 
 

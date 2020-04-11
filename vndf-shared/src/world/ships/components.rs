@@ -15,12 +15,12 @@ use crate::{
         Action,
         Rotation,
     },
-    math::{
-        Angle,
-        Pnt2,
-    },
     world::{
         crafts::Craft,
+        math::{
+            Angle,
+            Pnt2,
+        },
         missiles::{
             MissileEntity,
             MissileLaunch,

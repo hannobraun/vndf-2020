@@ -16,7 +16,7 @@ use crate::{
             self,
             Rotation,
         },
-        math::{
+        world::math::{
             Pnt2,
             Vec2,
         },

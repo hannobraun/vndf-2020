@@ -5,7 +5,7 @@
 /// integrators are useful.
 
 
-use crate::math::{
+use crate::world::math::{
     Pnt2,
     Vec2,
 };

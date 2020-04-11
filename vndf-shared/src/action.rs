@@ -3,7 +3,7 @@ use serde::{
     Serialize,
 };
 
-use crate::math::Pnt2;
+use crate::world::math::Pnt2;
 
 
 #[derive(Clone, Copy, Debug, Deserialize, Serialize, PartialEq)]

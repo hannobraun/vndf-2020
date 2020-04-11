@@ -30,22 +30,20 @@ use crate::{
         self,
         vertices,
     },
-    shared::{
+    shared::world::{
+        explosions::Explosion,
+        missiles::Missile,
+        physics::Body,
         math::{
             Pnt2,
             Vec2,
         },
-        world::{
-            explosions::Explosion,
-            missiles::Missile,
-            physics::Body,
-            orbits::Orbit,
-            planets::{
-                Planet,
-                Planets,
-            },
-            ships::Ship,
+        orbits::Orbit,
+        planets::{
+            Planet,
+            Planets,
         },
+        ships::Ship,
     },
 };
 

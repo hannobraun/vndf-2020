@@ -10,16 +10,16 @@ use toadster::{
 
 use crate::{
     data,
-    math::{
-        Angle,
-        Pnt2,
-    },
     world::{
         crafts::{
             Craft,
             Fuel,
         },
         health::Health,
+        math::{
+            Angle,
+            Pnt2,
+        },
         physics::{
             Body,
             Position,

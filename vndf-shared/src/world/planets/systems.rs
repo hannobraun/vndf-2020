@@ -1,16 +1,14 @@
 use toadster::store;
 
-use crate::{
+use crate::world::{
+    health::Health,
     math::{
         Pnt2,
         Vec2,
     },
-    world::{
-        health::Health,
-        physics::components::{
-            Body,
-            Position,
-        },
+    physics::components::{
+        Body,
+        Position,
     },
 };
 

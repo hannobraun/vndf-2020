@@ -17,11 +17,11 @@ use log::{
 };
 
 use crate::shared::{
-    math::Vec2,
     net::{
         client::Conn,
         msg,
     },
+    world::math::Vec2,
 };
 
 use self::{

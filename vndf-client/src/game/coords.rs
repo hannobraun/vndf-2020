@@ -6,12 +6,12 @@ use core::ops::{
 
 use ggez::mint;
 
-use crate::shared::{
+use crate::shared::world::{
     math::{
         Pnt2,
         Vec2,
     },
-    world::physics::Position,
+    physics::Position,
 };
 
 

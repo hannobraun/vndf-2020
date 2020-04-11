@@ -2,6 +2,7 @@ pub mod base;
 pub mod crafts;
 pub mod explosions;
 pub mod health;
+pub mod math;
 pub mod missiles;
 pub mod orbits;
 pub mod physics;
@@ -15,16 +16,14 @@ use rinnsal::{
     EventSource,
 };
 
-use crate::{
-    data,
-    math::Pnt2,
-};
+use crate::data;
 
 use self::{
     base::{
         ComponentRemoved,
         Update,
     },
+    math::Pnt2,
     planets::{
         Planet,
         Planets,

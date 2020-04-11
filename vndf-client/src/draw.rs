@@ -16,7 +16,7 @@ use crate::{
         Screen,
         World,
     },
-    shared::math::{
+    shared::world::math::{
         Pnt2,
         Vec2,
     },

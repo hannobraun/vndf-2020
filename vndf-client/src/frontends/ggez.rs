@@ -41,13 +41,13 @@ use crate::{
         },
     },
     shared::{
-        math::{
-            Pnt2,
-            Vec2,
-        },
         net::{
             self,
             msg,
+        },
+        world::math::{
+            Pnt2,
+            Vec2,
         },
     },
 };
