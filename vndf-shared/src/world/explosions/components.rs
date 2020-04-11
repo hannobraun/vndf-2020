@@ -9,13 +9,11 @@ use serde::{
 };
 use toadster::Handle;
 
-use crate::{
-    world::{
-        health::Health,
-        physics::{
-            Position,
-            Velocity,
-        },
+use crate::world::{
+    health::Health,
+    physics::{
+        Position,
+        Velocity,
     },
 };
 
