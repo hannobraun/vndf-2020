@@ -3,16 +3,16 @@ pub mod integration;
 pub use integration::integrate;
 
 
-use euclid::{
-    self,
-    UnknownUnit,
-};
+use euclid;
+
+
+pub enum Meter {}
 
 
 pub type Angle = euclid::Angle<f32>;
 
-pub type Pnt2 = euclid::Point2D<f32, UnknownUnit>;
-pub type Vec2 = euclid::Vector2D<f32, UnknownUnit>;
+pub type Pnt2 = euclid::Point2D<f32, Meter>;
+pub type Vec2 = euclid::Vector2D<f32, Meter>;
 
 
 pub fn rotate(vec: Vec2, angle: Angle) -> Vec2 {
