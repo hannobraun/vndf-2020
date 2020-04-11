@@ -13,11 +13,11 @@ use crate::{
     },
     shared::{
         data,
-        game::{
+        math::Pnt2,
+        world::{
             planets::Planets,
             players::PlayerId,
         },
-        math::Pnt2,
     },
 };
 

@@ -31,7 +31,11 @@ use crate::{
         vertices,
     },
     shared::{
-        game::{
+        math::{
+            Pnt2,
+            Vec2,
+        },
+        world::{
             explosions::Explosion,
             missiles::Missile,
             physics::Body,
@@ -42,10 +46,6 @@ use crate::{
             },
             ships::Ship,
         },
-        math::{
-            Pnt2,
-            Vec2,
-        }
     },
 };
 

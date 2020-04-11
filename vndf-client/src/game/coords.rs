@@ -7,11 +7,11 @@ use core::ops::{
 use ggez::mint;
 
 use crate::shared::{
-    game::physics::Position,
     math::{
         Pnt2,
         Vec2,
     },
+    world::physics::Position,
 };
 
 

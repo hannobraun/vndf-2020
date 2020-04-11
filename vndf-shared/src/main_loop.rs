@@ -6,7 +6,7 @@ use std::{
     },
 };
 
-use crate::game::FRAME_TIME;
+use crate::world::FRAME_TIME;
 
 
 pub fn main_loop<F>(mut action: F) -> ! where F: FnMut() {

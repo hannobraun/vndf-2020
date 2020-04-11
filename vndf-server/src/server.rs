@@ -19,7 +19,11 @@ use crate::{
         Network,
     },
     shared::{
-        game::{
+        net::{
+            self,
+            msg,
+        },
+        world::{
             self,
             FRAME_TIME,
             base::Update,
@@ -29,10 +33,6 @@ use crate::{
                 PlayerInput,
             },
         },
-        net::{
-            self,
-            msg,
-        },
     },
 };
 
@@ -40,7 +40,7 @@ use crate::{
 pub struct Server {
     network:     Network,
     events:      Vec<Event>,
-    state:       game::State,
+    state:       world::State,
     last_update: Instant,
     clients:     HashMap<SocketAddr, Client>,
 }
@@ -58,7 +58,7 @@ impl Server {
         Self {
             network,
             events:      Vec::new(),
-            state:       game::State::new(),
+            state:       world::State::new(),
             last_update: Instant::now(),
             clients:     HashMap::new(),
         }
