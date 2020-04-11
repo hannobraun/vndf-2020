@@ -1,10 +1,8 @@
 use ggez::{
+    self,
     Context,
     GameResult,
-    graphics::{
-        self,
-        Rect,
-    },
+    graphics::Rect,
 };
 
 use crate::{
@@ -27,9 +25,9 @@ impl Transform for ScreenTransform {
     type Point = Screen<Pnt2>;
 
     fn enable(&self, context: &mut Context) -> GameResult {
-        let (width, height) = graphics::drawable_size(context);
+        let (width, height) = ggez::graphics::drawable_size(context);
 
-        graphics::set_screen_coordinates(
+        ggez::graphics::set_screen_coordinates(
             context,
             Rect {
                 x: 0.0,
@@ -50,7 +48,8 @@ impl Transform for WorldTransform<'_> {
     type Point = World<Pnt2>;
 
     fn enable(&self, context: &mut Context) -> GameResult {
-        let (screen_width, screen_height) = graphics::drawable_size(context);
+        let (screen_width, screen_height) =
+            ggez::graphics::drawable_size(context);
         let screen_size = Screen(Vec2::new(screen_width, screen_height));
 
         let camera = self.0;
@@ -58,7 +57,7 @@ impl Transform for WorldTransform<'_> {
         let size       = camera.world_size_on_screen(screen_size);
         let upper_left = camera.center - size / 2.0;
 
-        graphics::set_screen_coordinates(
+        ggez::graphics::set_screen_coordinates(
             context,
             Rect {
                 x: upper_left.0.x,
