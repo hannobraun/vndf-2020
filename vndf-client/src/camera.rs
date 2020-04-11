@@ -40,12 +40,10 @@ impl Camera {
 
     pub fn world_to_screen(&self,
         screen_size: graphics::Vec2,
-        point_world: impl Into<world::Pnt2>,
+        point_world: world::Pnt2,
     )
         -> graphics::Pnt2
     {
-        let point_world = point_world.into();
-
         let point_camera = point_world - self.center.to_vector();
 
         let world_rect = self.world_size_on_screen(screen_size);
