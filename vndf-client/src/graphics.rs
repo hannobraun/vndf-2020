@@ -3,7 +3,7 @@ pub mod transforms;
 pub mod vertices;
 
 
-pub use math::{
+pub use self::math::{
     Pnt2,
     Size,
     Vec2,
