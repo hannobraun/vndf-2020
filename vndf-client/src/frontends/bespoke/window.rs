@@ -25,10 +25,10 @@ impl Window {
         Ok(Self(inner))
     }
 
-    pub fn size(&self) -> graphics::Vec2 {
+    pub fn size(&self) -> graphics::Size {
         let size = self.0.inner_size();
 
-        graphics::Vec2::new(
+        graphics::Size::new(
             size.width  as f32,
             size.height as f32,
         )

@@ -64,7 +64,7 @@ impl Game {
 
     pub fn handle_input(&mut self,
         input:       Input,
-        screen_size: graphics::Vec2,
+        screen_size: graphics::Size,
     )
         -> Transition
     {

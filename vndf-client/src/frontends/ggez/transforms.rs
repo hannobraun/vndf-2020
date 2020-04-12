@@ -46,7 +46,7 @@ impl Transform for WorldTransform<'_> {
     fn enable(&self, context: &mut Context) -> GameResult {
         let (screen_width, screen_height) =
             ggez::graphics::drawable_size(context);
-        let screen_size = graphics::Vec2::new(screen_width, screen_height);
+        let screen_size = graphics::Size::new(screen_width, screen_height);
 
         let camera = self.0;
 

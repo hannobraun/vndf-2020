@@ -4,6 +4,7 @@ pub mod vertices;
 
 pub use math::{
     Pnt2,
+    Size,
     Vec2,
 };
 

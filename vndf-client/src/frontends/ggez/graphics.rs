@@ -570,9 +570,9 @@ Heavy Missiles: {}",
 }
 
 
-fn screen_size(context: &Context) -> graphics::Vec2 {
+fn screen_size(context: &Context) -> graphics::Size {
     let (screen_width, screen_height) = ggez::graphics::drawable_size(context);
-    graphics::Vec2::new(screen_width, screen_height)
+    graphics::Size::new(screen_width, screen_height)
 }
 
 

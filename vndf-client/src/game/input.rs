@@ -42,7 +42,7 @@ impl Handler {
     pub fn handle(&mut self,
         input:       Input,
         camera:      &Camera,
-        screen_size: graphics::Vec2,
+        screen_size: graphics::Size,
         events:      &mut Events,
     )
         -> Transition

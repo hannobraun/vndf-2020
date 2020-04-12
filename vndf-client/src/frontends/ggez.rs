@@ -178,7 +178,7 @@ impl EventHandler for Handler {
     fn draw(&mut self, context: &mut Context) -> GameResult {
         let (screen_width, screen_height) =
             ggez::graphics::drawable_size(context);
-        let screen_size = crate::graphics::Vec2::new(
+        let screen_size = crate::graphics::Size::new(
             screen_width,
             screen_height,
         );
