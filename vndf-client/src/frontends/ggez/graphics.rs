@@ -274,7 +274,7 @@ impl Graphics {
         };
 
         let size_s          = screen_size(context);
-        let pixels_per_unit = game.state.camera.pixels_per_unit(size_s);
+        let pixels_per_unit = game.state.camera.pixels_per_meter(size_s);
 
         // Ellipse in screen coordinates
         let pos_s = game.state.camera.world_to_screen(

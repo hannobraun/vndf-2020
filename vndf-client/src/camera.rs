@@ -55,7 +55,7 @@ impl Camera {
         point_screen_origin_centered + screen_size / 2.0
     }
 
-    pub fn pixels_per_unit(&self, screen_size: graphics::Size) -> f32 {
+    pub fn pixels_per_meter(&self, screen_size: graphics::Size) -> f32 {
         let world_size_on_screen = self.world_size_on_screen(screen_size);
         screen_size.width / world_size_on_screen.width
     }
