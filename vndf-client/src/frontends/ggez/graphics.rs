@@ -273,16 +273,16 @@ impl Graphics {
             None        => return Ok(true),
         };
 
-        let size_s          = screen_size(context);
-        let pixels_per_unit = game.state.camera.pixels_per_meter(size_s);
+        let size_s           = screen_size(context);
+        let pixels_per_meter = game.state.camera.pixels_per_meter(size_s);
 
         // Ellipse in screen coordinates
         let pos_s = game.state.camera.world_to_screen(
             size_s,
             orbit.ellipse_pos,
         );
-        let r1_s = orbit.semi_major_axis * pixels_per_unit;
-        let r2_s = orbit.semi_minor_axis * pixels_per_unit;
+        let r1_s = orbit.semi_major_axis * pixels_per_meter;
+        let r2_s = orbit.semi_minor_axis * pixels_per_meter;
 
         let ellipse = Mesh::new_ellipse(
             context,
