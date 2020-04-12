@@ -8,7 +8,10 @@ use ggez::{
 use crate::{
     camera::Camera,
     draw::Transform,
-    graphics,
+    graphics::{
+        self,
+        transforms,
+    },
     shared::world,
 };
 
@@ -21,16 +24,14 @@ impl Transform for ScreenTransform {
 
     fn enable(&self, context: &mut Context) -> GameResult {
         let (width, height) = ggez::graphics::drawable_size(context);
+        let screen_size = graphics::Size::new(width, height);
 
-        ggez::graphics::set_screen_coordinates(
-            context,
-            Rect {
-                x: 0.0,
-                y: 0.0,
-                w: width,
-                h: height,
-            },
-        )?;
+        let transform = transforms::screen_to_homogeneous(screen_size)
+            .to_3d()
+            .to_row_arrays();
+
+        ggez::graphics::set_projection(context, transform);
+        ggez::graphics::apply_transformations(context)?;
 
         Ok(())
     }

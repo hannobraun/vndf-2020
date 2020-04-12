@@ -1,6 +1,7 @@
 use euclid;
 
 
+pub enum ClipUnit {}
 pub enum Pixel {}
 
 
