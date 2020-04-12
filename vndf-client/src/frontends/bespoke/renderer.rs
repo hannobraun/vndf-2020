@@ -239,32 +239,7 @@ impl Renderer {
                     &wgpu::CommandEncoderDescriptor { label: None }
                 );
 
-                {
-                    let mut render_pass = encoder.begin_render_pass(
-                        &wgpu::RenderPassDescriptor {
-                            color_attachments: &[
-                                wgpu::RenderPassColorAttachmentDescriptor {
-                                    attachment:     &frame.view,
-                                    resolve_target: None,
-                                    load_op:        wgpu::LoadOp::Clear,
-                                    store_op:       wgpu::StoreOp::Store,
-                                    clear_color:    graphics::BACKGROUND_COLOR,
-                                }
-                            ],
-                            depth_stencil_attachment: None,
-                        },
-                    );
-                    render_pass.set_pipeline(&self.render_pipeline);
-                    render_pass.set_bind_group(0, &self.bind_group, &[]);
-                    render_pass.set_vertex_buffer(0, &self.vertex_buffer, 0, 0);
-                    render_pass.set_index_buffer(&self.index_buffer, 0, 0);
-
-                    render_pass.draw_indexed(
-                        0 .. self.meshes.ship.indices.len() as u32,
-                        0,
-                        0 .. 1,
-                    );
-                }
+                self.draw_ship(&frame, &mut encoder);
 
                 self.queue.submit(&[encoder.finish()]);
             }
@@ -272,6 +247,35 @@ impl Renderer {
         }
 
         Ok(())
+    }
+
+    fn draw_ship(&self,
+        frame:   &wgpu::SwapChainOutput,
+        encoder: &mut wgpu::CommandEncoder,
+    ) {
+        let mut render_pass = encoder.begin_render_pass(
+            &wgpu::RenderPassDescriptor {
+                color_attachments: &[
+                    wgpu::RenderPassColorAttachmentDescriptor {
+                        attachment:     &frame.view,
+                        resolve_target: None,
+                        load_op:        wgpu::LoadOp::Clear,
+                        store_op:       wgpu::StoreOp::Store,
+                        clear_color:    graphics::BACKGROUND_COLOR,
+                    }
+                ],
+                depth_stencil_attachment: None,
+            },
+        );
+        render_pass.set_pipeline(&self.render_pipeline);
+        render_pass.set_bind_group(0, &self.bind_group, &[]);
+        render_pass.set_vertex_buffer(0, &self.vertex_buffer, 0, 0);
+        render_pass.set_index_buffer(&self.index_buffer, 0, 0);
+        render_pass.draw_indexed(
+            0 .. self.meshes.ship.indices.len() as u32,
+            0,
+            0 .. 1,
+        );
     }
 }
 
