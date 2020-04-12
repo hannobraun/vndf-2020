@@ -22,7 +22,7 @@ use crate::{
         health::Health,
         math::{
             Angle,
-            Pnt2,
+            Vec2,
             rotate,
         },
         physics::{
@@ -67,15 +67,13 @@ impl ShipEntity {
             thread_rng().gen_range(0.0, Angle::two_pi().radians),
         );
         let (sin, cos) = angle.sin_cos();
-        let position = Pnt2::new(
-            sin * distance.0,
-            cos * distance.0,
-        );
+        let position = planet.pos
+            + Vec2::new(sin * distance.0, cos * distance.0);
 
         // Compute velocity for circular orbit at the given distance.
         let speed = (G * planet.mass / distance.0).sqrt();
         let velocity = rotate(
-            position.to_vector().normalize() * speed,
+            (position - planet.pos).normalize() * speed,
             Angle::frac_pi_2(),
         );
 
