@@ -145,7 +145,7 @@ impl Graphics {
     {
         draw(
             context,
-            &WorldTransform(&game.state.camera),
+            &WorldTransform { camera: &game.state.camera },
             &self.circle,
             DrawParam::world()
                 .dest(planet.pos)

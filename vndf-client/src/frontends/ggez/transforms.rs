@@ -38,7 +38,9 @@ impl Transform for ScreenTransform {
 }
 
 
-pub struct WorldTransform<'r>(pub &'r Camera);
+pub struct WorldTransform<'r> {
+    pub camera: &'r Camera,
+}
 
 impl Transform for WorldTransform<'_> {
     type Point  = world::Pnt2;
@@ -49,10 +51,8 @@ impl Transform for WorldTransform<'_> {
             ggez::graphics::drawable_size(context);
         let screen_size = graphics::Size::new(screen_width, screen_height);
 
-        let camera = self.0;
-
-        let size       = camera.world_size_on_screen(screen_size);
-        let upper_left = camera.center - size / 2.0;
+        let size       = self.camera.world_size_on_screen(screen_size);
+        let upper_left = self.camera.center - size / 2.0;
 
         ggez::graphics::set_screen_coordinates(
             context,
