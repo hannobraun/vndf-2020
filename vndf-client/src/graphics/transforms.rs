@@ -11,6 +11,7 @@ use crate::{
 pub type Transform<Src, Dest> = euclid::Transform2D<f32, Src, Dest>;
 
 
+/// Returns what is commonly known as the view matrix
 pub fn world_to_screen(camera: &Camera, screen_size: graphics::Size,
 )
     -> Transform<Meter, Pixel>
