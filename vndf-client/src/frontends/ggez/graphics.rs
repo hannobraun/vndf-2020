@@ -145,11 +145,12 @@ impl Graphics {
     {
         draw(
             context,
-            &WorldTransform { camera: &game.state.camera },
+            &WorldTransform {
+                model:  planet.into(),
+                camera: &game.state.camera,
+            },
             &self.circle,
             DrawParam::world()
-                .dest(planet.pos)
-                .scale(world::Vec2::from_lengths(planet.size, planet.size))
         )?;
 
         Ok(())

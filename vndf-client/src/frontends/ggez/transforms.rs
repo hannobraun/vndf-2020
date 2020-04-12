@@ -9,6 +9,7 @@ use crate::{
     draw::Transform,
     graphics::{
         self,
+        Model,
         transforms,
     },
     shared::world,
@@ -38,6 +39,7 @@ impl Transform for ScreenTransform {
 
 
 pub struct WorldTransform<'r> {
+    pub model:  Model,
     pub camera: &'r Camera,
 }
 
@@ -50,8 +52,13 @@ impl Transform for WorldTransform<'_> {
             ggez::graphics::drawable_size(context);
         let screen_size = graphics::Size::new(screen_width, screen_height);
 
-        let transform = transforms::world_to_screen(self.camera, screen_size)
-            .post_transform(&transforms::screen_to_homogeneous(screen_size))
+        let transform = transforms::local_to_world(&self.model)
+            .post_transform(
+                &transforms::world_to_screen(self.camera, screen_size)
+            )
+            .post_transform(
+                &transforms::screen_to_homogeneous(screen_size)
+            )
             .to_3d()
             .to_row_arrays();
 

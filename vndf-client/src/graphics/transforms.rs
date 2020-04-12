@@ -2,6 +2,7 @@ use crate::{
     camera::Camera,
     graphics::{
         self,
+        Model,
         math::{
             ClipUnit,
             Pixel,
@@ -13,6 +14,14 @@ use crate::{
 
 pub type Transform<Src, Dest> = euclid::Transform2D<f32, Src, Dest>;
 
+
+/// Returns what is commonly known as the model matrix
+pub fn local_to_world(model: &Model) -> Transform<ClipUnit, Meter> {
+    Transform::identity()
+        .post_scale(model.size.width, model.size.height)
+        .post_rotate(model.angle)
+        .post_translate(model.pos.to_vector())
+}
 
 /// Returns what is commonly known as the view matrix
 pub fn world_to_screen(camera: &Camera, screen_size: graphics::Size)

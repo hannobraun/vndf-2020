@@ -1,12 +1,16 @@
 pub mod math;
+pub mod model;
 pub mod transforms;
 pub mod vertices;
 
 
-pub use self::math::{
-    Pnt2,
-    Size,
-    Vec2,
+pub use self::{
+    math::{
+        Pnt2,
+        Size,
+        Vec2,
+    },
+    model::Model,
 };
 
 
