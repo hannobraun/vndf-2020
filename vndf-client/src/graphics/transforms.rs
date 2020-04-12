@@ -11,13 +11,12 @@ use crate::{
 pub type Transform<Src, Dest> = euclid::Transform2D<f32, Src, Dest>;
 
 
-pub fn world_to_screen(
-    camera:           &Camera,
-    screen_size:      graphics::Size,
-    pixels_per_meter: f32,
+pub fn world_to_screen(camera: &Camera, screen_size: graphics::Size,
 )
     -> Transform<Meter, Pixel>
 {
+    let pixels_per_meter = camera.pixels_per_meter(screen_size);
+
     Transform::identity()
         .pre_translate(-camera.center.to_vector())
         .post_scale(pixels_per_meter, pixels_per_meter)

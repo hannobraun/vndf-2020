@@ -47,8 +47,7 @@ impl Camera {
     )
         -> graphics::Pnt2
     {
-        let pixels_per_meter = self.pixels_per_meter(screen_size);
-        transforms::world_to_screen(self, screen_size, pixels_per_meter)
+        transforms::world_to_screen(self, screen_size)
             .transform_point(point_world)
     }
 
