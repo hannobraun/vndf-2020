@@ -12,7 +12,11 @@ use winit::event::{
 };
 use zerocopy::AsBytes as _;
 
-use crate::graphics;
+use crate::graphics::{
+    self,
+    math::ClipUnit,
+    transforms,
+};
 
 use super::{
     meshes::{
@@ -28,6 +32,7 @@ pub struct Renderer {
     pub surface:               wgpu::Surface,
     pub device:                wgpu::Device,
     pub queue:                 wgpu::Queue,
+    pub uniform_buffer:        wgpu::Buffer,
     pub vertex_buffer:         wgpu::Buffer,
     pub index_buffer:          wgpu::Buffer,
     pub bind_group:            wgpu::BindGroup,
@@ -64,6 +69,14 @@ impl Renderer {
             )
             .await;
 
+        let uniform_buffer = device.create_buffer_with_data(
+            transforms::Transform::<ClipUnit, ClipUnit>::identity()
+                .to_3d()
+                .to_row_arrays()
+                .as_bytes(),
+            wgpu::BufferUsage::UNIFORM | wgpu::BufferUsage::COPY_DST,
+        );
+
         let meshes = Meshes::new()
             .map_err(|err| Error::Meshes(err))?;
 
@@ -88,15 +101,29 @@ impl Renderer {
 
         let bind_group_layout = device.create_bind_group_layout(
             &wgpu::BindGroupLayoutDescriptor {
-                bindings: &[],
-                label:    None,
+                bindings: &[
+                    wgpu::BindGroupLayoutEntry {
+                        binding: 0,
+                        visibility: wgpu::ShaderStage::VERTEX,
+                        ty: wgpu::BindingType::UniformBuffer { dynamic: false},
+                    },
+                ],
+                label: None,
             },
         );
         let bind_group = device.create_bind_group(
             &wgpu::BindGroupDescriptor {
                 layout:   &bind_group_layout,
-                bindings: &[],
-                label:    None,
+                bindings: &[
+                    wgpu::Binding {
+                        binding: 0,
+                        resource: wgpu::BindingResource::Buffer {
+                            buffer: &uniform_buffer,
+                            range: 0 .. size_of::<Transform>() as u64,
+                        },
+                    }
+                ],
+                label: None,
             },
         );
         let pipeline_layout = device.create_pipeline_layout(
@@ -179,6 +206,7 @@ impl Renderer {
                 surface,
                 device,
                 queue,
+                uniform_buffer,
                 vertex_buffer,
                 index_buffer,
                 render_pipeline,
@@ -246,6 +274,9 @@ impl Renderer {
         Ok(())
     }
 }
+
+
+pub type Transform = [[f32; 4]; 4];
 
 
 #[derive(Debug)]
