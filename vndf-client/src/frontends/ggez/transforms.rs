@@ -58,8 +58,8 @@ impl Transform for WorldTransform<'_> {
             Rect {
                 x: upper_left.x,
                 y: upper_left.y,
-                w: size.x,
-                h: size.y,
+                w: size.width,
+                h: size.height,
             },
         )?;
 

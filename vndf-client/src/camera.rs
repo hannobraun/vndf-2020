@@ -28,10 +28,10 @@ impl Camera {
         let world_rect = self.world_size_on_screen(screen_size);
         let point_world = world::Pnt2::new(
             point_screen_origin_centered.x
-                * world_rect.x
+                * world_rect.width
                 / screen_size.width,
             point_screen_origin_centered.y
-                * world_rect.y
+                * world_rect.height
                 / screen_size.height,
         );
 
@@ -48,8 +48,8 @@ impl Camera {
 
         let world_rect = self.world_size_on_screen(screen_size);
         let point_screen_origin_centered = graphics::Pnt2::new(
-            point_camera.x * screen_size.width  / world_rect.x,
-            point_camera.y * screen_size.height / world_rect.y,
+            point_camera.x * screen_size.width  / world_rect.width,
+            point_camera.y * screen_size.height / world_rect.height,
         );
 
         point_screen_origin_centered + screen_size / 2.0
@@ -57,24 +57,24 @@ impl Camera {
 
     pub fn pixels_per_unit(&self, screen_size: graphics::Size) -> f32 {
         let world_size_on_screen = self.world_size_on_screen(screen_size);
-        screen_size.width / world_size_on_screen.x
+        screen_size.width / world_size_on_screen.width
     }
 
     pub fn world_size_on_screen(&self, screen_size: graphics::Size)
-        -> world::Vec2
+        -> world::Size
     {
         let aspect_ratio = screen_size.width / screen_size.height;
 
         let min_world_size_on_screen = 100_000_000.0; // m
 
         let default_world_size_on_screen = if aspect_ratio >= 1.0 {
-            world::Vec2::new(
+            world::Size::new(
                 min_world_size_on_screen * aspect_ratio,
                 min_world_size_on_screen,
             )
         }
         else {
-            world::Vec2::new(
+            world::Size::new(
                 min_world_size_on_screen,
                 min_world_size_on_screen / aspect_ratio,
             )
