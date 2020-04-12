@@ -26,19 +26,13 @@ impl Camera {
     )
         -> world::Pnt2
     {
-        let point_screen_origin_centered = point_screen - screen_size / 2.0;
-
-        let world_rect = self.world_size_on_screen(screen_size);
-        let point_world = world::Pnt2::new(
-            point_screen_origin_centered.x
-                * world_rect.width
-                / screen_size.width,
-            point_screen_origin_centered.y
-                * world_rect.height
-                / screen_size.height,
-        );
-
-        point_world + self.center.to_vector()
+        transforms::world_to_screen(self, screen_size)
+            .inverse()
+            // I see no reason why the transformation matrix should not always
+            // be invertible, so I _think_ this is fine and should never panic.
+            // I haven't thought about this deeply enough to be sure though.
+            .unwrap()
+            .transform_point(point_screen)
     }
 
     pub fn world_to_screen(&self,
