@@ -1,5 +1,8 @@
 use crate::{
-    graphics,
+    graphics::{
+        self,
+        transforms,
+    },
     shared::world,
 };
 
@@ -44,15 +47,9 @@ impl Camera {
     )
         -> graphics::Pnt2
     {
-        let point_camera = point_world - self.center.to_vector();
-
-        let world_rect = self.world_size_on_screen(screen_size);
-        let point_screen_origin_centered = graphics::Pnt2::new(
-            point_camera.x * screen_size.width  / world_rect.width,
-            point_camera.y * screen_size.height / world_rect.height,
-        );
-
-        point_screen_origin_centered + screen_size / 2.0
+        let pixels_per_meter = self.pixels_per_meter(screen_size);
+        transforms::world_to_screen(self, screen_size, pixels_per_meter)
+            .transform_point(point_world)
     }
 
     pub fn pixels_per_meter(&self, screen_size: graphics::Size) -> f32 {
