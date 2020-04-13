@@ -229,18 +229,15 @@ impl Graphics {
     )
         -> GameResult<bool>
     {
-        let craft  = get!(game.state.data.crafts, &missile.craft);
         let target = get!(game.state.data.targets, &missile.target);
-        let body   = get!(game.state.data.bodies, &craft.body);
-        let pos    = get!(game.state.data.positions, &body.pos);
 
-        let pos = game.state.camera.world_to_screen(
-            screen_size(context),
-            pos.0,
-        );
         let target = game.state.camera.world_to_screen(
             screen_size(context),
             target.value,
+        );
+
+        let element = get!(
+            UiElement::from_missile(missile, game, screen_size(context))
         );
 
         draw(
@@ -248,13 +245,13 @@ impl Graphics {
             &ScreenTransform,
             &self.square,
             DrawParam::screen()
-                .dest(pos)
-                .scale(graphics::Vec2::new(4.0, 4.0))
+                .dest(element.pos)
+                .scale(element.size)
         )?;
 
         let line = Mesh::new_line(
             context,
-            &[pos, target],
+            &[element.pos, target],
             1.5,
             [0.0, 1.0, 0.0, 1.0].into(),
         )?;
