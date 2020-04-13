@@ -229,13 +229,6 @@ impl Graphics {
     )
         -> GameResult<bool>
     {
-        let target = get!(game.state.data.targets, &missile.target);
-
-        let target = game.state.camera.world_to_screen(
-            screen_size(context),
-            target.value,
-        );
-
         let element = get!(
             UiElement::from_missile(missile, game, screen_size(context))
         );
@@ -248,6 +241,26 @@ impl Graphics {
                 .dest(element.pos)
                 .scale(element.size)
         )?;
+
+        self.draw_missile_target_line(context, missile, element, game)?;
+
+        Ok(true)
+    }
+
+    fn draw_missile_target_line(&self,
+        context: &mut Context,
+        missile: &Missile,
+        element: UiElement,
+        game:    &Game,
+    )
+        -> GameResult<bool>
+    {
+        let target = get!(game.state.data.targets, &missile.target);
+
+        let target = game.state.camera.world_to_screen(
+            screen_size(context),
+            target.value,
+        );
 
         let line = Mesh::new_line(
             context,
