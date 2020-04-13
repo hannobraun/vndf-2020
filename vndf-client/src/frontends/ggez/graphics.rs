@@ -146,8 +146,8 @@ impl Graphics {
         draw(
             context,
             &WorldTransform {
-                model:  planet.into(),
-                camera: &game.state.camera,
+                element: planet.into(),
+                camera:  &game.state.camera,
             },
             &self.circle,
             DrawParam::world()
