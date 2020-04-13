@@ -14,6 +14,7 @@ use zerocopy::AsBytes as _;
 
 use crate::graphics::{
     self,
+    elements::Transform,
     math::ClipUnit,
     transforms,
 };
@@ -277,9 +278,6 @@ impl Renderer {
         );
     }
 }
-
-
-pub type Transform = [[f32; 4]; 4];
 
 
 #[derive(Debug)]
