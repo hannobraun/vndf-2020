@@ -27,6 +27,7 @@ use crate::{
     shared::world::{
         self,
         behavior::{
+            crafts::Craft,
             explosions::Explosion,
             missiles::Missile,
             physics::Body,
@@ -182,6 +183,19 @@ impl Graphics {
                 .color([ship.color[0], ship.color[1], ship.color[2], 1.0]),
         )?;
 
+        self.draw_craft_info(context, craft, element, game)?;
+
+        Ok(true)
+    }
+
+    fn draw_craft_info(&self,
+        context: &mut Context,
+        craft:   &Craft,
+        element: UiElement,
+        game:    &Game,
+    )
+        -> GameResult<bool>
+    {
         let body  = get!(game.state.data.bodies, &craft.body);
         let pos_w = get!(game.state.data.positions, &body.pos);
         let vel   = get!(game.state.data.velocities, &body.vel);
