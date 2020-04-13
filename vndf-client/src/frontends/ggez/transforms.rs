@@ -31,12 +31,7 @@ impl Transform for ScreenTransform<'_> {
         let (width, height) = ggez::graphics::drawable_size(context);
         let screen_size = graphics::Size::new(width, height);
 
-        let transform = transforms::local_to_screen(self.element)
-            .post_transform(
-                &transforms::screen_to_homogeneous(screen_size)
-            )
-            .to_3d()
-            .to_row_arrays();
+        let transform = self.element.transform(screen_size);
 
         ggez::graphics::set_projection(context, transform);
         ggez::graphics::apply_transformations(context)?;

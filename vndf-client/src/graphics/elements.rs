@@ -80,6 +80,15 @@ impl UiElement {
             }
         )
     }
+
+    pub fn transform(&self, screen_size: graphics::Size) -> Transform {
+        transforms::local_to_screen(self)
+            .post_transform(
+                &transforms::screen_to_homogeneous(screen_size)
+            )
+            .to_3d()
+            .to_row_arrays()
+    }
 }
 
 impl Default for UiElement {
@@ -108,3 +117,6 @@ impl From<&Planet> for WorldElement {
         }
     }
 }
+
+
+pub type Transform = [[f32; 4]; 4];
