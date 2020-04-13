@@ -90,6 +90,16 @@ impl UiElement {
     }
 }
 
+impl Default for UiElement {
+    fn default() -> Self {
+        Self {
+            size:  graphics::Size::new(1.0, 1.0),
+            pos:   graphics::Pnt2::origin(),
+            angle: graphics::Angle::zero(),
+        }
+    }
+}
+
 
 pub struct WorldElement {
     pub size:  world::Size,
