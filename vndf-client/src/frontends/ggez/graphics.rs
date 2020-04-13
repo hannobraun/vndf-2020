@@ -196,6 +196,8 @@ impl Graphics {
     )
         -> GameResult<bool>
     {
+        let element = element.offset(graphics::Vec2::new(20.0, -20.0));
+
         let body  = get!(game.state.data.bodies, &craft.body);
         let pos_w = get!(game.state.data.positions, &body.pos);
         let vel   = get!(game.state.data.velocities, &body.vel);
@@ -214,7 +216,7 @@ impl Graphics {
                 )
             ),
             DrawParam::screen()
-                .dest(element.pos + graphics::Vec2::new(20.0, -20.0)),
+                .dest(element.pos),
         )?;
 
         Ok(true)
