@@ -7,6 +7,7 @@ use crate::{
     shared::world::{
         self,
         behavior::{
+            crafts::Craft,
             ships::Ship,
             planets::Planet,
         },
@@ -25,8 +26,25 @@ impl UiElement {
         -> Option<Self>
     {
         let craft = game.state.data.crafts.get(&ship.craft)?;
-        let body  = game.state.data.bodies.get(&craft.body)?;
-        let pos   = game.state.data.positions.get(&body.pos)?;
+
+        Self::from_craft(
+            craft,
+            graphics::Size::new(30.0, 30.0),
+            game,
+            screen_size,
+        )
+    }
+
+    pub fn from_craft(
+        craft:       &Craft,
+        size:        graphics::Size,
+        game:        &Game,
+        screen_size: graphics::Size,
+    )
+        -> Option<Self>
+    {
+        let body = game.state.data.bodies.get(&craft.body)?;
+        let pos  = game.state.data.positions.get(&body.pos)?;
 
         let pos = transforms::world_to_screen(&game.state.camera, screen_size)
             .transform_point(pos.0);
@@ -34,7 +52,7 @@ impl UiElement {
 
         Some(
             Self {
-                size: graphics::Size::new(30.0, 30.0),
+                size,
                 pos,
                 angle,
             }
