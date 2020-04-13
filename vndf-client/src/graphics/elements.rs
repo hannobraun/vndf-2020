@@ -40,7 +40,11 @@ impl UiElement {
         )
     }
 
-    pub fn from_ship(ship: &Ship, game: &Game, screen_size: graphics::Size)
+    pub fn from_ship(
+        ship:        &Ship,
+        game:        &Game,
+        screen_size: graphics::Size,
+    )
         -> Option<Self>
     {
         let craft = game.state.data.crafts.get(&ship.craft)?;
