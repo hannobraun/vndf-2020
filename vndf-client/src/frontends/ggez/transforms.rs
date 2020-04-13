@@ -5,7 +5,6 @@ use ggez::{
 };
 
 use crate::{
-    draw::Transform,
     game::camera::Camera,
     graphics::{
         self,
@@ -16,6 +15,8 @@ use crate::{
     },
     shared::world,
 };
+
+use super::draw::Transform;
 
 
 pub struct ScreenTransform<'r> {

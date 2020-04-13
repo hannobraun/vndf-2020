@@ -14,10 +14,6 @@ use toadster::{
 };
 
 use crate::{
-    draw::{
-        draw,
-        DrawParam,
-    },
     game::Game,
     graphics::{
         self,
@@ -41,9 +37,15 @@ use crate::{
     },
 };
 
-use super::transforms::{
-    ScreenTransform,
-    WorldTransform,
+use super::{
+    draw::{
+        draw,
+        DrawParam,
+    },
+    transforms::{
+        ScreenTransform,
+        WorldTransform,
+    },
 };
 
 

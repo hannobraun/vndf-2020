@@ -1,3 +1,4 @@
+mod draw;
 mod graphics;
 mod transforms;
 
