@@ -1,5 +1,5 @@
 use crate::{
-    camera::Camera,
+    game::camera::Camera,
     graphics::{
         self,
         elements::{

@@ -6,8 +6,10 @@ use time::{
 };
 
 use crate::{
-    camera::Camera,
-    game::input,
+    game::{
+        camera::Camera,
+        input,
+    },
     shared::{
         data,
         world::{

@@ -1,4 +1,3 @@
-mod camera;
 mod draw;
 mod game;
 mod frontends;

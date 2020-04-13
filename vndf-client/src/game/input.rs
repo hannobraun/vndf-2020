@@ -1,6 +1,6 @@
 use crate::{
-    camera::Camera,
     game::{
+        camera::Camera,
         config::{
             Config,
             Key,

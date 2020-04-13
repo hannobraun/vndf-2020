@@ -1,6 +1,8 @@
 use crate::{
-    camera::Camera,
-    game::Game,
+    game::{
+        Game,
+        camera::Camera,
+    },
     graphics::{
         self,
         transforms,

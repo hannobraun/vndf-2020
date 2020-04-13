@@ -5,8 +5,8 @@ use ggez::{
 };
 
 use crate::{
-    camera::Camera,
     draw::Transform,
+    game::camera::Camera,
     graphics::{
         self,
         elements::{
