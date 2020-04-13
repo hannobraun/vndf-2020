@@ -47,7 +47,10 @@ use super::transforms::{
 
 macro_rules! get {
     ($store:expr, $handle:expr) => {
-        match $store.get($handle) {
+        get!($store.get($handle))
+    };
+    ($opt:expr) => {
+        match $opt {
             Some(value) => value,
             None        => return Ok(false),
         }
