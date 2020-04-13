@@ -8,7 +8,7 @@ use crate::{
         },
         math::{
             ClipUnit,
-            ModelUnit,
+            LocalUnit,
             Pixel,
         },
     },
@@ -20,14 +20,14 @@ pub type Transform<Src, Dest> = euclid::Transform2D<f32, Src, Dest>;
 
 
 /// Returns what is commonly known as the model matrix
-pub fn local_to_world(element: &WorldElement) -> Transform<ModelUnit, Meter> {
+pub fn local_to_world(element: &WorldElement) -> Transform<LocalUnit, Meter> {
     Transform::identity()
         .post_scale(element.size.width, element.size.height)
         .post_rotate(element.angle)
         .post_translate(element.pos.to_vector())
 }
 
-pub fn local_to_screen(element: &UiElement) -> Transform<ModelUnit, Pixel> {
+pub fn local_to_screen(element: &UiElement) -> Transform<LocalUnit, Pixel> {
     Transform::identity()
         .post_scale(element.size.width, element.size.height)
         .post_rotate(element.angle)
