@@ -9,16 +9,21 @@ use crate::{
     draw::Transform,
     graphics::{
         self,
-        elements::WorldElement,
+        elements::{
+            UiElement,
+            WorldElement,
+        },
         transforms,
     },
     shared::world,
 };
 
 
-pub struct ScreenTransform;
+pub struct ScreenTransform<'r> {
+    pub element: &'r UiElement,
+}
 
-impl Transform for ScreenTransform {
+impl Transform for ScreenTransform<'_> {
     type Point  = graphics::Pnt2;
     type Vector = graphics::Vec2;
 
@@ -26,7 +31,10 @@ impl Transform for ScreenTransform {
         let (width, height) = ggez::graphics::drawable_size(context);
         let screen_size = graphics::Size::new(width, height);
 
-        let transform = transforms::screen_to_homogeneous(screen_size)
+        let transform = transforms::local_to_screen(self.element)
+            .post_transform(
+                &transforms::screen_to_homogeneous(screen_size)
+            )
             .to_3d()
             .to_row_arrays();
 

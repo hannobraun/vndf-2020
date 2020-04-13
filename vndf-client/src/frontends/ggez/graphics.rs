@@ -174,12 +174,9 @@ impl Graphics {
 
         draw(
             context,
-            &ScreenTransform,
+            &ScreenTransform { element: &element },
             &self.ship,
             DrawParam::screen()
-                .dest(element.pos)
-                .rotation(element.angle.radians)
-                .scale(element.size)
                 .color([ship.color[0], ship.color[1], ship.color[2], 1.0]),
         )?;
 
@@ -210,7 +207,7 @@ impl Graphics {
 
         draw(
             context,
-            &ScreenTransform,
+            &ScreenTransform { element: &element },
             &Text::new(
                 format!(
                     "Pos: {:.0}/{:.0}\nVel: {:.0}/{:.0} ({:.0})",
@@ -218,8 +215,7 @@ impl Graphics {
                     vel_km.x, vel_km.y, vel_km.length(),
                 )
             ),
-            DrawParam::screen()
-                .dest(element.pos),
+            DrawParam::screen(),
         )?;
 
         Ok(true)
@@ -238,11 +234,9 @@ impl Graphics {
 
         draw(
             context,
-            &ScreenTransform,
+            &ScreenTransform { element: &element },
             &self.square,
-            DrawParam::screen()
-                .dest(element.pos)
-                .scale(element.size)
+            DrawParam::screen(),
         )?;
 
         self.draw_missile_target_line(context, missile, element, game)?;
@@ -274,7 +268,7 @@ impl Graphics {
 
         draw(
             context,
-            &ScreenTransform,
+            &ScreenTransform { element: &UiElement::default() },
             &line,
             DrawParam::screen(),
         )?;
@@ -327,7 +321,7 @@ impl Graphics {
         // Draw orbit
         draw(
             context,
-            &ScreenTransform,
+            &ScreenTransform { element: &UiElement::default() },
             &ellipse,
             DrawParam::screen()
                 .dest(pos_s)
@@ -350,7 +344,7 @@ impl Graphics {
 
             draw(
                 context,
-                &ScreenTransform,
+                &ScreenTransform { element: &UiElement::default() },
                 &Text::new(
                     format!(
                         "Periapsis:\nfrom center: {:.0} km\nabove surface:{:.0} km",
@@ -368,7 +362,7 @@ impl Graphics {
             )?;
             draw(
                 context,
-                &ScreenTransform,
+                &ScreenTransform { element: &UiElement::default() },
                 &Text::new(
                     format!(
                         "Apoapsis:\nfrom center: {:.0} km\nabove surface:{:.0} km",
@@ -408,7 +402,7 @@ impl Graphics {
 
         draw(
             context,
-            &ScreenTransform,
+            &ScreenTransform { element: &UiElement::default() },
             &self.circle,
             DrawParam::screen()
                 .dest(pos)
@@ -444,7 +438,7 @@ End game - {}",
 
         draw(
             context,
-            &ScreenTransform,
+            &ScreenTransform { element: &UiElement::default() },
             &Text::new(instructions),
             DrawParam::screen()
                 .dest(graphics::Pnt2::new(20.0, 20.0))
@@ -452,7 +446,7 @@ End game - {}",
 
         draw(
             context,
-            &ScreenTransform,
+            &ScreenTransform { element: &UiElement::default() },
             &Text::new(format!("Zoom: {:.3}x", game.input.zoom)),
             DrawParam::screen()
                 .dest(graphics::Pnt2::new(20.0, 150.0)),
@@ -470,7 +464,7 @@ End game - {}",
 
             draw(
                 context,
-                &ScreenTransform,
+                &ScreenTransform { element: &UiElement::default() },
                 &Text::new(frame_time),
                 DrawParam::screen()
                     .dest(graphics::Pnt2::new(20.0, 180.0))
@@ -516,7 +510,7 @@ Removals per s: {}",
 
                 draw(
                     context,
-                    &ScreenTransform,
+                    &ScreenTransform { element: &UiElement::default() },
                     &Text::new(diagnostics),
                     DrawParam::screen()
                         .dest(graphics::Pnt2::new(20.0, 220.0))
@@ -532,7 +526,7 @@ Removals per s: {}",
 
             draw(
                 context,
-                &ScreenTransform,
+                &ScreenTransform { element: &UiElement::default() },
                 &Text::new(input_events),
                 DrawParam::screen()
                     .dest(graphics::Pnt2::new(20.0, 520.0))
@@ -549,7 +543,7 @@ Removals per s: {}",
 
         draw(
             context,
-            &ScreenTransform,
+            &ScreenTransform { element: &UiElement::default() },
             &self.pointer,
             DrawParam::screen()
                 .dest(game.input.pointer_screen)
@@ -589,7 +583,7 @@ Heavy Missiles: {}",
 
         draw(
             context,
-            &ScreenTransform,
+            &ScreenTransform { element: &UiElement::default() },
             &Text::new(status),
             DrawParam::screen()
                 .dest(graphics::Pnt2::new(width - 200.0, 20.0))
