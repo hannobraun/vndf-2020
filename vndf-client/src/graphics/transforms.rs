@@ -2,7 +2,7 @@ use crate::{
     camera::Camera,
     graphics::{
         self,
-        WorldElement,
+        elements::WorldElement,
         math::{
             ClipUnit,
             ModelUnit,

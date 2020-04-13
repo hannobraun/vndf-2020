@@ -9,7 +9,7 @@ use crate::{
     draw::Transform,
     graphics::{
         self,
-        WorldElement,
+        elements::WorldElement,
         transforms,
     },
     shared::world,

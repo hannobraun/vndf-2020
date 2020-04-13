@@ -21,7 +21,7 @@ use crate::{
     game::Game,
     graphics::{
         self,
-        UiElement,
+        elements::UiElement,
         vertices,
     },
     shared::world::{

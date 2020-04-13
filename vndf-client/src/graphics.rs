@@ -4,17 +4,11 @@ pub mod transforms;
 pub mod vertices;
 
 
-pub use self::{
-    elements::{
-        UiElement,
-        WorldElement,
-    },
-    math::{
-        Angle,
-        Pnt2,
-        Size,
-        Vec2,
-    },
+pub use self::math::{
+    Angle,
+    Pnt2,
+    Size,
+    Vec2,
 };
 
 
