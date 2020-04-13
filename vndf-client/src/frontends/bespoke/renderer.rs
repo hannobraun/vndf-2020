@@ -19,6 +19,7 @@ use crate::graphics::{
 };
 
 use super::{
+    drawable::Drawable,
     meshes::{
         self,
         Meshes,
@@ -32,14 +33,10 @@ pub struct Renderer {
     pub surface:               wgpu::Surface,
     pub device:                wgpu::Device,
     pub queue:                 wgpu::Queue,
-    pub uniform_buffer:        wgpu::Buffer,
-    pub vertex_buffer:         wgpu::Buffer,
-    pub index_buffer:          wgpu::Buffer,
-    pub bind_group:            wgpu::BindGroup,
-    pub render_pipeline:       wgpu::RenderPipeline,
     pub swap_chain_descriptor: wgpu::SwapChainDescriptor,
     pub swap_chain:            wgpu::SwapChain,
 
+    ship:   Drawable,
     meshes: Meshes,
 }
 
@@ -206,14 +203,16 @@ impl Renderer {
                 surface,
                 device,
                 queue,
-                uniform_buffer,
-                vertex_buffer,
-                index_buffer,
-                render_pipeline,
-                bind_group,
                 swap_chain_descriptor,
                 swap_chain,
 
+                ship: Drawable {
+                    uniform_buffer,
+                    vertex_buffer,
+                    index_buffer,
+                    render_pipeline,
+                    bind_group,
+                },
                 meshes,
             }
         )
@@ -267,10 +266,10 @@ impl Renderer {
                 depth_stencil_attachment: None,
             },
         );
-        render_pass.set_pipeline(&self.render_pipeline);
-        render_pass.set_bind_group(0, &self.bind_group, &[]);
-        render_pass.set_vertex_buffer(0, &self.vertex_buffer, 0, 0);
-        render_pass.set_index_buffer(&self.index_buffer, 0, 0);
+        render_pass.set_pipeline(&self.ship.render_pipeline);
+        render_pass.set_bind_group(0, &self.ship.bind_group, &[]);
+        render_pass.set_vertex_buffer(0, &self.ship.vertex_buffer, 0, 0);
+        render_pass.set_index_buffer(&self.ship.index_buffer, 0, 0);
         render_pass.draw_indexed(
             0 .. self.meshes.ship.indices.len() as u32,
             0,
