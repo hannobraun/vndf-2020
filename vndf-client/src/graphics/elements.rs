@@ -24,9 +24,9 @@ pub struct UiElement {
 
 impl UiElement {
     pub fn from_missile(
-        missile:     &Missile,
-        game:        &Game,
-        screen_size: graphics::Size,
+        missile: &Missile,
+        game:    &Game,
+        screen:  graphics::Size,
     )
         -> Option<Self>
     {
@@ -36,14 +36,14 @@ impl UiElement {
             craft,
             graphics::Size::new(4.0, 4.0),
             game,
-            screen_size,
+            screen,
         )
     }
 
     pub fn from_ship(
-        ship:        &Ship,
-        game:        &Game,
-        screen_size: graphics::Size,
+        ship:   &Ship,
+        game:   &Game,
+        screen: graphics::Size,
     )
         -> Option<Self>
     {
@@ -53,22 +53,22 @@ impl UiElement {
             craft,
             graphics::Size::new(30.0, 30.0),
             game,
-            screen_size,
+            screen,
         )
     }
 
     pub fn from_craft(
-        craft:       &Craft,
-        size:        graphics::Size,
-        game:        &Game,
-        screen_size: graphics::Size,
+        craft:  &Craft,
+        size:   graphics::Size,
+        game:   &Game,
+        screen: graphics::Size,
     )
         -> Option<Self>
     {
         let body = game.state.data.bodies.get(&craft.body)?;
         let pos  = game.state.data.positions.get(&body.pos)?;
 
-        let pos = transforms::world_to_screen(&game.state.camera, screen_size)
+        let pos = transforms::world_to_screen(&game.state.camera, screen)
             .transform_point(pos.0);
         let angle = body.dir.angle_from_x_axis();
 
