@@ -163,16 +163,13 @@ impl Graphics {
     fn draw_ship(&self, context: &mut Context, ship: &Ship, game: &Game)
         -> GameResult<bool>
     {
+        let craft = get!(game.state.data.crafts, &ship.craft);
+
+        self.draw_orbit(context, &craft.body, ship.color, game)?;
+
         let element = get!(
             UiElement::from_ship(ship, game, screen_size(context))
         );
-
-        let craft = get!(game.state.data.crafts, &ship.craft);
-        let body  = get!(game.state.data.bodies, &craft.body);
-        let pos_w = get!(game.state.data.positions, &body.pos);
-        let vel   = get!(game.state.data.velocities, &body.vel);
-
-        self.draw_orbit(context, &craft.body, ship.color, game)?;
 
         draw(
             context,
@@ -184,6 +181,10 @@ impl Graphics {
                 .scale(element.size)
                 .color([ship.color[0], ship.color[1], ship.color[2], 1.0]),
         )?;
+
+        let body  = get!(game.state.data.bodies, &craft.body);
+        let pos_w = get!(game.state.data.positions, &body.pos);
+        let vel   = get!(game.state.data.velocities, &body.vel);
 
         let pos_km = pos_w.0 / 1000.0;
         let vel_km = vel.0 / 1000.0;
