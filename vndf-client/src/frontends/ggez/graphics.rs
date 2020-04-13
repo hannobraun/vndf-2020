@@ -196,7 +196,10 @@ impl Graphics {
     )
         -> GameResult<bool>
     {
-        let element = element.offset(graphics::Vec2::new(20.0, -20.0));
+        let element = UiElement {
+            pos: element.pos + graphics::Vec2::new(20.0, -20.0),
+            .. UiElement::default()
+        };
 
         let body  = get!(game.state.data.bodies, &craft.body);
         let pos_w = get!(game.state.data.positions, &body.pos);

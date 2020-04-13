@@ -80,14 +80,6 @@ impl UiElement {
             }
         )
     }
-
-    pub fn offset(self, offset: graphics::Vec2) -> Self {
-        Self {
-            size:  self.size,
-            pos:   self.pos + offset,
-            angle: self.angle,
-        }
-    }
 }
 
 impl Default for UiElement {
