@@ -151,7 +151,7 @@ impl Graphics {
         draw(
             context,
             &WorldTransform {
-                element: planet.into(),
+                element: &planet.into(),
                 camera:  &game.state.camera,
             },
             &self.circle,

@@ -39,7 +39,7 @@ impl Transform for ScreenTransform {
 
 
 pub struct WorldTransform<'r> {
-    pub element: WorldElement,
+    pub element: &'r WorldElement,
     pub camera:  &'r Camera,
 }
 
@@ -52,7 +52,7 @@ impl Transform for WorldTransform<'_> {
             ggez::graphics::drawable_size(context);
         let screen_size = graphics::Size::new(screen_width, screen_height);
 
-        let transform = transforms::local_to_world(&self.element)
+        let transform = transforms::local_to_world(self.element)
             .post_transform(
                 &transforms::world_to_screen(self.camera, screen_size)
             )
