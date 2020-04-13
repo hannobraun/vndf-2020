@@ -9,7 +9,7 @@ use crate::{
     draw::Transform,
     graphics::{
         self,
-        Model,
+        WorldElement,
         transforms,
     },
     shared::world,
@@ -39,7 +39,7 @@ impl Transform for ScreenTransform {
 
 
 pub struct WorldTransform<'r> {
-    pub model:  Model,
+    pub model:  WorldElement,
     pub camera: &'r Camera,
 }
 

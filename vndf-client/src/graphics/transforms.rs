@@ -2,7 +2,7 @@ use crate::{
     camera::Camera,
     graphics::{
         self,
-        Model,
+        WorldElement,
         math::{
             ClipUnit,
             ModelUnit,
@@ -17,7 +17,7 @@ pub type Transform<Src, Dest> = euclid::Transform2D<f32, Src, Dest>;
 
 
 /// Returns what is commonly known as the model matrix
-pub fn local_to_world(model: &Model) -> Transform<ModelUnit, Meter> {
+pub fn local_to_world(model: &WorldElement) -> Transform<ModelUnit, Meter> {
     Transform::identity()
         .post_scale(model.size.width, model.size.height)
         .post_rotate(model.angle)

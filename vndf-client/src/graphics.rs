@@ -5,7 +5,7 @@ pub mod vertices;
 
 
 pub use self::{
-    elements::Model,
+    elements::WorldElement,
     math::{
         Pnt2,
         Size,
