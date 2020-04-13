@@ -21,6 +21,7 @@ use crate::{
     game::Game,
     graphics::{
         self,
+        UiElement,
         vertices,
     },
     shared::world::{
@@ -162,6 +163,10 @@ impl Graphics {
     fn draw_ship(&self, context: &mut Context, ship: &Ship, game: &Game)
         -> GameResult<bool>
     {
+        let element = get!(
+            UiElement::from_ship(ship, game, screen_size(context))
+        );
+
         let craft = get!(game.state.data.crafts, &ship.craft);
         let body  = get!(game.state.data.bodies, &craft.body);
         let pos_w = get!(game.state.data.positions, &body.pos);
@@ -169,23 +174,14 @@ impl Graphics {
 
         self.draw_orbit(context, &craft.body, ship.color, game)?;
 
-        let pos_s = game.state.camera.world_to_screen(
-            screen_size(context),
-            pos_w.0,
-        );
-
         draw(
             context,
             &ScreenTransform,
             &self.ship,
             DrawParam::screen()
-                .dest(pos_s)
-                .rotation(
-                    graphics::Vec2::new(1.0, 0.0)
-                        .angle_to(body.dir.cast_unit())
-                        .radians
-                )
-                .scale(graphics::Vec2::new(30.0, 30.0))
+                .dest(element.pos)
+                .rotation(element.angle.radians)
+                .scale(element.size)
                 .color([ship.color[0], ship.color[1], ship.color[2], 1.0]),
         )?;
 
@@ -203,7 +199,7 @@ impl Graphics {
                 )
             ),
             DrawParam::screen()
-                .dest(pos_s + graphics::Vec2::new(20.0, -20.0)),
+                .dest(element.pos + graphics::Vec2::new(20.0, -20.0)),
         )?;
 
         Ok(true)

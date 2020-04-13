@@ -5,8 +5,12 @@ pub mod vertices;
 
 
 pub use self::{
-    elements::WorldElement,
+    elements::{
+        UiElement,
+        WorldElement,
+    },
     math::{
+        Angle,
         Pnt2,
         Size,
         Vec2,
