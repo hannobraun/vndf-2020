@@ -1,4 +1,5 @@
 use crate::{
+    camera::Camera,
     game::Game,
     graphics::{
         self,
@@ -106,6 +107,22 @@ pub struct WorldElement {
     pub size:  world::Size,
     pub pos:   world::Pnt2,
     pub angle: world::Angle,
+}
+
+impl WorldElement {
+    pub fn transform(&self, camera: &Camera, screen_size: graphics::Size)
+        -> Transform
+    {
+        transforms::local_to_world(self)
+            .post_transform(
+                &transforms::world_to_screen(camera, screen_size)
+            )
+            .post_transform(
+                &transforms::screen_to_homogeneous(screen_size)
+            )
+            .to_3d()
+            .to_row_arrays()
+    }
 }
 
 impl From<&Planet> for WorldElement {

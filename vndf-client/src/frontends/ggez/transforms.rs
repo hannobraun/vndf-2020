@@ -13,7 +13,6 @@ use crate::{
             UiElement,
             WorldElement,
         },
-        transforms,
     },
     shared::world,
 };
@@ -55,15 +54,7 @@ impl Transform for WorldTransform<'_> {
             ggez::graphics::drawable_size(context);
         let screen_size = graphics::Size::new(screen_width, screen_height);
 
-        let transform = transforms::local_to_world(self.element)
-            .post_transform(
-                &transforms::world_to_screen(self.camera, screen_size)
-            )
-            .post_transform(
-                &transforms::screen_to_homogeneous(screen_size)
-            )
-            .to_3d()
-            .to_row_arrays();
+        let transform = self.element.transform(self.camera, screen_size);
 
         ggez::graphics::set_projection(context, transform);
         ggez::graphics::apply_transformations(context)?;
