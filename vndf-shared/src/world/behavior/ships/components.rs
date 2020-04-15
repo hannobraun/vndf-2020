@@ -1,5 +1,4 @@
 use log::warn;
-use rinnsal::EventSink;
 use serde::{
     Deserialize,
     Serialize,
@@ -17,19 +16,9 @@ use crate::{
     },
     world::{
         crafts::Craft,
-        math::{
-            Angle,
-            Pnt2,
-        },
-        missiles::{
-            MissileEntity,
-            MissileLaunch,
-        },
+        math::Angle,
         physics::Body,
-        players::{
-            Player,
-            PlayerId,
-        },
+        players::Player,
     },
 };
 
@@ -67,22 +56,15 @@ impl Ship {
     }
 
     pub fn apply_input(&mut self,
-        bodies:         &store::Strong<Body>,
-        crafts:         &mut store::Strong<Craft>,
-        missile_launch: &mut EventSink<MissileLaunch>,
-        player:         &Player,
-        action:         Action,
+        crafts: &mut store::Strong<Craft>,
+        player: &Player,
+        action: Action,
     )
         -> Option<()>
     {
         let craft = crafts.get_mut(&self.craft)
             .or_else(|| {
                 warn!("Craft not found: {:?}", self.craft);
-                None
-            })?;
-        let body = bodies.get(&craft.body)
-            .or_else(|| {
-                warn!("Body not found: {:?}", craft.body);
                 None
             })?;
 
@@ -97,31 +79,9 @@ impl Ship {
             action::Kind::Thrust(thrust) => {
                 craft.engine_on = thrust;
             }
-            action::Kind::LaunchMissile { target } => {
-                let missile = self.launch_missile(
-                    craft.owner,
-                    &body,
-                    target,
-                );
-                if let Some(missile) = missile {
-                    missile_launch.push(MissileLaunch { missile });
-                }
-            }
         }
 
         Some(())
-    }
-
-    pub fn launch_missile(&mut self, owner: PlayerId, body: &Body, target: Pnt2)
-        -> Option<MissileEntity>
-    {
-        if self.missiles > 0 {
-            self.missiles -= 1;
-            Some(MissileEntity { owner, origin: body.clone(), target })
-        }
-        else {
-            None
-        }
     }
 
     pub fn update(&self,

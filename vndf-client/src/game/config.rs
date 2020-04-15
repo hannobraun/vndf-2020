@@ -39,7 +39,6 @@ pub struct Input {
     pub right:      Key,
     pub thrust_on:  Key,
     pub thrust_off: Key,
-    pub launch:     Key,
     pub quit:       Key,
 }
 
@@ -90,7 +89,6 @@ impl Default for Config {
                 right:      Key::Keyboard(VirtualKeyCode::D),
                 thrust_on:  Key::Keyboard(VirtualKeyCode::W),
                 thrust_off: Key::Keyboard(VirtualKeyCode::S),
-                launch:     Key::Mouse(MouseButton::Left),
                 quit:       Key::Keyboard(VirtualKeyCode::Escape),
             },
             color: Color {

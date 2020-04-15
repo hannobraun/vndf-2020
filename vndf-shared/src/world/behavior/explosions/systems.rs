@@ -6,15 +6,12 @@ use toadster::{
     store,
 };
 
-use crate::{
-    data,
-    world::{
-        health::Health,
-        physics::{
-            Body,
-            Position,
-            Velocity,
-        },
+use crate::world::{
+    health::Health,
+    physics::{
+        Body,
+        Position,
+        Velocity,
     },
 };
 
@@ -36,23 +33,7 @@ pub fn explode_entity(
     let health = healths.get(handle)?;
     let body   = bodies.get(&health.body)?;
 
-    let mut is_missile = false;
-    if let data::client::Handle::Missile(_) = health.parent_ref()? {
-        is_missile = true;
-    }
-
-    let mut is_ship = false;
-    if let data::client::Handle::Ship(_) = health.parent_ref()? {
-        is_ship = true;
-    }
-
-    let mut strength = 0.0;
-    if is_missile {
-        strength += 3.0;
-    }
-    if is_ship {
-        strength += 6.0;
-    }
+    let strength = 6.0;
 
     Some(ExplosionEntity { exploding: body.clone(), strength })
 }

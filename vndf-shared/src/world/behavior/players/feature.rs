@@ -6,10 +6,7 @@ use std::{
     net::SocketAddr,
 };
 
-use rinnsal::{
-    EventBuf,
-    EventSink,
-};
+use rinnsal::EventBuf;
 use serde::{
     Deserialize,
     Serialize,
@@ -28,7 +25,6 @@ use crate::world::{
         Fuel,
     },
     health::Health,
-    missiles::MissileLaunch,
     physics::{
         Body,
         Position,
@@ -116,21 +112,17 @@ impl Feature {
     }
 
     pub fn on_player_input(&mut self,
-        event:          &PlayerInput,
-        bodies:         &store::Strong<Body>,
-        crafts:         &mut store::Strong<Craft>,
-        players:        &store::Strong<Player>,
-        ships:          &mut store::Strong<Ship>,
-        missile_launch: &mut EventSink<MissileLaunch>,
+        event:   &PlayerInput,
+        crafts:  &mut store::Strong<Craft>,
+        players: &store::Strong<Player>,
+        ships:   &mut store::Strong<Ship>,
     ) {
         handle_input(
             event.addr,
             event.action,
-            bodies,
             crafts,
             players,
             ships,
-            missile_launch,
             &mut self.input_handled.sink(),
             &mut self.players_by_address,
         );

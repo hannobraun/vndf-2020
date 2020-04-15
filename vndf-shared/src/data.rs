@@ -7,11 +7,6 @@ use crate::world::behavior::{
     },
     explosions::Explosion,
     health::Health,
-    missiles::{
-        Guidance,
-        Missile,
-        Target,
-    },
     physics::{
         Body,
         Position,
@@ -259,14 +254,11 @@ components!(
         crafts,     Craft;
         explosions, Explosion;
         fuels,      Fuel;
-        guidances,  Guidance;
         healths,    Health;
-        missiles,   Missile;
         planets,    Planet;
         players,    Player;
         positions,  Position;
         ships,      Ship;
-        targets,    Target;
         velocities, Velocity;
     }
 );
@@ -278,11 +270,9 @@ components!(
         explosions, Explosion;
         fuels,      Fuel;
         healths,    Health;
-        missiles,   Missile;
         planets,    Planet;
         positions,  Position;
         ships,      Ship;
-        targets,    Target;
         velocities, Velocity;
     }
 );

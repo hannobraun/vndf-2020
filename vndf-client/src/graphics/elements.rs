@@ -11,7 +11,6 @@ use crate::{
         self,
         behavior::{
             crafts::Craft,
-            missiles::Missile,
             ships::Ship,
             planets::Planet,
         },
@@ -26,23 +25,6 @@ pub struct UiElement {
 }
 
 impl UiElement {
-    pub fn from_missile(
-        missile: &Missile,
-        game:    &Game,
-        screen:  graphics::Size,
-    )
-        -> Option<Self>
-    {
-        let craft = game.state.data.crafts.get(&missile.craft)?;
-
-        Self::from_craft(
-            craft,
-            graphics::Size::new(4.0, 4.0),
-            game,
-            screen,
-        )
-    }
-
     pub fn from_ship(
         ship:   &Ship,
         game:   &Game,

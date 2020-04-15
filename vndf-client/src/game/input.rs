@@ -65,13 +65,6 @@ impl Handler {
                     k if k == self.config.input.thrust_off => {
                         events.push(action::Kind::Thrust(false))
                     }
-                    k if k == self.config.input.launch => {
-                        events.push(
-                            action::Kind::LaunchMissile {
-                                target: self.pointer_world
-                            }
-                        )
-                    }
                     _ => (),
                 }
             }

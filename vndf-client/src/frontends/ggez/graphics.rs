@@ -25,7 +25,6 @@ use crate::{
         behavior::{
             crafts::Craft,
             explosions::Explosion,
-            missiles::Missile,
             physics::Body,
             orbits::Orbit,
             planets::{
@@ -65,7 +64,6 @@ macro_rules! get {
 pub struct Graphics {
     circle:   Mesh,
     ship:     Mesh,
-    square:   Mesh,
     pointer:  Mesh,
 }
 
@@ -85,12 +83,6 @@ impl Graphics {
             vertices::SHIP,
             [1.0, 1.0, 1.0, 1.0].into(),
         )?;
-        let square = Mesh::new_polygon(
-            context,
-            DrawMode::fill(),
-            vertices::SQUARE,
-            [1.0, 1.0, 1.0, 1.0].into(),
-        )?;
         let pointer = Mesh::new_polygon(
             context,
             DrawMode::stroke(0.2),
@@ -102,7 +94,6 @@ impl Graphics {
             Graphics {
                 circle,
                 ship,
-                square,
                 pointer,
             }
         )
@@ -136,9 +127,6 @@ impl Graphics {
         }
         for ship in game.state.data.ships.values() {
             self.draw_ship(context, ship, game)?;
-        }
-        for missile in game.state.data.missiles.values() {
-            self.draw_missile(context, missile, game)?;
         }
         for explosion in game.state.data.explosions.values() {
             self.draw_explosion(context, explosion, game)?;
@@ -217,61 +205,6 @@ impl Graphics {
                     vel_km.x, vel_km.y, vel_km.length(),
                 )
             ),
-            DrawParam::screen(),
-        )?;
-
-        Ok(true)
-    }
-
-    fn draw_missile(&self,
-        context: &mut Context,
-        missile: &Missile,
-        game:    &Game,
-    )
-        -> GameResult<bool>
-    {
-        let element = get!(
-            UiElement::from_missile(missile, game, screen_size(context))
-        );
-
-        draw(
-            context,
-            &ScreenTransform { element: &element },
-            &self.square,
-            DrawParam::screen(),
-        )?;
-
-        self.draw_missile_target_line(context, missile, element, game)?;
-
-        Ok(true)
-    }
-
-    fn draw_missile_target_line(&self,
-        context: &mut Context,
-        missile: &Missile,
-        element: UiElement,
-        game:    &Game,
-    )
-        -> GameResult<bool>
-    {
-        let target = get!(game.state.data.targets, &missile.target);
-
-        let target = game.state.camera.world_to_screen(
-            screen_size(context),
-            target.value,
-        );
-
-        let line = Mesh::new_line(
-            context,
-            &[element.pos, target],
-            1.5,
-            [0.0, 1.0, 0.0, 1.0].into(),
-        )?;
-
-        draw(
-            context,
-            &ScreenTransform { element: &UiElement::default() },
-            &line,
             DrawParam::screen(),
         )?;
 
@@ -427,14 +360,12 @@ Turn left - {}
 Turn right - {}
 Thrust On - {}
 Thrust Off - {}
-Shoot - {} (aim with mouse)
 Zoom Camera - Mouse Wheel
 End game - {}",
             game.input.config.input.left,
             game.input.config.input.right,
             game.input.config.input.thrust_on,
             game.input.config.input.thrust_off,
-            game.input.config.input.launch,
             game.input.config.input.quit,
         );
 
@@ -481,14 +412,11 @@ Bodies: {}/{}
 Crafts: {}/{}
 Explosions: {}/{}
 Fuels: {}/{}
-Guidances: {}/-
 Healths: {}/{}
 Planets: {}/{}
 Players: {}/-
-Missiles: {}/{}
 Positions: {}/{}
 Ships: {}/{}
-Targets: {}/{}
 Velocities: {}/{}
 ---
 Updates per s: {}
@@ -497,14 +425,11 @@ Removals per s: {}",
                     diagnostics.crafts, game.state.data.crafts.len(),
                     diagnostics.explosions, game.state.data.explosions.len(),
                     diagnostics.fuels, game.state.data.fuels.len(),
-                    diagnostics.guidances,
                     diagnostics.healths, game.state.data.healths.len(),
                     diagnostics.planets, game.state.data.planets.len(),
                     diagnostics.players,
-                    diagnostics.missiles, game.state.data.missiles.len(),
                     diagnostics.positions, game.state.data.positions.len(),
                     diagnostics.ships, game.state.data.ships.len(),
-                    diagnostics.targets, game.state.data.targets.len(),
                     diagnostics.velocities, game.state.data.velocities.len(),
                     game.state.statistics.updates.len(),
                     game.state.statistics.removals.len(),

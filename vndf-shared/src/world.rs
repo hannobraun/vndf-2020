@@ -27,7 +27,6 @@ use self::behavior::{
     crafts,
     explosions,
     health,
-    missiles,
     physics,
     planets::{
         self,
@@ -58,7 +57,6 @@ pub struct State {
     crafts:     crafts::Feature,
     explosions: explosions::Feature,
     health:     health::Feature,
-    missiles:   missiles::Feature,
     physics:    physics::Feature,
     players:    players::Feature,
     ships:      ships::Feature,
@@ -81,7 +79,6 @@ impl State {
             crafts:     crafts::Feature::new(),
             explosions: explosions::Feature::new(),
             health:     health::Feature::new(),
-            missiles:   missiles::Feature::new(),
             physics:    physics::Feature::new(),
             players:    players::Feature::new(),
             ships:      ships::Feature::new(),
@@ -136,17 +133,6 @@ impl State {
             self.health.on_update(
                 &self.data.healths,
             );
-            self.missiles.on_update(
-                &event,
-                &mut self.data.bodies,
-                &self.data.crafts,
-                &self.data.fuels,
-                &mut self.data.guidances,
-                &mut self.data.healths,
-                &self.data.positions,
-                &mut self.data.targets,
-                &self.data.velocities,
-            );
             self.ships.on_update(
                 &mut self.data.bodies,
                 &self.data.crafts,
@@ -182,27 +168,9 @@ impl State {
         while let Some(event) = self.players.player_input.source().next() {
             self.players.on_player_input(
                 &event,
-                &self.data.bodies,
                 &mut self.data.crafts,
                 &self.data.players,
                 &mut self.data.ships,
-                &mut self.missiles.missile_launch.sink(),
-            );
-        }
-        self.apply_changes();
-        while let Some(event) = self.missiles.missile_launch.source().next() {
-            self.missiles.on_missile_launch(
-                event,
-                &mut self.data.bodies,
-                &mut self.data.crafts,
-                &mut self.data.fuels,
-                &mut self.data.guidances,
-                &mut self.data.healths,
-                &mut self.data.missiles,
-                &mut self.data.positions,
-                &mut self.data.targets,
-                &mut self.data.velocities,
-                &mut self.health.index,
             );
         }
         self.apply_changes();
@@ -241,9 +209,6 @@ impl State {
         self.data.fuels.apply_changes();
         self.data.explosions.apply_changes();
         self.data.healths.apply_changes();
-        self.data.guidances.apply_changes();
-        self.data.missiles.apply_changes();
-        self.data.targets.apply_changes();
         self.data.bodies.apply_changes();
         self.data.positions.apply_changes();
         self.data.velocities.apply_changes();
@@ -279,11 +244,6 @@ impl State {
             .map(|(handle, c)|
                 data::client::Component::Health(handle.into(), c.to_weak())
             );
-        let missiles = self.data.missiles
-            .iter()
-            .map(|(handle, c)|
-                data::client::Component::Missile(handle.into(), c.to_weak())
-            );
         let planets = self.data.planets
             .iter()
             .map(|(handle, c)|
@@ -299,11 +259,6 @@ impl State {
             .map(|(handle, c)|
                 data::client::Component::Ship(handle.into(), c.to_weak())
             );
-        let targets = self.data.targets
-            .iter()
-            .map(|(handle, c)|
-                data::client::Component::Target(handle.into(), c.to_weak())
-            );
         let velocities = self.data.velocities
             .iter()
             .map(|(handle, c)|
@@ -315,11 +270,9 @@ impl State {
             .chain(explosions)
             .chain(fuels)
             .chain(healths)
-            .chain(missiles)
             .chain(planets)
             .chain(positions)
             .chain(ships)
-            .chain(targets)
             .chain(velocities)
     }
 
@@ -349,11 +302,6 @@ impl State {
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }
-        for handle in self.data.missiles.removed().ready() {
-            let handle = data::client::Handle::Missile(handle.into());
-            let event  = ComponentRemoved { handle };
-            self.base.component_removed.sink().push(event);
-        }
         for handle in self.data.positions.removed().ready() {
             let handle = data::client::Handle::Position(handle.into());
             let event  = ComponentRemoved { handle };
@@ -361,11 +309,6 @@ impl State {
         }
         for handle in self.data.ships.removed().ready() {
             let handle = data::client::Handle::Ship(handle.into());
-            let event  = ComponentRemoved { handle };
-            self.base.component_removed.sink().push(event);
-        }
-        for handle in self.data.targets.removed().ready() {
-            let handle = data::client::Handle::Target(handle.into());
             let event  = ComponentRemoved { handle };
             self.base.component_removed.sink().push(event);
         }

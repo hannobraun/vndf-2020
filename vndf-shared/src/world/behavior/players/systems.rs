@@ -24,7 +24,6 @@ use crate::{
             Fuel,
         },
         health::Health,
-        missiles::MissileLaunch,
         physics::{
             Body,
             Position,
@@ -88,15 +87,13 @@ pub fn disconnect_player(
 }
 
 pub fn handle_input(
-    addr:           SocketAddr,
-    action:         Action,
-    bodies:         &store::Strong<Body>,
-    crafts:         &mut store::Strong<Craft>,
-    players:        &store::Strong<Player>,
-    ships:          &mut store::Strong<Ship>,
-    missile_launch: &mut EventSink<MissileLaunch>,
-    input_handled:  &mut EventSink<InputHandled>,
-    index:          &mut HashMap<SocketAddr, handle::Strong<Player>>,
+    addr:          SocketAddr,
+    action:        Action,
+    crafts:        &mut store::Strong<Craft>,
+    players:       &store::Strong<Player>,
+    ships:         &mut store::Strong<Ship>,
+    input_handled: &mut EventSink<InputHandled>,
+    index:         &mut HashMap<SocketAddr, handle::Strong<Player>>,
 )
     -> Option<()>
 {
@@ -112,7 +109,7 @@ pub fn handle_input(
         })?;
 
     for ship in ships.values_mut() {
-        ship.apply_input(bodies, crafts, missile_launch, player, action);
+        ship.apply_input(crafts, player, action);
     }
 
     input_handled.push(InputHandled { addr, seq: action.seq });
