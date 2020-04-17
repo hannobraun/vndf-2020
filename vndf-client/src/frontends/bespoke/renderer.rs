@@ -108,6 +108,7 @@ impl Renderer {
                     &wgpu::CommandEncoderDescriptor { label: None }
                 );
 
+                self.draw_background(&frame, &mut encoder);
                 self.draw_ship(&frame, &mut encoder);
 
                 self.queue.submit(&[encoder.finish()]);
@@ -116,6 +117,26 @@ impl Renderer {
         }
 
         Ok(())
+    }
+
+    fn draw_background(&self,
+        frame:   &wgpu::SwapChainOutput,
+        encoder: &mut wgpu::CommandEncoder,
+    ) {
+        encoder.begin_render_pass(
+            &wgpu::RenderPassDescriptor {
+                color_attachments: &[
+                    wgpu::RenderPassColorAttachmentDescriptor {
+                        attachment:     &frame.view,
+                        resolve_target: None,
+                        load_op:        wgpu::LoadOp::Clear,
+                        store_op:       wgpu::StoreOp::Store,
+                        clear_color:    graphics::BACKGROUND_COLOR,
+                    },
+                ],
+                depth_stencil_attachment: None,
+            },
+        );
     }
 
     fn draw_ship(&self,
@@ -128,9 +149,9 @@ impl Renderer {
                     wgpu::RenderPassColorAttachmentDescriptor {
                         attachment:     &frame.view,
                         resolve_target: None,
-                        load_op:        wgpu::LoadOp::Clear,
+                        load_op:        wgpu::LoadOp::Load,
                         store_op:       wgpu::StoreOp::Store,
-                        clear_color:    graphics::BACKGROUND_COLOR,
+                        clear_color:    wgpu::Color::TRANSPARENT,
                     },
                 ],
                 depth_stencil_attachment: None,
