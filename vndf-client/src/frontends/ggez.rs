@@ -33,15 +33,12 @@ use ggez::{
     timer,
 };
 
-use crate::{
-    game::{
-        Game,
-        input::{
-            Input,
-            Transition,
-        },
+use crate::game::{
+    Game,
+    input::{
+        Input,
+        Transition,
     },
-    shared::net,
 };
 
 use self::graphics::Graphics;
@@ -191,20 +188,4 @@ impl EventHandler for Handler {
 }
 
 
-#[derive(Debug)]
-pub enum Error {
-    Ggez(GameError),
-    Net(net::Error),
-}
-
-impl From<GameError> for Error {
-    fn from(err: GameError) -> Self {
-        Self::Ggez(err)
-    }
-}
-
-impl From<net::Error> for Error {
-    fn from(err: net::Error) -> Self {
-        Self::Net(err)
-    }
-}
+pub type Error = GameError;
