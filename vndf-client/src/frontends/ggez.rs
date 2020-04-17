@@ -198,9 +198,6 @@ impl EventHandler for Handler {
             quit(context);
         }
 
-        let dt = timer::duration_to_f64(dt) as f32;
-        self.game.state.update(dt, &self.game.input);
-
         self.graphics.draw(context, &self.game)
     }
 }

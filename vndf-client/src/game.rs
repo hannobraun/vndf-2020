@@ -118,6 +118,11 @@ impl Game {
         self.state.frame_time.push(dt);
         self.events.limit();
 
+        self.state.update(
+            dt.as_seconds_f32(),
+            &self.input,
+        );
+
         Ok(())
     }
 }
