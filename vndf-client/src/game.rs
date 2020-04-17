@@ -116,6 +116,7 @@ impl Game {
         }
 
         self.state.frame_time.push(dt);
+        self.events.limit();
 
         Ok(())
     }
