@@ -1,13 +1,21 @@
-use std::io;
+use std::{
+    io,
+    mem::size_of_val,
+};
 
 use winit::event::{
     Event,
     WindowEvent,
 };
+use zerocopy::AsBytes as _;
 
 use crate::{
     game::Game,
-    graphics,
+    graphics::{
+        self,
+        elements::UiElement,
+    },
+    shared::world::behavior::ships::Ship,
 };
 
 use super::{
@@ -113,8 +121,8 @@ impl Renderer {
 
                 self.draw_background(&frame, &mut encoder);
 
-                for _ in game.state.data.ships.values() {
-                    self.draw_ship(&frame, &mut encoder);
+                for ship in game.state.data.ships.values() {
+                    self.draw_ship(&frame, &mut encoder, ship, game);
                 }
 
                 self.queue.submit(&[encoder.finish()]);
@@ -148,7 +156,29 @@ impl Renderer {
     fn draw_ship(&self,
         frame:   &wgpu::SwapChainOutput,
         encoder: &mut wgpu::CommandEncoder,
-    ) {
+        ship:    &Ship,
+        game:    &Game,
+    )
+        -> Option<()>
+    {
+        let screen_size = graphics::Size::new(
+            self.swap_chain_descriptor.width  as f32,
+            self.swap_chain_descriptor.height as f32,
+        );
+
+        let transform = UiElement::from_ship(ship, game, screen_size)?
+            .transform(screen_size);
+
+        let buffer = self.device.create_buffer_with_data(
+            transform.as_bytes(),
+            wgpu::BufferUsage::COPY_SRC,
+        );
+        encoder.copy_buffer_to_buffer(
+            &buffer, 0,
+            &self.ship.uniform_buffer, 0,
+            size_of_val(&transform) as u64,
+        );
+
         let mut render_pass = encoder.begin_render_pass(
             &wgpu::RenderPassDescriptor {
                 color_attachments: &[
@@ -172,6 +202,8 @@ impl Renderer {
             0,
             0 .. 1,
         );
+
+        Some(())
     }
 }
 
