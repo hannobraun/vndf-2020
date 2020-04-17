@@ -5,7 +5,10 @@ use winit::event::{
     WindowEvent,
 };
 
-use crate::graphics;
+use crate::{
+    game::Game,
+    graphics,
+};
 
 use super::{
     drawable::Drawable,
@@ -88,7 +91,7 @@ impl Renderer {
         )
     }
 
-    pub fn handle_event(&mut self, event: &Event<()>)
+    pub fn handle_event(&mut self, event: &Event<()>, game: &Game)
         -> Result<(), wgpu::TimeOut>
     {
         match event {
@@ -109,7 +112,10 @@ impl Renderer {
                 );
 
                 self.draw_background(&frame, &mut encoder);
-                self.draw_ship(&frame, &mut encoder);
+
+                for _ in game.state.data.ships.values() {
+                    self.draw_ship(&frame, &mut encoder);
+                }
 
                 self.queue.submit(&[encoder.finish()]);
             }

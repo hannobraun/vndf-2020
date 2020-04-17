@@ -56,7 +56,7 @@ pub fn start(mut game: Game) -> Result<(), Error> {
         }
 
         window.handle_event(&event);
-        if let Err(err) = renderer.handle_event(&event) {
+        if let Err(err) = renderer.handle_event(&event, &game) {
             error!("Renderer error: {:?}", err);
             *control_flow = ControlFlow::Exit;
         }
