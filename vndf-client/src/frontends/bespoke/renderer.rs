@@ -131,7 +131,7 @@ impl Renderer {
                         load_op:        wgpu::LoadOp::Clear,
                         store_op:       wgpu::StoreOp::Store,
                         clear_color:    graphics::BACKGROUND_COLOR,
-                    }
+                    },
                 ],
                 depth_stencil_attachment: None,
             },
