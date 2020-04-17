@@ -7,6 +7,7 @@ mod window;
 
 use futures::executor::block_on;
 use log::error;
+use time::Instant;
 use winit::{
     event::Event,
     event_loop::{
@@ -32,6 +33,8 @@ pub fn start(mut game: Game) -> Result<(), Error> {
         .map_err(|err| Error::Renderer(err))?;
     let mut input_handler = InputHandler::new();
 
+    let mut time = Instant::now();
+
     event_loop.run(move |event, _, control_flow| {
         input_handler.handle_event(
             &event,
@@ -42,7 +45,10 @@ pub fn start(mut game: Game) -> Result<(), Error> {
 
         match event {
             Event::MainEventsCleared => {
-                if let Err(()) = game.update() {
+                let dt = time.elapsed();
+                time = Instant::now();
+
+                if let Err(()) = game.update(dt) {
                     *control_flow = ControlFlow::Exit;
                 }
             }

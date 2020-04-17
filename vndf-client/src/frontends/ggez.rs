@@ -192,12 +192,11 @@ impl EventHandler for Handler {
             }
         }
 
-        if let Err(()) = self.game.update() {
+        let dt = timer::delta(context);
+
+        if let Err(()) = self.game.update(dt.try_into().unwrap()) {
             quit(context);
         }
-
-        let dt = timer::delta(context);
-        self.game.state.frame_time.push(dt.try_into().unwrap());
 
         self.game.events.limit();
 

@@ -14,6 +14,7 @@ use log::{
     debug,
     error,
 };
+use time::Duration;
 
 use crate::{
     graphics,
@@ -84,7 +85,7 @@ impl Game {
         trans
     }
 
-    pub fn update(&mut self) -> Result<(), ()> {
+    pub fn update(&mut self, dt: Duration) -> Result<(), ()> {
         for message in self.conn.incoming() {
             match message {
                 Ok(msg::FromServer::Ping) => {
@@ -113,6 +114,8 @@ impl Game {
                 }
             }
         }
+
+        self.state.frame_time.push(dt);
 
         Ok(())
     }
