@@ -19,6 +19,7 @@ use time::Duration;
 use crate::{
     graphics,
     shared::net::{
+        Error as NetError,
         client::Conn,
         msg,
     },
@@ -47,11 +48,19 @@ impl Game {
     pub fn init<A: ToSocketAddrs>(addr: A) -> Result<Self, Error> {
         let config = Config::load()
             .map_err(|err| Error::Config(err))?;
-        let conn = Conn::connect(addr)
+        let mut conn = Conn::connect(addr)
             .map_err(|err| Error::Io(err))?;
         let events = Events::new();
         let input = input::Handler::new(config);
         let state = State::new();
+
+        let color = [
+            config.color.r,
+            config.color.g,
+            config.color.b,
+        ];
+        conn.send(msg::FromClient::Hello { color })
+            .map_err(|err| Error::Net(err))?;
 
         Ok(
             Self {
@@ -132,4 +141,5 @@ impl Game {
 pub enum Error {
     Config(config::Error),
     Io(io::Error),
+    Net(NetError),
 }

@@ -41,10 +41,7 @@ use crate::{
             Transition,
         },
     },
-    shared::net::{
-        self,
-        msg,
-    },
+    shared::net,
 };
 
 use self::graphics::Graphics;
@@ -91,15 +88,6 @@ impl Handler {
     )
         -> Result<Self, Error>
     {
-        let mut game = game;
-
-        let color = [
-            game.config.color.r,
-            game.config.color.g,
-            game.config.color.b,
-        ];
-        game.conn.send(msg::FromClient::Hello { color })?;
-
         Ok(
             Self {
                 game,
