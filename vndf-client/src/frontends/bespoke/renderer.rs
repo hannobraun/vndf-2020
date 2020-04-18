@@ -203,7 +203,7 @@ impl Renderer {
         );
         encoder.copy_buffer_to_buffer(
             &buffer, 0,
-            &self.drawables.ship.uniform_buffer, 0,
+            &drawable.uniform_buffer, 0,
             size_of_val(&transform) as u64,
         );
 
