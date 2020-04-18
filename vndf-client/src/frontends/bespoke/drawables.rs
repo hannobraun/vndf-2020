@@ -156,7 +156,7 @@ impl Drawable {
                 primitive_topology: wgpu::PrimitiveTopology::TriangleStrip,
                 color_states: &[
                     wgpu::ColorStateDescriptor {
-                        format:      wgpu::TextureFormat::Bgra8UnormSrgb,
+                        format: wgpu::TextureFormat::Bgra8UnormSrgb,
                         color_blend: wgpu::BlendDescriptor {
                             src_factor: wgpu::BlendFactor::SrcAlpha,
                             dst_factor: wgpu::BlendFactor::OneMinusSrcAlpha,
@@ -167,7 +167,7 @@ impl Drawable {
                             dst_factor: wgpu::BlendFactor::One,
                             operation:  wgpu::BlendOperation::Add,
                         },
-                        write_mask:  wgpu::ColorWrite::ALL,
+                        write_mask: wgpu::ColorWrite::ALL,
                     },
                 ],
                 depth_stencil_state: None,
