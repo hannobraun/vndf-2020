@@ -10,7 +10,7 @@ use std::{
 use zerocopy::AsBytes as _;
 
 use crate::graphics::{
-    elements::Transform,
+    elements::NativeTransform,
     math::{
         ClipUnit,
         LocalUnit,
@@ -118,7 +118,7 @@ impl Drawable {
                         binding: 0,
                         resource: wgpu::BindingResource::Buffer {
                             buffer: &uniform_buffer,
-                            range: 0 .. size_of::<Transform>() as u64,
+                            range: 0 .. size_of::<NativeTransform>() as u64,
                         },
                     }
                 ],
@@ -214,7 +214,7 @@ impl Drawable {
         device:    &wgpu::Device,
         frame:     &wgpu::SwapChainOutput,
         encoder:   &mut wgpu::CommandEncoder,
-        transform: Transform,
+        transform: NativeTransform,
     ) {
         let buffer = device.create_buffer_with_data(
             transform.as_bytes(),

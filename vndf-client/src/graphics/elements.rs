@@ -66,7 +66,7 @@ impl UiElement {
         )
     }
 
-    pub fn transform(&self, screen_size: graphics::Size) -> Transform {
+    pub fn transform(&self, screen_size: graphics::Size) -> NativeTransform {
         transforms::local_to_screen(self)
             .post_transform(
                 &transforms::screen_to_homogeneous(screen_size)
@@ -95,7 +95,7 @@ pub struct WorldElement {
 
 impl WorldElement {
     pub fn transform(&self, camera: &Camera, screen_size: graphics::Size)
-        -> Transform
+        -> NativeTransform
     {
         transforms::local_to_world(self)
             .post_transform(
@@ -120,4 +120,4 @@ impl From<&Planet> for WorldElement {
 }
 
 
-pub type Transform = [[f32; 4]; 4];
+pub type NativeTransform = [[f32; 4]; 4];
