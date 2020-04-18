@@ -78,7 +78,7 @@ impl Drawable {
         );
 
         let vertex_shader = include_bytes!("shaders/shader.vert.spv");
-        let vertex_module_module = device.create_shader_module(
+        let vertex_shader = device.create_shader_module(
             &wgpu::read_spirv(Cursor::new(&vertex_shader[..]))?,
         );
 
@@ -124,7 +124,7 @@ impl Drawable {
             &wgpu::RenderPipelineDescriptor {
                 layout: &pipeline_layout,
                 vertex_stage: wgpu::ProgrammableStageDescriptor {
-                    module:      &vertex_module_module,
+                    module:      &vertex_shader,
                     entry_point: "main",
                 },
                 fragment_stage: Some(
