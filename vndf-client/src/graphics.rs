@@ -8,6 +8,7 @@ pub use self::math::{
     Angle,
     Pnt2,
     Size,
+    Transform,
     Vec2,
 };
 

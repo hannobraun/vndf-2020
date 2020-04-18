@@ -16,7 +16,7 @@ use crate::{
 };
 
 
-pub type Transform<Src, Dest> = euclid::Transform2D<f32, Src, Dest>;
+pub type Transform<Src, Dest> = graphics::Transform<Src, Dest>;
 
 
 /// Returns what is commonly known as the model matrix
