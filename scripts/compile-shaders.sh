@@ -3,6 +3,8 @@ set -e
 
 SHADERS=vndf-client/src/frontends/bespoke/shaders
 
+mkdir -p $SHADERS/spv
+
 for SHADER_SOURCE in $SHADERS/glsl/*.vert.glsl; do
     FILE=$(basename $SHADER_SOURCE)
     NAME=${FILE%.*.*}
