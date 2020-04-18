@@ -16,11 +16,11 @@ enum Shader {
 impl Shader {
     fn load(&self, device: &wgpu::Device) -> Result {
         let code = match self {
-            Shader::Vertex => include_bytes!("shaders/shader.vert.spv"),
+            Shader::Vertex => &include_bytes!("shaders/shader.vert.spv")[..],
         };
 
         let module = device.create_shader_module(
-            &wgpu::read_spirv(Cursor::new(&code[..]))?,
+            &wgpu::read_spirv(Cursor::new(code))?,
         );
 
         Ok(module)
