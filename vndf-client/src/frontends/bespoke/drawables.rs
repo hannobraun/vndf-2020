@@ -87,9 +87,6 @@ impl Drawable {
             wgpu::BufferUsage::INDEX,
         );
 
-        let vertex_shader   = vertex_shader.load(device)?;
-        let fragment_shader = fragment_shader.load(device)?;
-
         let bind_group_layout = device.create_bind_group_layout(
             &wgpu::BindGroupLayoutDescriptor {
                 bindings: &[
@@ -127,12 +124,12 @@ impl Drawable {
             &wgpu::RenderPipelineDescriptor {
                 layout: &pipeline_layout,
                 vertex_stage: wgpu::ProgrammableStageDescriptor {
-                    module:      &vertex_shader,
+                    module:      &vertex_shader.load(device)?,
                     entry_point: "main",
                 },
                 fragment_stage: Some(
                     wgpu::ProgrammableStageDescriptor {
-                        module:      &fragment_shader,
+                        module:      &fragment_shader.load(device)?,
                         entry_point: "main",
                     }
                 ),
