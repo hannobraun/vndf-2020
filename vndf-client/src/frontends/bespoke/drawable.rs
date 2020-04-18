@@ -24,6 +24,23 @@ use super::meshes::{
 };
 
 
+pub struct Drawables {
+    pub ship: Drawable,
+}
+
+impl Drawables {
+    pub fn new(device: &wgpu::Device, meshes: &Meshes)
+        -> Result<Self, io::Error>
+    {
+        Ok(
+            Self {
+                ship: Drawable::new(device, meshes)?,
+            }
+        )
+    }
+}
+
+
 pub struct Drawable {
     pub uniform_buffer:  wgpu::Buffer,
     pub vertex_buffer:   wgpu::Buffer,

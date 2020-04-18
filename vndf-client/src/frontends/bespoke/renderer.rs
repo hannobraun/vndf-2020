@@ -19,7 +19,10 @@ use crate::{
 };
 
 use super::{
-    drawable::Drawable,
+    drawable::{
+        Drawable,
+        Drawables,
+    },
     meshes::{
         self,
         Meshes,
@@ -35,7 +38,7 @@ pub struct Renderer {
     pub swap_chain_descriptor: wgpu::SwapChainDescriptor,
     pub swap_chain:            wgpu::SwapChain,
 
-    ship: Drawable,
+    drawables: Drawables,
 }
 
 impl Renderer {
@@ -66,8 +69,7 @@ impl Renderer {
 
         let meshes = Meshes::new()
             .map_err(|err| Error::Meshes(err))?;
-
-        let ship = Drawable::new(&device, &meshes)?;
+        let drawables = Drawables::new(&device, &meshes)?;
 
         let size = window.0.inner_size();
 
@@ -92,7 +94,7 @@ impl Renderer {
                 swap_chain_descriptor,
                 swap_chain,
 
-                ship,
+                drawables,
             }
         )
     }
@@ -173,11 +175,11 @@ impl Renderer {
         );
         encoder.copy_buffer_to_buffer(
             &buffer, 0,
-            &self.ship.uniform_buffer, 0,
+            &self.drawables.ship.uniform_buffer, 0,
             size_of_val(&transform) as u64,
         );
 
-        self.draw(frame, encoder, &self.ship);
+        self.draw(frame, encoder, &self.drawables.ship);
 
         Some(())
     }
