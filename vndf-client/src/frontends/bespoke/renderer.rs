@@ -16,9 +16,13 @@ use crate::{
         elements::{
             Transform,
             UiElement,
+            WorldElement,
         },
     },
-    shared::world::behavior::ships::Ship,
+    shared::world::behavior::{
+        planets::Planet,
+        ships::Ship,
+    },
 };
 
 use super::{
@@ -124,6 +128,9 @@ impl Renderer {
 
                 self.draw_background(&frame, &mut encoder);
 
+                for planet in game.state.data.planets.values() {
+                    self.draw_planet(&frame, &mut encoder, planet, game);
+                }
                 for ship in game.state.data.ships.values() {
                     self.draw_ship(&frame, &mut encoder, ship, game);
                 }
@@ -154,6 +161,18 @@ impl Renderer {
                 depth_stencil_attachment: None,
             },
         );
+    }
+
+    fn draw_planet(&self,
+        frame:   &wgpu::SwapChainOutput,
+        encoder: &mut wgpu::CommandEncoder,
+        planet:  &Planet,
+        game:    &Game,
+    ) {
+        let transform = WorldElement::from(planet)
+            .transform(&game.state.camera, self.screen_size());
+
+        self.draw(frame, encoder, &self.drawables.ship, transform);
     }
 
     fn draw_ship(&self,
