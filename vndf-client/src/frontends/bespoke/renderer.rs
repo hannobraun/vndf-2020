@@ -19,7 +19,7 @@ use crate::{
 };
 
 use super::{
-    drawable::{
+    drawables::{
         Drawable,
         Drawables,
     },

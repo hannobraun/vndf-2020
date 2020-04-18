@@ -1,4 +1,4 @@
-mod drawable;
+mod drawables;
 mod input_handler;
 mod meshes;
 mod renderer;
