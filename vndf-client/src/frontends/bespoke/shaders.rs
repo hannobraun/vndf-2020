@@ -4,15 +4,6 @@ use std::io::{
 };
 
 
-pub fn vertex_shader(device: &wgpu::Device) -> Result {
-    VertexShader::Simple.load(device)
-}
-
-pub fn fragment_shader(device: &wgpu::Device) -> Result {
-    FragmentShader::Simple.load(device)
-}
-
-
 pub enum VertexShader {
     Simple,
 }

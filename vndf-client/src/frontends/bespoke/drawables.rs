@@ -22,8 +22,8 @@ use super::{
         Vertex,
     },
     shaders::{
-        fragment_shader,
-        vertex_shader,
+        FragmentShader,
+        VertexShader,
     },
 };
 
@@ -80,8 +80,8 @@ impl Drawable {
             wgpu::BufferUsage::INDEX,
         );
 
-        let vertex_shader   = vertex_shader(device)?;
-        let fragment_shader = fragment_shader(device)?;
+        let vertex_shader   = VertexShader::Simple.load(device)?;
+        let fragment_shader = FragmentShader::Simple.load(device)?;
 
         let bind_group_layout = device.create_bind_group_layout(
             &wgpu::BindGroupLayoutDescriptor {
