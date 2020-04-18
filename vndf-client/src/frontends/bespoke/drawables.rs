@@ -10,12 +10,14 @@ use std::{
 use zerocopy::AsBytes as _;
 
 use crate::graphics::{
-    elements::NativeTransform,
     math::{
         ClipUnit,
         LocalUnit,
     },
-    transforms,
+    transforms::{
+        self,
+        NativeTransform,
+    },
 };
 
 use super::{

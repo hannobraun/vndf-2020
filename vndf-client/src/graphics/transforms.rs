@@ -19,6 +19,9 @@ use crate::{
 pub type Transform<Src, Dst> = graphics::Transform<Src, Dst>;
 
 
+pub type NativeTransform = [[f32; 4]; 4];
+
+
 /// Returns what is commonly known as the model matrix
 pub fn local_to_world(element: &WorldElement) -> Transform<LocalUnit, Meter> {
     Transform::identity()

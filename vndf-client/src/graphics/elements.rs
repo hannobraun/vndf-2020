@@ -5,7 +5,10 @@ use crate::{
     },
     graphics::{
         self,
-        transforms,
+        transforms::{
+            self,
+            NativeTransform,
+        },
     },
     shared::world::{
         self,
@@ -118,6 +121,3 @@ impl From<&Planet> for WorldElement {
         }
     }
 }
-
-
-pub type NativeTransform = [[f32; 4]; 4];
