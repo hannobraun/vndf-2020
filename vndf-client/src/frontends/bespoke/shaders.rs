@@ -5,11 +5,11 @@ use std::io::{
 
 
 pub fn vertex_shader(device: &wgpu::Device) -> Result {
-    Shader::Vertex(VertexShader::Simple).load(device)
+    VertexShader::Simple.load(device)
 }
 
 pub fn fragment_shader(device: &wgpu::Device) -> Result {
-    Shader::Fragment(FragmentShader::Simple).load(device)
+    FragmentShader::Simple.load(device)
 }
 
 
@@ -17,8 +17,21 @@ pub enum VertexShader {
     Simple,
 }
 
+impl VertexShader {
+    pub fn load(self, device: &wgpu::Device) -> Result {
+        Shader::load(&self.into(), device)
+    }
+}
+
+
 pub enum FragmentShader {
     Simple,
+}
+
+impl FragmentShader {
+    pub fn load(self, device: &wgpu::Device) -> Result {
+        Shader::load(&self.into(), device)
+    }
 }
 
 
@@ -43,6 +56,18 @@ impl Shader {
         );
 
         Ok(module)
+    }
+}
+
+impl From<VertexShader> for Shader {
+    fn from(vert: VertexShader) -> Self {
+        Self::Vertex(vert)
+    }
+}
+
+impl From<FragmentShader> for Shader {
+    fn from(frag: FragmentShader) -> Self {
+        Self::Fragment(frag)
     }
 }
 
