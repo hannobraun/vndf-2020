@@ -33,9 +33,14 @@ impl Drawables {
     pub fn new(device: &wgpu::Device, meshes: &Meshes)
         -> Result<Self, io::Error>
     {
+        let ship = Drawable::new(
+            device,
+            &meshes.ship,
+        )?;
+
         Ok(
             Self {
-                ship: Drawable::new(device, &meshes.ship)?,
+                ship,
             }
         )
     }
