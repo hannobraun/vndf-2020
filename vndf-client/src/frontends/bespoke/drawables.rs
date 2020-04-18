@@ -44,7 +44,7 @@ impl Drawables {
             device,
             &meshes.square,
             VertexShader::Simple,
-            FragmentShader::Simple,
+            FragmentShader::Planet,
         )?;
         let ship = Drawable::new(
             device,
