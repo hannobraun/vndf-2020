@@ -83,7 +83,7 @@ impl Drawable {
         );
 
         let fragment_shader = include_bytes!("shaders/shader.frag.spv");
-        let fragment_module_module = device.create_shader_module(
+        let fragment_shader = device.create_shader_module(
             &wgpu::read_spirv(Cursor::new(&fragment_shader[..]))?,
         );
 
@@ -129,7 +129,7 @@ impl Drawable {
                 },
                 fragment_stage: Some(
                     wgpu::ProgrammableStageDescriptor {
-                        module:      &fragment_module_module,
+                        module:      &fragment_shader,
                         entry_point: "main",
                     }
                 ),
