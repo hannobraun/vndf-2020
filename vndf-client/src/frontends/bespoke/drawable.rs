@@ -19,6 +19,7 @@ use crate::graphics::{
 };
 
 use super::meshes::{
+    Mesh,
     Meshes,
     Vertex,
 };
@@ -34,7 +35,7 @@ impl Drawables {
     {
         Ok(
             Self {
-                ship: Drawable::new(device, meshes)?,
+                ship: Drawable::new(device, &meshes.ship)?,
             }
         )
     }
@@ -51,7 +52,7 @@ pub struct Drawable {
 }
 
 impl Drawable {
-    pub fn new(device: &wgpu::Device, meshes: &Meshes)
+    pub fn new(device: &wgpu::Device, mesh: &Mesh)
         -> Result<Self, io::Error>
     {
         let uniform_buffer = device.create_buffer_with_data(
@@ -63,11 +64,11 @@ impl Drawable {
         );
 
         let vertex_buffer = device.create_buffer_with_data(
-            meshes.ship.vertices.as_bytes(),
+            mesh.vertices.as_bytes(),
             wgpu::BufferUsage::VERTEX,
         );
         let index_buffer = device.create_buffer_with_data(
-            meshes.ship.indices.as_bytes(),
+            mesh.indices.as_bytes(),
             wgpu::BufferUsage::INDEX,
         );
 
@@ -168,7 +169,7 @@ impl Drawable {
             },
         );
 
-        let num_indices = meshes.ship.indices
+        let num_indices = mesh.indices
             .len()
             .try_into()
             .expect("Mesh had too many indices; couldn't cast to `u32`");
