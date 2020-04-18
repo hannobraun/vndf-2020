@@ -16,7 +16,7 @@ use crate::{
 };
 
 
-pub type Transform<Src, Dest> = graphics::Transform<Src, Dest>;
+pub type Transform<Src, Dst> = graphics::Transform<Src, Dst>;
 
 
 /// Returns what is commonly known as the model matrix
