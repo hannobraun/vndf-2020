@@ -10,14 +10,12 @@ use std::{
 use zerocopy::AsBytes as _;
 
 use crate::graphics::{
+    self,
     math::{
         ClipUnit,
         LocalUnit,
     },
-    transforms::{
-        self,
-        NativeTransform,
-    },
+    transforms::NativeTransform,
 };
 
 use super::{
@@ -84,7 +82,7 @@ impl Drawable {
         -> Result<Self, io::Error>
     {
         let uniform_buffer = device.create_buffer_with_data(
-            transforms::Transform::<LocalUnit, ClipUnit>::identity()
+            graphics::Transform::<LocalUnit, ClipUnit>::identity()
                 .to_3d()
                 .to_row_arrays()
                 .as_bytes(),

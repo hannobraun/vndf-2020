@@ -26,7 +26,7 @@ impl Camera {
     )
         -> world::Pnt2
     {
-        transforms::world_to_screen(self, screen_size)
+        transforms::world_to_screen(self, screen_size).0
             .inverse()
             // I see no reason why the transformation matrix should not always
             // be invertible, so I _think_ this is fine and should never panic.
@@ -41,7 +41,7 @@ impl Camera {
     )
         -> graphics::Pnt2
     {
-        transforms::world_to_screen(self, screen_size)
+        transforms::world_to_screen(self, screen_size).0
             .transform_point(point_world)
     }
 

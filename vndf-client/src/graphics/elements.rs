@@ -56,7 +56,7 @@ impl UiElement {
         let body = game.state.data.bodies.get(&craft.body)?;
         let pos  = game.state.data.positions.get(&body.pos)?;
 
-        let pos = transforms::world_to_screen(&game.state.camera, screen)
+        let pos = transforms::world_to_screen(&game.state.camera, screen).0
             .transform_point(pos.0);
         let angle = -body.dir.angle_from_x_axis();
 
@@ -74,8 +74,7 @@ impl UiElement {
             .post_transform(
                 &transforms::screen_to_homogeneous(screen_size)
             )
-            .to_3d()
-            .to_row_arrays()
+            .to_native()
     }
 }
 
@@ -107,8 +106,7 @@ impl WorldElement {
             .post_transform(
                 &transforms::screen_to_homogeneous(screen_size)
             )
-            .to_3d()
-            .to_row_arrays()
+            .to_native()
     }
 }
 
