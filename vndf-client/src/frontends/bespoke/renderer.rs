@@ -172,7 +172,13 @@ impl Renderer {
         let transform = WorldElement::from(planet)
             .transform(&game.state.camera, self.screen_size());
 
-        self.draw(frame, encoder, &self.drawables.planet, transform);
+        self.draw(
+            &self.device,
+            frame,
+            encoder,
+            &self.drawables.planet,
+            transform,
+        );
     }
 
     fn draw_ship(&self,
@@ -186,18 +192,25 @@ impl Renderer {
         let transform = UiElement::from_ship(ship, game, self.screen_size())?
             .transform(self.screen_size());
 
-        self.draw(frame, encoder, &self.drawables.ship, transform);
+        self.draw(
+            &self.device,
+            frame,
+            encoder,
+            &self.drawables.ship,
+            transform,
+        );
 
         Some(())
     }
 
     fn draw(&self,
+        device:    &wgpu::Device,
         frame:     &wgpu::SwapChainOutput,
         encoder:   &mut wgpu::CommandEncoder,
         drawable:  &Drawable,
         transform: Transform,
     ) {
-        let buffer = self.device.create_buffer_with_data(
+        let buffer = device.create_buffer_with_data(
             transform.as_bytes(),
             wgpu::BufferUsage::COPY_SRC,
         );
