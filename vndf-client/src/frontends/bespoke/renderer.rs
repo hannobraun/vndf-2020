@@ -172,7 +172,7 @@ impl Renderer {
         let transform = WorldElement::from(planet)
             .transform(&game.state.camera, self.screen_size());
 
-        self.draw(frame, encoder, &self.drawables.ship, transform);
+        self.draw(frame, encoder, &self.drawables.planet, transform);
     }
 
     fn draw_ship(&self,
