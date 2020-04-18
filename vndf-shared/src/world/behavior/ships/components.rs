@@ -27,7 +27,6 @@ use crate::{
 pub struct Ship {
     pub craft:    Handle<Craft>,
     pub rotation: Rotation,
-    pub missiles: u64,
     pub color:    [f32; 3],
 }
 
@@ -41,7 +40,6 @@ impl Ship {
         Self {
             craft:    craft.into(),
             rotation: Rotation::None,
-            missiles: 16,
             color,
         }
     }
@@ -50,7 +48,6 @@ impl Ship {
         Self {
             craft:    self.craft.as_weak(),
             rotation: self.rotation.clone(),
-            missiles: self.missiles.clone(),
             color:    self.color.clone(),
         }
     }

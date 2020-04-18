@@ -501,11 +501,9 @@ Removals per s: {}",
 
         let status = format!("Ship Status
 Structural Integrity: {:.2}
-Fuel: {:.2}
-Heavy Missiles: {}",
+Fuel: {:.2}",
             health.value,
             fuel.0,
-            ship.missiles,
         );
 
         draw(
