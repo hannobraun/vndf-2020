@@ -15,10 +15,6 @@ serde    = "*"
 version  = "*"
 features = ["serde"]
 
-[dependencies.pid]
-version  = "*"
-features = ["serde"]
-
 [dependencies.rinnsal]
 path = "../rinnsal"
 

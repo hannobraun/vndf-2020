@@ -2074,16 +2074,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d4fd5641d01c8f18a23da7b6fe29298ff4b55afcccdf78973b24cf3175fee32e"
 
 [[package]]
-name = "pid"
-version = "2.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5222362a342cf1f0e5bfd031177a34e3d879bdcc2d89b6a7b7e4d0c089c5de4e"
-dependencies = [
- "num-traits 0.2.11",
- "serde",
-]
-
-[[package]]
 name = "pin-utils"
 version = "0.1.0-alpha.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3157,7 +3147,6 @@ version = "0.1.0"
 dependencies = [
  "euclid 0.20.10",
  "log",
- "pid",
  "postcard",
  "rand 0.7.3",
  "rinnsal",
