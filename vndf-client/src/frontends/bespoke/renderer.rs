@@ -177,6 +177,16 @@ impl Renderer {
             size_of_val(&transform) as u64,
         );
 
+        self.draw(frame, encoder, &self.ship);
+
+        Some(())
+    }
+
+    fn draw(&self,
+        frame:    &wgpu::SwapChainOutput,
+        encoder:  &mut wgpu::CommandEncoder,
+        drawable: &Drawable,
+    ) {
         let mut render_pass = encoder.begin_render_pass(
             &wgpu::RenderPassDescriptor {
                 color_attachments: &[
@@ -191,17 +201,15 @@ impl Renderer {
                 depth_stencil_attachment: None,
             },
         );
-        render_pass.set_pipeline(&self.ship.render_pipeline);
-        render_pass.set_bind_group(0, &self.ship.bind_group, &[]);
-        render_pass.set_vertex_buffer(0, &self.ship.vertex_buffer, 0, 0);
-        render_pass.set_index_buffer(&self.ship.index_buffer, 0, 0);
+        render_pass.set_pipeline(&drawable.render_pipeline);
+        render_pass.set_bind_group(0, &drawable.bind_group, &[]);
+        render_pass.set_vertex_buffer(0, &drawable.vertex_buffer, 0, 0);
+        render_pass.set_index_buffer(&drawable.index_buffer, 0, 0);
         render_pass.draw_indexed(
-            0 .. self.ship.num_indices,
+            0 .. drawable.num_indices,
             0,
             0 .. 1,
         );
-
-        Some(())
     }
 }
 
