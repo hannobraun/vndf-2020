@@ -33,10 +33,6 @@ impl InputHandler {
         control_flow: &mut ControlFlow,
     ) {
         let input = match event {
-            Event::WindowEvent { event: WindowEvent::CloseRequested, .. } => {
-                *control_flow = ControlFlow::Exit;
-                return;
-            }
             Event::WindowEvent {
                 event: WindowEvent::KeyboardInput {
                     input: KeyboardInput {
@@ -54,6 +50,10 @@ impl InputHandler {
                     ElementState::Pressed  => Input::KeyDown(key),
                     ElementState::Released => Input::KeyUp(key),
                 }
+            }
+            Event::WindowEvent { event: WindowEvent::CloseRequested, .. } => {
+                *control_flow = ControlFlow::Exit;
+                return;
             }
             _ => {
                 return;
