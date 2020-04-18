@@ -1,4 +1,5 @@
 use std::{
+    convert::TryInto as _,
     io::{
         self,
         Cursor,
@@ -29,6 +30,7 @@ pub struct Drawable {
     pub index_buffer:    wgpu::Buffer,
     pub bind_group:      wgpu::BindGroup,
     pub render_pipeline: wgpu::RenderPipeline,
+    pub num_indices:     u32,
 }
 
 impl Drawable {
@@ -149,6 +151,11 @@ impl Drawable {
             },
         );
 
+        let num_indices = meshes.ship.indices
+            .len()
+            .try_into()
+            .expect("Mesh had too many indices; couldn't cast to `u32`");
+
         Ok(
             Self {
                 uniform_buffer,
@@ -156,6 +163,7 @@ impl Drawable {
                 index_buffer,
                 render_pipeline,
                 bind_group,
+                num_indices,
             }
         )
     }

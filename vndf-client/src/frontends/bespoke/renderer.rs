@@ -35,8 +35,7 @@ pub struct Renderer {
     pub swap_chain_descriptor: wgpu::SwapChainDescriptor,
     pub swap_chain:            wgpu::SwapChain,
 
-    ship:   Drawable,
-    meshes: Meshes,
+    ship: Drawable,
 }
 
 impl Renderer {
@@ -94,7 +93,6 @@ impl Renderer {
                 swap_chain,
 
                 ship,
-                meshes,
             }
         )
     }
@@ -198,7 +196,7 @@ impl Renderer {
         render_pass.set_vertex_buffer(0, &self.ship.vertex_buffer, 0, 0);
         render_pass.set_index_buffer(&self.ship.index_buffer, 0, 0);
         render_pass.draw_indexed(
-            0 .. self.meshes.ship.indices.len() as u32,
+            0 .. self.ship.num_indices,
             0,
             0 .. 1,
         );
