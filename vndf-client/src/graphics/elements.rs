@@ -5,9 +5,13 @@ use crate::{
     },
     graphics::{
         self,
+        math::{
+            ClipUnit,
+            LocalUnit,
+        },
         transforms::{
             self,
-            NativeTransform,
+            Transform,
         },
     },
     shared::world::{
@@ -69,12 +73,13 @@ impl UiElement {
         )
     }
 
-    pub fn transform(&self, screen_size: graphics::Size) -> NativeTransform {
+    pub fn transform(&self, screen_size: graphics::Size)
+        -> Transform<LocalUnit, ClipUnit>
+    {
         transforms::local_to_screen(self)
             .post_transform(
                 &transforms::screen_to_homogeneous(screen_size)
             )
-            .to_native()
     }
 }
 
@@ -97,7 +102,7 @@ pub struct WorldElement {
 
 impl WorldElement {
     pub fn transform(&self, camera: &Camera, screen_size: graphics::Size)
-        -> NativeTransform
+        -> Transform<LocalUnit, ClipUnit>
     {
         transforms::local_to_world(self)
             .post_transform(
@@ -106,7 +111,6 @@ impl WorldElement {
             .post_transform(
                 &transforms::screen_to_homogeneous(screen_size)
             )
-            .to_native()
     }
 }
 

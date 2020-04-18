@@ -31,7 +31,9 @@ impl Transform for ScreenTransform<'_> {
         let (width, height) = ggez::graphics::drawable_size(context);
         let screen_size = graphics::Size::new(width, height);
 
-        let transform = self.element.transform(screen_size);
+        let transform = self.element
+            .transform(screen_size)
+            .to_native();
 
         ggez::graphics::set_projection(context, transform);
         ggez::graphics::apply_transformations(context)?;
@@ -55,7 +57,9 @@ impl Transform for WorldTransform<'_> {
             ggez::graphics::drawable_size(context);
         let screen_size = graphics::Size::new(screen_width, screen_height);
 
-        let transform = self.element.transform(self.camera, screen_size);
+        let transform = self.element
+            .transform(self.camera, screen_size)
+            .to_native();
 
         ggez::graphics::set_projection(context, transform);
         ggez::graphics::apply_transformations(context)?;

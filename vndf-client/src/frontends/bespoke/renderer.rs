@@ -162,7 +162,8 @@ impl Renderer {
         game:    &Game,
     ) {
         let transform = WorldElement::from(planet)
-            .transform(&game.state.camera, self.screen_size());
+            .transform(&game.state.camera, self.screen_size())
+            .to_native();
 
         self.drawables.planet.draw(
             &self.device,
@@ -181,7 +182,8 @@ impl Renderer {
         -> Option<()>
     {
         let transform = UiElement::from_ship(ship, game, self.screen_size())?
-            .transform(self.screen_size());
+            .transform(self.screen_size())
+            .to_native();
 
         self.drawables.ship.draw(
             &self.device,
