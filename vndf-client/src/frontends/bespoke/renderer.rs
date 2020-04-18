@@ -164,13 +164,8 @@ impl Renderer {
     )
         -> Option<()>
     {
-        let screen_size = graphics::Size::new(
-            self.swap_chain_descriptor.width  as f32,
-            self.swap_chain_descriptor.height as f32,
-        );
-
-        let transform = UiElement::from_ship(ship, game, screen_size)?
-            .transform(screen_size);
+        let transform = UiElement::from_ship(ship, game, self.screen_size())?
+            .transform(self.screen_size());
 
         self.draw(frame, encoder, &self.drawables.ship, transform);
 
@@ -216,6 +211,13 @@ impl Renderer {
             0,
             0 .. 1,
         );
+    }
+
+    fn screen_size(&self) -> graphics::Size {
+        graphics::Size::new(
+            self.swap_chain_descriptor.width  as f32,
+            self.swap_chain_descriptor.height as f32,
+        )
     }
 }
 
