@@ -8,15 +8,21 @@ pub fn vertex_shader(device: &wgpu::Device) -> Result {
     Shader::Vertex.load(device)
 }
 
+pub fn fragment_shader(device: &wgpu::Device) -> Result {
+    Shader::Fragment.load(device)
+}
+
 
 enum Shader {
     Vertex,
+    Fragment,
 }
 
 impl Shader {
     fn load(&self, device: &wgpu::Device) -> Result {
         let code = match self {
-            Shader::Vertex => &include_bytes!("shaders/shader.vert.spv")[..],
+            Shader::Vertex   => &include_bytes!("shaders/shader.vert.spv")[..],
+            Shader::Fragment => &include_bytes!("shaders/shader.frag.spv")[..],
         };
 
         let module = device.create_shader_module(

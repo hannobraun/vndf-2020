@@ -1,9 +1,6 @@
 use std::{
     convert::TryInto as _,
-    io::{
-        self,
-        Cursor,
-    },
+    io,
     mem::size_of,
 };
 
@@ -24,7 +21,10 @@ use super::{
         Meshes,
         Vertex,
     },
-    shaders::vertex_shader,
+    shaders::{
+        fragment_shader,
+        vertex_shader,
+    },
 };
 
 
@@ -80,12 +80,8 @@ impl Drawable {
             wgpu::BufferUsage::INDEX,
         );
 
-        let vertex_shader = vertex_shader(device)?;
-
-        let fragment_shader = include_bytes!("shaders/shader.frag.spv");
-        let fragment_shader = device.create_shader_module(
-            &wgpu::read_spirv(Cursor::new(&fragment_shader[..]))?,
-        );
+        let vertex_shader   = vertex_shader(device)?;
+        let fragment_shader = fragment_shader(device)?;
 
         let bind_group_layout = device.create_bind_group_layout(
             &wgpu::BindGroupLayoutDescriptor {
