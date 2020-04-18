@@ -5,11 +5,26 @@ use std::io::{
 
 
 pub fn vertex_shader(device: &wgpu::Device) -> Result {
-    let code = include_bytes!("shaders/shader.vert.spv");
-    let module = device.create_shader_module(
-        &wgpu::read_spirv(Cursor::new(&code[..]))?,
-    );
-    Ok(module)
+    Shader::Vertex.load(device)
+}
+
+
+enum Shader {
+    Vertex,
+}
+
+impl Shader {
+    fn load(&self, device: &wgpu::Device) -> Result {
+        let code = match self {
+            Shader::Vertex => include_bytes!("shaders/shader.vert.spv"),
+        };
+
+        let module = device.create_shader_module(
+            &wgpu::read_spirv(Cursor::new(&code[..]))?,
+        );
+
+        Ok(module)
+    }
 }
 
 
