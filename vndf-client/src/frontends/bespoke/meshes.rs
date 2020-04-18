@@ -18,14 +18,16 @@ pub type Index  = u16;
 
 
 pub struct Meshes {
-    pub ship: Mesh,
+    pub ship:   Mesh,
+    pub square: Mesh,
 }
 
 impl Meshes {
     pub fn new() -> Result<Self, Error> {
         Ok(
             Self {
-                ship: Mesh::new(vertices::SHIP)?,
+                ship:   Mesh::new(vertices::SHIP)?,
+                square: Mesh::new(vertices::SQUARE)?,
             }
         )
     }
