@@ -77,10 +77,7 @@ impl Drawable {
             wgpu::BufferUsage::INDEX,
         );
 
-        let vertex_shader = include_bytes!("shaders/shader.vert.spv");
-        let vertex_shader = device.create_shader_module(
-            &wgpu::read_spirv(Cursor::new(&vertex_shader[..]))?,
-        );
+        let vertex_shader = vertex_shader(device)?;
 
         let fragment_shader = include_bytes!("shaders/shader.frag.spv");
         let fragment_shader = device.create_shader_module(
@@ -190,4 +187,15 @@ impl Drawable {
             }
         )
     }
+}
+
+
+fn vertex_shader(device: &wgpu::Device)
+    -> Result<wgpu::ShaderModule, io::Error>
+{
+    let vertex_shader = include_bytes!("shaders/shader.vert.spv");
+    let vertex_shader = device.create_shader_module(
+        &wgpu::read_spirv(Cursor::new(&vertex_shader[..]))?,
+    );
+    Ok(vertex_shader)
 }
