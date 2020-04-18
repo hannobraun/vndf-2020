@@ -60,7 +60,7 @@ impl InputHandler {
                 },
                 ..
             } => {
-                let delta = match delta {
+                let y = match delta {
                     MouseScrollDelta::LineDelta(_, y) => {
                         *y
                     }
@@ -69,7 +69,7 @@ impl InputHandler {
                     }
                 };
 
-                Input::MouseWheel(delta)
+                Input::MouseWheel(y)
             }
             Event::WindowEvent { event: WindowEvent::CloseRequested, .. } => {
                 *control_flow = ControlFlow::Exit;
