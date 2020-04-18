@@ -193,9 +193,9 @@ impl Drawable {
 fn vertex_shader(device: &wgpu::Device)
     -> Result<wgpu::ShaderModule, io::Error>
 {
-    let vertex_shader = include_bytes!("shaders/shader.vert.spv");
+    let code = include_bytes!("shaders/shader.vert.spv");
     let vertex_shader = device.create_shader_module(
-        &wgpu::read_spirv(Cursor::new(&vertex_shader[..]))?,
+        &wgpu::read_spirv(Cursor::new(&code[..]))?,
     );
     Ok(vertex_shader)
 }
