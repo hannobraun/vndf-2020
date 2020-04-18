@@ -22,10 +22,10 @@ impl Shader {
     fn load(&self, device: &wgpu::Device) -> Result {
         let code = match self {
             Shader::Vertex => {
-                &include_bytes!("shaders/spv/shader.vert.spv")[..]
+                &include_bytes!("shaders/spv/simple.vert.spv")[..]
             }
             Shader::Fragment => {
-                &include_bytes!("shaders/spv/shader.frag.spv")[..]
+                &include_bytes!("shaders/spv/simple.frag.spv")[..]
             }
         };
 
