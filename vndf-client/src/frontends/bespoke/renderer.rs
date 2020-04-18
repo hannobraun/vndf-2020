@@ -13,7 +13,10 @@ use crate::{
     game::Game,
     graphics::{
         self,
-        elements::UiElement,
+        elements::{
+            Transform,
+            UiElement,
+        },
     },
     shared::world::behavior::ships::Ship,
 };
@@ -169,6 +172,17 @@ impl Renderer {
         let transform = UiElement::from_ship(ship, game, screen_size)?
             .transform(screen_size);
 
+        self.draw(frame, encoder, &self.drawables.ship, transform);
+
+        Some(())
+    }
+
+    fn draw(&self,
+        frame:     &wgpu::SwapChainOutput,
+        encoder:   &mut wgpu::CommandEncoder,
+        drawable:  &Drawable,
+        transform: Transform,
+    ) {
         let buffer = self.device.create_buffer_with_data(
             transform.as_bytes(),
             wgpu::BufferUsage::COPY_SRC,
@@ -179,16 +193,6 @@ impl Renderer {
             size_of_val(&transform) as u64,
         );
 
-        self.draw(frame, encoder, &self.drawables.ship);
-
-        Some(())
-    }
-
-    fn draw(&self,
-        frame:    &wgpu::SwapChainOutput,
-        encoder:  &mut wgpu::CommandEncoder,
-        drawable: &Drawable,
-    ) {
         let mut render_pass = encoder.begin_render_pass(
             &wgpu::RenderPassDescriptor {
                 color_attachments: &[
