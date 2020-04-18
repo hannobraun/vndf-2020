@@ -21,8 +21,12 @@ enum Shader {
 impl Shader {
     fn load(&self, device: &wgpu::Device) -> Result {
         let code = match self {
-            Shader::Vertex   => &include_bytes!("shaders/shader.vert.spv")[..],
-            Shader::Fragment => &include_bytes!("shaders/shader.frag.spv")[..],
+            Shader::Vertex => {
+                &include_bytes!("shaders/spv/shader.vert.spv")[..]
+            }
+            Shader::Fragment => {
+                &include_bytes!("shaders/spv/shader.frag.spv")[..]
+            }
         };
 
         let module = device.create_shader_module(

@@ -5,10 +5,10 @@ SHADERS=vndf-client/src/frontends/bespoke/shaders
 
 glslc \
     -fshader-stage=vertex \
-    $SHADERS/shader.vert.glsl \
-    -o $SHADERS/shader.vert.spv
+    $SHADERS/glsl/shader.vert.glsl \
+    -o $SHADERS/spv/shader.vert.spv
 
 glslc \
     -fshader-stage=fragment \
-    $SHADERS/shader.frag.glsl \
-    -o $SHADERS/shader.frag.spv
+    $SHADERS/glsl/shader.frag.glsl \
+    -o $SHADERS/spv/shader.frag.spv
