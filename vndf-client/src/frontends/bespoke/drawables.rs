@@ -10,12 +10,14 @@ use std::{
 use zerocopy::AsBytes as _;
 
 use crate::graphics::{
-    self,
     math::{
         ClipUnit,
         LocalUnit,
     },
-    transforms::NativeTransform,
+    transforms::{
+        NativeTransform,
+        Transform,
+    },
 };
 
 use super::{
@@ -82,9 +84,8 @@ impl Drawable {
         -> Result<Self, io::Error>
     {
         let uniform_buffer = device.create_buffer_with_data(
-            graphics::Transform::<LocalUnit, ClipUnit>::identity()
-                .to_3d()
-                .to_row_arrays()
+            Transform::<LocalUnit, ClipUnit>::identity()
+                .to_native()
                 .as_bytes(),
             wgpu::BufferUsage::UNIFORM | wgpu::BufferUsage::COPY_DST,
         );

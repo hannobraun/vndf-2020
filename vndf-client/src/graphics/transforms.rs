@@ -19,6 +19,10 @@ use crate::{
 pub struct Transform<Src, Dst>(pub graphics::Transform<Src, Dst>);
 
 impl<Src, Dst> Transform<Src, Dst> {
+    pub fn identity() -> Self {
+        Self(graphics::Transform::identity())
+    }
+
     pub fn post_transform<NewDst>(&self, transform: &Transform<Dst, NewDst>)
         -> Transform<Src, NewDst>
     {
