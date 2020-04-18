@@ -32,9 +32,10 @@ impl InputHandler {
         window:       &Window,
         control_flow: &mut ControlFlow,
     ) {
-        match event {
+        let input = match event {
             Event::WindowEvent { event: WindowEvent::CloseRequested, .. } => {
-                *control_flow = ControlFlow::Exit
+                *control_flow = ControlFlow::Exit;
+                return;
             }
             Event::WindowEvent {
                 event: WindowEvent::KeyboardInput {
@@ -49,17 +50,19 @@ impl InputHandler {
             } => {
                 let key = Key::Keyboard(*key_code);
 
-                let input = match state {
+                match state {
                     ElementState::Pressed  => Input::KeyDown(key),
                     ElementState::Released => Input::KeyUp(key),
-                };
-
-                let trans = game.handle_input(input, window.size());
-                if trans == Transition::Quit {
-                    *control_flow = ControlFlow::Exit
                 }
             }
-            _ => {}
+            _ => {
+                return;
+            }
+        };
+
+        let trans = game.handle_input(input, window.size());
+        if trans == Transition::Quit {
+            *control_flow = ControlFlow::Exit
         }
     }
 }
