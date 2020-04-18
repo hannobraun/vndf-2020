@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-TARGET=x86_64-pc-windows-msvc
+TARGET=x86_64-pc-windows-gnu
 
 cargo build --release --package=vndf-launcher --target=$TARGET
 

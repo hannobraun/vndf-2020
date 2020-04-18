@@ -76,6 +76,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ env.UPLOAD_URL }}
-        asset_path: target/release-binaries/vndf-launcher-x86_64-pc-windows-msvc.exe
-        asset_name: vndf-launcher-x86_64-pc-windows-msvc.exe
+        asset_path: target/release-binaries/vndf-launcher-x86_64-pc-windows-gnu.exe
+        asset_name: vndf-launcher-x86_64-pc-windows-gnu.exe
         asset_content_type: application/octet-stream
