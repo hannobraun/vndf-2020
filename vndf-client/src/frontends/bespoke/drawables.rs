@@ -39,6 +39,8 @@ impl Drawables {
         let ship = Drawable::new(
             device,
             &meshes.ship,
+            VertexShader::Simple,
+            FragmentShader::Simple,
         )?;
 
         Ok(
@@ -60,7 +62,12 @@ pub struct Drawable {
 }
 
 impl Drawable {
-    pub fn new(device: &wgpu::Device, mesh: &Mesh)
+    pub fn new(
+        device:          &wgpu::Device,
+        mesh:            &Mesh,
+        vertex_shader:   VertexShader,
+        fragment_shader: FragmentShader,
+    )
         -> Result<Self, io::Error>
     {
         let uniform_buffer = device.create_buffer_with_data(
@@ -80,8 +87,8 @@ impl Drawable {
             wgpu::BufferUsage::INDEX,
         );
 
-        let vertex_shader   = VertexShader::Simple.load(device)?;
-        let fragment_shader = FragmentShader::Simple.load(device)?;
+        let vertex_shader   = vertex_shader.load(device)?;
+        let fragment_shader = fragment_shader.load(device)?;
 
         let bind_group_layout = device.create_bind_group_layout(
             &wgpu::BindGroupLayoutDescriptor {
