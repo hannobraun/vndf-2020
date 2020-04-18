@@ -194,8 +194,8 @@ fn vertex_shader(device: &wgpu::Device)
     -> Result<wgpu::ShaderModule, io::Error>
 {
     let code = include_bytes!("shaders/shader.vert.spv");
-    let vertex_shader = device.create_shader_module(
+    let module = device.create_shader_module(
         &wgpu::read_spirv(Cursor::new(&code[..]))?,
     );
-    Ok(vertex_shader)
+    Ok(module)
 }
