@@ -2,6 +2,7 @@ mod drawables;
 mod input_handler;
 mod meshes;
 mod renderer;
+mod shaders;
 mod window;
 
 

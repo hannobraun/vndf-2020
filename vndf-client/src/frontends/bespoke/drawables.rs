@@ -18,10 +18,13 @@ use crate::graphics::{
     transforms,
 };
 
-use super::meshes::{
-    Mesh,
-    Meshes,
-    Vertex,
+use super::{
+    meshes::{
+        Mesh,
+        Meshes,
+        Vertex,
+    },
+    shaders::vertex_shader,
 };
 
 
@@ -187,15 +190,4 @@ impl Drawable {
             }
         )
     }
-}
-
-
-fn vertex_shader(device: &wgpu::Device)
-    -> Result<wgpu::ShaderModule, io::Error>
-{
-    let code = include_bytes!("shaders/shader.vert.spv");
-    let module = device.create_shader_module(
-        &wgpu::read_spirv(Cursor::new(&code[..]))?,
-    );
-    Ok(module)
 }
