@@ -1,8 +1,10 @@
 use winit::{
+    dpi::LogicalPosition,
     event::{
         ElementState,
         Event,
         KeyboardInput,
+        MouseScrollDelta,
         WindowEvent,
     },
     event_loop::ControlFlow,
@@ -50,6 +52,24 @@ impl InputHandler {
                     ElementState::Pressed  => Input::KeyDown(key),
                     ElementState::Released => Input::KeyUp(key),
                 }
+            }
+            Event::WindowEvent {
+                event: WindowEvent::MouseWheel {
+                    delta,
+                    ..
+                },
+                ..
+            } => {
+                let delta = match delta {
+                    MouseScrollDelta::LineDelta(_, y) => {
+                        *y
+                    }
+                    MouseScrollDelta::PixelDelta(LogicalPosition { y, ..}) => {
+                        *y as f32
+                    }
+                };
+
+                Input::MouseWheel(delta)
             }
             Event::WindowEvent { event: WindowEvent::CloseRequested, .. } => {
                 *control_flow = ControlFlow::Exit;
