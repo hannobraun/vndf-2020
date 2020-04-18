@@ -66,6 +66,8 @@ jobs:
         name: upload-url
     - run: echo "::set-env name=UPLOAD_URL::$(cat upload-url/upload-url)"
       shell: bash
+    - name: Install target
+      run: rustup target install x86_64-pc-windows-gnu
     - name: Build Windows client
       run: ./scripts/build-windows-client.sh
       shell: bash
