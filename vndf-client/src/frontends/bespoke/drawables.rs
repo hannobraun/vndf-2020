@@ -1,7 +1,10 @@
 use std::{
     convert::TryInto as _,
     io,
-    mem::size_of,
+    mem::{
+        size_of,
+        size_of_val,
+    },
 };
 
 use zerocopy::AsBytes as _;
@@ -197,5 +200,46 @@ impl Drawable {
                 num_indices,
             }
         )
+    }
+
+    pub fn draw(&self,
+        device:    &wgpu::Device,
+        frame:     &wgpu::SwapChainOutput,
+        encoder:   &mut wgpu::CommandEncoder,
+        transform: Transform,
+    ) {
+        let buffer = device.create_buffer_with_data(
+            transform.as_bytes(),
+            wgpu::BufferUsage::COPY_SRC,
+        );
+        encoder.copy_buffer_to_buffer(
+            &buffer, 0,
+            &self.uniform_buffer, 0,
+            size_of_val(&transform) as u64,
+        );
+
+        let mut render_pass = encoder.begin_render_pass(
+            &wgpu::RenderPassDescriptor {
+                color_attachments: &[
+                    wgpu::RenderPassColorAttachmentDescriptor {
+                        attachment:     &frame.view,
+                        resolve_target: None,
+                        load_op:        wgpu::LoadOp::Load,
+                        store_op:       wgpu::StoreOp::Store,
+                        clear_color:    wgpu::Color::TRANSPARENT,
+                    },
+                ],
+                depth_stencil_attachment: None,
+            },
+        );
+        render_pass.set_pipeline(&self.render_pipeline);
+        render_pass.set_bind_group(0, &self.bind_group, &[]);
+        render_pass.set_vertex_buffer(0, &self.vertex_buffer, 0, 0);
+        render_pass.set_index_buffer(&self.index_buffer, 0, 0);
+        render_pass.draw_indexed(
+            0 .. self.num_indices,
+            0,
+            0 .. 1,
+        );
     }
 }

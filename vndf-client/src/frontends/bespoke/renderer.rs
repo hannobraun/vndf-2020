@@ -1,20 +1,15 @@
-use std::{
-    io,
-    mem::size_of_val,
-};
+use std::io;
 
 use winit::event::{
     Event,
     WindowEvent,
 };
-use zerocopy::AsBytes as _;
 
 use crate::{
     game::Game,
     graphics::{
         self,
         elements::{
-            Transform,
             UiElement,
             WorldElement,
         },
@@ -26,10 +21,7 @@ use crate::{
 };
 
 use super::{
-    drawables::{
-        Drawable,
-        Drawables,
-    },
+    drawables::Drawables,
     meshes::{
         self,
         Meshes,
@@ -172,11 +164,10 @@ impl Renderer {
         let transform = WorldElement::from(planet)
             .transform(&game.state.camera, self.screen_size());
 
-        self.draw(
+        self.drawables.planet.draw(
             &self.device,
             frame,
             encoder,
-            &self.drawables.planet,
             transform,
         );
     }
@@ -192,57 +183,14 @@ impl Renderer {
         let transform = UiElement::from_ship(ship, game, self.screen_size())?
             .transform(self.screen_size());
 
-        self.draw(
+        self.drawables.ship.draw(
             &self.device,
             frame,
             encoder,
-            &self.drawables.ship,
             transform,
         );
 
         Some(())
-    }
-
-    fn draw(&self,
-        device:    &wgpu::Device,
-        frame:     &wgpu::SwapChainOutput,
-        encoder:   &mut wgpu::CommandEncoder,
-        drawable:  &Drawable,
-        transform: Transform,
-    ) {
-        let buffer = device.create_buffer_with_data(
-            transform.as_bytes(),
-            wgpu::BufferUsage::COPY_SRC,
-        );
-        encoder.copy_buffer_to_buffer(
-            &buffer, 0,
-            &drawable.uniform_buffer, 0,
-            size_of_val(&transform) as u64,
-        );
-
-        let mut render_pass = encoder.begin_render_pass(
-            &wgpu::RenderPassDescriptor {
-                color_attachments: &[
-                    wgpu::RenderPassColorAttachmentDescriptor {
-                        attachment:     &frame.view,
-                        resolve_target: None,
-                        load_op:        wgpu::LoadOp::Load,
-                        store_op:       wgpu::StoreOp::Store,
-                        clear_color:    wgpu::Color::TRANSPARENT,
-                    },
-                ],
-                depth_stencil_attachment: None,
-            },
-        );
-        render_pass.set_pipeline(&drawable.render_pipeline);
-        render_pass.set_bind_group(0, &drawable.bind_group, &[]);
-        render_pass.set_vertex_buffer(0, &drawable.vertex_buffer, 0, 0);
-        render_pass.set_index_buffer(&drawable.index_buffer, 0, 0);
-        render_pass.draw_indexed(
-            0 .. drawable.num_indices,
-            0,
-            0 .. 1,
-        );
     }
 
     fn screen_size(&self) -> graphics::Size {
