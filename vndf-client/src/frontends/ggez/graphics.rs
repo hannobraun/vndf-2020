@@ -118,6 +118,9 @@ impl Graphics {
     )
         -> GameResult
     {
+        for ship in game.state.data.ships.values() {
+            self.draw_orbit(context, ship, game)?;
+        }
         for planet in game.state.data.planets.values() {
             self.draw_planet(context, planet, game)?;
         }
@@ -151,8 +154,6 @@ impl Graphics {
         -> GameResult<bool>
     {
         let craft = get!(game.state.data.crafts, &ship.craft);
-
-        self.draw_orbit(context, &ship, game)?;
 
         let element = get!(
             UiElement::from_ship(ship, game, screen_size(context))
