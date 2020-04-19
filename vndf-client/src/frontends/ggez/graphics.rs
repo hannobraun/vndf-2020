@@ -171,7 +171,7 @@ impl Graphics {
             r1_s.0,
             r2_s.0,
             0.5,
-            [ship.color[0], ship.color[1], ship.color[2], 0.5].into(),
+            [1.0, 1.0, 1.0, 0.5].into(),
         )?;
 
         let element = UiElement {
