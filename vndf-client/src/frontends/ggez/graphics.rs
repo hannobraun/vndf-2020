@@ -23,7 +23,6 @@ use crate::{
     shared::world::behavior::{
         crafts::Craft,
         explosions::Explosion,
-        physics::Body,
         orbits::Orbit,
         planets::{
             Planet,
@@ -153,7 +152,7 @@ impl Graphics {
     {
         let craft = get!(game.state.data.crafts, &ship.craft);
 
-        self.draw_orbit(context, &craft.body, ship.color, game)?;
+        self.draw_orbit(context, &ship, ship.color, game)?;
 
         let element = get!(
             UiElement::from_ship(ship, game, screen_size(context))
@@ -210,15 +209,16 @@ impl Graphics {
 
     fn draw_orbit(&self,
         context: &mut Context,
-        body:    impl Into<handle::Weak<Body>>,
+        ship:    &Ship,
         color:   [f32; 3],
         game:    &Game,
     )
         -> GameResult<bool>
     {
-        let body = get!(game.state.data.bodies,     body);
-        let pos  = get!(game.state.data.positions,  &body.pos);
-        let vel  = get!(game.state.data.velocities, &body.vel);
+        let craft = get!(game.state.data.crafts,     &ship.craft);
+        let body  = get!(game.state.data.bodies,     &craft.body);
+        let pos   = get!(game.state.data.positions,  &body.pos);
+        let vel   = get!(game.state.data.velocities, &body.vel);
 
         let planets = Planets(&game.state.data.planets);
 
