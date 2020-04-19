@@ -152,7 +152,7 @@ impl Graphics {
     {
         let craft = get!(game.state.data.crafts, &ship.craft);
 
-        self.draw_orbit(context, &ship, ship.color, game)?;
+        self.draw_orbit(context, &ship, game)?;
 
         let element = get!(
             UiElement::from_ship(ship, game, screen_size(context))
@@ -210,7 +210,6 @@ impl Graphics {
     fn draw_orbit(&self,
         context: &mut Context,
         ship:    &Ship,
-        color:   [f32; 3],
         game:    &Game,
     )
         -> GameResult<bool>
@@ -245,7 +244,7 @@ impl Graphics {
             r1_s.0,
             r2_s.0,
             0.5,
-            [color[0], color[1], color[2], 0.5].into(),
+            [ship.color[0], ship.color[1], ship.color[2], 0.5].into(),
         )?;
 
         let element = UiElement {
