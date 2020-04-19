@@ -217,9 +217,8 @@ impl Graphics {
         -> GameResult<bool>
     {
         let body = get!(game.state.data.bodies, body);
-
-        let pos = *get!(game.state.data.positions,  &body.pos);
-        let vel = *get!(game.state.data.velocities, &body.vel);
+        let pos  = *get!(game.state.data.positions,  &body.pos);
+        let vel  = *get!(game.state.data.velocities, &body.vel);
 
         let planets = Planets(&game.state.data.planets);
 
