@@ -83,7 +83,7 @@ impl Drawable {
     )
         -> Result<Self, io::Error>
     {
-        let uniform_buffer = device.create_buffer_with_data(
+        let transform_buffer = device.create_buffer_with_data(
             Transform::<LocalUnit, ClipUnit>::identity()
                 .to_native()
                 .as_bytes(),
@@ -118,7 +118,7 @@ impl Drawable {
                     wgpu::Binding {
                         binding: 0,
                         resource: wgpu::BindingResource::Buffer {
-                            buffer: &uniform_buffer,
+                            buffer: &transform_buffer,
                             range: 0 .. size_of::<NativeTransform>() as u64,
                         },
                     }
@@ -201,7 +201,7 @@ impl Drawable {
 
         Ok(
             Self {
-                transform_buffer: uniform_buffer,
+                transform_buffer,
                 vertex_buffer,
                 index_buffer,
                 render_pipeline,
