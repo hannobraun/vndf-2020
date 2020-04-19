@@ -253,14 +253,18 @@ impl Graphics {
             [color[0], color[1], color[2], 0.5].into(),
         )?;
 
+        let element = UiElement {
+            pos:   pos_s,
+            angle: -orbit.arg_of_periapsis,
+            .. UiElement::default()
+        };
+
         // Draw orbit
         draw(
             context,
-            &ScreenTransform { element: &UiElement::default() },
+            &ScreenTransform { element: &element },
             &ellipse,
-            DrawParam::screen()
-                .dest(pos_s)
-                .rotation(orbit.arg_of_periapsis.radians),
+            DrawParam::screen(),
         )?;
 
         // Display periapsis and apoapsis
