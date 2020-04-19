@@ -15,6 +15,7 @@ use crate::{
         },
     },
     shared::world::behavior::{
+        orbits::Orbit,
         planets::Planet,
         ships::Ship,
     },
@@ -120,6 +121,9 @@ impl Renderer {
 
                 self.draw_background(&frame, &mut encoder);
 
+                for orbit in game.state.active_orbits() {
+                    self.draw_orbit(&frame, &mut encoder, &orbit, game);
+                }
                 for planet in game.state.data.planets.values() {
                     self.draw_planet(&frame, &mut encoder, planet, game);
                 }
@@ -153,6 +157,29 @@ impl Renderer {
                 depth_stencil_attachment: None,
             },
         );
+    }
+
+    fn draw_orbit(&self,
+        frame:   &wgpu::SwapChainOutput,
+        encoder: &mut wgpu::CommandEncoder,
+        orbit:   &Orbit,
+        game:    &Game,
+    )
+        -> Option<()>
+    {
+        let transform = WorldElement::from(orbit)
+            .transform(&game.state.camera, self.screen_size())
+            .to_native();
+
+        self.drawables.orbit.draw(
+            &self.device,
+            frame,
+            encoder,
+            transform,
+            [1.0, 1.0, 1.0, 0.1],
+        );
+
+        Some(())
     }
 
     fn draw_planet(&self,

@@ -18,6 +18,7 @@ use crate::{
         self,
         behavior::{
             crafts::Craft,
+            orbits::Orbit,
             planets::Planet,
             ships::Ship,
         },
@@ -111,6 +112,21 @@ impl WorldElement {
             .post_transform(
                 &transforms::screen_to_homogeneous(screen_size)
             )
+    }
+}
+
+impl From<&Orbit> for WorldElement {
+    fn from(orbit: &Orbit) -> Self {
+        let size = world::Size::from_lengths(
+            orbit.semi_major_axis,
+            orbit.semi_minor_axis,
+        );
+
+        Self {
+            size,
+            pos:   orbit.ellipse_pos,
+            angle: -orbit.arg_of_periapsis,
+        }
     }
 }
 

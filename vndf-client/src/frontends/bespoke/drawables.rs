@@ -34,6 +34,7 @@ use super::{
 
 
 pub struct Drawables {
+    pub orbit:  Drawable,
     pub planet: Drawable,
     pub ship:   Drawable,
 }
@@ -42,6 +43,12 @@ impl Drawables {
     pub fn new(device: &wgpu::Device, meshes: &Meshes)
         -> Result<Self, io::Error>
     {
+        let orbit = Drawable::new(
+            device,
+            &meshes.square,
+            VertexShader::Simple,
+            FragmentShader::Simple,
+        )?;
         let planet = Drawable::new(
             device,
             &meshes.square,
@@ -57,6 +64,7 @@ impl Drawables {
 
         Ok(
             Self {
+                orbit,
                 planet,
                 ship,
             }
