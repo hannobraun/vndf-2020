@@ -191,7 +191,7 @@ impl Renderer {
             frame,
             encoder,
             transform,
-            [1.0, 1.0, 1.0, 1.0],
+            [ship.color[0], ship.color[1], ship.color[2], 1.0],
         );
 
         Some(())
