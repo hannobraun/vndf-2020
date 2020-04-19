@@ -136,7 +136,7 @@ impl Drawable {
                         binding: 1,
                         resource: wgpu::BindingResource::Buffer {
                             buffer: &color_buffer,
-                            range: 0 .. size_of::<[f32; 4]>() as u64,
+                            range: 0 .. size_of::<Color>() as u64,
                         },
                     }
                 ],
@@ -269,3 +269,6 @@ impl Drawable {
         );
     }
 }
+
+
+pub type Color = [f32; 4];
