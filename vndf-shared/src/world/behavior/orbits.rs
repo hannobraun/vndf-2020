@@ -47,6 +47,8 @@ impl Orbit {
         let mu = G * planet.mass;
 
         // Orbital eccentricity
+        //
+        // The eccentricity vector points from apocenter to pericenter.
         let e =
             r * (v.length().powi(2) / mu - 1.0 / r.length())
             - v * r.dot(v) / mu;
