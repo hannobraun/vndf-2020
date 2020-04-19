@@ -153,8 +153,6 @@ impl Graphics {
     fn draw_ship(&self, context: &mut Context, ship: &Ship, game: &Game)
         -> GameResult<bool>
     {
-        let craft = get!(game.state.data.crafts, &ship.craft);
-
         let element = get!(
             UiElement::from_ship(ship, game, screen_size(context))
         );
@@ -167,6 +165,7 @@ impl Graphics {
                 .color([ship.color[0], ship.color[1], ship.color[2], 1.0]),
         )?;
 
+        let craft = get!(game.state.data.crafts, &ship.craft);
         self.draw_craft_info(context, craft, element, game)?;
 
         Ok(true)
