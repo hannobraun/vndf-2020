@@ -20,19 +20,16 @@ use crate::{
         elements::UiElement,
         vertices,
     },
-    shared::world::{
-        self,
-        behavior::{
-            crafts::Craft,
-            explosions::Explosion,
-            physics::Body,
-            orbits::Orbit,
-            planets::{
-                Planet,
-                Planets,
-            },
-            ships::Ship,
+    shared::world::behavior::{
+        crafts::Craft,
+        explosions::Explosion,
+        physics::Body,
+        orbits::Orbit,
+        planets::{
+            Planet,
+            Planets,
         },
+        ships::Ship,
     },
 };
 
@@ -219,8 +216,7 @@ impl Graphics {
     )
         -> GameResult<bool>
     {
-        let mut body = get!(game.state.data.bodies, body).clone();
-        body.acc = world::Vec2::zero();
+        let body = get!(game.state.data.bodies, body);
 
         let pos = *get!(game.state.data.positions,  &body.pos);
         let vel = *get!(game.state.data.velocities, &body.vel);
