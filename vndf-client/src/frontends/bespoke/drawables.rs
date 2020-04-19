@@ -154,7 +154,7 @@ impl Drawable {
                         depth_bias_clamp:       0.0,
                     }
                 ),
-                primitive_topology: wgpu::PrimitiveTopology::TriangleStrip,
+                primitive_topology: wgpu::PrimitiveTopology::TriangleList,
                 color_states: &[
                     wgpu::ColorStateDescriptor {
                         format: wgpu::TextureFormat::Bgra8UnormSrgb,
