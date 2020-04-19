@@ -170,6 +170,7 @@ impl Renderer {
             frame,
             encoder,
             transform,
+            [1.0, 1.0, 1.0, 1.0],
         );
     }
 
@@ -190,6 +191,7 @@ impl Renderer {
             frame,
             encoder,
             transform,
+            [1.0, 1.0, 1.0, 1.0],
         );
 
         Some(())
