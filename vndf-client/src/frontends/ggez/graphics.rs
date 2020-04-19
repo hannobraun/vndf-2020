@@ -134,79 +134,6 @@ impl Graphics {
         Ok(())
     }
 
-    fn draw_planet(&self, context: &mut Context, planet: &Planet, game: &Game)
-        -> GameResult
-    {
-        draw(
-            context,
-            &WorldTransform {
-                element: &planet.into(),
-                camera:  &game.state.camera,
-            },
-            &self.circle,
-            DrawParam::world()
-        )?;
-
-        Ok(())
-    }
-
-    fn draw_ship(&self, context: &mut Context, ship: &Ship, game: &Game)
-        -> GameResult<bool>
-    {
-        let element = get!(
-            UiElement::from_ship(ship, game, screen_size(context))
-        );
-
-        draw(
-            context,
-            &ScreenTransform { element: &element },
-            &self.ship,
-            DrawParam::screen()
-                .color([ship.color[0], ship.color[1], ship.color[2], 1.0]),
-        )?;
-
-        let craft = get!(game.state.data.crafts, &ship.craft);
-        self.draw_craft_info(context, craft, element, game)?;
-
-        Ok(true)
-    }
-
-    fn draw_craft_info(&self,
-        context: &mut Context,
-        craft:   &Craft,
-        element: UiElement,
-        game:    &Game,
-    )
-        -> GameResult<bool>
-    {
-        let element = UiElement {
-            pos: element.pos + graphics::Vec2::new(20.0, -20.0),
-            .. UiElement::default()
-        };
-
-        let body  = get!(game.state.data.bodies, &craft.body);
-        let pos_w = get!(game.state.data.positions, &body.pos);
-        let vel   = get!(game.state.data.velocities, &body.vel);
-
-        let pos_km = pos_w.0 / 1000.0;
-        let vel_km = vel.0 / 1000.0;
-
-        draw(
-            context,
-            &ScreenTransform { element: &element },
-            &Text::new(
-                format!(
-                    "Pos: {:.0}/{:.0}\nVel: {:.0}/{:.0} ({:.0})",
-                    pos_km.x, pos_km.y,
-                    vel_km.x, vel_km.y, vel_km.length(),
-                )
-            ),
-            DrawParam::screen(),
-        )?;
-
-        Ok(true)
-    }
-
     fn draw_orbit(&self,
         context: &mut Context,
         ship:    &Ship,
@@ -312,6 +239,79 @@ impl Graphics {
                     ),
             )?;
         }
+
+        Ok(true)
+    }
+
+    fn draw_planet(&self, context: &mut Context, planet: &Planet, game: &Game)
+        -> GameResult
+    {
+        draw(
+            context,
+            &WorldTransform {
+                element: &planet.into(),
+                camera:  &game.state.camera,
+            },
+            &self.circle,
+            DrawParam::world()
+        )?;
+
+        Ok(())
+    }
+
+    fn draw_ship(&self, context: &mut Context, ship: &Ship, game: &Game)
+        -> GameResult<bool>
+    {
+        let element = get!(
+            UiElement::from_ship(ship, game, screen_size(context))
+        );
+
+        draw(
+            context,
+            &ScreenTransform { element: &element },
+            &self.ship,
+            DrawParam::screen()
+                .color([ship.color[0], ship.color[1], ship.color[2], 1.0]),
+        )?;
+
+        let craft = get!(game.state.data.crafts, &ship.craft);
+        self.draw_craft_info(context, craft, element, game)?;
+
+        Ok(true)
+    }
+
+    fn draw_craft_info(&self,
+        context: &mut Context,
+        craft:   &Craft,
+        element: UiElement,
+        game:    &Game,
+    )
+        -> GameResult<bool>
+    {
+        let element = UiElement {
+            pos: element.pos + graphics::Vec2::new(20.0, -20.0),
+            .. UiElement::default()
+        };
+
+        let body  = get!(game.state.data.bodies, &craft.body);
+        let pos_w = get!(game.state.data.positions, &body.pos);
+        let vel   = get!(game.state.data.velocities, &body.vel);
+
+        let pos_km = pos_w.0 / 1000.0;
+        let vel_km = vel.0 / 1000.0;
+
+        draw(
+            context,
+            &ScreenTransform { element: &element },
+            &Text::new(
+                format!(
+                    "Pos: {:.0}/{:.0}\nVel: {:.0}/{:.0} ({:.0})",
+                    pos_km.x, pos_km.y,
+                    vel_km.x, vel_km.y, vel_km.length(),
+                )
+            ),
+            DrawParam::screen(),
+        )?;
 
         Ok(true)
     }
