@@ -16,6 +16,7 @@ impl VertexShader {
 
 
 pub enum FragmentShader {
+    Orbit,
     Planet,
     Simple,
 }
@@ -37,6 +38,9 @@ impl Shader {
         let code = match self {
             Shader::Vertex(VertexShader::Simple) => {
                 &include_bytes!("shaders/spv/simple.vert.spv")[..]
+            }
+            Shader::Fragment(FragmentShader::Orbit) => {
+                &include_bytes!("shaders/spv/orbit.frag.spv")[..]
             }
             Shader::Fragment(FragmentShader::Planet) => {
                 &include_bytes!("shaders/spv/planet.frag.spv")[..]
