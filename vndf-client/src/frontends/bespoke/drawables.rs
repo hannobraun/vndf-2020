@@ -66,12 +66,12 @@ impl Drawables {
 
 
 pub struct Drawable {
-    pub uniform_buffer:  wgpu::Buffer,
-    pub vertex_buffer:   wgpu::Buffer,
-    pub index_buffer:    wgpu::Buffer,
-    pub bind_group:      wgpu::BindGroup,
-    pub render_pipeline: wgpu::RenderPipeline,
-    pub num_indices:     u32,
+    pub transform_buffer: wgpu::Buffer,
+    pub vertex_buffer:    wgpu::Buffer,
+    pub index_buffer:     wgpu::Buffer,
+    pub bind_group:       wgpu::BindGroup,
+    pub render_pipeline:  wgpu::RenderPipeline,
+    pub num_indices:      u32,
 }
 
 impl Drawable {
@@ -201,7 +201,7 @@ impl Drawable {
 
         Ok(
             Self {
-                uniform_buffer,
+                transform_buffer: uniform_buffer,
                 vertex_buffer,
                 index_buffer,
                 render_pipeline,
@@ -223,7 +223,7 @@ impl Drawable {
         );
         encoder.copy_buffer_to_buffer(
             &buffer, 0,
-            &self.uniform_buffer, 0,
+            &self.transform_buffer, 0,
             size_of_val(&transform) as u64,
         );
 
