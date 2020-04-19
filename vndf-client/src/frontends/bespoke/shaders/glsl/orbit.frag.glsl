@@ -15,7 +15,7 @@ layout(location = 0) out vec4 color_out;
 void main() {
     float alpha;
     if (length(pos) <= 1.0) {
-        alpha = 1.0;
+        alpha = 0.1;
     }
     else {
         alpha = 0.0;
