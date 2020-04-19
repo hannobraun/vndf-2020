@@ -15,6 +15,7 @@ use crate::{
         world::{
             self,
             behavior::{
+                orbits::Orbit,
                 planets::Planets,
                 players::PlayerId,
             },
@@ -94,6 +95,27 @@ impl State {
         }
 
         None
+    }
+
+    pub fn active_orbits(&self) -> impl Iterator<Item=Orbit> + '_ {
+        self.data.ships
+            .values()
+            .filter_map(move |ship| {
+                let craft = self.data.crafts.get(&ship.craft)?;
+                let body  = self.data.bodies.get(&craft.body)?;
+                let pos   = self.data.positions.get(&body.pos)?;
+                let vel   = self.data.velocities.get(&body.vel)?;
+
+                let planets = Planets(&self.data.planets);
+
+                let orbit = Orbit::from_state_vectors(
+                    pos.0,
+                    vel.0,
+                    &planets,
+                )?;
+
+                Some(orbit)
+            })
     }
 }
 

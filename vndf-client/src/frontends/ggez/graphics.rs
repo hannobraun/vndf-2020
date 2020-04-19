@@ -24,10 +24,7 @@ use crate::{
         crafts::Craft,
         explosions::Explosion,
         orbits::Orbit,
-        planets::{
-            Planet,
-            Planets,
-        },
+        planets::Planet,
         ships::Ship,
     },
 };
@@ -118,8 +115,8 @@ impl Graphics {
     )
         -> GameResult
     {
-        for ship in game.state.data.ships.values() {
-            self.draw_orbit(context, ship, game)?;
+        for orbit in game.state.active_orbits() {
+            self.draw_orbit(context, &orbit, game)?;
         }
         for planet in game.state.data.planets.values() {
             self.draw_planet(context, planet, game)?;
@@ -136,23 +133,11 @@ impl Graphics {
 
     fn draw_orbit(&self,
         context: &mut Context,
-        ship:    &Ship,
+        orbit:   &Orbit,
         game:    &Game,
     )
         -> GameResult<bool>
     {
-        let craft = get!(game.state.data.crafts,     &ship.craft);
-        let body  = get!(game.state.data.bodies,     &craft.body);
-        let pos   = get!(game.state.data.positions,  &body.pos);
-        let vel   = get!(game.state.data.velocities, &body.vel);
-
-        let planets = Planets(&game.state.data.planets);
-
-        let orbit = match Orbit::from_state_vectors(pos.0, vel.0, &planets) {
-            Some(orbit) => orbit,
-            None        => return Ok(true),
-        };
-
         let size_s   = screen_size(context);
         let pi_per_m = game.state.camera.pixels_per_meter(size_s);
 
