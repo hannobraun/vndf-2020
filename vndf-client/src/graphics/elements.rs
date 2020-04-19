@@ -18,8 +18,8 @@ use crate::{
         self,
         behavior::{
             crafts::Craft,
-            ships::Ship,
             planets::Planet,
+            ships::Ship,
         },
     },
 };
