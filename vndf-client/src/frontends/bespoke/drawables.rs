@@ -89,6 +89,11 @@ impl Drawable {
                 .as_bytes(),
             wgpu::BufferUsage::UNIFORM | wgpu::BufferUsage::COPY_DST,
         );
+        let color_buffer = device.create_buffer_with_data(
+            [1.0f32, 1.0, 1.0, 1.0]
+                .as_bytes(),
+            wgpu::BufferUsage::UNIFORM | wgpu::BufferUsage::COPY_DST,
+        );
 
         let vertex_buffer = device.create_buffer_with_data(
             mesh.vertices.as_bytes(),
@@ -107,6 +112,11 @@ impl Drawable {
                         visibility: wgpu::ShaderStage::VERTEX,
                         ty: wgpu::BindingType::UniformBuffer { dynamic: false},
                     },
+                    wgpu::BindGroupLayoutEntry {
+                        binding: 1,
+                        visibility: wgpu::ShaderStage::FRAGMENT,
+                        ty: wgpu::BindingType::UniformBuffer { dynamic: false },
+                    },
                 ],
                 label: None,
             },
@@ -120,6 +130,13 @@ impl Drawable {
                         resource: wgpu::BindingResource::Buffer {
                             buffer: &transform_buffer,
                             range: 0 .. size_of::<NativeTransform>() as u64,
+                        },
+                    },
+                    wgpu::Binding {
+                        binding: 1,
+                        resource: wgpu::BindingResource::Buffer {
+                            buffer: &color_buffer,
+                            range: 0 .. size_of::<[f32; 4]>() as u64,
                         },
                     }
                 ],
