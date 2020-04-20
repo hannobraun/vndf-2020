@@ -13,17 +13,14 @@ layout(location = 0) in  vec2 pos;
 layout(location = 0) out vec4 color_out;
 
 void main() {
-    float d   = 0.002;
-    float min = 1.0 - d;
-    float max = 1.0 + d;
-
+    float x = 0.998;
     float r = length(pos);
 
     float alpha;
-    if (min <= r && r <= max) {
+    if (x < r && r <= 1.0) {
         alpha = 0.5;
     }
-    else if (r < min) {
+    else if (r <= x) {
         alpha = 0.1;
     }
     else {
