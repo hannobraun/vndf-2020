@@ -21,9 +21,12 @@ pub struct Uniforms {
 
 impl Default for Uniforms {
     fn default() -> Self {
+        let transform = Transform::<LocalUnit, ClipUnit>::identity()
+            .to_native();
+
         Self {
-            transform: Transform::<LocalUnit, ClipUnit>::identity().to_native(),
-            color:     [0.0; 4],
+            transform,
+            color: [0.0; 4],
         }
     }
 }
