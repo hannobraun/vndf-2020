@@ -8,6 +8,7 @@
 layout(set = 0, binding = 0) uniform Locals {
     mat4 transform;
     vec4 color_in;
+    vec2 u_per_pixel;
 };
 
 layout(location = 0) in  vec2 pos;

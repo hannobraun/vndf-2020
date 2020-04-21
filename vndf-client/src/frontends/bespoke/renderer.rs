@@ -225,6 +225,7 @@ impl Renderer {
             Uniforms {
                 transform,
                 color: [ship.color[0], ship.color[1], ship.color[2], 1.0],
+                .. Uniforms::default()
             },
         );
 

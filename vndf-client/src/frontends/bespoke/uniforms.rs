@@ -15,8 +15,9 @@ use crate::graphics::{
 #[derive(AsBytes)]
 #[repr(packed)]
 pub struct Uniforms {
-    pub transform: NativeTransform,
-    pub color:     Color,
+    pub transform:   NativeTransform,
+    pub color:       Color,
+    pub u_per_pixel: [f32; 2],
 }
 
 impl Default for Uniforms {
@@ -26,7 +27,8 @@ impl Default for Uniforms {
 
         Self {
             transform,
-            color: [1.0; 4],
+            color:       [1.0; 4],
+            u_per_pixel: [1.0, 1.0],
         }
     }
 }
