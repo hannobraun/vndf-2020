@@ -9,8 +9,6 @@ use std::{
 
 use zerocopy::AsBytes as _;
 
-use crate::graphics::transforms::NativeTransform;
-
 use super::{
     meshes::{
         Mesh,
@@ -21,10 +19,7 @@ use super::{
         FragmentShader,
         VertexShader,
     },
-    uniforms::{
-        Color,
-        Uniforms,
-    }
+    uniforms::Uniforms,
 };
 
 
@@ -215,14 +210,11 @@ impl Drawable {
     }
 
     pub fn draw(&self,
-        device:    &wgpu::Device,
-        frame:     &wgpu::SwapChainOutput,
-        encoder:   &mut wgpu::CommandEncoder,
-        transform: NativeTransform,
-        color:     Color,
+        device:   &wgpu::Device,
+        frame:    &wgpu::SwapChainOutput,
+        encoder:  &mut wgpu::CommandEncoder,
+        uniforms: Uniforms,
     ) {
-        let uniforms = Uniforms { transform, color };
-
         let buffer = device.create_buffer_with_data(
             uniforms.as_bytes(),
             wgpu::BufferUsage::COPY_SRC,

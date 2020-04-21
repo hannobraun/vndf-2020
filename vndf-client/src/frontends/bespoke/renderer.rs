@@ -27,6 +27,7 @@ use super::{
         self,
         Meshes,
     },
+    uniforms::Uniforms,
     window::Window,
 };
 
@@ -175,8 +176,10 @@ impl Renderer {
             &self.device,
             frame,
             encoder,
-            transform,
-            [1.0, 1.0, 1.0, 1.0],
+            Uniforms {
+                transform,
+                color: [1.0, 1.0, 1.0, 1.0],
+            },
         );
 
         Some(())
@@ -196,8 +199,10 @@ impl Renderer {
             &self.device,
             frame,
             encoder,
-            transform,
-            [1.0, 1.0, 1.0, 1.0],
+            Uniforms {
+                transform,
+                color: [1.0, 1.0, 1.0, 1.0],
+            },
         );
     }
 
@@ -217,8 +222,10 @@ impl Renderer {
             &self.device,
             frame,
             encoder,
-            transform,
-            [ship.color[0], ship.color[1], ship.color[2], 1.0],
+            Uniforms {
+                transform,
+                color: [ship.color[0], ship.color[1], ship.color[2], 1.0],
+            },
         );
 
         Some(())
