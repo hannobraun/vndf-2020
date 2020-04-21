@@ -178,7 +178,7 @@ impl Renderer {
             encoder,
             Uniforms {
                 transform,
-                color: [1.0, 1.0, 1.0, 1.0],
+                .. Uniforms::default()
             },
         );
 
@@ -201,7 +201,7 @@ impl Renderer {
             encoder,
             Uniforms {
                 transform,
-                color: [1.0, 1.0, 1.0, 1.0],
+                .. Uniforms::default()
             },
         );
     }

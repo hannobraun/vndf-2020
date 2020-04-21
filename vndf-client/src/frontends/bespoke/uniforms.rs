@@ -26,7 +26,7 @@ impl Default for Uniforms {
 
         Self {
             transform,
-            color: [0.0; 4],
+            color: [1.0; 4],
         }
     }
 }
