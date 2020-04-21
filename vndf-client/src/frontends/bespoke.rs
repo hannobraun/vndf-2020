@@ -3,6 +3,7 @@ mod input_handler;
 mod meshes;
 mod renderer;
 mod shaders;
+mod uniforms;
 mod window;
 
 

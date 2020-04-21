@@ -9,16 +9,7 @@ use std::{
 
 use zerocopy::AsBytes as _;
 
-use crate::graphics::{
-    math::{
-        ClipUnit,
-        LocalUnit,
-    },
-    transforms::{
-        NativeTransform,
-        Transform,
-    },
-};
+use crate::graphics::transforms::NativeTransform;
 
 use super::{
     meshes::{
@@ -30,6 +21,10 @@ use super::{
         FragmentShader,
         VertexShader,
     },
+    uniforms::{
+        Color,
+        Uniforms,
+    }
 };
 
 
@@ -74,13 +69,12 @@ impl Drawables {
 
 
 pub struct Drawable {
-    pub transform_buffer: wgpu::Buffer,
-    pub color_buffer:     wgpu::Buffer,
-    pub vertex_buffer:    wgpu::Buffer,
-    pub index_buffer:     wgpu::Buffer,
-    pub bind_group:       wgpu::BindGroup,
-    pub render_pipeline:  wgpu::RenderPipeline,
-    pub num_indices:      u32,
+    pub uniform_buffer:  wgpu::Buffer,
+    pub vertex_buffer:   wgpu::Buffer,
+    pub index_buffer:    wgpu::Buffer,
+    pub bind_group:      wgpu::BindGroup,
+    pub render_pipeline: wgpu::RenderPipeline,
+    pub num_indices:     u32,
 }
 
 impl Drawable {
@@ -92,14 +86,8 @@ impl Drawable {
     )
         -> Result<Self, io::Error>
     {
-        let transform_buffer = device.create_buffer_with_data(
-            Transform::<LocalUnit, ClipUnit>::identity()
-                .to_native()
-                .as_bytes(),
-            wgpu::BufferUsage::UNIFORM | wgpu::BufferUsage::COPY_DST,
-        );
-        let color_buffer = device.create_buffer_with_data(
-            [1.0f32, 1.0, 1.0, 1.0]
+        let uniform_buffer = device.create_buffer_with_data(
+            Uniforms::default()
                 .as_bytes(),
             wgpu::BufferUsage::UNIFORM | wgpu::BufferUsage::COPY_DST,
         );
@@ -118,12 +106,8 @@ impl Drawable {
                 bindings: &[
                     wgpu::BindGroupLayoutEntry {
                         binding: 0,
-                        visibility: wgpu::ShaderStage::VERTEX,
-                        ty: wgpu::BindingType::UniformBuffer { dynamic: false},
-                    },
-                    wgpu::BindGroupLayoutEntry {
-                        binding: 1,
-                        visibility: wgpu::ShaderStage::FRAGMENT,
+                        visibility: wgpu::ShaderStage::VERTEX
+                            | wgpu::ShaderStage::FRAGMENT,
                         ty: wgpu::BindingType::UniformBuffer { dynamic: false },
                     },
                 ],
@@ -137,17 +121,10 @@ impl Drawable {
                     wgpu::Binding {
                         binding: 0,
                         resource: wgpu::BindingResource::Buffer {
-                            buffer: &transform_buffer,
-                            range: 0 .. size_of::<NativeTransform>() as u64,
+                            buffer: &uniform_buffer,
+                            range: 0 .. size_of::<Uniforms>() as u64,
                         },
                     },
-                    wgpu::Binding {
-                        binding: 1,
-                        resource: wgpu::BindingResource::Buffer {
-                            buffer: &color_buffer,
-                            range: 0 .. size_of::<Color>() as u64,
-                        },
-                    }
                 ],
                 label: None,
             },
@@ -227,8 +204,7 @@ impl Drawable {
 
         Ok(
             Self {
-                transform_buffer,
-                color_buffer,
+                uniform_buffer,
                 vertex_buffer,
                 index_buffer,
                 render_pipeline,
@@ -245,26 +221,16 @@ impl Drawable {
         transform: NativeTransform,
         color:     Color,
     ) {
-        // Copy transform to buffer
-        let buffer = device.create_buffer_with_data(
-            transform.as_bytes(),
-            wgpu::BufferUsage::COPY_SRC,
-        );
-        encoder.copy_buffer_to_buffer(
-            &buffer, 0,
-            &self.transform_buffer, 0,
-            size_of_val(&transform) as u64,
-        );
+        let uniforms = Uniforms { transform, color };
 
-        // Copy color to buffer
         let buffer = device.create_buffer_with_data(
-            color.as_bytes(),
+            uniforms.as_bytes(),
             wgpu::BufferUsage::COPY_SRC,
         );
         encoder.copy_buffer_to_buffer(
             &buffer, 0,
-            &self.color_buffer, 0,
-            size_of_val(&color) as u64,
+            &self.uniform_buffer, 0,
+            size_of_val(&uniforms) as u64,
         );
 
         let mut render_pass = encoder.begin_render_pass(
@@ -292,6 +258,3 @@ impl Drawable {
         );
     }
 }
-
-
-pub type Color = [f32; 4];
