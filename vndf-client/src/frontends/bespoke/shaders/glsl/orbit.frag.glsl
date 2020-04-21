@@ -15,7 +15,10 @@ layout(location = 0) in  vec2 pos;
 layout(location = 0) out vec4 color_out;
 
 void main() {
-    float x = 0.998;
+    // This isn't really right, as it only takes into account the units per
+    // pixel for the y axis. Orbits are "round enough" that I don't notice it on
+    // screen though.
+    float x = 1.0 - (4.0 * u_per_pixel[0]);
     float r = length(pos);
 
     float alpha;

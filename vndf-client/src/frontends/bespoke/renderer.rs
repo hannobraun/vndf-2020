@@ -168,9 +168,23 @@ impl Renderer {
     )
         -> Option<()>
     {
-        let transform = WorldElement::from(orbit)
+        let element = WorldElement::from(orbit);
+
+        let transform = element
             .transform(&game.state.camera, self.screen_size())
             .to_native();
+
+        let pixel_per_m = game.state.camera.pixels_per_meter(
+            self.screen_size()
+        );
+        let pixel_per_u = [
+            pixel_per_m * element.size.width,
+            pixel_per_m * element.size.height,
+        ];
+        let u_per_pixel = [
+            1.0 / pixel_per_u[0],
+            1.0 / pixel_per_u[1],
+        ];
 
         self.drawables.orbit.draw(
             &self.device,
@@ -178,6 +192,7 @@ impl Renderer {
             encoder,
             Uniforms {
                 transform,
+                u_per_pixel,
                 .. Uniforms::default()
             },
         );
