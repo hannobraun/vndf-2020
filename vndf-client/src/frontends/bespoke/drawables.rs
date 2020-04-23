@@ -19,15 +19,17 @@ use super::{
     shaders::{
         self,
         Shader,
+        frag,
+        vert,
     },
     uniforms::Uniforms,
 };
 
 
 pub struct Drawables {
-    pub orbit:  Drawable<shaders::vert::Simple, shaders::frag::Orbit>,
-    pub planet: Drawable<shaders::vert::Simple, shaders::frag::Planet>,
-    pub ship:   Drawable<shaders::vert::Simple, shaders::frag::Simple>,
+    pub orbit:  Drawable<vert::Simple, frag::Orbit>,
+    pub planet: Drawable<vert::Simple, frag::Planet>,
+    pub ship:   Drawable<vert::Simple, frag::Simple>,
 }
 
 impl Drawables {
@@ -37,20 +39,20 @@ impl Drawables {
         let orbit = Drawable::new(
             device,
             &meshes.square,
-            shaders::vert::Simple,
-            shaders::frag::Orbit,
+            vert::Simple,
+            frag::Orbit,
         )?;
         let planet = Drawable::new(
             device,
             &meshes.square,
-            shaders::vert::Simple,
-            shaders::frag::Planet,
+            vert::Simple,
+            frag::Planet,
         )?;
         let ship = Drawable::new(
             device,
             &meshes.ship,
-            shaders::vert::Simple,
-            shaders::frag::Simple,
+            vert::Simple,
+            frag::Simple,
         )?;
 
         Ok(
