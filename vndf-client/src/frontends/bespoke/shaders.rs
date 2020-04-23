@@ -50,11 +50,7 @@ impl Shader {
             }
         };
 
-        let module = device.create_shader_module(
-            &wgpu::read_spirv(Cursor::new(code))?,
-        );
-
-        Ok(module)
+        load(code, device)
     }
 }
 
@@ -68,6 +64,15 @@ impl From<FragmentShader> for Shader {
     fn from(frag: FragmentShader) -> Self {
         Self::Fragment(frag)
     }
+}
+
+
+fn load(code: &[u8], device: &wgpu::Device) -> Result {
+    let module = device.create_shader_module(
+        &wgpu::read_spirv(Cursor::new(code))?,
+    );
+
+    Ok(module)
 }
 
 
