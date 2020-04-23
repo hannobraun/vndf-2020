@@ -196,7 +196,6 @@ impl Renderer {
             encoder,
             vert::simple::Uniforms {
                 transform: transform.into(),
-                .. vert::simple::Uniforms::default()
             },
             frag::orbit::Uniforms {
                 u_per_pixel: u_per_pixel.into(),
@@ -222,7 +221,6 @@ impl Renderer {
             encoder,
             vert::simple::Uniforms {
                 transform: transform.into(),
-                .. vert::simple::Uniforms::default()
             },
             frag::planet::Uniforms {
                 .. frag::planet::Uniforms::default()
@@ -247,11 +245,9 @@ impl Renderer {
             encoder,
             vert::simple::Uniforms {
                 transform: transform.into(),
-                .. vert::simple::Uniforms::default()
             },
             frag::simple::Uniforms {
                 color: ship.color.into(),
-                .. frag::simple::Uniforms::default()
             },
         );
 
