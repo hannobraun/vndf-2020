@@ -7,12 +7,12 @@ use std::io::{
 pub trait Shader {
     type Kind;
 
-    fn code(&self) -> &'static [u8];
+    fn code() -> &'static [u8];
 
     fn load(&self, device: &wgpu::Device)
         -> Result<wgpu::ShaderModule, io::Error>
     {
-        let code = self.code();
+        let code = Self::code();
 
         let module = device.create_shader_module(
             &wgpu::read_spirv(Cursor::new(code))?,
@@ -34,7 +34,7 @@ macro_rules! shader {
         impl crate::frontends::bespoke::shaders::Shader for $name {
             type Kind = $kind;
 
-            fn code(&self) -> &'static [u8] {
+            fn code() -> &'static [u8] {
                 &include_bytes!($path)[..]
             }
         }
