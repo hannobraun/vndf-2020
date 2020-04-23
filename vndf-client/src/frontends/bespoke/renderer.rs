@@ -27,7 +27,10 @@ use super::{
         self,
         Meshes,
     },
-    shaders::vert,
+    shaders::{
+        frag,
+        vert,
+    },
     window::Window,
 };
 
@@ -192,9 +195,12 @@ impl Renderer {
             frame,
             encoder,
             vert::simple::Uniforms {
-                transform:   transform.into(),
-                u_per_pixel: u_per_pixel.into(),
+                transform: transform.into(),
                 .. vert::simple::Uniforms::default()
+            },
+            frag::orbit::Uniforms {
+                u_per_pixel: u_per_pixel.into(),
+                .. frag::orbit::Uniforms::default()
             },
         );
 
@@ -218,6 +224,9 @@ impl Renderer {
                 transform: transform.into(),
                 .. vert::simple::Uniforms::default()
             },
+            frag::planet::Uniforms {
+                .. frag::planet::Uniforms::default()
+            },
         );
     }
 
@@ -238,8 +247,11 @@ impl Renderer {
             encoder,
             vert::simple::Uniforms {
                 transform: transform.into(),
-                color:     ship.color.into(),
                 .. vert::simple::Uniforms::default()
+            },
+            frag::simple::Uniforms {
+                color: ship.color.into(),
+                .. frag::simple::Uniforms::default()
             },
         );
 
