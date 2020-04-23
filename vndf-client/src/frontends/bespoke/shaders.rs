@@ -9,7 +9,7 @@ pub trait Shader {
 
     fn code() -> &'static [u8];
 
-    fn load(&self, device: &wgpu::Device)
+    fn load(device: &wgpu::Device)
         -> Result<wgpu::ShaderModule, io::Error>
     {
         let code = Self::code();

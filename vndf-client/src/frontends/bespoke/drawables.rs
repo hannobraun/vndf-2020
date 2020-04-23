@@ -39,20 +39,14 @@ impl Drawables {
         let orbit = Drawable::new(
             device,
             &meshes.square,
-            vert::Simple,
-            frag::Orbit,
         )?;
         let planet = Drawable::new(
             device,
             &meshes.square,
-            vert::Simple,
-            frag::Planet,
         )?;
         let ship = Drawable::new(
             device,
             &meshes.ship,
-            vert::Simple,
-            frag::Simple,
         )?;
 
         Ok(
@@ -84,10 +78,8 @@ impl<Vert, Frag> Drawable<Vert, Frag>
         Frag: Shader<Kind=shaders::Frag>,
 {
     pub fn new(
-        device:          &wgpu::Device,
-        mesh:            &Mesh,
-        vertex_shader:   Vert,
-        fragment_shader: Frag,
+        device: &wgpu::Device,
+        mesh:   &Mesh,
     )
         -> Result<Self, io::Error>
     {
@@ -144,12 +136,12 @@ impl<Vert, Frag> Drawable<Vert, Frag>
             &wgpu::RenderPipelineDescriptor {
                 layout: &pipeline_layout,
                 vertex_stage: wgpu::ProgrammableStageDescriptor {
-                    module:      &vertex_shader.load(device)?,
+                    module:      &Vert::load(device)?,
                     entry_point: "main",
                 },
                 fragment_stage: Some(
                     wgpu::ProgrammableStageDescriptor {
-                        module:      &fragment_shader.load(device)?,
+                        module:      &Frag::load(device)?,
                         entry_point: "main",
                     }
                 ),
