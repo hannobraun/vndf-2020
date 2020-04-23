@@ -222,9 +222,7 @@ impl Renderer {
             vert::simple::Uniforms {
                 transform: transform.into(),
             },
-            frag::planet::Uniforms {
-                .. frag::planet::Uniforms::default()
-            },
+            frag::planet::Uniforms::default(),
         );
     }
 
