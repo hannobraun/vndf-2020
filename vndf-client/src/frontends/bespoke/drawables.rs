@@ -119,7 +119,9 @@ impl<Vert, Frag> Drawable<Vert, Frag>
                         binding: 0,
                         resource: wgpu::BindingResource::Buffer {
                             buffer: &uniform_buffer,
-                            range: 0 .. size_of::<Uniforms>() as u64,
+                            // This is not quite correct, but it'll do until the
+                            // uniform buffers are separated.
+                            range: 0 .. size_of::<Vert::Uniforms>() as u64,
                         },
                     },
                 ],
