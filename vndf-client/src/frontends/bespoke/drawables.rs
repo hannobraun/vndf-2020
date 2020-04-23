@@ -17,7 +17,6 @@ use super::{
     },
     shaders::{
         self,
-        FragmentShader,
         Shader,
     },
     uniforms::Uniforms,
@@ -38,19 +37,19 @@ impl Drawables {
             device,
             &meshes.square,
             shaders::vert::Simple,
-            FragmentShader::Orbit,
+            shaders::frag::Orbit,
         )?;
         let planet = Drawable::new(
             device,
             &meshes.square,
             shaders::vert::Simple,
-            FragmentShader::Planet,
+            shaders::frag::Planet,
         )?;
         let ship = Drawable::new(
             device,
             &meshes.ship,
             shaders::vert::Simple,
-            FragmentShader::Simple,
+            shaders::frag::Simple,
         )?;
 
         Ok(
@@ -78,7 +77,7 @@ impl Drawable {
         device:          &wgpu::Device,
         mesh:            &Mesh,
         vertex_shader:   impl Shader,
-        fragment_shader: FragmentShader,
+        fragment_shader: impl Shader,
     )
         -> Result<Self, io::Error>
     {
