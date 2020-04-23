@@ -218,7 +218,9 @@ impl<Vert, Frag> Drawable<Vert, Frag>
         device:   &wgpu::Device,
         frame:    &wgpu::SwapChainOutput,
         encoder:  &mut wgpu::CommandEncoder,
-        uniforms: Uniforms,
+        // This is not quite correct, but it'll do until the uniform buffers are
+        // separated.
+        uniforms: Vert::Uniforms,
     ) {
         let buffer = device.create_buffer_with_data(
             uniforms.as_bytes(),
