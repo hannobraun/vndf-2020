@@ -27,11 +27,13 @@ impl Default for Uniforms {
 
         Self {
             transform,
-            color:       [1.0; 4],
+            color:       Color([1.0; 4]),
             u_per_pixel: [1.0, 1.0],
         }
     }
 }
 
 
-pub type Color = [f32; 4];
+#[derive(AsBytes)]
+#[repr(packed)]
+pub struct Color(pub [f32; 4]);
