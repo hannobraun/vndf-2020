@@ -9,8 +9,16 @@ pub enum VertexShader {
 }
 
 impl VertexShader {
+    pub fn code(&self) -> &'static [u8] {
+        match self {
+            Self::Simple => {
+                &include_bytes!("shaders/spv/simple.vert.spv")[..]
+            }
+        }
+    }
+
     pub fn load(self, device: &wgpu::Device) -> Result {
-        Shader::load(&self.into(), device)
+        load(self.code(), device)
     }
 }
 
@@ -22,47 +30,22 @@ pub enum FragmentShader {
 }
 
 impl FragmentShader {
-    pub fn load(self, device: &wgpu::Device) -> Result {
-        Shader::load(&self.into(), device)
-    }
-}
-
-
-enum Shader {
-    Vertex(VertexShader),
-    Fragment(FragmentShader),
-}
-
-impl Shader {
-    fn load(&self, device: &wgpu::Device) -> Result {
-        let code = match self {
-            Shader::Vertex(VertexShader::Simple) => {
-                &include_bytes!("shaders/spv/simple.vert.spv")[..]
-            }
-            Shader::Fragment(FragmentShader::Orbit) => {
+    pub fn code(&self) -> &'static [u8] {
+        match self {
+            FragmentShader::Orbit => {
                 &include_bytes!("shaders/spv/orbit.frag.spv")[..]
             }
-            Shader::Fragment(FragmentShader::Planet) => {
+            FragmentShader::Planet => {
                 &include_bytes!("shaders/spv/planet.frag.spv")[..]
             }
-            Shader::Fragment(FragmentShader::Simple) => {
+            FragmentShader::Simple => {
                 &include_bytes!("shaders/spv/simple.frag.spv")[..]
             }
-        };
-
-        load(code, device)
+        }
     }
-}
 
-impl From<VertexShader> for Shader {
-    fn from(vert: VertexShader) -> Self {
-        Self::Vertex(vert)
-    }
-}
-
-impl From<FragmentShader> for Shader {
-    fn from(frag: FragmentShader) -> Self {
-        Self::Fragment(frag)
+    pub fn load(self, device: &wgpu::Device) -> Result {
+        load(self.code(), device)
     }
 }
 
