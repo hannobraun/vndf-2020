@@ -19,11 +19,8 @@ pub struct Uniforms {
 
 impl Default for Uniforms {
     fn default() -> Self {
-        let transform = Transform::<LocalUnit, ClipUnit>::identity()
-            .to_native();
-
         Self {
-            transform:   Mat4(transform),
+            transform:   Mat4::default(),
             color:       Color::default(),
             u_per_pixel: Vec2::default(),
         }
@@ -51,6 +48,12 @@ impl From<[f32; 3]> for Color {
 #[derive(AsBytes)]
 #[repr(packed)]
 pub struct Mat4(pub [[f32; 4]; 4]);
+
+impl Default for Mat4 {
+    fn default() -> Self {
+        Transform::<LocalUnit, ClipUnit>::identity().into()
+    }
+}
 
 impl<A, B> From<Transform<A, B>> for Mat4 {
     fn from(transform: Transform<A, B>) -> Self {
