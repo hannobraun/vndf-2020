@@ -8,7 +8,7 @@ use zerocopy::AsBytes;
 
 pub trait Shader {
     type Kind;
-    type Uniforms: AsBytes;
+    type Uniforms: AsBytes + Default;
 
     fn code() -> &'static [u8];
 
