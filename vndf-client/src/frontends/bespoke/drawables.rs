@@ -76,8 +76,8 @@ impl Drawable {
     pub fn new(
         device:          &wgpu::Device,
         mesh:            &Mesh,
-        vertex_shader:   impl Shader,
-        fragment_shader: impl Shader,
+        vertex_shader:   impl Shader<Kind=shaders::Vert>,
+        fragment_shader: impl Shader<Kind=shaders::Frag>,
     )
         -> Result<Self, io::Error>
     {
