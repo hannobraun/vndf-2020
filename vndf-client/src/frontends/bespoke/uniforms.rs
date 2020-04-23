@@ -37,3 +37,9 @@ impl Default for Uniforms {
 #[derive(AsBytes)]
 #[repr(packed)]
 pub struct Color(pub [f32; 4]);
+
+impl From<[f32; 3]> for Color {
+    fn from([r, g, b]: [f32; 3]) -> Self {
+        Color([r, g, b, 1.0])
+    }
+}
