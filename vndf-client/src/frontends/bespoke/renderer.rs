@@ -27,7 +27,10 @@ use super::{
         self,
         Meshes,
     },
-    uniforms::Uniforms,
+    uniforms::{
+        Color,
+        Uniforms,
+    },
     window::Window,
 };
 
@@ -239,7 +242,7 @@ impl Renderer {
             encoder,
             Uniforms {
                 transform,
-                color: [ship.color[0], ship.color[1], ship.color[2], 1.0],
+                color: Color([ship.color[0], ship.color[1], ship.color[2], 1.0]),
                 .. Uniforms::default()
             },
         );
