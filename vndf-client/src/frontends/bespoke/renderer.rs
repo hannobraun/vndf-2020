@@ -27,10 +27,7 @@ use super::{
         self,
         Meshes,
     },
-    uniforms::{
-        self,
-        Uniforms,
-    },
+    uniforms::Uniforms,
     window::Window,
 };
 
@@ -195,7 +192,7 @@ impl Renderer {
             encoder,
             Uniforms {
                 transform,
-                u_per_pixel: uniforms::Vec2(u_per_pixel),
+                u_per_pixel: u_per_pixel.into(),
                 .. Uniforms::default()
             },
         );
