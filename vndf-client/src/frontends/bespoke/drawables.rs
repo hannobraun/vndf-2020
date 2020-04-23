@@ -60,7 +60,8 @@ impl Drawables {
 
 
 pub struct Drawable<Vert, Frag> {
-    uniform_buffer:  wgpu::Buffer,
+    vert_uniforms:   wgpu::Buffer,
+    frag_uniforms:   wgpu::Buffer,
     vertex_buffer:   wgpu::Buffer,
     index_buffer:    wgpu::Buffer,
     bind_group:      wgpu::BindGroup,
@@ -82,10 +83,13 @@ impl<Vert, Frag> Drawable<Vert, Frag>
     )
         -> Result<Self, io::Error>
     {
-        let uniform_buffer = device.create_buffer_with_data(
-            // This is not quite correct, but it'll do until the uniform buffers
-            // are separated.
+        let vert_uniforms = device.create_buffer_with_data(
             Vert::Uniforms::default()
+                .as_bytes(),
+            wgpu::BufferUsage::UNIFORM | wgpu::BufferUsage::COPY_DST,
+        );
+        let frag_uniforms = device.create_buffer_with_data(
+            Frag::Uniforms::default()
                 .as_bytes(),
             wgpu::BufferUsage::UNIFORM | wgpu::BufferUsage::COPY_DST,
         );
@@ -104,8 +108,12 @@ impl<Vert, Frag> Drawable<Vert, Frag>
                 bindings: &[
                     wgpu::BindGroupLayoutEntry {
                         binding: 0,
-                        visibility: wgpu::ShaderStage::VERTEX
-                            | wgpu::ShaderStage::FRAGMENT,
+                        visibility: wgpu::ShaderStage::VERTEX,
+                        ty: wgpu::BindingType::UniformBuffer { dynamic: false },
+                    },
+                    wgpu::BindGroupLayoutEntry {
+                        binding: 1,
+                        visibility: wgpu::ShaderStage::FRAGMENT,
                         ty: wgpu::BindingType::UniformBuffer { dynamic: false },
                     },
                 ],
@@ -119,10 +127,15 @@ impl<Vert, Frag> Drawable<Vert, Frag>
                     wgpu::Binding {
                         binding: 0,
                         resource: wgpu::BindingResource::Buffer {
-                            buffer: &uniform_buffer,
-                            // This is not quite correct, but it'll do until the
-                            // uniform buffers are separated.
+                            buffer: &vert_uniforms,
                             range: 0 .. size_of::<Vert::Uniforms>() as u64,
+                        },
+                    },
+                    wgpu::Binding {
+                        binding: 1,
+                        resource: wgpu::BindingResource::Buffer {
+                            buffer: &frag_uniforms,
+                            range: 0 .. size_of::<Frag::Uniforms>() as u64,
                         },
                     },
                 ],
@@ -204,7 +217,8 @@ impl<Vert, Frag> Drawable<Vert, Frag>
 
         Ok(
             Self {
-                uniform_buffer,
+                vert_uniforms,
+                frag_uniforms,
                 vertex_buffer,
                 index_buffer,
                 render_pipeline,
@@ -218,21 +232,30 @@ impl<Vert, Frag> Drawable<Vert, Frag>
     }
 
     pub fn draw(&self,
-        device:   &wgpu::Device,
-        frame:    &wgpu::SwapChainOutput,
-        encoder:  &mut wgpu::CommandEncoder,
-        // This is not quite correct, but it'll do until the uniform buffers are
-        // separated.
-        uniforms: Vert::Uniforms,
+        device:    &wgpu::Device,
+        frame:     &wgpu::SwapChainOutput,
+        encoder:   &mut wgpu::CommandEncoder,
+        vert_args: Vert::Uniforms,
+        frag_args: Frag::Uniforms,
     ) {
         let buffer = device.create_buffer_with_data(
-            uniforms.as_bytes(),
+            vert_args.as_bytes(),
             wgpu::BufferUsage::COPY_SRC,
         );
         encoder.copy_buffer_to_buffer(
             &buffer, 0,
-            &self.uniform_buffer, 0,
-            size_of_val(&uniforms) as u64,
+            &self.vert_uniforms, 0,
+            size_of_val(&vert_args) as u64,
+        );
+
+        let buffer = device.create_buffer_with_data(
+            frag_args.as_bytes(),
+            wgpu::BufferUsage::COPY_SRC,
+        );
+        encoder.copy_buffer_to_buffer(
+            &buffer, 0,
+            &self.frag_uniforms, 0,
+            size_of_val(&frag_args) as u64,
         );
 
         let mut render_pass = encoder.begin_render_pass(
