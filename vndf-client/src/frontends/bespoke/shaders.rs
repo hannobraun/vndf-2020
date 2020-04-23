@@ -13,16 +13,12 @@ pub trait Shader {
 }
 
 
-pub enum VertexShader {
-    Simple,
-}
+pub mod vert {
+    pub struct Simple;
 
-impl Shader for VertexShader {
-    fn code(&self) -> &'static [u8] {
-        match self {
-            Self::Simple => {
-                &include_bytes!("shaders/spv/simple.vert.spv")[..]
-            }
+    impl super::Shader for Simple {
+        fn code(&self) -> &'static [u8] {
+            &include_bytes!("shaders/spv/simple.vert.spv")[..]
         }
     }
 }
