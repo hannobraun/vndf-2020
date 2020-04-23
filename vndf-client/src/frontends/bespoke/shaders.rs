@@ -42,24 +42,36 @@ macro_rules! shader {
 }
 
 macro_rules! vertex_shader {
-    ($name:ident, $path:expr) => {
+    ($name:ident, $path:expr,) => {
         shader!(crate::frontends::bespoke::shaders::Vert, $name, $path);
     };
 }
 
 macro_rules! fragment_shader {
-    ($name:ident, $path:expr) => {
+    ($name:ident, $path:expr,) => {
         shader!(crate::frontends::bespoke::shaders::Frag, $name, $path);
     };
 }
 
 
 pub mod vert {
-    vertex_shader!(Simple, "shaders/spv/simple.vert.spv");
+    vertex_shader!(
+        Simple,
+        "shaders/spv/simple.vert.spv",
+    );
 }
 
 pub mod frag {
-    fragment_shader!(Orbit,  "shaders/spv/orbit.frag.spv" );
-    fragment_shader!(Planet, "shaders/spv/planet.frag.spv");
-    fragment_shader!(Simple, "shaders/spv/simple.frag.spv");
+    fragment_shader!(
+        Orbit,
+        "shaders/spv/orbit.frag.spv",
+    );
+    fragment_shader!(
+        Planet,
+        "shaders/spv/planet.frag.spv",
+    );
+    fragment_shader!(
+        Simple,
+        "shaders/spv/simple.frag.spv",
+    );
 }
