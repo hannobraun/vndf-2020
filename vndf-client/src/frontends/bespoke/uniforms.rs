@@ -52,6 +52,12 @@ impl From<[f32; 3]> for Color {
 #[repr(packed)]
 pub struct Mat4(pub [[f32; 4]; 4]);
 
+impl<A, B> From<Transform<A, B>> for Mat4 {
+    fn from(transform: Transform<A, B>) -> Self {
+        Mat4(transform.to_native())
+    }
+}
+
 
 #[derive(AsBytes)]
 #[repr(packed)]

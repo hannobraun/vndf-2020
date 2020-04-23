@@ -27,10 +27,7 @@ use super::{
         self,
         Meshes,
     },
-    uniforms::{
-        self,
-        Uniforms,
-    },
+    uniforms::Uniforms,
     window::Window,
 };
 
@@ -173,9 +170,10 @@ impl Renderer {
     {
         let element = WorldElement::from(orbit);
 
-        let transform = element
-            .transform(&game.state.camera, self.screen_size())
-            .to_native();
+        let transform = element.transform(
+            &game.state.camera,
+            self.screen_size(),
+        );
 
         let pixel_per_m = game.state.camera.pixels_per_meter(
             self.screen_size()
@@ -194,7 +192,7 @@ impl Renderer {
             frame,
             encoder,
             Uniforms {
-                transform:   uniforms::Mat4(transform),
+                transform:   transform.into(),
                 u_per_pixel: u_per_pixel.into(),
                 .. Uniforms::default()
             },
@@ -210,15 +208,14 @@ impl Renderer {
         game:    &Game,
     ) {
         let transform = WorldElement::from(planet)
-            .transform(&game.state.camera, self.screen_size())
-            .to_native();
+            .transform(&game.state.camera, self.screen_size());
 
         self.drawables.planet.draw(
             &self.device,
             frame,
             encoder,
             Uniforms {
-                transform: uniforms::Mat4(transform),
+                transform: transform.into(),
                 .. Uniforms::default()
             },
         );
@@ -233,15 +230,14 @@ impl Renderer {
         -> Option<()>
     {
         let transform = UiElement::from_ship(ship, game, self.screen_size())?
-            .transform(self.screen_size())
-            .to_native();
+            .transform(self.screen_size());
 
         self.drawables.ship.draw(
             &self.device,
             frame,
             encoder,
             Uniforms {
-                transform: uniforms::Mat4(transform),
+                transform: transform.into(),
                 color:     ship.color.into(),
                 .. Uniforms::default()
             },
