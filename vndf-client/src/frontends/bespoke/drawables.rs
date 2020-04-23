@@ -64,12 +64,12 @@ impl Drawables {
 
 
 pub struct Drawable {
-    pub uniform_buffer:  wgpu::Buffer,
-    pub vertex_buffer:   wgpu::Buffer,
-    pub index_buffer:    wgpu::Buffer,
-    pub bind_group:      wgpu::BindGroup,
-    pub render_pipeline: wgpu::RenderPipeline,
-    pub num_indices:     u32,
+    uniform_buffer:  wgpu::Buffer,
+    vertex_buffer:   wgpu::Buffer,
+    index_buffer:    wgpu::Buffer,
+    bind_group:      wgpu::BindGroup,
+    render_pipeline: wgpu::RenderPipeline,
+    num_indices:     u32,
 }
 
 impl Drawable {
