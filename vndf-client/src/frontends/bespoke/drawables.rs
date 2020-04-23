@@ -1,6 +1,7 @@
 use std::{
     convert::TryInto as _,
     io,
+    marker::PhantomData,
     mem::{
         size_of,
         size_of_val,
@@ -24,9 +25,9 @@ use super::{
 
 
 pub struct Drawables {
-    pub orbit:  Drawable,
-    pub planet: Drawable,
-    pub ship:   Drawable,
+    pub orbit:  Drawable<shaders::vert::Simple, shaders::frag::Orbit>,
+    pub planet: Drawable<shaders::vert::Simple, shaders::frag::Planet>,
+    pub ship:   Drawable<shaders::vert::Simple, shaders::frag::Simple>,
 }
 
 impl Drawables {
@@ -63,21 +64,28 @@ impl Drawables {
 }
 
 
-pub struct Drawable {
+pub struct Drawable<Vert, Frag> {
     uniform_buffer:  wgpu::Buffer,
     vertex_buffer:   wgpu::Buffer,
     index_buffer:    wgpu::Buffer,
     bind_group:      wgpu::BindGroup,
     render_pipeline: wgpu::RenderPipeline,
     num_indices:     u32,
+
+    vert: PhantomData<Vert>,
+    frag: PhantomData<Frag>,
 }
 
-impl Drawable {
+impl<Vert, Frag> Drawable<Vert, Frag>
+    where
+        Vert: Shader<Kind=shaders::Vert>,
+        Frag: Shader<Kind=shaders::Frag>,
+{
     pub fn new(
         device:          &wgpu::Device,
         mesh:            &Mesh,
-        vertex_shader:   impl Shader<Kind=shaders::Vert>,
-        fragment_shader: impl Shader<Kind=shaders::Frag>,
+        vertex_shader:   Vert,
+        fragment_shader: Frag,
     )
         -> Result<Self, io::Error>
     {
@@ -205,6 +213,9 @@ impl Drawable {
                 render_pipeline,
                 bind_group,
                 num_indices,
+
+                vert: PhantomData,
+                frag: PhantomData,
             }
         )
     }
