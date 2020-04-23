@@ -17,6 +17,7 @@ use super::{
     },
     shaders::{
         FragmentShader,
+        Shader as _,
         VertexShader,
     },
     uniforms::Uniforms,

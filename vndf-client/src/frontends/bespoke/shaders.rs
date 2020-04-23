@@ -4,21 +4,26 @@ use std::io::{
 };
 
 
+pub trait Shader {
+    fn code(&self) -> &'static [u8];
+
+    fn load(&self, device: &wgpu::Device) -> Result {
+        load(self.code(), device)
+    }
+}
+
+
 pub enum VertexShader {
     Simple,
 }
 
-impl VertexShader {
-    pub fn code(&self) -> &'static [u8] {
+impl Shader for VertexShader {
+    fn code(&self) -> &'static [u8] {
         match self {
             Self::Simple => {
                 &include_bytes!("shaders/spv/simple.vert.spv")[..]
             }
         }
-    }
-
-    pub fn load(&self, device: &wgpu::Device) -> Result {
-        load(self.code(), device)
     }
 }
 
@@ -29,8 +34,8 @@ pub enum FragmentShader {
     Simple,
 }
 
-impl FragmentShader {
-    pub fn code(&self) -> &'static [u8] {
+impl Shader for FragmentShader {
+    fn code(&self) -> &'static [u8] {
         match self {
             FragmentShader::Orbit => {
                 &include_bytes!("shaders/spv/orbit.frag.spv")[..]
@@ -42,10 +47,6 @@ impl FragmentShader {
                 &include_bytes!("shaders/spv/simple.frag.spv")[..]
             }
         }
-    }
-
-    pub fn load(&self, device: &wgpu::Device) -> Result {
-        load(self.code(), device)
     }
 }
 
