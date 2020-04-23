@@ -13,14 +13,21 @@ pub trait Shader {
 }
 
 
-pub mod vert {
-    pub struct Simple;
+macro_rules! shader {
+    ($name:ident, $path:expr) => {
+        pub struct $name;
 
-    impl super::Shader for Simple {
-        fn code(&self) -> &'static [u8] {
-            &include_bytes!("shaders/spv/simple.vert.spv")[..]
+        impl crate::frontends::bespoke::shaders::Shader for $name {
+            fn code(&self) -> &'static [u8] {
+                &include_bytes!($path)[..]
+            }
         }
-    }
+    };
+}
+
+
+pub mod vert {
+    shader!(Simple, "shaders/spv/simple.vert.spv");
 }
 
 
