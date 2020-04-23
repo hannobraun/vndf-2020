@@ -8,7 +8,13 @@ pub trait Shader {
     fn code(&self) -> &'static [u8];
 
     fn load(&self, device: &wgpu::Device) -> Result {
-        load(self.code(), device)
+        let code = self.code();
+
+        let module = device.create_shader_module(
+            &wgpu::read_spirv(Cursor::new(code))?,
+        );
+
+        Ok(module)
     }
 }
 
@@ -34,15 +40,6 @@ pub mod frag {
     shader!(Orbit,  "shaders/spv/orbit.frag.spv" );
     shader!(Planet, "shaders/spv/planet.frag.spv");
     shader!(Simple, "shaders/spv/simple.frag.spv");
-}
-
-
-fn load(code: &[u8], device: &wgpu::Device) -> Result {
-    let module = device.create_shader_module(
-        &wgpu::read_spirv(Cursor::new(code))?,
-    );
-
-    Ok(module)
 }
 
 
