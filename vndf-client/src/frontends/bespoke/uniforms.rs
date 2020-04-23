@@ -1,12 +1,6 @@
 use zerocopy::AsBytes;
 
-use crate::graphics::{
-    math::{
-        ClipUnit,
-        LocalUnit,
-    },
-    transforms::Transform,
-};
+use crate::graphics::transforms::Transform;
 
 
 #[derive(AsBytes)]
@@ -51,7 +45,7 @@ pub struct Mat4(pub [[f32; 4]; 4]);
 
 impl Default for Mat4 {
     fn default() -> Self {
-        Transform::<LocalUnit, ClipUnit>::identity().into()
+        Transform::<(), ()>::identity().into()
     }
 }
 
