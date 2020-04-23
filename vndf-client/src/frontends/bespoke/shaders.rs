@@ -7,7 +7,9 @@ use std::io::{
 pub trait Shader {
     fn code(&self) -> &'static [u8];
 
-    fn load(&self, device: &wgpu::Device) -> Result {
+    fn load(&self, device: &wgpu::Device)
+        -> Result<wgpu::ShaderModule, io::Error>
+    {
         let code = self.code();
 
         let module = device.create_shader_module(
@@ -41,6 +43,3 @@ pub mod frag {
     shader!(Planet, "shaders/spv/planet.frag.spv");
     shader!(Simple, "shaders/spv/simple.frag.spv");
 }
-
-
-pub type Result = std::result::Result<wgpu::ShaderModule, io::Error>;
