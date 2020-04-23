@@ -3,15 +3,6 @@ use zerocopy::AsBytes;
 use crate::graphics::transforms::Transform;
 
 
-#[derive(AsBytes, Default)]
-#[repr(packed)]
-pub struct Uniforms {
-    pub transform:   Mat4,
-    pub color:       Color,
-    pub u_per_pixel: Vec2,
-}
-
-
 #[derive(AsBytes)]
 #[repr(packed)]
 pub struct Color(pub [f32; 4]);

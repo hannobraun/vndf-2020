@@ -27,7 +27,7 @@ use super::{
         self,
         Meshes,
     },
-    uniforms::Uniforms,
+    shaders::vert,
     window::Window,
 };
 
@@ -191,10 +191,10 @@ impl Renderer {
             &self.device,
             frame,
             encoder,
-            Uniforms {
+            vert::simple::Uniforms {
                 transform:   transform.into(),
                 u_per_pixel: u_per_pixel.into(),
-                .. Uniforms::default()
+                .. vert::simple::Uniforms::default()
             },
         );
 
@@ -214,9 +214,9 @@ impl Renderer {
             &self.device,
             frame,
             encoder,
-            Uniforms {
+            vert::simple::Uniforms {
                 transform: transform.into(),
-                .. Uniforms::default()
+                .. vert::simple::Uniforms::default()
             },
         );
     }
@@ -236,10 +236,10 @@ impl Renderer {
             &self.device,
             frame,
             encoder,
-            Uniforms {
+            vert::simple::Uniforms {
                 transform: transform.into(),
                 color:     ship.color.into(),
-                .. Uniforms::default()
+                .. vert::simple::Uniforms::default()
             },
         );
 
