@@ -3,9 +3,12 @@ use std::io::{
     Cursor,
 };
 
+use zerocopy::AsBytes;
+
 
 pub trait Shader {
     type Kind;
+    type Uniforms: AsBytes;
 
     fn code() -> &'static [u8];
 
@@ -36,7 +39,8 @@ macro_rules! shader {
         pub struct $name;
 
         impl crate::frontends::bespoke::shaders::Shader for $name {
-            type Kind = $kind;
+            type Kind     = $kind;
+            type Uniforms = crate::frontends::bespoke::uniforms::Uniforms;
 
             fn code() -> &'static [u8] {
                 &include_bytes!($path)[..]
