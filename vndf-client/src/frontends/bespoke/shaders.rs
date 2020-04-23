@@ -33,12 +33,12 @@ pub struct Frag;
 macro_rules! shader {
     (
         $kind:ty,
-        $name:ident,
+        $name_s:ident,
         $path:expr,
     ) => {
-        pub struct $name;
+        pub struct $name_s;
 
-        impl crate::frontends::bespoke::shaders::Shader for $name {
+        impl crate::frontends::bespoke::shaders::Shader for $name_s {
             type Kind     = $kind;
             type Uniforms = crate::frontends::bespoke::uniforms::Uniforms;
 
@@ -51,12 +51,12 @@ macro_rules! shader {
 
 macro_rules! vertex_shader {
     (
-        $name:ident,
+        $name_s:ident,
         $path:expr,
     ) => {
         shader!(
             crate::frontends::bespoke::shaders::Vert,
-            $name,
+            $name_s,
             $path,
         );
     };
@@ -64,12 +64,12 @@ macro_rules! vertex_shader {
 
 macro_rules! fragment_shader {
     (
-        $name:ident,
+        $name_s:ident,
         $path:expr,
     ) => {
         shader!(
             crate::frontends::bespoke::shaders::Frag,
-            $name,
+            $name_s,
             $path,
         );
     };
