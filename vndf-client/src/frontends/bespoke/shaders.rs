@@ -30,27 +30,10 @@ pub mod vert {
     shader!(Simple, "shaders/spv/simple.vert.spv");
 }
 
-
-pub enum FragmentShader {
-    Orbit,
-    Planet,
-    Simple,
-}
-
-impl Shader for FragmentShader {
-    fn code(&self) -> &'static [u8] {
-        match self {
-            FragmentShader::Orbit => {
-                &include_bytes!("shaders/spv/orbit.frag.spv")[..]
-            }
-            FragmentShader::Planet => {
-                &include_bytes!("shaders/spv/planet.frag.spv")[..]
-            }
-            FragmentShader::Simple => {
-                &include_bytes!("shaders/spv/simple.frag.spv")[..]
-            }
-        }
-    }
+pub mod frag {
+    shader!(Orbit,  "shaders/spv/orbit.frag.spv" );
+    shader!(Planet, "shaders/spv/planet.frag.spv");
+    shader!(Simple, "shaders/spv/simple.frag.spv");
 }
 
 
