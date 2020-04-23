@@ -29,7 +29,7 @@ impl<Src, Dst> Transform<Src, Dst> {
         Self(self.0.post_transform(&transform.0))
     }
 
-    pub fn to_native(&self) -> NativeTransform {
+    pub fn to_native(&self) -> [[f32; 4]; 4] {
         self.0
             .to_3d()
             .to_row_arrays()
@@ -41,9 +41,6 @@ impl<Src, Dst> From<graphics::Transform<Src, Dst>> for Transform<Src, Dst> {
         Self(transform)
     }
 }
-
-
-pub type NativeTransform = [[f32; 4]; 4];
 
 
 /// Returns what is commonly known as the model matrix
