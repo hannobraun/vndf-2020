@@ -122,9 +122,7 @@ pub mod vert {
         simple,
         "shaders/spv/simple.vert.spv",
         Uniforms {
-            transform:   Mat4,
-            color:       Color,
-            u_per_pixel: Vec2,
+            transform: Mat4,
         },
     );
 }
@@ -135,7 +133,6 @@ pub mod frag {
         orbit,
         "shaders/spv/orbit.frag.spv",
         Uniforms {
-            transform:   Mat4,
             color:       Color,
             u_per_pixel: Vec2,
         },
@@ -145,9 +142,7 @@ pub mod frag {
         planet,
         "shaders/spv/planet.frag.spv",
         Uniforms {
-            transform:   Mat4,
-            color:       Color,
-            u_per_pixel: Vec2,
+            color: Color,
         },
     );
     fragment_shader!(
@@ -155,9 +150,7 @@ pub mod frag {
         simple,
         "shaders/spv/simple.frag.spv",
         Uniforms {
-            transform:   Mat4,
-            color:       Color,
-            u_per_pixel: Vec2,
+            color: Color,
         },
     );
 }
