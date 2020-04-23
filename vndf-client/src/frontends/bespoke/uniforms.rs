@@ -5,17 +5,14 @@ use crate::graphics::{
         ClipUnit,
         LocalUnit,
     },
-    transforms::{
-        NativeTransform,
-        Transform,
-    },
+    transforms::Transform,
 };
 
 
 #[derive(AsBytes)]
 #[repr(packed)]
 pub struct Uniforms {
-    pub transform:   NativeTransform,
+    pub transform:   Mat4,
     pub color:       Color,
     pub u_per_pixel: Vec2,
 }
@@ -26,7 +23,7 @@ impl Default for Uniforms {
             .to_native();
 
         Self {
-            transform,
+            transform:   Mat4(transform),
             color:       Color::default(),
             u_per_pixel: Vec2::default(),
         }
@@ -49,6 +46,11 @@ impl From<[f32; 3]> for Color {
         Color([r, g, b, 1.0])
     }
 }
+
+
+#[derive(AsBytes)]
+#[repr(packed)]
+pub struct Mat4(pub [[f32; 4]; 4]);
 
 
 #[derive(AsBytes)]

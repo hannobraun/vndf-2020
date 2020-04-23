@@ -27,7 +27,10 @@ use super::{
         self,
         Meshes,
     },
-    uniforms::Uniforms,
+    uniforms::{
+        self,
+        Uniforms,
+    },
     window::Window,
 };
 
@@ -191,7 +194,7 @@ impl Renderer {
             frame,
             encoder,
             Uniforms {
-                transform,
+                transform:   uniforms::Mat4(transform),
                 u_per_pixel: u_per_pixel.into(),
                 .. Uniforms::default()
             },
@@ -215,7 +218,7 @@ impl Renderer {
             frame,
             encoder,
             Uniforms {
-                transform,
+                transform: uniforms::Mat4(transform),
                 .. Uniforms::default()
             },
         );
@@ -238,8 +241,8 @@ impl Renderer {
             frame,
             encoder,
             Uniforms {
-                transform,
-                color: ship.color.into(),
+                transform: uniforms::Mat4(transform),
+                color:     ship.color.into(),
                 .. Uniforms::default()
             },
         );
