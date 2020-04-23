@@ -17,7 +17,7 @@ use crate::graphics::{
 pub struct Uniforms {
     pub transform:   NativeTransform,
     pub color:       Color,
-    pub u_per_pixel: [f32; 2],
+    pub u_per_pixel: Vec2,
 }
 
 impl Default for Uniforms {
@@ -28,7 +28,7 @@ impl Default for Uniforms {
         Self {
             transform,
             color:       Color::default(),
-            u_per_pixel: [1.0, 1.0],
+            u_per_pixel: Vec2([1.0, 1.0]),
         }
     }
 }
@@ -49,3 +49,8 @@ impl From<[f32; 3]> for Color {
         Color([r, g, b, 1.0])
     }
 }
+
+
+#[derive(AsBytes)]
+#[repr(packed)]
+pub struct Vec2(pub [f32; 2]);
