@@ -17,7 +17,7 @@ impl VertexShader {
         }
     }
 
-    pub fn load(self, device: &wgpu::Device) -> Result {
+    pub fn load(&self, device: &wgpu::Device) -> Result {
         load(self.code(), device)
     }
 }
@@ -44,7 +44,7 @@ impl FragmentShader {
         }
     }
 
-    pub fn load(self, device: &wgpu::Device) -> Result {
+    pub fn load(&self, device: &wgpu::Device) -> Result {
         load(self.code(), device)
     }
 }
