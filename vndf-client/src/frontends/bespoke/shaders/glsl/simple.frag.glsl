@@ -9,7 +9,6 @@ layout(set = 0, binding = 1) uniform Locals {
     vec4 color_in;
 };
 
-layout(location = 0) in  vec2 pos;
 layout(location = 0) out vec4 color_out;
 
 void main() {
