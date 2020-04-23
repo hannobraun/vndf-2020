@@ -54,3 +54,9 @@ impl From<[f32; 3]> for Color {
 #[derive(AsBytes)]
 #[repr(packed)]
 pub struct Vec2(pub [f32; 2]);
+
+impl From<[f32; 2]> for Vec2 {
+    fn from(vec2: [f32; 2]) -> Self {
+        Vec2(vec2)
+    }
+}
