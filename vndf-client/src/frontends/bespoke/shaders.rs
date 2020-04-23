@@ -28,7 +28,11 @@ pub struct Frag;
 
 
 macro_rules! shader {
-    ($kind:ty, $name:ident, $path:expr,) => {
+    (
+        $kind:ty,
+        $name:ident,
+        $path:expr,
+    ) => {
         pub struct $name;
 
         impl crate::frontends::bespoke::shaders::Shader for $name {
@@ -42,7 +46,10 @@ macro_rules! shader {
 }
 
 macro_rules! vertex_shader {
-    ($name:ident, $path:expr,) => {
+    (
+        $name:ident,
+        $path:expr,
+    ) => {
         shader!(
             crate::frontends::bespoke::shaders::Vert,
             $name,
@@ -52,7 +59,10 @@ macro_rules! vertex_shader {
 }
 
 macro_rules! fragment_shader {
-    ($name:ident, $path:expr,) => {
+    (
+        $name:ident,
+        $path:expr,
+    ) => {
         shader!(
             crate::frontends::bespoke::shaders::Frag,
             $name,
