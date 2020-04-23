@@ -22,7 +22,6 @@ use super::{
         frag,
         vert,
     },
-    uniforms::Uniforms,
 };
 
 
@@ -84,7 +83,9 @@ impl<Vert, Frag> Drawable<Vert, Frag>
         -> Result<Self, io::Error>
     {
         let uniform_buffer = device.create_buffer_with_data(
-            Uniforms::default()
+            // This is not quite correct, but it'll do until the uniform buffers
+            // are separated.
+            Vert::Uniforms::default()
                 .as_bytes(),
             wgpu::BufferUsage::UNIFORM | wgpu::BufferUsage::COPY_DST,
         );
