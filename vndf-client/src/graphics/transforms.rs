@@ -77,7 +77,7 @@ pub fn local_to_world(element: &WorldElement) -> Transform<LocalUnit, Meter> {
 pub fn local_to_screen(element: &UiElement) -> Transform<LocalUnit, Pixel> {
     graphics::Transform::identity()
         .post_scale(element.size.width, element.size.height)
-        .post_rotate(-element.angle)
+        .post_rotate(element.angle)
         .post_translate(element.pos.to_vector())
         .into()
 }

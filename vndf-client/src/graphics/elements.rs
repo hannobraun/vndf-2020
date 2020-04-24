@@ -63,7 +63,7 @@ impl UiElement {
 
         let pos = transforms::world_to_screen(&game.state.camera, screen).0
             .transform_point(pos.0);
-        let angle = -body.dir.angle_from_x_axis();
+        let angle = body.dir.angle_from_x_axis();
 
         Some(
             Self {
