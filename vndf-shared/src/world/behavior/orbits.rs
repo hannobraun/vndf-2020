@@ -27,6 +27,8 @@ pub struct Orbit {
     pub periapsis_above_surface: Length,
     pub apoapsis_above_surface:  Length,
     pub ellipse_pos:             Pnt2,
+    pub orbiter_pos:             Pnt2,
+    pub orbiter_vel:             Vec2,
 }
 
 impl Orbit {
@@ -107,6 +109,8 @@ impl Orbit {
                 periapsis_above_surface,
                 apoapsis_above_surface,
                 ellipse_pos,
+                orbiter_pos: pos,
+                orbiter_vel: vel,
             }
         )
     }
