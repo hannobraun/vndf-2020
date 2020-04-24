@@ -55,7 +55,7 @@ pub fn local_to_world(element: &WorldElement) -> Transform<LocalUnit, Meter> {
 pub fn local_to_screen(element: &UiElement) -> Transform<LocalUnit, Pixel> {
     graphics::Transform::identity()
         .post_scale(element.size.width, element.size.height)
-        .post_rotate(element.angle)
+        .post_rotate(-element.angle)
         .post_translate(element.pos.to_vector())
         .into()
 }
@@ -68,7 +68,7 @@ pub fn world_to_screen(camera: &Camera, screen_size: graphics::Size)
 
     graphics::Transform::identity()
         .pre_translate(-camera.center.to_vector())
-        .post_scale(pixels_per_meter, pixels_per_meter)
+        .post_scale(pixels_per_meter, -pixels_per_meter)
         .post_translate(screen_size.to_vector() / 2.0)
         .into()
 }
