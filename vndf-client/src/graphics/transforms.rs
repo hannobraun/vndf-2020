@@ -1,3 +1,25 @@
+/// Defines transformations between the various coordinate systems
+///
+/// The following coordinate systems exist:
+/// - **Local space**: The space in which models are defined.
+///   - Positive x is right.
+///   - Positive y is up.
+/// - **World space**:
+///   - Positive x is right.
+///   - Positive y is up.
+///   - Positive angles rotate counter-clockwise.
+///   - What the camera points at is drawn at the center of the screen.
+/// - **Screen space**:
+///   - Positive x is right.
+///   - Positive y is down.
+///   - The origin is at the upper-left corner.
+///   - Positive angles rotate counter-clockwise.
+/// - **Homogeneous space**:
+///   - Positive x is right.
+///   - Positive y is down.
+///   - Positive angles rotate counter-clockwise.
+
+
 use crate::{
     game::camera::Camera,
     graphics::{
