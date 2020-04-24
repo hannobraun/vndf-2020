@@ -78,7 +78,7 @@ impl Orbit {
         let b = a * (1.0 - e.length().powi(2)).sqrt();
 
         // Argument of periapsis
-        let w = f32::atan2(e.y, e.x);
+        let w = -f32::atan2(e.y, e.x);
 
         // Pericenter (point of closest approach)
         let pericenter = planet.pos + e.normalize() * (1.0 - e.length()) * a;

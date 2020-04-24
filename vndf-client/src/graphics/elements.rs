@@ -122,7 +122,7 @@ impl From<&Orbit> for WorldElement {
             orbit.semi_minor_axis,
         );
         let pos = orbit.ellipse_pos;
-        let angle = -orbit.arg_of_periapsis;
+        let angle = orbit.arg_of_periapsis;
 
         Self {
             size,
