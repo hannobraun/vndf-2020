@@ -19,7 +19,7 @@ pub enum Kind {
 
 #[derive(Clone, Copy, Debug, Deserialize, Serialize, Eq, PartialEq)]
 pub enum Rotation {
-    Left  = 1,
-    Right = -1,
-    None  = 0,
+    Pos  =  1,
+    Neg  = -1,
+    None =  0,
 }
