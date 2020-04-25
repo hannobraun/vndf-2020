@@ -5,6 +5,7 @@ use ggez::{
         DrawMode,
         Mesh,
         Text,
+        TextFragment,
     },
     input::mouse,
 };
@@ -539,5 +540,7 @@ impl<T> store::GetMut<T> for OneStore<T> {
 
 
 fn text(s: impl AsRef<str>) -> Text {
-    Text::new(s.as_ref())
+    Text::new(
+        TextFragment::new(s.as_ref())
+    )
 }
