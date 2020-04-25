@@ -133,8 +133,10 @@ pub mod frag {
         orbit,
         "shaders/spv/orbit.frag.spv",
         Uniforms {
-            color:       Color,
-            u_per_pixel: Vec2,
+            color:         Color,
+            u_per_pixel:   Vec2,
+            orbiter_angle: Float,
+            orbiter_dir:   Float,
         },
     );
     fragment_shader!(

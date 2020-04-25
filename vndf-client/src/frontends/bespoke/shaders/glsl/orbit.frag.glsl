@@ -6,8 +6,10 @@
 #version 450
 
 layout(set = 0, binding = 1) uniform Locals {
-    vec4 color_in;
-    vec2 u_per_pixel;
+    vec4  color_in;
+    vec2  u_per_pixel;
+    float orbiter_angle;
+    float orbiter_dir;
 };
 
 layout(location = 0) in  vec2 pos;

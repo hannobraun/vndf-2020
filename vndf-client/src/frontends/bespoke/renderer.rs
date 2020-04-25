@@ -190,6 +190,25 @@ impl Renderer {
             1.0 / pixel_per_u[1],
         ];
 
+        let orbiter_angle_abs = orbit.orbiter_pos
+            .to_vector()
+            .angle_from_x_axis();
+        let orbiter_angle_to_orbit =
+            (orbiter_angle_abs - orbit.arg_of_periapsis).signed();
+
+        let orbiter_dir = orbit.orbiter_pos.to_vector()
+            .angle_to(orbit.orbiter_vel)
+            .radians;
+        let orbiter_dir = if orbiter_dir < 0.0 {
+            -1.0
+        }
+        else if orbiter_dir > 0.0 {
+            1.0
+        }
+        else {
+            0.0
+        };
+
         self.drawables.orbit.draw(
             &self.device,
             frame,
@@ -198,7 +217,9 @@ impl Renderer {
                 transform: transform.into(),
             },
             frag::orbit::Uniforms {
-                u_per_pixel: u_per_pixel.into(),
+                u_per_pixel:   u_per_pixel.into(),
+                orbiter_angle: orbiter_angle_to_orbit.radians,
+                orbiter_dir,
                 .. frag::orbit::Uniforms::default()
             },
         );

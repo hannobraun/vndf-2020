@@ -20,6 +20,9 @@ impl From<[f32; 3]> for Color {
 }
 
 
+pub type Float = f32;
+
+
 #[derive(AsBytes)]
 #[repr(packed)]
 pub struct Mat4(pub [[f32; 4]; 4]);
