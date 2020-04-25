@@ -190,7 +190,7 @@ impl Graphics {
             draw(
                 context,
                 &ScreenTransform { element: &UiElement::default() },
-                &Text::new(
+                &text(
                     format!(
                         "Periapsis:\nfrom center: {:.0} km\nabove surface:{:.0} km",
                         periapsis_km,
@@ -208,7 +208,7 @@ impl Graphics {
             draw(
                 context,
                 &ScreenTransform { element: &UiElement::default() },
-                &Text::new(
+                &text(
                     format!(
                         "Apoapsis:\nfrom center: {:.0} km\nabove surface:{:.0} km",
                         apoapsis_km,
@@ -288,7 +288,7 @@ impl Graphics {
         draw(
             context,
             &ScreenTransform { element: &element },
-            &Text::new(
+            &text(
                 format!(
                     "Pos: {:.0}/{:.0}\nVel: {:.0}/{:.0} ({:.0})",
                     pos_km.x, pos_km.y,
@@ -355,7 +355,7 @@ End game - {}",
         draw(
             context,
             &ScreenTransform { element: &UiElement::default() },
-            &Text::new(instructions),
+            &text(instructions),
             DrawParam::screen()
                 .dest(graphics::Pnt2::new(20.0, 20.0))
         )?;
@@ -363,7 +363,7 @@ End game - {}",
         draw(
             context,
             &ScreenTransform { element: &UiElement::default() },
-            &Text::new(format!("Zoom: {:.3}x", game.input.zoom)),
+            &text(format!("Zoom: {:.3}x", game.input.zoom)),
             DrawParam::screen()
                 .dest(graphics::Pnt2::new(20.0, 150.0)),
         )?;
@@ -381,7 +381,7 @@ End game - {}",
             draw(
                 context,
                 &ScreenTransform { element: &UiElement::default() },
-                &Text::new(frame_time),
+                &text(frame_time),
                 DrawParam::screen()
                     .dest(graphics::Pnt2::new(20.0, 180.0))
             )?;
@@ -421,7 +421,7 @@ Removals per s: {}",
                 draw(
                     context,
                     &ScreenTransform { element: &UiElement::default() },
-                    &Text::new(diagnostics),
+                    &text(diagnostics),
                     DrawParam::screen()
                         .dest(graphics::Pnt2::new(20.0, 220.0))
                 )?;
@@ -437,7 +437,7 @@ Removals per s: {}",
             draw(
                 context,
                 &ScreenTransform { element: &UiElement::default() },
-                &Text::new(input_events),
+                &text(input_events),
                 DrawParam::screen()
                     .dest(graphics::Pnt2::new(20.0, 520.0))
             )?;
@@ -492,7 +492,7 @@ Fuel: {:.2}",
         draw(
             context,
             &ScreenTransform { element: &UiElement::default() },
-            &Text::new(status),
+            &text(status),
             DrawParam::screen()
                 .dest(graphics::Pnt2::new(width - 200.0, 20.0))
         )?;
@@ -535,4 +535,9 @@ impl<T> store::GetMut<T> for OneStore<T> {
             None
         }
     }
+}
+
+
+fn text(s: impl AsRef<str>) -> Text {
+    Text::new(s.as_ref())
 }
