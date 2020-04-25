@@ -16,7 +16,7 @@
 ///   - Positive angles rotate counter-clockwise.
 /// - **Homogeneous space**:
 ///   - Positive x is right.
-///   - Positive y is down.
+///   - Positive y is up.
 ///   - Positive angles rotate counter-clockwise.
 
 
