@@ -105,8 +105,7 @@ pub fn screen_to_homogeneous(screen_size: graphics::Size)
     );
 
     graphics::Transform::identity()
-        .pre_scale(1.0, -1.0)
-        .pre_scale(clip_units_per_pixel.x, clip_units_per_pixel.y)
+        .pre_scale(clip_units_per_pixel.x, -clip_units_per_pixel.y)
         .pre_translate(-screen_size.to_vector() / 2.0)
         .into()
 }
