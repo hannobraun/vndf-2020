@@ -981,9 +981,9 @@ dependencies = [
 
 [[package]]
 name = "gfx-backend-vulkan"
-version = "0.5.2"
+version = "0.5.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ebd1dee09bd8d8f1ba52c5ba22d1f70c7ffa990c5eb245eb3ef2d0206f631673"
+checksum = "2e4da6ab11e9cb972e52ed5e179ddfa1f2a910c61560d91cff92b4dfc682c27c"
 dependencies = [
  "arrayvec 0.5.1",
  "ash",
@@ -1324,9 +1324,9 @@ dependencies = [
 
 [[package]]
 name = "hermit-abi"
-version = "0.1.11"
+version = "0.1.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8a0d737e0f947a1864e93d33fdef4af8445a00d1ed8dc0c8ddb73139ea6abf15"
+checksum = "61565ff7aaace3525556587bd2dc31d4a07071957be715e63ce7b1eccf51a8f4"
 dependencies = [
  "libc",
 ]
@@ -1545,12 +1545,12 @@ dependencies = [
 
 [[package]]
 name = "lyon"
-version = "0.15.6"
+version = "0.15.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a89cf1bab21c6b814fd68993c3c3e35d524e238bd26bb86a5596c92d6b1e2f4b"
+checksum = "8e631d7a53ffb386b76a35c915826165323bbca04bd9eb6da95c1d74dd423b8d"
 dependencies = [
  "lyon_algorithms 0.15.0",
- "lyon_tessellation 0.15.6",
+ "lyon_tessellation 0.15.7",
 ]
 
 [[package]]
@@ -1625,9 +1625,9 @@ dependencies = [
 
 [[package]]
 name = "lyon_tessellation"
-version = "0.15.6"
+version = "0.15.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e35e118c320753dc3c688f323e2c6efeb9eab313e8e0cfdb9127d4d2e0e85cd0"
+checksum = "78e96947cdc44b8213e6ec05da63e91377cb808fa4e08ee542bd6d93278201d7"
 dependencies = [
  "arrayvec 0.5.1",
  "lyon_path 0.15.2",
@@ -2776,9 +2776,9 @@ checksum = "dba1a27d3efae4351c8051072d619e3ade2820635c3958d826bfea39d59b54c8"
 
 [[package]]
 name = "standback"
-version = "0.2.6"
+version = "0.2.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "898341a519ec30272f8665dd05fb00156254310e99df3dc1e0cb096883d8656c"
+checksum = "d747fb3ce0a32d6e9eb66484b58c53a568e163c56513defeff72c0be97a7b100"
 
 [[package]]
 name = "stb_truetype"
@@ -3102,7 +3102,7 @@ dependencies = [
  "futures",
  "ggez",
  "log",
- "lyon 0.15.6",
+ "lyon 0.15.7",
  "mint",
  "serde",
  "time",
