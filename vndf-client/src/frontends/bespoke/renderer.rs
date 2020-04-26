@@ -1,5 +1,10 @@
 use std::io;
 
+use wgpu_glyph::{
+    GlyphBrush,
+    GlyphBrushBuilder,
+    Section,
+};
 use winit::event::{
     Event,
     WindowEvent,
@@ -42,6 +47,8 @@ pub struct Renderer {
     swap_chain_desc: wgpu::SwapChainDescriptor,
     swap_chain:      wgpu::SwapChain,
 
+    glyph_brush: GlyphBrush<'static, ()>,
+
     drawables: Drawables,
 }
 
@@ -76,10 +83,11 @@ impl Renderer {
         let drawables = Drawables::new(&device, &meshes)?;
 
         let size = window.0.inner_size();
+        let texture_format = wgpu::TextureFormat::Bgra8UnormSrgb;
 
         let swap_chain_desc = wgpu::SwapChainDescriptor {
             usage:        wgpu::TextureUsage::OUTPUT_ATTACHMENT,
-            format:       wgpu::TextureFormat::Bgra8UnormSrgb,
+            format:       texture_format,
             width:        size.width,
             height:       size.height,
             present_mode: wgpu::PresentMode::Mailbox,
@@ -90,6 +98,11 @@ impl Renderer {
             &swap_chain_desc,
         );
 
+        let font = include_bytes!("fonts/Tuffy_Bold.ttf");
+        let glyph_brush = GlyphBrushBuilder::using_font_bytes(&font[..])
+            .map_err(|err| Error::Font(err))?
+            .build(&device, texture_format);
+
         Ok(
             Self {
                 surface,
@@ -97,6 +110,8 @@ impl Renderer {
                 queue,
                 swap_chain_desc,
                 swap_chain,
+
+                glyph_brush,
 
                 drawables,
             }
@@ -134,6 +149,24 @@ impl Renderer {
                 for ship in game.state.data.ships.values() {
                     self.draw_ship(&frame, &mut encoder, ship, game);
                 }
+
+                let screen_size = self.screen_size();
+                self.glyph_brush.queue(Section {
+                    text:  "Von Neumann Defense Force",
+                    color: [1.0, 1.0, 1.0, 1.0],
+                    .. Section::default()
+                });
+                self.glyph_brush
+                    .draw_queued(
+                        &self.device,
+                        &mut encoder,
+                        &frame.view,
+                        screen_size.width as u32,
+                        screen_size.height as u32,
+                    )
+                    // I've checked the code, and it doesn't look like this
+                    // actually returns any errors.
+                    .unwrap();
 
                 self.queue.submit(&[encoder.finish()]);
             }
@@ -285,6 +318,7 @@ impl Renderer {
 #[derive(Debug)]
 pub enum Error {
     AdapterRequest,
+    Font(wgpu_glyph::rusttype::Error),
     Io(io::Error),
     Meshes(meshes::Error),
 }
