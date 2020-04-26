@@ -77,7 +77,7 @@ impl Renderer {
 
         let size = window.0.inner_size();
 
-        let swap_chain_descriptor = wgpu::SwapChainDescriptor {
+        let swap_chain_desc = wgpu::SwapChainDescriptor {
             usage:        wgpu::TextureUsage::OUTPUT_ATTACHMENT,
             format:       wgpu::TextureFormat::Bgra8UnormSrgb,
             width:        size.width,
@@ -87,7 +87,7 @@ impl Renderer {
 
         let swap_chain = device.create_swap_chain(
             &surface,
-            &swap_chain_descriptor,
+            &swap_chain_desc,
         );
 
         Ok(
@@ -95,7 +95,7 @@ impl Renderer {
                 surface,
                 device,
                 queue,
-                swap_chain_desc: swap_chain_descriptor,
+                swap_chain_desc,
                 swap_chain,
 
                 drawables,
