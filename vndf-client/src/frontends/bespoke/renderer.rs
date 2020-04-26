@@ -36,11 +36,11 @@ use super::{
 
 
 pub struct Renderer {
-    surface:               wgpu::Surface,
-    device:                wgpu::Device,
-    queue:                 wgpu::Queue,
-    swap_chain_descriptor: wgpu::SwapChainDescriptor,
-    swap_chain:            wgpu::SwapChain,
+    surface:         wgpu::Surface,
+    device:          wgpu::Device,
+    queue:           wgpu::Queue,
+    swap_chain_desc: wgpu::SwapChainDescriptor,
+    swap_chain:      wgpu::SwapChain,
 
     drawables: Drawables,
 }
@@ -95,7 +95,7 @@ impl Renderer {
                 surface,
                 device,
                 queue,
-                swap_chain_descriptor,
+                swap_chain_desc: swap_chain_descriptor,
                 swap_chain,
 
                 drawables,
@@ -108,12 +108,12 @@ impl Renderer {
     {
         match event {
             Event::WindowEvent { event: WindowEvent::Resized(size), .. } => {
-                self.swap_chain_descriptor.width  = size.width;
-                self.swap_chain_descriptor.height = size.height;
+                self.swap_chain_desc.width  = size.width;
+                self.swap_chain_desc.height = size.height;
 
                 self.swap_chain = self.device.create_swap_chain(
                     &self.surface,
-                    &self.swap_chain_descriptor,
+                    &self.swap_chain_desc,
                 );
             }
             Event::RedrawRequested(_) => {
@@ -275,8 +275,8 @@ impl Renderer {
 
     fn screen_size(&self) -> graphics::Size {
         graphics::Size::new(
-            self.swap_chain_descriptor.width  as f32,
-            self.swap_chain_descriptor.height as f32,
+            self.swap_chain_desc.width  as f32,
+            self.swap_chain_desc.height as f32,
         )
     }
 }
