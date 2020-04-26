@@ -11,7 +11,7 @@ use winit::{
 use crate::graphics;
 
 
-pub struct Window(pub InnerWindow);
+pub struct Window(InnerWindow);
 
 impl Window {
     pub fn new(event_loop: &EventLoop<()>) -> Result<Self, OsError> {
