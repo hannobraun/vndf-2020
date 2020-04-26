@@ -43,4 +43,8 @@ impl Window {
             _ => (),
         }
     }
+
+    pub fn inner(&self) -> &InnerWindow {
+        &self.0
+    }
 }

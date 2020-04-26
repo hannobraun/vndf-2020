@@ -54,7 +54,7 @@ pub struct Renderer {
 
 impl Renderer {
     pub async fn new(window: &Window) -> Result<Self, Error> {
-        let surface = wgpu::Surface::create(&window.0);
+        let surface = wgpu::Surface::create(window.inner());
 
         let adapter =
             wgpu::Adapter::request(
