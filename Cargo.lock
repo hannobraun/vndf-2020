@@ -3111,6 +3111,7 @@ dependencies = [
  "vndf-macros",
  "vndf-shared",
  "wgpu",
+ "wgpu_glyph",
  "winit 0.22.1",
  "zerocopy",
 ]
@@ -3427,6 +3428,18 @@ checksum = "67b69dfe001a8a6b78810c7e479717cd1898b9177dbf646611fa1f258f5a2512"
 dependencies = [
  "bitflags",
  "peek-poke",
+]
+
+[[package]]
+name = "wgpu_glyph"
+version = "0.8.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7fabe70968bf2cadd4055d2f36c38233936c3344db4597c542ec185df05dd97a"
+dependencies = [
+ "glyph_brush 0.6.3",
+ "log",
+ "wgpu",
+ "zerocopy",
 ]
 
 [[package]]
