@@ -82,14 +82,14 @@ impl Renderer {
             .map_err(|err| Error::Meshes(err))?;
         let drawables = Drawables::new(&device, &meshes)?;
 
-        let size = window.0.inner_size();
+        let size = window.size();
         let texture_format = wgpu::TextureFormat::Bgra8UnormSrgb;
 
         let swap_chain_desc = wgpu::SwapChainDescriptor {
             usage:        wgpu::TextureUsage::OUTPUT_ATTACHMENT,
             format:       texture_format,
-            width:        size.width,
-            height:       size.height,
+            width:        size.width  as u32,
+            height:       size.height as u32,
             present_mode: wgpu::PresentMode::Mailbox,
         };
 
