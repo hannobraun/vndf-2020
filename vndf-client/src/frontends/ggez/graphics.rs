@@ -561,6 +561,7 @@ fn screen(context: &Context) -> Screen {
 
     Screen {
         size: graphics::Size::new(width, height),
+        scale_factor: 1.0,
     }
 }
 

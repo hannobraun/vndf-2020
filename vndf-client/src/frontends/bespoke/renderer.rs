@@ -50,7 +50,8 @@ pub struct Renderer {
 
     glyph_brush: GlyphBrush<'static, ()>,
 
-    drawables: Drawables,
+    drawables:    Drawables,
+    scale_factor: f32,
 }
 
 impl Renderer {
@@ -104,6 +105,8 @@ impl Renderer {
             .map_err(|err| Error::Font(err))?
             .build(&device, texture_format);
 
+        let scale_factor = window.scale_factor();
+
         Ok(
             Self {
                 surface,
@@ -115,6 +118,7 @@ impl Renderer {
                 glyph_brush,
 
                 drawables,
+                scale_factor,
             }
         )
     }
@@ -131,6 +135,15 @@ impl Renderer {
                     &self.surface,
                     &self.swap_chain_desc,
                 );
+            }
+            Event::WindowEvent {
+                event: WindowEvent::ScaleFactorChanged {
+                    scale_factor,
+                    ..
+                },
+                ..
+            } => {
+                self.scale_factor = *scale_factor as f32;
             }
             Event::RedrawRequested(_) => {
                 let frame = self.swap_chain.get_next_texture()?;
@@ -313,6 +326,7 @@ impl Renderer {
                 self.swap_chain_desc.width  as f32,
                 self.swap_chain_desc.height as f32,
             ),
+            scale_factor: self.scale_factor,
         }
     }
 }

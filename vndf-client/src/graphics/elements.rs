@@ -106,6 +106,7 @@ impl ScreenElement {
     )
         -> Self
     {
+        let size = size * screen.scale_factor;
         let pos = transforms::world_to_screen(&game.state.camera, screen.size).0
             .transform_point(pos.0);
         let angle = dir.angle_from_x_axis();

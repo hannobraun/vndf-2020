@@ -34,6 +34,10 @@ impl Window {
         )
     }
 
+    pub fn scale_factor(&self) -> f32 {
+        self.0.scale_factor() as f32
+    }
+
     pub fn handle_event(&self, event: &Event<()>) {
         match event {
             Event::MainEventsCleared => {
