@@ -134,7 +134,7 @@ impl Graphics {
     )
         -> GameResult<bool>
     {
-        let size_s   = screen_size(context).size;
+        let size_s   = screen(context).size;
         let pi_per_m = game.state.camera.pixels_per_meter(size_s);
 
         // Ellipse in screen coordinates
@@ -161,7 +161,7 @@ impl Graphics {
                 angle: -orbit.arg_of_periapsis,
                 .. ScreenElement::default()
             }
-            .transform(screen_size(context).size)
+            .transform(screen(context).size)
             .to_native();
 
         // Draw orbit
@@ -194,7 +194,7 @@ impl Graphics {
                     ),
                     .. ScreenElement::default()
                 }
-                .transform(screen_size(context).size)
+                .transform(screen(context).size)
                 .to_native();
             draw(
                 context,
@@ -217,7 +217,7 @@ impl Graphics {
                     ),
                     .. ScreenElement::default()
                 }
-                .transform(screen_size(context).size)
+                .transform(screen(context).size)
                 .to_native();
             draw(
                 context,
@@ -241,7 +241,7 @@ impl Graphics {
     {
         let element: WorldElement = planet.into();
         let transform = element
-            .transform(&game.state.camera, screen_size(context).size)
+            .transform(&game.state.camera, screen(context).size)
             .to_native();
 
         draw(
@@ -258,10 +258,10 @@ impl Graphics {
         -> GameResult<bool>
     {
         let element = get!(
-            ScreenElement::from_ship(ship, game, screen_size(context).size)
+            ScreenElement::from_ship(ship, game, screen(context).size)
         );
         let transform = element
-            .transform(screen_size(context).size)
+            .transform(screen(context).size)
             .to_native();
 
         draw(
@@ -290,7 +290,7 @@ impl Graphics {
                 pos: element.pos + graphics::Vec2::new(20.0, -20.0),
                 .. ScreenElement::default()
             }
-            .transform(screen_size(context).size)
+            .transform(screen(context).size)
             .to_native();
 
         let body  = get!(game.state.data.bodies, &craft.body);
@@ -324,10 +324,10 @@ impl Graphics {
         -> GameResult<bool>
     {
         let element = get!(
-            ScreenElement::from_explosion(explosion, game, screen_size(context).size)
+            ScreenElement::from_explosion(explosion, game, screen(context).size)
         );
         let transform = element
-            .transform(screen_size(context).size)
+            .transform(screen(context).size)
             .to_native();
 
         let alpha = explosion.strength_left / explosion.strength_total;
@@ -368,7 +368,7 @@ End game - {}",
                 pos: graphics::Pnt2::new(20.0, 20.0),
                 .. ScreenElement::default()
             }
-            .transform(screen_size(context).size)
+            .transform(screen(context).size)
             .to_native();
         draw(
             context,
@@ -382,7 +382,7 @@ End game - {}",
                 pos: graphics::Pnt2::new(20.0, 150.0),
                 .. ScreenElement::default()
             }
-            .transform(screen_size(context).size)
+            .transform(screen(context).size)
             .to_native();
         draw(
             context,
@@ -406,7 +406,7 @@ End game - {}",
                     pos: graphics::Pnt2::new(20.0, 180.0),
                     .. ScreenElement::default()
                 }
-                .transform(screen_size(context).size)
+                .transform(screen(context).size)
                 .to_native();
             draw(
                 context,
@@ -452,7 +452,7 @@ Removals per s: {}",
                         pos: graphics::Pnt2::new(20.0, 220.0),
                         .. ScreenElement::default()
                     }
-                    .transform(screen_size(context).size)
+                    .transform(screen(context).size)
                     .to_native();
                 draw(
                     context,
@@ -474,7 +474,7 @@ Removals per s: {}",
                     pos: graphics::Pnt2::new(20.0, 520.0),
                     .. ScreenElement::default()
                 }
-                .transform(screen_size(context).size)
+                .transform(screen(context).size)
                 .to_native();
             draw(
                 context,
@@ -498,7 +498,7 @@ Removals per s: {}",
                 pos:  game.input.pointer_screen,
                 .. ScreenElement::default()
             }
-            .transform(screen_size(context).size)
+            .transform(screen(context).size)
             .to_native();
 
         draw(
@@ -542,7 +542,7 @@ Fuel: {:.2}",
                 pos: graphics::Pnt2::new(width - 200.0, 20.0),
                 .. ScreenElement::default()
             }
-            .transform(screen_size(context).size)
+            .transform(screen(context).size)
             .to_native();
         draw(
             context,
@@ -556,7 +556,7 @@ Fuel: {:.2}",
 }
 
 
-fn screen_size(context: &Context) -> Screen {
+fn screen(context: &Context) -> Screen {
     let (screen_width, screen_height) = ggez::graphics::drawable_size(context);
 
     Screen {
