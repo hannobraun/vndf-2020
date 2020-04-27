@@ -444,12 +444,15 @@ Removals per s: {}",
                 input_events.push_str(&format!("{}\n", event));
             }
 
+            let element = UiElement {
+                pos: graphics::Pnt2::new(20.0, 520.0),
+                .. UiElement::default()
+            };
             draw(
                 context,
-                &ScreenTransform { element: &UiElement::default() },
+                &ScreenTransform { element: &element },
                 &text(input_events),
-                DrawParam::screen()
-                    .dest(graphics::Pnt2::new(20.0, 520.0))
+                DrawParam::screen(),
             )?;
         }
 
