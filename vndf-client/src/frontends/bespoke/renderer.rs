@@ -151,7 +151,7 @@ impl Renderer {
                     self.draw_ship(&frame, &mut encoder, ship, game);
                 }
 
-                let screen_size = self.screen();
+                let screen = self.screen();
                 self.glyph_brush.queue(Section {
                     text:  "Von Neumann Defense Force",
                     color: [1.0, 1.0, 1.0, 1.0],
@@ -162,8 +162,8 @@ impl Renderer {
                         &self.device,
                         &mut encoder,
                         &frame.view,
-                        screen_size.size.width as u32,
-                        screen_size.size.height as u32,
+                        screen.size.width as u32,
+                        screen.size.height as u32,
                     )
                     // I've checked the code, and it doesn't look like this
                     // actually returns any errors.
