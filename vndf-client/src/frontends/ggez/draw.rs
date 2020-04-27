@@ -68,10 +68,6 @@ impl<P, V> DrawParam<P, V>
         P: Into<mint::Point2<f32>>,
         V: Into<mint::Vector2<f32>>,
 {
-    pub fn dest(self, dest: impl Into<P>) -> Self {
-        Self(self.0.dest(dest.into()), PhantomData, PhantomData)
-    }
-
     pub fn color(self, color: impl Into<Color>) -> Self {
         Self(self.0.color(color.into()), PhantomData, PhantomData)
     }
