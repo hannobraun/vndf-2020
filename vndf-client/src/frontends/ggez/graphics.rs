@@ -361,12 +361,15 @@ End game - {}",
             DrawParam::screen(),
         )?;
 
+        let element = UiElement {
+            pos: graphics::Pnt2::new(20.0, 150.0),
+            .. UiElement::default()
+        };
         draw(
             context,
-            &ScreenTransform { element: &UiElement::default() },
+            &ScreenTransform { element: &element },
             &text(format!("Zoom: {:.3}x", game.input.zoom)),
-            DrawParam::screen()
-                .dest(graphics::Pnt2::new(20.0, 150.0)),
+            DrawParam::screen(),
         )?;
 
         if game.input.config.diagnostics.frame_time {
