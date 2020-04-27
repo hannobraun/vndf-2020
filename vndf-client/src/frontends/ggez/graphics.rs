@@ -188,6 +188,11 @@ impl Graphics {
             let apoapsis_above_surface_km =
                 orbit.apoapsis_above_surface / 1000.0;
 
+            let pos = game.state.camera.world_to_screen(
+                size_s,
+                orbit.pericenter,
+            );
+
             draw(
                 context,
                 &ScreenTransform { element: &UiElement::default() },
@@ -199,12 +204,7 @@ impl Graphics {
                     )
                 ),
                 DrawParam::screen()
-                    .dest(
-                        game.state.camera.world_to_screen(
-                            size_s,
-                            orbit.pericenter,
-                        )
-                    ),
+                    .dest(pos),
             )?;
             draw(
                 context,
