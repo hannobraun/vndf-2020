@@ -1,7 +1,10 @@
 use ggez::{
     Context,
     GameResult,
-    graphics::Drawable,
+    graphics::{
+        self,
+        Drawable,
+    },
 };
 
 
@@ -15,15 +18,15 @@ pub fn draw<D>(
     where
         D: Drawable,
 {
-    ggez::graphics::set_projection(context, transform);
-    ggez::graphics::apply_transformations(context)?;
+    graphics::set_projection(context, transform);
+    graphics::apply_transformations(context)?;
 
-    let mut param = ggez::graphics::DrawParam::new();
+    let mut param = graphics::DrawParam::new();
     if let Some(color) = color {
         param = param.color(color.into());
     }
 
-    ggez::graphics::draw(
+    graphics::draw(
         context,
         drawable,
         param,
