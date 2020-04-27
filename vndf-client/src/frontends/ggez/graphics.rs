@@ -193,9 +193,14 @@ impl Graphics {
                 orbit.pericenter,
             );
 
+            let element = UiElement {
+                pos,
+                .. UiElement::default()
+            };
+
             draw(
                 context,
-                &ScreenTransform { element: &UiElement::default() },
+                &ScreenTransform { element: &element },
                 &text(
                     format!(
                         "Periapsis:\nfrom center: {:.0} km\nabove surface:{:.0} km",
@@ -203,8 +208,7 @@ impl Graphics {
                         periapsis_above_surface_km,
                     )
                 ),
-                DrawParam::screen()
-                    .dest(pos),
+                DrawParam::screen(),
             )?;
             draw(
                 context,
