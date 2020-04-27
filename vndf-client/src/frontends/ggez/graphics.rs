@@ -557,10 +557,10 @@ Fuel: {:.2}",
 
 
 fn screen(context: &Context) -> Screen {
-    let (screen_width, screen_height) = ggez::graphics::drawable_size(context);
+    let (width, height) = ggez::graphics::drawable_size(context);
 
     Screen {
-        size: graphics::Size::new(screen_width, screen_height),
+        size: graphics::Size::new(width, height),
     }
 }
 
