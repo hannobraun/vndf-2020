@@ -17,18 +17,18 @@ use crate::{
 };
 
 
-pub fn draw<T, D>(
+pub fn draw<D>(
     context:   &mut Context,
-    transform: &T,
+    transform: [[f32; 4]; 4],
     drawable:  &D,
     color:     Option<[f32; 4]>,
 )
     -> GameResult
     where
-        T: Transform,
         D: Drawable,
 {
-    transform.enable(context)?;
+    ggez::graphics::set_projection(context, transform);
+    ggez::graphics::apply_transformations(context)?;
 
     let mut param = ggez::graphics::DrawParam::new();
     if let Some(color) = color {

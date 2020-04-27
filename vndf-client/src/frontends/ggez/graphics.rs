@@ -18,7 +18,10 @@ use crate::{
     game::Game,
     graphics::{
         self,
-        elements::UiElement,
+        elements::{
+            UiElement,
+            WorldElement,
+        },
         vertices,
     },
     shared::world::behavior::{
@@ -30,11 +33,7 @@ use crate::{
     },
 };
 
-use super::draw::{
-    draw,
-    ScreenTransform,
-    WorldTransform,
-};
+use super::draw::draw;
 
 
 macro_rules! get {
@@ -155,16 +154,19 @@ impl Graphics {
             [1.0, 1.0, 1.0, 0.5].into(),
         )?;
 
-        let element = UiElement {
-            pos:   pos_s,
-            angle: -orbit.arg_of_periapsis,
-            .. UiElement::default()
-        };
+        let transform =
+            UiElement {
+                pos:   pos_s,
+                angle: -orbit.arg_of_periapsis,
+                .. UiElement::default()
+            }
+            .transform(screen_size(context))
+            .to_native();
 
         // Draw orbit
         draw(
             context,
-            &ScreenTransform { element: &element },
+            transform,
             &ellipse,
             None,
         )?;
@@ -183,24 +185,19 @@ impl Graphics {
             let apoapsis_above_surface_km =
                 orbit.apoapsis_above_surface / 1000.0;
 
-            let pericenter = UiElement {
-                pos: game.state.camera.world_to_screen(
-                    size_s,
-                    orbit.pericenter,
-                ),
-                .. UiElement::default()
-            };
-            let apocenter = UiElement {
-                pos: game.state.camera.world_to_screen(
-                    size_s,
-                    orbit.apocenter,
-                ),
-                .. UiElement::default()
-            };
-
+            let transform =
+                UiElement {
+                    pos: game.state.camera.world_to_screen(
+                        size_s,
+                        orbit.pericenter,
+                    ),
+                    .. UiElement::default()
+                }
+                .transform(screen_size(context))
+                .to_native();
             draw(
                 context,
-                &ScreenTransform { element: &pericenter },
+                transform,
                 &text(
                     format!(
                         "Periapsis:\nfrom center: {:.0} km\nabove surface:{:.0} km",
@@ -210,9 +207,20 @@ impl Graphics {
                 ),
                 None,
             )?;
+
+            let transform =
+                UiElement {
+                    pos: game.state.camera.world_to_screen(
+                        size_s,
+                        orbit.apocenter,
+                    ),
+                    .. UiElement::default()
+                }
+                .transform(screen_size(context))
+                .to_native();
             draw(
                 context,
-                &ScreenTransform { element: &apocenter },
+                transform,
                 &text(
                     format!(
                         "Apoapsis:\nfrom center: {:.0} km\nabove surface:{:.0} km",
@@ -230,12 +238,14 @@ impl Graphics {
     fn draw_planet(&self, context: &mut Context, planet: &Planet, game: &Game)
         -> GameResult
     {
+        let element: WorldElement = planet.into();
+        let transform = element
+            .transform(&game.state.camera, screen_size(context))
+            .to_native();
+
         draw(
             context,
-            &WorldTransform {
-                element: &planet.into(),
-                camera:  &game.state.camera,
-            },
+            transform,
             &self.circle,
             None,
         )?;
@@ -249,10 +259,13 @@ impl Graphics {
         let element = get!(
             UiElement::from_ship(ship, game, screen_size(context))
         );
+        let transform = element
+            .transform(screen_size(context))
+            .to_native();
 
         draw(
             context,
-            &ScreenTransform { element: &element },
+            transform,
             &self.ship,
             Some([ship.color[0], ship.color[1], ship.color[2], 1.0]),
         )?;
@@ -271,10 +284,13 @@ impl Graphics {
     )
         -> GameResult<bool>
     {
-        let element = UiElement {
-            pos: element.pos + graphics::Vec2::new(20.0, -20.0),
-            .. UiElement::default()
-        };
+        let transform =
+            UiElement {
+                pos: element.pos + graphics::Vec2::new(20.0, -20.0),
+                .. UiElement::default()
+            }
+            .transform(screen_size(context))
+            .to_native();
 
         let body  = get!(game.state.data.bodies, &craft.body);
         let pos_w = get!(game.state.data.positions, &body.pos);
@@ -285,7 +301,7 @@ impl Graphics {
 
         draw(
             context,
-            &ScreenTransform { element: &element },
+            transform,
             &text(
                 format!(
                     "Pos: {:.0}/{:.0}\nVel: {:.0}/{:.0} ({:.0})",
@@ -309,12 +325,15 @@ impl Graphics {
         let element = get!(
             UiElement::from_explosion(explosion, game, screen_size(context))
         );
+        let transform = element
+            .transform(screen_size(context))
+            .to_native();
 
         let alpha = explosion.strength_left / explosion.strength_total;
 
         draw(
             context,
-            &ScreenTransform { element: &element },
+            transform,
             &self.circle,
             Some([1.0, 1.0, 1.0, alpha])
         )?;
@@ -343,24 +362,30 @@ End game - {}",
             game.input.config.input.quit,
         );
 
-        let element = UiElement {
-            pos: graphics::Pnt2::new(20.0, 20.0),
-            .. UiElement::default()
-        };
+        let transform =
+            UiElement {
+                pos: graphics::Pnt2::new(20.0, 20.0),
+                .. UiElement::default()
+            }
+            .transform(screen_size(context))
+            .to_native();
         draw(
             context,
-            &ScreenTransform { element: &element },
+            transform,
             &text(instructions),
             None,
         )?;
 
-        let element = UiElement {
-            pos: graphics::Pnt2::new(20.0, 150.0),
-            .. UiElement::default()
-        };
+        let transform =
+            UiElement {
+                pos: graphics::Pnt2::new(20.0, 150.0),
+                .. UiElement::default()
+            }
+            .transform(screen_size(context))
+            .to_native();
         draw(
             context,
-            &ScreenTransform { element: &element },
+            transform,
             &text(format!("Zoom: {:.3}x", game.input.zoom)),
             None,
         )?;
@@ -375,13 +400,16 @@ End game - {}",
                 report.avg_3.whole_milliseconds(),
             );
 
-            let element = UiElement {
-                pos: graphics::Pnt2::new(20.0, 180.0),
-                .. UiElement::default()
-            };
+            let transform =
+                UiElement {
+                    pos: graphics::Pnt2::new(20.0, 180.0),
+                    .. UiElement::default()
+                }
+                .transform(screen_size(context))
+                .to_native();
             draw(
                 context,
-                &ScreenTransform { element: &element },
+                transform,
                 &text(frame_time),
                 None,
             )?;
@@ -418,13 +446,16 @@ Removals per s: {}",
                     game.state.statistics.removals.len(),
                 );
 
-                let element = UiElement {
-                    pos: graphics::Pnt2::new(20.0, 220.0),
-                    .. UiElement::default()
-                };
+                let transform =
+                    UiElement {
+                        pos: graphics::Pnt2::new(20.0, 220.0),
+                        .. UiElement::default()
+                    }
+                    .transform(screen_size(context))
+                    .to_native();
                 draw(
                     context,
-                    &ScreenTransform { element: &element },
+                    transform,
                     &text(diagnostics),
                     None,
                 )?;
@@ -437,13 +468,16 @@ Removals per s: {}",
                 input_events.push_str(&format!("{}\n", event));
             }
 
-            let element = UiElement {
-                pos: graphics::Pnt2::new(20.0, 520.0),
-                .. UiElement::default()
-            };
+            let transform =
+                UiElement {
+                    pos: graphics::Pnt2::new(20.0, 520.0),
+                    .. UiElement::default()
+                }
+                .transform(screen_size(context))
+                .to_native();
             draw(
                 context,
-                &ScreenTransform { element: &element },
+                transform,
                 &text(input_events),
                 None,
             )?;
@@ -457,15 +491,18 @@ Removals per s: {}",
             }
         }
 
-        let element = UiElement {
-            size: graphics::Size::new(10.0, 10.0),
-            pos:  game.input.pointer_screen,
-            .. UiElement::default()
-        };
+        let transform =
+            UiElement {
+                size: graphics::Size::new(10.0, 10.0),
+                pos:  game.input.pointer_screen,
+                .. UiElement::default()
+            }
+            .transform(screen_size(context))
+            .to_native();
 
         draw(
             context,
-            &ScreenTransform { element: &element },
+            transform,
             &self.pointer,
             None,
         )?;
@@ -499,13 +536,16 @@ Fuel: {:.2}",
             fuel.0,
         );
 
-        let element = UiElement {
-            pos: graphics::Pnt2::new(width - 200.0, 20.0),
-            .. UiElement::default()
-        };
+        let transform =
+            UiElement {
+                pos: graphics::Pnt2::new(width - 200.0, 20.0),
+                .. UiElement::default()
+            }
+            .transform(screen_size(context))
+            .to_native();
         draw(
             context,
-            &ScreenTransform { element: &element },
+            transform,
             &text(status),
             None,
         )?;
