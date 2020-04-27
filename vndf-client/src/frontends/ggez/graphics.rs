@@ -446,13 +446,17 @@ Removals per s: {}",
             }
         }
 
+        let element = UiElement {
+            size: graphics::Size::new(10.0, 10.0),
+            pos:  game.input.pointer_screen,
+            .. UiElement::default()
+        };
+
         draw(
             context,
-            &ScreenTransform { element: &UiElement::default() },
+            &ScreenTransform { element: &element },
             &self.pointer,
-            DrawParam::screen()
-                .dest(game.input.pointer_screen)
-                .scale(graphics::Vec2::new(10.0, 10.0))
+            DrawParam::screen(),
         )?;
 
         mouse::set_cursor_hidden(context, true);
