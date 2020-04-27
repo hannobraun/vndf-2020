@@ -1545,12 +1545,12 @@ dependencies = [
 
 [[package]]
 name = "lyon"
-version = "0.15.7"
+version = "0.15.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8e631d7a53ffb386b76a35c915826165323bbca04bd9eb6da95c1d74dd423b8d"
+checksum = "a23d454ca7a53ad3385d9e45da4c97ea9a8233df5392353bc4a1a798d59dea9f"
 dependencies = [
  "lyon_algorithms 0.15.0",
- "lyon_tessellation 0.15.7",
+ "lyon_tessellation 0.15.8",
 ]
 
 [[package]]
@@ -1625,9 +1625,9 @@ dependencies = [
 
 [[package]]
 name = "lyon_tessellation"
-version = "0.15.7"
+version = "0.15.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "78e96947cdc44b8213e6ec05da63e91377cb808fa4e08ee542bd6d93278201d7"
+checksum = "a71f29de2e42414f80fd10a1c568a34b2cc911a85506f6bc36366d3b198c6398"
 dependencies = [
  "arrayvec 0.5.1",
  "lyon_path 0.15.2",
@@ -3102,7 +3102,7 @@ dependencies = [
  "futures",
  "ggez",
  "log",
- "lyon 0.15.7",
+ "lyon 0.15.8",
  "mint",
  "serde",
  "time",
@@ -3594,9 +3594,9 @@ checksum = "7395cdb9d0a6219fa0ea77d08c946adf9c1984c72fcd443ace30365f3daadef7"
 
 [[package]]
 name = "xml-rs"
-version = "0.8.2"
+version = "0.8.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2bb76e5c421bbbeb8924c60c030331b345555024d56261dae8f3e786ed817c23"
+checksum = "b07db065a5cf61a7e4ba64f29e67db906fb1787316516c4e6e5ff0fea1efcd8a"
 
 [[package]]
 name = "zerocopy"
