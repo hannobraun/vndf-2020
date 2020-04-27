@@ -151,7 +151,7 @@ impl Renderer {
                     self.draw_ship(&frame, &mut encoder, ship, game);
                 }
 
-                let screen_size = self.screen_size();
+                let screen_size = self.screen();
                 self.glyph_brush.queue(Section {
                     text:  "Von Neumann Defense Force",
                     color: [1.0, 1.0, 1.0, 1.0],
@@ -209,11 +209,11 @@ impl Renderer {
 
         let transform = element.transform(
             &game.state.camera,
-            self.screen_size().size,
+            self.screen().size,
         );
 
         let pixel_per_m = game.state.camera.pixels_per_meter(
-            self.screen_size().size
+            self.screen().size
         );
         let pixel_per_u = [
             pixel_per_m * element.size.width,
@@ -268,7 +268,7 @@ impl Renderer {
         game:    &Game,
     ) {
         let transform = WorldElement::from(planet)
-            .transform(&game.state.camera, self.screen_size().size);
+            .transform(&game.state.camera, self.screen().size);
 
         self.drawables.planet.draw(
             &self.device,
@@ -289,8 +289,8 @@ impl Renderer {
     )
         -> Option<()>
     {
-        let transform = ScreenElement::from_ship(ship, game, self.screen_size().size)?
-            .transform(self.screen_size().size);
+        let transform = ScreenElement::from_ship(ship, game, self.screen().size)?
+            .transform(self.screen().size);
 
         self.drawables.ship.draw(
             &self.device,
@@ -307,7 +307,7 @@ impl Renderer {
         Some(())
     }
 
-    fn screen_size(&self) -> Screen {
+    fn screen(&self) -> Screen {
         Screen {
             size: graphics::Size::new(
                 self.swap_chain_desc.width  as f32,
