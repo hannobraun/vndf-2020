@@ -195,6 +195,13 @@ impl Graphics {
                 ),
                 .. UiElement::default()
             };
+            let apocenter = UiElement {
+                pos: game.state.camera.world_to_screen(
+                    size_s,
+                    orbit.apocenter,
+                ),
+                .. UiElement::default()
+            };
 
             draw(
                 context,
@@ -210,7 +217,7 @@ impl Graphics {
             )?;
             draw(
                 context,
-                &ScreenTransform { element: &UiElement::default() },
+                &ScreenTransform { element: &apocenter },
                 &text(
                     format!(
                         "Apoapsis:\nfrom center: {:.0} km\nabove surface:{:.0} km",
@@ -218,13 +225,7 @@ impl Graphics {
                         apoapsis_above_surface_km,
                     )
                 ),
-                DrawParam::screen()
-                    .dest(
-                        game.state.camera.world_to_screen(
-                            size_s,
-                            orbit.apocenter,
-                        )
-                    ),
+                DrawParam::screen(),
             )?;
         }
 
