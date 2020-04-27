@@ -19,6 +19,7 @@ use crate::{
         behavior::{
             crafts::Craft,
             orbits::Orbit,
+            physics::Position,
             planets::Planet,
             ships::Ship,
         },
@@ -61,17 +62,35 @@ impl UiElement {
         let body = game.state.data.bodies.get(&craft.body)?;
         let pos  = game.state.data.positions.get(&body.pos)?;
 
+        Some(
+            Self::from_pos(
+                pos,
+                body.dir,
+                size,
+                game,
+                screen,
+            )
+        )
+    }
+
+    pub fn from_pos(
+        pos:    &Position,
+        dir:    world::Vec2,
+        size:   graphics::Size,
+        game:   &Game,
+        screen: graphics::Size,
+    )
+        -> Self
+    {
         let pos = transforms::world_to_screen(&game.state.camera, screen).0
             .transform_point(pos.0);
-        let angle = body.dir.angle_from_x_axis();
+        let angle = dir.angle_from_x_axis();
 
-        Some(
-            Self {
-                size,
-                pos,
-                angle,
-            }
-        )
+        Self {
+            size,
+            pos,
+            angle,
+        }
     }
 
     pub fn transform(&self, screen_size: graphics::Size)
