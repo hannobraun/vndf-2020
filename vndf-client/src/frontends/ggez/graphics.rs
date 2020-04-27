@@ -31,10 +31,7 @@ use crate::{
 };
 
 use super::{
-    draw::{
-        draw,
-        DrawParam,
-    },
+    draw::draw,
     transforms::{
         ScreenTransform,
         WorldTransform,
@@ -171,7 +168,7 @@ impl Graphics {
             context,
             &ScreenTransform { element: &element },
             &ellipse,
-            DrawParam::screen(),
+            None,
         )?;
 
         // Display periapsis and apoapsis
@@ -213,7 +210,7 @@ impl Graphics {
                         periapsis_above_surface_km,
                     )
                 ),
-                DrawParam::screen(),
+                None,
             )?;
             draw(
                 context,
@@ -225,7 +222,7 @@ impl Graphics {
                         apoapsis_above_surface_km,
                     )
                 ),
-                DrawParam::screen(),
+                None,
             )?;
         }
 
@@ -242,7 +239,7 @@ impl Graphics {
                 camera:  &game.state.camera,
             },
             &self.circle,
-            DrawParam::world()
+            None,
         )?;
 
         Ok(())
@@ -259,8 +256,7 @@ impl Graphics {
             context,
             &ScreenTransform { element: &element },
             &self.ship,
-            DrawParam::screen()
-                .color([ship.color[0], ship.color[1], ship.color[2], 1.0]),
+            Some([ship.color[0], ship.color[1], ship.color[2], 1.0]),
         )?;
 
         let craft = get!(game.state.data.crafts, &ship.craft);
@@ -299,7 +295,7 @@ impl Graphics {
                     vel_km.x, vel_km.y, vel_km.length(),
                 )
             ),
-            DrawParam::screen(),
+            None,
         )?;
 
         Ok(true)
@@ -322,8 +318,7 @@ impl Graphics {
             context,
             &ScreenTransform { element: &element },
             &self.circle,
-            DrawParam::screen()
-                .color([1.0, 1.0, 1.0, alpha])
+            Some([1.0, 1.0, 1.0, alpha])
         )?;
 
         Ok(true)
@@ -358,7 +353,7 @@ End game - {}",
             context,
             &ScreenTransform { element: &element },
             &text(instructions),
-            DrawParam::screen(),
+            None,
         )?;
 
         let element = UiElement {
@@ -369,7 +364,7 @@ End game - {}",
             context,
             &ScreenTransform { element: &element },
             &text(format!("Zoom: {:.3}x", game.input.zoom)),
-            DrawParam::screen(),
+            None,
         )?;
 
         if game.input.config.diagnostics.frame_time {
@@ -390,7 +385,7 @@ End game - {}",
                 context,
                 &ScreenTransform { element: &element },
                 &text(frame_time),
-                DrawParam::screen(),
+                None,
             )?;
         }
 
@@ -433,7 +428,7 @@ Removals per s: {}",
                     context,
                     &ScreenTransform { element: &element },
                     &text(diagnostics),
-                    DrawParam::screen(),
+                    None,
                 )?;
             }
         }
@@ -452,7 +447,7 @@ Removals per s: {}",
                 context,
                 &ScreenTransform { element: &element },
                 &text(input_events),
-                DrawParam::screen(),
+                None,
             )?;
         }
 
@@ -474,7 +469,7 @@ Removals per s: {}",
             context,
             &ScreenTransform { element: &element },
             &self.pointer,
-            DrawParam::screen(),
+            None,
         )?;
 
         mouse::set_cursor_hidden(context, true);
@@ -514,7 +509,7 @@ Fuel: {:.2}",
             context,
             &ScreenTransform { element: &element },
             &text(status),
-            DrawParam::screen(),
+            None,
         )?;
 
         Ok(true)

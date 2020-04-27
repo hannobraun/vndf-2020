@@ -20,7 +20,7 @@ pub fn draw<T, D>(
     context:   &mut Context,
     transform: &T,
     drawable:  &D,
-    params:    DrawParam<T::Point, T::Vector>,
+    color:     Option<[f32; 4]>,
 )
     -> GameResult
     where
@@ -29,10 +29,15 @@ pub fn draw<T, D>(
 {
     transform.enable(context)?;
 
+    let mut param = ggez::graphics::DrawParam::new();
+    if let Some(color) = color {
+        param = param.color(color.into());
+    }
+
     ggez::graphics::draw(
         context,
         drawable,
-        params,
+        param,
     )
 }
 
