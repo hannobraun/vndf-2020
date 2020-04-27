@@ -309,23 +309,17 @@ impl Graphics {
     )
         -> GameResult<bool>
     {
-        let pos = get!(game.state.data.positions, &explosion.pos);
+        let element = get!(
+            UiElement::from_explosion(explosion, game, screen_size(context))
+        );
 
         let alpha = explosion.strength_left / explosion.strength_total;
-        let size  = explosion.strength_total * 2.0;
-
-        let pos = game.state.camera.world_to_screen(
-            screen_size(context),
-            pos.0,
-        );
 
         draw(
             context,
-            &ScreenTransform { element: &UiElement::default() },
+            &ScreenTransform { element: &element },
             &self.circle,
             DrawParam::screen()
-                .dest(pos)
-                .scale(graphics::Vec2::new(size, size))
                 .color([1.0, 1.0, 1.0, alpha])
         )?;
 

@@ -18,6 +18,7 @@ use crate::{
         self,
         behavior::{
             crafts::Craft,
+            explosions::Explosion,
             orbits::Orbit,
             physics::Position,
             planets::Planet,
@@ -67,6 +68,28 @@ impl UiElement {
                 pos,
                 body.dir,
                 size,
+                game,
+                screen,
+            )
+        )
+    }
+
+    pub fn from_explosion(
+        explosion: &Explosion,
+        game:      &Game,
+        screen:    graphics::Size,
+    )
+        -> Option<Self>
+    {
+        let pos = game.state.data.positions.get(&explosion.pos)?;
+
+        let size = explosion.strength_total * 2.0;
+
+        Some(
+            Self::from_pos(
+                pos,
+                world::Vec2::new(1.0, 0.0),
+                graphics::Size::new(size, size),
                 game,
                 screen,
             )
