@@ -30,12 +30,10 @@ use crate::{
     },
 };
 
-use super::{
-    draw::draw,
-    transforms::{
-        ScreenTransform,
-        WorldTransform,
-    },
+use super::draw::{
+    draw,
+    ScreenTransform,
+    WorldTransform,
 };
 
 
