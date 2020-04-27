@@ -258,7 +258,7 @@ impl Graphics {
         -> GameResult<bool>
     {
         let element = get!(
-            ScreenElement::from_ship(ship, game, screen(context).size)
+            ScreenElement::from_ship(ship, game, screen(context))
         );
         let transform = element
             .transform(screen(context).size)
@@ -324,7 +324,7 @@ impl Graphics {
         -> GameResult<bool>
     {
         let element = get!(
-            ScreenElement::from_explosion(explosion, game, screen(context).size)
+            ScreenElement::from_explosion(explosion, game, screen(context))
         );
         let transform = element
             .transform(screen(context).size)

@@ -9,6 +9,7 @@ use crate::{
             ClipUnit,
             LocalUnit,
         },
+        screen::Screen,
         transforms::{
             self,
             Transform,
@@ -38,7 +39,7 @@ impl ScreenElement {
     pub fn from_ship(
         ship:   &Ship,
         game:   &Game,
-        screen: graphics::Size,
+        screen: Screen,
     )
         -> Option<Self>
     {
@@ -56,7 +57,7 @@ impl ScreenElement {
         craft:  &Craft,
         size:   graphics::Size,
         game:   &Game,
-        screen: graphics::Size,
+        screen: Screen,
     )
         -> Option<Self>
     {
@@ -77,7 +78,7 @@ impl ScreenElement {
     pub fn from_explosion(
         explosion: &Explosion,
         game:      &Game,
-        screen:    graphics::Size,
+        screen:    Screen,
     )
         -> Option<Self>
     {
@@ -101,11 +102,11 @@ impl ScreenElement {
         dir:    world::Vec2,
         size:   graphics::Size,
         game:   &Game,
-        screen: graphics::Size,
+        screen: Screen,
     )
         -> Self
     {
-        let pos = transforms::world_to_screen(&game.state.camera, screen).0
+        let pos = transforms::world_to_screen(&game.state.camera, screen.size).0
             .transform_point(pos.0);
         let angle = dir.angle_from_x_axis();
 
