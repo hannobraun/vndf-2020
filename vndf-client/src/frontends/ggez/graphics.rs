@@ -188,7 +188,7 @@ impl Graphics {
             let apoapsis_above_surface_km =
                 orbit.apoapsis_above_surface / 1000.0;
 
-            let element = UiElement {
+            let pericenter = UiElement {
                 pos: game.state.camera.world_to_screen(
                     size_s,
                     orbit.pericenter,
@@ -198,7 +198,7 @@ impl Graphics {
 
             draw(
                 context,
-                &ScreenTransform { element: &element },
+                &ScreenTransform { element: &pericenter },
                 &text(
                     format!(
                         "Periapsis:\nfrom center: {:.0} km\nabove surface:{:.0} km",
