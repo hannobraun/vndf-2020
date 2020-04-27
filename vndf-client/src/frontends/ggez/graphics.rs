@@ -382,12 +382,15 @@ End game - {}",
                 report.avg_3.whole_milliseconds(),
             );
 
+            let element = UiElement {
+                pos: graphics::Pnt2::new(20.0, 180.0),
+                .. UiElement::default()
+            };
             draw(
                 context,
-                &ScreenTransform { element: &UiElement::default() },
+                &ScreenTransform { element: &element },
                 &text(frame_time),
-                DrawParam::screen()
-                    .dest(graphics::Pnt2::new(20.0, 180.0))
+                DrawParam::screen(),
             )?;
         }
 
