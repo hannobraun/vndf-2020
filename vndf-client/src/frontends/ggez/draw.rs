@@ -72,10 +72,6 @@ impl<P, V> DrawParam<P, V>
         Self(self.0.dest(dest.into()), PhantomData, PhantomData)
     }
 
-    pub fn scale(self, scale: impl Into<V>) -> Self {
-        Self(self.0.scale(scale.into()), PhantomData, PhantomData)
-    }
-
     pub fn color(self, color: impl Into<Color>) -> Self {
         Self(self.0.color(color.into()), PhantomData, PhantomData)
     }
