@@ -18,6 +18,7 @@ use crate::{
             ScreenElement,
             WorldElement,
         },
+        screen::Screen,
     },
     shared::world::behavior::{
         orbits::Orbit,
@@ -161,8 +162,8 @@ impl Renderer {
                         &self.device,
                         &mut encoder,
                         &frame.view,
-                        screen_size.width as u32,
-                        screen_size.height as u32,
+                        screen_size.size.width as u32,
+                        screen_size.size.height as u32,
                     )
                     // I've checked the code, and it doesn't look like this
                     // actually returns any errors.
@@ -208,11 +209,11 @@ impl Renderer {
 
         let transform = element.transform(
             &game.state.camera,
-            self.screen_size(),
+            self.screen_size().size,
         );
 
         let pixel_per_m = game.state.camera.pixels_per_meter(
-            self.screen_size()
+            self.screen_size().size
         );
         let pixel_per_u = [
             pixel_per_m * element.size.width,
@@ -267,7 +268,7 @@ impl Renderer {
         game:    &Game,
     ) {
         let transform = WorldElement::from(planet)
-            .transform(&game.state.camera, self.screen_size());
+            .transform(&game.state.camera, self.screen_size().size);
 
         self.drawables.planet.draw(
             &self.device,
@@ -288,8 +289,8 @@ impl Renderer {
     )
         -> Option<()>
     {
-        let transform = ScreenElement::from_ship(ship, game, self.screen_size())?
-            .transform(self.screen_size());
+        let transform = ScreenElement::from_ship(ship, game, self.screen_size().size)?
+            .transform(self.screen_size().size);
 
         self.drawables.ship.draw(
             &self.device,
@@ -306,11 +307,13 @@ impl Renderer {
         Some(())
     }
 
-    fn screen_size(&self) -> graphics::Size {
-        graphics::Size::new(
-            self.swap_chain_desc.width  as f32,
-            self.swap_chain_desc.height as f32,
-        )
+    fn screen_size(&self) -> Screen {
+        Screen {
+            size: graphics::Size::new(
+                self.swap_chain_desc.width  as f32,
+                self.swap_chain_desc.height as f32,
+            ),
+        }
     }
 }
 
