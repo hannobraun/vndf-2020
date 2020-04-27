@@ -506,12 +506,15 @@ Fuel: {:.2}",
             fuel.0,
         );
 
+        let element = UiElement {
+            pos: graphics::Pnt2::new(width - 200.0, 20.0),
+            .. UiElement::default()
+        };
         draw(
             context,
-            &ScreenTransform { element: &UiElement::default() },
+            &ScreenTransform { element: &element },
             &text(status),
-            DrawParam::screen()
-                .dest(graphics::Pnt2::new(width - 200.0, 20.0))
+            DrawParam::screen(),
         )?;
 
         Ok(true)
