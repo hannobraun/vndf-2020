@@ -15,7 +15,7 @@ use crate::{
     graphics::{
         self,
         elements::{
-            UiElement,
+            ScreenElement,
             WorldElement,
         },
     },
@@ -288,7 +288,7 @@ impl Renderer {
     )
         -> Option<()>
     {
-        let transform = UiElement::from_ship(ship, game, self.screen_size())?
+        let transform = ScreenElement::from_ship(ship, game, self.screen_size())?
             .transform(self.screen_size());
 
         self.drawables.ship.draw(

@@ -28,13 +28,13 @@ use crate::{
 };
 
 
-pub struct UiElement {
+pub struct ScreenElement {
     pub size:  graphics::Size,
     pub pos:   graphics::Pnt2,
     pub angle: graphics::Angle,
 }
 
-impl UiElement {
+impl ScreenElement {
     pub fn from_ship(
         ship:   &Ship,
         game:   &Game,
@@ -126,7 +126,7 @@ impl UiElement {
     }
 }
 
-impl Default for UiElement {
+impl Default for ScreenElement {
     fn default() -> Self {
         Self {
             size:  graphics::Size::new(1.0, 1.0),

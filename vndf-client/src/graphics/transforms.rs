@@ -25,7 +25,7 @@ use crate::{
     graphics::{
         self,
         elements::{
-            UiElement,
+            ScreenElement,
             WorldElement,
         },
         math::{
@@ -74,7 +74,7 @@ pub fn local_to_world(element: &WorldElement) -> Transform<LocalUnit, Meter> {
         .into()
 }
 
-pub fn local_to_screen(element: &UiElement) -> Transform<LocalUnit, Pixel> {
+pub fn local_to_screen(element: &ScreenElement) -> Transform<LocalUnit, Pixel> {
     graphics::Transform::identity()
         .post_scale(element.size.width, element.size.height)
         .post_rotate(element.angle)
