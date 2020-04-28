@@ -981,9 +981,9 @@ dependencies = [
 
 [[package]]
 name = "gfx-backend-vulkan"
-version = "0.5.3"
+version = "0.5.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2e4da6ab11e9cb972e52ed5e179ddfa1f2a910c61560d91cff92b4dfc682c27c"
+checksum = "45ff36feae801fa23d29acd74082603a0145a697a23595757dd4e78828ab33da"
 dependencies = [
  "arrayvec 0.5.1",
  "ash",
@@ -1413,9 +1413,9 @@ checksum = "b8b7a7c0c47db5545ed3fef7468ee7bb5b74691498139e4b3f6a20685dc6dd8e"
 
 [[package]]
 name = "jpeg-decoder"
-version = "0.1.18"
+version = "0.1.19"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0256f0aec7352539102a9efbcb75543227b7ab1117e0f95450023af730128451"
+checksum = "5b47b4c4e017b01abdc5bcc126d2d1002e5a75bbe3ce73f9f4f311a916363704"
 dependencies = [
  "byteorder",
 ]
@@ -2527,17 +2527,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "rustversion"
-version = "1.0.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b3bba175698996010c4f6dce5e7f173b6eb781fce25d2cfc45e27091ce0b79f6"
-dependencies = [
- "proc-macro2 1.0.10",
- "quote 1.0.3",
- "syn 1.0.18",
-]
-
-[[package]]
 name = "rusty-xinput"
 version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2607,9 +2596,9 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.51"
+version = "1.0.52"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "da07b57ee2623368351e9a0488bb0b261322a15a6e0ae53e243cbdc0f4208da9"
+checksum = "a7894c8ed05b7a3a279aeb79025fdec1d3158080b75b98a08faf2806bb799edd"
 dependencies = [
  "itoa",
  "ryu",
@@ -2776,9 +2765,9 @@ checksum = "dba1a27d3efae4351c8051072d619e3ade2820635c3958d826bfea39d59b54c8"
 
 [[package]]
 name = "standback"
-version = "0.2.7"
+version = "0.2.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d747fb3ce0a32d6e9eb66484b58c53a568e163c56513defeff72c0be97a7b100"
+checksum = "47e4b8c631c998468961a9ea159f064c5c8499b95b5e4a34b77849d45949d540"
 
 [[package]]
 name = "stb_truetype"
@@ -2981,16 +2970,16 @@ dependencies = [
 
 [[package]]
 name = "time"
-version = "0.2.10"
+version = "0.2.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cacbd5ebf7b211db6d9500b8b033c20b6e333a68368a9e8d3a1d073bb1f0a12a"
+checksum = "6af7dfc707e7aed400b39ac00ad1408ea0847cea2bed42174d8dd24c480c55b3"
 dependencies = [
  "cfg-if",
  "libc",
- "rustversion",
  "standback",
  "stdweb 0.4.20",
  "time-macros",
+ "version_check",
  "winapi 0.3.8",
 ]
 
