@@ -40,7 +40,7 @@ impl Events {
                 seq: self.next_seq,
                 kind,
             },
-            entered: OffsetDateTime::now().time(),
+            entered: OffsetDateTime::now_utc().time(),
             sent:    None,
             handled: None,
         };
@@ -78,7 +78,7 @@ impl Events {
 
     pub fn handled(&mut self, seq: u64) {
         if let Some(event) = self.sent.get_mut(&seq) {
-            event.handled = Some(OffsetDateTime::now().time());
+            event.handled = Some(OffsetDateTime::now_utc().time());
         }
     }
 }
@@ -159,7 +159,7 @@ impl<'r> Iterator for Unsent<'r> {
     fn next(&mut self) -> Option<Self::Item> {
         self.inner.next()
             .map(|mut event| {
-                event.sent = Some(OffsetDateTime::now().time());
+                event.sent = Some(OffsetDateTime::now_utc().time());
                 self.sent.insert(event.inner.seq, event);
                 event.inner
             })
