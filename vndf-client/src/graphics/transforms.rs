@@ -48,7 +48,7 @@ impl<Src, Dst> Transform<Src, Dst> {
     pub fn post_transform<NewDst>(&self, transform: &Transform<Dst, NewDst>)
         -> Transform<Src, NewDst>
     {
-        Self(self.0.post_transform(&transform.0))
+        Transform(self.0.post_transform(&transform.0))
     }
 
     pub fn to_native(&self) -> [[f32; 4]; 4] {
