@@ -166,7 +166,7 @@ impl Renderer {
                 }
 
                 let screen = self.screen();
-                let scale  = Scale::uniform(16.0);
+                let scale  = Scale::uniform(16.0 * screen.scale_factor);
                 self.glyph_brush.queue(Section {
                     text:  "Von Neumann Defense Force",
                     scale,
