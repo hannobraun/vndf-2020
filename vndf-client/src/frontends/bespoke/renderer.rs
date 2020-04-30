@@ -3,6 +3,7 @@ use std::io;
 use wgpu_glyph::{
     GlyphBrush,
     GlyphBrushBuilder,
+    Scale,
     Section,
 };
 use winit::event::{
@@ -165,8 +166,10 @@ impl Renderer {
                 }
 
                 let screen = self.screen();
+                let scale  = Scale::uniform(16.0);
                 self.glyph_brush.queue(Section {
                     text:  "Von Neumann Defense Force",
+                    scale,
                     color: [1.0, 1.0, 1.0, 1.0],
                     .. Section::default()
                 });
