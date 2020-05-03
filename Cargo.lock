@@ -2970,9 +2970,9 @@ dependencies = [
 
 [[package]]
 name = "time"
-version = "0.2.13"
+version = "0.2.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a6b5580a7510e7f3c6f199c1cd448515063f7056f026fe42e930c11d97c83e83"
+checksum = "c19b581e837b3f1a6a211e1d30f11a2da711cc8f6d38c16972eecc0398114446"
 dependencies = [
  "cfg-if",
  "libc",
