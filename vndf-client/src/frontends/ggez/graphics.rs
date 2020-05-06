@@ -351,43 +351,11 @@ impl Graphics {
     {
         let ui = Ui::new(game, &screen(context));
 
-        draw(
-            context,
-            ui.instructions.transform,
-            &text(ui.instructions.text),
-            None,
-        )?;
-
-        draw(
-            context,
-            ui.zoom.transform,
-            &text(ui.zoom.text),
-            None,
-        )?;
-
-        if let Some(frame_time) = ui.frame_time {
+        for element in ui.elements {
             draw(
                 context,
-                frame_time.transform,
-                &text(frame_time.text),
-                None,
-            )?;
-        }
-
-        if let Some(diagnostics) = ui.diagnostics {
-            draw(
-                context,
-                diagnostics.transform,
-                &text(diagnostics.text),
-                None,
-            )?;
-        }
-
-        if let Some(input_events) = ui.input_events {
-            draw(
-                context,
-                input_events.transform,
-                &text(input_events.text),
+                element.transform,
+                &text(element.text),
                 None,
             )?;
         }

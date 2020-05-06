@@ -10,21 +10,28 @@ use crate::{
 
 
 pub struct Ui {
-    pub instructions: Element,
-    pub zoom:         Element,
-    pub frame_time:   Option<Element>,
-    pub diagnostics:  Option<Element>,
-    pub input_events: Option<Element>,
+    pub elements: Vec<Element>,
 }
 
 impl Ui {
     pub fn new(game: &Game, screen: &Screen) -> Self {
+        let mut elements = Vec::new();
+
+        elements.push(Element::instructions(game, screen));
+        elements.push(Element::zoom(game, screen));
+
+        if let Some(element) = Element::frame_time(game, screen) {
+            elements.push(element);
+        }
+        if let Some(element) = Element::diagnostics(game, screen) {
+            elements.push(element);
+        }
+        if let Some(element) = Element::input_events(game, screen) {
+            elements.push(element);
+        }
+
         Self {
-            instructions: Element::instructions(game, screen),
-            zoom:         Element::zoom(game, screen),
-            frame_time:   Element::frame_time(game, screen),
-            diagnostics:  Element::diagnostics(game, screen),
-            input_events: Element::input_events(game, screen),
+            elements,
         }
     }
 }
