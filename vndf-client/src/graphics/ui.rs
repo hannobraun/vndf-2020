@@ -2,11 +2,11 @@ use crate::game::Game;
 
 
 pub struct Ui {
-    pub instructions: String,
-    pub zoom:         String,
-    pub frame_time:   String,
-    pub diagnostics:  Option<String>,
-    pub input_events: String,
+    pub instructions: Element,
+    pub zoom:         Element,
+    pub frame_time:   Element,
+    pub diagnostics:  Option<Element>,
+    pub input_events: Element,
 }
 
 impl Ui {
@@ -74,11 +74,16 @@ impl Ui {
         }
 
         Self {
-            instructions,
-            zoom,
-            frame_time,
-            diagnostics,
-            input_events,
+            instructions: Element { text: instructions },
+            zoom:         Element { text: zoom },
+            frame_time:   Element { text: frame_time },
+            diagnostics:  diagnostics.map(|text| Element { text }),
+            input_events: Element { text: input_events },
         }
     }
+}
+
+
+pub struct Element {
+    pub text: String,
 }

@@ -361,7 +361,7 @@ impl Graphics {
         draw(
             context,
             transform,
-            &text(ui.instructions),
+            &text(ui.instructions.text),
             None,
         )?;
 
@@ -375,7 +375,7 @@ impl Graphics {
         draw(
             context,
             transform,
-            &text(ui.zoom),
+            &text(ui.zoom.text),
             None,
         )?;
 
@@ -390,7 +390,7 @@ impl Graphics {
             draw(
                 context,
                 transform,
-                &text(ui.frame_time),
+                &text(ui.frame_time.text),
                 None,
             )?;
         }
@@ -407,7 +407,7 @@ impl Graphics {
                 draw(
                     context,
                     transform,
-                    &text(diagnostics),
+                    &text(diagnostics.text),
                     None,
                 )?;
             }
@@ -424,7 +424,7 @@ impl Graphics {
             draw(
                 context,
                 transform,
-                &text(ui.input_events),
+                &text(ui.input_events.text),
                 None,
             )?;
         }
