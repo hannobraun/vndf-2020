@@ -11,7 +11,24 @@ pub struct Ui {
 
 impl Ui {
     pub fn new(game: &Game) -> Self {
-        let instructions = format!(
+        Self {
+            instructions: Element::instructions(game),
+            zoom:         Element::zoom(game),
+            frame_time:   Element::frame_time(game),
+            diagnostics:  Element::diagnostics(game),
+            input_events: Element::input_events(game),
+        }
+    }
+}
+
+
+pub struct Element {
+    pub text: String,
+}
+
+impl Element {
+    pub fn instructions(game: &Game) -> Self {
+        let text = format!(
             "Instructions:\n\
             Turn left - {}\n\
             Turn right - {}\n\
@@ -26,10 +43,22 @@ impl Ui {
             game.input.config.input.quit,
         );
 
-        let zoom = format!("Zoom: {:.3}x", game.input.zoom);
+        Self {
+            text,
+        }
+    }
 
+    pub fn zoom(game: &Game) -> Self {
+        let text = format!("Zoom: {:.3}x", game.input.zoom);
+
+        Self {
+            text,
+        }
+    }
+
+    pub fn frame_time(game: &Game) -> Self {
         let report = game.state.frame_time.report();
-        let frame_time = format!(
+        let text = format!(
             "Frame time:\n{} ms (avg {}/{}/{})",
             report.latest.whole_milliseconds(),
             report.avg_1.whole_milliseconds(),
@@ -37,8 +66,14 @@ impl Ui {
             report.avg_3.whole_milliseconds(),
         );
 
-        let diagnostics = game.state.diagnostics.map(|diagnostics| {
-            format!(
+        Self {
+            text,
+        }
+    }
+
+    pub fn diagnostics(game: &Game) -> Option<Self> {
+        game.state.diagnostics.map(|diagnostics| {
+            let text = format!(
                 "Components:\n\
                 Bodies: {}/{}\n\
                 Crafts: {}/{}\n\
@@ -65,25 +100,22 @@ impl Ui {
                 diagnostics.velocities, game.state.data.velocities.len(),
                 game.state.statistics.updates.len(),
                 game.state.statistics.removals.len(),
-            )
-        });
+            );
 
-        let mut input_events = String::from("Input:\n");
+            Self {
+                text,
+            }
+        })
+    }
+
+    pub fn input_events(game: &Game) -> Self {
+        let mut text = String::from("Input:\n");
         for event in game.events.iter().rev() {
-            input_events.push_str(&format!("{}\n", event));
+            text.push_str(&format!("{}\n", event));
         }
 
         Self {
-            instructions: Element { text: instructions },
-            zoom:         Element { text: zoom },
-            frame_time:   Element { text: frame_time },
-            diagnostics:  diagnostics.map(|text| Element { text }),
-            input_events: Element { text: input_events },
+            text,
         }
     }
-}
-
-
-pub struct Element {
-    pub text: String,
 }
