@@ -43,17 +43,13 @@ impl Element {
             game.input.config.input.quit,
         );
 
-        Self {
-            text,
-        }
+        Self::new(text)
     }
 
     pub fn zoom(game: &Game) -> Self {
         let text = format!("Zoom: {:.3}x", game.input.zoom);
 
-        Self {
-            text,
-        }
+        Self::new(text)
     }
 
     pub fn frame_time(game: &Game) -> Self {
@@ -66,9 +62,7 @@ impl Element {
             report.avg_3.whole_milliseconds(),
         );
 
-        Self {
-            text,
-        }
+        Self::new(text)
     }
 
     pub fn diagnostics(game: &Game) -> Option<Self> {
@@ -102,9 +96,7 @@ impl Element {
                 game.state.statistics.removals.len(),
             );
 
-            Self {
-                text,
-            }
+            Self::new(text)
         })
     }
 
@@ -114,6 +106,10 @@ impl Element {
             text.push_str(&format!("{}\n", event));
         }
 
+        Self::new(text)
+    }
+
+    pub fn new(text: String) -> Self {
         Self {
             text,
         }
