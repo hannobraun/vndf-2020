@@ -12,9 +12,9 @@ use crate::{
 pub struct Ui {
     pub instructions: Element,
     pub zoom:         Element,
-    pub frame_time:   Element,
+    pub frame_time:   Option<Element>,
     pub diagnostics:  Option<Element>,
-    pub input_events: Element,
+    pub input_events: Option<Element>,
 }
 
 impl Ui {
@@ -65,7 +65,11 @@ impl Element {
         Self::new(text, pos, screen)
     }
 
-    pub fn frame_time(game: &Game, screen: &Screen) -> Self {
+    pub fn frame_time(game: &Game, screen: &Screen) -> Option<Self> {
+        if !game.input.config.diagnostics.frame_time {
+            return None;
+        }
+
         let report = game.state.frame_time.report();
         let text = format!(
             "Frame time:\n{} ms (avg {}/{}/{})",
@@ -77,10 +81,16 @@ impl Element {
 
         let pos = graphics::Pnt2::new(20.0, 180.0);
 
-        Self::new(text, pos, screen)
+        Some(
+            Self::new(text, pos, screen)
+        )
     }
 
     pub fn diagnostics(game: &Game, screen: &Screen) -> Option<Self> {
+        if !game.input.config.diagnostics.components {
+            return None;
+        }
+
         game.state.diagnostics.map(|diagnostics| {
             let text = format!(
                 "Components:\n\
@@ -117,7 +127,11 @@ impl Element {
         })
     }
 
-    pub fn input_events(game: &Game, screen: &Screen) -> Self {
+    pub fn input_events(game: &Game, screen: &Screen) -> Option<Self> {
+        if !game.input.config.diagnostics.input {
+            return None;
+        }
+
         let mut text = String::from("Input:\n");
         for event in game.events.iter().rev() {
             text.push_str(&format!("{}\n", event));
@@ -125,7 +139,9 @@ impl Element {
 
         let pos = graphics::Pnt2::new(20.0, 520.0);
 
-        Self::new(text, pos, screen)
+        Some(
+            Self::new(text, pos, screen)
+        )
     }
 
     pub fn new(text: String, pos: graphics::Pnt2, screen: &Screen) -> Self {

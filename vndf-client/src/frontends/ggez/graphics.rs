@@ -365,31 +365,29 @@ impl Graphics {
             None,
         )?;
 
-        if game.input.config.diagnostics.frame_time {
+        if let Some(frame_time) = ui.frame_time {
             draw(
                 context,
-                ui.frame_time.transform,
-                &text(ui.frame_time.text),
+                frame_time.transform,
+                &text(frame_time.text),
                 None,
             )?;
         }
 
-        if game.input.config.diagnostics.components {
-            if let Some(diagnostics) = ui.diagnostics {
-                draw(
-                    context,
-                    diagnostics.transform,
-                    &text(diagnostics.text),
-                    None,
-                )?;
-            }
-        }
-
-        if game.input.config.diagnostics.input {
+        if let Some(diagnostics) = ui.diagnostics {
             draw(
                 context,
-                ui.input_events.transform,
-                &text(ui.input_events.text),
+                diagnostics.transform,
+                &text(diagnostics.text),
+                None,
+            )?;
+        }
+
+        if let Some(input_events) = ui.input_events {
+            draw(
+                context,
+                input_events.transform,
+                &text(input_events.text),
                 None,
             )?;
         }
