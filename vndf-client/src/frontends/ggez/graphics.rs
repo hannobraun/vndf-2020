@@ -349,47 +349,26 @@ impl Graphics {
     )
         -> GameResult
     {
-        let ui = Ui::new(game);
+        let ui = Ui::new(game, &screen(context));
 
-        let transform =
-            ScreenElement {
-                pos: graphics::Pnt2::new(20.0, 20.0),
-                .. ScreenElement::default()
-            }
-            .transform(screen(context).size)
-            .to_native();
         draw(
             context,
-            transform,
+            ui.instructions.transform,
             &text(ui.instructions.text),
             None,
         )?;
 
-        let transform =
-            ScreenElement {
-                pos: graphics::Pnt2::new(20.0, 150.0),
-                .. ScreenElement::default()
-            }
-            .transform(screen(context).size)
-            .to_native();
         draw(
             context,
-            transform,
+            ui.zoom.transform,
             &text(ui.zoom.text),
             None,
         )?;
 
         if game.input.config.diagnostics.frame_time {
-            let transform =
-                ScreenElement {
-                    pos: graphics::Pnt2::new(20.0, 180.0),
-                    .. ScreenElement::default()
-                }
-                .transform(screen(context).size)
-                .to_native();
             draw(
                 context,
-                transform,
+                ui.frame_time.transform,
                 &text(ui.frame_time.text),
                 None,
             )?;
@@ -397,16 +376,9 @@ impl Graphics {
 
         if game.input.config.diagnostics.components {
             if let Some(diagnostics) = ui.diagnostics {
-                let transform =
-                    ScreenElement {
-                        pos: graphics::Pnt2::new(20.0, 220.0),
-                        .. ScreenElement::default()
-                    }
-                    .transform(screen(context).size)
-                    .to_native();
                 draw(
                     context,
-                    transform,
+                    diagnostics.transform,
                     &text(diagnostics.text),
                     None,
                 )?;
@@ -414,16 +386,9 @@ impl Graphics {
         }
 
         if game.input.config.diagnostics.input {
-            let transform =
-                ScreenElement {
-                    pos: graphics::Pnt2::new(20.0, 520.0),
-                    .. ScreenElement::default()
-                }
-                .transform(screen(context).size)
-                .to_native();
             draw(
                 context,
-                transform,
+                ui.input_events.transform,
                 &text(ui.input_events.text),
                 None,
             )?;

@@ -1,4 +1,12 @@
-use crate::game::Game;
+use crate::{
+    game::Game,
+    graphics::{
+        self,
+        elements::ScreenElement,
+        screen::Screen,
+        transforms::NativeTransform,
+    },
+};
 
 
 pub struct Ui {
@@ -10,24 +18,25 @@ pub struct Ui {
 }
 
 impl Ui {
-    pub fn new(game: &Game) -> Self {
+    pub fn new(game: &Game, screen: &Screen) -> Self {
         Self {
-            instructions: Element::instructions(game),
-            zoom:         Element::zoom(game),
-            frame_time:   Element::frame_time(game),
-            diagnostics:  Element::diagnostics(game),
-            input_events: Element::input_events(game),
+            instructions: Element::instructions(game, screen),
+            zoom:         Element::zoom(game, screen),
+            frame_time:   Element::frame_time(game, screen),
+            diagnostics:  Element::diagnostics(game, screen),
+            input_events: Element::input_events(game, screen),
         }
     }
 }
 
 
 pub struct Element {
-    pub text: String,
+    pub text:      String,
+    pub transform: NativeTransform,
 }
 
 impl Element {
-    pub fn instructions(game: &Game) -> Self {
+    pub fn instructions(game: &Game, screen: &Screen) -> Self {
         let text = format!(
             "Instructions:\n\
             Turn left - {}\n\
@@ -43,16 +52,20 @@ impl Element {
             game.input.config.input.quit,
         );
 
-        Self::new(text)
+        let pos = graphics::Pnt2::new(20.0, 20.0);
+
+        Self::new(text, pos, screen)
     }
 
-    pub fn zoom(game: &Game) -> Self {
+    pub fn zoom(game: &Game, screen: &Screen) -> Self {
         let text = format!("Zoom: {:.3}x", game.input.zoom);
 
-        Self::new(text)
+        let pos = graphics::Pnt2::new(20.0, 150.0);
+
+        Self::new(text, pos, screen)
     }
 
-    pub fn frame_time(game: &Game) -> Self {
+    pub fn frame_time(game: &Game, screen: &Screen) -> Self {
         let report = game.state.frame_time.report();
         let text = format!(
             "Frame time:\n{} ms (avg {}/{}/{})",
@@ -62,10 +75,12 @@ impl Element {
             report.avg_3.whole_milliseconds(),
         );
 
-        Self::new(text)
+        let pos = graphics::Pnt2::new(20.0, 180.0);
+
+        Self::new(text, pos, screen)
     }
 
-    pub fn diagnostics(game: &Game) -> Option<Self> {
+    pub fn diagnostics(game: &Game, screen: &Screen) -> Option<Self> {
         game.state.diagnostics.map(|diagnostics| {
             let text = format!(
                 "Components:\n\
@@ -96,22 +111,31 @@ impl Element {
                 game.state.statistics.removals.len(),
             );
 
-            Self::new(text)
+            let pos = graphics::Pnt2::new(20.0, 220.0);
+
+            Self::new(text, pos, screen)
         })
     }
 
-    pub fn input_events(game: &Game) -> Self {
+    pub fn input_events(game: &Game, screen: &Screen) -> Self {
         let mut text = String::from("Input:\n");
         for event in game.events.iter().rev() {
             text.push_str(&format!("{}\n", event));
         }
 
-        Self::new(text)
+        let pos = graphics::Pnt2::new(20.0, 520.0);
+
+        Self::new(text, pos, screen)
     }
 
-    pub fn new(text: String) -> Self {
+    pub fn new(text: String, pos: graphics::Pnt2, screen: &Screen) -> Self {
+        let transform = ScreenElement { pos, .. ScreenElement::default() }
+            .transform(screen.size)
+            .to_native();
+
         Self {
             text,
+            transform,
         }
     }
 }
