@@ -23,6 +23,7 @@ use crate::{
             WorldElement,
         },
         screen::Screen,
+        ui::Ui,
         vertices,
     },
     shared::world::behavior::{
@@ -348,20 +349,7 @@ impl Graphics {
     )
         -> GameResult
     {
-        let instructions = format!(
-"Instructions:
-Turn left - {}
-Turn right - {}
-Thrust On - {}
-Thrust Off - {}
-Zoom Camera - Mouse Wheel
-End game - {}",
-            game.input.config.input.left,
-            game.input.config.input.right,
-            game.input.config.input.thrust_on,
-            game.input.config.input.thrust_off,
-            game.input.config.input.quit,
-        );
+        let ui = Ui::new(game);
 
         let transform =
             ScreenElement {
@@ -373,7 +361,7 @@ End game - {}",
         draw(
             context,
             transform,
-            &text(instructions),
+            &text(ui.instructions),
             None,
         )?;
 
@@ -387,20 +375,11 @@ End game - {}",
         draw(
             context,
             transform,
-            &text(format!("Zoom: {:.3}x", game.input.zoom)),
+            &text(ui.zoom),
             None,
         )?;
 
         if game.input.config.diagnostics.frame_time {
-            let report = game.state.frame_time.report();
-            let frame_time = format!(
-                "Frame time:\n{} ms (avg {}/{}/{})",
-                report.latest.whole_milliseconds(),
-                report.avg_1.whole_milliseconds(),
-                report.avg_2.whole_milliseconds(),
-                report.avg_3.whole_milliseconds(),
-            );
-
             let transform =
                 ScreenElement {
                     pos: graphics::Pnt2::new(20.0, 180.0),
@@ -411,42 +390,13 @@ End game - {}",
             draw(
                 context,
                 transform,
-                &text(frame_time),
+                &text(ui.frame_time),
                 None,
             )?;
         }
 
         if game.input.config.diagnostics.components {
-            if let Some(diagnostics) = game.state.diagnostics {
-                let diagnostics = format!(
-"Components:
-Bodies: {}/{}
-Crafts: {}/{}
-Explosions: {}/{}
-Fuels: {}/{}
-Healths: {}/{}
-Planets: {}/{}
-Players: {}/-
-Positions: {}/{}
-Ships: {}/{}
-Velocities: {}/{}
----
-Updates per s: {}
-Removals per s: {}",
-                    diagnostics.bodies, game.state.data.bodies.len(),
-                    diagnostics.crafts, game.state.data.crafts.len(),
-                    diagnostics.explosions, game.state.data.explosions.len(),
-                    diagnostics.fuels, game.state.data.fuels.len(),
-                    diagnostics.healths, game.state.data.healths.len(),
-                    diagnostics.planets, game.state.data.planets.len(),
-                    diagnostics.players,
-                    diagnostics.positions, game.state.data.positions.len(),
-                    diagnostics.ships, game.state.data.ships.len(),
-                    diagnostics.velocities, game.state.data.velocities.len(),
-                    game.state.statistics.updates.len(),
-                    game.state.statistics.removals.len(),
-                );
-
+            if let Some(diagnostics) = ui.diagnostics {
                 let transform =
                     ScreenElement {
                         pos: graphics::Pnt2::new(20.0, 220.0),
@@ -464,11 +414,6 @@ Removals per s: {}",
         }
 
         if game.input.config.diagnostics.input {
-            let mut input_events = String::from("Input:\n");
-            for event in game.events.iter().rev() {
-                input_events.push_str(&format!("{}\n", event));
-            }
-
             let transform =
                 ScreenElement {
                     pos: graphics::Pnt2::new(20.0, 520.0),
@@ -479,7 +424,7 @@ Removals per s: {}",
             draw(
                 context,
                 transform,
-                &text(input_events),
+                &text(ui.input_events),
                 None,
             )?;
         }

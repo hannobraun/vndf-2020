@@ -2,6 +2,7 @@ pub mod elements;
 pub mod math;
 pub mod screen;
 pub mod transforms;
+pub mod ui;
 pub mod vertices;
 
 
