@@ -9,19 +9,19 @@ use crate::{
 };
 
 
-pub fn elements(game: &Game, screen: &Screen) -> Vec<Element> {
+pub fn elements(game: &Game) -> Vec<Element> {
     let mut elements = Vec::new();
 
-    elements.push(Element::instructions(game, screen));
-    elements.push(Element::zoom(game, screen));
+    elements.push(Element::instructions(game));
+    elements.push(Element::zoom(game));
 
-    if let Some(element) = Element::frame_time(game, screen) {
+    if let Some(element) = Element::frame_time(game) {
         elements.push(element);
     }
-    if let Some(element) = Element::diagnostics(game, screen) {
+    if let Some(element) = Element::diagnostics(game) {
         elements.push(element);
     }
-    if let Some(element) = Element::input_events(game, screen) {
+    if let Some(element) = Element::input_events(game) {
         elements.push(element);
     }
 
@@ -30,12 +30,12 @@ pub fn elements(game: &Game, screen: &Screen) -> Vec<Element> {
 
 
 pub struct Element {
-    pub text:      String,
-    pub transform: NativeTransform,
+    pub text: String,
+    pub pos:  graphics::Pnt2,
 }
 
 impl Element {
-    pub fn instructions(game: &Game, screen: &Screen) -> Self {
+    pub fn instructions(game: &Game) -> Self {
         let text = format!(
             "Instructions:\n\
             Turn left - {}\n\
@@ -53,18 +53,24 @@ impl Element {
 
         let pos = graphics::Pnt2::new(20.0, 20.0);
 
-        Self::new(text, pos, screen)
+        Self {
+            text,
+            pos,
+        }
     }
 
-    pub fn zoom(game: &Game, screen: &Screen) -> Self {
+    pub fn zoom(game: &Game) -> Self {
         let text = format!("Zoom: {:.3}x", game.input.zoom);
 
         let pos = graphics::Pnt2::new(20.0, 150.0);
 
-        Self::new(text, pos, screen)
+        Self {
+            text,
+            pos,
+        }
     }
 
-    pub fn frame_time(game: &Game, screen: &Screen) -> Option<Self> {
+    pub fn frame_time(game: &Game) -> Option<Self> {
         if !game.input.config.diagnostics.frame_time {
             return None;
         }
@@ -81,11 +87,14 @@ impl Element {
         let pos = graphics::Pnt2::new(20.0, 180.0);
 
         Some(
-            Self::new(text, pos, screen)
+            Self {
+                text,
+                pos,
+            }
         )
     }
 
-    pub fn diagnostics(game: &Game, screen: &Screen) -> Option<Self> {
+    pub fn diagnostics(game: &Game) -> Option<Self> {
         if !game.input.config.diagnostics.components {
             return None;
         }
@@ -122,11 +131,14 @@ impl Element {
 
             let pos = graphics::Pnt2::new(20.0, 220.0);
 
-            Self::new(text, pos, screen)
+            Self {
+                text,
+                pos,
+            }
         })
     }
 
-    pub fn input_events(game: &Game, screen: &Screen) -> Option<Self> {
+    pub fn input_events(game: &Game) -> Option<Self> {
         if !game.input.config.diagnostics.input {
             return None;
         }
@@ -139,18 +151,16 @@ impl Element {
         let pos = graphics::Pnt2::new(20.0, 520.0);
 
         Some(
-            Self::new(text, pos, screen)
+            Self {
+                text,
+                pos,
+            }
         )
     }
 
-    pub fn new(text: String, pos: graphics::Pnt2, screen: &Screen) -> Self {
-        let transform = ScreenElement { pos, .. ScreenElement::default() }
+    pub fn transform(&self, screen: &Screen) -> NativeTransform {
+        ScreenElement { pos: self.pos, .. ScreenElement::default() }
             .transform(screen.size)
-            .to_native();
-
-        Self {
-            text,
-            transform,
-        }
+            .to_native()
     }
 }

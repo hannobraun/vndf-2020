@@ -349,10 +349,10 @@ impl Graphics {
     )
         -> GameResult
     {
-        for element in ui::elements(game, &screen(context)) {
+        for element in ui::elements(game) {
             draw(
                 context,
-                element.transform,
+                element.transform(&screen(context)),
                 &text(element.text),
                 None,
             )?;
