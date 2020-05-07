@@ -20,6 +20,7 @@ use crate::{
             WorldElement,
         },
         screen::Screen,
+        ui,
     },
     shared::world::behavior::{
         orbits::Orbit,
@@ -307,17 +308,28 @@ impl Renderer {
     fn draw_ui(&mut self,
         frame:   &wgpu::SwapChainOutput,
         encoder: &mut wgpu::CommandEncoder,
-        _game:   &Game,
+        game:    &Game,
     ) {
         let screen = self.screen();
-
         let scale  = Scale::uniform(16.0 * screen.scale_factor);
-        self.glyph_brush.queue(Section {
-            text:  "Von Neumann Defense Force",
-            scale,
-            color: [1.0, 1.0, 1.0, 1.0],
-            .. Section::default()
-        });
+
+        for element in ui::elements(game) {
+            let text = element.text.as_str();
+            let screen_position = (
+                element.pos.x * screen.scale_factor,
+                element.pos.y * screen.scale_factor,
+            );
+            let color = [1.0, 1.0, 1.0, 1.0];
+
+            self.glyph_brush.queue(Section {
+                text,
+                screen_position,
+                scale,
+                color,
+                .. Section::default()
+            });
+        }
+
         self.glyph_brush
             .draw_queued(
                 &self.device,
