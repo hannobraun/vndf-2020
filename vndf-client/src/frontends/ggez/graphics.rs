@@ -23,7 +23,7 @@ use crate::{
             WorldElement,
         },
         screen::Screen,
-        ui::Ui,
+        ui,
         vertices,
     },
     shared::world::behavior::{
@@ -349,9 +349,7 @@ impl Graphics {
     )
         -> GameResult
     {
-        let ui = Ui::new(game, &screen(context));
-
-        for element in ui.elements {
+        for element in ui::elements(game, &screen(context)) {
             draw(
                 context,
                 element.transform,

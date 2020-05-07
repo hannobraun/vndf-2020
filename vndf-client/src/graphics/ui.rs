@@ -9,31 +9,23 @@ use crate::{
 };
 
 
-pub struct Ui {
-    pub elements: Vec<Element>,
-}
+pub fn elements(game: &Game, screen: &Screen) -> Vec<Element> {
+    let mut elements = Vec::new();
 
-impl Ui {
-    pub fn new(game: &Game, screen: &Screen) -> Self {
-        let mut elements = Vec::new();
+    elements.push(Element::instructions(game, screen));
+    elements.push(Element::zoom(game, screen));
 
-        elements.push(Element::instructions(game, screen));
-        elements.push(Element::zoom(game, screen));
-
-        if let Some(element) = Element::frame_time(game, screen) {
-            elements.push(element);
-        }
-        if let Some(element) = Element::diagnostics(game, screen) {
-            elements.push(element);
-        }
-        if let Some(element) = Element::input_events(game, screen) {
-            elements.push(element);
-        }
-
-        Self {
-            elements,
-        }
+    if let Some(element) = Element::frame_time(game, screen) {
+        elements.push(element);
     }
+    if let Some(element) = Element::diagnostics(game, screen) {
+        elements.push(element);
+    }
+    if let Some(element) = Element::input_events(game, screen) {
+        elements.push(element);
+    }
+
+    elements
 }
 
 
