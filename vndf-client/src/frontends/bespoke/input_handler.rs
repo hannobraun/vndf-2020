@@ -65,7 +65,7 @@ impl InputHandler {
                         *y
                     }
                     MouseScrollDelta::PixelDelta(LogicalPosition { y, ..}) => {
-                        *y as f32
+                        *y as f32 * 0.1
                     }
                 };
 
