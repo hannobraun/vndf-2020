@@ -164,26 +164,7 @@ impl Renderer {
                 for ship in game.state.data.ships.values() {
                     self.draw_ship(&frame, &mut encoder, ship, game);
                 }
-
-                let screen = self.screen();
-                let scale  = Scale::uniform(16.0 * screen.scale_factor);
-                self.glyph_brush.queue(Section {
-                    text:  "Von Neumann Defense Force",
-                    scale,
-                    color: [1.0, 1.0, 1.0, 1.0],
-                    .. Section::default()
-                });
-                self.glyph_brush
-                    .draw_queued(
-                        &self.device,
-                        &mut encoder,
-                        &frame.view,
-                        screen.size.width as u32,
-                        screen.size.height as u32,
-                    )
-                    // I've checked the code, and it doesn't look like this
-                    // actually returns any errors.
-                    .unwrap();
+                self.draw_ui(&frame, &mut encoder, game);
 
                 self.queue.submit(&[encoder.finish()]);
             }
@@ -321,6 +302,33 @@ impl Renderer {
         );
 
         Some(())
+    }
+
+    fn draw_ui(&mut self,
+        frame:   &wgpu::SwapChainOutput,
+        encoder: &mut wgpu::CommandEncoder,
+        _game:   &Game,
+    ) {
+        let screen = self.screen();
+
+        let scale  = Scale::uniform(16.0 * screen.scale_factor);
+        self.glyph_brush.queue(Section {
+            text:  "Von Neumann Defense Force",
+            scale,
+            color: [1.0, 1.0, 1.0, 1.0],
+            .. Section::default()
+        });
+        self.glyph_brush
+            .draw_queued(
+                &self.device,
+                encoder,
+                &frame.view,
+                screen.size.width as u32,
+                screen.size.height as u32,
+            )
+            // I've checked the code, and it doesn't look like this
+            // actually returns any errors.
+            .unwrap();
     }
 
     fn screen(&self) -> Screen {
