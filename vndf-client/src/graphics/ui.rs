@@ -14,16 +14,9 @@ pub fn elements(game: &Game) -> Vec<Element> {
 
     elements.push(Element::instructions(game));
     elements.push(Element::zoom(game));
-
-    if let Some(element) = Element::frame_time(game) {
-        elements.push(element);
-    }
-    if let Some(element) = Element::diagnostics(game) {
-        elements.push(element);
-    }
-    if let Some(element) = Element::input_events(game) {
-        elements.push(element);
-    }
+    elements.extend(Element::frame_time(game));
+    elements.extend(Element::diagnostics(game));
+    elements.extend(Element::input_events(game));
 
     elements
 }
