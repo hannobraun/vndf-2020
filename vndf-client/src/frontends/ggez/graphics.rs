@@ -27,7 +27,6 @@ use crate::{
         vertices,
     },
     shared::world::behavior::{
-        crafts::Craft,
         explosions::Explosion,
         orbits::Orbit,
         planets::Planet,
@@ -270,48 +269,6 @@ impl Graphics {
             transform,
             &self.ship,
             Some([ship.color[0], ship.color[1], ship.color[2], 1.0]),
-        )?;
-
-        let craft = get!(game.state.data.crafts, &ship.craft);
-        self.draw_craft_info(context, craft, element, game)?;
-
-        Ok(true)
-    }
-
-    fn draw_craft_info(&self,
-        context: &mut Context,
-        craft:   &Craft,
-        element: ScreenElement,
-        game:    &Game,
-    )
-        -> GameResult<bool>
-    {
-        let transform =
-            ScreenElement {
-                pos: element.pos + graphics::Vec2::new(20.0, -20.0),
-                .. ScreenElement::default()
-            }
-            .transform(screen(context).size)
-            .to_native();
-
-        let body  = get!(game.state.data.bodies, &craft.body);
-        let pos_w = get!(game.state.data.positions, &body.pos);
-        let vel   = get!(game.state.data.velocities, &body.vel);
-
-        let pos_km = pos_w.0 / 1000.0;
-        let vel_km = vel.0 / 1000.0;
-
-        draw(
-            context,
-            transform,
-            &text(
-                format!(
-                    "Pos: {:.0}/{:.0}\nVel: {:.0}/{:.0} ({:.0})",
-                    pos_km.x, pos_km.y,
-                    vel_km.x, vel_km.y, vel_km.length(),
-                )
-            ),
-            None,
         )?;
 
         Ok(true)

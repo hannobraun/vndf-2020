@@ -18,6 +18,7 @@ pub fn elements(game: &Game, screen: &Screen) -> Vec<Element> {
     elements.extend(Element::diagnostics(game));
     elements.extend(Element::input_events(game));
     elements.extend(Element::own_ship_status(game, screen));
+    elements.extend(Element::ship_info(game, screen));
 
     elements
 }
@@ -175,6 +176,45 @@ impl Element {
                 pos,
             }
         )
+    }
+
+    pub fn ship_info<'r>(game: &'r Game, screen: &'r Screen)
+        -> impl Iterator<Item=Self> + 'r
+    {
+        game.state.data.ships.values()
+            .filter_map(move |ship| {
+                let craft = game.state.data.crafts.get(&ship.craft)?;
+                let body  = game.state.data.bodies.get(&craft.body)?;
+                let pos_w = game.state.data.positions.get(&body.pos)?;
+                let vel   = game.state.data.velocities.get(&body.vel)?;
+
+                let pos_km = pos_w.0 / 1000.0;
+                let vel_km = vel.0 / 1000.0;
+
+                let text = format!(
+                    "Pos: {:.0}/{:.0}\n\
+                    Vel: {:.0}/{:.0} ({:.0})",
+                    pos_km.x, pos_km.y,
+                    vel_km.x, vel_km.y, vel_km.length(),
+                );
+
+                let element = ScreenElement::from_ship(
+                    ship,
+                    game,
+                    screen,
+                )?;
+                let offset =
+                    graphics::Vec2::new(20.0, -20.0)
+                    * screen.scale_factor;
+                let pos = (element.pos + offset) / screen.scale_factor;
+
+                Some(
+                    Self {
+                        text,
+                        pos,
+                    }
+                )
+            })
     }
 
     pub fn transform(&self, screen: &Screen) -> NativeTransform {
