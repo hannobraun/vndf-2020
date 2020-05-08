@@ -313,7 +313,7 @@ impl Renderer {
         let screen = self.screen();
         let scale  = Scale::uniform(16.0 * screen.scale_factor);
 
-        for element in ui::elements(game) {
+        for element in ui::elements(game, &screen) {
             let text = element.text.as_str();
             let screen_position = (
                 element.pos.x * screen.scale_factor,

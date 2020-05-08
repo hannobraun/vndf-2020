@@ -9,7 +9,7 @@ use crate::{
 };
 
 
-pub fn elements(game: &Game) -> Vec<Element> {
+pub fn elements(game: &Game, screen: &Screen) -> Vec<Element> {
     let mut elements = Vec::new();
 
     elements.push(Element::instructions(game));
@@ -17,6 +17,7 @@ pub fn elements(game: &Game) -> Vec<Element> {
     elements.extend(Element::frame_time(game));
     elements.extend(Element::diagnostics(game));
     elements.extend(Element::input_events(game));
+    elements.extend(Element::ship_status(game, screen));
 
     elements
 }
@@ -142,6 +143,31 @@ impl Element {
         }
 
         let pos = graphics::Pnt2::new(20.0, 520.0);
+
+        Some(
+            Self {
+                text,
+                pos,
+            }
+        )
+    }
+
+    pub fn ship_status(game: &Game, screen: &Screen) -> Option<Self> {
+        let ship   = game.state.own_ship()?;
+        let craft  = game.state.data.crafts.get(&ship.craft)?;
+        let fuel   = game.state.data.fuels.get(&craft.fuel)?;
+        let health = game.state.data.healths.get(&craft.health)?;
+
+        let text = format!(
+            "Ship Status\n\
+            Structural Integrity: {:.2}\n\
+            Fuel: {:.2}",
+            health.value,
+            fuel.0,
+        );
+
+        let width = screen.size.width / screen.scale_factor;
+        let pos = graphics::Pnt2::new(width - 200.0, 20.0);
 
         Some(
             Self {

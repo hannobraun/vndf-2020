@@ -349,21 +349,13 @@ impl Graphics {
     )
         -> GameResult
     {
-        for element in ui::elements(game) {
+        for element in ui::elements(game, &screen(context)) {
             draw(
                 context,
                 element.transform(&screen(context)),
                 &text(element.text),
                 None,
             )?;
-        }
-
-        for ship in game.state.data.ships.values() {
-            if self.draw_ship_status(context, ship, game)? {
-                // There should only be one ship owned by the local player, so
-                // let's quit.
-                break;
-            }
         }
 
         let transform =
@@ -385,47 +377,6 @@ impl Graphics {
         mouse::set_cursor_hidden(context, true);
 
         Ok(())
-    }
-
-    fn draw_ship_status(&self,
-        context: &mut Context,
-        ship:    &Ship,
-        game:    &Game,
-    )
-        -> GameResult<bool>
-    {
-        let craft  = get!(game.state.data.crafts, &ship.craft);
-        let fuel   = get!(game.state.data.fuels, &craft.fuel);
-        let health = get!(game.state.data.healths, &craft.health);
-
-        if game.state.own_id != Some(craft.owner) {
-            return Ok(false);
-        }
-
-        let (width, _) = ggez::graphics::drawable_size(context);
-
-        let status = format!("Ship Status
-Structural Integrity: {:.2}
-Fuel: {:.2}",
-            health.value,
-            fuel.0,
-        );
-
-        let transform =
-            ScreenElement {
-                pos: graphics::Pnt2::new(width - 200.0, 20.0),
-                .. ScreenElement::default()
-            }
-            .transform(screen(context).size)
-            .to_native();
-        draw(
-            context,
-            transform,
-            &text(status),
-            None,
-        )?;
-
-        Ok(true)
     }
 }
 
