@@ -12,6 +12,7 @@ use crate::{
 pub fn elements(game: &Game, screen: &Screen) -> Vec<Element> {
     let mut elements = Vec::new();
 
+    elements.extend(Element::orbit_info(game, screen));
     elements.extend(Element::ship_info(game, screen));
     elements.push(Element::instructions(game));
     elements.push(Element::zoom(game));
@@ -215,6 +216,70 @@ impl Element {
                     }
                 )
             })
+    }
+
+    pub fn orbit_info<'r>(game: &'r Game, screen: &'r Screen)
+        -> impl Iterator<Item=Self> + 'r
+    {
+        game.state.active_orbits()
+            .filter_map(move |orbit| {
+                // Display periapsis and apoapsis
+                //
+                // If our orbit is nearly circular, the computed apses will jump
+                // around like crazy. Let's make sure we have a minimum of
+                // eccentricity, so they become well-defined.
+                if orbit.eccentricity.length() <= 0.01 {
+                    return None;
+                }
+
+                let periapsis_km = orbit.periapsis / 1000.0;
+                let apoapsis_km  = orbit.apoapsis  / 1000.0;
+
+                let periapsis_above_surface_km =
+                    orbit.periapsis_above_surface / 1000.0;
+                let apoapsis_above_surface_km =
+                    orbit.apoapsis_above_surface / 1000.0;
+
+                let pericenter_text = format!(
+                    "Periapsis:\n\
+                    from center: {:.0} km\n\
+                    above surface:{:.0} km",
+                    periapsis_km,
+                    periapsis_above_surface_km,
+                );
+                let apocenter_text = format!(
+                    "Apoapsis:\n\
+                    from center: {:.0} km\n\
+                    above surface:{:.0} km",
+                    apoapsis_km,
+                    apoapsis_above_surface_km,
+                );
+
+                let size = screen.size / screen.scale_factor;
+
+                let pericenter_pos = game.state.camera.world_to_screen(
+                    size,
+                    orbit.pericenter,
+                );
+                let apocenter_pos = game.state.camera.world_to_screen(
+                    size,
+                    orbit.apocenter,
+                );
+
+                Some(
+                    vec![
+                        Self {
+                            text: pericenter_text,
+                            pos:  pericenter_pos,
+                        },
+                        Self {
+                            text: apocenter_text,
+                            pos:  apocenter_pos,
+                        },
+                    ]
+                )
+            })
+            .flatten()
     }
 
     pub fn transform(&self, screen: &Screen) -> NativeTransform {

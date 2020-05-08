@@ -172,67 +172,6 @@ impl Graphics {
             None,
         )?;
 
-        // Display periapsis and apoapsis
-        //
-        // If our orbit is nearly circular, the computed apses will jump around
-        // like crazy. Let's make sure we have a minimum of eccentricity, so
-        // they become well-defined.
-        if orbit.eccentricity.length() > 0.01 {
-            let periapsis_km = orbit.periapsis / 1000.0;
-            let apoapsis_km  = orbit.apoapsis  / 1000.0;
-
-            let periapsis_above_surface_km =
-                orbit.periapsis_above_surface / 1000.0;
-            let apoapsis_above_surface_km =
-                orbit.apoapsis_above_surface / 1000.0;
-
-            let transform =
-                ScreenElement {
-                    pos: game.state.camera.world_to_screen(
-                        size_s,
-                        orbit.pericenter,
-                    ),
-                    .. ScreenElement::default()
-                }
-                .transform(screen(context).size)
-                .to_native();
-            draw(
-                context,
-                transform,
-                &text(
-                    format!(
-                        "Periapsis:\nfrom center: {:.0} km\nabove surface:{:.0} km",
-                        periapsis_km,
-                        periapsis_above_surface_km,
-                    )
-                ),
-                None,
-            )?;
-
-            let transform =
-                ScreenElement {
-                    pos: game.state.camera.world_to_screen(
-                        size_s,
-                        orbit.apocenter,
-                    ),
-                    .. ScreenElement::default()
-                }
-                .transform(screen(context).size)
-                .to_native();
-            draw(
-                context,
-                transform,
-                &text(
-                    format!(
-                        "Apoapsis:\nfrom center: {:.0} km\nabove surface:{:.0} km",
-                        apoapsis_km,
-                        apoapsis_above_surface_km,
-                    )
-                ),
-                None,
-            )?;
-        }
-
         Ok(true)
     }
 
