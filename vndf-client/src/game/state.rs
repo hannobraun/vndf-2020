@@ -18,6 +18,7 @@ use crate::{
                 orbits::Orbit,
                 planets::Planets,
                 players::PlayerId,
+                ships::Ship,
             },
         },
     },
@@ -83,18 +84,27 @@ impl State {
         handle.remove(&mut self.data);
     }
 
-    pub fn own_pos(&self) -> Option<world::Pnt2> {
+    pub fn own_ship(&self) -> Option<Ship> {
         for ship in self.data.ships.values() {
             let craft = self.data.crafts.get(&ship.craft)?;
-            let body  = self.data.bodies.get(&craft.body)?;
-            let pos   = self.data.positions.get(&body.pos)?;
 
             if Some(craft.owner) == self.own_id {
-                return Some(pos.0);
+                return Some(ship.clone());
             }
         }
 
         None
+    }
+
+    pub fn own_pos(&self) -> Option<world::Pnt2> {
+        self.own_ship()
+            .and_then(|ship| {
+                let craft = self.data.crafts.get(&ship.craft)?;
+                let body  = self.data.bodies.get(&craft.body)?;
+                let pos   = self.data.positions.get(&body.pos)?;
+
+                Some(pos.0)
+            })
     }
 
     pub fn active_orbits(&self) -> impl Iterator<Item=Orbit> + '_ {
