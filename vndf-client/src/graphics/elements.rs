@@ -39,7 +39,7 @@ impl ScreenElement {
     pub fn from_ship(
         ship:   &Ship,
         game:   &Game,
-        screen: Screen,
+        screen: &Screen,
     )
         -> Option<Self>
     {
@@ -57,7 +57,7 @@ impl ScreenElement {
         craft:  &Craft,
         size:   graphics::Size,
         game:   &Game,
-        screen: Screen,
+        screen: &Screen,
     )
         -> Option<Self>
     {
@@ -78,7 +78,7 @@ impl ScreenElement {
     pub fn from_explosion(
         explosion: &Explosion,
         game:      &Game,
-        screen:    Screen,
+        screen:    &Screen,
     )
         -> Option<Self>
     {
@@ -102,7 +102,7 @@ impl ScreenElement {
         dir:    world::Vec2,
         size:   graphics::Size,
         game:   &Game,
-        screen: Screen,
+        screen: &Screen,
     )
         -> Self
     {

@@ -287,7 +287,7 @@ impl Renderer {
     )
         -> Option<()>
     {
-        let transform = ScreenElement::from_ship(ship, game, self.screen())?
+        let transform = ScreenElement::from_ship(ship, game, &self.screen())?
             .transform(self.screen().size);
 
         self.drawables.ship.draw(
