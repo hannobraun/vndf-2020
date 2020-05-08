@@ -12,13 +12,13 @@ use crate::{
 pub fn elements(game: &Game, screen: &Screen) -> Vec<Element> {
     let mut elements = Vec::new();
 
+    elements.extend(Element::ship_info(game, screen));
     elements.push(Element::instructions(game));
     elements.push(Element::zoom(game));
     elements.extend(Element::frame_time(game));
     elements.extend(Element::diagnostics(game));
     elements.extend(Element::input_events(game));
     elements.extend(Element::own_ship_status(game, screen));
-    elements.extend(Element::ship_info(game, screen));
 
     elements
 }
