@@ -17,7 +17,7 @@ pub fn elements(game: &Game, screen: &Screen) -> Vec<Element> {
     elements.extend(Element::frame_time(game));
     elements.extend(Element::diagnostics(game));
     elements.extend(Element::input_events(game));
-    elements.extend(Element::ship_status(game, screen));
+    elements.extend(Element::own_ship_status(game, screen));
 
     elements
 }
@@ -152,7 +152,7 @@ impl Element {
         )
     }
 
-    pub fn ship_status(game: &Game, screen: &Screen) -> Option<Self> {
+    pub fn own_ship_status(game: &Game, screen: &Screen) -> Option<Self> {
         let ship   = game.state.own_ship()?;
         let craft  = game.state.data.crafts.get(&ship.craft)?;
         let fuel   = game.state.data.fuels.get(&craft.fuel)?;
