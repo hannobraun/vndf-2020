@@ -77,16 +77,16 @@ impl Orbit {
         let w = -f32::atan2(e.y, e.x);
 
         // Pericenter (point of closest approach)
-        let pericenter = planet.pos + e.normalize() * (1.0 - e.length()) * a;
+        let periapsis = planet.pos + e.normalize() * (1.0 - e.length()) * a;
 
         // Apocenter (farthest point of orbit)
-        let apocenter = pericenter - e.normalize() * 2.0 * a;
+        let apoapsis = periapsis - e.normalize() * 2.0 * a;
 
         // Center of ellipse
-        let ellipse_pos = pericenter - e.normalize() * a;
+        let ellipse_pos = periapsis - e.normalize() * a;
 
-        let periapsis = Apsis::new(pericenter, planet);
-        let apoapsis  = Apsis::new(apocenter,  planet);
+        let periapsis = Apsis::new(periapsis, planet);
+        let apoapsis  = Apsis::new(apoapsis,  planet);
 
         Some(
             Self {
