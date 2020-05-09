@@ -28,14 +28,12 @@ pub struct Orbit {
 
 impl Orbit {
     pub fn from_state_vectors(
-        pos:     Pnt2,
-        vel:     Vec2,
+        orbiter: Orbiter,
         planets: &Planets<impl for<'r> store::Values<'r, Planet>>,
     )
         -> Option<Self>
     {
-        let orbiter = Orbiter { pos, vel };
-        let planet  = planets.dominant_at(orbiter.pos);
+        let planet = planets.dominant_at(orbiter.pos);
 
         // State vectors
         let r = orbiter.pos - planet.pos;

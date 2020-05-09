@@ -15,7 +15,10 @@ use crate::{
         world::{
             self,
             behavior::{
-                orbits::Orbit,
+                orbits::{
+                    Orbit,
+                    Orbiter,
+                },
                 planets::Planets,
                 players::PlayerId,
                 ships::Ship,
@@ -116,11 +119,14 @@ impl State {
                 let pos   = self.data.positions.get(&body.pos)?;
                 let vel   = self.data.velocities.get(&body.vel)?;
 
+                let orbiter = Orbiter {
+                    pos: pos.0,
+                    vel: vel.0,
+                };
                 let planets = Planets(&self.data.planets);
 
                 let orbit = Orbit::from_state_vectors(
-                    pos.0,
-                    vel.0,
+                    orbiter,
                     &planets,
                 )?;
 
