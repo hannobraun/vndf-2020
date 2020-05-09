@@ -226,14 +226,14 @@ impl Renderer {
             1.0 / pixel_per_u[1],
         ];
 
-        let orbiter_angle_abs = orbit.orbiter_pos
+        let orbiter_angle_abs = orbit.orbiter.pos
             .to_vector()
             .angle_from_x_axis();
         let orbiter_angle_to_orbit =
             (orbiter_angle_abs - orbit.arg_of_periapsis).signed();
 
-        let orbiter_dir = orbit.orbiter_pos.to_vector()
-            .angle_to(orbit.orbiter_vel)
+        let orbiter_dir = orbit.orbiter.pos.to_vector()
+            .angle_to(orbit.orbiter.vel)
             .radians;
         let orbiter_dir = if orbiter_dir < 0.0 {
             -1.0

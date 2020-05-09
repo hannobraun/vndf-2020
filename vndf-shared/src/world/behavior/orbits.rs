@@ -23,8 +23,7 @@ pub struct Orbit {
     pub periapsis:        Apsis,
     pub apoapsis:         Apsis,
     pub ellipse_pos:      Pnt2,
-    pub orbiter_pos:      Pnt2,
-    pub orbiter_vel:      Vec2,
+    pub orbiter:          Orbiter,
 }
 
 impl Orbit {
@@ -35,7 +34,8 @@ impl Orbit {
     )
         -> Option<Self>
     {
-        let planet = planets.dominant_at(pos);
+        let orbiter = Orbiter { pos, vel };
+        let planet  = planets.dominant_at(pos);
 
         // State vectors
         let r = pos - planet.pos;
@@ -97,11 +97,16 @@ impl Orbit {
                 periapsis,
                 apoapsis,
                 ellipse_pos,
-                orbiter_pos: pos,
-                orbiter_vel: vel,
+                orbiter,
             }
         )
     }
+}
+
+
+pub struct Orbiter {
+    pub pos: Pnt2,
+    pub vel: Vec2,
 }
 
 
