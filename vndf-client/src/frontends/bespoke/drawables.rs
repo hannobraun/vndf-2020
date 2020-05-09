@@ -26,15 +26,20 @@ use super::{
 
 
 pub struct Drawables {
-    pub orbit:  Drawable<vert::Simple, frag::Orbit>,
-    pub planet: Drawable<vert::Simple, frag::Planet>,
-    pub ship:   Drawable<vert::Simple, frag::Simple>,
+    pub explosion: Drawable<vert::Simple, frag::Explosion>,
+    pub orbit:     Drawable<vert::Simple, frag::Orbit>,
+    pub planet:    Drawable<vert::Simple, frag::Planet>,
+    pub ship:      Drawable<vert::Simple, frag::Simple>,
 }
 
 impl Drawables {
     pub fn new(device: &wgpu::Device, meshes: &Meshes)
         -> Result<Self, io::Error>
     {
+        let explosion = Drawable::new(
+            device,
+            &meshes.square,
+        )?;
         let orbit = Drawable::new(
             device,
             &meshes.square,
@@ -50,6 +55,7 @@ impl Drawables {
 
         Ok(
             Self {
+                explosion,
                 orbit,
                 planet,
                 ship,

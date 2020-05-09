@@ -129,6 +129,15 @@ pub mod vert {
 
 pub mod frag {
     fragment_shader!(
+        Explosion,
+        explosion,
+        "shaders/spv/explosion.frag.spv",
+        Uniforms {
+            strength_total: Float,
+            strength_left:  Float,
+        },
+    );
+    fragment_shader!(
         Orbit,
         orbit,
         "shaders/spv/orbit.frag.spv",

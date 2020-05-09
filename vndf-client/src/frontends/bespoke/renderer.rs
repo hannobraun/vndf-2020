@@ -23,6 +23,7 @@ use crate::{
         ui,
     },
     shared::world::behavior::{
+        explosions::Explosion,
         orbits::Orbit,
         planets::Planet,
         ships::Ship,
@@ -165,6 +166,9 @@ impl Renderer {
                 for ship in game.state.data.ships.values() {
                     self.draw_ship(&frame, &mut encoder, ship, game);
                 }
+                for explosion in game.state.data.explosions.values() {
+                    self.draw_explosion(&frame, &mut encoder, explosion, game);
+                }
                 self.draw_ui(&frame, &mut encoder, game);
 
                 self.queue.submit(&[encoder.finish()]);
@@ -299,6 +303,38 @@ impl Renderer {
             },
             frag::simple::Uniforms {
                 color: ship.color.into(),
+            },
+        );
+
+        Some(())
+    }
+
+    fn draw_explosion(&self,
+        frame:     &wgpu::SwapChainOutput,
+        encoder:   &mut wgpu::CommandEncoder,
+        explosion: &Explosion,
+        game:      &Game,
+    )
+        -> Option<()>
+    {
+        let transform =
+            ScreenElement::from_explosion(
+                explosion,
+                game,
+                &self.screen(),
+            )?
+            .transform(self.screen().size);
+
+        self.drawables.explosion.draw(
+            &self.device,
+            frame,
+            encoder,
+            vert::simple::Uniforms {
+                transform: transform.into(),
+            },
+            frag::explosion::Uniforms {
+                strength_total: explosion.strength_total,
+                strength_left:  explosion.strength_left,
             },
         );
 
