@@ -78,29 +78,15 @@ impl Orbit {
 
         // Pericenter (point of closest approach)
         let pericenter = planet.pos + e.normalize() * (1.0 - e.length()) * a;
-        let periapsis  = Length::new((pericenter - planet.pos).length());
 
         // Apocenter (farthest point of orbit)
         let apocenter = pericenter - e.normalize() * 2.0 * a;
-        let apoapsis  = Length::new((apocenter - planet.pos).length());
-
-        // Distance of periapsis and apoapsis above surface
-        let periapsis_above_surface = periapsis - planet.radius;
-        let apoapsis_above_surface  = apoapsis - planet.radius;
 
         // Center of ellipse
         let ellipse_pos = pericenter - e.normalize() * a;
 
-        let periapsis = Apsis {
-            position:     pericenter,
-            distance:     periapsis,
-            from_surface: periapsis_above_surface,
-        };
-        let apoapsis = Apsis {
-            position:     apocenter,
-            distance:     apoapsis,
-            from_surface: apoapsis_above_surface,
-        };
+        let periapsis = Apsis::new(pericenter, planet);
+        let apoapsis  = Apsis::new(apocenter,  planet);
 
         Some(
             Self {
@@ -124,4 +110,17 @@ pub struct Apsis {
     pub position:     Pnt2,
     pub distance:     Length,
     pub from_surface: Length,
+}
+
+impl Apsis {
+    pub fn new(position: Pnt2, planet: &Planet) -> Self {
+        let distance     = Length::new((position - planet.pos).length());
+        let from_surface = distance - planet.radius;
+
+        Self {
+            position,
+            distance,
+            from_surface,
+        }
+    }
 }
