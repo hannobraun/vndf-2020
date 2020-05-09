@@ -35,11 +35,11 @@ impl Orbit {
         -> Option<Self>
     {
         let orbiter = Orbiter { pos, vel };
-        let planet  = planets.dominant_at(pos);
+        let planet  = planets.dominant_at(orbiter.pos);
 
         // State vectors
-        let r = pos - planet.pos;
-        let v = vel;
+        let r = orbiter.pos - planet.pos;
+        let v = orbiter.vel;
 
         // Standard gravitational parameter
         let mu = G * planet.mass;
