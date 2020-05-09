@@ -62,7 +62,7 @@ impl ShipEntity {
         const FUEL:   f32 = 6_000.0;
         const HEALTH: f32 =    10.0;
 
-        let distance = planet.size * 1.5;
+        let distance = planet.radius * 1.5;
         let angle = Angle::radians(
             thread_rng().gen_range(0.0, Angle::two_pi().radians),
         );

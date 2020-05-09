@@ -14,9 +14,9 @@ use super::G;
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Planet {
-    pub pos:  Pnt2,
-    pub size: Length,
-    pub mass: f32,
+    pub pos:    Pnt2,
+    pub radius: Length,
+    pub mass:   f32,
 }
 
 impl Planet {

@@ -179,7 +179,7 @@ impl From<&Orbit> for WorldElement {
 impl From<&Planet> for WorldElement {
     fn from(planet: &Planet) -> Self {
         Self {
-            size:  world::Size::from_lengths(planet.size, planet.size),
+            size:  world::Size::from_lengths(planet.radius, planet.radius),
             pos:   planet.pos,
             angle: world::Angle::zero(),
         }

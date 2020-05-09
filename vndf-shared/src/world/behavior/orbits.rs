@@ -89,8 +89,8 @@ impl Orbit {
         let apoapsis  = Length::new((apocenter - planet.pos).length());
 
         // Distance of periapsis and apoapsis above surface
-        let periapsis_above_surface = periapsis - planet.size;
-        let apoapsis_above_surface  = apoapsis - planet.size;
+        let periapsis_above_surface = periapsis - planet.radius;
+        let apoapsis_above_surface  = apoapsis - planet.radius;
 
         // Center of ellipse
         let ellipse_pos = pericenter - e.normalize() * a;

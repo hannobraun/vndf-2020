@@ -78,7 +78,7 @@ impl<S> Planets<S>
 
     pub fn check_collision(&self, pos: Pnt2) -> bool {
         for planet in self.0.values() {
-            if (pos - planet.pos).length() <= planet.size.0 {
+            if (pos - planet.pos).length() <= planet.radius.0 {
                 return true;
             }
         }
