@@ -27,7 +27,7 @@ pub struct Orbit {
 }
 
 impl Orbit {
-    pub fn from_state_vectors(
+    pub fn new(
         orbiter: Orbiter,
         planets: &Planets<impl for<'r> store::Values<'r, Planet>>,
     )

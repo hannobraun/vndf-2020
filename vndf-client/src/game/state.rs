@@ -125,7 +125,7 @@ impl State {
                 };
                 let planets = Planets(&self.data.planets);
 
-                let orbit = Orbit::from_state_vectors(
+                let orbit = Orbit::new(
                     orbiter,
                     &planets,
                 )?;
