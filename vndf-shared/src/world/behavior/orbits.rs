@@ -78,15 +78,14 @@ impl Orbit {
 
         // Pericenter (point of closest approach)
         let periapsis = planet.pos + e.normalize() * (1.0 - e.length()) * a;
+        let periapsis = Apsis::new(periapsis, planet);
 
         // Apocenter (farthest point of orbit)
-        let apoapsis = periapsis - e.normalize() * 2.0 * a;
+        let apoapsis = periapsis.position - e.normalize() * 2.0 * a;
+        let apoapsis = Apsis::new(apoapsis,  planet);
 
         // Center of ellipse
-        let ellipse_pos = periapsis - e.normalize() * a;
-
-        let periapsis = Apsis::new(periapsis, planet);
-        let apoapsis  = Apsis::new(apoapsis,  planet);
+        let ellipse_pos = periapsis.position - e.normalize() * a;
 
         Some(
             Self {
