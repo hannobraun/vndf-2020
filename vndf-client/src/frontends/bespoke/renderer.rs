@@ -44,6 +44,9 @@ use super::{
 };
 
 
+const BACKEND: wgpu::BackendBit = wgpu::BackendBit::all();
+
+
 pub struct Renderer {
     surface:         wgpu::Surface,
     device:          wgpu::Device,
@@ -67,7 +70,7 @@ impl Renderer {
                     power_preference:   wgpu::PowerPreference::Default,
                     compatible_surface: Some(&surface),
                 },
-                wgpu::BackendBit::all(),
+                BACKEND,
             )
             .await
             .ok_or(Error::AdapterRequest)?;
