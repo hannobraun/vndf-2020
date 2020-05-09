@@ -232,13 +232,13 @@ impl Element {
                     return None;
                 }
 
-                let periapsis_km = orbit.periapsis / 1000.0;
-                let apoapsis_km  = orbit.apoapsis  / 1000.0;
+                let periapsis_km = orbit.periapsis.distance / 1000.0;
+                let apoapsis_km  = orbit.apoapsis.distance  / 1000.0;
 
                 let periapsis_above_surface_km =
-                    orbit.periapsis_above_surface / 1000.0;
+                    orbit.periapsis.from_surface / 1000.0;
                 let apoapsis_above_surface_km =
-                    orbit.apoapsis_above_surface / 1000.0;
+                    orbit.apoapsis.from_surface / 1000.0;
 
                 let pericenter_text = format!(
                     "Periapsis:\n\
@@ -259,11 +259,11 @@ impl Element {
 
                 let pericenter_pos = game.state.camera.world_to_screen(
                     size,
-                    orbit.pericenter,
+                    orbit.periapsis.position,
                 );
                 let apocenter_pos = game.state.camera.world_to_screen(
                     size,
-                    orbit.apocenter,
+                    orbit.apoapsis.position,
                 );
 
                 Some(

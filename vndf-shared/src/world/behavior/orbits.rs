@@ -15,20 +15,16 @@ use crate::world::{
 };
 
 pub struct Orbit {
-    pub center:                  Pnt2,
-    pub eccentricity:            Vec2,
-    pub semi_major_axis:         Length,
-    pub semi_minor_axis:         Length,
-    pub arg_of_periapsis:        Angle,
-    pub pericenter:              Pnt2,
-    pub apocenter:               Pnt2,
-    pub periapsis:               Length,
-    pub apoapsis:                Length,
-    pub periapsis_above_surface: Length,
-    pub apoapsis_above_surface:  Length,
-    pub ellipse_pos:             Pnt2,
-    pub orbiter_pos:             Pnt2,
-    pub orbiter_vel:             Vec2,
+    pub center:           Pnt2,
+    pub eccentricity:     Vec2,
+    pub semi_major_axis:  Length,
+    pub semi_minor_axis:  Length,
+    pub arg_of_periapsis: Angle,
+    pub periapsis:        Apsis,
+    pub apoapsis:         Apsis,
+    pub ellipse_pos:      Pnt2,
+    pub orbiter_pos:      Pnt2,
+    pub orbiter_vel:      Vec2,
 }
 
 impl Orbit {
@@ -95,6 +91,17 @@ impl Orbit {
         // Center of ellipse
         let ellipse_pos = pericenter - e.normalize() * a;
 
+        let periapsis = Apsis {
+            position:     pericenter,
+            distance:     periapsis,
+            from_surface: periapsis_above_surface,
+        };
+        let apoapsis = Apsis {
+            position:     apocenter,
+            distance:     apoapsis,
+            from_surface: apoapsis_above_surface,
+        };
+
         Some(
             Self {
                 center:           planet.pos,
@@ -102,16 +109,19 @@ impl Orbit {
                 semi_major_axis:  Length::new(a),
                 semi_minor_axis:  Length::new(b),
                 arg_of_periapsis: Angle::radians(w),
-                pericenter,
-                apocenter,
                 periapsis,
                 apoapsis,
-                periapsis_above_surface,
-                apoapsis_above_surface,
                 ellipse_pos,
                 orbiter_pos: pos,
                 orbiter_vel: vel,
             }
         )
     }
+}
+
+
+pub struct Apsis {
+    pub position:     Pnt2,
+    pub distance:     Length,
+    pub from_surface: Length,
 }
