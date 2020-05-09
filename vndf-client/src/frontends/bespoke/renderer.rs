@@ -44,7 +44,11 @@ use super::{
 };
 
 
-const BACKEND: wgpu::BackendBit = wgpu::BackendBit::all();
+#[cfg(target_os = "linux")]
+const BACKEND: wgpu::BackendBit = wgpu::BackendBit::VULKAN;
+
+#[cfg(target_os = "windows")]
+const BACKEND: wgpu::BackendBit = wgpu::BackendBit::DX12;
 
 
 pub struct Renderer {
