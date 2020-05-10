@@ -102,7 +102,7 @@ impl Renderer {
             format:       texture_format,
             width:        size.width  as u32,
             height:       size.height as u32,
-            present_mode: wgpu::PresentMode::Mailbox,
+            present_mode: wgpu::PresentMode::Fifo,
         };
 
         let swap_chain = device.create_swap_chain(
