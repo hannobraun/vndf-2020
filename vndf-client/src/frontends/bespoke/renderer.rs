@@ -404,6 +404,8 @@ impl Renderer {
 fn select_backend(graphics: Graphics) -> wgpu::BackendBit {
     match graphics {
         Graphics::Auto => {
+            debug!("Automatically selecting backend based on target platform");
+
             if cfg!(target_os = "linux") {
                 return wgpu::BackendBit::VULKAN;
             }
