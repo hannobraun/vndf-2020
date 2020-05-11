@@ -408,7 +408,7 @@ fn select_backend(graphics: Graphics) -> wgpu::BackendBit {
                 return wgpu::BackendBit::VULKAN;
             }
             if cfg!(target_os = "windows") {
-                return wgpu::BackendBit::DX11;
+                return wgpu::BackendBit::DX12;
             }
 
             warn!("Platform not recognized; leaving backend selection to wgpu");
