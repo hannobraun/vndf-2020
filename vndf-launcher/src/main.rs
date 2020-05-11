@@ -8,6 +8,9 @@ struct Options {
     #[structopt(short, long, default_value = "ggez")]
     frontend: client::Frontend,
 
+    #[structopt(short, long, default_value = "auto")]
+    graphics: client::Graphics,
+
     #[structopt(short, long)]
     local: bool,
 }
@@ -30,5 +33,9 @@ fn main() -> Result<(), client::Error> {
         "reineke.hannobraun.de"
     };
 
-    client::start((addr, 34480), options.frontend)
+    client::start(
+        (addr, 34480),
+        options.frontend,
+        options.graphics,
+    )
 }

@@ -14,6 +14,9 @@ use vndf_shared::{
 struct Options {
     #[structopt(short, long, default_value = "ggez")]
     frontend: client::Frontend,
+
+    #[structopt(short, long, default_value = "auto")]
+    graphics: client::Graphics,
 }
 
 
@@ -30,7 +33,7 @@ fn main() -> Result<(), Error> {
     let     addr   = server.addr();
 
     thread::spawn(move || main_loop(|| server.update()));
-    client::start(addr, options.frontend)
+    client::start(addr, options.frontend, options.graphics)
         .map_err(|err| Error::Run(err))
 }
 

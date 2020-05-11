@@ -14,7 +14,11 @@ use std::{
 use crate::game::Game;
 
 
-pub fn start<A: ToSocketAddrs>(addr: A, frontend: Frontend)
+pub fn start<A: ToSocketAddrs>(
+    addr:     A,
+    frontend: Frontend,
+    graphics: Graphics,
+)
     -> Result<(), Error>
 {
     let game = Game::init(addr)
@@ -22,7 +26,7 @@ pub fn start<A: ToSocketAddrs>(addr: A, frontend: Frontend)
 
     match frontend {
         Frontend::Bespoke => {
-            frontends::bespoke::start(game)
+            frontends::bespoke::start(game, graphics)
                 .map_err(Error::Bespoke)
         }
         Frontend::Ggez => {
@@ -46,6 +50,35 @@ impl FromStr for Frontend {
             "bespoke" => Ok(Self::Bespoke),
             "ggez"    => Ok(Self::Ggez),
             s         => Err(format!("`{}` is not a valid frontend", s)),
+        }
+    }
+}
+
+
+pub enum Graphics {
+    Auto,
+    DirectX11,
+    DirectX12,
+    Metal,
+    OpenGl,
+    Vulkan,
+    WebGpu
+}
+
+impl FromStr for Graphics {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "auto"      => Ok(Self::Auto),
+            "directx11" => Ok(Self::DirectX11),
+            "directx12" => Ok(Self::DirectX12),
+            "metal"     => Ok(Self::Metal),
+            "opengl"    => Ok(Self::OpenGl),
+            "vulkan"    => Ok(Self::Vulkan),
+            "webgpu"    => Ok(Self::WebGpu),
+
+            s => Err(format!("`{}` is not a valid graphics backend", s)),
         }
     }
 }

@@ -1,6 +1,9 @@
 use std::io;
 
-use log::debug;
+use log::{
+    debug,
+    warn,
+};
 use wgpu_glyph::{
     GlyphBrush,
     GlyphBrushBuilder,
@@ -13,6 +16,7 @@ use winit::event::{
 };
 
 use crate::{
+    Graphics,
     game::Game,
     graphics::{
         self,
@@ -45,13 +49,6 @@ use super::{
 };
 
 
-#[cfg(target_os = "linux")]
-const BACKEND: wgpu::BackendBit = wgpu::BackendBit::VULKAN;
-
-#[cfg(target_os = "windows")]
-const BACKEND: wgpu::BackendBit = wgpu::BackendBit::DX11;
-
-
 pub struct Renderer {
     surface:         wgpu::Surface,
     device:          wgpu::Device,
@@ -66,13 +63,11 @@ pub struct Renderer {
 }
 
 impl Renderer {
-    pub async fn new(window: &Window) -> Result<Self, Error> {
-        if cfg!(target_os = "linux") {
-            debug!("Linux detected");
-        }
-        if cfg!(target_os = "windows") {
-            debug!("Windows detected");
-        }
+    pub async fn new(window: &Window, graphics: Graphics)
+        -> Result<Self, Error>
+    {
+        let backend = select_backend(graphics);
+        debug!("Backend selected: {:?}", backend);
 
         let surface = wgpu::Surface::create(window.inner());
 
@@ -82,7 +77,7 @@ impl Renderer {
                     power_preference:   wgpu::PowerPreference::Default,
                     compatible_surface: Some(&surface),
                 },
-                BACKEND,
+                backend,
             )
             .await
             .ok_or(Error::AdapterRequest)?;
@@ -402,6 +397,30 @@ impl Renderer {
             ),
             scale_factor: self.scale_factor,
         }
+    }
+}
+
+
+fn select_backend(graphics: Graphics) -> wgpu::BackendBit {
+    match graphics {
+        Graphics::Auto => {
+            if cfg!(target_os = "linux") {
+                return wgpu::BackendBit::VULKAN;
+            }
+            if cfg!(target_os = "windows") {
+                return wgpu::BackendBit::DX11;
+            }
+
+            warn!("Platform not recognized; leaving backend selection to wgpu");
+            wgpu::BackendBit::PRIMARY
+        }
+
+        Graphics::DirectX11 => wgpu::BackendBit::DX11,
+        Graphics::DirectX12 => wgpu::BackendBit::DX12,
+        Graphics::Metal     => wgpu::BackendBit::METAL,
+        Graphics::OpenGl    => wgpu::BackendBit::GL,
+        Graphics::Vulkan    => wgpu::BackendBit::VULKAN,
+        Graphics::WebGpu    => wgpu::BackendBit::BROWSER_WEBGPU,
     }
 }
 
