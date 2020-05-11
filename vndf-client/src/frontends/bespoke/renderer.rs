@@ -1,5 +1,6 @@
 use std::io;
 
+use log::debug;
 use wgpu_glyph::{
     GlyphBrush,
     GlyphBrushBuilder,
@@ -66,6 +67,13 @@ pub struct Renderer {
 
 impl Renderer {
     pub async fn new(window: &Window) -> Result<Self, Error> {
+        if cfg!(target_os = "linux") {
+            debug!("Linux detected");
+        }
+        if cfg!(target_os = "windows") {
+            debug!("Windows detected");
+        }
+
         let surface = wgpu::Surface::create(window.inner());
 
         let adapter =
