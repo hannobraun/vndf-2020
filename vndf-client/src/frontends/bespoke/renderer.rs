@@ -49,7 +49,7 @@ use super::{
 const BACKEND: wgpu::BackendBit = wgpu::BackendBit::VULKAN;
 
 #[cfg(target_os = "windows")]
-const BACKEND: wgpu::BackendBit = wgpu::BackendBit::DX12;
+const BACKEND: wgpu::BackendBit = wgpu::BackendBit::DX11;
 
 
 pub struct Renderer {
