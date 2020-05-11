@@ -12,7 +12,7 @@ use vndf_shared::{
 
 #[derive(StructOpt)]
 struct Options {
-    #[structopt(default_value = "ggez", short, long)]
+    #[structopt(short, long, default_value = "ggez")]
     frontend: client::Frontend,
 }
 
