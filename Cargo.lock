@@ -327,9 +327,9 @@ dependencies = [
 
 [[package]]
 name = "clap"
-version = "2.33.0"
+version = "2.33.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5067f5bb2d80ef5d68b4c87db81601f0b75bca627bc2ef76b141d7b846a3c6d9"
+checksum = "bdfa80d47f954d53a35a64987ca1422f495b8d6483c0fe9f7117b36c2a792129"
 dependencies = [
  "ansi_term",
  "atty",
@@ -810,7 +810,7 @@ dependencies = [
  "proc-macro-hack",
  "proc-macro2 1.0.12",
  "quote 1.0.4",
- "syn 1.0.19",
+ "syn 1.0.20",
 ]
 
 [[package]]
@@ -1136,9 +1136,9 @@ dependencies = [
 
 [[package]]
 name = "gilrs-core"
-version = "0.2.5"
+version = "0.2.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6bdd4ea2d919ecb594362fa26b0f172729b9ee9b95e407fbad95e0a49cadc143"
+checksum = "43c758daf46af26d6872fe55507e3b2339779a160a06ad7a9b2a082f221209cd"
 dependencies = [
  "core-foundation 0.6.4",
  "io-kit-sys",
@@ -2066,7 +2066,7 @@ checksum = "6fb44a25c5bba983be0fc8592dfaf3e6d0935ce8be0c6b15b2a39507af34a926"
 dependencies = [
  "proc-macro2 1.0.12",
  "quote 1.0.4",
- "syn 1.0.19",
+ "syn 1.0.20",
  "synstructure",
  "unicode-xid 0.2.0",
 ]
@@ -2100,7 +2100,7 @@ checksum = "a82996f11efccb19b685b14b5df818de31c1edcee3daa256ab5775dd98e72feb"
 dependencies = [
  "proc-macro2 1.0.12",
  "quote 1.0.4",
- "syn 1.0.19",
+ "syn 1.0.20",
 ]
 
 [[package]]
@@ -2165,7 +2165,7 @@ dependencies = [
  "proc-macro-error-attr",
  "proc-macro2 1.0.12",
  "quote 1.0.4",
- "syn 1.0.19",
+ "syn 1.0.20",
  "version_check",
 ]
 
@@ -2177,7 +2177,7 @@ checksum = "4f5444ead4e9935abd7f27dc51f7e852a0569ac888096d5ec2499470794e2e53"
 dependencies = [
  "proc-macro2 1.0.12",
  "quote 1.0.4",
- "syn 1.0.19",
+ "syn 1.0.20",
  "syn-mid",
  "version_check",
 ]
@@ -2621,7 +2621,7 @@ checksum = "818fbf6bfa9a42d3bfcaca148547aa00c7b915bec71d1757aa2d44ca68771984"
 dependencies = [
  "proc-macro2 1.0.12",
  "quote 1.0.4",
- "syn 1.0.19",
+ "syn 1.0.20",
 ]
 
 [[package]]
@@ -2840,7 +2840,7 @@ dependencies = [
  "quote 1.0.4",
  "serde",
  "serde_derive",
- "syn 1.0.19",
+ "syn 1.0.20",
 ]
 
 [[package]]
@@ -2856,7 +2856,7 @@ dependencies = [
  "serde_derive",
  "serde_json",
  "sha1",
- "syn 1.0.19",
+ "syn 1.0.20",
 ]
 
 [[package]]
@@ -2901,7 +2901,7 @@ dependencies = [
  "proc-macro-error",
  "proc-macro2 1.0.12",
  "quote 1.0.4",
- "syn 1.0.19",
+ "syn 1.0.20",
 ]
 
 [[package]]
@@ -2917,9 +2917,9 @@ dependencies = [
 
 [[package]]
 name = "syn"
-version = "1.0.19"
+version = "1.0.20"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e8e5aa70697bb26ee62214ae3288465ecec0000f05182f039b477001f08f5ae7"
+checksum = "dd1b5e337360b1fae433c59fcafa0c6b77c605e92540afa5221a7b81a9eca91d"
 dependencies = [
  "proc-macro2 1.0.12",
  "quote 1.0.4",
@@ -2934,7 +2934,7 @@ checksum = "7be3539f6c128a931cf19dcee741c1af532c7fd387baa739c03dd2e96479338a"
 dependencies = [
  "proc-macro2 1.0.12",
  "quote 1.0.4",
- "syn 1.0.19",
+ "syn 1.0.20",
 ]
 
 [[package]]
@@ -2945,7 +2945,7 @@ checksum = "67656ea1dc1b41b1451851562ea232ec2e5a80242139f7e679ceccfb5d61f545"
 dependencies = [
  "proc-macro2 1.0.12",
  "quote 1.0.4",
- "syn 1.0.19",
+ "syn 1.0.20",
  "unicode-xid 0.2.0",
 ]
 
@@ -3033,7 +3033,7 @@ dependencies = [
  "proc-macro2 1.0.12",
  "quote 1.0.4",
  "standback",
- "syn 1.0.19",
+ "syn 1.0.20",
 ]
 
 [[package]]
@@ -3150,7 +3150,7 @@ version = "0.1.0"
 dependencies = [
  "proc-macro2 1.0.12",
  "quote 1.0.4",
- "syn 1.0.19",
+ "syn 1.0.20",
 ]
 
 [[package]]
@@ -3230,7 +3230,7 @@ dependencies = [
  "log",
  "proc-macro2 1.0.12",
  "quote 1.0.4",
- "syn 1.0.19",
+ "syn 1.0.20",
  "wasm-bindgen-shared",
 ]
 
@@ -3252,7 +3252,7 @@ checksum = "8eb197bd3a47553334907ffd2f16507b4f4f01bbec3ac921a7719e0decdfe72a"
 dependencies = [
  "proc-macro2 1.0.12",
  "quote 1.0.4",
- "syn 1.0.19",
+ "syn 1.0.20",
  "wasm-bindgen-backend",
  "wasm-bindgen-shared",
 ]
@@ -3634,7 +3634,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d498dbd1fd7beb83c86709ae1c33ca50942889473473d287d56ce4770a18edfb"
 dependencies = [
  "proc-macro2 1.0.12",
- "syn 1.0.19",
+ "syn 1.0.20",
  "synstructure",
 ]
 
