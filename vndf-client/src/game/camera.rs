@@ -20,21 +20,6 @@ impl Camera {
         }
     }
 
-    pub fn screen_to_world(&self,
-        screen_size:  graphics::Size,
-        point_screen: graphics::Pnt2,
-    )
-        -> world::Pnt2
-    {
-        transforms::world_to_screen(self, screen_size).0
-            .inverse()
-            // I see no reason why the transformation matrix should not always
-            // be invertible, so I _think_ this is fine and should never panic.
-            // I haven't thought about this deeply enough to be sure though.
-            .unwrap()
-            .transform_point(point_screen)
-    }
-
     pub fn world_to_screen(&self,
         screen_size: graphics::Size,
         point_world: world::Pnt2,

@@ -16,13 +16,10 @@ use log::{
 };
 use time::Duration;
 
-use crate::{
-    graphics,
-    shared::net::{
-        Error as NetError,
-        client::Conn,
-        msg,
-    },
+use crate::shared::net::{
+    Error as NetError,
+    client::Conn,
+    msg,
 };
 
 use self::{
@@ -73,16 +70,9 @@ impl Game {
         )
     }
 
-    pub fn handle_input(&mut self,
-        input:       Input,
-        screen_size: graphics::Size,
-    )
-        -> Transition
-    {
+    pub fn handle_input(&mut self, input: Input) -> Transition {
         let trans = self.input.handle(
             input,
-            &self.state.camera,
-            screen_size,
             &mut self.events,
         );
 

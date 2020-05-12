@@ -4,7 +4,6 @@ use crate::{
         self,
         elements::ScreenElement,
         screen::Screen,
-        transforms::NativeTransform,
     },
 };
 
@@ -280,11 +279,5 @@ impl Element {
                 )
             })
             .flatten()
-    }
-
-    pub fn transform(&self, screen: &Screen) -> NativeTransform {
-        ScreenElement { pos: self.pos, .. ScreenElement::default() }
-            .transform(screen.size)
-            .to_native()
     }
 }

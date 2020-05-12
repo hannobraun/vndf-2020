@@ -1,6 +1,5 @@
 use crate::{
     game::{
-        camera::Camera,
         config::{
             Config,
             Key,
@@ -40,10 +39,8 @@ impl Handler {
     }
 
     pub fn handle(&mut self,
-        input:       Input,
-        camera:      &Camera,
-        screen_size: graphics::Size,
-        events:      &mut Events,
+        input:  Input,
+        events: &mut Events,
     )
         -> Transition
     {
@@ -79,14 +76,6 @@ impl Handler {
                     _ => (),
                 }
             }
-            Input::MouseMotion(pos) => {
-                self.pointer_screen = pos;
-
-                self.pointer_world = camera.screen_to_world(
-                    screen_size,
-                    self.pointer_screen,
-                );
-            }
             Input::MouseWheel(y) => {
                 self.zoom += y * 0.1;
 
@@ -104,7 +93,6 @@ impl Handler {
 pub enum Input {
     KeyDown(Key),
     KeyUp(Key),
-    MouseMotion(graphics::Pnt2),
     MouseWheel(f32),
 }
 

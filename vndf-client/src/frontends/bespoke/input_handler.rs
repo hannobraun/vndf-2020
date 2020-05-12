@@ -19,8 +19,6 @@ use crate::game::{
     },
 };
 
-use super::window::Window;
-
 pub struct InputHandler;
 
 impl InputHandler {
@@ -31,7 +29,6 @@ impl InputHandler {
     pub fn handle_event(&mut self,
         event:        &Event<()>,
         game:         &mut Game,
-        window:       &Window,
         control_flow: &mut ControlFlow,
     ) {
         let input = match event {
@@ -80,7 +77,7 @@ impl InputHandler {
             }
         };
 
-        let trans = game.handle_input(input, window.size());
+        let trans = game.handle_input(input);
         if trans == Transition::Quit {
             *control_flow = ControlFlow::Exit
         }

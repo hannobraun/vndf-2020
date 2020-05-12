@@ -7,12 +7,6 @@ use euclid::{
 pub type Vertex = Point2D<f32, UnknownUnit>;
 
 
-pub const POINTER: &[Vertex] = &[
-    Vertex::new( 0.5,  0.5),
-    Vertex::new( 0.0, -0.5),
-    Vertex::new(-0.5,  0.5),
-];
-
 pub const SHIP: &[Vertex] = &[
     Vertex::new( 0.6,  0.0),
     Vertex::new(-0.4,  0.4),

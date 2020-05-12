@@ -44,7 +44,6 @@ pub fn start(mut game: Game, graphics: Graphics) -> Result<(), Error> {
         input_handler.handle_event(
             &event,
             &mut game,
-            &window,
             control_flow,
         );
 
