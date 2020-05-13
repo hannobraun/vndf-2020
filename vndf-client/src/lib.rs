@@ -1,6 +1,7 @@
 mod game;
 mod frontend;
 mod graphics;
+mod ui;
 
 
 pub use vndf_shared as shared;

@@ -7,10 +7,8 @@ use wgpu_glyph::{
 
 use crate::{
     game::Game,
-    graphics::{
-        screen::Screen,
-        ui,
-    },
+    graphics::screen::Screen,
+    ui,
 };
 
 
