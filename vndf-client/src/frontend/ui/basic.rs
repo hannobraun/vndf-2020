@@ -12,11 +12,11 @@ use crate::{
 };
 
 
-pub struct Ui {
+pub struct Basic {
     glyph_brush: GlyphBrush<'static, ()>,
 }
 
-impl Ui {
+impl Basic {
     pub fn new(device: &wgpu::Device, texture_format: wgpu::TextureFormat)
         -> Result<Self, wgpu_glyph::rusttype::Error>
     {
