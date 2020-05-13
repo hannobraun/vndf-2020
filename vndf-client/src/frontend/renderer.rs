@@ -38,7 +38,7 @@ use super::{
         frag,
         vert,
     },
-    ui::basic::Ui,
+    ui,
     window::Window,
 };
 
@@ -50,7 +50,7 @@ pub struct Renderer {
     swap_chain_desc: wgpu::SwapChainDescriptor,
     swap_chain:      wgpu::SwapChain,
 
-    ui: Ui,
+    ui: ui::basic::Ui,
 
     drawables:    Drawables,
     scale_factor: f32,
@@ -107,7 +107,7 @@ impl Renderer {
             &swap_chain_desc,
         );
 
-        let ui = Ui::new(&device, texture_format)
+        let ui = ui::basic::Ui::new(&device, texture_format)
             .map_err(|err| Error::Font(err))?;
 
         let scale_factor = window.scale_factor();
