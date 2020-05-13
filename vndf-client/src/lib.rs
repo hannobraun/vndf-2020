@@ -16,7 +16,6 @@ use crate::game::Game;
 
 pub fn start<A: ToSocketAddrs>(
     addr:     A,
-    frontend: Frontend,
     graphics: Graphics,
 )
     -> Result<(), Error>
@@ -24,28 +23,8 @@ pub fn start<A: ToSocketAddrs>(
     let game = Game::init(addr)
         .map_err(Error::Game)?;
 
-    match frontend {
-        Frontend::Bespoke => {
-            frontends::bespoke::start(game, graphics)
-                .map_err(Error::Bespoke)
-        }
-    }
-}
-
-
-pub enum Frontend {
-    Bespoke,
-}
-
-impl FromStr for Frontend {
-    type Err = String;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
-            "bespoke" => Ok(Self::Bespoke),
-            s         => Err(format!("`{}` is not a valid frontend", s)),
-        }
-    }
+    frontends::bespoke::start(game, graphics)
+        .map_err(Error::Bespoke)
 }
 
 

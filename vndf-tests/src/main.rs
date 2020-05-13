@@ -12,9 +12,6 @@ use vndf_shared::{
 
 #[derive(StructOpt)]
 struct Options {
-    #[structopt(short, long, default_value = "bespoke")]
-    frontend: client::Frontend,
-
     #[structopt(short, long, default_value = "auto")]
     graphics: client::Graphics,
 }
@@ -33,7 +30,7 @@ fn main() -> Result<(), Error> {
     let     addr   = server.addr();
 
     thread::spawn(move || main_loop(|| server.update()));
-    client::start(addr, options.frontend, options.graphics)
+    client::start(addr, options.graphics)
         .map_err(|err| Error::Run(err))
 }
 

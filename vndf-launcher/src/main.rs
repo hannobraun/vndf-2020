@@ -5,9 +5,6 @@ use vndf_client as client;
 
 #[derive(StructOpt)]
 struct Options {
-    #[structopt(short, long, default_value = "bespoke")]
-    frontend: client::Frontend,
-
     #[structopt(short, long, default_value = "auto")]
     graphics: client::Graphics,
 
@@ -35,7 +32,6 @@ fn main() -> Result<(), client::Error> {
 
     client::start(
         (addr, 34480),
-        options.frontend,
         options.graphics,
     )
 }
