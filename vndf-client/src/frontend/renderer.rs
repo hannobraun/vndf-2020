@@ -4,10 +4,6 @@ use log::{
     debug,
     warn,
 };
-use wgpu_glyph::{
-    Scale,
-    Section,
-};
 use winit::event::{
     Event,
     WindowEvent,
@@ -23,7 +19,6 @@ use crate::{
             WorldElement,
         },
         screen::Screen,
-        ui,
     },
     shared::world::behavior::{
         explosions::Explosion,
@@ -353,37 +348,13 @@ impl Renderer {
         encoder: &mut wgpu::CommandEncoder,
         game:    &Game,
     ) {
-        let screen = self.screen();
-        let scale  = Scale::uniform(16.0 * screen.scale_factor);
-
-        for element in ui::elements(game, &screen) {
-            let text = element.text.as_str();
-            let screen_position = (
-                element.pos.x * screen.scale_factor,
-                element.pos.y * screen.scale_factor,
-            );
-            let color = [1.0, 1.0, 1.0, 1.0];
-
-            self.ui.glyph_brush.queue(Section {
-                text,
-                screen_position,
-                scale,
-                color,
-                .. Section::default()
-            });
-        }
-
-        self.ui.glyph_brush
-            .draw_queued(
-                &self.device,
-                encoder,
-                &frame.view,
-                screen.size.width as u32,
-                screen.size.height as u32,
-            )
-            // I've checked the code, and it doesn't look like this
-            // actually returns any errors.
-            .unwrap();
+        self.ui.draw(
+            &self.device,
+            frame,
+            encoder,
+            game,
+            &self.screen(),
+        );
     }
 
     fn screen(&self) -> Screen {
