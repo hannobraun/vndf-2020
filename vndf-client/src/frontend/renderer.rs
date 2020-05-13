@@ -40,7 +40,7 @@ use super::{
     },
     ui::{
         self,
-        Ui as _,
+        Ui,
     },
     window::Window,
 };
@@ -53,7 +53,7 @@ pub struct Renderer {
     swap_chain_desc: wgpu::SwapChainDescriptor,
     swap_chain:      wgpu::SwapChain,
 
-    ui: ui::Basic,
+    ui: Box<dyn Ui>,
 
     drawables:    Drawables,
     scale_factor: f32,
@@ -110,8 +110,10 @@ impl Renderer {
             &swap_chain_desc,
         );
 
-        let ui = ui::Basic::new(&device, texture_format)
-            .map_err(|err| Error::Font(err))?;
+        let ui = Box::new(
+            ui::Basic::new(&device, texture_format)
+                .map_err(|err| Error::Font(err))?
+        );
 
         let scale_factor = window.scale_factor();
 
