@@ -23,7 +23,7 @@ pub fn start<A: ToSocketAddrs>(
     let game = Game::init(addr)
         .map_err(Error::Game)?;
 
-    frontends::bespoke::start(game, graphics)
+    frontends::start(game, graphics)
         .map_err(Error::Bespoke)
 }
 
@@ -59,6 +59,6 @@ impl FromStr for Graphics {
 
 #[derive(Debug)]
 pub enum Error {
-    Bespoke(frontends::bespoke::Error),
+    Bespoke(frontends::Error),
     Game(game::Error),
 }
