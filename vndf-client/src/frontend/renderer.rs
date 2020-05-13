@@ -38,7 +38,7 @@ use super::{
         frag,
         vert,
     },
-    ui::Ui,
+    ui::basic::Ui,
     window::Window,
 };
 
