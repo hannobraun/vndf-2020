@@ -4,7 +4,7 @@ mod graphics;
 mod ui;
 
 
-pub use vndf_shared as shared;
+extern crate vndf_shared as shared;
 
 
 use std::{
