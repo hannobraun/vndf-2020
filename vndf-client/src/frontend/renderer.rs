@@ -11,6 +11,7 @@ use winit::event::{
 
 use crate::{
     Graphics,
+    UiOption,
     game::Game,
     graphics::{
         self,
@@ -60,7 +61,7 @@ pub struct Renderer {
 }
 
 impl Renderer {
-    pub async fn new(window: &Window, graphics: Graphics)
+    pub async fn new(window: &Window, graphics: Graphics, ui: UiOption)
         -> Result<Self, Error>
     {
         let backend = select_backend(graphics);
@@ -110,10 +111,14 @@ impl Renderer {
             &swap_chain_desc,
         );
 
-        let ui = Box::new(
-            ui::Basic::new(&device, texture_format)
-                .map_err(|err| Error::Font(err))?
-        );
+        let ui = match ui {
+            UiOption::Basic => {
+                Box::new(
+                    ui::Basic::new(&device, texture_format)
+                        .map_err(|err| Error::Font(err))?
+                )
+            }
+        };
 
         let scale_factor = window.scale_factor();
 

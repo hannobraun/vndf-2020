@@ -21,6 +21,7 @@ use winit::{
 
 use crate::{
     Graphics,
+    UiOption,
     game::Game,
 };
 
@@ -31,11 +32,11 @@ use self::{
 };
 
 
-pub fn start(mut game: Game, graphics: Graphics) -> Result<(), Error> {
+pub fn start(mut game: Game, graphics: Graphics, ui: UiOption) -> Result<(), Error> {
     let event_loop = EventLoop::new();
     let window = Window::new(&event_loop)
         .map_err(|err| Error::Winit(err))?;
-    let mut renderer = block_on(Renderer::new(&window, graphics))
+    let mut renderer = block_on(Renderer::new(&window, graphics, ui))
         .map_err(|err| Error::Renderer(err))?;
     let mut input_handler = InputHandler::new();
 
