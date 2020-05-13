@@ -6,16 +6,18 @@ edition = "2018"
 
 
 [dependencies]
-futures    = "*"
-log        = "*"
-lyon       = "*"
-serde      = "*"
-time       = "*"
-toml       = "*"
-wgpu       = "*"
-wgpu_glyph = "*"
-winit      = "*"
-zerocopy   = "*"
+conrod_core = "*"
+conrod_wgpu = "*"
+futures     = "*"
+log         = "*"
+lyon        = "*"
+serde       = "*"
+time        = "*"
+toml        = "*"
+wgpu        = "*"
+wgpu_glyph  = "*"
+winit       = "*"
+zerocopy    = "*"
 
 [dependencies.euclid]
 version  = "*"
