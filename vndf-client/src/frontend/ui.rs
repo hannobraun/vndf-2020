@@ -15,7 +15,7 @@ use crate::{
 
 
 pub struct Ui {
-    pub glyph_brush: GlyphBrush<'static, ()>,
+    glyph_brush: GlyphBrush<'static, ()>,
 }
 
 impl Ui {
