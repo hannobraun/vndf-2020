@@ -1,5 +1,5 @@
 mod game;
-mod frontends;
+mod frontend;
 mod graphics;
 
 
@@ -23,7 +23,7 @@ pub fn start<A: ToSocketAddrs>(
     let game = Game::init(addr)
         .map_err(Error::Game)?;
 
-    frontends::start(game, graphics)
+    frontend::start(game, graphics)
         .map_err(Error::Bespoke)
 }
 
@@ -59,6 +59,6 @@ impl FromStr for Graphics {
 
 #[derive(Debug)]
 pub enum Error {
-    Bespoke(frontends::Error),
+    Bespoke(frontend::Error),
     Game(game::Error),
 }

@@ -44,7 +44,7 @@ macro_rules! shader {
     ) => {
         pub struct $name_s;
 
-        impl crate::frontends::shaders::Shader for $name_s {
+        impl crate::frontend::shaders::Shader for $name_s {
             type Kind     = $kind;
             type Uniforms = $name_m::Uniforms;
 
@@ -58,7 +58,7 @@ macro_rules! shader {
             #[repr(packed)]
             pub struct Uniforms {
                 $(
-                    pub $u_name: crate::frontends::uniforms::$u_ty,
+                    pub $u_name: crate::frontend::uniforms::$u_ty,
                 )*
             }
         }
@@ -77,7 +77,7 @@ macro_rules! vertex_shader {
         },
     ) => {
         shader!(
-            crate::frontends::shaders::Vert,
+            crate::frontend::shaders::Vert,
             $name_s,
             $name_m,
             $path,
@@ -102,7 +102,7 @@ macro_rules! fragment_shader {
         },
     ) => {
         shader!(
-            crate::frontends::shaders::Frag,
+            crate::frontend::shaders::Frag,
             $name_s,
             $name_m,
             $path,
