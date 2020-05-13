@@ -5,7 +5,6 @@ use log::{
     warn,
 };
 use wgpu_glyph::{
-    GlyphBrush,
     GlyphBrushBuilder,
     Scale,
     Section,
@@ -45,6 +44,7 @@ use super::{
         frag,
         vert,
     },
+    ui::Ui,
     window::Window,
 };
 
@@ -56,7 +56,7 @@ pub struct Renderer {
     swap_chain_desc: wgpu::SwapChainDescriptor,
     swap_chain:      wgpu::SwapChain,
 
-    glyph_brush: GlyphBrush<'static, ()>,
+    ui: Ui,
 
     drawables:    Drawables,
     scale_factor: f32,
@@ -117,6 +117,9 @@ impl Renderer {
         let glyph_brush = GlyphBrushBuilder::using_font_bytes(&font[..])
             .map_err(|err| Error::Font(err))?
             .build(&device, texture_format);
+        let ui = Ui {
+            glyph_brush,
+        };
 
         let scale_factor = window.scale_factor();
 
@@ -128,7 +131,7 @@ impl Renderer {
                 swap_chain_desc,
                 swap_chain,
 
-                glyph_brush,
+                ui,
 
                 drawables,
                 scale_factor,
@@ -367,7 +370,7 @@ impl Renderer {
             );
             let color = [1.0, 1.0, 1.0, 1.0];
 
-            self.glyph_brush.queue(Section {
+            self.ui.glyph_brush.queue(Section {
                 text,
                 screen_position,
                 scale,
@@ -376,7 +379,7 @@ impl Renderer {
             });
         }
 
-        self.glyph_brush
+        self.ui.glyph_brush
             .draw_queued(
                 &self.device,
                 encoder,
