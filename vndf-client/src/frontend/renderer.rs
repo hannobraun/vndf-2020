@@ -5,7 +5,6 @@ use log::{
     warn,
 };
 use wgpu_glyph::{
-    GlyphBrushBuilder,
     Scale,
     Section,
 };
@@ -113,13 +112,8 @@ impl Renderer {
             &swap_chain_desc,
         );
 
-        let font = include_bytes!("fonts/Tuffy_Bold.ttf");
-        let glyph_brush = GlyphBrushBuilder::using_font_bytes(&font[..])
-            .map_err(|err| Error::Font(err))?
-            .build(&device, texture_format);
-        let ui = Ui {
-            glyph_brush,
-        };
+        let ui = Ui::new(&device, texture_format)
+            .map_err(|err| Error::Font(err))?;
 
         let scale_factor = window.scale_factor();
 
