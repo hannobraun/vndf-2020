@@ -30,8 +30,10 @@ impl Basic {
             }
         )
     }
+}
 
-    pub fn draw(&mut self,
+impl super::Ui for Basic {
+    fn draw(&mut self,
         device:  &wgpu::Device,
         frame:   &wgpu::SwapChainOutput,
         encoder: &mut wgpu::CommandEncoder,
