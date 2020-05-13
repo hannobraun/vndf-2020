@@ -171,7 +171,14 @@ impl Renderer {
                 for explosion in game.state.data.explosions.values() {
                     self.draw_explosion(&frame, &mut encoder, explosion, game);
                 }
-                self.draw_ui(&frame, &mut encoder, game);
+
+                self.ui.draw(
+                    &self.device,
+                    &frame,
+                    &mut encoder,
+                    game,
+                    &self.screen(),
+                );
 
                 self.queue.submit(&[encoder.finish()]);
             }
@@ -341,20 +348,6 @@ impl Renderer {
         );
 
         Some(())
-    }
-
-    fn draw_ui(&mut self,
-        frame:   &wgpu::SwapChainOutput,
-        encoder: &mut wgpu::CommandEncoder,
-        game:    &Game,
-    ) {
-        self.ui.draw(
-            &self.device,
-            frame,
-            encoder,
-            game,
-            &self.screen(),
-        );
     }
 
     fn screen(&self) -> Screen {
