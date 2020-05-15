@@ -17,5 +17,6 @@ pub trait Ui {
         encoder: &mut wgpu::CommandEncoder,
         game:    &Game,
         screen:  &Screen,
-    );
+    )
+        -> Result<(), ()>;
 }

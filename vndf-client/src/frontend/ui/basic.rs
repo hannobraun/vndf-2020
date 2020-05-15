@@ -39,7 +39,9 @@ impl super::Ui for Basic {
         encoder: &mut wgpu::CommandEncoder,
         game:    &Game,
         screen:  &Screen,
-    ) {
+    )
+        -> Result<(), ()>
+    {
         let scale  = Scale::uniform(16.0 * screen.scale_factor);
 
         for element in ui::elements(game, screen) {
@@ -70,5 +72,7 @@ impl super::Ui for Basic {
             // I've checked the code, and it doesn't look like this
             // actually returns any errors.
             .unwrap();
+
+        Ok(())
     }
 }
