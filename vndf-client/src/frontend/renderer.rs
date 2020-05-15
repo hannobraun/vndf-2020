@@ -139,7 +139,7 @@ impl Renderer {
     }
 
     pub fn handle_event(&mut self, event: &Event<()>, game: &Game)
-        -> Result<(), wgpu::TimeOut>
+        -> Result<(), Error>
     {
         match event {
             Event::WindowEvent { event: WindowEvent::Resized(size), .. } => {
@@ -161,7 +161,8 @@ impl Renderer {
                 self.scale_factor = *scale_factor as f32;
             }
             Event::RedrawRequested(_) => {
-                let frame = self.swap_chain.get_next_texture()?;
+                let frame = self.swap_chain.get_next_texture()
+                    .map_err(|_| Error::TimeOut)?;
 
                 let mut encoder = self.device.create_command_encoder(
                     &wgpu::CommandEncoderDescriptor { label: None }
@@ -404,6 +405,7 @@ pub enum Error {
     Font(wgpu_glyph::rusttype::Error),
     Io(io::Error),
     Meshes(meshes::Error),
+    TimeOut,
 }
 
 impl From<io::Error> for Error {
