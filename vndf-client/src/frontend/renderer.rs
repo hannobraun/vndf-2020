@@ -111,7 +111,7 @@ impl Renderer {
             &swap_chain_desc,
         );
 
-        let ui = match ui {
+        let ui: Box<dyn Ui> = match ui {
             UiOption::Basic => {
                 Box::new(
                     ui::Basic::new(&device, texture_format)
