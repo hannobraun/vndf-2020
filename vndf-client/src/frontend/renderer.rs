@@ -118,6 +118,11 @@ impl Renderer {
                         .map_err(|err| Error::Font(err))?
                 )
             }
+            UiOption::Conrod => {
+                Box::new(
+                    ui::Conrod::new(&device, texture_format)
+                )
+            }
         };
 
         let scale_factor = window.scale_factor();

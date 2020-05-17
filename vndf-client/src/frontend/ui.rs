@@ -1,7 +1,11 @@
 pub mod basic;
+pub mod conrod;
 
 
-pub use self::basic::Basic;
+pub use self::{
+    basic::Basic,
+    conrod::Conrod,
+};
 
 
 use crate::{

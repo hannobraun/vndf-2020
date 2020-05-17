@@ -61,6 +61,7 @@ impl FromStr for Graphics {
 
 pub enum UiOption {
     Basic,
+    Conrod,
 }
 
 impl FromStr for UiOption {
@@ -68,7 +69,8 @@ impl FromStr for UiOption {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
-            "basic" => Ok(Self::Basic),
+            "basic"  => Ok(Self::Basic),
+            "conrod" => Ok(Self::Conrod),
 
             s => Err(format!("`{}` is not a valid graphics backend", s)),
         }
