@@ -372,13 +372,7 @@ impl Renderer {
     }
 
     fn screen(&self) -> Screen {
-        Screen {
-            size: graphics::Size::new(
-                self.swap_chain_desc.width  as f32,
-                self.swap_chain_desc.height as f32,
-            ),
-            scale_factor: self.scale_factor,
-        }
+        screen(&self.swap_chain_desc, self.scale_factor)
     }
 }
 
@@ -405,6 +399,18 @@ fn select_backend(graphics: Graphics) -> wgpu::BackendBit {
         Graphics::OpenGl    => wgpu::BackendBit::GL,
         Graphics::Vulkan    => wgpu::BackendBit::VULKAN,
         Graphics::WebGpu    => wgpu::BackendBit::BROWSER_WEBGPU,
+    }
+}
+
+fn screen(swap_chain_desc: &wgpu::SwapChainDescriptor, scale_factor: f32)
+    -> Screen
+{
+    Screen {
+        size: graphics::Size::new(
+            swap_chain_desc.width  as f32,
+            swap_chain_desc.height as f32,
+        ),
+        scale_factor,
     }
 }
 
