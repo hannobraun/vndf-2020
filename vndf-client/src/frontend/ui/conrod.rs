@@ -107,11 +107,6 @@ impl super::Ui for Conrod {
             .fill(
                 &image_map,
                 [0.0, 0.0, screen.size.width, screen.size.height],
-                // This is the scale factor. I haven't quite figured out why,
-                // but passing the actual scale factor from `screen` here leads
-                // to weird effects. I suspect that Conrod expects to get the
-                // unscaled size in the previous argument, and will scale those
-                // by itself, using the scale factor given here.
                 1.0,
                 primitives,
             )
