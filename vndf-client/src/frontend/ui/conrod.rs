@@ -29,6 +29,7 @@ use crate::{
 
 pub struct Conrod {
     ui:       Ui,
+    ids:      Ids,
     renderer: conrod_wgpu::Renderer,
 }
 
@@ -40,13 +41,16 @@ impl Conrod {
     )
         -> Self
     {
-        let ui = UiBuilder::new(screen_size.cast().to_array())
+        let mut ui = UiBuilder::new(screen_size.cast().to_array())
             .build();
+
+        let ids = Ids::new(ui.widget_id_generator());
 
         let renderer = conrod_wgpu::Renderer::new(device, 1, texture_format);
 
         Self {
             ui,
+            ids,
             renderer,
         }
     }
@@ -62,8 +66,6 @@ impl super::Ui for Conrod {
     )
         -> Result<(), ()>
     {
-        let ids = Ids::new(self.ui.widget_id_generator());
-
         {
             let ui  = &mut self.ui.set_widgets();
 
@@ -73,11 +75,11 @@ impl super::Ui for Conrod {
                     .. canvas::Style::default()
                 })
                 .pad(20.0)
-                .set(ids.canvas, ui);
+                .set(self.ids.canvas, ui);
 
             widget::Circle::fill(10.0)
-                .top_left_of(ids.canvas)
-                .set(ids.circle, ui);
+                .top_left_of(self.ids.canvas)
+                .set(self.ids.circle, ui);
         }
 
         let primitives = self.ui.draw();
