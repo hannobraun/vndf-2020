@@ -45,7 +45,7 @@ impl super::Ui for Basic {
     {
         let scale  = Scale::uniform(16.0 * screen.scale_factor);
 
-        for element in ui::elements(game, screen) {
+        for element in ui::Elements::new(game, screen).elements() {
             let text = element.text.as_str();
             let screen_position = (
                 element.pos.x * screen.scale_factor,

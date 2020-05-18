@@ -8,19 +8,47 @@ use crate::{
 };
 
 
-pub fn elements(game: &Game, screen: &Screen) -> Vec<Element> {
-    let mut elements = Vec::new();
+pub struct Elements {
+    pub instructions:    Element,
+    pub zoom:            Element,
+    pub frame_time:      Option<Element>,
+    pub diagnostics:     Option<Element>,
+    pub input_events:    Option<Element>,
+    pub own_ship_status: Option<Element>,
 
-    elements.extend(Element::orbit_info(game, screen));
-    elements.extend(Element::ship_info(game, screen));
-    elements.push(Element::instructions(game));
-    elements.push(Element::zoom(game));
-    elements.extend(Element::frame_time(game));
-    elements.extend(Element::diagnostics(game));
-    elements.extend(Element::input_events(game));
-    elements.extend(Element::own_ship_status(game, screen));
+    pub ship_info:  Vec<Element>,
+    pub orbit_info: Vec<Element>,
+}
 
-    elements
+impl Elements {
+    pub fn new(game: &Game, screen: &Screen) -> Self {
+        Self {
+            instructions: Element::instructions(game),
+            zoom:         Element::zoom(game),
+            frame_time:   Element::frame_time(game),
+            diagnostics:  Element::diagnostics(game),
+            input_events: Element::input_events(game),
+            own_ship_status: Element::own_ship_status(game, screen),
+
+            orbit_info: Element::orbit_info(game, screen),
+            ship_info:  Element::ship_info(game, screen),
+        }
+    }
+
+    pub fn elements(&self) -> Vec<&Element> {
+        let mut elements = Vec::new();
+
+        elements.extend(&self.orbit_info);
+        elements.extend(&self.ship_info);
+        elements.push(&self.instructions);
+        elements.push(&self.zoom);
+        elements.extend(&self.frame_time);
+        elements.extend(&self.diagnostics);
+        elements.extend(&self.input_events);
+        elements.extend(&self.own_ship_status);
+
+        elements
+    }
 }
 
 
