@@ -40,7 +40,7 @@ impl Conrod {
     )
         -> Result<Self, rusttype::Error>
     {
-        let mut ui = UiBuilder::new(screen.size.cast().to_array())
+        let mut ui = UiBuilder::new(screen.logical_size().cast().to_array())
             .theme(
                 Theme {
                     label_color: Color::Rgba(1.0, 1.0, 1.0, 1.0),
@@ -104,7 +104,7 @@ impl super::Ui for Conrod {
             .fill(
                 &image_map,
                 [0.0, 0.0, screen.size.width, screen.size.height],
-                1.0,
+                screen.scale_factor as f64,
                 primitives,
             )
             .map_err(|_| ())?;
@@ -154,13 +154,13 @@ impl super::Ui for Conrod {
         Ok(())
     }
 
-    fn handle_event(&mut self, event: &Event<()>, _: &Screen) {
+    fn handle_event(&mut self, event: &Event<()>, screen: &Screen) {
         match event {
             Event::WindowEvent { event: WindowEvent::Resized(size), .. } => {
                 self.ui.handle_event(
                     Input::Resize(
-                        size.width  as f64,
-                        size.height as f64,
+                        size.width  as f64 / screen.scale_factor as f64,
+                        size.height as f64 / screen.scale_factor as f64,
                     )
                 );
             }

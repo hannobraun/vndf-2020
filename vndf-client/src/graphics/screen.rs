@@ -9,3 +9,9 @@ pub struct Screen {
     /// The scale factor used to convert between physical and logical size
     pub scale_factor: f32,
 }
+
+impl Screen {
+    pub fn logical_size(&self) -> graphics::Size {
+        self.size / self.scale_factor
+    }
+}
