@@ -120,7 +120,7 @@ impl Renderer {
             }
             UiOption::Conrod => {
                 Box::new(
-                    ui::Conrod::new(&device, texture_format)
+                    ui::Conrod::new(&device, texture_format, size)
                 )
             }
         };

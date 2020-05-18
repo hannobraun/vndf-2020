@@ -1,8 +1,10 @@
 use conrod_core::{
     Color,
     Positionable as _,
+    Ui,
     UiBuilder,
     Widget as _,
+    event::Input,
     image,
     widget::{
         self,
@@ -11,25 +13,40 @@ use conrod_core::{
     widget_ids,
 };
 use conrod_wgpu::RenderPassCommand;
-use winit::event::Event;
+use winit::event::{
+    Event,
+    WindowEvent,
+};
 
 use crate::{
     game::Game,
-    graphics::screen::Screen,
+    graphics::{
+        self,
+        screen::Screen,
+    },
 };
 
 
 pub struct Conrod {
+    ui:       Ui,
     renderer: conrod_wgpu::Renderer,
 }
 
 impl Conrod {
-    pub fn new(device: &wgpu::Device, texture_format: wgpu::TextureFormat)
+    pub fn new(
+        device:         &wgpu::Device,
+        texture_format: wgpu::TextureFormat,
+        screen_size:    graphics::Size,
+    )
         -> Self
     {
+        let ui = UiBuilder::new(screen_size.cast().to_array())
+            .build();
+
         let renderer = conrod_wgpu::Renderer::new(device, 1, texture_format);
 
         Self {
+            ui,
             renderer,
         }
     }
@@ -45,13 +62,10 @@ impl super::Ui for Conrod {
     )
         -> Result<(), ()>
     {
-        let mut ui = UiBuilder::new(screen.size.cast().to_array())
-            .build();
-
-        let ids = Ids::new(ui.widget_id_generator());
+        let ids = Ids::new(self.ui.widget_id_generator());
 
         {
-            let ui  = &mut ui.set_widgets();
+            let ui  = &mut self.ui.set_widgets();
 
             widget::Canvas::new()
                 .with_style(canvas::Style {
@@ -66,7 +80,7 @@ impl super::Ui for Conrod {
                 .set(ids.circle, ui);
         }
 
-        let primitives = ui.draw();
+        let primitives = self.ui.draw();
         let image_map  = image::Map::new();
 
         let command = self.renderer
@@ -128,7 +142,19 @@ impl super::Ui for Conrod {
         Ok(())
     }
 
-    fn handle_event(&mut self, _: &Event<()>) {}
+    fn handle_event(&mut self, event: &Event<()>) {
+        match event {
+            Event::WindowEvent { event: WindowEvent::Resized(size), .. } => {
+                self.ui.handle_event(
+                    Input::Resize(
+                        size.width  as f64,
+                        size.height as f64,
+                    )
+                );
+            }
+            _ => {}
+        }
+    }
 }
 
 
