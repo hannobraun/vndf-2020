@@ -178,9 +178,7 @@ impl Element {
         )
     }
 
-    pub fn ship_info<'r>(game: &'r Game, screen: &'r Screen)
-        -> impl Iterator<Item=Self> + 'r
-    {
+    pub fn ship_info<'r>(game: &'r Game, screen: &'r Screen) -> Vec<Self> {
         game.state.data.ships.values()
             .filter_map(move |ship| {
                 let craft = game.state.data.crafts.get(&ship.craft)?;
@@ -215,11 +213,10 @@ impl Element {
                     }
                 )
             })
+            .collect()
     }
 
-    pub fn orbit_info<'r>(game: &'r Game, screen: &'r Screen)
-        -> impl Iterator<Item=Self> + 'r
-    {
+    pub fn orbit_info<'r>(game: &'r Game, screen: &'r Screen) -> Vec<Self> {
         game.state.active_orbits()
             .filter_map(move |orbit| {
                 // Display periapsis and apoapsis
@@ -279,5 +276,6 @@ impl Element {
                 )
             })
             .flatten()
+            .collect()
     }
 }
