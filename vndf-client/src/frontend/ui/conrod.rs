@@ -94,6 +94,10 @@ impl super::Ui for Conrod {
             widget::Circle::fill(10.0)
                 .top_left_of(self.ids.canvas)
                 .set(self.ids.circle, ui);
+
+            widget::Text::new("Von Neumann Defense Force")
+                .down(10.0)
+                .set(self.ids.text, ui);
         }
 
         let primitives = self.ui.draw();
@@ -178,5 +182,6 @@ widget_ids! {
     pub struct Ids {
         canvas,
         circle,
+        text,
     }
 }
