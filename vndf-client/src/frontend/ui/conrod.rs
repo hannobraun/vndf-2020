@@ -7,6 +7,7 @@ use conrod_core::{
     Widget as _,
     event::Input,
     image,
+    text::Font,
     widget::{
         self,
         canvas,
@@ -40,7 +41,7 @@ impl Conrod {
         texture_format: wgpu::TextureFormat,
         screen_size:    graphics::Size,
     )
-        -> Self
+        -> Result<Self, rusttype::Error>
     {
         let mut ui = UiBuilder::new(screen_size.cast().to_array())
             .theme(
@@ -51,15 +52,21 @@ impl Conrod {
             )
             .build();
 
+        let font = include_bytes!("fonts/Tuffy_Bold.ttf");
+        let font = Font::from_bytes(&font[..])?;
+        ui.fonts.insert(font);
+
         let ids = Ids::new(ui.widget_id_generator());
 
         let renderer = conrod_wgpu::Renderer::new(device, 1, texture_format);
 
-        Self {
-            ui,
-            ids,
-            renderer,
-        }
+        Ok(
+            Self {
+                ui,
+                ids,
+                renderer,
+            }
+        )
     }
 }
 

@@ -121,6 +121,7 @@ impl Renderer {
             UiOption::Conrod => {
                 Box::new(
                     ui::Conrod::new(&device, texture_format, size)
+                        .map_err(|err| Error::Font(err))?
                 )
             }
         };
