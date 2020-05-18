@@ -111,6 +111,8 @@ impl Renderer {
             &swap_chain_desc,
         );
 
+        let scale_factor = window.scale_factor();
+
         let ui: Box<dyn Ui> = match ui {
             UiOption::Basic => {
                 Box::new(
@@ -125,8 +127,6 @@ impl Renderer {
                 )
             }
         };
-
-        let scale_factor = window.scale_factor();
 
         Ok(
             Self {
