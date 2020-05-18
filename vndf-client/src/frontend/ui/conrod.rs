@@ -23,6 +23,7 @@ use winit::event::{
 use crate::{
     game::Game,
     graphics::screen::Screen,
+    ui,
 };
 
 
@@ -73,12 +74,16 @@ impl super::Ui for Conrod {
         device:  &wgpu::Device,
         frame:   &wgpu::SwapChainOutput,
         encoder: &mut wgpu::CommandEncoder,
-        _game:   &Game,
+        game:    &Game,
         screen:  &Screen,
     )
         -> Result<(), ()>
     {
+        let elements = ui::Elements::new(game, screen);
+
         {
+            const PADDING: f64 = 20.0;
+
             let ui = &mut self.ui.set_widgets();
 
             widget::Canvas::new()
@@ -86,16 +91,40 @@ impl super::Ui for Conrod {
                     color: Some(Color::Rgba(0.0, 0.0, 0.0, 0.0)),
                     .. canvas::Style::default()
                 })
-                .pad(20.0)
+                .pad(PADDING)
                 .set(self.ids.canvas, ui);
 
-            widget::Circle::fill(10.0)
+            widget::Text::new(elements.instructions.text.as_str())
                 .top_left_of(self.ids.canvas)
-                .set(self.ids.circle, ui);
+                .set(self.ids.instructions, ui);
 
-            widget::Text::new("Von Neumann Defense Force")
-                .down(10.0)
-                .set(self.ids.text, ui);
+            widget::Text::new(elements.zoom.text.as_str())
+                .down(PADDING)
+                .set(self.ids.zoom, ui);
+
+            if let Some(frame_time) = elements.frame_time {
+                widget::Text::new(frame_time.text.as_str())
+                    .down(PADDING)
+                    .set(self.ids.frame_time, ui);
+            }
+
+            if let Some(diagnostics) = elements.diagnostics {
+                widget::Text::new(diagnostics.text.as_str())
+                    .down(PADDING)
+                    .set(self.ids.diagnostics, ui);
+            }
+
+            if let Some(input_events) = elements.input_events {
+                widget::Text::new(input_events.text.as_str())
+                    .down(PADDING)
+                    .set(self.ids.input_events, ui);
+            }
+
+            if let Some(own_ship_status) = elements.own_ship_status {
+                widget::Text::new(own_ship_status.text.as_str())
+                    .top_right_of(self.ids.canvas)
+                    .set(self.ids.own_ship_status, ui);
+            }
         }
 
         let primitives = self.ui.draw();
@@ -174,7 +203,11 @@ impl super::Ui for Conrod {
 widget_ids! {
     pub struct Ids {
         canvas,
-        circle,
-        text,
+        instructions,
+        zoom,
+        frame_time,
+        diagnostics,
+        input_events,
+        own_ship_status,
     }
 }
