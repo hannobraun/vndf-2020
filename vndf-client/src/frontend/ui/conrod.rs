@@ -79,7 +79,7 @@ impl super::Ui for Conrod {
         -> Result<(), ()>
     {
         {
-            let ui  = &mut self.ui.set_widgets();
+            let ui = &mut self.ui.set_widgets();
 
             widget::Canvas::new()
                 .with_style(canvas::Style {
