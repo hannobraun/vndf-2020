@@ -43,7 +43,8 @@ impl Conrod {
         let mut ui = UiBuilder::new(screen.logical_size().cast().to_array())
             .theme(
                 Theme {
-                    label_color: Color::Rgba(1.0, 1.0, 1.0, 1.0),
+                    label_color:      Color::Rgba(1.0, 1.0, 1.0, 1.0),
+                    font_size_medium: 12,
                     .. Theme::default()
                 }
             )
