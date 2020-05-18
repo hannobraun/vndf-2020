@@ -154,7 +154,7 @@ impl super::Ui for Conrod {
         Ok(())
     }
 
-    fn handle_event(&mut self, event: &Event<()>) {
+    fn handle_event(&mut self, event: &Event<()>, _: &Screen) {
         match event {
             Event::WindowEvent { event: WindowEvent::Resized(size), .. } => {
                 self.ui.handle_event(

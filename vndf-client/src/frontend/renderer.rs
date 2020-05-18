@@ -206,7 +206,7 @@ impl Renderer {
             _ => {}
         }
 
-        self.ui.handle_event(event);
+        self.ui.handle_event(event, &self.screen());
 
         Ok(())
     }

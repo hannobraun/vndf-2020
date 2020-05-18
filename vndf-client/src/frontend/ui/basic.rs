@@ -77,5 +77,5 @@ impl super::Ui for Basic {
         Ok(())
     }
 
-    fn handle_event(&mut self, _: &Event<()>) {}
+    fn handle_event(&mut self, _: &Event<()>, _: &Screen) {}
 }
