@@ -26,8 +26,10 @@ impl Conrod {
     pub fn new(device: &wgpu::Device, texture_format: wgpu::TextureFormat)
         -> Self
     {
+        let renderer = conrod_wgpu::Renderer::new(device, 1, texture_format);
+
         Self {
-            renderer: conrod_wgpu::Renderer::new(device, 1, texture_format),
+            renderer,
         }
     }
 }
