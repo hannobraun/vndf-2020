@@ -22,10 +22,7 @@ use winit::event::{
 
 use crate::{
     game::Game,
-    graphics::{
-        self,
-        screen::Screen,
-    },
+    graphics::screen::Screen,
 };
 
 
@@ -39,11 +36,11 @@ impl Conrod {
     pub fn new(
         device:         &wgpu::Device,
         texture_format: wgpu::TextureFormat,
-        screen_size:    graphics::Size,
+        screen:         &Screen,
     )
         -> Result<Self, rusttype::Error>
     {
-        let mut ui = UiBuilder::new(screen_size.cast().to_array())
+        let mut ui = UiBuilder::new(screen.size.cast().to_array())
             .theme(
                 Theme {
                     label_color: Color::Rgba(1.0, 1.0, 1.0, 1.0),

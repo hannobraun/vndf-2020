@@ -121,8 +121,10 @@ impl Renderer {
                 )
             }
             UiOption::Conrod => {
+                let screen = screen(&swap_chain_desc, scale_factor);
+
                 Box::new(
-                    ui::Conrod::new(&device, texture_format, size)
+                    ui::Conrod::new(&device, texture_format, &screen)
                         .map_err(|err| Error::Font(err))?
                 )
             }
