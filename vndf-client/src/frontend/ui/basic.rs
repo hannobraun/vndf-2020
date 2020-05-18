@@ -4,6 +4,7 @@ use wgpu_glyph::{
     Scale,
     Section,
 };
+use winit::event::Event;
 
 use crate::{
     game::Game,
@@ -75,4 +76,6 @@ impl super::Ui for Basic {
 
         Ok(())
     }
+
+    fn handle_event(&mut self, _: &Event<()>) {}
 }

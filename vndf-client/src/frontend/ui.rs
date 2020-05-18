@@ -8,6 +8,8 @@ pub use self::{
 };
 
 
+use winit::event::Event;
+
 use crate::{
     game::Game,
     graphics::screen::Screen,
@@ -23,4 +25,6 @@ pub trait Ui {
         screen:  &Screen,
     )
         -> Result<(), ()>;
+
+    fn handle_event(&mut self, event: &Event<()>);
 }

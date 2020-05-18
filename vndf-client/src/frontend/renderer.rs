@@ -203,6 +203,8 @@ impl Renderer {
             _ => {}
         }
 
+        self.ui.handle_event(event);
+
         Ok(())
     }
 

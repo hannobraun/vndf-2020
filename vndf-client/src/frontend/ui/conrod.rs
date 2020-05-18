@@ -11,6 +11,7 @@ use conrod_core::{
     widget_ids,
 };
 use conrod_wgpu::RenderPassCommand;
+use winit::event::Event;
 
 use crate::{
     game::Game,
@@ -126,6 +127,8 @@ impl super::Ui for Conrod {
 
         Ok(())
     }
+
+    fn handle_event(&mut self, _: &Event<()>) {}
 }
 
 
