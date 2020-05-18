@@ -26,5 +26,5 @@ pub trait Ui {
     )
         -> Result<(), ()>;
 
-    fn handle_event(&mut self, event: &Event<()>, screen: &Screen);
+    fn handle_event(&mut self, _: &Event<()>, _: &Screen);
 }
