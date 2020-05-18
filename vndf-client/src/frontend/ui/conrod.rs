@@ -1,6 +1,7 @@
 use conrod_core::{
     Color,
     Positionable as _,
+    Theme,
     Ui,
     UiBuilder,
     Widget as _,
@@ -42,6 +43,12 @@ impl Conrod {
         -> Self
     {
         let mut ui = UiBuilder::new(screen_size.cast().to_array())
+            .theme(
+                Theme {
+                    label_color: Color::Rgba(1.0, 1.0, 1.0, 1.0),
+                    .. Theme::default()
+                }
+            )
             .build();
 
         let ids = Ids::new(ui.widget_id_generator());
