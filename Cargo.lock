@@ -1941,9 +1941,9 @@ dependencies = [
 
 [[package]]
 name = "syn"
-version = "1.0.22"
+version = "1.0.23"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1425de3c33b0941002740a420b1a906a350b88d08b82b2c8a01035a3f9447bac"
+checksum = "95b5f192649e48a5302a13f2feb224df883b98933222369e4b3b0fe2a5447269"
 dependencies = [
  "proc-macro2 1.0.13",
  "quote 1.0.6",
@@ -2337,9 +2337,9 @@ dependencies = [
 
 [[package]]
 name = "wgpu-core"
-version = "0.5.4"
+version = "0.5.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "50212a35d2c20de1c421d9a0d831f494a85f9afab240e19aae499cff9d0526f2"
+checksum = "b093098e0782b0f46f154fac5c670ba27b7a5bff98dc943422c13852c696a2b0"
 dependencies = [
  "arrayvec",
  "bitflags",
@@ -2379,9 +2379,9 @@ dependencies = [
 
 [[package]]
 name = "wgpu-types"
-version = "0.5.0"
+version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "67b69dfe001a8a6b78810c7e479717cd1898b9177dbf646611fa1f258f5a2512"
+checksum = "f3474b5ce2ed628e158c2fe4387a469b2ee119604556aa2debd10d830cedc3bc"
 dependencies = [
  "bitflags",
  "peek-poke",
