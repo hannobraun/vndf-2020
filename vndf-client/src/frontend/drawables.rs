@@ -28,6 +28,7 @@ use super::{
 pub struct Drawables {
     pub explosion: Drawable<vert::Simple, frag::Explosion>,
     pub orbit:     Drawable<vert::Simple, frag::Orbit>,
+    pub panel:     Drawable<vert::Simple, frag::Simple>,
     pub planet:    Drawable<vert::Simple, frag::Planet>,
     pub ship:      Drawable<vert::Simple, frag::Simple>,
 }
@@ -44,6 +45,10 @@ impl Drawables {
             device,
             &meshes.square,
         )?;
+        let panel = Drawable::new(
+            device,
+            &meshes.square,
+        )?;
         let planet = Drawable::new(
             device,
             &meshes.square,
@@ -57,6 +62,7 @@ impl Drawables {
             Self {
                 explosion,
                 orbit,
+                panel,
                 planet,
                 ship,
             }

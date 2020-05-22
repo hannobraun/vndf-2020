@@ -1,15 +1,26 @@
 use wgpu_glyph::{
     GlyphBrush,
     GlyphBrushBuilder,
+    GlyphCruncher as _,
     Scale,
     Section,
 };
 use winit::event::Event;
 
 use crate::{
-    frontend::drawables::Drawables,
+    frontend::{
+        drawables::Drawables,
+        shaders::{
+            frag,
+            vert,
+        },
+    },
     game::Game,
-    graphics::screen::Screen,
+    graphics::{
+        self,
+        elements::ScreenElement,
+        screen::Screen,
+    },
     ui,
 };
 
@@ -36,12 +47,12 @@ impl Basic {
 
 impl super::Ui for Basic {
     fn draw(&mut self,
-        device:     &wgpu::Device,
-        frame:      &wgpu::SwapChainOutput,
-        encoder:    &mut wgpu::CommandEncoder,
-        _drawables: &mut Drawables,
-        game:       &Game,
-        screen:     &Screen,
+        device:    &wgpu::Device,
+        frame:     &wgpu::SwapChainOutput,
+        encoder:   &mut wgpu::CommandEncoder,
+        drawables: &mut Drawables,
+        game:      &Game,
+        screen:    &Screen,
     )
         -> Result<(), ()>
     {
@@ -59,6 +70,31 @@ impl super::Ui for Basic {
                 color,
                 .. Section::default()
             };
+
+            let size = match self.glyph_brush.glyph_bounds(section) {
+                Some(size) => size,
+                None       => continue,
+            };
+            let size = graphics::Size::new(size.width(), size.height())
+                / screen.scale_factor;
+
+            let element = ScreenElement {
+                size,
+                pos:   pos + size * screen.scale_factor / 2.0,
+                angle: graphics::Angle::zero(),
+            };
+
+            drawables.panel.draw(
+                device,
+                frame,
+                encoder,
+                vert::simple::Uniforms {
+                    transform: element.transform(screen.size).into(),
+                },
+                frag::simple::Uniforms {
+                    color: [0.0, 0.0, 0.0, 0.95].into(),
+                },
+            );
 
             self.glyph_brush.queue(section);
         }
