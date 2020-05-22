@@ -19,6 +19,12 @@ impl From<[f32; 3]> for Color {
     }
 }
 
+impl From<[f32; 4]> for Color {
+    fn from(color: [f32; 4]) -> Self {
+        Color(color)
+    }
+}
+
 
 pub type Float = f32;
 
