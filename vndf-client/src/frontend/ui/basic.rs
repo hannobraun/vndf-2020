@@ -49,15 +49,12 @@ impl super::Ui for Basic {
 
         for element in ui::Elements::new(game, screen).elements() {
             let text = element.text.as_str();
-            let screen_position = (
-                element.pos.x * screen.scale_factor,
-                element.pos.y * screen.scale_factor,
-            );
+            let screen_position = element.pos * screen.scale_factor;
             let color = [1.0, 1.0, 1.0, 1.0];
 
             let section = Section {
                 text,
-                screen_position,
+                screen_position: (screen_position.x, screen_position.y),
                 scale,
                 color,
                 .. Section::default()
