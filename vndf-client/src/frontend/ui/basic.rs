@@ -48,8 +48,8 @@ impl super::Ui for Basic {
         let scale  = Scale::uniform(16.0 * screen.scale_factor);
 
         for element in ui::Elements::new(game, screen).elements() {
-            let text = element.text.as_str();
-            let pos = element.pos * screen.scale_factor;
+            let text  = element.text.as_str();
+            let pos   = element.pos * screen.scale_factor;
             let color = [1.0, 1.0, 1.0, 1.0];
 
             let section = Section {
