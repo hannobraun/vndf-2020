@@ -191,13 +191,15 @@ impl Renderer {
                     self.draw_explosion(&frame, &mut encoder, explosion, game);
                 }
 
+                let screen = self.screen();
+
                 self.ui
                     .draw(
                         &self.device,
                         &frame,
                         &mut encoder,
                         game,
-                        &self.screen(),
+                        &screen,
                     )
                     .map_err(|()| Error::Ui)?;
 
