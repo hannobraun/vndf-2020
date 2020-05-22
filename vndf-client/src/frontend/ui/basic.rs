@@ -55,13 +55,15 @@ impl super::Ui for Basic {
             );
             let color = [1.0, 1.0, 1.0, 1.0];
 
-            self.glyph_brush.queue(Section {
+            let section = Section {
                 text,
                 screen_position,
                 scale,
                 color,
                 .. Section::default()
-            });
+            };
+
+            self.glyph_brush.queue(section);
         }
 
         self.glyph_brush
