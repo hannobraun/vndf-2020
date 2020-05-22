@@ -11,6 +11,7 @@ pub use self::{
 use winit::event::Event;
 
 use crate::{
+    frontend::drawables::Drawables,
     game::Game,
     graphics::screen::Screen,
 };
@@ -18,11 +19,12 @@ use crate::{
 
 pub trait Ui {
     fn draw(&mut self,
-        device:  &wgpu::Device,
-        frame:   &wgpu::SwapChainOutput,
-        encoder: &mut wgpu::CommandEncoder,
-        game:    &Game,
-        screen:  &Screen,
+        device:    &wgpu::Device,
+        frame:     &wgpu::SwapChainOutput,
+        encoder:   &mut wgpu::CommandEncoder,
+        drawables: &mut Drawables,
+        game:      &Game,
+        screen:    &Screen,
     )
         -> Result<(), ()>;
 

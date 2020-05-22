@@ -198,6 +198,7 @@ impl Renderer {
                         &self.device,
                         &frame,
                         &mut encoder,
+                        &mut self.drawables,
                         game,
                         &screen,
                     )

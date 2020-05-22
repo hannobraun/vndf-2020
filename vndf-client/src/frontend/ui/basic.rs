@@ -7,6 +7,7 @@ use wgpu_glyph::{
 use winit::event::Event;
 
 use crate::{
+    frontend::drawables::Drawables,
     game::Game,
     graphics::screen::Screen,
     ui,
@@ -35,11 +36,12 @@ impl Basic {
 
 impl super::Ui for Basic {
     fn draw(&mut self,
-        device:  &wgpu::Device,
-        frame:   &wgpu::SwapChainOutput,
-        encoder: &mut wgpu::CommandEncoder,
-        game:    &Game,
-        screen:  &Screen,
+        device:     &wgpu::Device,
+        frame:      &wgpu::SwapChainOutput,
+        encoder:    &mut wgpu::CommandEncoder,
+        _drawables: &mut Drawables,
+        game:       &Game,
+        screen:     &Screen,
     )
         -> Result<(), ()>
     {
