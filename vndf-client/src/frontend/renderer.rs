@@ -174,43 +174,44 @@ impl Renderer {
                 self.scale_factor = *scale_factor as f32;
             }
             Event::RedrawRequested(_) => {
-                let frame = self.swap_chain.get_next_texture()
-                    .map_err(|_| Error::TimeOut)?;
+                let mut res = FrameResources {
+                    output: self.swap_chain.get_next_texture()
+                        .map_err(|_| Error::TimeOut)?,
+                    encoder: self.device.create_command_encoder(
+                        &wgpu::CommandEncoderDescriptor { label: None }
+                    ),
+                };
 
-                let mut encoder = self.device.create_command_encoder(
-                    &wgpu::CommandEncoderDescriptor { label: None }
-                );
-
-                Background::draw(&frame, &mut encoder);
+                Background::draw(&res.output, &mut res.encoder);
 
                 for orbit in game.state.active_orbits() {
                     self.draw_orbit(
-                        &frame,
-                        &mut encoder,
+                        &res.output,
+                        &mut res.encoder,
                         &orbit,
                         game,
                     );
                 }
                 for planet in game.state.data.planets.values() {
                     self.draw_planet(
-                        &frame,
-                        &mut encoder,
+                        &res.output,
+                        &mut res.encoder,
                         planet,
                         game,
                     );
                 }
                 for ship in game.state.data.ships.values() {
                     self.draw_ship(
-                        &frame,
-                        &mut encoder,
+                        &res.output,
+                        &mut res.encoder,
                         ship,
                         game,
                     );
                 }
                 for explosion in game.state.data.explosions.values() {
                     self.draw_explosion(
-                        &frame,
-                        &mut encoder,
+                        &res.output,
+                        &mut res.encoder,
                         explosion,
                         game,
                     );
@@ -221,15 +222,15 @@ impl Renderer {
                 self.ui
                     .draw(
                         &self.device,
-                        &frame,
-                        &mut encoder,
+                        &res.output,
+                        &mut res.encoder,
                         &mut self.drawables,
                         game,
                         &screen,
                     )
                     .map_err(|()| Error::Ui)?;
 
-                self.queue.submit(&[encoder.finish()]);
+                self.queue.submit(&[res.encoder.finish()]);
             }
             _ => {}
         }
@@ -384,6 +385,12 @@ impl Renderer {
     fn screen(&self) -> Screen {
         screen(&self.swap_chain_desc, self.scale_factor)
     }
+}
+
+
+struct FrameResources {
+    pub output:  wgpu::SwapChainOutput,
+    pub encoder: wgpu::CommandEncoder,
 }
 
 
