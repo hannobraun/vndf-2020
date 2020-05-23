@@ -1,3 +1,6 @@
+mod background;
+
+
 use std::io;
 
 use log::{
@@ -45,6 +48,8 @@ use super::{
     },
     window::Window,
 };
+
+use self::background::Background;
 
 
 pub struct Renderer {
@@ -176,7 +181,7 @@ impl Renderer {
                     &wgpu::CommandEncoderDescriptor { label: None }
                 );
 
-                self.draw_background(&frame, &mut encoder);
+                Background::draw(&frame, &mut encoder);
 
                 for orbit in game.state.active_orbits() {
                     self.draw_orbit(&frame, &mut encoder, &orbit, game);
@@ -212,26 +217,6 @@ impl Renderer {
         self.ui.handle_event(event, &self.screen());
 
         Ok(())
-    }
-
-    fn draw_background(&self,
-        frame:   &wgpu::SwapChainOutput,
-        encoder: &mut wgpu::CommandEncoder,
-    ) {
-        encoder.begin_render_pass(
-            &wgpu::RenderPassDescriptor {
-                color_attachments: &[
-                    wgpu::RenderPassColorAttachmentDescriptor {
-                        attachment:     &frame.view,
-                        resolve_target: None,
-                        load_op:        wgpu::LoadOp::Clear,
-                        store_op:       wgpu::StoreOp::Store,
-                        clear_color:    graphics::BACKGROUND_COLOR,
-                    },
-                ],
-                depth_stencil_attachment: None,
-            },
-        );
     }
 
     fn draw_orbit(&self,
