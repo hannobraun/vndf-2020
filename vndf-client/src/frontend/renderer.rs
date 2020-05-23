@@ -213,15 +213,12 @@ impl Renderer {
                     );
                 }
 
-                let screen = self.screen();
-
                 self.ui
                     .draw(
                         &self.device,
                         &mut res,
                         &mut self.drawables,
                         game,
-                        &screen,
                     )
                     .map_err(|()| Error::Ui)?;
 

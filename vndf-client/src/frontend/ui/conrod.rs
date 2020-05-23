@@ -79,11 +79,10 @@ impl super::Ui for Conrod {
         res:        &mut FrameResources,
         _drawables: &mut Drawables,
         game:       &Game,
-        screen:     &Screen,
     )
         -> Result<(), ()>
     {
-        let elements = ui::Elements::new(game, screen);
+        let elements = ui::Elements::new(game, &res.screen);
 
         {
             const PADDING: f64 = 20.0;
@@ -137,8 +136,8 @@ impl super::Ui for Conrod {
         let command = self.renderer
             .fill(
                 &image_map,
-                [0.0, 0.0, screen.size.width, screen.size.height],
-                screen.scale_factor as f64,
+                [0.0, 0.0, res.screen.size.width, res.screen.size.height],
+                res.screen.scale_factor as f64,
                 primitives,
             )
             .map_err(|_| ())?;

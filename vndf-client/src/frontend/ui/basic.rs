@@ -52,15 +52,14 @@ impl super::Ui for Basic {
         res:       &mut FrameResources,
         drawables: &mut Drawables,
         game:      &Game,
-        screen:    &Screen,
     )
         -> Result<(), ()>
     {
-        let scale  = Scale::uniform(16.0 * screen.scale_factor);
+        let scale  = Scale::uniform(16.0 * res.screen.scale_factor);
 
-        for element in ui::Elements::new(game, screen).elements() {
+        for element in ui::Elements::new(game, &res.screen).elements() {
             let text  = element.text.as_str();
-            let pos   = element.pos * screen.scale_factor;
+            let pos   = element.pos * res.screen.scale_factor;
             let color = [1.0, 1.0, 1.0, 1.0];
 
             let section = Section {
@@ -76,14 +75,14 @@ impl super::Ui for Basic {
                 None       => continue,
             };
             let size = graphics::Size::new(size.width(), size.height())
-                / screen.scale_factor;
+                / res.screen.scale_factor;
 
             const MARGIN: f32 = 5.0;
             let margin = graphics::Size::new(MARGIN * 2.0, MARGIN * 2.0);
 
             let element = ScreenElement {
                 size:  size + margin,
-                pos:   pos + size * screen.scale_factor / 2.0,
+                pos:   pos + size * res.screen.scale_factor / 2.0,
                 angle: graphics::Angle::zero(),
             };
 
@@ -91,7 +90,7 @@ impl super::Ui for Basic {
                 device,
                 res,
                 vert::simple::Uniforms {
-                    transform: element.transform(screen.size).into(),
+                    transform: element.transform(res.screen.size).into(),
                 },
                 frag::simple::Uniforms {
                     color: [0.0, 0.0, 0.0, 0.95].into(),
@@ -106,8 +105,8 @@ impl super::Ui for Basic {
                 device,
                 &mut res.encoder,
                 &res.output.view,
-                screen.size.width as u32,
-                screen.size.height as u32,
+                res.screen.size.width as u32,
+                res.screen.size.height as u32,
             )
             // I've checked the code, and it doesn't look like this
             // actually returns any errors.

@@ -27,7 +27,6 @@ pub trait Ui {
         res:       &mut FrameResources,
         drawables: &mut Drawables,
         game:      &Game,
-        screen:    &Screen,
     )
         -> Result<(), ()>;
 
