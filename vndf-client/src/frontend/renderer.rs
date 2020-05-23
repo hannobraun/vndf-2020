@@ -1,6 +1,3 @@
-mod drawers;
-
-
 use std::io;
 
 use log::{
@@ -34,6 +31,10 @@ use crate::{
 
 use super::{
     drawables::Drawables,
+    drawers::{
+        self,
+        FrameResources,
+    },
     meshes::{
         self,
         Meshes,
@@ -48,8 +49,6 @@ use super::{
     },
     window::Window,
 };
-
-use self::drawers::FrameResources;
 
 
 pub struct Renderer {
