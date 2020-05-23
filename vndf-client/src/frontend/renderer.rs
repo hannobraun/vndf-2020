@@ -32,8 +32,8 @@ use crate::{
 use super::{
     drawables::Drawables,
     drawers::{
-        self,
         FrameResources,
+        draw_background,
     },
     meshes::{
         self,
@@ -182,7 +182,7 @@ impl Renderer {
                     ),
                 };
 
-                drawers::Background::draw(&mut res);
+                draw_background(&mut res);
 
                 for orbit in game.state.active_orbits() {
                     self.draw_orbit(

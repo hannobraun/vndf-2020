@@ -1,7 +1,7 @@
 pub mod background;
 
 
-pub use self::background::Background;
+pub use self::background::draw_background;
 
 
 use crate::graphics::screen::Screen;
