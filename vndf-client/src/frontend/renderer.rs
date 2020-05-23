@@ -180,7 +180,10 @@ impl Renderer {
                     ),
                 };
 
-                drawers::Background::draw(&res.output, &mut res.encoder);
+                drawers::Background::draw(
+                    &res.output,
+                    &mut res.encoder,
+                );
 
                 for orbit in game.state.active_orbits() {
                     self.draw_orbit(
