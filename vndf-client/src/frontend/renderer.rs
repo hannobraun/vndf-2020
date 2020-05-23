@@ -243,11 +243,11 @@ impl Renderer {
 
         let transform = element.transform(
             &game.state.camera,
-            self.screen().size,
+            res.screen.size,
         );
 
         let pixel_per_m = game.state.camera.pixels_per_meter(
-            self.screen().size
+            res.screen.size
         );
         let pixel_per_u = [
             pixel_per_m * element.size.width,
@@ -300,7 +300,7 @@ impl Renderer {
         game:   &Game,
     ) {
         let transform = WorldElement::from(planet)
-            .transform(&game.state.camera, self.screen().size);
+            .transform(&game.state.camera, res.screen.size);
 
         self.drawables.planet.draw(
             &self.device,
@@ -319,8 +319,8 @@ impl Renderer {
     )
         -> Option<()>
     {
-        let transform = ScreenElement::from_ship(ship, game, &self.screen())?
-            .transform(self.screen().size);
+        let transform = ScreenElement::from_ship(ship, game, &res.screen)?
+            .transform(res.screen.size);
 
         self.drawables.ship.draw(
             &self.device,
@@ -347,9 +347,9 @@ impl Renderer {
             ScreenElement::from_explosion(
                 explosion,
                 game,
-                &self.screen(),
+                &res.screen,
             )?
-            .transform(self.screen().size);
+            .transform(res.screen.size);
 
         self.drawables.explosion.draw(
             &self.device,
