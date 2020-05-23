@@ -11,10 +11,11 @@ pub use self::{
 use winit::event::Event;
 
 use crate::{
-    frontend::drawables::Drawables,
     game::Game,
     graphics::screen::Screen,
 };
+
+use super::drawables::Drawables;
 
 
 pub trait Ui {
