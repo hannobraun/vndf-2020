@@ -1,4 +1,4 @@
-mod background;
+mod drawers;
 
 
 use std::io;
@@ -49,7 +49,7 @@ use super::{
     window::Window,
 };
 
-use self::background::Background;
+use self::drawers::background::Background;
 
 
 pub struct Renderer {
