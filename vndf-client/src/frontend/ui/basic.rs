@@ -89,8 +89,7 @@ impl super::Ui for Basic {
 
             drawables.panel.draw(
                 device,
-                &res.output,
-                &mut res.encoder,
+                res,
                 vert::simple::Uniforms {
                     transform: element.transform(screen.size).into(),
                 },

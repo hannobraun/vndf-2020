@@ -281,8 +281,7 @@ impl Renderer {
 
         self.drawables.orbit.draw(
             &self.device,
-            &res.output,
-            &mut res.encoder,
+            res,
             vert::simple::Uniforms {
                 transform: transform.into(),
             },
@@ -307,8 +306,7 @@ impl Renderer {
 
         self.drawables.planet.draw(
             &self.device,
-            &res.output,
-            &mut res.encoder,
+            res,
             vert::simple::Uniforms {
                 transform: transform.into(),
             },
@@ -328,8 +326,7 @@ impl Renderer {
 
         self.drawables.ship.draw(
             &self.device,
-            &res.output,
-            &mut res.encoder,
+            res,
             vert::simple::Uniforms {
                 transform: transform.into(),
             },
@@ -358,8 +355,7 @@ impl Renderer {
 
         self.drawables.explosion.draw(
             &self.device,
-            &res.output,
-            &mut res.encoder,
+            res,
             vert::simple::Uniforms {
                 transform: transform.into(),
             },
