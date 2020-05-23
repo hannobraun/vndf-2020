@@ -49,6 +49,8 @@ use super::{
     window::Window,
 };
 
+use self::drawers::FrameResources;
+
 
 pub struct Renderer {
     surface:         wgpu::Surface,
@@ -386,12 +388,6 @@ impl Renderer {
     fn screen(&self) -> Screen {
         screen(&self.swap_chain_desc, self.scale_factor)
     }
-}
-
-
-struct FrameResources {
-    pub output:  wgpu::SwapChainOutput,
-    pub encoder: wgpu::CommandEncoder,
 }
 
 
