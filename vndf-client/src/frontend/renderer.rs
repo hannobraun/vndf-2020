@@ -184,16 +184,36 @@ impl Renderer {
                 Background::draw(&frame, &mut encoder);
 
                 for orbit in game.state.active_orbits() {
-                    self.draw_orbit(&frame, &mut encoder, &orbit, game);
+                    self.draw_orbit(
+                        &frame,
+                        &mut encoder,
+                        &orbit,
+                        game,
+                    );
                 }
                 for planet in game.state.data.planets.values() {
-                    self.draw_planet(&frame, &mut encoder, planet, game);
+                    self.draw_planet(
+                        &frame,
+                        &mut encoder,
+                        planet,
+                        game,
+                    );
                 }
                 for ship in game.state.data.ships.values() {
-                    self.draw_ship(&frame, &mut encoder, ship, game);
+                    self.draw_ship(
+                        &frame,
+                        &mut encoder,
+                        ship,
+                        game,
+                    );
                 }
                 for explosion in game.state.data.explosions.values() {
-                    self.draw_explosion(&frame, &mut encoder, explosion, game);
+                    self.draw_explosion(
+                        &frame,
+                        &mut encoder,
+                        explosion,
+                        game,
+                    );
                 }
 
                 let screen = self.screen();
