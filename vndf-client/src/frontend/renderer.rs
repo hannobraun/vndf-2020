@@ -174,6 +174,7 @@ impl Renderer {
             }
             Event::RedrawRequested(_) => {
                 let mut res = FrameResources {
+                    screen: self.screen(),
                     output: self.swap_chain.get_next_texture()
                         .map_err(|_| Error::TimeOut)?,
                     encoder: self.device.create_command_encoder(
