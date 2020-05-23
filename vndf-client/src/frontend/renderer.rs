@@ -49,8 +49,6 @@ use super::{
     window::Window,
 };
 
-use self::drawers::background::Background;
-
 
 pub struct Renderer {
     surface:         wgpu::Surface,
@@ -182,7 +180,7 @@ impl Renderer {
                     ),
                 };
 
-                Background::draw(&res.output, &mut res.encoder);
+                drawers::Background::draw(&res.output, &mut res.encoder);
 
                 for orbit in game.state.active_orbits() {
                     self.draw_orbit(
