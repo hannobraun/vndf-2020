@@ -186,32 +186,28 @@ impl Renderer {
 
                 for orbit in game.state.active_orbits() {
                     self.draw_orbit(
-                        &res.output,
-                        &mut res.encoder,
+                        &mut res,
                         &orbit,
                         game,
                     );
                 }
                 for planet in game.state.data.planets.values() {
                     self.draw_planet(
-                        &res.output,
-                        &mut res.encoder,
+                        &mut res,
                         planet,
                         game,
                     );
                 }
                 for ship in game.state.data.ships.values() {
                     self.draw_ship(
-                        &res.output,
-                        &mut res.encoder,
+                        &mut res,
                         ship,
                         game,
                     );
                 }
                 for explosion in game.state.data.explosions.values() {
                     self.draw_explosion(
-                        &res.output,
-                        &mut res.encoder,
+                        &mut res,
                         explosion,
                         game,
                     );
@@ -241,10 +237,9 @@ impl Renderer {
     }
 
     fn draw_orbit(&self,
-        frame:   &wgpu::SwapChainOutput,
-        encoder: &mut wgpu::CommandEncoder,
-        orbit:   &Orbit,
-        game:    &Game,
+        res:   &mut FrameResources,
+        orbit: &Orbit,
+        game:  &Game,
     )
         -> Option<()>
     {
@@ -288,8 +283,8 @@ impl Renderer {
 
         self.drawables.orbit.draw(
             &self.device,
-            frame,
-            encoder,
+            &res.output,
+            &mut res.encoder,
             vert::simple::Uniforms {
                 transform: transform.into(),
             },
@@ -305,18 +300,17 @@ impl Renderer {
     }
 
     fn draw_planet(&self,
-        frame:   &wgpu::SwapChainOutput,
-        encoder: &mut wgpu::CommandEncoder,
-        planet:  &Planet,
-        game:    &Game,
+        res:    &mut FrameResources,
+        planet: &Planet,
+        game:   &Game,
     ) {
         let transform = WorldElement::from(planet)
             .transform(&game.state.camera, self.screen().size);
 
         self.drawables.planet.draw(
             &self.device,
-            frame,
-            encoder,
+            &res.output,
+            &mut res.encoder,
             vert::simple::Uniforms {
                 transform: transform.into(),
             },
@@ -325,10 +319,9 @@ impl Renderer {
     }
 
     fn draw_ship(&self,
-        frame:   &wgpu::SwapChainOutput,
-        encoder: &mut wgpu::CommandEncoder,
-        ship:    &Ship,
-        game:    &Game,
+        res:  &mut FrameResources,
+        ship: &Ship,
+        game: &Game,
     )
         -> Option<()>
     {
@@ -337,8 +330,8 @@ impl Renderer {
 
         self.drawables.ship.draw(
             &self.device,
-            frame,
-            encoder,
+            &res.output,
+            &mut res.encoder,
             vert::simple::Uniforms {
                 transform: transform.into(),
             },
@@ -351,8 +344,7 @@ impl Renderer {
     }
 
     fn draw_explosion(&self,
-        frame:     &wgpu::SwapChainOutput,
-        encoder:   &mut wgpu::CommandEncoder,
+        res:       &mut FrameResources,
         explosion: &Explosion,
         game:      &Game,
     )
@@ -368,8 +360,8 @@ impl Renderer {
 
         self.drawables.explosion.draw(
             &self.device,
-            frame,
-            encoder,
+            &res.output,
+            &mut res.encoder,
             vert::simple::Uniforms {
                 transform: transform.into(),
             },
