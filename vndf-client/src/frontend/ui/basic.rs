@@ -78,7 +78,7 @@ impl super::Ui for Basic {
             let size = graphics::Size::new(size.width(), size.height())
                 / screen.scale_factor;
 
-            const MARGIN: f32 = 10.0;
+            const MARGIN: f32 = 5.0;
             let margin = graphics::Size::new(MARGIN * 2.0, MARGIN * 2.0);
 
             let element = ScreenElement {
