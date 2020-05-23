@@ -15,14 +15,16 @@ use crate::{
     graphics::screen::Screen,
 };
 
-use super::drawables::Drawables;
+use super::{
+    drawables::Drawables,
+    drawers::FrameResources,
+};
 
 
 pub trait Ui {
     fn draw(&mut self,
         device:    &wgpu::Device,
-        frame:     &wgpu::SwapChainOutput,
-        encoder:   &mut wgpu::CommandEncoder,
+        res:       &mut FrameResources,
         drawables: &mut Drawables,
         game:      &Game,
         screen:    &Screen,

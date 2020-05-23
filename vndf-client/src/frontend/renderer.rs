@@ -217,8 +217,7 @@ impl Renderer {
                 self.ui
                     .draw(
                         &self.device,
-                        &res.output,
-                        &mut res.encoder,
+                        &mut res,
                         &mut self.drawables,
                         game,
                         &screen,

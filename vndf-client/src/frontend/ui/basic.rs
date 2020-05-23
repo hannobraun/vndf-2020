@@ -10,6 +10,7 @@ use winit::event::Event;
 use crate::{
     frontend::{
         drawables::Drawables,
+        drawers::FrameResources,
         shaders::{
             frag,
             vert,
@@ -48,8 +49,7 @@ impl Basic {
 impl super::Ui for Basic {
     fn draw(&mut self,
         device:    &wgpu::Device,
-        frame:     &wgpu::SwapChainOutput,
-        encoder:   &mut wgpu::CommandEncoder,
+        res:       &mut FrameResources,
         drawables: &mut Drawables,
         game:      &Game,
         screen:    &Screen,
@@ -89,8 +89,8 @@ impl super::Ui for Basic {
 
             drawables.panel.draw(
                 device,
-                frame,
-                encoder,
+                &res.output,
+                &mut res.encoder,
                 vert::simple::Uniforms {
                     transform: element.transform(screen.size).into(),
                 },
@@ -105,8 +105,8 @@ impl super::Ui for Basic {
         self.glyph_brush
             .draw_queued(
                 device,
-                encoder,
-                &frame.view,
+                &mut res.encoder,
+                &res.output.view,
                 screen.size.width as u32,
                 screen.size.height as u32,
             )
