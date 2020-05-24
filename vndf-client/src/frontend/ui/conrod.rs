@@ -76,13 +76,13 @@ impl Conrod {
 impl super::Ui for Conrod {
     fn draw(&mut self,
         device:     &wgpu::Device,
-        res:        &mut Frame,
+        frame:      &mut Frame,
         _drawables: &mut Drawables,
         game:       &Game,
     )
         -> Result<(), ()>
     {
-        let elements = ui::Elements::new(game, &res.screen);
+        let elements = ui::Elements::new(game, &frame.screen);
 
         {
             const PADDING: f64 = 20.0;
@@ -136,22 +136,22 @@ impl super::Ui for Conrod {
         let command = self.renderer
             .fill(
                 &image_map,
-                [0.0, 0.0, res.screen.size.width, res.screen.size.height],
-                res.screen.scale_factor as f64,
+                [0.0, 0.0, frame.screen.size.width, frame.screen.size.height],
+                frame.screen.scale_factor as f64,
                 primitives,
             )
             .map_err(|_| ())?;
         if let Some(command) = command {
-            command.load_buffer_and_encode(device, &mut res.encoder);
+            command.load_buffer_and_encode(device, &mut frame.encoder);
         }
 
         let render = self.renderer.render(device, &image_map);
 
-        let mut render_pass = res.encoder.begin_render_pass(
+        let mut render_pass = frame.encoder.begin_render_pass(
             &wgpu::RenderPassDescriptor {
                 color_attachments: &[
                     wgpu::RenderPassColorAttachmentDescriptor {
-                        attachment:     &res.output.view,
+                        attachment:     &frame.output.view,
                         resolve_target: None,
                         load_op:        wgpu::LoadOp::Load,
                         store_op:       wgpu::StoreOp::Store,
