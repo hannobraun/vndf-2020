@@ -59,7 +59,7 @@ impl Renderer {
         -> Result<Self, Error>
     {
         let size = window.size();
-        let texture_format = wgpu::TextureFormat::Bgra8UnormSrgb;
+        let format = wgpu::TextureFormat::Bgra8UnormSrgb;
 
         let backend = select_backend(graphics);
         debug!("Backend selected: {:?}", backend);
@@ -94,7 +94,7 @@ impl Renderer {
 
         let swap_chain_desc = wgpu::SwapChainDescriptor {
             usage:        wgpu::TextureUsage::OUTPUT_ATTACHMENT,
-            format:       texture_format,
+            format,
             width:        size.width  as u32,
             height:       size.height as u32,
             present_mode: wgpu::PresentMode::Fifo,
@@ -110,7 +110,7 @@ impl Renderer {
         let ui: Box<dyn Ui> = match ui {
             UiOption::Basic => {
                 Box::new(
-                    ui::Basic::new(&device, texture_format)
+                    ui::Basic::new(&device, format)
                         .map_err(|err| Error::Font(err))?
                 )
             }
@@ -118,7 +118,7 @@ impl Renderer {
                 let screen = screen(&swap_chain_desc, scale_factor);
 
                 Box::new(
-                    ui::Conrod::new(&device, texture_format, &screen)
+                    ui::Conrod::new(&device, format, &screen)
                         .map_err(|err| Error::Font(err))?
                 )
             }
