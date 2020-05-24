@@ -15,7 +15,7 @@ use super::{
 
 
 pub fn draw_orbit(
-    res:   &DrawResources,
+    res:   &mut DrawResources,
     frame: &mut Frame,
     orbit: &Orbit,
     game:  &Game,

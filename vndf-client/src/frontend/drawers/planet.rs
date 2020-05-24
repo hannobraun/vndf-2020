@@ -15,7 +15,7 @@ use super::{
 
 
 pub fn draw_planet(
-    res:    &DrawResources,
+    res:    &mut DrawResources,
     frame:  &mut Frame,
     planet: &Planet,
     game:   &Game,

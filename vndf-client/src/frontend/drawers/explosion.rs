@@ -15,7 +15,7 @@ use crate::{
 
 
 pub fn draw_explosion(
-    res:       &DrawResources,
+    res:       &mut DrawResources,
     frame:     &mut Frame,
     explosion: &Explosion,
     game:      &Game,

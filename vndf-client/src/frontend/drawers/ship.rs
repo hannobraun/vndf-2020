@@ -15,7 +15,7 @@ use super::{
 
 
 pub fn draw_ship(
-    res:   &DrawResources,
+    res:   &mut DrawResources,
     frame: &mut Frame,
     ship:  &Ship,
     game:  &Game,

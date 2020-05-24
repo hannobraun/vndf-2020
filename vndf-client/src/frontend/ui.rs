@@ -23,7 +23,7 @@ use super::drawers::{
 
 pub trait Ui {
     fn draw(&mut self,
-        res:   &DrawResources,
+        res:   &mut DrawResources,
         frame: &mut Frame,
         game:  &Game,
     )

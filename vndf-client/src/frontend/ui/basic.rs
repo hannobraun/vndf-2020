@@ -50,7 +50,7 @@ impl Basic {
 
 impl super::Ui for Basic {
     fn draw(&mut self,
-        res:   &DrawResources,
+        res:   &mut DrawResources,
         frame: &mut Frame,
         game:  &Game,
     )

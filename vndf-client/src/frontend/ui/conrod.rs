@@ -75,7 +75,7 @@ impl Conrod {
 
 impl super::Ui for Conrod {
     fn draw(&mut self,
-        res:   &DrawResources,
+        res:   &mut DrawResources,
         frame: &mut Frame,
         game:  &Game,
     )

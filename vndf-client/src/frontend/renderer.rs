@@ -180,7 +180,7 @@ impl Renderer {
 
                 for orbit in game.state.active_orbits() {
                     draw_orbit(
-                        &self.draw_res,
+                        &mut self.draw_res,
                         &mut frame,
                         &orbit,
                         game,
@@ -188,7 +188,7 @@ impl Renderer {
                 }
                 for planet in game.state.data.planets.values() {
                     draw_planet(
-                        &self.draw_res,
+                        &mut self.draw_res,
                         &mut frame,
                         planet,
                         game,
@@ -196,7 +196,7 @@ impl Renderer {
                 }
                 for ship in game.state.data.ships.values() {
                     draw_ship(
-                        &self.draw_res,
+                        &mut self.draw_res,
                         &mut frame,
                         ship,
                         game,
@@ -204,7 +204,7 @@ impl Renderer {
                 }
                 for explosion in game.state.data.explosions.values() {
                     draw_explosion(
-                        &self.draw_res,
+                        &mut self.draw_res,
                         &mut frame,
                         explosion,
                         game,
@@ -213,7 +213,7 @@ impl Renderer {
 
                 self.ui
                     .draw(
-                        &self.draw_res,
+                        &mut self.draw_res,
                         &mut frame,
                         game,
                     )
