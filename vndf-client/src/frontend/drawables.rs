@@ -246,7 +246,7 @@ impl<Vert, Frag> Drawable<Vert, Frag>
 
     pub fn draw(&self,
         device:    &wgpu::Device,
-        res:       &mut Frame,
+        frame:     &mut Frame,
         vert_args: Vert::Uniforms,
         frag_args: Frag::Uniforms,
     ) {
@@ -254,7 +254,7 @@ impl<Vert, Frag> Drawable<Vert, Frag>
             vert_args.as_bytes(),
             wgpu::BufferUsage::COPY_SRC,
         );
-        res.encoder.copy_buffer_to_buffer(
+        frame.encoder.copy_buffer_to_buffer(
             &buffer, 0,
             &self.vert_uniforms, 0,
             size_of_val(&vert_args) as u64,
@@ -264,17 +264,17 @@ impl<Vert, Frag> Drawable<Vert, Frag>
             frag_args.as_bytes(),
             wgpu::BufferUsage::COPY_SRC,
         );
-        res.encoder.copy_buffer_to_buffer(
+        frame.encoder.copy_buffer_to_buffer(
             &buffer, 0,
             &self.frag_uniforms, 0,
             size_of_val(&frag_args) as u64,
         );
 
-        let mut render_pass = res.encoder.begin_render_pass(
+        let mut render_pass = frame.encoder.begin_render_pass(
             &wgpu::RenderPassDescriptor {
                 color_attachments: &[
                     wgpu::RenderPassColorAttachmentDescriptor {
-                        attachment:     &res.output.view,
+                        attachment:     &frame.output.view,
                         resolve_target: None,
                         load_op:        wgpu::LoadOp::Load,
                         store_op:       wgpu::StoreOp::Store,
