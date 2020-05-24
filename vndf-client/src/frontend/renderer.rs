@@ -58,6 +58,9 @@ impl Renderer {
     pub async fn new(window: &Window, graphics: Graphics, ui: UiOption)
         -> Result<Self, Error>
     {
+        let size = window.size();
+        let texture_format = wgpu::TextureFormat::Bgra8UnormSrgb;
+
         let backend = select_backend(graphics);
         debug!("Backend selected: {:?}", backend);
 
@@ -88,9 +91,6 @@ impl Renderer {
         let meshes = Meshes::new()
             .map_err(|err| Error::Meshes(err))?;
         let drawables = Drawables::new(&device, &meshes)?;
-
-        let size = window.size();
-        let texture_format = wgpu::TextureFormat::Bgra8UnormSrgb;
 
         let swap_chain_desc = wgpu::SwapChainDescriptor {
             usage:        wgpu::TextureUsage::OUTPUT_ATTACHMENT,
