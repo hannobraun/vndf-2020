@@ -197,7 +197,8 @@ impl Renderer {
                     );
                 }
                 for planet in game.state.data.planets.values() {
-                    self.draw_planet(
+                    Self::draw_planet(
+                        &self.draw_res,
                         &mut frame,
                         planet,
                         game,
@@ -237,7 +238,8 @@ impl Renderer {
         Ok(())
     }
 
-    fn draw_planet(&self,
+    fn draw_planet(
+        res:    &DrawResources,
         frame:  &mut Frame,
         planet: &Planet,
         game:   &Game,
@@ -245,8 +247,8 @@ impl Renderer {
         let transform = WorldElement::from(planet)
             .transform(&game.state.camera, frame.screen.size);
 
-        self.draw_res.drawables.planet.draw(
-            &self.draw_res.device,
+        res.drawables.planet.draw(
+            &res.device,
             frame,
             vert::simple::Uniforms {
                 transform: transform.into(),
