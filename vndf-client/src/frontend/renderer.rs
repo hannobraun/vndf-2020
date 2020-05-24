@@ -58,7 +58,7 @@ impl Renderer {
     pub async fn new(window: &Window, graphics: Graphics, ui: UiOption)
         -> Result<Self, Error>
     {
-        let size = window.size();
+        let size   = window.size();
         let format = wgpu::TextureFormat::Bgra8UnormSrgb;
 
         let backend = select_backend(graphics);
