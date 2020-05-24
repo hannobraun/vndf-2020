@@ -337,7 +337,7 @@ impl Renderer {
     }
 
     fn draw_explosion(&self,
-        res:       &mut Frame,
+        frame:     &mut Frame,
         explosion: &Explosion,
         game:      &Game,
     )
@@ -347,13 +347,13 @@ impl Renderer {
             ScreenElement::from_explosion(
                 explosion,
                 game,
-                &res.screen,
+                &frame.screen,
             )?
-            .transform(res.screen.size);
+            .transform(frame.screen.size);
 
         self.drawables.explosion.draw(
             &self.device,
-            res,
+            frame,
             vert::simple::Uniforms {
                 transform: transform.into(),
             },
