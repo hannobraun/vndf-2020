@@ -313,18 +313,18 @@ impl Renderer {
     }
 
     fn draw_ship(&self,
-        res:  &mut Frame,
-        ship: &Ship,
-        game: &Game,
+        frame: &mut Frame,
+        ship:  &Ship,
+        game:  &Game,
     )
         -> Option<()>
     {
-        let transform = ScreenElement::from_ship(ship, game, &res.screen)?
-            .transform(res.screen.size);
+        let transform = ScreenElement::from_ship(ship, game, &frame.screen)?
+            .transform(frame.screen.size);
 
         self.drawables.ship.draw(
             &self.device,
-            res,
+            frame,
             vert::simple::Uniforms {
                 transform: transform.into(),
             },
