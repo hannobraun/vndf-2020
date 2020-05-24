@@ -173,7 +173,7 @@ impl Renderer {
                 self.scale_factor = *scale_factor as f32;
             }
             Event::RedrawRequested(_) => {
-                let mut res = Frame {
+                let mut frame = Frame {
                     screen: self.screen(),
                     output: self.swap_chain.get_next_texture()
                         .map_err(|_| Error::TimeOut)?,
@@ -182,32 +182,32 @@ impl Renderer {
                     ),
                 };
 
-                draw_background(&mut res);
+                draw_background(&mut frame);
 
                 for orbit in game.state.active_orbits() {
                     self.draw_orbit(
-                        &mut res,
+                        &mut frame,
                         &orbit,
                         game,
                     );
                 }
                 for planet in game.state.data.planets.values() {
                     self.draw_planet(
-                        &mut res,
+                        &mut frame,
                         planet,
                         game,
                     );
                 }
                 for ship in game.state.data.ships.values() {
                     self.draw_ship(
-                        &mut res,
+                        &mut frame,
                         ship,
                         game,
                     );
                 }
                 for explosion in game.state.data.explosions.values() {
                     self.draw_explosion(
-                        &mut res,
+                        &mut frame,
                         explosion,
                         game,
                     );
@@ -216,13 +216,13 @@ impl Renderer {
                 self.ui
                     .draw(
                         &self.device,
-                        &mut res,
+                        &mut frame,
                         &mut self.drawables,
                         game,
                     )
                     .map_err(|()| Error::Ui)?;
 
-                self.queue.submit(&[res.encoder.finish()]);
+                self.queue.submit(&[frame.encoder.finish()]);
             }
             _ => {}
         }
