@@ -18,10 +18,7 @@ use crate::{
         elements::ScreenElement,
         screen::Screen,
     },
-    shared::world::behavior::{
-        explosions::Explosion,
-        ships::Ship,
-    },
+    shared::world::behavior::explosions::Explosion,
 };
 
 use super::{
@@ -32,6 +29,7 @@ use super::{
         draw_background,
         draw_orbit,
         draw_planet,
+        draw_ship,
     },
     meshes::{
         self,
@@ -202,7 +200,7 @@ impl Renderer {
                     );
                 }
                 for ship in game.state.data.ships.values() {
-                    Self::draw_ship(
+                    draw_ship(
                         &self.draw_res,
                         &mut frame,
                         ship,
@@ -234,31 +232,6 @@ impl Renderer {
         self.ui.handle_event(event, &self.screen());
 
         Ok(())
-    }
-
-    fn draw_ship(
-        res:   &DrawResources,
-        frame: &mut Frame,
-        ship:  &Ship,
-        game:  &Game,
-    )
-        -> Option<()>
-    {
-        let transform = ScreenElement::from_ship(ship, game, &frame.screen)?
-            .transform(frame.screen.size);
-
-        res.drawables.ship.draw(
-            &res.device,
-            frame,
-            vert::simple::Uniforms {
-                transform: transform.into(),
-            },
-            frag::simple::Uniforms {
-                color: ship.color.into(),
-            },
-        );
-
-        Some(())
     }
 
     fn draw_explosion(&self,
