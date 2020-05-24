@@ -24,7 +24,7 @@ use super::{
 pub trait Ui {
     fn draw(&mut self,
         device:    &wgpu::Device,
-        res:       &mut Frame,
+        frame:     &mut Frame,
         drawables: &mut Drawables,
         game:      &Game,
     )
