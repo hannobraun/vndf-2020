@@ -49,17 +49,17 @@ impl Basic {
 impl super::Ui for Basic {
     fn draw(&mut self,
         device:    &wgpu::Device,
-        res:       &mut Frame,
+        frame:     &mut Frame,
         drawables: &mut Drawables,
         game:      &Game,
     )
         -> Result<(), ()>
     {
-        let scale  = Scale::uniform(16.0 * res.screen.scale_factor);
+        let scale  = Scale::uniform(16.0 * frame.screen.scale_factor);
 
-        for element in ui::Elements::new(game, &res.screen).elements() {
+        for element in ui::Elements::new(game, &frame.screen).elements() {
             let text  = element.text.as_str();
-            let pos   = element.pos * res.screen.scale_factor;
+            let pos   = element.pos * frame.screen.scale_factor;
             let color = [1.0, 1.0, 1.0, 1.0];
 
             let section = Section {
@@ -75,22 +75,22 @@ impl super::Ui for Basic {
                 None       => continue,
             };
             let size = graphics::Size::new(size.width(), size.height())
-                / res.screen.scale_factor;
+                / frame.screen.scale_factor;
 
             const MARGIN: f32 = 5.0;
             let margin = graphics::Size::new(MARGIN * 2.0, MARGIN * 2.0);
 
             let element = ScreenElement {
                 size:  size + margin,
-                pos:   pos + size * res.screen.scale_factor / 2.0,
+                pos:   pos + size * frame.screen.scale_factor / 2.0,
                 angle: graphics::Angle::zero(),
             };
 
             drawables.panel.draw(
                 device,
-                res,
+                frame,
                 vert::simple::Uniforms {
-                    transform: element.transform(res.screen.size).into(),
+                    transform: element.transform(frame.screen.size).into(),
                 },
                 frag::simple::Uniforms {
                     color: [0.0, 0.0, 0.0, 0.95].into(),
@@ -103,10 +103,10 @@ impl super::Ui for Basic {
         self.glyph_brush
             .draw_queued(
                 device,
-                &mut res.encoder,
-                &res.output.view,
-                res.screen.size.width as u32,
-                res.screen.size.height as u32,
+                &mut frame.encoder,
+                &frame.output.view,
+                frame.screen.size.width as u32,
+                frame.screen.size.height as u32,
             )
             // I've checked the code, and it doesn't look like this
             // actually returns any errors.
