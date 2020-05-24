@@ -32,6 +32,7 @@ use crate::{
 use super::{
     drawables::Drawables,
     drawers::{
+        DrawResources,
         Frame,
         draw_background,
     },
@@ -53,14 +54,13 @@ use super::{
 
 pub struct Renderer {
     surface:         wgpu::Surface,
-    device:          wgpu::Device,
     queue:           wgpu::Queue,
     swap_chain_desc: wgpu::SwapChainDescriptor,
     swap_chain:      wgpu::SwapChain,
+    draw_res:        DrawResources,
 
     ui: Box<dyn Ui>,
 
-    drawables:    Drawables,
     scale_factor: f32,
 }
 
@@ -134,17 +134,21 @@ impl Renderer {
             }
         };
 
+        let draw_res = DrawResources {
+            device,
+            drawables,
+        };
+
         Ok(
             Self {
                 surface,
-                device,
                 queue,
                 swap_chain_desc,
                 swap_chain,
+                draw_res,
 
                 ui,
 
-                drawables,
                 scale_factor,
             }
         )
@@ -158,7 +162,7 @@ impl Renderer {
                 self.swap_chain_desc.width  = size.width;
                 self.swap_chain_desc.height = size.height;
 
-                self.swap_chain = self.device.create_swap_chain(
+                self.swap_chain = self.draw_res.device.create_swap_chain(
                     &self.surface,
                     &self.swap_chain_desc,
                 );
@@ -177,7 +181,7 @@ impl Renderer {
                     screen: self.screen(),
                     output: self.swap_chain.get_next_texture()
                         .map_err(|_| Error::TimeOut)?,
-                    encoder: self.device.create_command_encoder(
+                    encoder: self.draw_res.device.create_command_encoder(
                         &wgpu::CommandEncoderDescriptor { label: None }
                     ),
                 };
@@ -215,9 +219,9 @@ impl Renderer {
 
                 self.ui
                     .draw(
-                        &self.device,
+                        &self.draw_res.device,
                         &mut frame,
-                        &mut self.drawables,
+                        &mut self.draw_res.drawables,
                         game,
                     )
                     .map_err(|()| Error::Ui)?;
@@ -277,8 +281,8 @@ impl Renderer {
             0.0
         };
 
-        self.drawables.orbit.draw(
-            &self.device,
+        self.draw_res.drawables.orbit.draw(
+            &self.draw_res.device,
             frame,
             vert::simple::Uniforms {
                 transform: transform.into(),
@@ -302,8 +306,8 @@ impl Renderer {
         let transform = WorldElement::from(planet)
             .transform(&game.state.camera, frame.screen.size);
 
-        self.drawables.planet.draw(
-            &self.device,
+        self.draw_res.drawables.planet.draw(
+            &self.draw_res.device,
             frame,
             vert::simple::Uniforms {
                 transform: transform.into(),
@@ -322,8 +326,8 @@ impl Renderer {
         let transform = ScreenElement::from_ship(ship, game, &frame.screen)?
             .transform(frame.screen.size);
 
-        self.drawables.ship.draw(
-            &self.device,
+        self.draw_res.drawables.ship.draw(
+            &self.draw_res.device,
             frame,
             vert::simple::Uniforms {
                 transform: transform.into(),
@@ -351,8 +355,8 @@ impl Renderer {
             )?
             .transform(frame.screen.size);
 
-        self.drawables.explosion.draw(
-            &self.device,
+        self.draw_res.drawables.explosion.draw(
+            &self.draw_res.device,
             frame,
             vert::simple::Uniforms {
                 transform: transform.into(),
