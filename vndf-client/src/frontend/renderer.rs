@@ -15,10 +15,8 @@ use crate::{
     game::Game,
     graphics::{
         self,
-        elements::ScreenElement,
         screen::Screen,
     },
-    shared::world::behavior::explosions::Explosion,
 };
 
 use super::{
@@ -27,6 +25,7 @@ use super::{
         DrawResources,
         Frame,
         draw_background,
+        draw_explosion,
         draw_orbit,
         draw_planet,
         draw_ship,
@@ -34,10 +33,6 @@ use super::{
     meshes::{
         self,
         Meshes,
-    },
-    shaders::{
-        frag,
-        vert,
     },
     ui::{
         self,
@@ -208,7 +203,7 @@ impl Renderer {
                     );
                 }
                 for explosion in game.state.data.explosions.values() {
-                    Self::draw_explosion(
+                    draw_explosion(
                         &self.draw_res,
                         &mut frame,
                         explosion,
@@ -233,37 +228,6 @@ impl Renderer {
         self.ui.handle_event(event, &self.screen());
 
         Ok(())
-    }
-
-    fn draw_explosion(
-        res:       &DrawResources,
-        frame:     &mut Frame,
-        explosion: &Explosion,
-        game:      &Game,
-    )
-        -> Option<()>
-    {
-        let transform =
-            ScreenElement::from_explosion(
-                explosion,
-                game,
-                &frame.screen,
-            )?
-            .transform(frame.screen.size);
-
-        res.drawables.explosion.draw(
-            &res.device,
-            frame,
-            vert::simple::Uniforms {
-                transform: transform.into(),
-            },
-            frag::explosion::Uniforms {
-                strength_total: explosion.strength_total,
-                strength_left:  explosion.strength_left,
-            },
-        );
-
-        Some(())
     }
 
     fn screen(&self) -> Screen {
