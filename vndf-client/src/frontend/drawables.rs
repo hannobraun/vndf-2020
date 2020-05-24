@@ -27,34 +27,34 @@ use super::{
 
 
 pub struct Drawables {
-    pub explosion: Drawable<vert::Simple, frag::Explosion>,
-    pub orbit:     Drawable<vert::Simple, frag::Orbit>,
-    pub panel:     Drawable<vert::Simple, frag::Simple>,
-    pub planet:    Drawable<vert::Simple, frag::Planet>,
-    pub ship:      Drawable<vert::Simple, frag::Simple>,
+    pub explosion: Standard<vert::Simple, frag::Explosion>,
+    pub orbit:     Standard<vert::Simple, frag::Orbit>,
+    pub panel:     Standard<vert::Simple, frag::Simple>,
+    pub planet:    Standard<vert::Simple, frag::Planet>,
+    pub ship:      Standard<vert::Simple, frag::Simple>,
 }
 
 impl Drawables {
     pub fn new(device: &wgpu::Device, meshes: &Meshes)
         -> Result<Self, io::Error>
     {
-        let explosion = Drawable::new(
+        let explosion = Standard::new(
             device,
             &meshes.square,
         )?;
-        let orbit = Drawable::new(
+        let orbit = Standard::new(
             device,
             &meshes.square,
         )?;
-        let panel = Drawable::new(
+        let panel = Standard::new(
             device,
             &meshes.square,
         )?;
-        let planet = Drawable::new(
+        let planet = Standard::new(
             device,
             &meshes.square,
         )?;
-        let ship = Drawable::new(
+        let ship = Standard::new(
             device,
             &meshes.ship,
         )?;
@@ -72,7 +72,7 @@ impl Drawables {
 }
 
 
-pub struct Drawable<Vert, Frag> {
+pub struct Standard<Vert, Frag> {
     vert_uniforms:   wgpu::Buffer,
     frag_uniforms:   wgpu::Buffer,
     vertex_buffer:   wgpu::Buffer,
@@ -85,7 +85,7 @@ pub struct Drawable<Vert, Frag> {
     frag: PhantomData<Frag>,
 }
 
-impl<Vert, Frag> Drawable<Vert, Frag>
+impl<Vert, Frag> Standard<Vert, Frag>
     where
         Vert: Shader<Kind=shaders::Vert>,
         Frag: Shader<Kind=shaders::Frag>,
