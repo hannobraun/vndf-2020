@@ -295,16 +295,16 @@ impl Renderer {
     }
 
     fn draw_planet(&self,
-        res:    &mut Frame,
+        frame:  &mut Frame,
         planet: &Planet,
         game:   &Game,
     ) {
         let transform = WorldElement::from(planet)
-            .transform(&game.state.camera, res.screen.size);
+            .transform(&game.state.camera, frame.screen.size);
 
         self.drawables.planet.draw(
             &self.device,
-            res,
+            frame,
             vert::simple::Uniforms {
                 transform: transform.into(),
             },
