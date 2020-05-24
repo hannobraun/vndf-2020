@@ -189,7 +189,8 @@ impl Renderer {
                 draw_background(&mut frame);
 
                 for orbit in game.state.active_orbits() {
-                    self.draw_orbit(
+                    Self::draw_orbit(
+                        &self.draw_res,
                         &mut frame,
                         &orbit,
                         game,
@@ -236,7 +237,8 @@ impl Renderer {
         Ok(())
     }
 
-    fn draw_orbit(&self,
+    fn draw_orbit(
+        res:   &DrawResources,
         frame: &mut Frame,
         orbit: &Orbit,
         game:  &Game,
@@ -281,8 +283,8 @@ impl Renderer {
             0.0
         };
 
-        self.draw_res.drawables.orbit.draw(
-            &self.draw_res.device,
+        res.drawables.orbit.draw(
+            &res.device,
             frame,
             vert::simple::Uniforms {
                 transform: transform.into(),
