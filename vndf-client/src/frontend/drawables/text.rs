@@ -1,7 +1,11 @@
 use wgpu_glyph::{
     GlyphBrush,
     GlyphBrushBuilder,
+    GlyphCruncher as _,
+    Section,
 };
+
+use crate::graphics;
 
 
 pub struct Text {
@@ -21,5 +25,12 @@ impl Text {
                 glyph_brush,
             }
         )
+    }
+
+    pub fn bounds(&mut self, section: Section) -> Option<graphics::Size> {
+        self.glyph_brush.glyph_bounds(section)
+            .map(|size| {
+                graphics::Size::new(size.width(), size.height())
+            })
     }
 }

@@ -1,5 +1,4 @@
 use wgpu_glyph::{
-    GlyphCruncher as _,
     Scale,
     Section,
 };
@@ -57,13 +56,10 @@ impl super::Ui for Basic {
                 .. Section::default()
             };
 
-            let size = res.drawables.text.glyph_brush.glyph_bounds(section);
-            let size = match size {
-                Some(size) => size,
+            let size = match res.drawables.text.bounds(section) {
+                Some(size) => size / frame.screen.scale_factor,
                 None       => continue,
             };
-            let size = graphics::Size::new(size.width(), size.height())
-                / frame.screen.scale_factor;
 
             const MARGIN: f32 = 5.0;
             let margin = graphics::Size::new(MARGIN * 2.0, MARGIN * 2.0);
