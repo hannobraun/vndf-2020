@@ -15,15 +15,11 @@ use crate::{
     game::Game,
     graphics::{
         self,
-        elements::{
-            ScreenElement,
-            WorldElement,
-        },
+        elements::ScreenElement,
         screen::Screen,
     },
     shared::world::behavior::{
         explosions::Explosion,
-        planets::Planet,
         ships::Ship,
     },
 };
@@ -35,6 +31,7 @@ use super::{
         Frame,
         draw_background,
         draw_orbit,
+        draw_planet,
     },
     meshes::{
         self,
@@ -197,7 +194,7 @@ impl Renderer {
                     );
                 }
                 for planet in game.state.data.planets.values() {
-                    Self::draw_planet(
+                    draw_planet(
                         &self.draw_res,
                         &mut frame,
                         planet,
@@ -236,25 +233,6 @@ impl Renderer {
         self.ui.handle_event(event, &self.screen());
 
         Ok(())
-    }
-
-    fn draw_planet(
-        res:    &DrawResources,
-        frame:  &mut Frame,
-        planet: &Planet,
-        game:   &Game,
-    ) {
-        let transform = WorldElement::from(planet)
-            .transform(&game.state.camera, frame.screen.size);
-
-        res.drawables.planet.draw(
-            &res.device,
-            frame,
-            vert::simple::Uniforms {
-                transform: transform.into(),
-            },
-            frag::planet::Uniforms::default(),
-        );
     }
 
     fn draw_ship(&self,

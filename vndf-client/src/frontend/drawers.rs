@@ -1,10 +1,12 @@
 pub mod background;
 pub mod orbit;
+pub mod planet;
 
 
 pub use self::{
     background::draw_background,
     orbit::draw_orbit,
+    planet::draw_planet,
 };
 
 
