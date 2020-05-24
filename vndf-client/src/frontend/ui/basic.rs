@@ -1,6 +1,4 @@
 use wgpu_glyph::{
-    GlyphBrush,
-    GlyphBrushBuilder,
     GlyphCruncher as _,
     Scale,
     Section,
@@ -28,23 +26,11 @@ use crate::{
 };
 
 
-pub struct Basic {
-    glyph_brush: GlyphBrush<'static, ()>,
-}
+pub struct Basic;
 
 impl Basic {
-    pub fn new(device: &wgpu::Device, texture_format: wgpu::TextureFormat)
-        -> Result<Self, wgpu_glyph::rusttype::Error>
-    {
-        let font = include_bytes!("fonts/Tuffy_Bold.ttf");
-        let glyph_brush = GlyphBrushBuilder::using_font_bytes(&font[..])?
-            .build(&device, texture_format);
-
-        Ok(
-            Self {
-                glyph_brush,
-            }
-        )
+    pub fn new() -> Self {
+        Self
     }
 }
 
@@ -71,7 +57,8 @@ impl super::Ui for Basic {
                 .. Section::default()
             };
 
-            let size = match self.glyph_brush.glyph_bounds(section) {
+            let size = res.drawables.text.glyph_brush.glyph_bounds(section);
+            let size = match size {
                 Some(size) => size,
                 None       => continue,
             };
@@ -98,10 +85,10 @@ impl super::Ui for Basic {
                 },
             );
 
-            self.glyph_brush.queue(section);
+            res.drawables.text.glyph_brush.queue(section);
         }
 
-        self.glyph_brush
+        res.drawables.text.glyph_brush
             .draw_queued(
                 &res.device,
                 &mut frame.encoder,

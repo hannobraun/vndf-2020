@@ -1,7 +1,11 @@
 mod standard;
+mod text;
 
 
-pub use self::standard::Standard;
+pub use self::{
+    standard::Standard,
+    text::Text,
+};
 
 
 use std::io;
@@ -21,10 +25,16 @@ pub struct Drawables {
     pub panel:     Standard<vert::Simple, frag::Simple>,
     pub planet:    Standard<vert::Simple, frag::Planet>,
     pub ship:      Standard<vert::Simple, frag::Simple>,
+
+    pub text: Text,
 }
 
 impl Drawables {
-    pub fn new(device: &wgpu::Device, meshes: &Meshes)
+    pub fn new(
+        device: &wgpu::Device,
+        meshes: &Meshes,
+        format: wgpu::TextureFormat,
+    )
         -> Result<Self, io::Error>
     {
         let explosion = Standard::new(
@@ -48,6 +58,8 @@ impl Drawables {
             &meshes.ship,
         )?;
 
+        let text = Text::new(device, format)?;
+
         Ok(
             Self {
                 explosion,
@@ -55,6 +67,8 @@ impl Drawables {
                 panel,
                 planet,
                 ship,
+
+                text,
             }
         )
     }

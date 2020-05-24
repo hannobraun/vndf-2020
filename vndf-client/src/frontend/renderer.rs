@@ -90,7 +90,7 @@ impl Renderer {
 
         let meshes = Meshes::new()
             .map_err(|err| Error::Meshes(err))?;
-        let drawables = Drawables::new(&device, &meshes)?;
+        let drawables = Drawables::new(&device, &meshes, format)?;
 
         let swap_chain_desc = wgpu::SwapChainDescriptor {
             usage:        wgpu::TextureUsage::OUTPUT_ATTACHMENT,
@@ -110,8 +110,7 @@ impl Renderer {
         let ui: Box<dyn Ui> = match ui {
             UiOption::Basic => {
                 Box::new(
-                    ui::Basic::new(&device, format)
-                        .map_err(|err| Error::Font(err))?
+                    ui::Basic::new()
                 )
             }
             UiOption::Conrod => {
