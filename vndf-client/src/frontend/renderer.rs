@@ -202,7 +202,8 @@ impl Renderer {
                     );
                 }
                 for ship in game.state.data.ships.values() {
-                    self.draw_ship(
+                    Self::draw_ship(
+                        &self.draw_res,
                         &mut frame,
                         ship,
                         game,
@@ -235,7 +236,8 @@ impl Renderer {
         Ok(())
     }
 
-    fn draw_ship(&self,
+    fn draw_ship(
+        res:   &DrawResources,
         frame: &mut Frame,
         ship:  &Ship,
         game:  &Game,
@@ -245,8 +247,8 @@ impl Renderer {
         let transform = ScreenElement::from_ship(ship, game, &frame.screen)?
             .transform(frame.screen.size);
 
-        self.draw_res.drawables.ship.draw(
-            &self.draw_res.device,
+        res.drawables.ship.draw(
+            &res.device,
             frame,
             vert::simple::Uniforms {
                 transform: transform.into(),
