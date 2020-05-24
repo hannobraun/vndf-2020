@@ -233,7 +233,7 @@ impl Renderer {
     }
 
     fn draw_orbit(&self,
-        res:   &mut Frame,
+        frame: &mut Frame,
         orbit: &Orbit,
         game:  &Game,
     )
@@ -243,11 +243,11 @@ impl Renderer {
 
         let transform = element.transform(
             &game.state.camera,
-            res.screen.size,
+            frame.screen.size,
         );
 
         let pixel_per_m = game.state.camera.pixels_per_meter(
-            res.screen.size
+            frame.screen.size
         );
         let pixel_per_u = [
             pixel_per_m * element.size.width,
@@ -279,7 +279,7 @@ impl Renderer {
 
         self.drawables.orbit.draw(
             &self.device,
-            res,
+            frame,
             vert::simple::Uniforms {
                 transform: transform.into(),
             },
