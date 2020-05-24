@@ -21,9 +21,9 @@ use winit::event::{
 };
 
 use crate::{
-    frontend::{
-        drawables::Drawables,
-        drawers::Frame,
+    frontend::drawers::{
+        DrawResources,
+        Frame,
     },
     game::Game,
     graphics::screen::Screen,
@@ -75,10 +75,9 @@ impl Conrod {
 
 impl super::Ui for Conrod {
     fn draw(&mut self,
-        device:     &wgpu::Device,
-        frame:      &mut Frame,
-        _drawables: &mut Drawables,
-        game:       &Game,
+        res:   &DrawResources,
+        frame: &mut Frame,
+        game:  &Game,
     )
         -> Result<(), ()>
     {
@@ -142,10 +141,10 @@ impl super::Ui for Conrod {
             )
             .map_err(|_| ())?;
         if let Some(command) = command {
-            command.load_buffer_and_encode(device, &mut frame.encoder);
+            command.load_buffer_and_encode(&res.device, &mut frame.encoder);
         }
 
-        let render = self.renderer.render(device, &image_map);
+        let render = self.renderer.render(&res.device, &image_map);
 
         let mut render_pass = frame.encoder.begin_render_pass(
             &wgpu::RenderPassDescriptor {

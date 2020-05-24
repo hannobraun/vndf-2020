@@ -9,8 +9,10 @@ use winit::event::Event;
 
 use crate::{
     frontend::{
-        drawables::Drawables,
-        drawers::Frame,
+        drawers::{
+            DrawResources,
+            Frame,
+        },
         shaders::{
             frag,
             vert,
@@ -48,10 +50,9 @@ impl Basic {
 
 impl super::Ui for Basic {
     fn draw(&mut self,
-        device:    &wgpu::Device,
-        frame:     &mut Frame,
-        drawables: &mut Drawables,
-        game:      &Game,
+        res:   &DrawResources,
+        frame: &mut Frame,
+        game:  &Game,
     )
         -> Result<(), ()>
     {
@@ -86,8 +87,8 @@ impl super::Ui for Basic {
                 angle: graphics::Angle::zero(),
             };
 
-            drawables.panel.draw(
-                device,
+            res.drawables.panel.draw(
+                &res.device,
                 frame,
                 vert::simple::Uniforms {
                     transform: element.transform(frame.screen.size).into(),
@@ -102,7 +103,7 @@ impl super::Ui for Basic {
 
         self.glyph_brush
             .draw_queued(
-                device,
+                &res.device,
                 &mut frame.encoder,
                 &frame.output.view,
                 frame.screen.size.width as u32,

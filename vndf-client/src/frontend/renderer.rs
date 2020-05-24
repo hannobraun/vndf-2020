@@ -213,9 +213,8 @@ impl Renderer {
 
                 self.ui
                     .draw(
-                        &self.draw_res.device,
+                        &self.draw_res,
                         &mut frame,
-                        &mut self.draw_res.drawables,
                         game,
                     )
                     .map_err(|()| Error::Ui)?;
