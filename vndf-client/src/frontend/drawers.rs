@@ -1,7 +1,11 @@
 pub mod background;
+pub mod orbit;
 
 
-pub use self::background::draw_background;
+pub use self::{
+    background::draw_background,
+    orbit::draw_orbit,
+};
 
 
 use crate::graphics::screen::Screen;

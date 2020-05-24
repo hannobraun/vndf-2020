@@ -23,7 +23,6 @@ use crate::{
     },
     shared::world::behavior::{
         explosions::Explosion,
-        orbits::Orbit,
         planets::Planet,
         ships::Ship,
     },
@@ -35,6 +34,7 @@ use super::{
         DrawResources,
         Frame,
         draw_background,
+        draw_orbit,
     },
     meshes::{
         self,
@@ -189,7 +189,7 @@ impl Renderer {
                 draw_background(&mut frame);
 
                 for orbit in game.state.active_orbits() {
-                    Self::draw_orbit(
+                    draw_orbit(
                         &self.draw_res,
                         &mut frame,
                         &orbit,
@@ -235,69 +235,6 @@ impl Renderer {
         self.ui.handle_event(event, &self.screen());
 
         Ok(())
-    }
-
-    fn draw_orbit(
-        res:   &DrawResources,
-        frame: &mut Frame,
-        orbit: &Orbit,
-        game:  &Game,
-    )
-        -> Option<()>
-    {
-        let element = WorldElement::from(orbit);
-
-        let transform = element.transform(
-            &game.state.camera,
-            frame.screen.size,
-        );
-
-        let pixel_per_m = game.state.camera.pixels_per_meter(
-            frame.screen.size
-        );
-        let pixel_per_u = [
-            pixel_per_m * element.size.width,
-            pixel_per_m * element.size.height,
-        ];
-        let u_per_pixel = [
-            1.0 / pixel_per_u[0],
-            1.0 / pixel_per_u[1],
-        ];
-
-        let orbiter_angle_abs = orbit.orbiter.pos
-            .to_vector()
-            .angle_from_x_axis();
-        let orbiter_angle_to_orbit =
-            (orbiter_angle_abs - orbit.arg_of_periapsis).signed();
-
-        let orbiter_dir = orbit.orbiter.pos.to_vector()
-            .angle_to(orbit.orbiter.vel)
-            .radians;
-        let orbiter_dir = if orbiter_dir < 0.0 {
-            -1.0
-        }
-        else if orbiter_dir > 0.0 {
-            1.0
-        }
-        else {
-            0.0
-        };
-
-        res.drawables.orbit.draw(
-            &res.device,
-            frame,
-            vert::simple::Uniforms {
-                transform: transform.into(),
-            },
-            frag::orbit::Uniforms {
-                u_per_pixel:   u_per_pixel.into(),
-                orbiter_angle: orbiter_angle_to_orbit.radians,
-                orbiter_dir,
-                .. frag::orbit::Uniforms::default()
-            },
-        );
-
-        Some(())
     }
 
     fn draw_planet(&self,
