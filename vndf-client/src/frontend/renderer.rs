@@ -208,7 +208,8 @@ impl Renderer {
                     );
                 }
                 for explosion in game.state.data.explosions.values() {
-                    self.draw_explosion(
+                    Self::draw_explosion(
+                        &self.draw_res,
                         &mut frame,
                         explosion,
                         game,
@@ -234,7 +235,8 @@ impl Renderer {
         Ok(())
     }
 
-    fn draw_explosion(&self,
+    fn draw_explosion(
+        res:       &DrawResources,
         frame:     &mut Frame,
         explosion: &Explosion,
         game:      &Game,
@@ -249,8 +251,8 @@ impl Renderer {
             )?
             .transform(frame.screen.size);
 
-        self.draw_res.drawables.explosion.draw(
-            &self.draw_res.device,
+        res.drawables.explosion.draw(
+            &res.device,
             frame,
             vert::simple::Uniforms {
                 transform: transform.into(),
