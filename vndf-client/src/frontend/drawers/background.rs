@@ -1,9 +1,9 @@
 use crate::graphics;
 
-use super::FrameResources;
+use super::Frame;
 
 
-pub fn draw_background(res: &mut FrameResources) {
+pub fn draw_background(res: &mut Frame) {
     res.encoder.begin_render_pass(
         &wgpu::RenderPassDescriptor {
             color_attachments: &[

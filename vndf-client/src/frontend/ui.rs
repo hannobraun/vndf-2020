@@ -17,14 +17,14 @@ use crate::{
 
 use super::{
     drawables::Drawables,
-    drawers::FrameResources,
+    drawers::Frame,
 };
 
 
 pub trait Ui {
     fn draw(&mut self,
         device:    &wgpu::Device,
-        res:       &mut FrameResources,
+        res:       &mut Frame,
         drawables: &mut Drawables,
         game:      &Game,
     )

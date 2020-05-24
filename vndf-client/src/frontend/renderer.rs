@@ -32,7 +32,7 @@ use crate::{
 use super::{
     drawables::Drawables,
     drawers::{
-        FrameResources,
+        Frame,
         draw_background,
     },
     meshes::{
@@ -173,7 +173,7 @@ impl Renderer {
                 self.scale_factor = *scale_factor as f32;
             }
             Event::RedrawRequested(_) => {
-                let mut res = FrameResources {
+                let mut res = Frame {
                     screen: self.screen(),
                     output: self.swap_chain.get_next_texture()
                         .map_err(|_| Error::TimeOut)?,
@@ -233,7 +233,7 @@ impl Renderer {
     }
 
     fn draw_orbit(&self,
-        res:   &mut FrameResources,
+        res:   &mut Frame,
         orbit: &Orbit,
         game:  &Game,
     )
@@ -295,7 +295,7 @@ impl Renderer {
     }
 
     fn draw_planet(&self,
-        res:    &mut FrameResources,
+        res:    &mut Frame,
         planet: &Planet,
         game:   &Game,
     ) {
@@ -313,7 +313,7 @@ impl Renderer {
     }
 
     fn draw_ship(&self,
-        res:  &mut FrameResources,
+        res:  &mut Frame,
         ship: &Ship,
         game: &Game,
     )
@@ -337,7 +337,7 @@ impl Renderer {
     }
 
     fn draw_explosion(&self,
-        res:       &mut FrameResources,
+        res:       &mut Frame,
         explosion: &Explosion,
         game:      &Game,
     )

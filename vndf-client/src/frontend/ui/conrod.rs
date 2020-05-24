@@ -23,7 +23,7 @@ use winit::event::{
 use crate::{
     frontend::{
         drawables::Drawables,
-        drawers::FrameResources,
+        drawers::Frame,
     },
     game::Game,
     graphics::screen::Screen,
@@ -76,7 +76,7 @@ impl Conrod {
 impl super::Ui for Conrod {
     fn draw(&mut self,
         device:     &wgpu::Device,
-        res:        &mut FrameResources,
+        res:        &mut Frame,
         _drawables: &mut Drawables,
         game:       &Game,
     )

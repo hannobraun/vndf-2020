@@ -11,7 +11,7 @@ use std::{
 use zerocopy::AsBytes as _;
 
 use super::{
-    drawers::FrameResources,
+    drawers::Frame,
     meshes::{
         Mesh,
         Meshes,
@@ -246,7 +246,7 @@ impl<Vert, Frag> Drawable<Vert, Frag>
 
     pub fn draw(&self,
         device:    &wgpu::Device,
-        res:       &mut FrameResources,
+        res:       &mut Frame,
         vert_args: Vert::Uniforms,
         frag_args: Frag::Uniforms,
     ) {

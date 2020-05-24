@@ -10,7 +10,7 @@ use winit::event::Event;
 use crate::{
     frontend::{
         drawables::Drawables,
-        drawers::FrameResources,
+        drawers::Frame,
         shaders::{
             frag,
             vert,
@@ -49,7 +49,7 @@ impl Basic {
 impl super::Ui for Basic {
     fn draw(&mut self,
         device:    &wgpu::Device,
-        res:       &mut FrameResources,
+        res:       &mut Frame,
         drawables: &mut Drawables,
         game:      &Game,
     )
