@@ -74,7 +74,7 @@ impl super::Ui for Basic {
                     angle: graphics::Angle::zero(),
                 };
 
-                res.drawables.panel.draw(
+                res.drawables.square.draw(
                     &res.device,
                     frame,
                     vert::simple::Uniforms {
