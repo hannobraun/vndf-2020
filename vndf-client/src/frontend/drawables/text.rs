@@ -12,7 +12,7 @@ use crate::{
 
 
 pub struct Text {
-    pub glyph_brush: GlyphBrush<'static, ()>,
+    glyph_brush: GlyphBrush<'static, ()>,
 }
 
 impl Text {
