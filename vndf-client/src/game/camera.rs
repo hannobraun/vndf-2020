@@ -9,14 +9,14 @@ use crate::{
 
 pub struct Camera {
     pub center: world::Pnt2,
-    pub zoom:   f32,
+    pub view:   f32,
 }
 
 impl Camera {
     pub fn new() -> Self {
         Self {
             center: world::Pnt2::new(0.0, 0.0),
-            zoom:   1.0,
+            view:   100_000_000.0, // m
         }
     }
 
@@ -40,21 +40,9 @@ impl Camera {
     {
         let aspect_ratio = screen_size.width / screen_size.height;
 
-        let min_world_size_on_screen = 100_000_000.0; // m
-
-        let default_world_size_on_screen = if aspect_ratio >= 1.0 {
-            world::Size::new(
-                min_world_size_on_screen * aspect_ratio,
-                min_world_size_on_screen,
-            )
-        }
-        else {
-            world::Size::new(
-                min_world_size_on_screen,
-                min_world_size_on_screen / aspect_ratio,
-            )
-        };
-
-        default_world_size_on_screen / self.zoom
+        world::Size::new(
+            self.view * aspect_ratio,
+            self.view,
+        )
     }
 }

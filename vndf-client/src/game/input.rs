@@ -23,7 +23,7 @@ pub struct Handler {
     pub pointer_screen: graphics::Pnt2,
     pub pointer_world:  world::Pnt2,
 
-    pub zoom: f32,
+    pub view: f32,
 }
 
 impl Handler {
@@ -34,7 +34,7 @@ impl Handler {
             pointer_screen: graphics::Pnt2::new(0.0, 0.0),
             pointer_world:  world::Pnt2::new(0.0, 0.0),
 
-            zoom: 1.0,
+            view: 100_000_000.0, // m
         }
     }
 
@@ -77,9 +77,9 @@ impl Handler {
                 }
             }
             Input::MouseWheel(y) => {
-                self.zoom += y * 0.1;
+                self.view -= y * 1_000_000.0;
 
-                self.zoom = f32::max(self.zoom,  0.1);
+                self.view = f32::max(self.view, 100_000.0);
             }
         }
 

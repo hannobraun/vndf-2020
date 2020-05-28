@@ -52,7 +52,7 @@ impl State {
     pub fn update(&mut self, dt: f32, input: &input::Handler) {
         self.statistics.update();
 
-        self.camera.zoom = input.zoom;
+        self.camera.view = input.view;
         if let Some(own_pos) = self.own_pos() {
             self.camera.center = own_pos;
         }
