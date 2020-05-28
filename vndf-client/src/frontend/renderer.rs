@@ -26,6 +26,7 @@ use super::{
         Frame,
         draw_background,
         draw_explosion,
+        draw_grid,
         draw_orbit,
         draw_planet,
         draw_ship,
@@ -176,6 +177,11 @@ impl Renderer {
                 };
 
                 draw_background(&mut frame);
+                draw_grid(
+                    &mut self.draw_res,
+                    &mut frame,
+                    game,
+                );
 
                 for orbit in game.state.active_orbits() {
                     draw_orbit(

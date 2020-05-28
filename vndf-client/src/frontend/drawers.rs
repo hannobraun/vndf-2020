@@ -1,5 +1,6 @@
 pub mod background;
 pub mod explosion;
+pub mod grid;
 pub mod orbit;
 pub mod planet;
 pub mod ship;
@@ -8,6 +9,7 @@ pub mod ship;
 pub use self::{
     background::draw_background,
     explosion::draw_explosion,
+    grid::draw_grid,
     orbit::draw_orbit,
     planet::draw_planet,
     ship::draw_ship,
