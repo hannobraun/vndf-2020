@@ -54,7 +54,9 @@ pub fn draw_grid(
 
         let screen_to_cell = max_screen_len / cell_size;
 
-        if screen_to_cell > 5.0 {
+        const LOWER_LIMIT: f32 = 5.0;
+
+        if screen_to_cell > LOWER_LIMIT {
             break;
         }
     }
