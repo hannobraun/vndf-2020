@@ -34,16 +34,28 @@ pub fn draw_grid(
     let start = camera.center - world_size_on_screen / 2.0;
     let end   = start + world_size_on_screen;
 
-    let cell_size = 33_554_432.0;
-
-    draw_cells(
-        res,
-        frame,
-        start,
-        end,
-        cell_size,
-        camera,
+    let max_screen_len = f32::max(
+        world_size_on_screen.x,
+        world_size_on_screen.y,
     );
+    let mut cell_size = (2.0f32).powf(max_screen_len.log2().ceil());
+
+    loop {
+        draw_cells(
+            res,
+            frame,
+            start,
+            end,
+            cell_size,
+            camera,
+        );
+
+        cell_size /= 2.0;
+
+        if cell_size * 5.0 < max_screen_len {
+            break;
+        }
+    }
 }
 
 fn draw_cells(
