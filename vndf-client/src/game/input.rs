@@ -79,7 +79,6 @@ impl Handler {
             Input::MouseWheel(y) => {
                 self.zoom += y * 0.1;
 
-                self.zoom = f32::min(self.zoom, 10.0);
                 self.zoom = f32::max(self.zoom,  0.1);
             }
         }
