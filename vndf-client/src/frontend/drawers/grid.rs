@@ -39,6 +39,7 @@ pub fn draw_grid(
         world_size_on_screen.y,
     );
     let mut cell_size = (2.0f32).powf(max_screen_len.log2().ceil());
+    let mut alpha     = 1.0;
 
     loop {
         draw_cells(
@@ -47,6 +48,7 @@ pub fn draw_grid(
             start,
             end,
             cell_size,
+            alpha,
             camera,
         );
 
@@ -54,8 +56,13 @@ pub fn draw_grid(
 
         let screen_to_cell = max_screen_len / cell_size;
 
+        const ALPHA_LIMIT: f32 = 2.0;
         const LOWER_LIMIT: f32 = 5.0;
 
+        if screen_to_cell > ALPHA_LIMIT {
+            alpha = 1.0
+                - (screen_to_cell - ALPHA_LIMIT) / (LOWER_LIMIT - ALPHA_LIMIT);
+        }
         if screen_to_cell > LOWER_LIMIT {
             break;
         }
@@ -68,6 +75,7 @@ fn draw_cells(
     start:     world::Pnt2,
     end:       world::Pnt2,
     cell_size: f32,
+    alpha:     f32,
     camera:    &Camera,
 ) {
     let start_x = start.x - start.x % cell_size;
@@ -82,6 +90,7 @@ fn draw_cells(
             frame,
             world::Pnt2::new(x, start.y),
             world::Pnt2::new(x, end.y),
+            alpha,
             camera,
         );
 
@@ -101,6 +110,7 @@ fn draw_cells(
             frame,
             world::Pnt2::new(start.x, y),
             world::Pnt2::new(end.x,   y),
+            alpha,
             camera,
         );
 
@@ -117,6 +127,7 @@ fn draw_line(
     frame:  &mut Frame,
     start:  world::Pnt2,
     end:    world::Pnt2,
+    alpha:  f32,
     camera: &Camera,
 ) {
     let start = camera.world_to_screen(frame.screen.size, start);
@@ -142,7 +153,7 @@ fn draw_line(
             transform: transform.into(),
         },
         frag::simple::Uniforms {
-            color: [0.3, 0.3, 1.0, 1.0].into(),
+            color: [0.3, 0.3, 1.0, alpha].into(),
         }
     );
 }
