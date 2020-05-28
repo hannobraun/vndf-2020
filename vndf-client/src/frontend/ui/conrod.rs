@@ -100,10 +100,6 @@ impl super::Ui for Conrod {
                 .top_left_of(self.ids.canvas)
                 .set(self.ids.instructions, ui);
 
-            widget::Text::new(elements.zoom.text.as_str())
-                .down(PADDING)
-                .set(self.ids.zoom, ui);
-
             if let Some(frame_time) = elements.frame_time {
                 widget::Text::new(frame_time.text.as_str())
                     .down(PADDING)

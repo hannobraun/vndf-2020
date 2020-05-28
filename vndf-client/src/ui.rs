@@ -10,7 +10,6 @@ use crate::{
 
 pub struct Elements {
     pub instructions:    Element,
-    pub zoom:            Element,
     pub frame_time:      Option<Element>,
     pub diagnostics:     Option<Element>,
     pub input_events:    Option<Element>,
@@ -24,7 +23,6 @@ impl Elements {
     pub fn new(game: &Game, screen: &Screen) -> Self {
         Self {
             instructions: Element::instructions(game),
-            zoom:         Element::zoom(game),
             frame_time:   Element::frame_time(game),
             diagnostics:  Element::diagnostics(game),
             input_events: Element::input_events(game),
@@ -41,7 +39,6 @@ impl Elements {
         elements.extend(&self.orbit_info);
         elements.extend(&self.ship_info);
         elements.push(&self.instructions);
-        elements.push(&self.zoom);
         elements.extend(&self.frame_time);
         elements.extend(&self.diagnostics);
         elements.extend(&self.input_events);
@@ -75,17 +72,6 @@ impl Element {
         );
 
         let pos = graphics::Pnt2::new(20.0, 20.0);
-
-        Self {
-            text,
-            pos,
-        }
-    }
-
-    pub fn zoom(game: &Game) -> Self {
-        let text = format!("Zoom: {:.3}x", game.input.zoom);
-
-        let pos = graphics::Pnt2::new(20.0, 150.0);
 
         Self {
             text,
