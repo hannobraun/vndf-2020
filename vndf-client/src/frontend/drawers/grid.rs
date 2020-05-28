@@ -26,6 +26,7 @@ pub fn draw_grid(
     game:  &Game,
 ) {
     let camera = &game.state.camera;
+
     let world_size_on_screen = camera
         .world_size_on_screen(frame.screen.size)
         .to_vector();
