@@ -83,8 +83,8 @@ fn draw_cells(
         draw_line(
             res,
             frame,
-            world::Pnt2::new(start.x,  y),
-            world::Pnt2::new(end.x,    y),
+            world::Pnt2::new(start.x, y),
+            world::Pnt2::new(end.x,   y),
             camera,
         );
 
