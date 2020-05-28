@@ -52,7 +52,9 @@ pub fn draw_grid(
 
         cell_size /= 2.0;
 
-        if cell_size * 5.0 < max_screen_len {
+        let screen_to_cell = max_screen_len / cell_size;
+
+        if screen_to_cell > 5.0 {
             break;
         }
     }
