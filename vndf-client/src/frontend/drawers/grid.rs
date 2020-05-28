@@ -54,8 +54,13 @@ fn draw_cells(
     cell_size: f32,
     camera:    &Camera,
 ) {
-    let mut x = start.x - start.x % cell_size;
+    let start_x = start.x - start.x % cell_size;
+    let start_y = start.y - start.y % cell_size;
+
+    let mut i = 0;
     loop {
+        let x = start_x + cell_size * i as f32;
+
         draw_line(
             res,
             frame,
@@ -64,15 +69,17 @@ fn draw_cells(
             camera,
         );
 
-        x += cell_size;
-
         if x > end.x {
             break;
         }
+
+        i += 1;
     }
 
-    let mut y = start.y - start.y % cell_size;
+    let mut i = 0;
     loop {
+        let y = start_y + cell_size * i as f32;
+
         draw_line(
             res,
             frame,
@@ -81,11 +88,11 @@ fn draw_cells(
             camera,
         );
 
-        y += cell_size;
-
         if y > end.y {
             break;
         }
+
+        i += 1;
     }
 }
 
