@@ -35,6 +35,24 @@ pub fn draw_grid(
 
     let cell_size = 33_554_432.0;
 
+    draw_cells(
+        res,
+        frame,
+        start,
+        end,
+        cell_size,
+        camera,
+    );
+}
+
+fn draw_cells(
+    res:       &mut DrawResources,
+    frame:     &mut Frame,
+    start:     world::Pnt2,
+    end:       world::Pnt2,
+    cell_size: f32,
+    camera:    &Camera,
+) {
     let mut x = start.x - start.x % cell_size;
     loop {
         draw_line(
