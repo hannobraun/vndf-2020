@@ -57,7 +57,7 @@ pub fn draw_grid(
         let screen_to_cell = max_screen_len / cell_size;
 
         const ALPHA_LIMIT: f32 = 2.0;
-        const LOWER_LIMIT: f32 = 5.0;
+        const LOWER_LIMIT: f32 = 8.0;
 
         if screen_to_cell > ALPHA_LIMIT {
             alpha = 1.0
