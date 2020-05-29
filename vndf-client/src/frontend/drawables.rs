@@ -35,7 +35,7 @@ impl Drawables {
         meshes: &Meshes,
         format: wgpu::TextureFormat,
     )
-        -> Result<Self, io::Error>
+        -> Result<Self, Error>
     {
         let explosion = Standard::new(
             device,
@@ -58,7 +58,8 @@ impl Drawables {
             &meshes.square,
         )?;
 
-        let text = Text::new(device, format)?;
+        let text = Text::new(device, format)
+            .map_err(|err| Error::Text(err))?;
 
         Ok(
             Self {
@@ -71,5 +72,18 @@ impl Drawables {
                 text,
             }
         )
+    }
+}
+
+
+#[derive(Debug)]
+pub enum Error {
+    Io(io::Error),
+    Text(wgpu_glyph::rusttype::Error),
+}
+
+impl From<io::Error> for Error {
+    fn from(err: io::Error) -> Self {
+        Self::Io(err)
     }
 }

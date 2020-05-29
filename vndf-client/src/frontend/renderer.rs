@@ -20,7 +20,10 @@ use crate::{
 };
 
 use super::{
-    drawables::Drawables,
+    drawables::{
+        self,
+        Drawables,
+    },
     drawers::{
         DrawResources,
         Frame,
@@ -91,7 +94,8 @@ impl Renderer {
 
         let meshes = Meshes::new()
             .map_err(|err| Error::Meshes(err))?;
-        let drawables = Drawables::new(&device, &meshes, format)?;
+        let drawables = Drawables::new(&device, &meshes, format)
+            .map_err(|err| Error::Drawables(err))?;
 
         let swap_chain_desc = wgpu::SwapChainDescriptor {
             usage:        wgpu::TextureUsage::OUTPUT_ATTACHMENT,
@@ -281,6 +285,7 @@ fn screen(swap_chain_desc: &wgpu::SwapChainDescriptor, scale_factor: f32)
 #[derive(Debug)]
 pub enum Error {
     AdapterRequest,
+    Drawables(drawables::Error),
     Font(wgpu_glyph::rusttype::Error),
     Io(io::Error),
     Meshes(meshes::Error),
