@@ -60,7 +60,7 @@ impl super::Ui for Basic {
                     .. Section::default()
                 };
 
-                let size = match res.drawables.text.bounds(section) {
+                let size = match res.drawables.text.bounds(&section) {
                     Some(size) => size / frame.screen.scale_factor,
                     None       => return None,
                 };
