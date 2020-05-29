@@ -1,6 +1,6 @@
 use wgpu_glyph::{
-    Scale,
     Section,
+    Text,
 };
 use winit::event::Event;
 
@@ -41,22 +41,23 @@ impl super::Ui for Basic {
     )
         -> Result<(), ()>
     {
-        let scale  = Scale::uniform(16.0 * frame.screen.scale_factor);
-
         let elements = ui::Elements::new(game, &frame.screen);
         let sections: Vec<_> = elements
             .elements()
             .into_iter()
             .filter_map(|element| {
-                let text  = element.text.as_str();
+                let text = vec![
+                    Text::default()
+                        .with_text(element.text.as_str())
+                        .with_scale(16.0 * frame.screen.scale_factor)
+                        .with_color([1.0, 1.0, 1.0, 1.0]),
+                ];
+
                 let pos   = element.pos * frame.screen.scale_factor;
-                let color = [1.0, 1.0, 1.0, 1.0];
 
                 let section = Section {
                     text,
                     screen_position: (pos.x, pos.y),
-                    scale,
-                    color,
                     .. Section::default()
                 };
 

@@ -79,7 +79,7 @@ impl Drawables {
 #[derive(Debug)]
 pub enum Error {
     Io(io::Error),
-    Text(wgpu_glyph::rusttype::Error),
+    Text(wgpu_glyph::ab_glyph::InvalidFont),
 }
 
 impl From<io::Error> for Error {

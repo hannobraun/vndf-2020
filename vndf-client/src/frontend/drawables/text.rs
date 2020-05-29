@@ -3,6 +3,7 @@ use wgpu_glyph::{
     GlyphBrushBuilder,
     GlyphCruncher as _,
     Section,
+    ab_glyph::FontRef,
 };
 
 use crate::{
@@ -12,15 +13,16 @@ use crate::{
 
 
 pub struct Text {
-    glyph_brush: GlyphBrush<'static, ()>,
+    glyph_brush: GlyphBrush<(), FontRef<'static>>,
 }
 
 impl Text {
     pub fn new(device: &wgpu::Device, format: wgpu::TextureFormat)
-        -> Result<Self, wgpu_glyph::rusttype::Error>
+        -> Result<Self, wgpu_glyph::ab_glyph::InvalidFont>
     {
         let font = include_bytes!("../ui/fonts/Tuffy_Bold.ttf");
-        let glyph_brush = GlyphBrushBuilder::using_font_bytes(&font[..])?
+        let font = FontRef::try_from_slice(&font[..])?;
+        let glyph_brush = GlyphBrushBuilder::using_font(font)
             .build(&device, format);
 
         Ok(
