@@ -286,7 +286,7 @@ fn screen(swap_chain_desc: &wgpu::SwapChainDescriptor, scale_factor: f32)
 pub enum Error {
     AdapterRequest,
     Drawables(drawables::Error),
-    Font(wgpu_glyph::rusttype::Error),
+    Font(rusttype::Error),
     Io(io::Error),
     Meshes(meshes::Error),
     TimeOut,
