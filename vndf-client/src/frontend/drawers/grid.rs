@@ -1,3 +1,5 @@
+use std::iter;
+
 use crate::{
     frontend::shaders::{
         frag,
@@ -78,13 +80,7 @@ fn draw_cells(
     alpha:     f32,
     camera:    &Camera,
 ) {
-    let start_x = start.x - start.x % cell_size;
-    let start_y = start.y - start.y % cell_size;
-
-    let mut i = 0;
-    loop {
-        let x = start_x + cell_size * i as f32;
-
+    for x in iter(start.x, end.x, cell_size) {
         draw_line(
             res,
             frame,
@@ -93,18 +89,9 @@ fn draw_cells(
             alpha,
             camera,
         );
-
-        if x > end.x {
-            break;
-        }
-
-        i += 1;
     }
 
-    let mut i = 0;
-    loop {
-        let y = start_y + cell_size * i as f32;
-
+    for y in iter(start.y, end.y, cell_size) {
         draw_line(
             res,
             frame,
@@ -113,12 +100,6 @@ fn draw_cells(
             alpha,
             camera,
         );
-
-        if y > end.y {
-            break;
-        }
-
-        i += 1;
     }
 }
 
@@ -156,4 +137,22 @@ fn draw_line(
             color: [0.3, 0.3, 1.0, alpha].into(),
         }
     );
+}
+
+fn iter(start: f32, end: f32, cell_size: f32) -> impl Iterator<Item=f32> {
+    let start = start - start % cell_size;
+
+    let mut i = 0;
+
+    iter::from_fn(move || {
+        let v = start + cell_size * i as f32;
+        i += 1;
+
+        if v <= end {
+            Some(v)
+        }
+        else {
+            None
+        }
+    })
 }
