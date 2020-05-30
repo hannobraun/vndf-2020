@@ -1,7 +1,7 @@
 use crate::graphics;
 
 
-#[derive(Debug)]
+#[derive(Clone, Copy, Debug)]
 pub struct Screen {
     /// The physical screen size in pixels
     pub size: graphics::Size,
