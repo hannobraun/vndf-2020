@@ -119,7 +119,7 @@ impl Game {
 
         self.state.update(
             dt.as_seconds_f32(),
-            &self.input,
+            &mut self.input,
         );
 
         Ok(())

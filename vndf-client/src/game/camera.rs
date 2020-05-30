@@ -26,7 +26,7 @@ impl Camera {
 
     pub fn update(&mut self,
         own_pos: Option<world::Pnt2>,
-        input:   &input::Handler,
+        input:   &mut input::Handler,
     ) {
         self.view = input.view;
 

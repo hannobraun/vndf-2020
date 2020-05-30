@@ -49,7 +49,7 @@ impl State {
         }
     }
 
-    pub fn update(&mut self, dt: f32, input: &input::Handler) {
+    pub fn update(&mut self, dt: f32, input: &mut input::Handler) {
         self.statistics.update();
 
         self.camera.update(
