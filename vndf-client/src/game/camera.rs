@@ -8,8 +8,11 @@ use crate::{
 
 
 pub struct Camera {
+    /// The point in the world where the camera is centered
     pub center: world::Pnt2,
-    pub view:   f32,
+
+    /// The length along the x axis that is currently shown by the camera
+    pub view: f32,
 }
 
 impl Camera {
