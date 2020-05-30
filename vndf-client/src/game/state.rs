@@ -53,6 +53,7 @@ impl State {
         self.statistics.update();
 
         self.camera.update(
+            dt,
             self.own_pos(),
             input,
         );

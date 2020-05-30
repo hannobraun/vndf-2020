@@ -23,7 +23,7 @@ pub struct Handler {
     pub pointer_screen: graphics::Pnt2,
     pub pointer_world:  world::Pnt2,
 
-    pub view: f32,
+    scroll_acc: f32,
 }
 
 impl Handler {
@@ -34,7 +34,7 @@ impl Handler {
             pointer_screen: graphics::Pnt2::new(0.0, 0.0),
             pointer_world:  world::Pnt2::new(0.0, 0.0),
 
-            view: 100_000_000.0, // m
+            scroll_acc: 0.0,
         }
     }
 
@@ -77,13 +77,17 @@ impl Handler {
                 }
             }
             Input::MouseWheel(y) => {
-                self.view -= y * 1_000_000.0;
-
-                self.view = f32::max(self.view, 100_000.0);
+                self.scroll_acc += y;
             }
         }
 
         Transition::None
+    }
+
+    pub fn scroll_acc(&mut self) -> f32 {
+        let scroll_acc = self.scroll_acc;
+        self.scroll_acc = 0.0;
+        scroll_acc
     }
 }
 
