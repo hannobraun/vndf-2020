@@ -53,7 +53,7 @@ impl super::Ui for Basic {
                         .with_color([1.0, 1.0, 1.0, 1.0]),
                 ];
 
-                let pos   = element.pos * frame.screen.scale_factor;
+                let pos = element.pos * frame.screen.scale_factor;
 
                 let section = Section {
                     text,
