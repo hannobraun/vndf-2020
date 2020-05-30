@@ -1,4 +1,5 @@
 use crate::{
+    game::input,
     graphics::{
         self,
         transforms,
@@ -20,6 +21,17 @@ impl Camera {
         Self {
             center: world::Pnt2::new(0.0, 0.0),
             view:   100_000_000.0, // m
+        }
+    }
+
+    pub fn update(&mut self,
+        own_pos: Option<world::Pnt2>,
+        input:   &input::Handler,
+    ) {
+        self.view = input.view;
+
+        if let Some(own_pos) = own_pos {
+            self.center = own_pos;
         }
     }
 

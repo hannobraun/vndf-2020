@@ -52,10 +52,10 @@ impl State {
     pub fn update(&mut self, dt: f32, input: &input::Handler) {
         self.statistics.update();
 
-        self.camera.view = input.view;
-        if let Some(own_pos) = self.own_pos() {
-            self.camera.center = own_pos;
-        }
+        self.camera.update(
+            self.own_pos(),
+            input,
+        );
 
         for body in self.data.bodies.values_mut() {
             body.update(
