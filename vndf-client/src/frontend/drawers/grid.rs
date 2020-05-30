@@ -22,6 +22,11 @@ use super::{
 };
 
 
+const R: f32 = 0.3;
+const G: f32 = 0.3;
+const B: f32 = 1.0;
+
+
 pub fn draw_grid(
     res:   &mut DrawResources,
     frame: &mut Frame,
@@ -134,7 +139,7 @@ fn draw_line(
             transform: transform.into(),
         },
         frag::simple::Uniforms {
-            color: [0.3, 0.3, 1.0, alpha].into(),
+            color: [R, G, B, alpha].into(),
         }
     );
 }
