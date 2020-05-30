@@ -1,5 +1,10 @@
 use std::iter;
 
+use wgpu_glyph::{
+    Section,
+    Text,
+};
+
 use crate::{
     frontend::shaders::{
         frag,
@@ -95,7 +100,6 @@ fn draw_cells(
             camera,
         );
     }
-
     for y in iter(start.y, end.y, cell_size) {
         draw_line(
             res,
@@ -106,6 +110,51 @@ fn draw_cells(
             camera,
         );
     }
+
+    let screen = frame.screen;
+
+    let positions: Vec<_> = iter(start.x, end.x, cell_size)
+        .map(|x| {
+            iter::repeat(x)
+                .zip(iter(start.y, end.y, cell_size))
+        })
+        .flatten()
+        .map(|(x, y)| {
+            let x_km = x / 1000.0;
+            let y_km = y / 1000.0;
+
+            let pos  = world::Pnt2::new(x, y);
+            let text = format!("{:.0}\n{:.0}", x_km, y_km);
+
+            (pos, text)
+        })
+        .collect();
+    let sections = positions
+        .iter()
+        .map(move |(pos, text)| {
+            let text = vec![
+                Text::default()
+                    .with_text(&text)
+                    .with_scale(12.0 * screen.scale_factor)
+                    .with_color([R, G, B, alpha]),
+            ];
+            let pos = camera.world_to_screen(
+                screen.size,
+                *pos,
+            );
+
+            Section {
+                text,
+                screen_position: (pos.x, pos.y),
+                .. Section::default()
+            }
+        });
+
+    res.drawables.text.draw(
+        &res.device,
+        frame,
+        sections,
+    );
 }
 
 fn draw_line(
