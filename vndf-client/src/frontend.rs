@@ -33,7 +33,9 @@ use self::{
 };
 
 
-pub fn start(mut game: Game, graphics: Graphics, ui: UiOption) -> Result<(), Error> {
+pub fn start(mut game: Game, graphics: Graphics, ui: UiOption)
+    -> Result<(), Error>
+{
     let event_loop = EventLoop::new();
     let window = Window::new(&event_loop)
         .map_err(|err| Error::Winit(err))?;
