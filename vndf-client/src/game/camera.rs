@@ -57,7 +57,7 @@ impl Camera {
         if input * (self.speed - 1.0) >= 0.0 {
             // Current speed and input go into the same direction. Add input to
             // speed.
-            self.speed += input * 0.005;
+            self.speed += input * 0.01;
         }
         else {
             // Input goes into other direction. Stop completely.
@@ -67,7 +67,7 @@ impl Camera {
         // We want to restrict the camera speed to a maximum value. We do that
         // by choosing the same value as a maximum factor and divisor per
         // second.
-        let max_factor = 100.0f32;
+        let max_factor = 400.0f32;
         let min_factor = 1.0 / max_factor;
 
         // So we decided what the maximum factor or divisor for a whole second
