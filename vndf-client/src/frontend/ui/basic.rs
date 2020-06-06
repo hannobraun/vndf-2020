@@ -66,7 +66,10 @@ impl super::Ui for Basic {
             };
 
             const MARGIN: graphics::Scalar = 5.0;
-            let margin = graphics::Size::new(MARGIN * 2.0, MARGIN * 2.0);
+            let margin = graphics::Size::new(
+                MARGIN * 2.0,
+                MARGIN * 2.0,
+            );
 
             let pos = pos * frame.screen.scale_factor;
             let element = ScreenElement {
