@@ -41,54 +41,52 @@ impl super::Ui for Basic {
     )
         -> Result<(), ()>
     {
+        let mut sections = Vec::new();
+
         let elements = ui::Elements::new(game, &frame.screen);
-        let sections: Vec<_> = elements
-            .elements()
-            .into_iter()
-            .filter_map(|element| {
-                let text = vec![
-                    Text::default()
-                        .with_text(element.text.as_str())
-                        .with_scale(16.0 * frame.screen.scale_factor)
-                        .with_color([1.0, 1.0, 1.0, 1.0]),
-                ];
+        for element in elements.elements() {
+            let text = vec![
+                Text::default()
+                    .with_text(element.text.as_str())
+                    .with_scale(16.0 * frame.screen.scale_factor)
+                    .with_color([1.0, 1.0, 1.0, 1.0]),
+            ];
 
-                let pos = element.pos * frame.screen.scale_factor;
+            let pos = element.pos * frame.screen.scale_factor;
 
-                let section = Section {
-                    text,
-                    screen_position: (pos.x, pos.y),
-                    .. Section::default()
-                };
+            let section = Section {
+                text,
+                screen_position: (pos.x, pos.y),
+                .. Section::default()
+            };
 
-                let size = match res.drawables.text.bounds(&section) {
-                    Some(size) => size / frame.screen.scale_factor,
-                    None       => return None,
-                };
+            let size = match res.drawables.text.bounds(&section) {
+                Some(size) => size / frame.screen.scale_factor,
+                None       => continue,
+            };
 
-                const MARGIN: graphics::Scalar = 5.0;
-                let margin = graphics::Size::new(MARGIN * 2.0, MARGIN * 2.0);
+            const MARGIN: graphics::Scalar = 5.0;
+            let margin = graphics::Size::new(MARGIN * 2.0, MARGIN * 2.0);
 
-                let element = ScreenElement {
-                    size:  size + margin,
-                    pos:   pos + size * frame.screen.scale_factor / 2.0,
-                    angle: graphics::Angle::zero(),
-                };
+            let element = ScreenElement {
+                size:  size + margin,
+                pos:   pos + size * frame.screen.scale_factor / 2.0,
+                angle: graphics::Angle::zero(),
+            };
 
-                res.drawables.square.draw(
-                    &res.device,
-                    frame,
-                    vert::simple::Uniforms {
-                        transform: element.transform(frame.screen.size).into(),
-                    },
-                    frag::simple::Uniforms {
-                        color: [0.0, 0.0, 0.0, 0.95].into(),
-                    },
-                );
+            res.drawables.square.draw(
+                &res.device,
+                frame,
+                vert::simple::Uniforms {
+                    transform: element.transform(frame.screen.size).into(),
+                },
+                frag::simple::Uniforms {
+                    color: [0.0, 0.0, 0.0, 0.95].into(),
+                },
+            );
 
-                Some(section)
-            })
-            .collect();
+            sections.push(section);
+        }
 
         res.drawables.text.draw(
             &res.device,
