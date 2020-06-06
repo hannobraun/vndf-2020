@@ -77,7 +77,7 @@ impl super::Ui for Basic {
                 angle: graphics::Angle::zero(),
             };
             let transform = element
-                .transform(frame.screen.logical_size())
+                .transform(&frame.screen)
                 .into();
 
             res.drawables.square.draw(

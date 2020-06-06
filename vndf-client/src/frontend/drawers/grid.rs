@@ -179,7 +179,7 @@ fn draw_line(
             pos:   start,
             angle: -start_to_end.angle_from_x_axis(),
         }
-        .transform(frame.screen.logical_size());
+        .transform(&frame.screen);
 
     res.drawables.square.draw(
         &res.device,

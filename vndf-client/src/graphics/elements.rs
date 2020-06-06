@@ -129,12 +129,12 @@ impl ScreenElement {
         }
     }
 
-    pub fn transform(&self, screen_size: graphics::Size)
+    pub fn transform(&self, screen: &Screen)
         -> Transform<LocalUnit, ClipUnit>
     {
         transforms::local_to_screen(self)
             .post_transform(
-                &transforms::screen_to_homogeneous(screen_size)
+                &transforms::screen_to_homogeneous(screen.logical_size())
             )
     }
 }

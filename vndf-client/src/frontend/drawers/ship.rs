@@ -23,7 +23,7 @@ pub fn draw_ship(
     -> Option<()>
 {
     let transform = ScreenElement::from_ship(ship, game, &frame.screen)?
-        .transform(frame.screen.logical_size());
+        .transform(&frame.screen);
 
     res.drawables.ship.draw(
         &res.device,

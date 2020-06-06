@@ -31,7 +31,7 @@ pub fn draw_explosion(
             game,
             &frame.screen,
         )?
-        .transform(frame.screen.logical_size());
+        .transform(&frame.screen);
 
     res.drawables.explosion.draw(
         &res.device,
