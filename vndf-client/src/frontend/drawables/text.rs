@@ -56,8 +56,8 @@ impl Text {
                 &device,
                 &mut frame.encoder,
                 &frame.output.view,
-                frame.screen.size.width as u32,
-                frame.screen.size.height as u32,
+                frame.screen.physical_size().width as u32,
+                frame.screen.physical_size().height as u32,
             )
             // I've checked the code, and it doesn't look like this
             // actually returns any errors.

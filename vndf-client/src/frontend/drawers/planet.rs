@@ -21,7 +21,7 @@ pub fn draw_planet(
     game:   &Game,
 ) {
     let transform = WorldElement::from(planet)
-        .transform(&game.state.camera, frame.screen.size);
+        .transform(&game.state.camera, frame.screen.physical_size());
 
     res.drawables.planet.draw(
         &res.device,

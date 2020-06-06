@@ -134,8 +134,8 @@ impl super::Ui for Conrod {
                 [
                     0.0,
                     0.0,
-                    frame.screen.size.width,
-                    frame.screen.size.height,
+                    frame.screen.physical_size().width,
+                    frame.screen.physical_size().height,
                 ],
                 frame.screen.scale_factor as f64,
                 primitives,

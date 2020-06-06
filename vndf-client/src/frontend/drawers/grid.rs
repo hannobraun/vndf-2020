@@ -42,7 +42,7 @@ pub fn draw_grid(
     let camera = &game.state.camera;
 
     let world_size_on_screen = camera
-        .world_size_on_screen(frame.screen.size)
+        .world_size_on_screen(frame.screen.physical_size())
         .to_vector();
 
     let start = camera.center - world_size_on_screen / 2.0;
@@ -136,7 +136,7 @@ fn draw_cells(
                     .with_color([R, G, B, alpha])
             ];
             let pos = camera.world_to_screen(
-                screen.size,
+                screen.physical_size(),
                 pos,
             );
             let layout = Layout::default_wrap()
@@ -165,8 +165,8 @@ fn draw_line(
     alpha:  f32,
     camera: &Camera,
 ) {
-    let start = camera.world_to_screen(frame.screen.size, start);
-    let end   = camera.world_to_screen(frame.screen.size, end);
+    let start = camera.world_to_screen(frame.screen.physical_size(), start);
+    let end   = camera.world_to_screen(frame.screen.physical_size(), end);
 
     let start_to_end = end - start;
 
@@ -179,7 +179,7 @@ fn draw_line(
             pos:   start,
             angle: -start_to_end.angle_from_x_axis(),
         }
-        .transform(frame.screen.size);
+        .transform(frame.screen.physical_size());
 
     res.drawables.square.draw(
         &res.device,

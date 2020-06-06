@@ -111,7 +111,7 @@ impl ScreenElement {
         let pos =
             transforms::world_to_screen(
                 &game.state.camera,
-                screen.size,
+                screen.physical_size(),
             )
             .0
             .transform_point(pos.0.cast());
