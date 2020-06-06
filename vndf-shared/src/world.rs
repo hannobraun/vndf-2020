@@ -6,6 +6,7 @@ pub use self::math::{
     Angle,
     Length,
     Pnt2,
+    Scalar,
     Size,
     Vec2,
 };
