@@ -8,6 +8,7 @@ pub mod vertices;
 pub use self::math::{
     Angle,
     Pnt2,
+    Scalar,
     Size,
     Transform,
     Vec2,
