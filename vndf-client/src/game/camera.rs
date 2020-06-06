@@ -13,12 +13,12 @@ pub struct Camera {
     pub center: world::Pnt2,
 
     /// The length along the x axis that is currently shown by the camera
-    pub view: f32,
+    pub view: world::Scalar,
 
     /// The speed at which the camera is currently moving
     ///
     /// Expressed as a factor that is multiplied with `view` every frame.
-    pub speed: f32,
+    pub speed: world::Scalar,
 }
 
 impl Camera {
@@ -31,7 +31,7 @@ impl Camera {
     }
 
     pub fn update(&mut self,
-        dt:      f32,
+        dt:      world::Scalar,
         own_pos: Option<world::Pnt2>,
         input:   &mut input::Handler,
     ) {
@@ -45,7 +45,7 @@ impl Camera {
     }
 
     fn update_speed(&mut self,
-        dt:    f32,
+        dt:    world::Scalar,
         input: &mut input::Handler,
     ) {
         // Before we do anything, let's slow the speed down a bit. If the user
@@ -83,8 +83,8 @@ impl Camera {
 
         // Now that we've figured out our factors, we can use them to restrict
         // our speed.
-        self.speed = f32::min(self.speed, max_factor);
-        self.speed = f32::max(self.speed, min_factor);
+        self.speed = world::Scalar::min(self.speed, max_factor);
+        self.speed = world::Scalar::max(self.speed, min_factor);
     }
 
     pub fn world_to_screen(&self,

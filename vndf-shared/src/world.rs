@@ -47,8 +47,8 @@ use self::behavior::{
 };
 
 
-pub const TARGET_FPS: u32 = 60;
-pub const FRAME_TIME: f32 = 1.0 / TARGET_FPS as f32;
+pub const TARGET_FPS: u32    = 60;
+pub const FRAME_TIME: Scalar = 1.0 / TARGET_FPS as Scalar;
 
 
 pub struct State {

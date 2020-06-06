@@ -48,11 +48,11 @@ pub fn draw_grid(
     let start = camera.center - world_size_on_screen / 2.0;
     let end   = start + world_size_on_screen;
 
-    let max_screen_len = f32::max(
+    let max_screen_len = world::Scalar::max(
         world_size_on_screen.x,
         world_size_on_screen.y,
     );
-    let mut cell_size = (2.0f32)
+    let mut cell_size = (2.0 as world::Scalar)
         .powf(max_screen_len.log2().ceil());
     let mut alpha = 1.0;
 
@@ -89,7 +89,7 @@ fn draw_cells(
     frame:     &mut Frame,
     start:     world::Pnt2,
     end:       world::Pnt2,
-    cell_size: f32,
+    cell_size: world::Scalar,
     alpha:     f32,
     camera:    &Camera,
 ) {
@@ -192,13 +192,19 @@ fn draw_line(
     );
 }
 
-fn iter(start: f32, end: f32, cell_size: f32) -> impl Iterator<Item=f32> {
+fn iter(
+    start:     world::Scalar,
+    end:       world::Scalar,
+    cell_size: world::Scalar,
+)
+    -> impl Iterator<Item=world::Scalar>
+{
     let start = start - start % cell_size;
 
     let mut i = 0;
 
     iter::from_fn(move || {
-        let v = start + cell_size * i as f32;
+        let v = start + cell_size * i as world::Scalar;
         i += 1;
 
         if v <= end {
