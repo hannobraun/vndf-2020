@@ -35,7 +35,10 @@ impl Text {
     pub fn bounds(&mut self, section: &Section) -> Option<graphics::Size> {
         self.glyph_brush.glyph_bounds(section)
             .map(|size| {
-                graphics::Size::new(size.width(), size.height())
+                graphics::Size::new(
+                    size.width(),
+                    size.height(),
+                )
             })
     }
 
