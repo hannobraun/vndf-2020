@@ -2,6 +2,7 @@ use crate::{
     game::input,
     graphics::{
         self,
+        screen::Screen,
         transforms,
     },
     shared::world,
@@ -89,12 +90,12 @@ impl Camera {
     }
 
     pub fn world_to_screen(&self,
-        screen_size: graphics::Size,
+        screen:      &Screen,
         point_world: world::Pnt2,
     )
         -> graphics::Pnt2
     {
-        transforms::world_to_screen(self, screen_size).0
+        transforms::world_to_screen(self, screen.logical_size()).0
             .transform_point(point_world.cast())
     }
 

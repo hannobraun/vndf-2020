@@ -263,11 +263,11 @@ impl Element {
                 );
 
                 let pericenter_pos = game.state.camera.world_to_screen(
-                    screen.logical_size(),
+                    &screen,
                     orbit.periapsis.position,
                 );
                 let apocenter_pos = game.state.camera.world_to_screen(
-                    screen.logical_size(),
+                    &screen,
                     orbit.apoapsis.position,
                 );
 

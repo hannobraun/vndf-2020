@@ -136,7 +136,7 @@ fn draw_cells(
                     .with_color([R, G, B, alpha])
             ];
             let pos = camera.world_to_screen(
-                screen.logical_size(),
+                &screen,
                 pos,
             );
             let layout = Layout::default_wrap()
@@ -165,8 +165,8 @@ fn draw_line(
     alpha:  f32,
     camera: &Camera,
 ) {
-    let start = camera.world_to_screen(frame.screen.logical_size(), start);
-    let end   = camera.world_to_screen(frame.screen.logical_size(), end);
+    let start = camera.world_to_screen(&frame.screen, start);
+    let end   = camera.world_to_screen(&frame.screen, end);
 
     let start_to_end = end - start;
 
