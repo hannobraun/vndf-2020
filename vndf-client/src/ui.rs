@@ -215,10 +215,8 @@ impl Element {
                     game,
                     screen,
                 )?;
-                let offset =
-                    graphics::Vec2::new(20.0, -20.0)
-                    * screen.scale_factor;
-                let pos = (element.pos + offset) / screen.scale_factor;
+                let offset = graphics::Vec2::new(20.0, -20.0);
+                let pos = element.pos + offset;
 
                 Some(
                     Self {

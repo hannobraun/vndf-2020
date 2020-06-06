@@ -107,11 +107,10 @@ impl ScreenElement {
     )
         -> Self
     {
-        let size = size * screen.scale_factor;
         let pos =
             transforms::world_to_screen(
                 &game.state.camera,
-                screen.physical_size(),
+                screen.logical_size(),
             )
             .0
             .transform_point(pos.0.cast());
