@@ -3,6 +3,7 @@ use crate::graphics;
 
 #[derive(Clone, Copy, Debug)]
 pub struct Screen {
+    /// The physical size of the screen
     size: graphics::Size,
 
     /// The scale factor used to convert between physical and logical size
