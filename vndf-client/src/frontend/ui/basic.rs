@@ -65,7 +65,7 @@ impl super::Ui for Basic {
                 None       => continue,
             };
 
-            const MARGIN: graphics::Scalar = 2.5;
+            const MARGIN: graphics::Scalar = 3.0;
             let margin = graphics::Size::new(
                 MARGIN * 2.0 * frame.screen.scale_factor,
                 MARGIN * 2.0 * frame.screen.scale_factor,
