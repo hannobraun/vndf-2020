@@ -33,6 +33,7 @@ use crate::{
             LocalUnit,
             Pixel,
         },
+        screen::Screen,
     },
     shared::world::math::Meter,
 };
@@ -95,15 +96,15 @@ pub fn local_to_screen(element: &ScreenElement) -> Transform<LocalUnit, Pixel> {
 }
 
 /// Returns what is commonly known as the view matrix
-pub fn world_to_screen(camera: &Camera, screen_size: graphics::Size)
+pub fn world_to_screen(camera: &Camera, screen: &Screen)
     -> Transform<Meter, Pixel>
 {
-    let pixels_per_meter = camera.pixels_per_meter(screen_size);
+    let pixels_per_meter = camera.pixels_per_meter(screen.logical_size());
 
     graphics::Transform::identity()
         .pre_translate(-camera.center.to_vector().cast::<graphics::Scalar>())
         .post_scale(pixels_per_meter, -pixels_per_meter)
-        .post_translate(screen_size.to_vector() / 2.0)
+        .post_translate(screen.logical_size().to_vector() / 2.0)
         .into()
 }
 

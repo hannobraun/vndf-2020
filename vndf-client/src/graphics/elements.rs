@@ -110,7 +110,7 @@ impl ScreenElement {
         let pos =
             transforms::world_to_screen(
                 &game.state.camera,
-                screen.logical_size(),
+                screen,
             )
             .0
             .transform_point(pos.0.cast());
@@ -162,7 +162,7 @@ impl WorldElement {
     {
         transforms::local_to_world(self)
             .post_transform(
-                &transforms::world_to_screen(camera, screen.logical_size())
+                &transforms::world_to_screen(camera, screen)
             )
             .post_transform(
                 &transforms::screen_to_homogeneous(screen.logical_size())

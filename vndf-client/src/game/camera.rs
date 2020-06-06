@@ -95,7 +95,7 @@ impl Camera {
     )
         -> graphics::Pnt2
     {
-        transforms::world_to_screen(self, screen.logical_size()).0
+        transforms::world_to_screen(self, screen).0
             .transform_point(point_world.cast())
     }
 
