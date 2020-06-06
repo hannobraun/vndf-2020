@@ -70,6 +70,7 @@ pub fn draw_grid(
         cell_size /= 2.0;
 
         let screen_to_cell = max_screen_len / cell_size;
+        let screen_to_cell = screen_to_cell as f32;
 
         const ALPHA_LIMIT: f32 = 2.0;
         const LOWER_LIMIT: f32 = 8.0;

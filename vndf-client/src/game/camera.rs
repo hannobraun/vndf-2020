@@ -54,6 +54,7 @@ impl Camera {
 
         // Now let's apply the latest input to the speed.
         let input = -input.scroll_acc();
+        let input = input as world::Scalar;
         if input * (self.speed - 1.0) >= 0.0 {
             // Current speed and input go into the same direction. Add input to
             // speed.
@@ -67,7 +68,7 @@ impl Camera {
         // We want to restrict the camera speed to a maximum value. We do that
         // by choosing the same value as a maximum factor and divisor per
         // second.
-        let max_factor = 400.0f32;
+        let max_factor = 400.0 as world::Scalar;
         let min_factor = 1.0 / max_factor;
 
         // So we decided what the maximum factor or divisor for a whole second
@@ -94,14 +95,14 @@ impl Camera {
         -> graphics::Pnt2
     {
         transforms::world_to_screen(self, screen_size).0
-            .transform_point(point_world)
+            .transform_point(point_world.cast())
     }
 
     pub fn pixels_per_meter(&self, screen_size: graphics::Size)
         -> graphics::Scalar
     {
         let world_size_on_screen = self.world_size_on_screen(screen_size);
-        screen_size.width / world_size_on_screen.width
+        screen_size.width / world_size_on_screen.width as graphics::Scalar
     }
 
     pub fn world_size_on_screen(&self, screen_size: graphics::Size)
@@ -110,7 +111,7 @@ impl Camera {
         let aspect_ratio = screen_size.width / screen_size.height;
 
         world::Size::new(
-            self.view * aspect_ratio,
+            self.view * aspect_ratio as world::Scalar,
             self.view,
         )
     }

@@ -9,7 +9,7 @@ use euclid;
 pub enum Meter {}
 
 
-pub type Scalar = f32;
+pub type Scalar = f64;
 
 pub type Angle = euclid::Angle<Scalar>;
 

@@ -70,13 +70,19 @@ pub type NativeTransform = [[f32; 4]; 4];
 
 /// Returns what is commonly known as the model matrix
 pub fn local_to_world(element: &WorldElement) -> Transform<LocalUnit, Meter> {
+    // Can be replaced with `.cast()`, once this PR lands:
+    // https://github.com/servo/euclid/pull/440
+    let angle = graphics::Angle {
+        radians: element.angle.radians as graphics::Scalar,
+    };
+
     graphics::Transform::identity()
         .post_scale(
-            element.size.width,
-            element.size.height,
+            element.size.width  as graphics::Scalar,
+            element.size.height as graphics::Scalar,
         )
-        .post_rotate(element.angle)
-        .post_translate(element.pos.to_vector())
+        .post_rotate(angle)
+        .post_translate(element.pos.to_vector().cast())
         .into()
 }
 
@@ -95,7 +101,7 @@ pub fn world_to_screen(camera: &Camera, screen_size: graphics::Size)
     let pixels_per_meter = camera.pixels_per_meter(screen_size);
 
     graphics::Transform::identity()
-        .pre_translate(-camera.center.to_vector())
+        .pre_translate(-camera.center.to_vector().cast::<graphics::Scalar>())
         .post_scale(pixels_per_meter, -pixels_per_meter)
         .post_translate(screen_size.to_vector() / 2.0)
         .into()

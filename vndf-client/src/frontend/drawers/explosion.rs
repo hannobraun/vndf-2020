@@ -1,7 +1,10 @@
 use crate::{
-    frontend::shaders::{
-        frag,
-        vert,
+    frontend::{
+        shaders::{
+            frag,
+            vert,
+        },
+        uniforms,
     },
     game::Game,
     graphics::elements::ScreenElement,
@@ -37,8 +40,8 @@ pub fn draw_explosion(
             transform: transform.into(),
         },
         frag::explosion::Uniforms {
-            strength_total: explosion.strength_total,
-            strength_left:  explosion.strength_left,
+            strength_total: explosion.strength_total as uniforms::Float,
+            strength_left:  explosion.strength_left  as uniforms::Float,
         },
     );
 

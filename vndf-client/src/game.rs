@@ -118,7 +118,7 @@ impl Game {
         self.events.limit();
 
         self.state.update(
-            dt.as_seconds_f32(),
+            dt.as_seconds_f64(),
             &mut self.input,
         );
 

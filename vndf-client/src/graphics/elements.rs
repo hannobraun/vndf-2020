@@ -85,6 +85,7 @@ impl ScreenElement {
         let pos = game.state.data.positions.get(&explosion.pos)?;
 
         let size = explosion.strength_total * 2.0;
+        let size = size as graphics::Scalar;
 
         Some(
             Self::from_pos(
@@ -108,8 +109,14 @@ impl ScreenElement {
     {
         let size = size * screen.scale_factor;
         let pos = transforms::world_to_screen(&game.state.camera, screen.size).0
-            .transform_point(pos.0);
+            .transform_point(pos.0.cast());
         let angle = dir.angle_from_x_axis();
+
+        // Can be replaced with `.cast()`, once this PR lands:
+        // https://github.com/servo/euclid/pull/440
+        let angle = graphics::Angle {
+            radians: angle.radians as graphics::Scalar,
+        };
 
         Self {
             size,

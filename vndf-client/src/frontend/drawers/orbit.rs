@@ -1,10 +1,16 @@
 use crate::{
-    frontend::shaders::{
-        frag,
-        vert,
+    frontend::{
+        shaders::{
+            frag,
+            vert,
+        },
+        uniforms,
     },
     game::Game,
-    graphics::elements::WorldElement,
+    graphics::{
+        self,
+        elements::WorldElement,
+    },
     shared::world::behavior::orbits::Orbit,
 };
 
@@ -33,8 +39,8 @@ pub fn draw_orbit(
         frame.screen.size
     );
     let pixel_per_u = [
-        pixel_per_m * element.size.width,
-        pixel_per_m * element.size.height,
+        pixel_per_m * element.size.width  as graphics::Scalar,
+        pixel_per_m * element.size.height as graphics::Scalar,
     ];
     let u_per_pixel = [
         1.0 / pixel_per_u[0],
@@ -68,7 +74,7 @@ pub fn draw_orbit(
         },
         frag::orbit::Uniforms {
             u_per_pixel:   u_per_pixel.into(),
-            orbiter_angle: orbiter_angle_to_orbit.radians,
+            orbiter_angle: orbiter_angle_to_orbit.radians as uniforms::Float,
             orbiter_dir,
             .. frag::orbit::Uniforms::default()
         },
