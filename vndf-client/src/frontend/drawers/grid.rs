@@ -52,8 +52,9 @@ pub fn draw_grid(
         world_size_on_screen.x,
         world_size_on_screen.y,
     );
-    let mut cell_size = (2.0f32).powf(max_screen_len.log2().ceil());
-    let mut alpha     = 1.0;
+    let mut cell_size = (2.0f32)
+        .powf(max_screen_len.log2().ceil());
+    let mut alpha = 1.0;
 
     loop {
         draw_cells(
