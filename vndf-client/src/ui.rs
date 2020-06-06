@@ -181,7 +181,7 @@ impl Element {
             fuel.0,
         );
 
-        let width = screen.size.width / screen.scale_factor;
+        let width = screen.logical_size().width;
         let pos = graphics::Pnt2::new(width - 200.0, 20.0);
 
         Some(
