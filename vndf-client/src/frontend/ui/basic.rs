@@ -61,7 +61,7 @@ impl super::Ui for Basic {
             };
 
             let size = match res.drawables.text.bounds(&section) {
-                Some(size) => size,
+                Some(size) => size / 2.0 * frame.screen.scale_factor,
                 None       => continue,
             };
 
