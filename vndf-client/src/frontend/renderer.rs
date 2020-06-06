@@ -269,7 +269,10 @@ fn select_backend(graphics: Graphics) -> wgpu::BackendBit {
     }
 }
 
-fn screen(swap_chain_desc: &wgpu::SwapChainDescriptor, scale_factor: f32)
+fn screen(
+    swap_chain_desc: &wgpu::SwapChainDescriptor,
+    scale_factor:    f32,
+)
     -> Screen
 {
     Screen {
