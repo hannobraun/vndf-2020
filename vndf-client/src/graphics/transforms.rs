@@ -71,7 +71,10 @@ pub type NativeTransform = [[f32; 4]; 4];
 /// Returns what is commonly known as the model matrix
 pub fn local_to_world(element: &WorldElement) -> Transform<LocalUnit, Meter> {
     graphics::Transform::identity()
-        .post_scale(element.size.width, element.size.height)
+        .post_scale(
+            element.size.width,
+            element.size.height,
+        )
         .post_rotate(element.angle)
         .post_translate(element.pos.to_vector())
         .into()
