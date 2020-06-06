@@ -99,7 +99,7 @@ pub fn local_to_screen(element: &ScreenElement) -> Transform<LocalUnit, Pixel> {
 pub fn world_to_screen(camera: &Camera, screen: &Screen)
     -> Transform<Meter, Pixel>
 {
-    let pixels_per_meter = camera.pixels_per_meter(screen.logical_size());
+    let pixels_per_meter = camera.pixels_per_meter(screen);
 
     graphics::Transform::identity()
         .pre_translate(-camera.center.to_vector().cast::<graphics::Scalar>())

@@ -36,7 +36,7 @@ pub fn draw_orbit(
     );
 
     let pixel_per_m = game.state.camera.pixels_per_meter(
-        frame.screen.logical_size()
+        &frame.screen
     );
     let pixel_per_u = [
         pixel_per_m * element.size.width  as graphics::Scalar,
