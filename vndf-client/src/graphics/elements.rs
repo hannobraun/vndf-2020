@@ -134,7 +134,7 @@ impl ScreenElement {
     {
         transforms::local_to_screen(self)
             .post_transform(
-                &transforms::screen_to_homogeneous(screen.logical_size())
+                &transforms::screen_to_homogeneous(screen)
             )
     }
 }
@@ -165,7 +165,7 @@ impl WorldElement {
                 &transforms::world_to_screen(camera, screen)
             )
             .post_transform(
-                &transforms::screen_to_homogeneous(screen.logical_size())
+                &transforms::screen_to_homogeneous(screen)
             )
     }
 }

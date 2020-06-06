@@ -109,16 +109,16 @@ pub fn world_to_screen(camera: &Camera, screen: &Screen)
 }
 
 /// Returns what is commonly known as the projection matrix
-pub fn screen_to_homogeneous(screen_size: graphics::Size)
+pub fn screen_to_homogeneous(screen: &Screen)
     -> Transform<Pixel, ClipUnit>
 {
     let clip_units_per_pixel = graphics::Vec2::new(
-        2.0 / screen_size.width,
-        2.0 / screen_size.height,
+        2.0 / screen.logical_size().width,
+        2.0 / screen.logical_size().height,
     );
 
     graphics::Transform::identity()
         .pre_scale(clip_units_per_pixel.x, -clip_units_per_pixel.y)
-        .pre_translate(-screen_size.to_vector() / 2.0)
+        .pre_translate(-screen.logical_size().to_vector() / 2.0)
         .into()
 }
