@@ -1,8 +1,3 @@
-use super::{
-    DrawResources,
-    Frame,
-};
-
 use crate::{
     frontend::shaders::{
         frag,
@@ -11,6 +6,11 @@ use crate::{
     game::Game,
     graphics::elements::ScreenElement,
     shared::world::behavior::explosions::Explosion,
+};
+
+use super::{
+    DrawResources,
+    Frame,
 };
 
 
