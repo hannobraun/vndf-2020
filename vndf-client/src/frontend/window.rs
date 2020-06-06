@@ -29,13 +29,13 @@ impl Window {
         let size = self.0.inner_size();
 
         graphics::Size::new(
-            size.width  as f32,
-            size.height as f32,
+            size.width  as graphics::Scalar,
+            size.height as graphics::Scalar,
         )
     }
 
-    pub fn scale_factor(&self) -> f32 {
-        self.0.scale_factor() as f32
+    pub fn scale_factor(&self) -> graphics::Scalar {
+        self.0.scale_factor() as graphics::Scalar
     }
 
     pub fn handle_event(&self, event: &Event<()>) {

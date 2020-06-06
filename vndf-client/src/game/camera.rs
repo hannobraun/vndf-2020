@@ -97,7 +97,9 @@ impl Camera {
             .transform_point(point_world)
     }
 
-    pub fn pixels_per_meter(&self, screen_size: graphics::Size) -> f32 {
+    pub fn pixels_per_meter(&self, screen_size: graphics::Size)
+        -> graphics::Scalar
+    {
         let world_size_on_screen = self.world_size_on_screen(screen_size);
         screen_size.width / world_size_on_screen.width
     }

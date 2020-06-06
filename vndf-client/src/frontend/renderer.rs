@@ -55,7 +55,7 @@ pub struct Renderer {
 
     ui: Box<dyn Ui>,
 
-    scale_factor: f32,
+    scale_factor: graphics::Scalar,
 }
 
 impl Renderer {
@@ -168,7 +168,7 @@ impl Renderer {
                 },
                 ..
             } => {
-                self.scale_factor = *scale_factor as f32;
+                self.scale_factor = *scale_factor as graphics::Scalar;
             }
             Event::RedrawRequested(_) => {
                 let mut frame = Frame {
@@ -271,14 +271,14 @@ fn select_backend(graphics: Graphics) -> wgpu::BackendBit {
 
 fn screen(
     swap_chain_desc: &wgpu::SwapChainDescriptor,
-    scale_factor:    f32,
+    scale_factor:    graphics::Scalar,
 )
     -> Screen
 {
     Screen {
         size: graphics::Size::new(
-            swap_chain_desc.width  as f32,
-            swap_chain_desc.height as f32,
+            swap_chain_desc.width  as graphics::Scalar,
+            swap_chain_desc.height as graphics::Scalar,
         ),
         scale_factor,
     }

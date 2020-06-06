@@ -66,7 +66,7 @@ impl super::Ui for Basic {
                     None       => return None,
                 };
 
-                const MARGIN: f32 = 5.0;
+                const MARGIN: graphics::Scalar = 5.0;
                 let margin = graphics::Size::new(MARGIN * 2.0, MARGIN * 2.0);
 
                 let element = ScreenElement {
