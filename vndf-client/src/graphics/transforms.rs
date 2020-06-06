@@ -122,31 +122,3 @@ pub fn screen_to_homogeneous(screen_size: graphics::Size)
         .pre_translate(-screen_size.to_vector() / 2.0)
         .into()
 }
-
-
-#[cfg(test)]
-mod tests {
-    use crate::graphics;
-
-    use super::screen_to_homogeneous;
-
-
-    #[test]
-    fn test_screen_to_homogeneous() {
-        let screen_size = graphics::Size::new(100.0, 200.0);
-        let transform   = screen_to_homogeneous(screen_size);
-
-        assert_eq!(
-            transform.0.transform_point(graphics::Pnt2::new(0.0, 0.0)),
-            euclid::Point2D::new(-1.0, 1.0),
-        );
-        assert_eq!(
-            transform.0.transform_point(graphics::Pnt2::new(100.0, 200.0)),
-            euclid::Point2D::new(1.0, -1.0),
-        );
-        assert_eq!(
-            transform.0.transform_point(graphics::Pnt2::new(50.0, 100.0)),
-            euclid::Point2D::new(0.0, 0.0),
-        );
-    }
-}
