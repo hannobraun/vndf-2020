@@ -131,7 +131,12 @@ impl super::Ui for Conrod {
         let command = self.renderer
             .fill(
                 &image_map,
-                [0.0, 0.0, frame.screen.size.width, frame.screen.size.height],
+                [
+                    0.0,
+                    0.0,
+                    frame.screen.size.width,
+                    frame.screen.size.height,
+                ],
                 frame.screen.scale_factor as f64,
                 primitives,
             )
