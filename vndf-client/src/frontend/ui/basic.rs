@@ -73,12 +73,15 @@ impl super::Ui for Basic {
                 pos:   pos + size * frame.screen.scale_factor / 2.0,
                 angle: graphics::Angle::zero(),
             };
+            let transform = element
+                .transform(frame.screen.size)
+                .into();
 
             res.drawables.square.draw(
                 &res.device,
                 frame,
                 vert::simple::Uniforms {
-                    transform: element.transform(frame.screen.size).into(),
+                    transform,
                 },
                 frag::simple::Uniforms {
                     color: [0.0, 0.0, 0.0, 0.95].into(),
