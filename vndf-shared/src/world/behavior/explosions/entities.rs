@@ -5,10 +5,13 @@ use toadster::{
     store,
 };
 
-use crate::world::physics::{
-    Body,
-    Position,
-    Velocity,
+use crate::world::{
+    math::Scalar,
+    physics::{
+        Body,
+        Position,
+        Velocity,
+    },
 };
 
 use super::Explosion;
@@ -16,7 +19,7 @@ use super::Explosion;
 
 pub struct ExplosionEntity {
     pub exploding: Body,
-    pub strength:  f32,
+    pub strength:  Scalar,
 }
 
 impl ExplosionEntity {

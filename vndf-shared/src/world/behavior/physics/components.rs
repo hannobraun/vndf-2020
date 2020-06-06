@@ -12,6 +12,7 @@ use crate::world::{
         self,
         Angle,
         Pnt2,
+        Scalar,
         Vec2,
         rotate,
     },
@@ -64,7 +65,7 @@ pub struct Body {
     pub dir: Vec2,
     pub rot: Angle,
 
-    pub mass: f32,
+    pub mass: Scalar,
 }
 
 impl Body {
@@ -98,7 +99,7 @@ impl Body {
     }
 
     pub fn update(&mut self,
-            dt:         f32,
+            dt:         Scalar,
             planets:    &Planets<impl for<'r> store::Values<'r, Planet>>,
         mut positions:  impl store::GetMut<Position>,
         mut velocities: impl store::GetMut<Velocity>,

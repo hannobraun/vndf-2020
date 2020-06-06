@@ -1,4 +1,7 @@
-use crate::data;
+use crate::{
+    data,
+    world::math::Scalar,
+};
 
 
 pub struct ComponentRemoved {
@@ -6,5 +9,5 @@ pub struct ComponentRemoved {
 }
 
 pub struct Update {
-    pub dt: f32,
+    pub dt: Scalar,
 }

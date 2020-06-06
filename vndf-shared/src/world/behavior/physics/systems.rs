@@ -1,8 +1,11 @@
 use toadster::store;
 
-use crate::world::planets::{
-    Planet,
-    Planets,
+use crate::world::{
+    math::Scalar,
+    planets::{
+        Planet,
+        Planets,
+    },
 };
 
 use super::{
@@ -17,7 +20,7 @@ pub fn update_bodies(
         planets:    &store::Strong<Planet>,
     mut positions:  &mut store::Strong<Position>,
     mut velocities: &mut store::Strong<Velocity>,
-        dt:         f32,
+        dt:         Scalar,
 ) {
     for body in bodies.values_mut() {
         body.update(dt, &Planets(planets), &mut positions, &mut velocities);

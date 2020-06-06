@@ -14,7 +14,10 @@ use toadster::{
 
 use crate::{
     data,
-    world::physics::Body,
+    world::{
+        math::Scalar,
+        physics::Body,
+    },
 };
 
 
@@ -23,11 +26,11 @@ pub struct Health {
     parent: Option<data::client::Handle>,
 
     pub body:   Handle<Body>,
-    pub value:  f32,
+    pub value:  Scalar,
 }
 
 impl Health {
-    pub fn new(body: impl Into<Handle<Body>>, value: f32) -> Self {
+    pub fn new(body: impl Into<Handle<Body>>, value: Scalar) -> Self {
         Health {
             parent: None,
             body:   body.into(),

@@ -6,6 +6,7 @@ use serde::{
 use crate::world::math::{
     Length,
     Pnt2,
+    Scalar,
     Vec2,
 };
 
@@ -16,7 +17,7 @@ use super::G;
 pub struct Planet {
     pub pos:    Pnt2,
     pub radius: Length,
-    pub mass:   f32,
+    pub mass:   Scalar,
 }
 
 impl Planet {

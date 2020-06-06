@@ -11,6 +11,7 @@ use toadster::Handle;
 
 use crate::world::{
     health::Health,
+    math::Scalar,
     physics::{
         Position,
         Velocity,
@@ -23,15 +24,15 @@ pub struct Explosion {
     pub pos: Handle<Position>,
     pub vel: Handle<Velocity>,
 
-    pub strength_total: f32,
-    pub strength_left:  f32,
+    pub strength_total: Scalar,
+    pub strength_left:  Scalar,
 }
 
 impl Explosion {
     pub fn new(
         pos:      impl Into<Handle<Position>>,
         vel:      impl Into<Handle<Velocity>>,
-        strength: f32,
+        strength: Scalar,
     )
         -> Self
     {
@@ -70,7 +71,7 @@ impl Explosion {
         }
     }
 
-    pub fn update(&mut self, dt: f32) -> bool {
+    pub fn update(&mut self, dt: Scalar) -> bool {
         if self.strength_left > 0.0 {
             self.strength_left -= dt;
             false

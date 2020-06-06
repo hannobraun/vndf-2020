@@ -5,6 +5,7 @@ use crate::world::{
         Angle,
         Length,
         Pnt2,
+        Scalar,
         Vec2,
     },
     planets::{
@@ -72,7 +73,7 @@ impl Orbit {
         let b = a * (1.0 - e.length().powi(2)).sqrt();
 
         // Argument of periapsis
-        let w = -f32::atan2(e.y, e.x);
+        let w = -Scalar::atan2(e.y, e.x);
 
         // Pericenter (point of closest approach)
         let periapsis = planet.pos + e.normalize() * (1.0 - e.length()) * a;

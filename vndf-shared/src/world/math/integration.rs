@@ -7,12 +7,13 @@
 
 use crate::world::math::{
     Pnt2,
+    Scalar,
     Vec2,
 };
 
 
 pub fn integrate(
-    dt:  f32,
+    dt:  Scalar,
     pos: &mut Pnt2,
     vel: &mut Vec2,
     acc: impl Fn(Pnt2) -> Vec2,
@@ -29,7 +30,7 @@ pub fn integrate(
 /// result, the projected path is inaccurate, and varies according to the
 /// current position in the orbit.
 pub fn semi_implicit_euler(
-    dt:  f32,
+    dt:  Scalar,
     pos: &mut Pnt2,
     vel: &mut Vec2,
     acc: impl Fn(Pnt2) -> Vec2,
@@ -48,7 +49,7 @@ pub fn semi_implicit_euler(
 /// to the path projection (as can be expected), but the improved accuracy makes
 /// it good enough for now.
 pub fn velocity_verlet(
-    dt:  f32,
+    dt:  Scalar,
     pos: &mut Pnt2,
     vel: &mut Vec2,
     acc: impl Fn(Pnt2) -> Vec2,

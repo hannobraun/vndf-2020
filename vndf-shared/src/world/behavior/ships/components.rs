@@ -16,7 +16,10 @@ use crate::{
     },
     world::{
         crafts::Craft,
-        math::Angle,
+        math::{
+            Angle,
+            Scalar,
+        },
         physics::Body,
         players::Player,
     },
@@ -90,7 +93,7 @@ impl Ship {
         let     craft = crafts.get(&self.craft)?;
         let mut body  = bodies.get_mut(&craft.body)?;
 
-        let rotation = self.rotation as i32 as f32;
+        let rotation = self.rotation as i32 as Scalar;
         body.rot = Angle::two_pi() * 0.6 * rotation;
 
         Some(())

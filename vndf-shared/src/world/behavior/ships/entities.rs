@@ -22,6 +22,7 @@ use crate::{
         health::Health,
         math::{
             Angle,
+            Scalar,
             Vec2,
             rotate,
         },
@@ -58,9 +59,9 @@ impl ShipEntity {
         velocities: &mut store::Strong<Velocity>,
         entities:   &mut HashSet<handle::Strong<Untyped>>,
     ) {
-        const THRUST: f32 =   100.0;
-        const FUEL:   f32 = 6_000.0;
-        const HEALTH: f32 =    10.0;
+        const THRUST: Scalar =   100.0;
+        const FUEL:   Scalar = 6_000.0;
+        const HEALTH: Scalar =    10.0;
 
         let distance = planet.radius * 1.5;
         let angle = Angle::radians(

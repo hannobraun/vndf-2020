@@ -8,6 +8,7 @@ use toadster::{
 
 use crate::world::{
     health::Health,
+    math::Scalar,
     physics::{
         Body,
         Position,
@@ -83,7 +84,7 @@ pub fn damage_nearby(
 
 pub fn update_explosions(
     explosions:      &mut store::Strong<Explosion>,
-    dt:              f32,
+    dt:              Scalar,
     explosion_faded: &mut EventSink<ExplosionFaded>,
 ) {
     for (handle, explosion) in explosions.iter_mut().strong() {

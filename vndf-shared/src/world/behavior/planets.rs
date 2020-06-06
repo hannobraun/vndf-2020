@@ -8,5 +8,8 @@ pub use self::{
 };
 
 
+use crate::world::math::Scalar;
+
+
 /// The gravitational constant
-pub const G: f32 = 6.674e-11;
+pub const G: Scalar = 6.674e-11;
