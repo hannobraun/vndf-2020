@@ -171,7 +171,7 @@ fn draw_line(
     let start_to_end = end - start;
 
     let length    = start_to_end.length();
-    let thickness = 2.0;
+    let thickness = 1.0 * frame.screen.scale_factor;
 
     let transform =
         ScreenElement {
