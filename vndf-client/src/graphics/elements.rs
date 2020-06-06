@@ -157,15 +157,15 @@ pub struct WorldElement {
 }
 
 impl WorldElement {
-    pub fn transform(&self, camera: &Camera, screen_size: graphics::Size)
+    pub fn transform(&self, camera: &Camera, screen: &Screen)
         -> Transform<LocalUnit, ClipUnit>
     {
         transforms::local_to_world(self)
             .post_transform(
-                &transforms::world_to_screen(camera, screen_size)
+                &transforms::world_to_screen(camera, screen.logical_size())
             )
             .post_transform(
-                &transforms::screen_to_homogeneous(screen_size)
+                &transforms::screen_to_homogeneous(screen.logical_size())
             )
     }
 }

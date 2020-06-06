@@ -32,7 +32,7 @@ pub fn draw_orbit(
 
     let transform = element.transform(
         &game.state.camera,
-        frame.screen.physical_size(),
+        &frame.screen,
     );
 
     let pixel_per_m = game.state.camera.pixels_per_meter(
