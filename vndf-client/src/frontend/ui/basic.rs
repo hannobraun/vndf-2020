@@ -48,11 +48,11 @@ impl super::Ui for Basic {
             let text = vec![
                 Text::default()
                     .with_text(element.text.as_str())
-                    .with_scale(16.0 * frame.screen.scale_factor)
+                    .with_scale(16.0)
                     .with_color([1.0, 1.0, 1.0, 1.0]),
             ];
 
-            let pos = element.pos * frame.screen.scale_factor;
+            let pos = element.pos;
 
             let section = Section {
                 text,
@@ -61,13 +61,14 @@ impl super::Ui for Basic {
             };
 
             let size = match res.drawables.text.bounds(&section) {
-                Some(size) => size / frame.screen.scale_factor,
+                Some(size) => size,
                 None       => continue,
             };
 
             const MARGIN: graphics::Scalar = 5.0;
             let margin = graphics::Size::new(MARGIN * 2.0, MARGIN * 2.0);
 
+            let pos = pos * frame.screen.scale_factor;
             let element = ScreenElement {
                 size:  size + margin,
                 pos:   pos + size * frame.screen.scale_factor / 2.0,

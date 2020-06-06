@@ -132,11 +132,11 @@ fn draw_cells(
             let text = vec![
                 Text::default()
                     .with_text(&label)
-                    .with_scale(12.0 * screen.scale_factor)
+                    .with_scale(12.0)
                     .with_color([R, G, B, alpha])
             ];
             let pos = camera.world_to_screen(
-                screen.physical_size(),
+                screen.logical_size(),
                 pos,
             );
             let layout = Layout::default_wrap()
