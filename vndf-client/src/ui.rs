@@ -265,14 +265,12 @@ impl Element {
                     apoapsis_above_surface_km,
                 );
 
-                let size = screen.size / screen.scale_factor;
-
                 let pericenter_pos = game.state.camera.world_to_screen(
-                    size,
+                    screen.logical_size(),
                     orbit.periapsis.position,
                 );
                 let apocenter_pos = game.state.camera.world_to_screen(
-                    size,
+                    screen.logical_size(),
                     orbit.apoapsis.position,
                 );
 
