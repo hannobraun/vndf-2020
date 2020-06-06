@@ -61,24 +61,23 @@ impl super::Ui for Basic {
             };
 
             let size = match res.drawables.text.bounds(&section) {
-                Some(size) => size * frame.screen.scale_factor,
+                Some(size) => size,
                 None       => continue,
             };
 
             const MARGIN: graphics::Scalar = 3.0;
             let margin = graphics::Size::new(
-                MARGIN * 2.0 * frame.screen.scale_factor,
-                MARGIN * 2.0 * frame.screen.scale_factor,
+                MARGIN * 2.0,
+                MARGIN * 2.0,
             );
 
-            let pos = pos * frame.screen.scale_factor;
             let element = ScreenElement {
                 size:  size / 2.0 + margin,
-                pos:   pos + size / 2.0 * frame.screen.scale_factor / 2.0,
+                pos:   pos + size / 2.0,
                 angle: graphics::Angle::zero(),
             };
             let transform = element
-                .transform(frame.screen.physical_size())
+                .transform(frame.screen.logical_size())
                 .into();
 
             res.drawables.square.draw(
