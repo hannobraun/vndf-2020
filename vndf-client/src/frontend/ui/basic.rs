@@ -61,7 +61,7 @@ impl super::Ui for Basic {
             };
 
             let size = match res.drawables.text.bounds(&section) {
-                Some(size) => size / 2.0 * frame.screen.scale_factor,
+                Some(size) => size * frame.screen.scale_factor,
                 None       => continue,
             };
 
@@ -73,8 +73,8 @@ impl super::Ui for Basic {
 
             let pos = pos * frame.screen.scale_factor;
             let element = ScreenElement {
-                size:  size + margin,
-                pos:   pos + size * frame.screen.scale_factor / 2.0,
+                size:  size / 2.0 + margin,
+                pos:   pos + size / 2.0 * frame.screen.scale_factor / 2.0,
                 angle: graphics::Angle::zero(),
             };
             let transform = element
