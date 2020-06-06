@@ -215,8 +215,7 @@ impl Element {
                     game,
                     screen,
                 )?;
-                let offset = graphics::Vec2::new(20.0, -20.0);
-                let pos = element.pos + offset;
+                let pos = element.pos + graphics::Vec2::new(20.0, -20.0);
 
                 Some(
                     Self {
