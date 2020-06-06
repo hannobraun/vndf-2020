@@ -275,13 +275,13 @@ fn screen(
 )
     -> Screen
 {
-    Screen {
-        size: graphics::Size::new(
+    Screen::new(
+        graphics::Size::new(
             swap_chain_desc.width  as graphics::Scalar,
             swap_chain_desc.height as graphics::Scalar,
         ),
         scale_factor,
-    }
+    )
 }
 
 

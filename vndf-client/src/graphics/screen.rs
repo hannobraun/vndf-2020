@@ -11,6 +11,13 @@ pub struct Screen {
 }
 
 impl Screen {
+    pub fn new(size: graphics::Size, scale_factor: graphics::Scalar) -> Self {
+        Self {
+            size,
+            scale_factor,
+        }
+    }
+
     pub fn physical_size(&self) -> graphics::Size {
         self.size
     }
