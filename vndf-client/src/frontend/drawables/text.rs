@@ -20,7 +20,7 @@ impl Text {
     pub fn new(device: &wgpu::Device, format: wgpu::TextureFormat)
         -> Result<Self, wgpu_glyph::ab_glyph::InvalidFont>
     {
-        let font = include_bytes!("../ui/fonts/Tuffy_Bold.ttf");
+        let font = include_bytes!("../fonts/Tuffy_Bold.ttf");
         let font = FontRef::try_from_slice(&font[..])?;
         let glyph_brush = GlyphBrushBuilder::using_font(font)
             .build(&device, format);
