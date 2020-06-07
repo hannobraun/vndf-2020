@@ -37,7 +37,7 @@ use super::{
         self,
         Meshes,
     },
-    ui::Ui,
+    ui,
     window::Window,
 };
 
@@ -48,8 +48,6 @@ pub struct Renderer {
     swap_chain_desc: wgpu::SwapChainDescriptor,
     swap_chain:      wgpu::SwapChain,
     draw_res:        DrawResources,
-
-    ui: Ui,
 
     scale_factor: graphics::Scalar,
 }
@@ -108,8 +106,6 @@ impl Renderer {
 
         let scale_factor = window.scale_factor();
 
-        let ui = Ui::new();
-
         let draw_res = DrawResources {
             device,
             drawables,
@@ -122,8 +118,6 @@ impl Renderer {
                 swap_chain_desc,
                 swap_chain,
                 draw_res,
-
-                ui,
 
                 scale_factor,
             }
@@ -202,13 +196,12 @@ impl Renderer {
                     );
                 }
 
-                self.ui
-                    .draw(
-                        &mut self.draw_res,
-                        &mut frame,
-                        game,
-                    )
-                    .map_err(|()| Error::Ui)?;
+                ui::draw(
+                    &mut self.draw_res,
+                    &mut frame,
+                    game,
+                )
+                .map_err(|()| Error::Ui)?;
 
                 self.queue.submit(&[frame.encoder.finish()]);
             }
