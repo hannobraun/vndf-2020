@@ -102,16 +102,15 @@ impl Camera {
     pub fn pixels_per_meter(&self, screen: &Screen)
         -> graphics::Scalar
     {
-        let world_size_on_screen = self.world_size_on_screen(
-            screen.logical_size()
-        );
+        let world_size_on_screen = self.world_size_on_screen(screen);
         screen.logical_size().width
             / world_size_on_screen.width as graphics::Scalar
     }
 
-    pub fn world_size_on_screen(&self, screen_size: graphics::Size)
+    pub fn world_size_on_screen(&self, screen: &Screen)
         -> world::Size
     {
+        let screen_size  = screen.logical_size();
         let aspect_ratio = screen_size.width / screen_size.height;
 
         world::Size::new(

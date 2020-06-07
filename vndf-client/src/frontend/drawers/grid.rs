@@ -42,7 +42,7 @@ pub fn draw_grid(
     let camera = &game.state.camera;
 
     let world_size_on_screen = camera
-        .world_size_on_screen(frame.screen.logical_size())
+        .world_size_on_screen(&frame.screen)
         .to_vector();
 
     let start = camera.center - world_size_on_screen / 2.0;
