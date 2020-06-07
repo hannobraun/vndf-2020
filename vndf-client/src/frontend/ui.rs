@@ -14,10 +14,7 @@ use crate::{
     ui,
 };
 
-use self::{
-    element::draw,
-    layout::Layout,
-};
+use self::layout::Layout;
 
 
 pub struct Ui;
@@ -61,7 +58,7 @@ impl Ui {
             .chain(&elements.ship_info);
 
         for element in other_elements {
-            draw(
+            element::draw(
                 res,
                 frame,
                 element.pos,
