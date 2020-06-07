@@ -22,11 +22,11 @@ use crate::{
 };
 
 
-pub fn draw<'r>(
+pub fn draw(
     res:   &mut DrawResources,
     frame: &mut Frame,
     pos:   graphics::Pnt2,
-    text:  &'r str,
+    text:  &str,
 )
     -> graphics::Size
 {
