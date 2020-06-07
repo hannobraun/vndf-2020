@@ -168,16 +168,20 @@ fn draw_line(
     let start = camera.world_to_screen(&frame.screen, start);
     let end   = camera.world_to_screen(&frame.screen, end);
 
-    let start_to_end = end - start;
-
-    let length    = start_to_end.length();
     let thickness = 1.0;
+
+    let size = if start.x == end.x {
+        graphics::Size::new(thickness, end.y - start.y)
+    }
+    else {
+        graphics::Size::new(end.x - start.x, thickness)
+    };
 
     let transform =
         ScreenElement {
-            size:  graphics::Size::new(length, thickness),
-            pos:   start,
-            angle: -start_to_end.angle_from_x_axis(),
+            size,
+            pos: start,
+            .. ScreenElement::default()
         }
         .transform(&frame.screen);
 
