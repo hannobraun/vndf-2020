@@ -7,7 +7,7 @@ use crate::{
     ui,
 };
 
-use super::element;
+use super::elements;
 
 
 pub struct Layout<'r> {
@@ -33,7 +33,7 @@ impl<'r> Layout<'r> {
     }
 
     pub fn draw(&mut self, element: &'r ui::Element) {
-        let size = element::draw(
+        let size = elements::draw(
             self.res,
             self.frame,
             self.next_pos,

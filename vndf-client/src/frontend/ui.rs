@@ -1,4 +1,4 @@
-mod element;
+mod elements;
 mod layout;
 
 
@@ -51,7 +51,7 @@ pub fn draw(
         .chain(&elements.ship_info);
 
     for element in other_elements {
-        element::draw(
+        elements::draw(
             res,
             frame,
             element.pos,
