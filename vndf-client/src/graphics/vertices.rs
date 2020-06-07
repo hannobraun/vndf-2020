@@ -15,8 +15,8 @@ pub const SHIP: &[Vertex] = &[
 ];
 
 pub const SQUARE: &[Vertex] = &[
-    Vertex::new(-1.0, -1.0),
-    Vertex::new( 1.0, -1.0),
-    Vertex::new( 1.0,  1.0),
-    Vertex::new(-1.0,  1.0),
+    Vertex::new(-0.5, -0.5),
+    Vertex::new( 0.5, -0.5),
+    Vertex::new( 0.5,  0.5),
+    Vertex::new(-0.5,  0.5),
 ];

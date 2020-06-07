@@ -173,8 +173,8 @@ impl WorldElement {
 impl From<&Orbit> for WorldElement {
     fn from(orbit: &Orbit) -> Self {
         let size = world::Size::from_lengths(
-            orbit.semi_major_axis,
-            orbit.semi_minor_axis,
+            orbit.semi_major_axis * 2.0,
+            orbit.semi_minor_axis * 2.0,
         );
         let pos = orbit.ellipse_pos;
         let angle = orbit.arg_of_periapsis;
@@ -189,8 +189,10 @@ impl From<&Orbit> for WorldElement {
 
 impl From<&Planet> for WorldElement {
     fn from(planet: &Planet) -> Self {
+        let diameter = planet.radius * 2.0;
+
         Self {
-            size:  world::Size::from_lengths(planet.radius, planet.radius),
+            size:  world::Size::from_lengths(diameter, diameter),
             pos:   planet.pos,
             angle: world::Angle::zero(),
         }

@@ -178,8 +178,8 @@ fn draw_line(
 
     let transform =
         ScreenElement {
-            size: size / 2.0,
-            pos:  start + size / 2.0,
+            size,
+            pos: start + size / 2.0,
             .. ScreenElement::default()
         }
         .transform(&frame.screen);

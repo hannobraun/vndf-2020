@@ -72,7 +72,7 @@ impl super::Ui for Basic {
             );
 
             let element = ScreenElement {
-                size:  size / 2.0 + margin,
+                size:  size + margin,
                 pos:   pos + size / 2.0,
                 angle: graphics::Angle::zero(),
             };
