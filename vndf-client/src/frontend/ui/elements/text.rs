@@ -47,9 +47,7 @@ impl<'r> Text<'r> {
 }
 
 impl<'r> Element for Text<'r> {
-    fn size(&self, _: &mut DrawResources)
-        -> graphics::Size
-    {
+    fn size(&self, _: &mut DrawResources) -> graphics::Size {
         self.size
     }
 
