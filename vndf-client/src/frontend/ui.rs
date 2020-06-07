@@ -1,7 +1,6 @@
 mod element;
+mod layout;
 
-
-use std::iter;
 
 use crate::{
     frontend::{
@@ -15,7 +14,10 @@ use crate::{
     ui,
 };
 
-use self::element::draw;
+use self::{
+    element::draw,
+    layout::Layout,
+};
 
 
 pub struct Ui;
@@ -34,14 +36,25 @@ impl Ui {
     {
         let elements = ui::Elements::new(game, &frame.screen);
 
-        layout_panels(
+        const MARGIN: f32 = 20.0;
+
+        let mut top_left = Layout::new(
             res,
             frame,
-            iter::once(&elements.instructions)
-                .chain(elements.frame_time.as_ref())
-                .chain(elements.diagnostics.as_ref())
-                .chain(elements.input_events.as_ref()),
+            graphics::Pnt2::new(MARGIN, MARGIN),
+            MARGIN,
         );
+
+        top_left.draw(&elements.instructions);
+        if let Some(element) = elements.frame_time.as_ref() {
+            top_left.draw(element);
+        }
+        if let Some(element) = elements.diagnostics.as_ref() {
+            top_left.draw(element);
+        }
+        if let Some(element) = elements.input_events.as_ref() {
+            top_left.draw(element);
+        }
 
         let other_elements = elements.own_ship_status.iter()
             .chain(&elements.ship_info)
@@ -57,27 +70,5 @@ impl Ui {
         }
 
         Ok(())
-    }
-}
-
-
-fn layout_panels<'r>(
-    res:      &mut DrawResources,
-    frame:    &mut Frame,
-    elements: impl Iterator<Item=&'r ui::Element>,
-) {
-    const MARGIN: f32 = 20.0;
-
-    let mut next_pos = graphics::Pnt2::new(MARGIN, MARGIN);
-
-    for element in elements {
-        let size = draw(
-            res,
-            frame,
-            next_pos,
-            element.text.as_str(),
-        );
-
-        next_pos.y += size.height + MARGIN;
     }
 }
