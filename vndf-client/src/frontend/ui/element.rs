@@ -55,9 +55,31 @@ pub fn draw<'r>(
 
     let panel_size = text_size + padding;
 
+    panel(
+        res,
+        frame,
+        pos + text_size / 2.0,
+        panel_size,
+    );
+
+    res.drawables.text.draw(
+        &res.device,
+        frame,
+        Some(section),
+    );
+
+    panel_size
+}
+
+pub fn panel(
+    res:   &mut DrawResources,
+    frame: &mut Frame,
+    pos:   graphics::Pnt2,
+    size:  graphics::Size,
+) {
     let element = ScreenElement {
-        size:  panel_size,
-        pos:   pos + text_size / 2.0,
+        size,
+        pos,
         angle: graphics::Angle::zero(),
     };
     let transform = element
@@ -74,12 +96,4 @@ pub fn draw<'r>(
             color: [0.0, 0.0, 0.0, 0.95].into(),
         },
     );
-
-    res.drawables.text.draw(
-        &res.device,
-        frame,
-        Some(section),
-    );
-
-    panel_size
 }
