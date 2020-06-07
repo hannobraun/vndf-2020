@@ -37,10 +37,7 @@ use super::{
         self,
         Meshes,
     },
-    ui::{
-        self,
-        Ui,
-    },
+    ui,
     window::Window,
 };
 
@@ -217,8 +214,6 @@ impl Renderer {
             }
             _ => {}
         }
-
-        self.ui.handle_event(event, &self.screen());
 
         Ok(())
     }

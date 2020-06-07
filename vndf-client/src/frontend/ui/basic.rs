@@ -4,7 +4,6 @@ use wgpu_glyph::{
     Section,
     Text,
 };
-use winit::event::Event;
 
 use crate::{
     frontend::{
@@ -21,7 +20,6 @@ use crate::{
     graphics::{
         self,
         elements::ScreenElement,
-        screen::Screen,
     },
     ui,
 };
@@ -33,10 +31,8 @@ impl Basic {
     pub fn new() -> Self {
         Self
     }
-}
 
-impl super::Ui for Basic {
-    fn draw(&mut self,
+    pub fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,
         game:  &Game,
@@ -78,8 +74,6 @@ impl super::Ui for Basic {
 
         Ok(())
     }
-
-    fn handle_event(&mut self, _: &Event<()>, _: &Screen) {}
 }
 
 
