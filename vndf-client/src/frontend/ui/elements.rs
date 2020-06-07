@@ -23,10 +23,10 @@ use crate::{
 
 
 pub fn draw<'r>(
-    res:      &mut DrawResources,
-    frame:    &mut Frame,
-    pos:      graphics::Pnt2,
-    text:     &'r str,
+    res:   &mut DrawResources,
+    frame: &mut Frame,
+    pos:   graphics::Pnt2,
+    text:  &'r str,
 )
     -> graphics::Size
 {
