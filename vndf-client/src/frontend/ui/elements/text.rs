@@ -6,6 +6,8 @@ use crate::{
     graphics,
 };
 
+use super::Element;
+
 
 pub struct Text<'r> {
     section: wgpu_glyph::Section<'r>,
@@ -35,14 +37,16 @@ impl<'r> Text<'r> {
             section,
         }
     }
+}
 
-    pub fn size(&self, res: &mut DrawResources)
+impl<'r> Element for Text<'r> {
+    fn size(&self, res: &mut DrawResources)
         -> Option<graphics::Size>
     {
         res.drawables.text.bounds(&self.section)
     }
 
-    pub fn draw(self,
+    fn draw(self,
         res:   &mut DrawResources,
         frame: &mut Frame,
     ) {

@@ -22,6 +22,12 @@ use crate::{
 };
 
 
+pub trait Element {
+    fn size(&self, res: &mut DrawResources) -> Option<graphics::Size>;
+    fn draw(self, res: &mut DrawResources, frame: &mut Frame);
+}
+
+
 pub fn text_panel(
     res:   &mut DrawResources,
     frame: &mut Frame,
