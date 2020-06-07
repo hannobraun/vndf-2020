@@ -51,7 +51,7 @@ pub fn draw(
         .chain(&elements.ship_info);
 
     for element in other_elements {
-        elements::draw(
+        elements::text_panel(
             res,
             frame,
             element.pos,

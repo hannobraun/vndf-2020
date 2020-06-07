@@ -22,7 +22,7 @@ use crate::{
 };
 
 
-pub fn draw(
+pub fn text_panel(
     res:   &mut DrawResources,
     frame: &mut Frame,
     pos:   graphics::Pnt2,

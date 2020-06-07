@@ -33,7 +33,7 @@ impl<'r> Layout<'r> {
     }
 
     pub fn draw(&mut self, element: &'r ui::Element) {
-        let size = elements::draw(
+        let size = elements::text_panel(
             self.res,
             self.frame,
             self.next_pos,
