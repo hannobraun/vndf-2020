@@ -139,8 +139,10 @@ fn draw_panel<'r>(
         PADDING * 2.0,
     );
 
+    let panel_size = size + padding;
+
     let element = ScreenElement {
-        size:  size + padding,
+        size:  panel_size,
         pos:   pos + size / 2.0,
         angle: graphics::Angle::zero(),
     };
@@ -161,5 +163,5 @@ fn draw_panel<'r>(
 
     sections.push(section);
 
-    size
+    panel_size
 }
