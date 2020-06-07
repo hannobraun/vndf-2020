@@ -26,7 +26,6 @@ pub fn draw<'r>(
     frame:    &mut Frame,
     pos:      graphics::Pnt2,
     text:     &'r str,
-    sections: &mut Vec<Section<'r>>,
 )
     -> graphics::Size
 {
@@ -76,7 +75,11 @@ pub fn draw<'r>(
         },
     );
 
-    sections.push(section);
+    res.drawables.text.draw(
+        &res.device,
+        frame,
+        Some(section),
+    );
 
     panel_size
 }
