@@ -1,13 +1,17 @@
 use crate::{
-    frontend::drawers::{
-        DrawResources,
-        Frame,
+    frontend::{
+        drawers::{
+            DrawResources,
+            Frame,
+        },
+        ui::elements::{
+            Element as _,
+            TextPanel,
+        }
     },
     graphics,
     ui,
 };
-
-use super::elements;
 
 
 pub struct Layout<'r> {
@@ -33,13 +37,11 @@ impl<'r> Layout<'r> {
     }
 
     pub fn draw(&mut self, element: &'r ui::Element) {
-        let size = elements::text_panel(
-            self.res,
-            self.frame,
-            self.next_pos,
-            element.text.as_str(),
-        );
+        let text_panel = TextPanel::new(self.res, &element.text, self.next_pos)
+            .unwrap();
 
-        self.next_pos.y += size.height + self.margin;
+        self.next_pos.y += text_panel.size().height + self.margin;
+
+        text_panel.draw(self.res, self.frame)
     }
 }

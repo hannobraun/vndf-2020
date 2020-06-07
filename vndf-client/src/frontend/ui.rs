@@ -14,7 +14,13 @@ use crate::{
     ui,
 };
 
-use self::layout::Layout;
+use self::{
+    elements::{
+        Element as _,
+        TextPanel,
+    },
+    layout::Layout,
+};
 
 
 pub fn draw(
@@ -51,12 +57,9 @@ pub fn draw(
         .chain(&elements.ship_info);
 
     for element in other_elements {
-        elements::text_panel(
-            res,
-            frame,
-            element.pos,
-            element.text.as_str(),
-        );
+        TextPanel::new(res, &element.text, element.pos)
+            .unwrap()
+            .draw(res, frame);
     }
 
     Ok(())
