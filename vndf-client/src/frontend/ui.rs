@@ -17,7 +17,7 @@ use crate::{
     ui,
 };
 
-use self::element::draw_panel;
+use self::element::draw;
 
 
 pub struct Ui;
@@ -52,7 +52,7 @@ impl Ui {
             .chain(&elements.orbit_info);
 
         for element in other_elements {
-            draw_panel(
+            draw(
                 res,
                 frame,
                 element.pos,
@@ -83,7 +83,7 @@ fn layout_panels<'r>(
     let mut next_pos = graphics::Pnt2::new(MARGIN, MARGIN);
 
     for element in elements {
-        let size = draw_panel(
+        let size = draw(
             res,
             frame,
             next_pos,

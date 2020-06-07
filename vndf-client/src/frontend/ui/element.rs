@@ -21,7 +21,7 @@ use crate::{
 };
 
 
-pub fn draw_panel<'r>(
+pub fn draw<'r>(
     res:      &mut DrawResources,
     frame:    &mut Frame,
     pos:      graphics::Pnt2,
