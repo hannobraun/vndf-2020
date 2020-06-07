@@ -37,7 +37,7 @@ use super::{
         self,
         Meshes,
     },
-    ui,
+    ui::Ui,
     window::Window,
 };
 
@@ -49,7 +49,7 @@ pub struct Renderer {
     swap_chain:      wgpu::SwapChain,
     draw_res:        DrawResources,
 
-    ui: ui::Basic,
+    ui: Ui,
 
     scale_factor: graphics::Scalar,
 }
@@ -108,7 +108,7 @@ impl Renderer {
 
         let scale_factor = window.scale_factor();
 
-        let ui = ui::Basic::new();
+        let ui = Ui::new();
 
         let draw_res = DrawResources {
             device,

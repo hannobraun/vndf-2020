@@ -25,9 +25,9 @@ use crate::{
 };
 
 
-pub struct Basic;
+pub struct Ui;
 
-impl Basic {
+impl Ui {
     pub fn new() -> Self {
         Self
     }
