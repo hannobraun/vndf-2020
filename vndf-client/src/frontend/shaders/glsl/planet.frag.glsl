@@ -13,8 +13,10 @@ layout(location = 0) in  vec2 pos;
 layout(location = 0) out vec4 color_out;
 
 void main() {
+    const float LIMIT = 1.0;
+
     float alpha;
-    if (length(pos) <= 1.0) {
+    if (length(pos) <= LIMIT) {
         alpha = 1.0;
     }
     else {
