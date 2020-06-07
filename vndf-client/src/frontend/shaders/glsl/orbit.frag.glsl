@@ -16,14 +16,16 @@ layout(location = 0) in  vec2 pos;
 layout(location = 0) out vec4 color_out;
 
 void main() {
+    const float LIMIT = 1.0;
+
     // This isn't really right, as it only takes into account the units per
     // pixel for the y axis. Orbits are "round enough" that I don't notice it on
     // screen though.
-    float x = 1.0 - (2.0 * u_per_pixel[0]);
+    float x = LIMIT - (2.0 * u_per_pixel[0]);
     float r = length(pos);
 
     float alpha;
-    if (x < r && r <= 1.0) {
+    if (x < r && r <= LIMIT) {
         alpha = 0.5;
     }
     else if (r <= x) {
