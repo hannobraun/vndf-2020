@@ -18,7 +18,7 @@ use crate::{
 
 
 pub trait Element {
-    fn size(&self, res: &mut DrawResources) -> graphics::Size;
+    fn size(&self) -> graphics::Size;
     fn draw(self, res: &mut DrawResources, frame: &mut Frame);
 }
 
@@ -34,7 +34,7 @@ pub fn text_panel(
     let text = Text::new(res, text, pos)
         .unwrap();
 
-    let text_size = text.size(res);
+    let text_size = text.size();
 
     const PADDING: graphics::Scalar = 3.0;
     let padding = graphics::Size::new(

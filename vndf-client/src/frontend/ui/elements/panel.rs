@@ -24,7 +24,7 @@ pub struct Panel {
 }
 
 impl Element for Panel {
-    fn size(&self, _: &mut DrawResources) -> graphics::Size {
+    fn size(&self) -> graphics::Size {
         self.size
     }
 
