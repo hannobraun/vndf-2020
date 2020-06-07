@@ -57,8 +57,8 @@ impl Ui {
         }
 
         let other_elements = elements.own_ship_status.iter()
-            .chain(&elements.ship_info)
-            .chain(&elements.orbit_info);
+            .chain(&elements.orbit_info)
+            .chain(&elements.ship_info);
 
         for element in other_elements {
             draw(
