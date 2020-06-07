@@ -1,24 +1,19 @@
+mod panel;
 mod text;
 
 
-pub use self::text::Text;
+pub use self::{
+    panel::Panel,
+    text::Text,
+};
 
 
 use crate::{
-    frontend::{
-        drawers::{
-            DrawResources,
-            Frame,
-        },
-        shaders::{
-            frag,
-            vert,
-        },
+    frontend::drawers::{
+        DrawResources,
+        Frame,
     },
-    graphics::{
-        self,
-        elements::ScreenElement,
-    },
+    graphics,
 };
 
 
@@ -51,41 +46,10 @@ pub fn text_panel(
 
     let panel_size = text_size + padding;
 
-    panel(
-        res,
-        frame,
-        pos + text_size / 2.0,
-        panel_size,
-    );
+    Panel { pos: pos + text_size / 2.0, size: panel_size }
+        .draw(res, frame);
 
     text.draw(res, frame);
 
     panel_size
-}
-
-pub fn panel(
-    res:   &mut DrawResources,
-    frame: &mut Frame,
-    pos:   graphics::Pnt2,
-    size:  graphics::Size,
-) {
-    let element = ScreenElement {
-        size,
-        pos,
-        angle: graphics::Angle::zero(),
-    };
-    let transform = element
-        .transform(&frame.screen)
-        .into();
-
-    res.drawables.square.draw(
-        &res.device,
-        frame,
-        vert::simple::Uniforms {
-            transform,
-        },
-        frag::simple::Uniforms {
-            color: [0.0, 0.0, 0.0, 0.95].into(),
-        },
-    );
 }
