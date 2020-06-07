@@ -45,53 +45,13 @@ impl super::Ui for Basic {
 
         let elements = ui::Elements::new(game, &frame.screen);
         for element in elements.elements() {
-            let text = vec![
-                Text::default()
-                    .with_text(element.text.as_str())
-                    .with_scale(16.0)
-                    .with_color([1.0, 1.0, 1.0, 1.0]),
-            ];
-
-            let pos = element.pos;
-
-            let section = Section {
-                text,
-                screen_position: (pos.x, pos.y),
-                .. Section::default()
-            };
-
-            let size = match res.drawables.text.bounds(&section) {
-                Some(size) => size,
-                None       => continue,
-            };
-
-            const MARGIN: graphics::Scalar = 3.0;
-            let margin = graphics::Size::new(
-                MARGIN * 2.0,
-                MARGIN * 2.0,
-            );
-
-            let element = ScreenElement {
-                size:  size + margin,
-                pos:   pos + size / 2.0,
-                angle: graphics::Angle::zero(),
-            };
-            let transform = element
-                .transform(&frame.screen)
-                .into();
-
-            res.drawables.square.draw(
-                &res.device,
+            draw_panel(
+                res,
                 frame,
-                vert::simple::Uniforms {
-                    transform,
-                },
-                frag::simple::Uniforms {
-                    color: [0.0, 0.0, 0.0, 0.95].into(),
-                },
+                element.pos,
+                element.text.as_str(),
+                &mut sections,
             );
-
-            sections.push(section);
         }
 
         res.drawables.text.draw(
@@ -104,4 +64,63 @@ impl super::Ui for Basic {
     }
 
     fn handle_event(&mut self, _: &Event<()>, _: &Screen) {}
+}
+
+
+fn draw_panel<'r>(
+    res:      &mut DrawResources,
+    frame:    &mut Frame,
+    pos:      graphics::Pnt2,
+    text:     &'r str,
+    sections: &mut Vec<Section<'r>>,
+)
+    -> Option<graphics::Size>
+{
+    let text = vec![
+        Text::default()
+            .with_text(text)
+            .with_scale(16.0)
+            .with_color([1.0, 1.0, 1.0, 1.0]),
+    ];
+
+    let section = Section {
+        text,
+        screen_position: (pos.x, pos.y),
+        .. Section::default()
+    };
+
+    let size = match res.drawables.text.bounds(&section) {
+        Some(size) => size,
+        None       => return None,
+    };
+
+    const MARGIN: graphics::Scalar = 3.0;
+    let margin = graphics::Size::new(
+        MARGIN * 2.0,
+        MARGIN * 2.0,
+    );
+
+    let element = ScreenElement {
+        size:  size + margin,
+        pos:   pos + size / 2.0,
+        angle: graphics::Angle::zero(),
+    };
+    let transform = element
+        .transform(&frame.screen)
+        .into();
+
+    res.drawables.square.draw(
+        &res.device,
+        frame,
+        vert::simple::Uniforms {
+            transform,
+        },
+        frag::simple::Uniforms {
+            color: [0.0, 0.0, 0.0, 0.95].into(),
+        },
+    );
+
+    sections.push(section);
+
+    Some(size)
 }
