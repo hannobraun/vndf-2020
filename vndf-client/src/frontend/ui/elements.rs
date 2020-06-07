@@ -1,7 +1,8 @@
-use wgpu_glyph::{
-    Section,
-    Text,
-};
+mod text;
+
+
+pub use self::text::Text;
+
 
 use crate::{
     frontend::{
@@ -29,20 +30,9 @@ pub fn draw<'r>(
 )
     -> graphics::Size
 {
-    let text = vec![
-        Text::default()
-            .with_text(text)
-            .with_scale(16.0)
-            .with_color([1.0, 1.0, 1.0, 1.0]),
-    ];
+    let text = Text::new(text, pos);
 
-    let section = Section {
-        text,
-        screen_position: (pos.x, pos.y),
-        .. Section::default()
-    };
-
-    let text_size = match res.drawables.text.bounds(&section) {
+    let text_size = match text.size(res) {
         Some(size) => size,
         None       => panic!("Tried rendering text without size"),
     };
@@ -62,11 +52,7 @@ pub fn draw<'r>(
         panel_size,
     );
 
-    res.drawables.text.draw(
-        &res.device,
-        frame,
-        Some(section),
-    );
+    text.draw(res, frame);
 
     panel_size
 }
