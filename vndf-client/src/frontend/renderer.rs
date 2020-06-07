@@ -118,14 +118,6 @@ impl Renderer {
                     ui::Basic::new()
                 )
             }
-            UiOption::Conrod => {
-                let screen = screen(&swap_chain_desc, scale_factor);
-
-                Box::new(
-                    ui::Conrod::new(&device, format, &screen)
-                        .map_err(|err| Error::Font(err))?
-                )
-            }
         };
 
         let draw_res = DrawResources {

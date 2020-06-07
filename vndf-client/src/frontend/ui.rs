@@ -1,11 +1,7 @@
 pub mod basic;
-pub mod conrod;
 
 
-pub use self::{
-    basic::Basic,
-    conrod::Conrod,
-};
+pub use self::basic::Basic;
 
 
 use winit::event::Event;
