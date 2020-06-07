@@ -269,7 +269,6 @@ fn screen(
 pub enum Error {
     AdapterRequest,
     Drawables(drawables::Error),
-    Font(rusttype::Error),
     Io(io::Error),
     Meshes(meshes::Error),
     TimeOut,
