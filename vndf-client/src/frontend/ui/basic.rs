@@ -128,7 +128,7 @@ fn draw_panel<'r>(
         .. Section::default()
     };
 
-    let size = match res.drawables.text.bounds(&section) {
+    let text_size = match res.drawables.text.bounds(&section) {
         Some(size) => size,
         None       => panic!("Tried rendering text without size"),
     };
@@ -139,11 +139,11 @@ fn draw_panel<'r>(
         PADDING * 2.0,
     );
 
-    let panel_size = size + padding;
+    let panel_size = text_size + padding;
 
     let element = ScreenElement {
         size:  panel_size,
-        pos:   pos + size / 2.0,
+        pos:   pos + text_size / 2.0,
         angle: graphics::Angle::zero(),
     };
     let transform = element
