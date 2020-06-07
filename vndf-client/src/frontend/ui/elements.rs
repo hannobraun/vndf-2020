@@ -31,7 +31,8 @@ pub fn text_panel(
 )
     -> graphics::Size
 {
-    let text = Text::new(text, pos);
+    let text = Text::new(res, text, pos)
+        .unwrap();
 
     let text_size = match text.size(res) {
         Some(size) => size,

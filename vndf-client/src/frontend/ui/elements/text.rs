@@ -11,14 +11,16 @@ use super::Element;
 
 pub struct Text<'r> {
     section: wgpu_glyph::Section<'r>,
+    size:    graphics::Size,
 }
 
 impl<'r> Text<'r> {
     pub fn new(
+        res:  &mut DrawResources,
         text: &'r str,
         pos:  graphics::Pnt2,
     )
-        -> Self
+        -> Option<Self>
     {
         let text = vec![
             wgpu_glyph::Text::default()
@@ -33,17 +35,22 @@ impl<'r> Text<'r> {
             .. wgpu_glyph::Section::default()
         };
 
-        Self {
-            section,
-        }
+        let size = res.drawables.text.bounds(&section)?;
+
+        Some(
+            Self {
+                section,
+                size,
+            }
+        )
     }
 }
 
 impl<'r> Element for Text<'r> {
-    fn size(&self, res: &mut DrawResources)
+    fn size(&self, _: &mut DrawResources)
         -> Option<graphics::Size>
     {
-        res.drawables.text.bounds(&self.section)
+        Some(self.size)
     }
 
     fn draw(self,
