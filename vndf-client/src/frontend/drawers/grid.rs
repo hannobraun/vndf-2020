@@ -169,7 +169,6 @@ fn draw_line(
     let end   = camera.world_to_screen(&frame.screen, end);
 
     const THICKNESS: f32 = 1.0;
-
     let size = if start.x == end.x {
         graphics::Size::new(THICKNESS, end.y - start.y)
     }
