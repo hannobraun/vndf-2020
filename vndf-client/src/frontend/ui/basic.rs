@@ -1,3 +1,5 @@
+use std::iter;
+
 use wgpu_glyph::{
     Section,
     Text,
@@ -42,9 +44,23 @@ impl super::Ui for Basic {
         -> Result<(), ()>
     {
         let mut sections = Vec::new();
+        let     elements = ui::Elements::new(game, &frame.screen);
 
-        let elements = ui::Elements::new(game, &frame.screen);
-        for element in elements.elements() {
+        layout_panels(
+            res,
+            frame,
+            iter::once(&elements.instructions)
+                .chain(elements.frame_time.as_ref())
+                .chain(elements.diagnostics.as_ref())
+                .chain(elements.input_events.as_ref()),
+            &mut sections,
+        );
+
+        let other_elements = elements.own_ship_status.iter()
+            .chain(&elements.ship_info)
+            .chain(&elements.orbit_info);
+
+        for element in other_elements {
             draw_panel(
                 res,
                 frame,
@@ -66,6 +82,29 @@ impl super::Ui for Basic {
     fn handle_event(&mut self, _: &Event<()>, _: &Screen) {}
 }
 
+
+fn layout_panels<'r>(
+    res:      &mut DrawResources,
+    frame:    &mut Frame,
+    elements: impl Iterator<Item=&'r ui::Element>,
+    sections: &mut Vec<Section<'r>>,
+) {
+    const MARGIN: f32 = 20.0;
+
+    let mut next_pos = graphics::Pnt2::new(MARGIN, MARGIN);
+
+    for element in elements {
+        let size = draw_panel(
+            res,
+            frame,
+            next_pos,
+            element.text.as_str(),
+            sections,
+        );
+
+        next_pos.y += size.height + MARGIN;
+    }
+}
 
 fn draw_panel<'r>(
     res:      &mut DrawResources,

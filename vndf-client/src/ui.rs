@@ -32,20 +32,6 @@ impl Elements {
             ship_info:  Element::ship_info(game, screen),
         }
     }
-
-    pub fn elements(&self) -> Vec<&Element> {
-        let mut elements = Vec::new();
-
-        elements.extend(&self.orbit_info);
-        elements.extend(&self.ship_info);
-        elements.push(&self.instructions);
-        elements.extend(&self.frame_time);
-        elements.extend(&self.diagnostics);
-        elements.extend(&self.input_events);
-        elements.extend(&self.own_ship_status);
-
-        elements
-    }
 }
 
 
