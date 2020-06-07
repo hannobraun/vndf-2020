@@ -9,7 +9,6 @@ edition = "2018"
 futures    = "*"
 log        = "*"
 lyon       = "*"
-rusttype   = "0.8.3" # needs to match `conrod_core` and `glyph_brush`
 serde      = "*"
 time       = "*"
 toml       = "*"

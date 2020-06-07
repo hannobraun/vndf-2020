@@ -2003,7 +2003,6 @@ dependencies = [
  "futures",
  "log",
  "lyon",
- "rusttype 0.8.3",
  "serde",
  "time",
  "toadster",
