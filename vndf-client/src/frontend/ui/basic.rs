@@ -74,7 +74,7 @@ fn draw_panel<'r>(
     text:     &'r str,
     sections: &mut Vec<Section<'r>>,
 )
-    -> Option<graphics::Size>
+    -> graphics::Size
 {
     let text = vec![
         Text::default()
@@ -91,7 +91,7 @@ fn draw_panel<'r>(
 
     let size = match res.drawables.text.bounds(&section) {
         Some(size) => size,
-        None       => return None,
+        None       => panic!("Tried rendering text without size"),
     };
 
     const MARGIN: graphics::Scalar = 3.0;
@@ -122,5 +122,5 @@ fn draw_panel<'r>(
 
     sections.push(section);
 
-    Some(size)
+    size
 }
