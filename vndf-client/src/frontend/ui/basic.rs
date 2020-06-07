@@ -95,13 +95,13 @@ fn draw_panel<'r>(
     };
 
     const PADDING: graphics::Scalar = 3.0;
-    let margin = graphics::Size::new(
+    let padding = graphics::Size::new(
         PADDING * 2.0,
         PADDING * 2.0,
     );
 
     let element = ScreenElement {
-        size:  size + margin,
+        size:  size + padding,
         pos:   pos + size / 2.0,
         angle: graphics::Angle::zero(),
     };
