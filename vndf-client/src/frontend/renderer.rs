@@ -52,7 +52,7 @@ pub struct Renderer {
     swap_chain:      wgpu::SwapChain,
     draw_res:        DrawResources,
 
-    ui: Box<dyn Ui>,
+    ui: ui::Basic,
 
     scale_factor: graphics::Scalar,
 }
@@ -111,7 +111,7 @@ impl Renderer {
 
         let scale_factor = window.scale_factor();
 
-        let ui: Box<dyn Ui> = Box::new(ui::Basic::new());
+        let ui = ui::Basic::new();
 
         let draw_res = DrawResources {
             device,
