@@ -48,9 +48,9 @@ impl<'r> Text<'r> {
 
 impl<'r> Element for Text<'r> {
     fn size(&self, _: &mut DrawResources)
-        -> Option<graphics::Size>
+        -> graphics::Size
     {
-        Some(self.size)
+        self.size
     }
 
     fn draw(self,
