@@ -28,9 +28,9 @@ use vndf_macros::keys;
 
 #[derive(Clone, Copy, Debug, Deserialize, Serialize)]
 pub struct Config {
+    pub diagnostics: bool,
     pub input:       Input,
     pub color:       Color,
-    pub diagnostics: Diagnostics,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Serialize)]
@@ -47,13 +47,6 @@ pub struct Color {
     pub r: f32,
     pub g: f32,
     pub b: f32,
-}
-
-#[derive(Clone, Copy, Debug, Deserialize, Serialize)]
-pub struct Diagnostics {
-    pub frame_time: bool,
-    pub components: bool,
-    pub input:      bool,
 }
 
 impl Config {
@@ -84,6 +77,7 @@ impl Config {
 impl Default for Config {
     fn default() -> Self {
         Self {
+            diagnostics: true,
             input: Input {
                 left:       Key::Keyboard(VirtualKeyCode::A),
                 right:      Key::Keyboard(VirtualKeyCode::D),
@@ -95,11 +89,6 @@ impl Default for Config {
                 r: 1.0,
                 g: 1.0,
                 b: 0.0,
-            },
-            diagnostics: Diagnostics {
-                frame_time: true,
-                components: true,
-                input:      true,
             },
         }
     }

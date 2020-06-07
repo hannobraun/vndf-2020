@@ -66,7 +66,7 @@ impl Element {
     }
 
     pub fn frame_time(game: &Game) -> Option<Self> {
-        if !game.input.config.diagnostics.frame_time {
+        if !game.input.config.diagnostics {
             return None;
         }
 
@@ -90,7 +90,7 @@ impl Element {
     }
 
     pub fn diagnostics(game: &Game) -> Option<Self> {
-        if !game.input.config.diagnostics.components {
+        if !game.input.config.diagnostics {
             return None;
         }
 
@@ -134,7 +134,7 @@ impl Element {
     }
 
     pub fn input_events(game: &Game) -> Option<Self> {
-        if !game.input.config.diagnostics.input {
+        if !game.input.config.diagnostics {
             return None;
         }
 
