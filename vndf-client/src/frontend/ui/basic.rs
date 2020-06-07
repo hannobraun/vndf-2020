@@ -94,10 +94,10 @@ fn draw_panel<'r>(
         None       => panic!("Tried rendering text without size"),
     };
 
-    const MARGIN: graphics::Scalar = 3.0;
+    const PADDING: graphics::Scalar = 3.0;
     let margin = graphics::Size::new(
-        MARGIN * 2.0,
-        MARGIN * 2.0,
+        PADDING * 2.0,
+        PADDING * 2.0,
     );
 
     let element = ScreenElement {
