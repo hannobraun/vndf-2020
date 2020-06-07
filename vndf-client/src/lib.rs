@@ -18,14 +18,13 @@ use crate::game::Game;
 pub fn start<A: ToSocketAddrs>(
     addr:     A,
     graphics: Graphics,
-    ui:       UiOption,
 )
     -> Result<(), Error>
 {
     let game = Game::init(addr)
         .map_err(Error::Game)?;
 
-    frontend::start(game, graphics, ui)
+    frontend::start(game, graphics)
         .map_err(Error::Frontend)
 }
 
@@ -52,23 +51,6 @@ impl FromStr for Graphics {
             "opengl"    => Ok(Self::OpenGl),
             "vulkan"    => Ok(Self::Vulkan),
             "webgpu"    => Ok(Self::WebGpu),
-
-            s => Err(format!("`{}` is not a valid graphics backend", s)),
-        }
-    }
-}
-
-
-pub enum UiOption {
-    Basic,
-}
-
-impl FromStr for UiOption {
-    type Err = String;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
-            "basic"  => Ok(Self::Basic),
 
             s => Err(format!("`{}` is not a valid graphics backend", s)),
         }

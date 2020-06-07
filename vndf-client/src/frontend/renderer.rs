@@ -11,7 +11,6 @@ use winit::event::{
 
 use crate::{
     Graphics,
-    UiOption,
     game::Game,
     graphics::{
         self,
@@ -59,7 +58,7 @@ pub struct Renderer {
 }
 
 impl Renderer {
-    pub async fn new(window: &Window, graphics: Graphics, ui: UiOption)
+    pub async fn new(window: &Window, graphics: Graphics)
         -> Result<Self, Error>
     {
         let size   = window.size();
@@ -112,13 +111,7 @@ impl Renderer {
 
         let scale_factor = window.scale_factor();
 
-        let ui: Box<dyn Ui> = match ui {
-            UiOption::Basic => {
-                Box::new(
-                    ui::Basic::new()
-                )
-            }
-        };
+        let ui: Box<dyn Ui> = Box::new(ui::Basic::new());
 
         let draw_res = DrawResources {
             device,

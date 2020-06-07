@@ -8,9 +8,6 @@ struct Options {
     #[structopt(short, long, default_value = "auto")]
     graphics: client::Graphics,
 
-    #[structopt(short, long, default_value = "basic")]
-    ui: client::UiOption,
-
     #[structopt(short, long)]
     local: bool,
 }
@@ -36,6 +33,5 @@ fn main() -> Result<(), client::Error> {
     client::start(
         (addr, 34480),
         options.graphics,
-        options.ui,
     )
 }
