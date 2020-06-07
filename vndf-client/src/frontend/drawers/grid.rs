@@ -168,13 +168,13 @@ fn draw_line(
     let start = camera.world_to_screen(&frame.screen, start);
     let end   = camera.world_to_screen(&frame.screen, end);
 
-    let thickness = 1.0;
+    const THICKNESS: f32 = 1.0;
 
     let size = if start.x == end.x {
-        graphics::Size::new(thickness, end.y - start.y)
+        graphics::Size::new(THICKNESS, end.y - start.y)
     }
     else {
-        graphics::Size::new(end.x - start.x, thickness)
+        graphics::Size::new(end.x - start.x, THICKNESS)
     };
 
     let transform =
