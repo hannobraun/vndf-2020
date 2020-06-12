@@ -119,7 +119,7 @@ fn draw_cells(
 
     let label = format!("{:.0} km", cell_size / 1000.0);
 
-    let sections = iter(start.x, end.x, cell_size)
+    let positions = iter(start.x, end.x, cell_size)
         .map(|x| {
             iter::repeat(x)
                 .zip(iter(start.y, end.y, cell_size))
@@ -127,31 +127,30 @@ fn draw_cells(
         .flatten()
         .map(|(x, y)| {
             world::Pnt2::new(x + cell_size / 2.0, y)
-        })
-        .map(|pos| {
-            let text = vec![
-                Text::default()
-                    .with_text(&label)
-                    .with_scale(12.0)
-                    .with_color([R, G, B, alpha])
-            ];
-            let pos = camera.world_to_screen(
-                &screen,
-                pos,
-            );
-            let layout = Layout::default_wrap()
-                .h_align(HorizontalAlign::Center);
+        });
 
+    for pos in positions {
+        let text = vec![
+            Text::default()
+                .with_text(&label)
+                .with_scale(12.0)
+                .with_color([R, G, B, alpha])
+        ];
+        let pos = camera.world_to_screen(
+            &screen,
+            pos,
+        );
+        let layout = Layout::default_wrap()
+            .h_align(HorizontalAlign::Center);
+
+        res.drawables.text.queue(
             Section {
                 text,
                 screen_position: (pos.x, pos.y),
                 layout,
                 .. Section::default()
             }
-        });
-
-    for section in sections {
-        res.drawables.text.queue(section);
+        );
     }
 
     res.drawables.text.draw(
