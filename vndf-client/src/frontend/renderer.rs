@@ -201,7 +201,7 @@ impl Renderer {
                     &mut frame,
                     game,
                 )
-                .map_err(|()| Error::Ui)?;
+                .map_err(|err| Error::Ui(err))?;
 
                 self.queue.submit(&[frame.encoder.finish()]);
             }
@@ -265,7 +265,7 @@ pub enum Error {
     Io(io::Error),
     Meshes(meshes::Error),
     TimeOut,
-    Ui,
+    Ui(ui::Error),
 }
 
 impl From<io::Error> for Error {

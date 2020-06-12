@@ -25,12 +25,15 @@ use self::{
 };
 
 
+pub use self::elements::TextPanelRelatedError as Error;
+
+
 pub fn draw(
     res:   &mut DrawResources,
     frame: &mut Frame,
     game:  &Game,
 )
-    -> Result<(), ()>
+    -> Result<(), Error>
 {
     let mut cache = Cache::new();
 
@@ -48,15 +51,13 @@ pub fn draw(
             res,
             &mut cache.instructions,
             game,
-        )
-        .unwrap();
+        )?;
     let frame_time =
         FrameTime::new(
             res,
             &mut cache.frame_time,
             game,
-        )
-        .unwrap();
+        )?;
 
     top_left.draw(res, frame, instructions);
     top_left.draw_iter(res, frame, frame_time);
