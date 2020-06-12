@@ -4,10 +4,7 @@ use crate::{
             DrawResources,
             Frame,
         },
-        ui::elements::{
-            self,
-            Element,
-        },
+        ui::elements,
     },
     graphics,
 };
@@ -54,6 +51,6 @@ impl<'r> Layout<'r> {
 }
 
 
-pub trait StackElement: elements::Size + Element {}
+pub trait StackElement: elements::Size + elements::Draw {}
 
-impl<T> StackElement for T where T: elements::Size + Element {}
+impl<T> StackElement for T where T: elements::Size + elements::Draw {}

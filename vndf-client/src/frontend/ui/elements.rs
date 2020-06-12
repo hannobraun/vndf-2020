@@ -37,7 +37,7 @@ pub trait Size {
     fn size(&self) -> graphics::Size;
 }
 
-pub trait Element {
+pub trait Draw {
     fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,

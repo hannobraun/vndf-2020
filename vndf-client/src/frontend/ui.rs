@@ -17,7 +17,7 @@ use crate::{
 use self::{
     elements::{
         Diagnostics,
-        Element as _,
+        Draw as _,
         FrameTime,
         InputEvents,
         Instructions,

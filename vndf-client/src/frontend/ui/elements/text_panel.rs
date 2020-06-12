@@ -13,7 +13,6 @@ use crate::{
 };
 
 use super::{
-    Element,
     Panel,
     Text,
     text::NoBoundsError,
@@ -59,7 +58,7 @@ impl<'r> elements::Size for TextPanel<'r> {
     }
 }
 
-impl<'r> Element for TextPanel<'r> {
+impl<'r> elements::Draw for TextPanel<'r> {
     fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,

@@ -13,7 +13,6 @@ use crate::{
 };
 
 use super::{
-    Element,
     TextPanel,
     TextPanelRelatedError,
 };
@@ -81,7 +80,7 @@ impl<'r> elements::Size for Diagnostics<'r> {
     }
 }
 
-impl<'r> Element for Diagnostics<'r> {
+impl<'r> elements::Draw for Diagnostics<'r> {
     fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,

@@ -8,6 +8,7 @@ use crate::{
             frag,
             vert,
         },
+        ui::elements,
     },
     graphics::{
         self,
@@ -15,14 +16,12 @@ use crate::{
     },
 };
 
-use super::Element;
-
 
 pub struct Panel {
     pub size: graphics::Size,
 }
 
-impl Element for Panel {
+impl elements::Draw for Panel {
     fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,

@@ -13,7 +13,6 @@ use crate::{
 };
 
 use super::{
-    Element,
     TextPanel,
     TextPanelRelatedError,
 };
@@ -61,7 +60,7 @@ impl<'r> elements::Size for NetworkStats<'r> {
     }
 }
 
-impl<'r> Element for NetworkStats<'r> {
+impl<'r> elements::Draw for NetworkStats<'r> {
     fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,

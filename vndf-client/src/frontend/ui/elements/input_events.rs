@@ -13,7 +13,6 @@ use crate::{
 };
 
 use super::{
-    Element,
     TextPanel,
     TextPanelRelatedError,
 };
@@ -57,7 +56,7 @@ impl<'r> elements::Size for InputEvents<'r> {
     }
 }
 
-impl<'r> Element for InputEvents<'r> {
+impl<'r> elements::Draw for InputEvents<'r> {
     fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,

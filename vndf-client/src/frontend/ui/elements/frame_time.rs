@@ -13,7 +13,6 @@ use crate::{
 };
 
 use super::{
-    Element,
     TextPanel,
     TextPanelRelatedError,
 };
@@ -62,7 +61,7 @@ impl<'r> elements::Size for FrameTime<'r> {
     }
 }
 
-impl<'r> Element for FrameTime<'r> {
+impl<'r> elements::Draw for FrameTime<'r> {
     fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,
