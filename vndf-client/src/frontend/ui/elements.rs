@@ -1,3 +1,4 @@
+mod frame_time;
 mod instructions;
 mod panel;
 mod text;
@@ -5,6 +6,7 @@ mod text_panel;
 
 
 pub use self::{
+    frame_time::FrameTime,
     instructions::Instructions,
     panel::Panel,
     text::Text,

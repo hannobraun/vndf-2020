@@ -17,6 +17,7 @@ use crate::{
 use self::{
     elements::{
         Element as _,
+        FrameTime,
         Instructions,
         TextPanel,
     },
@@ -49,14 +50,21 @@ pub fn draw(
             game,
         )
         .unwrap();
+    let frame_time =
+        FrameTime::new(
+            res,
+            &mut cache.frame_time,
+            game,
+        )
+        .unwrap();
 
     top_left.draw(
         res,
         frame,
         instructions,
     );
-    if let Some(element) = elements.frame_time.as_ref() {
-        top_left.draw_legacy_element(res, frame, element);
+    if let Some(element) = frame_time {
+        top_left.draw(res, frame, element);
     }
     if let Some(element) = elements.diagnostics.as_ref() {
         top_left.draw_legacy_element(res, frame, element);
@@ -96,5 +104,6 @@ macro_rules! cache {
 }
 
 cache!(
+    frame_time,
     instructions,
 );
