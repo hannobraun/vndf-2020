@@ -1,12 +1,12 @@
-mod component_stats;
-mod frame_time;
-mod input_events;
-mod instructions;
-mod network_stats;
-mod panel;
-mod stack;
-mod text;
-mod text_panel;
+pub mod component_stats;
+pub mod frame_time;
+pub mod input_events;
+pub mod instructions;
+pub mod network_stats;
+pub mod panel;
+pub mod stack;
+pub mod text;
+pub mod text_panel;
 
 
 pub use self::{
