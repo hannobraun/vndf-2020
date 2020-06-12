@@ -51,7 +51,7 @@ pub fn draw(
         )?;
         let mut component_stats = ComponentStats::new(
             res,
-            &mut cache.diagnostics,
+            &mut cache.component_stats,
             game,
         )?;
         let mut network_stats = NetworkStats::new(
@@ -122,7 +122,7 @@ macro_rules! cache {
 }
 
 cache!(
-    diagnostics,
+    component_stats,
     frame_time,
     input_events,
     instructions,
