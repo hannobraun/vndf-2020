@@ -1,5 +1,6 @@
 mod diagnostics;
 mod frame_time;
+mod input_events;
 mod instructions;
 mod network_stats;
 mod panel;
@@ -10,6 +11,7 @@ mod text_panel;
 pub use self::{
     diagnostics::Diagnostics,
     frame_time::FrameTime,
+    input_events::InputEvents,
     instructions::Instructions,
     network_stats::NetworkStats,
     panel::Panel,

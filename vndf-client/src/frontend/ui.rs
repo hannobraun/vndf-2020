@@ -19,6 +19,7 @@ use self::{
         Diagnostics,
         Element as _,
         FrameTime,
+        InputEvents,
         Instructions,
         NetworkStats,
         TextPanel,
@@ -68,14 +69,17 @@ pub fn draw(
         &mut cache.network_stats,
         game,
     )?;
+    let input_events = InputEvents::new(
+        res,
+        &mut cache.input_events,
+        game,
+    )?;
 
     top_left.draw(res, frame, instructions);
     top_left.draw_iter(res, frame, frame_time);
     top_left.draw_iter(res, frame, diagnostics);
     top_left.draw_iter(res, frame, network_stats);
-    if let Some(element) = elements.input_events.as_ref() {
-        top_left.draw_legacy_element(res, frame, element);
-    }
+    top_left.draw_iter(res, frame, input_events);
 
     let other_elements = elements.own_ship_status.iter()
         .chain(&elements.orbit_info)
@@ -110,6 +114,7 @@ macro_rules! cache {
 cache!(
     diagnostics,
     frame_time,
+    input_events,
     instructions,
     network_stats,
 );

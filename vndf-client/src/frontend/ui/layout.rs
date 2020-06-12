@@ -4,13 +4,9 @@ use crate::{
             DrawResources,
             Frame,
         },
-        ui::elements::{
-            Element,
-            TextPanel,
-        }
+        ui::elements::Element,
     },
     graphics,
-    ui,
 };
 
 
@@ -48,16 +44,5 @@ impl Layout {
             element.draw(res, frame, self.next_pos);
             self.next_pos.y += offset_y;
         }
-    }
-
-    pub fn draw_legacy_element(&mut self,
-        res:     &mut DrawResources,
-        frame:   &mut Frame,
-        element: &ui::Element,
-    ) {
-        let text_panel = TextPanel::new(res, &element.text)
-            .unwrap();
-
-        self.draw(res, frame, text_panel);
     }
 }
