@@ -9,7 +9,6 @@ use crate::{
 
 
 pub struct Elements {
-    pub diagnostics:     Option<Element>,
     pub input_events:    Option<Element>,
     pub own_ship_status: Option<Element>,
 
@@ -20,7 +19,6 @@ pub struct Elements {
 impl Elements {
     pub fn new(game: &Game, screen: &Screen) -> Self {
         Self {
-            diagnostics:  Element::diagnostics(game),
             input_events: Element::input_events(game),
             own_ship_status: Element::own_ship_status(game, screen),
 
@@ -37,50 +35,6 @@ pub struct Element {
 }
 
 impl Element {
-    pub fn diagnostics(game: &Game) -> Option<Self> {
-        if !game.input.config.diagnostics {
-            return None;
-        }
-
-        game.state.diagnostics.map(|diagnostics| {
-            let text = format!(
-                "Components:\n\
-                Bodies: {}/{}\n\
-                Crafts: {}/{}\n\
-                Explosions: {}/{}\n\
-                Fuels: {}/{}\n\
-                Healths: {}/{}\n\
-                Planets: {}/{}\n\
-                Players: {}/-\n\
-                Positions: {}/{}\n\
-                Ships: {}/{}\n\
-                Velocities: {}/{}\n\
-                ---\n\
-                Updates per s: {}\n\
-                Removals per s: {}",
-                diagnostics.bodies, game.state.data.bodies.len(),
-                diagnostics.crafts, game.state.data.crafts.len(),
-                diagnostics.explosions, game.state.data.explosions.len(),
-                diagnostics.fuels, game.state.data.fuels.len(),
-                diagnostics.healths, game.state.data.healths.len(),
-                diagnostics.planets, game.state.data.planets.len(),
-                diagnostics.players,
-                diagnostics.positions, game.state.data.positions.len(),
-                diagnostics.ships, game.state.data.ships.len(),
-                diagnostics.velocities, game.state.data.velocities.len(),
-                game.state.statistics.updates.len(),
-                game.state.statistics.removals.len(),
-            );
-
-            let pos = graphics::Pnt2::new(20.0, 220.0);
-
-            Self {
-                text,
-                pos,
-            }
-        })
-    }
-
     pub fn input_events(game: &Game) -> Option<Self> {
         if !game.input.config.diagnostics {
             return None;
