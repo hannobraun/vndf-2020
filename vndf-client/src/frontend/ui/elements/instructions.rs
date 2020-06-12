@@ -29,8 +29,6 @@ impl<'r> Instructions<'r> {
     )
         -> Result<Self, Error>
     {
-        buf.clear();
-
         write!(
             buf,
             "Instructions:\n\
