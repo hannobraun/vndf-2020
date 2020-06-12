@@ -12,14 +12,19 @@ use crate::{
 
 pub struct Stack<'r> {
     margin:   f32,
-    elements: Vec<&'r mut dyn StackElement>
+    elements: &'r mut Vec<&'r mut dyn StackElement>
 }
 
 impl<'r> Stack<'r> {
-    pub fn new(margin: f32) -> Self {
+    pub fn new(
+        buf:    &'r mut Vec<&'r mut dyn StackElement>,
+        margin: f32,
+    )
+        -> Self
+    {
         Self {
             margin,
-            elements: Vec::new(),
+            elements: buf,
         }
     }
 
@@ -44,7 +49,7 @@ impl<'r> elements::Draw for Stack<'r> {
     ) {
         let mut next_pos = pos;
 
-        for element in &mut self.elements {
+        for element in self.elements.iter_mut() {
             let offset_y = element.size().height + self.margin;
             element.draw(res, frame, next_pos);
             next_pos.y += offset_y;
