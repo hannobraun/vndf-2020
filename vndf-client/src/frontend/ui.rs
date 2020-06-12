@@ -46,18 +46,16 @@ pub fn draw(
         MARGIN,
     );
 
-    let instructions =
-        Instructions::new(
-            res,
-            &mut cache.instructions,
-            game,
-        )?;
-    let frame_time =
-        FrameTime::new(
-            res,
-            &mut cache.frame_time,
-            game,
-        )?;
+    let instructions = Instructions::new(
+        res,
+        &mut cache.instructions,
+        game,
+    )?;
+    let frame_time = FrameTime::new(
+        res,
+        &mut cache.frame_time,
+        game,
+    )?;
 
     top_left.draw(res, frame, instructions);
     top_left.draw_iter(res, frame, frame_time);
