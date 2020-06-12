@@ -73,9 +73,10 @@ pub fn draw(
         diagnostics.draw(res, frame, graphics::Pnt2::new(MARGIN, MARGIN));
     }
 
+    let mut instructions_buf = String::new();
     let mut instructions = Instructions::new(
         res,
-        &mut cache.instructions,
+        &mut instructions_buf,
         game,
     )?;
     instructions.draw(
@@ -125,6 +126,5 @@ cache!(
     component_stats,
     frame_time,
     input_events,
-    instructions,
     network_stats,
 );
