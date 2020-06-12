@@ -17,6 +17,7 @@ use crate::{
 use self::{
     elements::{
         Element as _,
+        Instructions,
         TextPanel,
     },
     layout::Layout,
@@ -30,6 +31,8 @@ pub fn draw(
 )
     -> Result<(), ()>
 {
+    let mut instructions_buf = String::new();
+
     let elements = ui::Elements::new(game, &frame.screen);
 
     const MARGIN: f32 = 20.0;
@@ -39,7 +42,19 @@ pub fn draw(
         MARGIN,
     );
 
-    top_left.draw_legacy_element(res, frame, &elements.instructions);
+    let instructions =
+        Instructions::new(
+            res,
+            &mut instructions_buf,
+            game,
+        )
+        .unwrap();
+
+    top_left.draw(
+        res,
+        frame,
+        instructions,
+    );
     if let Some(element) = elements.frame_time.as_ref() {
         top_left.draw_legacy_element(res, frame, element);
     }
