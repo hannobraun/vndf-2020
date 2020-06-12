@@ -59,9 +59,7 @@ pub fn draw(
         .unwrap();
 
     top_left.draw(res, frame, instructions);
-    if let Some(element) = frame_time {
-        top_left.draw(res, frame, element);
-    }
+    top_left.draw_iter(res, frame, frame_time);
     if let Some(element) = elements.diagnostics.as_ref() {
         top_left.draw_legacy_element(res, frame, element);
     }
