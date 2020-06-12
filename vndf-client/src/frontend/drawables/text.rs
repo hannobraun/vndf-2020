@@ -42,7 +42,7 @@ impl Text {
             })
     }
 
-    pub fn queue(&mut self, section: Section<'_>) {
+    pub fn queue(&mut self, section: &Section<'_>) {
         self.glyph_brush.queue(section);
     }
 

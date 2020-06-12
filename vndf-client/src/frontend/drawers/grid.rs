@@ -144,7 +144,7 @@ fn draw_cells(
             .h_align(HorizontalAlign::Center);
 
         res.drawables.text.queue(
-            Section {
+            &Section {
                 text,
                 screen_position: (pos.x, pos.y),
                 layout,
