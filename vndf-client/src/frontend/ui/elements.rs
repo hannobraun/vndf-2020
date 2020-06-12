@@ -1,4 +1,4 @@
-mod diagnostics;
+mod component_stats;
 mod frame_time;
 mod input_events;
 mod instructions;
@@ -10,7 +10,7 @@ mod text_panel;
 
 
 pub use self::{
-    diagnostics::ComponentStats,
+    component_stats::ComponentStats,
     frame_time::FrameTime,
     input_events::InputEvents,
     instructions::Instructions,
