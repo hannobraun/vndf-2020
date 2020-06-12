@@ -47,7 +47,7 @@ pub fn draw(
         &mut cache.frame_time,
         game,
     )?;
-    let mut diagnostics = ComponentStats::new(
+    let mut component_stats = ComponentStats::new(
         res,
         &mut cache.diagnostics,
         game,
@@ -64,7 +64,7 @@ pub fn draw(
     )?;
 
     top_left.add_iter(frame_time.as_mut().map(|e| e as _));
-    top_left.add_iter(diagnostics.as_mut().map(|e| e as _));
+    top_left.add_iter(component_stats.as_mut().map(|e| e as _));
     top_left.add_iter(network_stats.as_mut().map(|e| e as _));
     top_left.add_iter(input_events.as_mut().map(|e| e as _));
 
