@@ -9,7 +9,6 @@ use crate::{
 
 
 pub struct Elements {
-    pub frame_time:      Option<Element>,
     pub diagnostics:     Option<Element>,
     pub input_events:    Option<Element>,
     pub own_ship_status: Option<Element>,
@@ -21,7 +20,6 @@ pub struct Elements {
 impl Elements {
     pub fn new(game: &Game, screen: &Screen) -> Self {
         Self {
-            frame_time:   Element::frame_time(game),
             diagnostics:  Element::diagnostics(game),
             input_events: Element::input_events(game),
             own_ship_status: Element::own_ship_status(game, screen),
@@ -39,30 +37,6 @@ pub struct Element {
 }
 
 impl Element {
-    pub fn frame_time(game: &Game) -> Option<Self> {
-        if !game.input.config.diagnostics {
-            return None;
-        }
-
-        let report = game.state.frame_time.report();
-        let text = format!(
-            "Frame time:\n{} ms (avg {}/{}/{})",
-            report.latest.whole_milliseconds(),
-            report.avg_1.whole_milliseconds(),
-            report.avg_2.whole_milliseconds(),
-            report.avg_3.whole_milliseconds(),
-        );
-
-        let pos = graphics::Pnt2::new(20.0, 180.0);
-
-        Some(
-            Self {
-                text,
-                pos,
-            }
-        )
-    }
-
     pub fn diagnostics(game: &Game) -> Option<Self> {
         if !game.input.config.diagnostics {
             return None;
