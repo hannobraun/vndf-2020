@@ -79,14 +79,22 @@ pub fn draw(
 }
 
 
-struct Cache {
-    instructions: String,
+macro_rules! cache {
+    ($($entry:ident,)*) => {
+        struct Cache {
+            $($entry: String,)*
+        }
+
+        impl Cache {
+            fn new() -> Self {
+                Self {
+                    $($entry: String::new(),)*
+                }
+            }
+        }
+    };
 }
 
-impl Cache {
-    fn new() -> Self {
-        Self {
-            instructions: String::new(),
-        }
-    }
-}
+cache!(
+    instructions,
+);
