@@ -11,18 +11,13 @@ use crate::{
 
 
 pub struct Layout<'r> {
-    next_pos: graphics::Pnt2,
     margin:   f32,
     elements: Vec<&'r mut dyn Element>
 }
 
 impl<'r> Layout<'r> {
-    pub fn new(
-        initial_pos: graphics::Pnt2,
-        margin:      f32,
-    ) -> Self {
+    pub fn new(margin: f32) -> Self {
         Self {
-            next_pos: initial_pos,
             margin,
             elements: Vec::new(),
         }
@@ -43,11 +38,14 @@ impl<'r> Layout<'r> {
     pub fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,
+        pos:   graphics::Pnt2,
     ) {
+        let mut next_pos = pos;
+
         for element in &mut self.elements {
             let offset_y = element.size().height + self.margin;
-            element.draw(res, frame, self.next_pos);
-            self.next_pos.y += offset_y;
+            element.draw(res, frame, next_pos);
+            next_pos.y += offset_y;
         }
     }
 }

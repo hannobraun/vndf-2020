@@ -44,10 +44,7 @@ pub fn draw(
 
     const MARGIN: f32 = 20.0;
 
-    let mut top_left = Layout::new(
-        graphics::Pnt2::new(MARGIN, MARGIN),
-        MARGIN,
-    );
+    let mut top_left = Layout::new(MARGIN);
 
     let mut instructions = Instructions::new(
         res,
@@ -81,7 +78,7 @@ pub fn draw(
     top_left.add_iter(network_stats.as_mut().map(|e| e as _));
     top_left.add_iter(input_events.as_mut().map(|e| e as _));
 
-    top_left.draw(res, frame);
+    top_left.draw(res, frame, graphics::Pnt2::new(MARGIN, MARGIN));
 
     let other_elements = elements.own_ship_status.iter()
         .chain(&elements.orbit_info)
