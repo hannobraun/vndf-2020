@@ -12,6 +12,8 @@ pub use self::{
 };
 
 
+use std::fmt;
+
 use crate::{
     frontend::drawers::{
         DrawResources,
@@ -19,6 +21,8 @@ use crate::{
     },
     graphics,
 };
+
+use self::text::NoBoundsError;
 
 
 pub trait Element {
@@ -28,4 +32,23 @@ pub trait Element {
         frame: &mut Frame,
         pos:   graphics::Pnt2,
     );
+}
+
+
+#[derive(Debug)]
+pub enum TextPanelRelatedError {
+    Fmt(fmt::Error),
+    NoBounds(NoBoundsError),
+}
+
+impl From<fmt::Error> for TextPanelRelatedError {
+    fn from(err: fmt::Error) -> Self {
+        Self::Fmt(err)
+    }
+}
+
+impl From<NoBoundsError> for TextPanelRelatedError {
+    fn from(err: NoBoundsError) -> Self {
+        Self::NoBounds(err)
+    }
 }

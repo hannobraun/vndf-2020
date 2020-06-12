@@ -1,7 +1,4 @@
-use std::fmt::{
-    self,
-    Write as _,
-};
+use std::fmt::Write as _;
 
 use crate::{
     frontend::drawers::{
@@ -15,7 +12,7 @@ use crate::{
 use super::{
     Element,
     TextPanel,
-    text::NoBoundsError,
+    TextPanelRelatedError,
 };
 
 
@@ -67,24 +64,5 @@ impl<'r> Element for Instructions<'r> {
         pos:   graphics::Pnt2,
     ) {
         self.0.draw(res, frame, pos)
-    }
-}
-
-
-#[derive(Debug)]
-pub enum TextPanelRelatedError {
-    Fmt(fmt::Error),
-    NoBounds(NoBoundsError),
-}
-
-impl From<fmt::Error> for TextPanelRelatedError {
-    fn from(err: fmt::Error) -> Self {
-        Self::Fmt(err)
-    }
-}
-
-impl From<NoBoundsError> for TextPanelRelatedError {
-    fn from(err: NoBoundsError) -> Self {
-        Self::NoBounds(err)
     }
 }
