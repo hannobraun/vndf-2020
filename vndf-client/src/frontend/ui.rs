@@ -54,32 +54,32 @@ pub fn draw(
         &mut cache.instructions,
         game,
     )?;
-    let frame_time = FrameTime::new(
+    let mut frame_time = FrameTime::new(
         res,
         &mut cache.frame_time,
         game,
     )?;
-    let diagnostics = Diagnostics::new(
+    let mut diagnostics = Diagnostics::new(
         res,
         &mut cache.diagnostics,
         game,
     )?;
-    let network_stats = NetworkStats::new(
+    let mut network_stats = NetworkStats::new(
         res,
         &mut cache.network_stats,
         game,
     )?;
-    let input_events = InputEvents::new(
+    let mut input_events = InputEvents::new(
         res,
         &mut cache.input_events,
         game,
     )?;
 
     top_left.draw(res, frame, &mut instructions);
-    top_left.draw_iter(res, frame, frame_time);
-    top_left.draw_iter(res, frame, diagnostics);
-    top_left.draw_iter(res, frame, network_stats);
-    top_left.draw_iter(res, frame, input_events);
+    top_left.draw_iter(res, frame, frame_time.as_mut().map(|e| e as _));
+    top_left.draw_iter(res, frame, diagnostics.as_mut().map(|e| e as _));
+    top_left.draw_iter(res, frame, network_stats.as_mut().map(|e| e as _));
+    top_left.draw_iter(res, frame, input_events.as_mut().map(|e| e as _));
 
     let other_elements = elements.own_ship_status.iter()
         .chain(&elements.orbit_info)

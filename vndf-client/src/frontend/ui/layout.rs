@@ -36,13 +36,13 @@ impl Layout {
         self.next_pos.y += offset_y;
     }
 
-    pub fn draw_iter(&mut self,
+    pub fn draw_iter<'r>(&mut self,
         res:      &mut DrawResources,
         frame:    &mut Frame,
-        elements: impl IntoIterator<Item=impl Element>,
+        elements: impl IntoIterator<Item=&'r mut dyn Element>,
     ) {
-        for mut element in elements {
-            self.draw(res, frame, &mut element)
+        for element in elements {
+            self.draw(res, frame, element)
         }
     }
 }
