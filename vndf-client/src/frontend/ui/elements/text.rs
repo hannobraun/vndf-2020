@@ -1,7 +1,10 @@
 use crate::{
-    frontend::drawers::{
-        DrawResources,
-        Frame,
+    frontend::{
+        drawers::{
+            DrawResources,
+            Frame,
+        },
+        ui::elements,
     },
     graphics,
 };
@@ -49,11 +52,13 @@ impl<'r> Text<'r> {
     }
 }
 
-impl<'r> Element for Text<'r> {
+impl<'r> elements::Size for Text<'r> {
     fn size(&self) -> graphics::Size {
         self.size
     }
+}
 
+impl<'r> Element for Text<'r> {
     fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,

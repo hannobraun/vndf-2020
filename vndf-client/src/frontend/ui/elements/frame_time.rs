@@ -1,9 +1,12 @@
 use std::fmt::Write as _;
 
 use crate::{
-    frontend::drawers::{
-        DrawResources,
-        Frame,
+    frontend::{
+        drawers::{
+            DrawResources,
+            Frame,
+        },
+        ui::elements,
     },
     game::Game,
     graphics,
@@ -53,11 +56,13 @@ impl<'r> FrameTime<'r> {
     }
 }
 
-impl<'r> Element for FrameTime<'r> {
+impl<'r> elements::Size for FrameTime<'r> {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }
+}
 
+impl<'r> Element for FrameTime<'r> {
     fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,

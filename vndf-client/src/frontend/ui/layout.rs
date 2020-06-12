@@ -4,7 +4,10 @@ use crate::{
             DrawResources,
             Frame,
         },
-        ui::elements::Element,
+        ui::elements::{
+            self,
+            Element,
+        },
     },
     graphics,
 };
@@ -12,7 +15,7 @@ use crate::{
 
 pub struct Layout<'r> {
     margin:   f32,
-    elements: Vec<&'r mut dyn Element>
+    elements: Vec<&'r mut dyn StackElement>
 }
 
 impl<'r> Layout<'r> {
@@ -23,12 +26,12 @@ impl<'r> Layout<'r> {
         }
     }
 
-    pub fn add(&mut self, element: &'r mut dyn Element) {
+    pub fn add(&mut self, element: &'r mut dyn StackElement) {
         self.elements.push(element);
     }
 
     pub fn add_iter(&mut self,
-        elements: impl IntoIterator<Item=&'r mut dyn Element>,
+        elements: impl IntoIterator<Item=&'r mut dyn StackElement>,
     ) {
         for element in elements {
             self.add(element)
@@ -49,3 +52,8 @@ impl<'r> Layout<'r> {
         }
     }
 }
+
+
+pub trait StackElement: elements::Size + Element {}
+
+impl<T> StackElement for T where T: elements::Size + Element {}

@@ -33,8 +33,11 @@ use crate::{
 use self::text::NoBoundsError;
 
 
-pub trait Element {
+pub trait Size {
     fn size(&self) -> graphics::Size;
+}
+
+pub trait Element {
     fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,
