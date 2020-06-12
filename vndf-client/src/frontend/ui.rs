@@ -16,6 +16,7 @@ use crate::{
 
 use self::{
     elements::{
+        Diagnostics,
         Element as _,
         FrameTime,
         Instructions,
@@ -56,12 +57,15 @@ pub fn draw(
         &mut cache.frame_time,
         game,
     )?;
+    let diagnostics = Diagnostics::new(
+        res,
+        &mut cache.diagnostics,
+        game,
+    )?;
 
     top_left.draw(res, frame, instructions);
     top_left.draw_iter(res, frame, frame_time);
-    if let Some(element) = elements.diagnostics.as_ref() {
-        top_left.draw_legacy_element(res, frame, element);
-    }
+    top_left.draw_iter(res, frame, diagnostics);
     if let Some(element) = elements.input_events.as_ref() {
         top_left.draw_legacy_element(res, frame, element);
     }
@@ -97,6 +101,7 @@ macro_rules! cache {
 }
 
 cache!(
+    diagnostics,
     frame_time,
     instructions,
 );

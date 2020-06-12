@@ -1,3 +1,4 @@
+mod diagnostics;
 mod frame_time;
 mod instructions;
 mod panel;
@@ -6,6 +7,7 @@ mod text_panel;
 
 
 pub use self::{
+    diagnostics::Diagnostics,
     frame_time::FrameTime,
     instructions::Instructions,
     panel::Panel,
