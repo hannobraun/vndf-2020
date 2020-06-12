@@ -27,7 +27,7 @@ impl Element for Panel {
         self.size
     }
 
-    fn draw(self,
+    fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,
         pos:   graphics::Pnt2,

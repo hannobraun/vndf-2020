@@ -53,7 +53,7 @@ impl<'r> Element for InputEvents<'r> {
         self.0.size()
     }
 
-    fn draw(self,
+    fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,
         pos:   graphics::Pnt2,

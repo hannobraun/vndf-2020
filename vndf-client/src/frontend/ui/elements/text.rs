@@ -54,7 +54,7 @@ impl<'r> Element for Text<'r> {
         self.size
     }
 
-    fn draw(mut self,
+    fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,
         pos:   graphics::Pnt2,

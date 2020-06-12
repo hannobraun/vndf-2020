@@ -39,7 +39,7 @@ impl Layout {
         frame:    &mut Frame,
         elements: impl IntoIterator<Item=impl Element>,
     ) {
-        for element in elements {
+        for mut element in elements {
             let offset_y = element.size().height + self.margin;
             element.draw(res, frame, self.next_pos);
             self.next_pos.y += offset_y;

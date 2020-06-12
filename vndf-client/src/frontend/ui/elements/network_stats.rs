@@ -57,7 +57,7 @@ impl<'r> Element for NetworkStats<'r> {
         self.0.size()
     }
 
-    fn draw(self,
+    fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,
         pos:   graphics::Pnt2,

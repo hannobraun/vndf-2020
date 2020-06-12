@@ -52,7 +52,7 @@ impl<'r> Element for TextPanel<'r> {
         self.panel.size
     }
 
-    fn draw(self,
+    fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,
         pos:   graphics::Pnt2,

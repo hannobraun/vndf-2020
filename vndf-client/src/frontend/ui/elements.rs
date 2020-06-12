@@ -35,7 +35,7 @@ use self::text::NoBoundsError;
 
 pub trait Element {
     fn size(&self) -> graphics::Size;
-    fn draw(self,
+    fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,
         pos:   graphics::Pnt2,
