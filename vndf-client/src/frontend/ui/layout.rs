@@ -34,8 +34,10 @@ impl<'r> Layout<'r> {
             self.add(element)
         }
     }
+}
 
-    pub fn draw(&mut self,
+impl<'r> elements::Draw for Layout<'r> {
+    fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,
         pos:   graphics::Pnt2,
