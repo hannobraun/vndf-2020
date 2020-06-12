@@ -5,7 +5,7 @@ use crate::{
             Frame,
         },
         ui::elements::{
-            Element as _,
+            Element,
             TextPanel,
         }
     },
@@ -36,12 +36,16 @@ impl<'r> Layout<'r> {
         }
     }
 
+    pub fn draw(&mut self, element: impl Element) {
+        self.next_pos.y += element.size().height + self.margin;
+
+        element.draw(self.res, self.frame)
+    }
+
     pub fn draw_legacy_element(&mut self, element: &'r ui::Element) {
         let text_panel = TextPanel::new(self.res, &element.text, self.next_pos)
             .unwrap();
 
-        self.next_pos.y += text_panel.size().height + self.margin;
-
-        text_panel.draw(self.res, self.frame)
+        self.draw(text_panel);
     }
 }
