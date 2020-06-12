@@ -36,7 +36,7 @@ impl<'r> Layout<'r> {
         }
     }
 
-    pub fn draw(&mut self, element: &'r ui::Element) {
+    pub fn draw_legacy_element(&mut self, element: &'r ui::Element) {
         let text_panel = TextPanel::new(self.res, &element.text, self.next_pos)
             .unwrap();
 

@@ -41,15 +41,15 @@ pub fn draw(
         MARGIN,
     );
 
-    top_left.draw(&elements.instructions);
+    top_left.draw_legacy_element(&elements.instructions);
     if let Some(element) = elements.frame_time.as_ref() {
-        top_left.draw(element);
+        top_left.draw_legacy_element(element);
     }
     if let Some(element) = elements.diagnostics.as_ref() {
-        top_left.draw(element);
+        top_left.draw_legacy_element(element);
     }
     if let Some(element) = elements.input_events.as_ref() {
-        top_left.draw(element);
+        top_left.draw_legacy_element(element);
     }
 
     let other_elements = elements.own_ship_status.iter()
