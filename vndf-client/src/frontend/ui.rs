@@ -58,11 +58,7 @@ pub fn draw(
         )
         .unwrap();
 
-    top_left.draw(
-        res,
-        frame,
-        instructions,
-    );
+    top_left.draw(res, frame, instructions);
     if let Some(element) = frame_time {
         top_left.draw(res, frame, element);
     }
