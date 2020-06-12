@@ -31,9 +31,7 @@ pub fn draw(
 )
     -> Result<(), ()>
 {
-    let mut cache = Cache {
-        instructions: String::new(),
-    };
+    let mut cache = Cache::new();
 
     let elements = ui::Elements::new(game, &frame.screen);
 
@@ -83,4 +81,12 @@ pub fn draw(
 
 struct Cache {
     instructions: String,
+}
+
+impl Cache {
+    fn new() -> Self {
+        Self {
+            instructions: String::new(),
+        }
+    }
 }
