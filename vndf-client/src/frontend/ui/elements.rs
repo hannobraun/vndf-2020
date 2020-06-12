@@ -4,6 +4,7 @@ mod input_events;
 mod instructions;
 mod network_stats;
 mod panel;
+mod stack;
 mod text;
 mod text_panel;
 
@@ -15,6 +16,7 @@ pub use self::{
     instructions::Instructions,
     network_stats::NetworkStats,
     panel::Panel,
+    stack::Stack,
     text::Text,
     text_panel::TextPanel,
 };

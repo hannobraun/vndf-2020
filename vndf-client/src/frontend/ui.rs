@@ -1,5 +1,4 @@
 mod elements;
-mod layout;
 
 
 use crate::{
@@ -12,17 +11,15 @@ use crate::{
     ui,
 };
 
-use self::{
-    elements::{
-        Diagnostics,
-        Draw as _,
-        FrameTime,
-        InputEvents,
-        Instructions,
-        NetworkStats,
-        TextPanel,
-    },
-    layout::Stack,
+use self::elements::{
+    Diagnostics,
+    Draw as _,
+    FrameTime,
+    InputEvents,
+    Instructions,
+    NetworkStats,
+    Stack,
+    TextPanel,
 };
 
 
