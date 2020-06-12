@@ -35,21 +35,19 @@ pub fn draw(
     const MARGIN: f32 = 20.0;
 
     let mut top_left = Layout::new(
-        res,
-        frame,
         graphics::Pnt2::new(MARGIN, MARGIN),
         MARGIN,
     );
 
-    top_left.draw_legacy_element(&elements.instructions);
+    top_left.draw_legacy_element(res, frame, &elements.instructions);
     if let Some(element) = elements.frame_time.as_ref() {
-        top_left.draw_legacy_element(element);
+        top_left.draw_legacy_element(res, frame, element);
     }
     if let Some(element) = elements.diagnostics.as_ref() {
-        top_left.draw_legacy_element(element);
+        top_left.draw_legacy_element(res, frame, element);
     }
     if let Some(element) = elements.input_events.as_ref() {
-        top_left.draw_legacy_element(element);
+        top_left.draw_legacy_element(res, frame, element);
     }
 
     let other_elements = elements.own_ship_status.iter()
