@@ -10,7 +10,7 @@ mod text_panel;
 
 
 pub use self::{
-    diagnostics::Diagnostics,
+    diagnostics::ComponentStats,
     frame_time::FrameTime,
     input_events::InputEvents,
     instructions::Instructions,

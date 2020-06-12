@@ -18,9 +18,9 @@ use super::{
 };
 
 
-pub struct Diagnostics<'r>(TextPanel<'r>);
+pub struct ComponentStats<'r>(TextPanel<'r>);
 
-impl<'r> Diagnostics<'r> {
+impl<'r> ComponentStats<'r> {
     pub fn new(
         res:  &mut DrawResources,
         buf:  &'r mut String,
@@ -74,13 +74,13 @@ impl<'r> Diagnostics<'r> {
     }
 }
 
-impl<'r> elements::Size for Diagnostics<'r> {
+impl<'r> elements::Size for ComponentStats<'r> {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }
 }
 
-impl<'r> elements::Draw for Diagnostics<'r> {
+impl<'r> elements::Draw for ComponentStats<'r> {
     fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,

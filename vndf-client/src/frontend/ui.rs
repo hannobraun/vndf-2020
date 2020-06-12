@@ -12,7 +12,7 @@ use crate::{
 };
 
 use self::elements::{
-    Diagnostics,
+    ComponentStats,
     Draw as _,
     FrameTime,
     InputEvents,
@@ -47,7 +47,7 @@ pub fn draw(
         &mut cache.frame_time,
         game,
     )?;
-    let mut diagnostics = Diagnostics::new(
+    let mut diagnostics = ComponentStats::new(
         res,
         &mut cache.diagnostics,
         game,
