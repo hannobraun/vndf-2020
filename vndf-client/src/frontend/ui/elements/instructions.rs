@@ -43,14 +43,12 @@ impl<'r> Instructions<'r> {
             game.input.config.input.thrust_on,
             game.input.config.input.thrust_off,
             game.input.config.input.quit,
-        )
-        .map_err(|err| TextPanelRelatedError::Fmt(err))?;
+        )?;
 
         let text_panel = TextPanel::new(
             res,
             buf,
-        )
-        .map_err(|err| TextPanelRelatedError::NoBounds(err))?;
+        )?;
 
         Ok(
             Self(text_panel)
@@ -77,4 +75,16 @@ impl<'r> Element for Instructions<'r> {
 pub enum TextPanelRelatedError {
     Fmt(fmt::Error),
     NoBounds(NoBoundsError),
+}
+
+impl From<fmt::Error> for TextPanelRelatedError {
+    fn from(err: fmt::Error) -> Self {
+        Self::Fmt(err)
+    }
+}
+
+impl From<NoBoundsError> for TextPanelRelatedError {
+    fn from(err: NoBoundsError) -> Self {
+        Self::NoBounds(err)
+    }
 }
