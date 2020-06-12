@@ -18,6 +18,7 @@ use self::elements::{
     InputEvents,
     Instructions,
     NetworkStats,
+    Size as _,
     Stack,
     TextPanel,
 };
@@ -41,11 +42,6 @@ pub fn draw(
 
     let mut top_left = Stack::new(MARGIN);
 
-    let mut instructions = Instructions::new(
-        res,
-        &mut cache.instructions,
-        game,
-    )?;
     let mut frame_time = FrameTime::new(
         res,
         &mut cache.frame_time,
@@ -67,13 +63,30 @@ pub fn draw(
         game,
     )?;
 
-    top_left.add(&mut instructions);
     top_left.add_iter(frame_time.as_mut().map(|e| e as _));
     top_left.add_iter(diagnostics.as_mut().map(|e| e as _));
     top_left.add_iter(network_stats.as_mut().map(|e| e as _));
     top_left.add_iter(input_events.as_mut().map(|e| e as _));
 
     top_left.draw(res, frame, graphics::Pnt2::new(MARGIN, MARGIN));
+
+    let mut instructions = Instructions::new(
+        res,
+        &mut cache.instructions,
+        game,
+    )?;
+    instructions.draw(
+        res,
+        frame,
+        graphics::Pnt2::new(
+            frame.screen.logical_size().width
+                - MARGIN
+                - instructions.size().width,
+            frame.screen.logical_size().height
+                - MARGIN
+                - instructions.size().height,
+        ),
+    );
 
     let other_elements = elements.own_ship_status.iter()
         .chain(&elements.orbit_info)
