@@ -75,11 +75,13 @@ pub fn draw(
         game,
     )?;
 
-    top_left.draw(res, frame, &mut instructions);
-    top_left.draw_iter(res, frame, frame_time.as_mut().map(|e| e as _));
-    top_left.draw_iter(res, frame, diagnostics.as_mut().map(|e| e as _));
-    top_left.draw_iter(res, frame, network_stats.as_mut().map(|e| e as _));
-    top_left.draw_iter(res, frame, input_events.as_mut().map(|e| e as _));
+    top_left.add(&mut instructions);
+    top_left.add_iter(frame_time.as_mut().map(|e| e as _));
+    top_left.add_iter(diagnostics.as_mut().map(|e| e as _));
+    top_left.add_iter(network_stats.as_mut().map(|e| e as _));
+    top_left.add_iter(input_events.as_mut().map(|e| e as _));
+
+    top_left.draw(res, frame);
 
     let other_elements = elements.own_ship_status.iter()
         .chain(&elements.orbit_info)
