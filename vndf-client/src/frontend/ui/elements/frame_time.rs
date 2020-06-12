@@ -26,12 +26,8 @@ impl<'r> FrameTime<'r> {
         buf:  &'r mut String,
         game: &Game,
     )
-        -> Result<Option<Self>, TextPanelRelatedError>
+        -> Result<Self, TextPanelRelatedError>
     {
-        if !game.input.config.diagnostics {
-            return Ok(None);
-        }
-
         let report = game.state.frame_time.report();
         write!(
             buf,
@@ -48,9 +44,7 @@ impl<'r> FrameTime<'r> {
         )?;
 
         Ok(
-            Some(
-                Self(text_panel)
-            )
+            Self(text_panel)
         )
     }
 }

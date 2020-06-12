@@ -40,35 +40,37 @@ pub fn draw(
 
     const MARGIN: f32 = 20.0;
 
-    let mut diagnostics = Stack::new(MARGIN);
+    if game.input.config.diagnostics {
+        let mut diagnostics = Stack::new(MARGIN);
 
-    let mut frame_time = FrameTime::new(
-        res,
-        &mut cache.frame_time,
-        game,
-    )?;
-    let mut component_stats = ComponentStats::new(
-        res,
-        &mut cache.diagnostics,
-        game,
-    )?;
-    let mut network_stats = NetworkStats::new(
-        res,
-        &mut cache.network_stats,
-        game,
-    )?;
-    let mut input_events = InputEvents::new(
-        res,
-        &mut cache.input_events,
-        game,
-    )?;
+        let mut frame_time = FrameTime::new(
+            res,
+            &mut cache.frame_time,
+            game,
+        )?;
+        let mut component_stats = ComponentStats::new(
+            res,
+            &mut cache.diagnostics,
+            game,
+        )?;
+        let mut network_stats = NetworkStats::new(
+            res,
+            &mut cache.network_stats,
+            game,
+        )?;
+        let mut input_events = InputEvents::new(
+            res,
+            &mut cache.input_events,
+            game,
+        )?;
 
-    diagnostics.add_iter(frame_time.as_mut().map(|e| e as _));
-    diagnostics.add_iter(component_stats.as_mut().map(|e| e as _));
-    diagnostics.add_iter(network_stats.as_mut().map(|e| e as _));
-    diagnostics.add_iter(input_events.as_mut().map(|e| e as _));
+        diagnostics.add(&mut frame_time);
+        diagnostics.add_iter(component_stats.as_mut().map(|e| e as _));
+        diagnostics.add(&mut network_stats);
+        diagnostics.add(&mut input_events);
 
-    diagnostics.draw(res, frame, graphics::Pnt2::new(MARGIN, MARGIN));
+        diagnostics.draw(res, frame, graphics::Pnt2::new(MARGIN, MARGIN));
+    }
 
     let mut instructions = Instructions::new(
         res,

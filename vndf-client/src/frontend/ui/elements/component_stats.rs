@@ -28,10 +28,6 @@ impl<'r> ComponentStats<'r> {
     )
         -> Result<Option<Self>, TextPanelRelatedError>
     {
-        if !game.input.config.diagnostics {
-            return Ok(None);
-        }
-
         if let Some(diagnostics) = game.state.diagnostics {
             write!(
                 buf,

@@ -26,12 +26,8 @@ impl<'r> NetworkStats<'r> {
         buf:  &'r mut String,
         game: &Game,
     )
-        -> Result<Option<Self>, TextPanelRelatedError>
+        -> Result<Self, TextPanelRelatedError>
     {
-        if !game.input.config.diagnostics {
-            return Ok(None);
-        }
-
         write!(
             buf,
             "Network:\n\
@@ -47,9 +43,7 @@ impl<'r> NetworkStats<'r> {
         )?;
 
         Ok(
-            Some(
-                Self(text_panel)
-            )
+            Self(text_panel)
         )
     }
 }

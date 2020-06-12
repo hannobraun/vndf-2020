@@ -26,12 +26,8 @@ impl<'r> InputEvents<'r> {
         buf:  &'r mut String,
         game: &Game,
     )
-        -> Result<Option<Self>, TextPanelRelatedError>
+        -> Result<Self, TextPanelRelatedError>
     {
-        if !game.input.config.diagnostics {
-            return Ok(None);
-        }
-
         write!(buf, "Input:\n")?;
         for event in game.events.iter().rev() {
             write!(buf, "{}\n", event)?;
@@ -43,9 +39,7 @@ impl<'r> InputEvents<'r> {
         )?;
 
         Ok(
-            Some(
-                Self(text_panel)
-            )
+            Self(text_panel)
         )
     }
 }
