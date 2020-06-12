@@ -31,7 +31,9 @@ pub fn draw(
 )
     -> Result<(), ()>
 {
-    let mut instructions_buf = String::new();
+    let mut cache = Cache {
+        instructions: String::new(),
+    };
 
     let elements = ui::Elements::new(game, &frame.screen);
 
@@ -45,7 +47,7 @@ pub fn draw(
     let instructions =
         Instructions::new(
             res,
-            &mut instructions_buf,
+            &mut cache.instructions,
             game,
         )
         .unwrap();
@@ -76,4 +78,9 @@ pub fn draw(
     }
 
     Ok(())
+}
+
+
+struct Cache {
+    instructions: String,
 }
