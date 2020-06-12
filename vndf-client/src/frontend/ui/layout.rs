@@ -29,10 +29,8 @@ impl Layout {
     pub fn draw(&mut self,
         res:     &mut DrawResources,
         frame:   &mut Frame,
-        element: impl Element,
+        element: &mut dyn Element,
     ) {
-        let mut element = element;
-
         let offset_y = element.size().height + self.margin;
         element.draw(res, frame, self.next_pos);
         self.next_pos.y += offset_y;
@@ -43,8 +41,8 @@ impl Layout {
         frame:    &mut Frame,
         elements: impl IntoIterator<Item=impl Element>,
     ) {
-        for element in elements {
-            self.draw(res, frame, element)
+        for mut element in elements {
+            self.draw(res, frame, &mut element)
         }
     }
 }

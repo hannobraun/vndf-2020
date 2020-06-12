@@ -49,7 +49,7 @@ pub fn draw(
         MARGIN,
     );
 
-    let instructions = Instructions::new(
+    let mut instructions = Instructions::new(
         res,
         &mut cache.instructions,
         game,
@@ -75,7 +75,7 @@ pub fn draw(
         game,
     )?;
 
-    top_left.draw(res, frame, instructions);
+    top_left.draw(res, frame, &mut instructions);
     top_left.draw_iter(res, frame, frame_time);
     top_left.draw_iter(res, frame, diagnostics);
     top_left.draw_iter(res, frame, network_stats);
