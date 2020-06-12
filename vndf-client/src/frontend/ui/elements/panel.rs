@@ -19,7 +19,6 @@ use super::Element;
 
 
 pub struct Panel {
-    pub pos:  graphics::Pnt2,
     pub size: graphics::Size,
 }
 
@@ -28,10 +27,14 @@ impl Element for Panel {
         self.size
     }
 
-    fn draw(self, res: &mut DrawResources, frame: &mut Frame) {
+    fn draw(self,
+        res:   &mut DrawResources,
+        frame: &mut Frame,
+        pos:   graphics::Pnt2,
+    ) {
         let element = ScreenElement {
             size: self.size,
-            pos:  self.pos,
+            pos,
             angle: graphics::Angle::zero(),
         };
         let transform = element

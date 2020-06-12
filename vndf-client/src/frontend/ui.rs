@@ -57,9 +57,9 @@ pub fn draw(
         .chain(&elements.ship_info);
 
     for element in other_elements {
-        TextPanel::new(res, &element.text, element.pos)
+        TextPanel::new(res, &element.text)
             .unwrap()
-            .draw(res, frame);
+            .draw(res, frame, element.pos);
     }
 
     Ok(())

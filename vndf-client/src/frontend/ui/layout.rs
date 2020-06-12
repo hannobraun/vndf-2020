@@ -38,12 +38,12 @@ impl<'r> Layout<'r> {
 
     pub fn draw(&mut self, element: impl Element) {
         let offset_y = element.size().height + self.margin;
-        element.draw(self.res, self.frame);
+        element.draw(self.res, self.frame, self.next_pos);
         self.next_pos.y += offset_y;
     }
 
     pub fn draw_legacy_element(&mut self, element: &'r ui::Element) {
-        let text_panel = TextPanel::new(self.res, &element.text, self.next_pos)
+        let text_panel = TextPanel::new(self.res, &element.text)
             .unwrap();
 
         self.draw(text_panel);

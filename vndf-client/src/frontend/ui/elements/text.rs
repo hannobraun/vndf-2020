@@ -18,7 +18,6 @@ impl<'r> Text<'r> {
     pub fn new(
         res:  &mut DrawResources,
         text: &'r str,
-        pos:  graphics::Pnt2,
     )
         -> Result<Self, NoBoundsError>
     {
@@ -31,7 +30,8 @@ impl<'r> Text<'r> {
 
         let section = wgpu_glyph::Section {
             text,
-            screen_position: (pos.x, pos.y),
+            // placeholder; posisition is supplied in `draw`
+            screen_position: (0.0, 0.0),
             .. wgpu_glyph::Section::default()
         };
 
@@ -54,10 +54,13 @@ impl<'r> Element for Text<'r> {
         self.size
     }
 
-    fn draw(self,
+    fn draw(mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,
+        pos:   graphics::Pnt2,
     ) {
+        self.section.screen_position = (pos.x, pos.y);
+
         res.drawables.text.draw(
             &res.device,
             frame,

@@ -21,5 +21,9 @@ use crate::{
 
 pub trait Element {
     fn size(&self) -> graphics::Size;
-    fn draw(self, res: &mut DrawResources, frame: &mut Frame);
+    fn draw(self,
+        res:   &mut DrawResources,
+        frame: &mut Frame,
+        pos:   graphics::Pnt2,
+    );
 }

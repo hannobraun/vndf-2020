@@ -23,7 +23,6 @@ impl<'r> TextPanel<'r> {
     pub fn new(
         res:  &mut DrawResources,
         text: &'r str,
-        pos:  graphics::Pnt2,
     )
         -> Result<Self, NoBoundsError>
     {
@@ -33,10 +32,9 @@ impl<'r> TextPanel<'r> {
             PADDING * 2.0,
         );
 
-        let text = Text::new(res, text, pos)?;
+        let text = Text::new(res, text)?;
 
         let panel = Panel {
-            pos:  pos + text.size() / 2.0,
             size: text.size() + padding,
         };
 
@@ -54,8 +52,12 @@ impl<'r> Element for TextPanel<'r> {
         self.panel.size
     }
 
-    fn draw(self, res: &mut DrawResources, frame: &mut Frame) {
-        self.panel.draw(res, frame);
-        self.text.draw(res, frame);
+    fn draw(self,
+        res:   &mut DrawResources,
+        frame: &mut Frame,
+        pos:   graphics::Pnt2,
+    ) {
+        self.panel.draw(res, frame, pos + self.text.size() / 2.0);
+        self.text.draw(res, frame, pos);
     }
 }
