@@ -35,9 +35,19 @@ impl Layout {
         frame:   &mut Frame,
         element: impl Element,
     ) {
-        let offset_y = element.size().height + self.margin;
-        element.draw(res, frame, self.next_pos);
-        self.next_pos.y += offset_y;
+        self.draw_iter(res, frame, Some(element))
+    }
+
+    pub fn draw_iter(&mut self,
+        res:      &mut DrawResources,
+        frame:    &mut Frame,
+        elements: impl IntoIterator<Item=impl Element>,
+    ) {
+        for element in elements {
+            let offset_y = element.size().height + self.margin;
+            element.draw(res, frame, self.next_pos);
+            self.next_pos.y += offset_y;
+        }
     }
 
     pub fn draw_legacy_element(&mut self,
