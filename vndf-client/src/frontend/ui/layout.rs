@@ -37,9 +37,9 @@ impl<'r> Layout<'r> {
     }
 
     pub fn draw(&mut self, element: impl Element) {
-        self.next_pos.y += element.size().height + self.margin;
-
-        element.draw(self.res, self.frame)
+        let offset_y = element.size().height + self.margin;
+        element.draw(self.res, self.frame);
+        self.next_pos.y += offset_y;
     }
 
     pub fn draw_legacy_element(&mut self, element: &'r ui::Element) {
