@@ -20,7 +20,7 @@ impl<'r> Text<'r> {
         text: &'r str,
         pos:  graphics::Pnt2,
     )
-        -> Option<Self>
+        -> Result<Self, NoBoundsError>
     {
         let text = vec![
             wgpu_glyph::Text::default()
@@ -35,9 +35,12 @@ impl<'r> Text<'r> {
             .. wgpu_glyph::Section::default()
         };
 
-        let size = res.drawables.text.bounds(&section)?;
+        let size = match res.drawables.text.bounds(&section) {
+            Some(size) => size,
+            None       => return Err(NoBoundsError),
+        };
 
-        Some(
+        Ok(
             Self {
                 section,
                 size,
@@ -62,3 +65,7 @@ impl<'r> Element for Text<'r> {
         );
     }
 }
+
+
+#[derive(Debug)]
+pub struct NoBoundsError;

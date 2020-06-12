@@ -10,6 +10,7 @@ use super::{
     Element,
     Panel,
     Text,
+    text::NoBoundsError,
 };
 
 
@@ -24,7 +25,7 @@ impl<'r> TextPanel<'r> {
         text: &'r str,
         pos:  graphics::Pnt2,
     )
-        -> Option<Self>
+        -> Result<Self, NoBoundsError>
     {
         const PADDING: graphics::Scalar = 3.0;
         let padding = graphics::Size::new(
@@ -39,7 +40,7 @@ impl<'r> TextPanel<'r> {
             size: text.size() + padding,
         };
 
-        Some(
+        Ok(
             Self {
                 text,
                 panel,
