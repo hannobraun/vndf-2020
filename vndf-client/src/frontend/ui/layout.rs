@@ -31,7 +31,11 @@ impl Layout {
         frame:   &mut Frame,
         element: impl Element,
     ) {
-        self.draw_iter(res, frame, Some(element))
+        let mut element = element;
+
+        let offset_y = element.size().height + self.margin;
+        element.draw(res, frame, self.next_pos);
+        self.next_pos.y += offset_y;
     }
 
     pub fn draw_iter(&mut self,
@@ -39,10 +43,8 @@ impl Layout {
         frame:    &mut Frame,
         elements: impl IntoIterator<Item=impl Element>,
     ) {
-        for mut element in elements {
-            let offset_y = element.size().height + self.margin;
-            element.draw(res, frame, self.next_pos);
-            self.next_pos.y += offset_y;
+        for element in elements {
+            self.draw(res, frame, element)
         }
     }
 }
