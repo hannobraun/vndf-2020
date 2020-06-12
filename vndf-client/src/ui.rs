@@ -9,7 +9,6 @@ use crate::{
 
 
 pub struct Elements {
-    pub input_events:    Option<Element>,
     pub own_ship_status: Option<Element>,
 
     pub ship_info:  Vec<Element>,
@@ -19,7 +18,6 @@ pub struct Elements {
 impl Elements {
     pub fn new(game: &Game, screen: &Screen) -> Self {
         Self {
-            input_events: Element::input_events(game),
             own_ship_status: Element::own_ship_status(game, screen),
 
             orbit_info: Element::orbit_info(game, screen),
@@ -35,26 +33,6 @@ pub struct Element {
 }
 
 impl Element {
-    pub fn input_events(game: &Game) -> Option<Self> {
-        if !game.input.config.diagnostics {
-            return None;
-        }
-
-        let mut text = String::from("Input:\n");
-        for event in game.events.iter().rev() {
-            text.push_str(&format!("{}\n", event));
-        }
-
-        let pos = graphics::Pnt2::new(20.0, 520.0);
-
-        Some(
-            Self {
-                text,
-                pos,
-            }
-        )
-    }
-
     pub fn own_ship_status(game: &Game, screen: &Screen) -> Option<Self> {
         let ship   = game.state.own_ship()?;
         let craft  = game.state.data.crafts.get(&ship.craft)?;
