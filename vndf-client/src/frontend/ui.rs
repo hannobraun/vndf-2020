@@ -21,6 +21,7 @@ use self::elements::{
     Size as _,
     Stack,
     TextPanel,
+    stack::StackElement,
 };
 
 
@@ -34,7 +35,6 @@ pub fn draw(
 )
     -> Result<(), Error>
 {
-    let mut buf   = Vec::new();
     let mut cache = Cache::new();
 
     let elements = ui::Elements::new(game, &frame.screen);
@@ -42,7 +42,7 @@ pub fn draw(
     const MARGIN: f32 = 20.0;
 
     if game.input.config.diagnostics {
-        let mut diagnostics = Stack::new(&mut buf, MARGIN);
+        let mut diagnostics = Stack::new(&mut cache.stack, MARGIN);
 
         let mut frame_time = FrameTime::new(
             res,
@@ -108,13 +108,17 @@ pub fn draw(
 
 macro_rules! cache {
     ($($entry:ident,)*) => {
-        struct Cache {
+        struct Cache<'r> {
+            stack: Vec<&'r mut dyn StackElement>,
+
             $($entry: String,)*
         }
 
-        impl Cache {
+        impl<'r> Cache<'r> {
             fn new() -> Self {
                 Self {
+                    stack: Vec::new(),
+
                     $($entry: String::new(),)*
                 }
             }
