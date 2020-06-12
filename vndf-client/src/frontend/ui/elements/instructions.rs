@@ -27,7 +27,7 @@ impl<'r> Instructions<'r> {
         buf:  &'r mut String,
         game: &Game,
     )
-        -> Result<Self, Error>
+        -> Result<Self, TextPanelRelatedError>
     {
         write!(
             buf,
@@ -44,13 +44,13 @@ impl<'r> Instructions<'r> {
             game.input.config.input.thrust_off,
             game.input.config.input.quit,
         )
-        .map_err(|err| Error::Fmt(err))?;
+        .map_err(|err| TextPanelRelatedError::Fmt(err))?;
 
         let text_panel = TextPanel::new(
             res,
             buf,
         )
-        .map_err(|err| Error::NoBounds(err))?;
+        .map_err(|err| TextPanelRelatedError::NoBounds(err))?;
 
         Ok(
             Self(text_panel)
@@ -74,7 +74,7 @@ impl<'r> Element for Instructions<'r> {
 
 
 #[derive(Debug)]
-pub enum Error {
+pub enum TextPanelRelatedError {
     Fmt(fmt::Error),
     NoBounds(NoBoundsError),
 }
