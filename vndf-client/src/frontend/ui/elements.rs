@@ -1,6 +1,7 @@
 mod diagnostics;
 mod frame_time;
 mod instructions;
+mod network_stats;
 mod panel;
 mod text;
 mod text_panel;
@@ -10,6 +11,7 @@ pub use self::{
     diagnostics::Diagnostics,
     frame_time::FrameTime,
     instructions::Instructions,
+    network_stats::NetworkStats,
     panel::Panel,
     text::Text,
     text_panel::TextPanel,

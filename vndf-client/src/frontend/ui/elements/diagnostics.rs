@@ -43,10 +43,7 @@ impl<'r> Diagnostics<'r> {
                 Players: {}/-\n\
                 Positions: {}/{}\n\
                 Ships: {}/{}\n\
-                Velocities: {}/{}\n\
-                ---\n\
-                Updates per s: {}\n\
-                Removals per s: {}",
+                Velocities: {}/{}",
                 diagnostics.bodies, game.state.data.bodies.len(),
                 diagnostics.crafts, game.state.data.crafts.len(),
                 diagnostics.explosions, game.state.data.explosions.len(),
@@ -57,8 +54,6 @@ impl<'r> Diagnostics<'r> {
                 diagnostics.positions, game.state.data.positions.len(),
                 diagnostics.ships, game.state.data.ships.len(),
                 diagnostics.velocities, game.state.data.velocities.len(),
-                game.state.statistics.updates.len(),
-                game.state.statistics.removals.len(),
             )?;
 
             let text_panel = TextPanel::new(

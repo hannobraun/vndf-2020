@@ -20,6 +20,7 @@ use self::{
         Element as _,
         FrameTime,
         Instructions,
+        NetworkStats,
         TextPanel,
     },
     layout::Layout,
@@ -62,10 +63,16 @@ pub fn draw(
         &mut cache.diagnostics,
         game,
     )?;
+    let network_stats = NetworkStats::new(
+        res,
+        &mut cache.network_stats,
+        game,
+    )?;
 
     top_left.draw(res, frame, instructions);
     top_left.draw_iter(res, frame, frame_time);
     top_left.draw_iter(res, frame, diagnostics);
+    top_left.draw_iter(res, frame, network_stats);
     if let Some(element) = elements.input_events.as_ref() {
         top_left.draw_legacy_element(res, frame, element);
     }
@@ -104,4 +111,5 @@ cache!(
     diagnostics,
     frame_time,
     instructions,
+    network_stats,
 );
