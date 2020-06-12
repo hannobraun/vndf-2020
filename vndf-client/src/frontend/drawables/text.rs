@@ -42,15 +42,14 @@ impl Text {
             })
     }
 
+    pub fn queue(&mut self, section: Section<'_>) {
+        self.glyph_brush.queue(section);
+    }
+
     pub fn draw<'r>(&mut self,
         device:   &wgpu::Device,
         frame:    &mut Frame,
-        sections: impl IntoIterator<Item=Section<'r>>,
     ) {
-        for section in sections {
-            self.glyph_brush.queue(section);
-        }
-
         self.glyph_brush
             .draw_queued(
                 &device,

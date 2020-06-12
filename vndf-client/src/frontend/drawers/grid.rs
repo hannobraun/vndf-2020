@@ -150,10 +150,13 @@ fn draw_cells(
             }
         });
 
+    for section in sections {
+        res.drawables.text.queue(section);
+    }
+
     res.drawables.text.draw(
         &res.device,
         frame,
-        sections,
     );
 }
 

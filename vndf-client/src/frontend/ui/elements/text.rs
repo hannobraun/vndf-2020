@@ -61,10 +61,10 @@ impl<'r> Element for Text<'r> {
     ) {
         self.section.screen_position = (pos.x, pos.y);
 
+        res.drawables.text.queue(self.section);
         res.drawables.text.draw(
             &res.device,
             frame,
-            Some(self.section),
         );
     }
 }
