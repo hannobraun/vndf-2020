@@ -3,11 +3,9 @@ mod layout;
 
 
 use crate::{
-    frontend::{
-        drawers::{
-            DrawResources,
-            Frame,
-        },
+    frontend::drawers::{
+        DrawResources,
+        Frame,
     },
     game::Game,
     graphics,
