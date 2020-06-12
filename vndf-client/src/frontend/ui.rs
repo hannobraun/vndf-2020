@@ -22,7 +22,7 @@ use self::{
         NetworkStats,
         TextPanel,
     },
-    layout::Layout,
+    layout::Stack,
 };
 
 
@@ -42,7 +42,7 @@ pub fn draw(
 
     const MARGIN: f32 = 20.0;
 
-    let mut top_left = Layout::new(MARGIN);
+    let mut top_left = Stack::new(MARGIN);
 
     let mut instructions = Instructions::new(
         res,

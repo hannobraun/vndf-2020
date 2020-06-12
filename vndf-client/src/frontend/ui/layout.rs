@@ -10,12 +10,12 @@ use crate::{
 };
 
 
-pub struct Layout<'r> {
+pub struct Stack<'r> {
     margin:   f32,
     elements: Vec<&'r mut dyn StackElement>
 }
 
-impl<'r> Layout<'r> {
+impl<'r> Stack<'r> {
     pub fn new(margin: f32) -> Self {
         Self {
             margin,
@@ -36,7 +36,7 @@ impl<'r> Layout<'r> {
     }
 }
 
-impl<'r> elements::Draw for Layout<'r> {
+impl<'r> elements::Draw for Stack<'r> {
     fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,
