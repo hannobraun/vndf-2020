@@ -34,7 +34,6 @@ pub fn draw(
 )
     -> Result<(), Error>
 {
-    let mut stack = Vec::new();
     let mut cache = Cache::new();
 
     let elements = ui::Elements::new(game, &frame.screen);
@@ -42,6 +41,7 @@ pub fn draw(
     const MARGIN: f32 = 20.0;
 
     if game.input.config.diagnostics {
+        let mut stack = Vec::new();
         let mut diagnostics = Stack::new(&mut stack, MARGIN);
 
         let mut frame_time = FrameTime::new(
