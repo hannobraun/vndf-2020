@@ -106,29 +106,24 @@ pub fn draw(
 }
 
 
-macro_rules! cache {
-    ($($entry:ident,)*) => {
-        struct Cache<'r> {
-            stack: Vec<&'r mut dyn StackElement>,
+struct Cache<'r> {
+    stack: Vec<&'r mut dyn StackElement>,
 
-            $($entry: String,)*
-        }
-
-        impl<'r> Cache<'r> {
-            fn new() -> Self {
-                Self {
-                    stack: Vec::new(),
-
-                    $($entry: String::new(),)*
-                }
-            }
-        }
-    };
+    component_stats: String,
+    frame_time:      String,
+    input_events:    String,
+    network_stats:   String,
 }
 
-cache!(
-    component_stats,
-    frame_time,
-    input_events,
-    network_stats,
-);
+impl<'r> Cache<'r> {
+    fn new() -> Self {
+        Self {
+            stack: Vec::new(),
+
+            component_stats: String::new(),
+            frame_time:      String::new(),
+            input_events:    String::new(),
+            network_stats:   String::new(),
+        }
+    }
+}
