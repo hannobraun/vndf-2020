@@ -9,8 +9,6 @@ use crate::{
 
 
 pub struct Elements {
-    pub own_ship_status: Option<Element>,
-
     pub ship_info:  Vec<Element>,
     pub orbit_info: Vec<Element>,
 }
@@ -18,8 +16,6 @@ pub struct Elements {
 impl Elements {
     pub fn new(game: &Game, screen: &Screen) -> Self {
         Self {
-            own_ship_status: Element::own_ship_status(game, screen),
-
             orbit_info: Element::orbit_info(game, screen),
             ship_info:  Element::ship_info(game, screen),
         }
@@ -33,31 +29,6 @@ pub struct Element {
 }
 
 impl Element {
-    pub fn own_ship_status(game: &Game, screen: &Screen) -> Option<Self> {
-        let ship   = game.state.own_ship()?;
-        let craft  = game.state.data.crafts.get(&ship.craft)?;
-        let fuel   = game.state.data.fuels.get(&craft.fuel)?;
-        let health = game.state.data.healths.get(&craft.health)?;
-
-        let text = format!(
-            "Ship Status\n\
-            Structural Integrity: {:.2}\n\
-            Fuel: {:.2}",
-            health.value,
-            fuel.0,
-        );
-
-        let width = screen.logical_size().width;
-        let pos = graphics::Pnt2::new(width - 200.0, 20.0);
-
-        Some(
-            Self {
-                text,
-                pos,
-            }
-        )
-    }
-
     pub fn ship_info<'r>(game: &'r Game, screen: &'r Screen) -> Vec<Self> {
         game.state.data.ships.values()
             .filter_map(move |ship| {
