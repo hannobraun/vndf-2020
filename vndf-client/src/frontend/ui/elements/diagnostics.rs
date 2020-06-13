@@ -1,0 +1,97 @@
+use crate::{
+    frontend::{
+        drawers::{
+            DrawResources,
+            Frame,
+        },
+        ui::elements,
+    },
+    game::Game,
+    graphics,
+};
+
+use super::{
+    ComponentStats,
+    FrameTime,
+    InputEvents,
+    NetworkStats,
+    Stack,
+    TextPanelRelatedError,
+    stack::StackElement,
+};
+
+
+pub struct Diagnostics<'a, 'b>(Stack<'a, 'b>);
+
+impl<'a, 'b> Diagnostics<'a, 'b> {
+    pub fn new(
+        res:    &mut DrawResources,
+        cache:  &'b mut Cache,
+        stack:  &'a mut Vec<Box<dyn StackElement + 'b>>,
+        margin: graphics::Scalar,
+        game:   &Game,
+    )
+        -> Result<Self, TextPanelRelatedError>
+    {
+        let frame_time = FrameTime::new(
+            res,
+            &mut cache.frame_time,
+            game,
+        )?;
+        let component_stats = ComponentStats::new(
+            res,
+            &mut cache.component_stats,
+            game,
+        )?;
+        let network_stats = NetworkStats::new(
+            res,
+            &mut cache.network_stats,
+            game,
+        )?;
+        let input_events = InputEvents::new(
+            res,
+            &mut cache.input_events,
+            game,
+        )?;
+
+        let mut diagnostics = Stack::new(stack, margin);
+
+        diagnostics.add(frame_time);
+        diagnostics.add_iter(component_stats);
+        diagnostics.add(network_stats);
+        diagnostics.add(input_events);
+
+        Ok(
+            Self(diagnostics)
+        )
+    }
+}
+
+impl<'a, 'b> elements::Draw for Diagnostics<'a, 'b> {
+    fn draw(&mut self,
+        res:   &mut DrawResources,
+        frame: &mut Frame,
+        pos:   graphics::Pnt2,
+    ) {
+        self.0.draw(res, frame, pos)
+    }
+}
+
+
+pub struct Cache {
+    component_stats: String,
+    frame_time:      String,
+    input_events:    String,
+    network_stats:   String,
+}
+
+impl Cache {
+    pub fn new() -> Self {
+        Self {
+            component_stats: String::new(),
+            frame_time:      String::new(),
+            input_events:    String::new(),
+            network_stats:   String::new(),
+        }
+    }
+}

@@ -1,4 +1,5 @@
 pub mod component_stats;
+pub mod diagnostics;
 pub mod frame_time;
 pub mod input_events;
 pub mod instructions;
@@ -11,6 +12,7 @@ pub mod text_panel;
 
 pub use self::{
     component_stats::ComponentStats,
+    diagnostics::Diagnostics,
     frame_time::FrameTime,
     input_events::InputEvents,
     instructions::Instructions,
