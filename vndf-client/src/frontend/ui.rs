@@ -41,9 +41,6 @@ pub fn draw(
     const MARGIN: f32 = 20.0;
 
     if game.input.config.diagnostics {
-        let mut stack = Vec::new();
-        let mut diagnostics = Stack::new(&mut stack, MARGIN);
-
         let mut frame_time = FrameTime::new(
             res,
             &mut cache.frame_time,
@@ -64,6 +61,9 @@ pub fn draw(
             &mut cache.input_events,
             game,
         )?;
+
+        let mut stack = Vec::new();
+        let mut diagnostics = Stack::new(&mut stack, MARGIN);
 
         diagnostics.add(&mut frame_time);
         diagnostics.add_iter(component_stats.as_mut().map(|e| e as _));
