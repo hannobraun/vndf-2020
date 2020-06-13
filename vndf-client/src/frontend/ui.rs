@@ -45,6 +45,7 @@ pub fn draw(
             &mut stack,
             MARGIN,
             game,
+            frame,
         )?;
         diagnostics.draw(res, frame, graphics::Pnt2::new(MARGIN, MARGIN));
     }

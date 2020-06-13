@@ -15,6 +15,7 @@ use super::{
     FrameTime,
     InputEvents,
     NetworkStats,
+    ScaleFactor,
     Stack,
     TextPanelRelatedError,
     stack::StackElement,
@@ -30,6 +31,7 @@ impl<'a, 'b> Diagnostics<'a, 'b> {
         stack:  &'a mut Vec<Box<dyn StackElement + 'b>>,
         margin: graphics::Scalar,
         game:   &Game,
+        frame:  &Frame,
     )
         -> Result<Self, TextPanelRelatedError>
     {
@@ -37,6 +39,11 @@ impl<'a, 'b> Diagnostics<'a, 'b> {
             res,
             &mut cache.frame_time,
             game,
+        )?;
+        let scale_factor = ScaleFactor::new(
+            res,
+            &mut cache.scale_factor,
+            frame,
         )?;
         let component_stats = ComponentStats::new(
             res,
@@ -57,6 +64,7 @@ impl<'a, 'b> Diagnostics<'a, 'b> {
         let mut diagnostics = Stack::new(stack, margin);
 
         diagnostics.add(frame_time);
+        diagnostics.add(scale_factor);
         diagnostics.add_iter(component_stats);
         diagnostics.add(network_stats);
         diagnostics.add(input_events);
@@ -83,6 +91,7 @@ pub struct Cache {
     frame_time:      String,
     input_events:    String,
     network_stats:   String,
+    scale_factor:    String,
 }
 
 impl Cache {
@@ -92,6 +101,7 @@ impl Cache {
             frame_time:      String::new(),
             input_events:    String::new(),
             network_stats:   String::new(),
+            scale_factor:    String::new(),
         }
     }
 }

@@ -5,6 +5,7 @@ pub mod input_events;
 pub mod instructions;
 pub mod network_stats;
 pub mod panel;
+pub mod scale_factor;
 pub mod stack;
 pub mod text;
 pub mod text_panel;
@@ -18,6 +19,7 @@ pub use self::{
     instructions::Instructions,
     network_stats::NetworkStats,
     panel::Panel,
+    scale_factor::ScaleFactor,
     stack::Stack,
     text::Text,
     text_panel::TextPanel,
