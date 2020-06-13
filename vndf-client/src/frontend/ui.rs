@@ -41,22 +41,22 @@ pub fn draw(
     const MARGIN: f32 = 20.0;
 
     if game.input.config.diagnostics {
-        let mut frame_time = FrameTime::new(
+        let frame_time = FrameTime::new(
             res,
             &mut cache.frame_time,
             game,
         )?;
-        let mut component_stats = ComponentStats::new(
+        let component_stats = ComponentStats::new(
             res,
             &mut cache.component_stats,
             game,
         )?;
-        let mut network_stats = NetworkStats::new(
+        let network_stats = NetworkStats::new(
             res,
             &mut cache.network_stats,
             game,
         )?;
-        let mut input_events = InputEvents::new(
+        let input_events = InputEvents::new(
             res,
             &mut cache.input_events,
             game,
@@ -65,10 +65,10 @@ pub fn draw(
         let mut stack = Vec::new();
         let mut diagnostics = Stack::new(&mut stack, MARGIN);
 
-        diagnostics.add(&mut frame_time);
-        diagnostics.add_iter(component_stats.as_mut().map(|e| e as _));
-        diagnostics.add(&mut network_stats);
-        diagnostics.add(&mut input_events);
+        diagnostics.add(frame_time);
+        diagnostics.add_iter(component_stats);
+        diagnostics.add(network_stats);
+        diagnostics.add(input_events);
 
         diagnostics.draw(res, frame, graphics::Pnt2::new(MARGIN, MARGIN));
     }

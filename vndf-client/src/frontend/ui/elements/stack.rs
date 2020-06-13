@@ -12,12 +12,12 @@ use crate::{
 
 pub struct Stack<'a, 'b> {
     margin:   f32,
-    elements: &'a mut Vec<&'b mut dyn StackElement>
+    elements: &'a mut Vec<Box<dyn StackElement + 'b>>,
 }
 
 impl<'a, 'b> Stack<'a, 'b> {
     pub fn new(
-        buf:    &'a mut Vec<&'b mut dyn StackElement>,
+        buf:    &'a mut Vec<Box<dyn StackElement + 'b>>,
         margin: f32,
     )
         -> Self
@@ -28,12 +28,12 @@ impl<'a, 'b> Stack<'a, 'b> {
         }
     }
 
-    pub fn add(&mut self, element: &'b mut dyn StackElement) {
-        self.elements.push(element);
+    pub fn add(&mut self, element: impl StackElement + 'b) {
+        self.elements.push(Box::new(element));
     }
 
     pub fn add_iter(&mut self,
-        elements: impl IntoIterator<Item=&'b mut dyn StackElement>,
+        elements: impl IntoIterator<Item=impl StackElement + 'b>,
     ) {
         for element in elements {
             self.add(element)
