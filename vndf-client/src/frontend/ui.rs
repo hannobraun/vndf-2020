@@ -15,6 +15,7 @@ use self::elements::{
     Diagnostics,
     Draw as _,
     Instructions,
+    ShipStatus,
     Size as _,
     TextPanel,
     ViewSize,
@@ -88,8 +89,26 @@ pub fn draw(
         ),
     );
 
-    let other_elements = elements.own_ship_status.iter()
-        .chain(&elements.orbit_info)
+    let mut ship_status_buf = String::new();
+    let ship_status = ShipStatus::new(
+        res,
+        &mut ship_status_buf,
+        game,
+    )?;
+    if let Some(mut ship_status) = ship_status {
+        ship_status.draw(
+            res,
+            frame,
+            graphics::Pnt2::new(
+                frame.screen.logical_size().width
+                    - MARGIN
+                    - ship_status.size().width,
+                MARGIN,
+            ),
+        );
+    }
+
+    let other_elements = elements.orbit_info.iter()
         .chain(&elements.ship_info);
 
     for element in other_elements {
