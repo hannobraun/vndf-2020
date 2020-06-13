@@ -17,6 +17,7 @@ use self::elements::{
     Instructions,
     Size as _,
     TextPanel,
+    ViewSize,
     diagnostics,
 };
 
@@ -49,6 +50,24 @@ pub fn draw(
         )?;
         diagnostics.draw(res, frame, graphics::Pnt2::new(MARGIN, MARGIN));
     }
+
+    let mut view_size_buf = String::new();
+    let mut view_size = ViewSize::new(
+        res,
+        frame,
+        &mut view_size_buf,
+        game,
+    )?;
+    view_size.draw(
+        res,
+        frame,
+        graphics::Pnt2::new(
+            MARGIN,
+            frame.screen.logical_size().height
+                - MARGIN
+                - view_size.size().height,
+        )
+    );
 
     let mut instructions_buf = String::new();
     let mut instructions = Instructions::new(

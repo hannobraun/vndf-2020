@@ -9,6 +9,7 @@ pub mod scale_factor;
 pub mod stack;
 pub mod text;
 pub mod text_panel;
+pub mod view_size;
 
 
 pub use self::{
@@ -23,6 +24,7 @@ pub use self::{
     stack::Stack,
     text::Text,
     text_panel::TextPanel,
+    view_size::ViewSize,
 };
 
 
