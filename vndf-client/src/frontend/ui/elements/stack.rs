@@ -10,14 +10,14 @@ use crate::{
 };
 
 
-pub struct Stack<'r> {
+pub struct Stack<'a, 'b> {
     margin:   f32,
-    elements: &'r mut Vec<&'r mut dyn StackElement>
+    elements: &'a mut Vec<&'b mut dyn StackElement>
 }
 
-impl<'r> Stack<'r> {
+impl<'a, 'b> Stack<'a, 'b> {
     pub fn new(
-        buf:    &'r mut Vec<&'r mut dyn StackElement>,
+        buf:    &'a mut Vec<&'b mut dyn StackElement>,
         margin: f32,
     )
         -> Self
@@ -28,12 +28,12 @@ impl<'r> Stack<'r> {
         }
     }
 
-    pub fn add(&mut self, element: &'r mut dyn StackElement) {
+    pub fn add(&mut self, element: &'b mut dyn StackElement) {
         self.elements.push(element);
     }
 
     pub fn add_iter(&mut self,
-        elements: impl IntoIterator<Item=&'r mut dyn StackElement>,
+        elements: impl IntoIterator<Item=&'b mut dyn StackElement>,
     ) {
         for element in elements {
             self.add(element)
@@ -41,7 +41,7 @@ impl<'r> Stack<'r> {
     }
 }
 
-impl<'r> elements::Draw for Stack<'r> {
+impl<'a, 'b> elements::Draw for Stack<'a, 'b> {
     fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,
