@@ -4,12 +4,12 @@ use crate::{
 };
 
 
-pub struct Origin {
+pub struct Anchor {
     pub horizontal: Horizontal,
     pub vertical:   Vertical,
 }
 
-impl Origin {
+impl Anchor {
     pub fn top_left() -> Self {
         Self {
             horizontal: Horizontal::Left,
