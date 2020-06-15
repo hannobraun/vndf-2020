@@ -13,6 +13,7 @@ use crate::{
 };
 
 use self::{
+    anchor::Anchor,
     elements::{
         Diagnostics,
         Draw as _,
@@ -23,7 +24,6 @@ use self::{
         ViewSize,
         diagnostics,
     },
-    anchor::Anchor,
 };
 
 
