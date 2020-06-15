@@ -38,7 +38,7 @@ pub fn draw(
     let elements = ui::Elements::new(game, &frame.screen);
 
     const MARGIN: f32 = 20.0;
-    let size = frame.screen.logical_size();
+    let screen_size = frame.screen.logical_size();
 
     if game.input.config.diagnostics {
         let mut stack = Vec::new();
@@ -65,7 +65,7 @@ pub fn draw(
         frame,
         graphics::Pnt2::new(
             MARGIN,
-            size.height
+            screen_size.height
                 - MARGIN
                 - view_size.size().height,
         )
@@ -81,10 +81,10 @@ pub fn draw(
         res,
         frame,
         graphics::Pnt2::new(
-            size.width
+            screen_size.width
                 - MARGIN
                 - instructions.size().width,
-            size.height
+            screen_size.height
                 - MARGIN
                 - instructions.size().height,
         ),
@@ -101,7 +101,7 @@ pub fn draw(
             res,
             frame,
             graphics::Pnt2::new(
-                size.width
+                screen_size.width
                     - MARGIN
                     - ship_status.size().width,
                 MARGIN,
