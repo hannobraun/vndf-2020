@@ -50,7 +50,13 @@ pub fn draw(
             game,
             frame,
         )?;
-        diagnostics.draw(res, frame, graphics::Pnt2::new(MARGIN, MARGIN));
+        diagnostics.draw(
+            res,
+            frame,
+            graphics::Pnt2::new(0.0, 0.0)
+                + graphics::Vec2::new(0.0, 0.0)
+                + graphics::Vec2::new(MARGIN, MARGIN),
+        );
     }
 
     let mut view_size_buf = String::new();
@@ -60,15 +66,13 @@ pub fn draw(
         &mut view_size_buf,
         game,
     )?;
+    let size = view_size.size();
     view_size.draw(
         res,
         frame,
-        graphics::Pnt2::new(
-            MARGIN,
-            screen_size.height
-                - MARGIN
-                - view_size.size().height,
-        )
+        graphics::Pnt2::new(0.0, screen_size.height)
+            + graphics::Vec2::new(0.0, -size.height)
+            + graphics::Vec2::new(MARGIN, -MARGIN),
     );
 
     let mut instructions_buf = String::new();
@@ -77,17 +81,13 @@ pub fn draw(
         &mut instructions_buf,
         game,
     )?;
+    let size = instructions.size();
     instructions.draw(
         res,
         frame,
-        graphics::Pnt2::new(
-            screen_size.width
-                - MARGIN
-                - instructions.size().width,
-            screen_size.height
-                - MARGIN
-                - instructions.size().height,
-        ),
+        graphics::Pnt2::new(screen_size.width, screen_size.height)
+            + graphics::Vec2::new(-size.width, -size.height)
+            + graphics::Vec2::new(-MARGIN, -MARGIN),
     );
 
     let mut ship_status_buf = String::new();
@@ -97,15 +97,13 @@ pub fn draw(
         game,
     )?;
     if let Some(mut ship_status) = ship_status {
+        let size = ship_status.size();
         ship_status.draw(
             res,
             frame,
-            graphics::Pnt2::new(
-                screen_size.width
-                    - MARGIN
-                    - ship_status.size().width,
-                MARGIN,
-            ),
+            graphics::Pnt2::new(screen_size.width, 0.0)
+                + graphics::Vec2::new(-size.width, 0.0)
+                + graphics::Vec2::new(-MARGIN, MARGIN),
         );
     }
 
