@@ -1,4 +1,5 @@
 mod elements;
+mod origin;
 
 
 use crate::{
@@ -11,15 +12,18 @@ use crate::{
     ui,
 };
 
-use self::elements::{
-    Diagnostics,
-    Draw as _,
-    Instructions,
-    ShipStatus,
-    Size as _,
-    TextPanel,
-    ViewSize,
-    diagnostics,
+use self::{
+    elements::{
+        Diagnostics,
+        Draw as _,
+        Instructions,
+        ShipStatus,
+        Size as _,
+        TextPanel,
+        ViewSize,
+        diagnostics,
+    },
+    origin::Origin,
 };
 
 
@@ -38,7 +42,6 @@ pub fn draw(
     let elements = ui::Elements::new(game, &frame.screen);
 
     const MARGIN: f32 = 20.0;
-    let screen_size = frame.screen.logical_size();
 
     if game.input.config.diagnostics {
         let mut stack = Vec::new();
@@ -53,7 +56,7 @@ pub fn draw(
         diagnostics.draw(
             res,
             frame,
-            graphics::Pnt2::new(0.0, 0.0)
+            Origin::top_left().point(frame)
                 + graphics::Vec2::new(0.0, 0.0)
                 + graphics::Vec2::new(MARGIN, MARGIN),
         );
@@ -70,7 +73,7 @@ pub fn draw(
     view_size.draw(
         res,
         frame,
-        graphics::Pnt2::new(0.0, screen_size.height)
+        Origin::bottom_left().point(frame)
             + graphics::Vec2::new(0.0, -size.height)
             + graphics::Vec2::new(MARGIN, -MARGIN),
     );
@@ -85,7 +88,7 @@ pub fn draw(
     instructions.draw(
         res,
         frame,
-        graphics::Pnt2::new(screen_size.width, screen_size.height)
+        Origin::bottom_right().point(frame)
             + graphics::Vec2::new(-size.width, -size.height)
             + graphics::Vec2::new(-MARGIN, -MARGIN),
     );
@@ -101,7 +104,7 @@ pub fn draw(
         ship_status.draw(
             res,
             frame,
-            graphics::Pnt2::new(screen_size.width, 0.0)
+            Origin::top_right().point(frame)
                 + graphics::Vec2::new(-size.width, 0.0)
                 + graphics::Vec2::new(-MARGIN, MARGIN),
         );
