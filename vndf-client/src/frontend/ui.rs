@@ -56,7 +56,7 @@ pub fn draw(
         diagnostics.draw(
             res,
             frame,
-            Anchor::top_left().point(frame)
+            Anchor::top_left().origin(frame)
                 + graphics::Vec2::new(0.0, 0.0)
                 + graphics::Vec2::new(MARGIN, MARGIN),
         );
@@ -73,7 +73,7 @@ pub fn draw(
     view_size.draw(
         res,
         frame,
-        Anchor::bottom_left().point(frame)
+        Anchor::bottom_left().origin(frame)
             + graphics::Vec2::new(0.0, -size.height)
             + graphics::Vec2::new(MARGIN, -MARGIN),
     );
@@ -88,7 +88,7 @@ pub fn draw(
     instructions.draw(
         res,
         frame,
-        Anchor::bottom_right().point(frame)
+        Anchor::bottom_right().origin(frame)
             + graphics::Vec2::new(-size.width, -size.height)
             + graphics::Vec2::new(-MARGIN, -MARGIN),
     );
@@ -104,7 +104,7 @@ pub fn draw(
         ship_status.draw(
             res,
             frame,
-            Anchor::top_right().point(frame)
+            Anchor::top_right().origin(frame)
                 + graphics::Vec2::new(-size.width, 0.0)
                 + graphics::Vec2::new(-MARGIN, MARGIN),
         );

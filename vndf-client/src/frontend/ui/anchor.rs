@@ -38,7 +38,7 @@ impl Anchor {
         }
     }
 
-    pub fn point(&self, frame: &Frame) -> graphics::Pnt2 {
+    pub fn origin(&self, frame: &Frame) -> graphics::Pnt2 {
         let size = frame.screen.logical_size();
 
         let x = match self.horizontal {
