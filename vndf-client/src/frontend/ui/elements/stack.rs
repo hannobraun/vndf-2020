@@ -50,8 +50,8 @@ impl<'a, 'b> elements::Draw for Stack<'a, 'b> {
         let mut next_pos = pos;
 
         for element in self.elements.iter_mut() {
-            let offset_y = element.size().height + self.margin;
             element.draw(res, frame, next_pos);
+            let offset_y = element.size().height + self.margin;
             next_pos.y += offset_y;
         }
     }
