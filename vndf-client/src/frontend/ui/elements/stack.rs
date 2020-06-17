@@ -41,6 +41,26 @@ impl<'a, 'b> Stack<'a, 'b> {
     }
 }
 
+impl<'a, 'b> elements::Size for Stack<'a, 'b> {
+    fn size(&self) -> graphics::Size {
+        let mut size = graphics::Size::new(0.0, 0.0);
+
+        for (i, element) in self.elements.iter().enumerate() {
+            size.width = graphics::Scalar::max(
+                size.width,
+                element.size().width,
+            );
+
+            size.height += element.size().height;
+            if i < self.elements.len() - 1 {
+                size.height += self.margin;
+            }
+        }
+
+        size
+    }
+}
+
 impl<'a, 'b> elements::Draw for Stack<'a, 'b> {
     fn draw(&mut self,
         res:   &mut DrawResources,
