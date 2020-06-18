@@ -40,11 +40,31 @@ use crate::{
     graphics,
 };
 
+use super::anchor::{
+    self,
+    Anchor,
+};
+
 use self::text::NoBoundsError;
 
 
 pub trait Size {
     fn size(&self) -> graphics::Size;
+
+    fn offset(&self, anchor: Anchor, margin: graphics::Scalar)
+        -> graphics::Vec2
+    {
+        let x = match anchor.horizontal {
+            anchor::Horizontal::Left  => margin,
+            anchor::Horizontal::Right => -self.size().width - margin
+        };
+        let y = match anchor.vertical {
+            anchor::Vertical::Top    => margin,
+            anchor::Vertical::Bottom => -self.size().height - margin
+        };
+
+        graphics::Vec2::new(x, y)
+    }
 }
 
 pub trait Draw {

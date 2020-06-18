@@ -8,7 +8,6 @@ use crate::{
         Frame,
     },
     game::Game,
-    graphics,
     ui,
 };
 
@@ -57,8 +56,7 @@ pub fn draw(
             res,
             frame,
             Anchor::top_left().origin(frame)
-                + graphics::Vec2::new(0.0, 0.0)
-                + graphics::Vec2::new(MARGIN, MARGIN),
+                + diagnostics.offset(Anchor::top_left(), MARGIN),
         );
     }
 
@@ -69,13 +67,11 @@ pub fn draw(
         &mut view_size_buf,
         game,
     )?;
-    let size = view_size.size();
     view_size.draw(
         res,
         frame,
         Anchor::bottom_left().origin(frame)
-            + graphics::Vec2::new(0.0, -size.height)
-            + graphics::Vec2::new(MARGIN, -MARGIN),
+            + view_size.offset(Anchor::bottom_left(), MARGIN),
     );
 
     let mut instructions_buf = String::new();
@@ -84,13 +80,11 @@ pub fn draw(
         &mut instructions_buf,
         game,
     )?;
-    let size = instructions.size();
     instructions.draw(
         res,
         frame,
         Anchor::bottom_right().origin(frame)
-            + graphics::Vec2::new(-size.width, -size.height)
-            + graphics::Vec2::new(-MARGIN, -MARGIN),
+            + instructions.offset(Anchor::bottom_right(), MARGIN),
     );
 
     let mut ship_status_buf = String::new();
@@ -100,13 +94,11 @@ pub fn draw(
         game,
     )?;
     if let Some(mut ship_status) = ship_status {
-        let size = ship_status.size();
         ship_status.draw(
             res,
             frame,
             Anchor::top_right().origin(frame)
-                + graphics::Vec2::new(-size.width, 0.0)
-                + graphics::Vec2::new(-MARGIN, MARGIN),
+                + ship_status.offset(Anchor::top_right(), MARGIN),
         );
     }
 
