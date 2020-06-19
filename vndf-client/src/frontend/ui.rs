@@ -18,7 +18,6 @@ use self::{
         Draw as _,
         Instructions,
         ShipStatus,
-        Size as _,
         TextPanel,
         ViewSize,
         diagnostics,
@@ -55,8 +54,9 @@ pub fn draw(
         diagnostics.draw(
             res,
             frame,
-            Anchor::top_left().origin(frame)
-                + diagnostics.offset(Anchor::top_left(), MARGIN),
+            Anchor::top_left()
+                .origin(frame)
+                .position(&diagnostics, MARGIN),
         );
     }
 
@@ -70,8 +70,9 @@ pub fn draw(
     view_size.draw(
         res,
         frame,
-        Anchor::bottom_left().origin(frame)
-            + view_size.offset(Anchor::bottom_left(), MARGIN),
+        Anchor::bottom_left()
+            .origin(frame)
+            .position(&view_size, MARGIN),
     );
 
     let mut instructions_buf = String::new();
@@ -83,8 +84,9 @@ pub fn draw(
     instructions.draw(
         res,
         frame,
-        Anchor::bottom_right().origin(frame)
-            + instructions.offset(Anchor::bottom_right(), MARGIN),
+        Anchor::bottom_right()
+            .origin(frame)
+            .position(&instructions, MARGIN),
     );
 
     let mut ship_status_buf = String::new();
@@ -97,8 +99,9 @@ pub fn draw(
         ship_status.draw(
             res,
             frame,
-            Anchor::top_right().origin(frame)
-                + ship_status.offset(Anchor::top_right(), MARGIN),
+            Anchor::top_right()
+                .origin(frame)
+                .position(&ship_status, MARGIN),
         );
     }
 
