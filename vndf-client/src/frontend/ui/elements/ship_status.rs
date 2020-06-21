@@ -6,7 +6,7 @@ use crate::{
             DrawResources,
             Frame,
         },
-        ui::elements,
+        ui::elements::Element,
     },
     game::Game,
     graphics,
@@ -67,13 +67,11 @@ impl<'r> ShipStatus<'r> {
     }
 }
 
-impl<'r> elements::Size for ShipStatus<'r> {
+impl<'r> Element for ShipStatus<'r> {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }
-}
 
-impl<'r> elements::Draw for ShipStatus<'r> {
     fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,

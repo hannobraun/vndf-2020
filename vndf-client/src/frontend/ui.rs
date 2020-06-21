@@ -15,7 +15,7 @@ use self::{
     anchor::Anchor,
     elements::{
         Diagnostics,
-        Draw as _,
+        Element as _,
         Instructions,
         ShipStatus,
         TextPanel,

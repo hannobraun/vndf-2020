@@ -48,7 +48,7 @@ use super::anchor::{
 use self::text::NoBoundsError;
 
 
-pub trait Size {
+pub trait Element {
     fn size(&self) -> graphics::Size;
 
     fn offset(&self, anchor: Anchor, margin: graphics::Scalar)
@@ -65,9 +65,7 @@ pub trait Size {
 
         graphics::Vec2::new(x, y)
     }
-}
 
-pub trait Draw {
     fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,

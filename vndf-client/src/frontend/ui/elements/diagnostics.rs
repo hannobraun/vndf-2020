@@ -4,7 +4,7 @@ use crate::{
             DrawResources,
             Frame,
         },
-        ui::elements,
+        ui::elements::Element,
     },
     game::Game,
     graphics,
@@ -75,13 +75,11 @@ impl<'a, 'b> Diagnostics<'a, 'b> {
     }
 }
 
-impl<'a, 'b> elements::Size for Diagnostics<'a, 'b> {
+impl<'a, 'b> Element for Diagnostics<'a, 'b> {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }
-}
 
-impl<'a, 'b> elements::Draw for Diagnostics<'a, 'b> {
     fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,

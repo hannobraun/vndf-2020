@@ -6,7 +6,7 @@ use crate::{
             DrawResources,
             Frame,
         },
-        ui::elements,
+        ui::elements::Element,
     },
     game::Game,
     graphics,
@@ -53,13 +53,11 @@ impl<'r> ViewSize<'r> {
     }
 }
 
-impl<'r> elements::Size for ViewSize<'r> {
+impl<'r> Element for ViewSize<'r> {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }
-}
 
-impl<'r> elements::Draw for ViewSize<'r> {
     fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,

@@ -6,7 +6,7 @@ use crate::{
             DrawResources,
             Frame,
         },
-        ui::elements,
+        ui::elements::Element,
     },
     graphics,
 };
@@ -44,13 +44,11 @@ impl<'r> ScaleFactor<'r> {
     }
 }
 
-impl<'r> elements::Size for ScaleFactor<'r> {
+impl<'r> Element for ScaleFactor<'r> {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }
-}
 
-impl<'r> elements::Draw for ScaleFactor<'r> {
     fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,

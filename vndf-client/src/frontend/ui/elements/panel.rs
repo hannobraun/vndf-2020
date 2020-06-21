@@ -8,7 +8,7 @@ use crate::{
             frag,
             vert,
         },
-        ui::elements,
+        ui::elements::Element,
     },
     graphics::{
         self,
@@ -21,7 +21,11 @@ pub struct Panel {
     pub size: graphics::Size,
 }
 
-impl elements::Draw for Panel {
+impl Element for Panel {
+    fn size(&self) -> graphics::Size {
+        self.size
+    }
+
     fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,

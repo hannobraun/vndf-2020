@@ -4,7 +4,7 @@ use crate::{
             DrawResources,
             Frame,
         },
-        ui::elements,
+        ui::elements::Element,
     },
     graphics,
 };
@@ -41,7 +41,7 @@ impl<'a, 'b> Stack<'a, 'b> {
     }
 }
 
-impl<'a, 'b> elements::Size for Stack<'a, 'b> {
+impl<'a, 'b> Element for Stack<'a, 'b> {
     fn size(&self) -> graphics::Size {
         let mut size = graphics::Size::new(0.0, 0.0);
 
@@ -59,9 +59,7 @@ impl<'a, 'b> elements::Size for Stack<'a, 'b> {
 
         size
     }
-}
 
-impl<'a, 'b> elements::Draw for Stack<'a, 'b> {
     fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,
@@ -78,6 +76,6 @@ impl<'a, 'b> elements::Draw for Stack<'a, 'b> {
 }
 
 
-pub trait StackElement: elements::Size + elements::Draw {}
+pub trait StackElement: Element {}
 
-impl<T> StackElement for T where T: elements::Size + elements::Draw {}
+impl<T> StackElement for T where T: Element {}
