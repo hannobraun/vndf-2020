@@ -48,7 +48,7 @@ impl<'r> NetworkStats<'r> {
     }
 }
 
-impl<'r> Element for NetworkStats<'r> {
+impl Element for NetworkStats<'_> {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }

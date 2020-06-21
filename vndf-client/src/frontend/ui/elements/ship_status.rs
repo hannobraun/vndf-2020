@@ -67,7 +67,7 @@ impl<'r> ShipStatus<'r> {
     }
 }
 
-impl<'r> Element for ShipStatus<'r> {
+impl Element for ShipStatus<'_> {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }

@@ -55,7 +55,7 @@ impl<'r> Instructions<'r> {
     }
 }
 
-impl<'r> Element for Instructions<'r> {
+impl Element for Instructions<'_> {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }

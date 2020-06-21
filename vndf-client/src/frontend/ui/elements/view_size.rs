@@ -53,7 +53,7 @@ impl<'r> ViewSize<'r> {
     }
 }
 
-impl<'r> Element for ViewSize<'r> {
+impl Element for ViewSize<'_> {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }

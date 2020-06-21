@@ -70,7 +70,7 @@ impl<'r> ComponentStats<'r> {
     }
 }
 
-impl<'r> Element for ComponentStats<'r> {
+impl Element for ComponentStats<'_> {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }

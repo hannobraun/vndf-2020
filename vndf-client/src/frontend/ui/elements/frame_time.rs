@@ -49,7 +49,7 @@ impl<'r> FrameTime<'r> {
     }
 }
 
-impl<'r> Element for FrameTime<'r> {
+impl Element for FrameTime<'_> {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }

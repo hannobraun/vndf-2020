@@ -50,7 +50,7 @@ impl<'r> Text<'r> {
     }
 }
 
-impl<'r> Element for Text<'r> {
+impl Element for Text<'_> {
     fn size(&self) -> graphics::Size {
         self.size
     }

@@ -44,7 +44,7 @@ impl<'r> ScaleFactor<'r> {
     }
 }
 
-impl<'r> Element for ScaleFactor<'r> {
+impl Element for ScaleFactor<'_> {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }

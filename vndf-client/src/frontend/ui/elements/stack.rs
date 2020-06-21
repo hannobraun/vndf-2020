@@ -41,7 +41,7 @@ impl<'a, 'b> Stack<'a, 'b> {
     }
 }
 
-impl<'a, 'b> Element for Stack<'a, 'b> {
+impl Element for Stack<'_, '_> {
     fn size(&self) -> graphics::Size {
         let mut size = graphics::Size::new(0.0, 0.0);
 

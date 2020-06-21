@@ -49,7 +49,7 @@ impl<'r> TextPanel<'r> {
     }
 }
 
-impl<'r> Element for TextPanel<'r> {
+impl Element for TextPanel<'_> {
     fn size(&self) -> graphics::Size {
         self.panel.size
     }

@@ -44,7 +44,7 @@ impl<'r> InputEvents<'r> {
     }
 }
 
-impl<'r> Element for InputEvents<'r> {
+impl Element for InputEvents<'_> {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }

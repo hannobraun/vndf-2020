@@ -75,7 +75,7 @@ impl<'a, 'b> Diagnostics<'a, 'b> {
     }
 }
 
-impl<'a, 'b> Element for Diagnostics<'a, 'b> {
+impl Element for Diagnostics<'_, '_> {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }
