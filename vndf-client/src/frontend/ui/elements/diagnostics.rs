@@ -18,7 +18,6 @@ use super::{
     ScaleFactor,
     Stack,
     TextPanelRelatedError,
-    stack::StackElement,
 };
 
 
@@ -28,7 +27,7 @@ impl<'a, 'b> Diagnostics<'a, 'b> {
     pub fn new(
         res:    &mut DrawResources,
         cache:  &'b mut Cache,
-        stack:  &'a mut Vec<Box<dyn StackElement + 'b>>,
+        stack:  &'a mut Vec<Box<dyn Element + 'b>>,
         margin: graphics::Scalar,
         game:   &Game,
         frame:  &Frame,
