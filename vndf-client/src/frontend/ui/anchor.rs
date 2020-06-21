@@ -81,7 +81,7 @@ pub struct Origin {
 
 impl Origin {
     pub fn position(self,
-        element: &impl Element,
+        element: &dyn Element,
         margin:  graphics::Scalar,
     )
         -> graphics::Pnt2
