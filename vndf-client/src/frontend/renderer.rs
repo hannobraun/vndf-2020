@@ -51,6 +51,7 @@ pub struct Renderer {
     swap_chain_desc: wgpu::SwapChainDescriptor,
     swap_chain:      wgpu::SwapChain,
     draw_res:        DrawResources,
+    ui:              Ui,
 
     scale_factor: graphics::Scalar,
 }
@@ -114,6 +115,8 @@ impl Renderer {
             drawables,
         };
 
+        let ui = Ui::new();
+
         Ok(
             Self {
                 surface,
@@ -121,6 +124,7 @@ impl Renderer {
                 swap_chain_desc,
                 swap_chain,
                 draw_res,
+                ui,
 
                 scale_factor,
             }
@@ -199,7 +203,7 @@ impl Renderer {
                     );
                 }
 
-                Ui::draw(
+                self.ui.draw(
                     &mut self.draw_res,
                     &mut frame,
                     game,

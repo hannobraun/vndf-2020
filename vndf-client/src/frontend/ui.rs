@@ -31,7 +31,11 @@ pub use self::elements::TextPanelRelatedError as Error;
 pub struct Ui {}
 
 impl Ui {
-    pub fn draw(
+    pub fn new() -> Self {
+        Self {}
+    }
+
+    pub fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,
         game:  &Game,
