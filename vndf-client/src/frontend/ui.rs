@@ -43,51 +43,39 @@ pub fn draw(
 
     if game.input.config.diagnostics {
         let mut stack = Vec::new();
-        let mut diagnostics = Diagnostics::new(
-            res,
-            &mut cache,
-            &mut stack,
-            MARGIN,
-            game,
-            frame,
-        )?;
-        diagnostics.draw(
-            res,
-            frame,
-            Anchor::top_left()
-                .origin(frame)
-                .position(&diagnostics, MARGIN),
-        );
+        Diagnostics
+            ::new(
+                res,
+                &mut cache,
+                &mut stack,
+                MARGIN,
+                game,
+                frame,
+            )?
+            .position(Anchor::top_left(), MARGIN, frame)
+            .draw(res, frame);
     }
 
     let mut view_size_buf = String::new();
-    let mut view_size = ViewSize::new(
-        res,
-        frame,
-        &mut view_size_buf,
-        game,
-    )?;
-    view_size.draw(
-        res,
-        frame,
-        Anchor::bottom_left()
-            .origin(frame)
-            .position(&view_size, MARGIN),
-    );
+    ViewSize
+        ::new(
+            res,
+            frame,
+            &mut view_size_buf,
+            game,
+        )?
+        .position(Anchor::bottom_left(), MARGIN, frame)
+        .draw(res, frame);
 
     let mut instructions_buf = String::new();
-    let mut instructions = Instructions::new(
-        res,
-        &mut instructions_buf,
-        game,
-    )?;
-    instructions.draw(
-        res,
-        frame,
-        Anchor::bottom_right()
-            .origin(frame)
-            .position(&instructions, MARGIN),
-    );
+    Instructions
+        ::new(
+            res,
+            &mut instructions_buf,
+            game,
+        )?
+        .position(Anchor::bottom_right(), MARGIN, frame)
+        .draw(res, frame);
 
     let mut ship_status_buf = String::new();
     let ship_status = ShipStatus::new(
@@ -96,13 +84,9 @@ pub fn draw(
         game,
     )?;
     if let Some(mut ship_status) = ship_status {
-        ship_status.draw(
-            res,
-            frame,
-            Anchor::top_right()
-                .origin(frame)
-                .position(&ship_status, MARGIN),
-        );
+        ship_status
+            .position(Anchor::top_right(), MARGIN, frame)
+            .draw(res, frame);
     }
 
     let other_elements = elements.orbit_info.iter()

@@ -66,11 +66,44 @@ pub trait Element {
         graphics::Vec2::new(x, y)
     }
 
+    fn position(&mut self,
+        anchor: Anchor,
+        margin: graphics::Scalar,
+        frame:  &Frame,
+    )
+        -> Positioned
+        where Self: Sized,
+    {
+        let position = anchor
+            .origin(frame)
+            .position(self, margin);
+
+        Positioned {
+            element: self,
+            position,
+        }
+    }
+
     fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,
         pos:   graphics::Pnt2,
     );
+}
+
+
+pub struct Positioned<'r> {
+    pub element:  &'r mut dyn Element,
+    pub position: graphics::Pnt2,
+}
+
+impl Positioned<'_> {
+    pub fn draw(&mut self,
+        res:   &mut DrawResources,
+        frame: &mut Frame,
+    ) {
+        self.element.draw(res, frame, self.position)
+    }
 }
 
 
