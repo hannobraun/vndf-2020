@@ -203,12 +203,13 @@ impl Renderer {
                     );
                 }
 
-                self.ui.draw(
-                    &mut self.draw_res,
-                    &mut frame,
-                    game,
-                )
-                .map_err(|err| Error::Ui(err))?;
+                self.ui
+                    .draw(
+                        &mut self.draw_res,
+                        &mut frame,
+                        game,
+                    )
+                    .map_err(|err| Error::Ui(err))?;
 
                 self.queue.submit(&[frame.encoder.finish()]);
             }
