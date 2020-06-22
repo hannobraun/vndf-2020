@@ -37,7 +37,10 @@ use super::{
         self,
         Meshes,
     },
-    ui,
+    ui::{
+        self,
+        Ui,
+    },
     window::Window,
 };
 
@@ -196,7 +199,7 @@ impl Renderer {
                     );
                 }
 
-                ui::draw(
+                Ui::draw(
                     &mut self.draw_res,
                     &mut frame,
                     game,
