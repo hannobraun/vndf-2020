@@ -31,7 +31,7 @@ impl<'r> Text<'r> {
 
         let section = wgpu_glyph::Section {
             text,
-            // placeholder; posisition is supplied in `draw`
+            // placeholder; position is supplied in `draw`
             screen_position: (0.0, 0.0),
             .. wgpu_glyph::Section::default()
         };
