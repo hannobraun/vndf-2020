@@ -112,9 +112,8 @@ impl State {
     }
 
     pub fn active_orbits(&self) -> impl IntoIterator<Item=Orbit> + '_ {
-        self.data.ships
-            .values()
-            .filter_map(move |ship| {
+        self.own_ship()
+            .and_then(move |ship| {
                 let craft = self.data.crafts.get(&ship.craft)?;
                 let body  = self.data.bodies.get(&craft.body)?;
                 let pos   = self.data.positions.get(&body.pos)?;
