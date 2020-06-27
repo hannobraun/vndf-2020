@@ -66,6 +66,7 @@ impl Element {
 
     pub fn orbit_info<'r>(game: &'r Game, screen: &'r Screen) -> Vec<Self> {
         game.state.active_orbits()
+            .into_iter()
             .filter_map(move |orbit| {
                 // Display periapsis and apoapsis
                 //

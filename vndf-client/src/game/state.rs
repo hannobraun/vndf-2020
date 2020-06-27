@@ -111,7 +111,7 @@ impl State {
             })
     }
 
-    pub fn active_orbits(&self) -> impl Iterator<Item=Orbit> + '_ {
+    pub fn active_orbits(&self) -> impl IntoIterator<Item=Orbit> + '_ {
         self.data.ships
             .values()
             .filter_map(move |ship| {
