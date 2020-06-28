@@ -28,8 +28,8 @@ impl<'a, 'b> Stack<'a, 'b> {
         }
     }
 
-    pub fn add(&mut self, element: impl Widget + 'b) {
-        self.widgets.push(Box::new(element));
+    pub fn add(&mut self, widget: impl Widget + 'b) {
+        self.widgets.push(Box::new(widget));
     }
 
     pub fn add_iter(&mut self,
