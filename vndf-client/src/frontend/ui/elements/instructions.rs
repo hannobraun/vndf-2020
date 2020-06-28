@@ -6,7 +6,7 @@ use crate::{
             DrawResources,
             Frame,
         },
-        ui::elements::Element,
+        ui::elements::Widget,
     },
     game::Game,
     graphics,
@@ -55,7 +55,7 @@ impl<'r> Instructions<'r> {
     }
 }
 
-impl Element for Instructions<'_> {
+impl Widget for Instructions<'_> {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }

@@ -1,7 +1,7 @@
 use crate::{
     frontend::{
         drawers::Frame,
-        ui::elements::Element,
+        ui::elements::Widget,
     },
     graphics,
 };
@@ -81,7 +81,7 @@ pub struct Origin {
 
 impl Origin {
     pub fn position(self,
-        element: &dyn Element,
+        element: &dyn Widget,
         margin:  graphics::Scalar,
     )
         -> graphics::Pnt2

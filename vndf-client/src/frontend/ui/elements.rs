@@ -48,7 +48,7 @@ use super::anchor::{
 use self::text::NoBoundsError;
 
 
-pub trait Element {
+pub trait Widget {
     fn size(&self) -> graphics::Size;
 
     fn offset(&self, anchor: Anchor, margin: graphics::Scalar)
@@ -93,7 +93,7 @@ pub trait Element {
 
 
 pub struct Positioned<'r> {
-    pub element:  &'r mut dyn Element,
+    pub element:  &'r mut dyn Widget,
     pub position: graphics::Pnt2,
 }
 

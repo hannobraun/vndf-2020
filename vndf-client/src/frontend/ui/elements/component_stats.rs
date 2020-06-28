@@ -6,7 +6,7 @@ use crate::{
             DrawResources,
             Frame,
         },
-        ui::elements::Element,
+        ui::elements::Widget,
     },
     game::Game,
     graphics,
@@ -70,7 +70,7 @@ impl<'r> ComponentStats<'r> {
     }
 }
 
-impl Element for ComponentStats<'_> {
+impl Widget for ComponentStats<'_> {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }

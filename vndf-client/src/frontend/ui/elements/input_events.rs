@@ -6,7 +6,7 @@ use crate::{
             DrawResources,
             Frame,
         },
-        ui::elements::Element,
+        ui::elements::Widget,
     },
     game::Game,
     graphics,
@@ -44,7 +44,7 @@ impl<'r> InputEvents<'r> {
     }
 }
 
-impl Element for InputEvents<'_> {
+impl Widget for InputEvents<'_> {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }

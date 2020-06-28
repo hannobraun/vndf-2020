@@ -4,7 +4,7 @@ use crate::{
             DrawResources,
             Frame,
         },
-        ui::elements::Element,
+        ui::elements::Widget,
     },
     graphics,
 };
@@ -49,7 +49,7 @@ impl<'r> TextPanel<'r> {
     }
 }
 
-impl Element for TextPanel<'_> {
+impl Widget for TextPanel<'_> {
     fn size(&self) -> graphics::Size {
         self.panel.size
     }

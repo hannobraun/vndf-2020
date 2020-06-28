@@ -4,7 +4,7 @@ use crate::{
             DrawResources,
             Frame,
         },
-        ui::elements::Element,
+        ui::elements::Widget,
     },
     graphics,
 };
@@ -50,7 +50,7 @@ impl<'r> Text<'r> {
     }
 }
 
-impl Element for Text<'_> {
+impl Widget for Text<'_> {
     fn size(&self) -> graphics::Size {
         self.size
     }

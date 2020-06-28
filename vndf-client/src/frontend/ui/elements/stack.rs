@@ -4,7 +4,7 @@ use crate::{
             DrawResources,
             Frame,
         },
-        ui::elements::Element,
+        ui::elements::Widget,
     },
     graphics,
 };
@@ -12,12 +12,12 @@ use crate::{
 
 pub struct Stack<'a, 'b> {
     margin:   f32,
-    elements: &'a mut Vec<Box<dyn Element + 'b>>,
+    elements: &'a mut Vec<Box<dyn Widget + 'b>>,
 }
 
 impl<'a, 'b> Stack<'a, 'b> {
     pub fn new(
-        buf:    &'a mut Vec<Box<dyn Element + 'b>>,
+        buf:    &'a mut Vec<Box<dyn Widget + 'b>>,
         margin: f32,
     )
         -> Self
@@ -28,12 +28,12 @@ impl<'a, 'b> Stack<'a, 'b> {
         }
     }
 
-    pub fn add(&mut self, element: impl Element + 'b) {
+    pub fn add(&mut self, element: impl Widget + 'b) {
         self.elements.push(Box::new(element));
     }
 
     pub fn add_iter(&mut self,
-        elements: impl IntoIterator<Item=impl Element + 'b>,
+        elements: impl IntoIterator<Item=impl Widget + 'b>,
     ) {
         for element in elements {
             self.add(element)
@@ -41,7 +41,7 @@ impl<'a, 'b> Stack<'a, 'b> {
     }
 }
 
-impl Element for Stack<'_, '_> {
+impl Widget for Stack<'_, '_> {
     fn size(&self) -> graphics::Size {
         let mut size = graphics::Size::new(0.0, 0.0);
 

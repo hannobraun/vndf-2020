@@ -4,7 +4,7 @@ use crate::{
             DrawResources,
             Frame,
         },
-        ui::elements::Element,
+        ui::elements::Widget,
     },
     game::Game,
     graphics,
@@ -27,7 +27,7 @@ impl<'a, 'b> Diagnostics<'a, 'b> {
     pub fn new(
         res:    &mut DrawResources,
         cache:  &'b mut Cache,
-        stack:  &'a mut Vec<Box<dyn Element + 'b>>,
+        stack:  &'a mut Vec<Box<dyn Widget + 'b>>,
         margin: graphics::Scalar,
         game:   &Game,
         frame:  &Frame,
@@ -74,7 +74,7 @@ impl<'a, 'b> Diagnostics<'a, 'b> {
     }
 }
 
-impl Element for Diagnostics<'_, '_> {
+impl Widget for Diagnostics<'_, '_> {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }

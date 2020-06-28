@@ -15,11 +15,11 @@ use self::{
     anchor::Anchor,
     elements::{
         Diagnostics,
-        Element as _,
         Instructions,
         ShipStatus,
         TextPanel,
         ViewSize,
+        Widget as _,
         diagnostics,
     },
 };

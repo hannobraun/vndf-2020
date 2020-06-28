@@ -6,7 +6,7 @@ use crate::{
             DrawResources,
             Frame,
         },
-        ui::elements::Element,
+        ui::elements::Widget,
     },
     game::Game,
     graphics,
@@ -49,7 +49,7 @@ impl<'r> FrameTime<'r> {
     }
 }
 
-impl Element for FrameTime<'_> {
+impl Widget for FrameTime<'_> {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }
