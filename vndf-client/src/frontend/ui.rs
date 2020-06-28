@@ -21,6 +21,7 @@ use self::{
         ViewSize,
         Widget as _,
         diagnostics,
+        ship_control,
     },
 };
 
@@ -83,11 +84,11 @@ impl Ui {
             .position(Anchor::bottom_right(), MARGIN, frame)
             .draw(res, frame);
 
-        let mut ship_status_buf = String::new();
+        let mut cache = ship_control::Cache::new();
         let mut stack = Vec::new();
         let ship_control = ShipControl::new(
             res,
-            &mut ship_status_buf,
+            &mut cache,
             &mut stack,
             MARGIN,
             game,

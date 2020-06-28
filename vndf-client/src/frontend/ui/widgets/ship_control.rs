@@ -22,7 +22,7 @@ pub struct ShipControl<'a, 'b>(Stack<'a, 'b>);
 impl<'a, 'b> ShipControl<'a, 'b> {
     pub fn new(
         res:    &mut DrawResources,
-        buf:    &'b mut String,
+        cache:  &'b mut Cache,
         stack:  &'a mut Vec<Box<dyn Widget + 'b>>,
         margin: graphics::Scalar,
         game:   &Game,
@@ -31,7 +31,7 @@ impl<'a, 'b> ShipControl<'a, 'b> {
     {
         let ship_status = ShipStatus::new(
             res,
-            buf,
+            &mut cache.ship_status,
             game,
         )?;
 
@@ -60,5 +60,18 @@ impl Widget for ShipControl<'_, '_> {
         pos:   graphics::Pnt2,
     ) {
         self.0.draw(res, frame, pos)
+    }
+}
+
+
+pub struct Cache {
+    ship_status: String,
+}
+
+impl Cache {
+    pub fn new() -> Self {
+        Self {
+            ship_status: String::new(),
+        }
     }
 }
