@@ -6,6 +6,7 @@ pub mod instructions;
 pub mod network_stats;
 pub mod panel;
 pub mod scale_factor;
+pub mod ship_control;
 pub mod ship_status;
 pub mod stack;
 pub mod text;
@@ -22,6 +23,7 @@ pub use self::{
     network_stats::NetworkStats,
     panel::Panel,
     scale_factor::ScaleFactor,
+    ship_control::ShipControl,
     ship_status::ShipStatus,
     stack::Stack,
     text::Text,

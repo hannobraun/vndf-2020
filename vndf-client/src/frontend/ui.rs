@@ -16,7 +16,7 @@ use self::{
     widgets::{
         Diagnostics,
         Instructions,
-        ShipStatus,
+        ShipControl,
         TextPanel,
         ViewSize,
         Widget as _,
@@ -85,12 +85,15 @@ impl Ui {
             .draw(res, frame);
 
         let mut ship_status_buf = String::new();
-        let ship_status = ShipStatus::new(
+        let mut stack = Vec::new();
+        let ship_control = ShipControl::new(
             res,
             &mut ship_status_buf,
+            &mut stack,
+            MARGIN,
             game,
         )?;
-        if let Some(mut ship_status) = ship_status {
+        if let Some(mut ship_status) = ship_control {
             ship_status
                 .position(Anchor::top_right(), MARGIN, frame)
                 .draw(res, frame);
