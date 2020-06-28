@@ -42,13 +42,12 @@ impl Ui {
     )
         -> Result<(), Error>
     {
-        let mut cache = diagnostics::Cache::new();
-
         let elements = ui::Elements::new(game, &frame.screen);
 
         const MARGIN: f32 = 20.0;
 
         if game.input.config.diagnostics {
+            let mut cache = diagnostics::Cache::new();
             let mut stack = Vec::new();
             Diagnostics
                 ::new(
