@@ -81,11 +81,11 @@ pub struct Origin {
 
 impl Origin {
     pub fn position(self,
-        element: &dyn Widget,
-        margin:  graphics::Scalar,
+        widget: &dyn Widget,
+        margin: graphics::Scalar,
     )
         -> graphics::Pnt2
     {
-        self.pos + element.offset(self.anchor, margin)
+        self.pos + widget.offset(self.anchor, margin)
     }
 }
