@@ -45,13 +45,13 @@ impl Widget for Stack<'_, '_> {
     fn size(&self) -> graphics::Size {
         let mut size = graphics::Size::new(0.0, 0.0);
 
-        for (i, element) in self.widgets.iter().enumerate() {
+        for (i, widget) in self.widgets.iter().enumerate() {
             size.width = graphics::Scalar::max(
                 size.width,
-                element.size().width,
+                widget.size().width,
             );
 
-            size.height += element.size().height;
+            size.height += widget.size().height;
             if i < self.widgets.len() - 1 {
                 size.height += self.margin;
             }
