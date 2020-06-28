@@ -11,8 +11,8 @@ use crate::{
 
 
 pub struct Stack<'a, 'b> {
-    margin:   f32,
-    elements: &'a mut Vec<Box<dyn Widget + 'b>>,
+    margin:  f32,
+    widgets: &'a mut Vec<Box<dyn Widget + 'b>>,
 }
 
 impl<'a, 'b> Stack<'a, 'b> {
@@ -24,12 +24,12 @@ impl<'a, 'b> Stack<'a, 'b> {
     {
         Self {
             margin,
-            elements: buf,
+            widgets: buf,
         }
     }
 
     pub fn add(&mut self, element: impl Widget + 'b) {
-        self.elements.push(Box::new(element));
+        self.widgets.push(Box::new(element));
     }
 
     pub fn add_iter(&mut self,
@@ -45,14 +45,14 @@ impl Widget for Stack<'_, '_> {
     fn size(&self) -> graphics::Size {
         let mut size = graphics::Size::new(0.0, 0.0);
 
-        for (i, element) in self.elements.iter().enumerate() {
+        for (i, element) in self.widgets.iter().enumerate() {
             size.width = graphics::Scalar::max(
                 size.width,
                 element.size().width,
             );
 
             size.height += element.size().height;
-            if i < self.elements.len() - 1 {
+            if i < self.widgets.len() - 1 {
                 size.height += self.margin;
             }
         }
@@ -67,7 +67,7 @@ impl Widget for Stack<'_, '_> {
     ) {
         let mut next_pos = pos;
 
-        for element in self.elements.iter_mut() {
+        for element in self.widgets.iter_mut() {
             element.draw(res, frame, next_pos);
             let offset_y = element.size().height + self.margin;
             next_pos.y += offset_y;
