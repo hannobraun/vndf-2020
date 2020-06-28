@@ -79,7 +79,7 @@ pub trait Widget {
             .position(self, margin);
 
         Positioned {
-            element: self,
+            widget: self,
             position,
         }
     }
@@ -93,7 +93,7 @@ pub trait Widget {
 
 
 pub struct Positioned<'r> {
-    pub element:  &'r mut dyn Widget,
+    pub widget:   &'r mut dyn Widget,
     pub position: graphics::Pnt2,
 }
 
@@ -102,7 +102,7 @@ impl Positioned<'_> {
         res:   &mut DrawResources,
         frame: &mut Frame,
     ) {
-        self.element.draw(res, frame, self.position)
+        self.widget.draw(res, frame, self.position)
     }
 }
 
