@@ -11,6 +11,7 @@ use crate::{
 };
 
 use super::{
+    Commands,
     ShipStatus,
     Stack,
     TextPanelRelatedError,
@@ -34,12 +35,17 @@ impl<'a, 'b> ShipControl<'a, 'b> {
             &mut cache.ship_status,
             game,
         )?;
+        let commands = Commands::new(
+            res,
+            &mut cache.commands,
+        )?;
 
         let mut stack = Stack::new(stack, margin);
 
         if let Some(ship_status) = ship_status {
             stack.add(ship_status);
         }
+        stack.add(commands);
 
         Ok(
             Some(
@@ -65,12 +71,14 @@ impl Widget for ShipControl<'_, '_> {
 
 
 pub struct Cache {
+    commands:    String,
     ship_status: String,
 }
 
 impl Cache {
     pub fn new() -> Self {
         Self {
+            commands:    String::new(),
             ship_status: String::new(),
         }
     }
