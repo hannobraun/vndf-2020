@@ -67,9 +67,9 @@ impl Widget for Stack<'_, '_> {
     ) {
         let mut next_pos = pos;
 
-        for element in self.widgets.iter_mut() {
-            element.draw(res, frame, next_pos);
-            let offset_y = element.size().height + self.margin;
+        for widget in self.widgets.iter_mut() {
+            widget.draw(res, frame, next_pos);
+            let offset_y = widget.size().height + self.margin;
             next_pos.y += offset_y;
         }
     }
