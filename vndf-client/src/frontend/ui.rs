@@ -1,5 +1,5 @@
 mod anchor;
-mod elements;
+mod widgets;
 
 
 use crate::{
@@ -13,7 +13,7 @@ use crate::{
 
 use self::{
     anchor::Anchor,
-    elements::{
+    widgets::{
         Diagnostics,
         Instructions,
         ShipStatus,
@@ -25,7 +25,7 @@ use self::{
 };
 
 
-pub use self::elements::TextPanelRelatedError as Error;
+pub use self::widgets::TextPanelRelatedError as Error;
 
 
 pub struct Ui {}

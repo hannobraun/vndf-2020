@@ -6,7 +6,7 @@ use crate::{
             DrawResources,
             Frame,
         },
-        ui::elements::Widget,
+        ui::widgets::Widget,
     },
     game::Game,
     graphics,
@@ -18,9 +18,9 @@ use super::{
 };
 
 
-pub struct NetworkStats<'r>(TextPanel<'r>);
+pub struct InputEvents<'r>(TextPanel<'r>);
 
-impl<'r> NetworkStats<'r> {
+impl<'r> InputEvents<'r> {
     pub fn new(
         res:  &mut DrawResources,
         buf:  &'r mut String,
@@ -28,14 +28,10 @@ impl<'r> NetworkStats<'r> {
     )
         -> Result<Self, TextPanelRelatedError>
     {
-        write!(
-            buf,
-            "Network:\n\
-            Updates per s: {}\n\
-            Removals per s: {}",
-            game.state.statistics.updates.len(),
-            game.state.statistics.removals.len(),
-        )?;
+        write!(buf, "Input:\n")?;
+        for event in game.events.iter().rev() {
+            write!(buf, "{}\n", event)?;
+        }
 
         let text_panel = TextPanel::new(
             res,
@@ -48,7 +44,7 @@ impl<'r> NetworkStats<'r> {
     }
 }
 
-impl Widget for NetworkStats<'_> {
+impl Widget for InputEvents<'_> {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }

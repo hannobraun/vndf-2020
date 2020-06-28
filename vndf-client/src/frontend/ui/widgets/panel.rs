@@ -8,7 +8,7 @@ use crate::{
             frag,
             vert,
         },
-        ui::elements::Widget,
+        ui::widgets::Widget,
     },
     graphics::{
         self,

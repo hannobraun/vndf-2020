@@ -1,7 +1,7 @@
 use crate::{
     frontend::{
         drawers::Frame,
-        ui::elements::Widget,
+        ui::widgets::Widget,
     },
     graphics,
 };

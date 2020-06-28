@@ -6,7 +6,7 @@ use crate::{
             DrawResources,
             Frame,
         },
-        ui::elements::Widget,
+        ui::widgets::Widget,
     },
     game::Game,
     graphics,
@@ -18,9 +18,9 @@ use super::{
 };
 
 
-pub struct Instructions<'r>(TextPanel<'r>);
+pub struct NetworkStats<'r>(TextPanel<'r>);
 
-impl<'r> Instructions<'r> {
+impl<'r> NetworkStats<'r> {
     pub fn new(
         res:  &mut DrawResources,
         buf:  &'r mut String,
@@ -30,18 +30,11 @@ impl<'r> Instructions<'r> {
     {
         write!(
             buf,
-            "Instructions:\n\
-            Turn left - {}\n\
-            Turn right - {}\n\
-            Thrust On - {}\n\
-            Thrust Off - {}\n\
-            Zoom Camera - Mouse Wheel\n\
-            End game - {}",
-            game.input.config.input.left,
-            game.input.config.input.right,
-            game.input.config.input.thrust_on,
-            game.input.config.input.thrust_off,
-            game.input.config.input.quit,
+            "Network:\n\
+            Updates per s: {}\n\
+            Removals per s: {}",
+            game.state.statistics.updates.len(),
+            game.state.statistics.removals.len(),
         )?;
 
         let text_panel = TextPanel::new(
@@ -55,7 +48,7 @@ impl<'r> Instructions<'r> {
     }
 }
 
-impl Widget for Instructions<'_> {
+impl Widget for NetworkStats<'_> {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }

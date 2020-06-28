@@ -6,8 +6,9 @@ use crate::{
             DrawResources,
             Frame,
         },
-        ui::elements::Widget,
+        ui::widgets::Widget,
     },
+    game::Game,
     graphics,
 };
 
@@ -17,20 +18,28 @@ use super::{
 };
 
 
-pub struct ScaleFactor<'r>(TextPanel<'r>);
+pub struct ViewSize<'r>(TextPanel<'r>);
 
-impl<'r> ScaleFactor<'r> {
+impl<'r> ViewSize<'r> {
     pub fn new(
         res:   &mut DrawResources,
-        buf:   &'r mut String,
         frame: &Frame,
+        buf:   &'r mut String,
+        game:  &Game,
     )
         -> Result<Self, TextPanelRelatedError>
     {
+        let size = game.state.camera.world_size_on_screen(&frame.screen);
+
+        let width_km  = size.width  / 1000.0;
+        let height_km = size.height / 1000.0;
+
         write!(
             buf,
-            "Scale factor: {}",
-            frame.screen.scale_factor,
+            "View Size (km):\n\
+            {:.0} x {:.0}",
+            width_km,
+            height_km,
         )?;
 
         let text_panel = TextPanel::new(
@@ -44,7 +53,7 @@ impl<'r> ScaleFactor<'r> {
     }
 }
 
-impl Widget for ScaleFactor<'_> {
+impl Widget for ViewSize<'_> {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }

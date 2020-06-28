@@ -6,7 +6,7 @@ use crate::{
             DrawResources,
             Frame,
         },
-        ui::elements::Widget,
+        ui::widgets::Widget,
     },
     game::Game,
     graphics,
@@ -18,9 +18,9 @@ use super::{
 };
 
 
-pub struct InputEvents<'r>(TextPanel<'r>);
+pub struct Instructions<'r>(TextPanel<'r>);
 
-impl<'r> InputEvents<'r> {
+impl<'r> Instructions<'r> {
     pub fn new(
         res:  &mut DrawResources,
         buf:  &'r mut String,
@@ -28,10 +28,21 @@ impl<'r> InputEvents<'r> {
     )
         -> Result<Self, TextPanelRelatedError>
     {
-        write!(buf, "Input:\n")?;
-        for event in game.events.iter().rev() {
-            write!(buf, "{}\n", event)?;
-        }
+        write!(
+            buf,
+            "Instructions:\n\
+            Turn left - {}\n\
+            Turn right - {}\n\
+            Thrust On - {}\n\
+            Thrust Off - {}\n\
+            Zoom Camera - Mouse Wheel\n\
+            End game - {}",
+            game.input.config.input.left,
+            game.input.config.input.right,
+            game.input.config.input.thrust_on,
+            game.input.config.input.thrust_off,
+            game.input.config.input.quit,
+        )?;
 
         let text_panel = TextPanel::new(
             res,
@@ -44,7 +55,7 @@ impl<'r> InputEvents<'r> {
     }
 }
 
-impl Widget for InputEvents<'_> {
+impl Widget for Instructions<'_> {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }
