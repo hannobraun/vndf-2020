@@ -35,8 +35,8 @@ impl<'a, 'b> Stack<'a, 'b> {
     pub fn add_iter(&mut self,
         widgets: impl IntoIterator<Item=impl Widget + 'b>,
     ) {
-        for element in widgets {
-            self.add(element)
+        for widget in widgets {
+            self.add(widget)
         }
     }
 }
