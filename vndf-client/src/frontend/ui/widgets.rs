@@ -1,4 +1,5 @@
 pub mod commands;
+pub mod commands_list;
 pub mod component_stats;
 pub mod diagnostics;
 pub mod frame_time;
@@ -17,6 +18,7 @@ pub mod view_size;
 
 pub use self::{
     commands::Commands,
+    commands_list::CommandsList,
     component_stats::ComponentStats,
     diagnostics::Diagnostics,
     frame_time::FrameTime,

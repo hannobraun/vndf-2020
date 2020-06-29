@@ -1,3 +1,5 @@
+use std::fmt::Write as _;
+
 use crate::{
     frontend::{
         drawers::{
@@ -10,29 +12,37 @@ use crate::{
 };
 
 use super::{
-    CommandsList,
+    TextPanel,
     TextPanelRelatedError,
 };
 
 
-pub struct Commands<'a>(CommandsList<'a>);
+pub struct CommandsList<'a>(TextPanel<'a>);
 
-impl<'a> Commands<'a> {
+impl<'a> CommandsList<'a> {
     pub fn new(
         res: &mut DrawResources,
         buf: &'a mut String,
     )
         -> Result<Self, TextPanelRelatedError>
     {
-        let list = CommandsList::new(res, buf)?;
+        write!(
+            buf,
+            "Commands",
+        )?;
+
+        let text_panel = TextPanel::new(
+            res,
+            buf,
+        )?;
 
         Ok(
-            Self(list)
+            Self(text_panel)
         )
     }
 }
 
-impl Widget for Commands<'_> {
+impl Widget for CommandsList<'_> {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }
