@@ -46,11 +46,9 @@ impl Ui {
         const MARGIN: f32 = 20.0;
 
         if game.input.config.diagnostics {
-            let stack = Vec::new();
             Diagnostics
                 ::new(
                     res,
-                    stack,
                     MARGIN,
                     game,
                     frame,
@@ -76,10 +74,8 @@ impl Ui {
             .position(Anchor::bottom_right(), MARGIN, frame)
             .draw(res, frame);
 
-        let stack = Vec::new();
         let ship_control = ShipControl::new(
             res,
-            stack,
             MARGIN,
             game,
         )?;

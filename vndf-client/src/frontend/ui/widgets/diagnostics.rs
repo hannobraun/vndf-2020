@@ -26,7 +26,6 @@ pub struct Diagnostics<'a>(Stack<'a>);
 impl<'a> Diagnostics<'a> {
     pub fn new(
         res:    &mut DrawResources,
-        stack:  Vec<Box<dyn Widget>>,
         margin: graphics::Scalar,
         game:   &Game,
         frame:  &Frame,
@@ -54,7 +53,7 @@ impl<'a> Diagnostics<'a> {
             game,
         )?;
 
-        let mut diagnostics = Stack::new(stack, margin);
+        let mut diagnostics = Stack::new(margin);
 
         diagnostics.add(frame_time);
         diagnostics.add(scale_factor);

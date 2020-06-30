@@ -18,14 +18,13 @@ pub struct Stack<'a> {
 
 impl<'a> Stack<'a> {
     pub fn new(
-        buf:    Vec<Box<dyn Widget>>,
         margin: f32,
     )
         -> Self
     {
         Self {
             margin,
-            widgets: buf,
+            widgets: Vec::new(),
             _tmp:    std::marker::PhantomData,
         }
     }

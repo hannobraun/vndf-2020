@@ -23,7 +23,6 @@ pub struct ShipControl<'a>(Stack<'a>);
 impl<'a> ShipControl<'a> {
     pub fn new(
         res:    &mut DrawResources,
-        stack:  Vec<Box<dyn Widget>>,
         margin: graphics::Scalar,
         game:   &Game,
     )
@@ -37,7 +36,7 @@ impl<'a> ShipControl<'a> {
             res,
         )?;
 
-        let mut stack = Stack::new(stack, margin);
+        let mut stack = Stack::new(margin);
 
         if let Some(ship_status) = ship_status {
             stack.add(ship_status);
