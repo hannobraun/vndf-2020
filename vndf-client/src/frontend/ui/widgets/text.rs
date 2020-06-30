@@ -11,8 +11,9 @@ use crate::{
 
 
 pub struct Text<'r> {
-    section: wgpu_glyph::Section<'r>,
+    section: glyph_brush::OwnedSection,
     size:    graphics::Size,
+    _tmp:    core::marker::PhantomData<&'r ()>,
 }
 
 impl<'r> Text<'r> {
@@ -23,13 +24,13 @@ impl<'r> Text<'r> {
         -> Result<Self, NoBoundsError>
     {
         let text = vec![
-            wgpu_glyph::Text::default()
+            glyph_brush::OwnedText::default()
                 .with_text(text)
                 .with_scale(16.0)
                 .with_color([1.0, 1.0, 1.0, 1.0]),
         ];
 
-        let section = wgpu_glyph::Section {
+        let section = glyph_brush::OwnedSection {
             text,
             // placeholder; position is supplied in `draw`
             screen_position: (0.0, 0.0),
@@ -45,6 +46,7 @@ impl<'r> Text<'r> {
             Self {
                 section,
                 size,
+                _tmp: core::marker::PhantomData,
             }
         )
     }
