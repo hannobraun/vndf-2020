@@ -26,7 +26,6 @@ pub struct Diagnostics<'a, 'b>(Stack<'a, 'b>);
 impl<'a, 'b> Diagnostics<'a, 'b> {
     pub fn new(
         res:    &mut DrawResources,
-        cache:  &'b mut Cache,
         stack:  &'a mut Vec<Box<dyn Widget + 'b>>,
         margin: graphics::Scalar,
         game:   &Game,
@@ -36,27 +35,27 @@ impl<'a, 'b> Diagnostics<'a, 'b> {
     {
         let frame_time = FrameTime::new(
             res,
-            &mut cache.frame_time,
+            String::new(),
             game,
         )?;
         let scale_factor = ScaleFactor::new(
             res,
-            &mut cache.scale_factor,
+            String::new(),
             frame,
         )?;
         let component_stats = ComponentStats::new(
             res,
-            &mut cache.component_stats,
+            String::new(),
             game,
         )?;
         let network_stats = NetworkStats::new(
             res,
-            &mut cache.network_stats,
+            String::new(),
             game,
         )?;
         let input_events = InputEvents::new(
             res,
-            &mut cache.input_events,
+            String::new(),
             game,
         )?;
 
@@ -85,26 +84,5 @@ impl Widget for Diagnostics<'_, '_> {
         pos:   graphics::Pnt2,
     ) {
         self.0.draw(res, frame, pos)
-    }
-}
-
-
-pub struct Cache {
-    component_stats: String,
-    frame_time:      String,
-    input_events:    String,
-    network_stats:   String,
-    scale_factor:    String,
-}
-
-impl Cache {
-    pub fn new() -> Self {
-        Self {
-            component_stats: String::new(),
-            frame_time:      String::new(),
-            input_events:    String::new(),
-            network_stats:   String::new(),
-            scale_factor:    String::new(),
-        }
     }
 }

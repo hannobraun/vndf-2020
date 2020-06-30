@@ -20,7 +20,7 @@ pub struct Commands<'a>(CommandsList<'a>);
 impl<'a> Commands<'a> {
     pub fn new(
         res: &mut DrawResources,
-        buf: &'a mut String,
+        buf: String,
     )
         -> Result<Self, TextPanelRelatedError>
     {

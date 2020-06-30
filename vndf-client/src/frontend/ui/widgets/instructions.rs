@@ -23,11 +23,12 @@ pub struct Instructions<'r>(TextPanel<'r>);
 impl<'r> Instructions<'r> {
     pub fn new(
         res:  &mut DrawResources,
-        buf:  &'r mut String,
+        buf:  String,
         game: &Game,
     )
         -> Result<Self, TextPanelRelatedError>
     {
+        let mut buf = buf;
         write!(
             buf,
             "Instructions:\n\

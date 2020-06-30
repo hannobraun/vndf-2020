@@ -21,10 +21,10 @@ pub struct TextPanel<'r> {
     panel: Panel,
 }
 
-impl<'r> TextPanel<'r> {
+impl TextPanel<'_> {
     pub fn new(
         res:  &mut DrawResources,
-        text: &'r str,
+        text: String,
     )
         -> Result<Self, NoBoundsError>
     {

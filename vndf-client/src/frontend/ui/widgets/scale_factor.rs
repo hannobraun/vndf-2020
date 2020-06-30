@@ -22,11 +22,12 @@ pub struct ScaleFactor<'r>(TextPanel<'r>);
 impl<'r> ScaleFactor<'r> {
     pub fn new(
         res:   &mut DrawResources,
-        buf:   &'r mut String,
+        buf:   String,
         frame: &Frame,
     )
         -> Result<Self, TextPanelRelatedError>
     {
+        let mut buf = buf;
         write!(
             buf,
             "Scale factor: {}",

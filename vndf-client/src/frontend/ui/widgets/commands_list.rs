@@ -22,10 +22,11 @@ pub struct CommandsList<'a>(TextPanel<'a>);
 impl<'a> CommandsList<'a> {
     pub fn new(
         res: &mut DrawResources,
-        buf: &'a mut String,
+        buf: String,
     )
         -> Result<Self, TextPanelRelatedError>
     {
+        let mut buf = buf;
         write!(
             buf,
             "Commands",

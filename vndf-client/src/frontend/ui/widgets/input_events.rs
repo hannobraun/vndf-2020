@@ -23,11 +23,12 @@ pub struct InputEvents<'r>(TextPanel<'r>);
 impl<'r> InputEvents<'r> {
     pub fn new(
         res:  &mut DrawResources,
-        buf:  &'r mut String,
+        buf:  String,
         game: &Game,
     )
         -> Result<Self, TextPanelRelatedError>
     {
+        let mut buf = buf;
         write!(buf, "Input:\n")?;
         for event in game.events.iter().rev() {
             write!(buf, "{}\n", event)?;

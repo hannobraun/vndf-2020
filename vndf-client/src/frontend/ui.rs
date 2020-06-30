@@ -20,8 +20,6 @@ use self::{
         TextPanel,
         ViewSize,
         Widget as _,
-        diagnostics,
-        ship_control,
     },
 };
 
@@ -48,12 +46,10 @@ impl Ui {
         const MARGIN: f32 = 20.0;
 
         if game.input.config.diagnostics {
-            let mut cache = diagnostics::Cache::new();
             let mut stack = Vec::new();
             Diagnostics
                 ::new(
                     res,
-                    &mut cache,
                     &mut stack,
                     MARGIN,
                     game,
@@ -63,32 +59,28 @@ impl Ui {
                 .draw(res, frame);
         }
 
-        let mut view_size_buf = String::new();
         ViewSize
             ::new(
                 res,
                 frame,
-                &mut view_size_buf,
+                String::new(),
                 game,
             )?
             .position(Anchor::bottom_left(), MARGIN, frame)
             .draw(res, frame);
 
-        let mut instructions_buf = String::new();
         Instructions
             ::new(
                 res,
-                &mut instructions_buf,
+                String::new(),
                 game,
             )?
             .position(Anchor::bottom_right(), MARGIN, frame)
             .draw(res, frame);
 
-        let mut cache = ship_control::Cache::new();
         let mut stack = Vec::new();
         let ship_control = ShipControl::new(
             res,
-            &mut cache,
             &mut stack,
             MARGIN,
             game,
@@ -103,7 +95,7 @@ impl Ui {
             .chain(elements.ship_info);
 
         for element in other_elements {
-            TextPanel::new(res, &element.text)
+            TextPanel::new(res, element.text)
                 .unwrap()
                 .draw(res, frame, element.pos);
         }

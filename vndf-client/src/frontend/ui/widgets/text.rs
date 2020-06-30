@@ -16,10 +16,10 @@ pub struct Text<'r> {
     _tmp:    core::marker::PhantomData<&'r ()>,
 }
 
-impl<'r> Text<'r> {
+impl Text<'_> {
     pub fn new(
         res:  &mut DrawResources,
-        text: &'r str,
+        text: String,
     )
         -> Result<Self, NoBoundsError>
     {
