@@ -23,13 +23,12 @@ pub struct FrameTime<'r>(TextPanel<'r>);
 impl FrameTime<'_> {
     pub fn new(
         res:  &mut DrawResources,
-        buf:  String,
         game: &Game,
     )
         -> Result<Self, TextPanelRelatedError>
     {
         let report = game.state.frame_time.report();
-        let mut text = buf;
+        let mut text = String::new();
         write!(
             text,
             "Frame time:\n{} ms (avg {}/{}/{})",

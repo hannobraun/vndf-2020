@@ -35,27 +35,22 @@ impl<'a, 'b> Diagnostics<'a, 'b> {
     {
         let frame_time = FrameTime::new(
             res,
-            String::new(),
             game,
         )?;
         let scale_factor = ScaleFactor::new(
             res,
-            String::new(),
             frame,
         )?;
         let component_stats = ComponentStats::new(
             res,
-            String::new(),
             game,
         )?;
         let network_stats = NetworkStats::new(
             res,
-            String::new(),
             game,
         )?;
         let input_events = InputEvents::new(
             res,
-            String::new(),
             game,
         )?;
 

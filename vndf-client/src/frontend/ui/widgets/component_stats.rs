@@ -23,13 +23,12 @@ pub struct ComponentStats<'r>(TextPanel<'r>);
 impl ComponentStats<'_> {
     pub fn new(
         res:  &mut DrawResources,
-        buf:  String,
         game: &Game,
     )
         -> Result<Option<Self>, TextPanelRelatedError>
     {
         if let Some(diagnostics) = game.state.diagnostics {
-            let mut text = buf;
+            let mut text = String::new();
             write!(
                 text,
                 "Components:\n\

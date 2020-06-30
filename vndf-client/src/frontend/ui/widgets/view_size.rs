@@ -24,7 +24,6 @@ impl ViewSize<'_> {
     pub fn new(
         res:   &mut DrawResources,
         frame: &Frame,
-        buf:   String,
         game:  &Game,
     )
         -> Result<Self, TextPanelRelatedError>
@@ -34,7 +33,7 @@ impl ViewSize<'_> {
         let width_km  = size.width  / 1000.0;
         let height_km = size.height / 1000.0;
 
-        let mut text = buf;
+        let mut text = String::new();
         write!(
             text,
             "View Size (km):\n\

@@ -20,11 +20,10 @@ pub struct Commands<'a>(CommandsList<'a>);
 impl Commands<'_> {
     pub fn new(
         res: &mut DrawResources,
-        buf: String,
     )
         -> Result<Self, TextPanelRelatedError>
     {
-        let list = CommandsList::new(res, buf)?;
+        let list = CommandsList::new(res)?;
 
         Ok(
             Self(list)

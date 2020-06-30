@@ -63,7 +63,6 @@ impl Ui {
             ::new(
                 res,
                 frame,
-                String::new(),
                 game,
             )?
             .position(Anchor::bottom_left(), MARGIN, frame)
@@ -72,7 +71,6 @@ impl Ui {
         Instructions
             ::new(
                 res,
-                String::new(),
                 game,
             )?
             .position(Anchor::bottom_right(), MARGIN, frame)

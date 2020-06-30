@@ -27,7 +27,6 @@ pub struct ShipStatus<'r>(TextPanel<'r>);
 impl ShipStatus<'_> {
     pub fn new(
         res:  &mut DrawResources,
-        buf:  String,
         game: &Game,
     )
         -> Result<Option<Self>, TextPanelRelatedError>
@@ -42,7 +41,7 @@ impl ShipStatus<'_> {
         }
 
         if let Some((fuel, health)) = components(game) {
-            let mut text = buf;
+            let mut text = String::new();
             write!(
                 text,
                 "Ship Status\n\

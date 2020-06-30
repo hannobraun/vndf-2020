@@ -23,12 +23,11 @@ pub struct NetworkStats<'r>(TextPanel<'r>);
 impl NetworkStats<'_> {
     pub fn new(
         res:  &mut DrawResources,
-        buf:  String,
         game: &Game,
     )
         -> Result<Self, TextPanelRelatedError>
     {
-        let mut text = buf;
+        let mut text = String::new();
         write!(
             text,
             "Network:\n\

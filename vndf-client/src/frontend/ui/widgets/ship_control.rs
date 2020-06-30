@@ -31,12 +31,10 @@ impl<'a, 'b> ShipControl<'a, 'b> {
     {
         let ship_status = ShipStatus::new(
             res,
-            String::new(),
             game,
         )?;
         let commands = Commands::new(
             res,
-            String::new(),
         )?;
 
         let mut stack = Stack::new(stack, margin);
