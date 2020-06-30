@@ -19,7 +19,7 @@ use super::{
 
 pub struct ScaleFactor<'r>(TextPanel<'r>);
 
-impl<'r> ScaleFactor<'r> {
+impl ScaleFactor<'_> {
     pub fn new(
         res:   &mut DrawResources,
         buf:   String,

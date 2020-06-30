@@ -20,7 +20,7 @@ use super::{
 
 pub struct ComponentStats<'r>(TextPanel<'r>);
 
-impl<'r> ComponentStats<'r> {
+impl ComponentStats<'_> {
     pub fn new(
         res:  &mut DrawResources,
         buf:  String,

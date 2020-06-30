@@ -20,7 +20,7 @@ use super::{
 
 pub struct ViewSize<'r>(TextPanel<'r>);
 
-impl<'r> ViewSize<'r> {
+impl ViewSize<'_> {
     pub fn new(
         res:   &mut DrawResources,
         frame: &Frame,

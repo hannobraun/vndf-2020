@@ -20,7 +20,7 @@ use super::{
 
 pub struct FrameTime<'r>(TextPanel<'r>);
 
-impl<'r> FrameTime<'r> {
+impl FrameTime<'_> {
     pub fn new(
         res:  &mut DrawResources,
         buf:  String,

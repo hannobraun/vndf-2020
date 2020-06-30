@@ -20,7 +20,7 @@ use super::{
 
 pub struct Instructions<'r>(TextPanel<'r>);
 
-impl<'r> Instructions<'r> {
+impl Instructions<'_> {
     pub fn new(
         res:  &mut DrawResources,
         buf:  String,

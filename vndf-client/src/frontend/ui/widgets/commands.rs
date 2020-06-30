@@ -17,7 +17,7 @@ use super::{
 
 pub struct Commands<'a>(CommandsList<'a>);
 
-impl<'a> Commands<'a> {
+impl Commands<'_> {
     pub fn new(
         res: &mut DrawResources,
         buf: String,

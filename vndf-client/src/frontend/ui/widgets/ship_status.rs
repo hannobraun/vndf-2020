@@ -24,7 +24,7 @@ use super::{
 
 pub struct ShipStatus<'r>(TextPanel<'r>);
 
-impl<'r> ShipStatus<'r> {
+impl ShipStatus<'_> {
     pub fn new(
         res:  &mut DrawResources,
         buf:  String,

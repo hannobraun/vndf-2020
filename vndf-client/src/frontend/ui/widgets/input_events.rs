@@ -20,7 +20,7 @@ use super::{
 
 pub struct InputEvents<'r>(TextPanel<'r>);
 
-impl<'r> InputEvents<'r> {
+impl InputEvents<'_> {
     pub fn new(
         res:  &mut DrawResources,
         buf:  String,

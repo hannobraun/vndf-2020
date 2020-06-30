@@ -19,7 +19,7 @@ use super::{
 
 pub struct CommandsList<'a>(TextPanel<'a>);
 
-impl<'a> CommandsList<'a> {
+impl CommandsList<'_> {
     pub fn new(
         res: &mut DrawResources,
         buf: String,
