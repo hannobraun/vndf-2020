@@ -99,8 +99,8 @@ impl Ui {
                 .draw(res, frame);
         }
 
-        let other_elements = elements.orbit_info.iter()
-            .chain(&elements.ship_info);
+        let other_elements = elements.orbit_info.into_iter()
+            .chain(elements.ship_info);
 
         for element in other_elements {
             TextPanel::new(res, &element.text)
