@@ -10,13 +10,12 @@ use crate::{
 };
 
 
-pub struct Text<'r> {
+pub struct Text {
     section: glyph_brush::OwnedSection,
     size:    graphics::Size,
-    _tmp:    core::marker::PhantomData<&'r ()>,
 }
 
-impl Text<'_> {
+impl Text {
     pub fn new(
         res:  &mut DrawResources,
         text: String,
@@ -46,13 +45,12 @@ impl Text<'_> {
             Self {
                 section,
                 size,
-                _tmp: core::marker::PhantomData,
             }
         )
     }
 }
 
-impl Widget for Text<'_> {
+impl Widget for Text {
     fn size(&self) -> graphics::Size {
         self.size
     }

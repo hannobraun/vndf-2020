@@ -16,9 +16,9 @@ use super::{
 };
 
 
-pub struct NetworkStats<'r>(TextPanel<'r>);
+pub struct NetworkStats(TextPanel);
 
-impl NetworkStats<'_> {
+impl NetworkStats {
     pub fn new(
         res:  &mut DrawResources,
         game: &Game,
@@ -42,7 +42,7 @@ impl NetworkStats<'_> {
     }
 }
 
-impl Widget for NetworkStats<'_> {
+impl Widget for NetworkStats {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }

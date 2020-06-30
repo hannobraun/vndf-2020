@@ -20,9 +20,9 @@ use super::{
 };
 
 
-pub struct ShipStatus<'r>(TextPanel<'r>);
+pub struct ShipStatus(TextPanel);
 
-impl ShipStatus<'_> {
+impl ShipStatus {
     pub fn new(
         res:  &mut DrawResources,
         game: &Game,
@@ -61,7 +61,7 @@ impl ShipStatus<'_> {
     }
 }
 
-impl Widget for ShipStatus<'_> {
+impl Widget for ShipStatus {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }

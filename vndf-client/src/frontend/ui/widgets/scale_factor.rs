@@ -15,9 +15,9 @@ use super::{
 };
 
 
-pub struct ScaleFactor<'r>(TextPanel<'r>);
+pub struct ScaleFactor(TextPanel);
 
-impl ScaleFactor<'_> {
+impl ScaleFactor {
     pub fn new(
         res:   &mut DrawResources,
         frame: &Frame,
@@ -38,7 +38,7 @@ impl ScaleFactor<'_> {
     }
 }
 
-impl Widget for ScaleFactor<'_> {
+impl Widget for ScaleFactor {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }

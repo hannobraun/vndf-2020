@@ -16,9 +16,9 @@ use super::{
 };
 
 
-pub struct ComponentStats<'r>(TextPanel<'r>);
+pub struct ComponentStats(TextPanel);
 
-impl ComponentStats<'_> {
+impl ComponentStats {
     pub fn new(
         res:  &mut DrawResources,
         game: &Game,
@@ -64,7 +64,7 @@ impl ComponentStats<'_> {
     }
 }
 
-impl Widget for ComponentStats<'_> {
+impl Widget for ComponentStats {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }

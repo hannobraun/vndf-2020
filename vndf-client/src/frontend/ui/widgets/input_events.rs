@@ -18,9 +18,9 @@ use super::{
 };
 
 
-pub struct InputEvents<'r>(TextPanel<'r>);
+pub struct InputEvents(TextPanel);
 
-impl InputEvents<'_> {
+impl InputEvents {
     pub fn new(
         res:  &mut DrawResources,
         game: &Game,
@@ -44,7 +44,7 @@ impl InputEvents<'_> {
     }
 }
 
-impl Widget for InputEvents<'_> {
+impl Widget for InputEvents {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }

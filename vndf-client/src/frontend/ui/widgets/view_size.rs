@@ -16,9 +16,9 @@ use super::{
 };
 
 
-pub struct ViewSize<'r>(TextPanel<'r>);
+pub struct ViewSize(TextPanel);
 
-impl ViewSize<'_> {
+impl ViewSize {
     pub fn new(
         res:   &mut DrawResources,
         frame: &Frame,
@@ -47,7 +47,7 @@ impl ViewSize<'_> {
     }
 }
 
-impl Widget for ViewSize<'_> {
+impl Widget for ViewSize {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }

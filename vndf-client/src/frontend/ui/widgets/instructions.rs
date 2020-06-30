@@ -16,9 +16,9 @@ use super::{
 };
 
 
-pub struct Instructions<'r>(TextPanel<'r>);
+pub struct Instructions(TextPanel);
 
-impl Instructions<'_> {
+impl Instructions {
     pub fn new(
         res:  &mut DrawResources,
         game: &Game,
@@ -49,7 +49,7 @@ impl Instructions<'_> {
     }
 }
 
-impl Widget for Instructions<'_> {
+impl Widget for Instructions {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }

@@ -16,12 +16,12 @@ use super::{
 };
 
 
-pub struct TextPanel<'r> {
-    text:  Text<'r>,
+pub struct TextPanel {
+    text:  Text,
     panel: Panel,
 }
 
-impl TextPanel<'_> {
+impl TextPanel {
     pub fn new(
         res:  &mut DrawResources,
         text: String,
@@ -49,7 +49,7 @@ impl TextPanel<'_> {
     }
 }
 
-impl Widget for TextPanel<'_> {
+impl Widget for TextPanel {
     fn size(&self) -> graphics::Size {
         self.panel.size
     }

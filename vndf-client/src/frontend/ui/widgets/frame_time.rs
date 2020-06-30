@@ -16,9 +16,9 @@ use super::{
 };
 
 
-pub struct FrameTime<'r>(TextPanel<'r>);
+pub struct FrameTime(TextPanel);
 
-impl FrameTime<'_> {
+impl FrameTime {
     pub fn new(
         res:  &mut DrawResources,
         game: &Game,
@@ -44,7 +44,7 @@ impl FrameTime<'_> {
     }
 }
 
-impl Widget for FrameTime<'_> {
+impl Widget for FrameTime {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }

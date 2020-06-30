@@ -15,9 +15,9 @@ use super::{
 };
 
 
-pub struct Commands<'a>(CommandsList<'a>);
+pub struct Commands(CommandsList);
 
-impl Commands<'_> {
+impl Commands {
     pub fn new(
         res: &mut DrawResources,
     )
@@ -31,7 +31,7 @@ impl Commands<'_> {
     }
 }
 
-impl Widget for Commands<'_> {
+impl Widget for Commands {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }
