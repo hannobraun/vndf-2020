@@ -1,5 +1,3 @@
-use std::fmt::Write as _;
-
 use crate::{
     frontend::{
         drawers::{
@@ -28,35 +26,31 @@ impl ComponentStats<'_> {
         -> Result<Option<Self>, TextPanelRelatedError>
     {
         if let Some(diagnostics) = game.state.diagnostics {
-            let mut text = String::new();
-            write!(
-                text,
-                "Components:\n\
-                Bodies: {}/{}\n\
-                Crafts: {}/{}\n\
-                Explosions: {}/{}\n\
-                Fuels: {}/{}\n\
-                Healths: {}/{}\n\
-                Planets: {}/{}\n\
-                Players: {}/-\n\
-                Positions: {}/{}\n\
-                Ships: {}/{}\n\
-                Velocities: {}/{}",
-                diagnostics.bodies, game.state.data.bodies.len(),
-                diagnostics.crafts, game.state.data.crafts.len(),
-                diagnostics.explosions, game.state.data.explosions.len(),
-                diagnostics.fuels, game.state.data.fuels.len(),
-                diagnostics.healths, game.state.data.healths.len(),
-                diagnostics.planets, game.state.data.planets.len(),
-                diagnostics.players,
-                diagnostics.positions, game.state.data.positions.len(),
-                diagnostics.ships, game.state.data.ships.len(),
-                diagnostics.velocities, game.state.data.velocities.len(),
-            )?;
-
             let text_panel = TextPanel::new(
                 res,
-                text,
+                format!(
+                    "Components:\n\
+                    Bodies: {}/{}\n\
+                    Crafts: {}/{}\n\
+                    Explosions: {}/{}\n\
+                    Fuels: {}/{}\n\
+                    Healths: {}/{}\n\
+                    Planets: {}/{}\n\
+                    Players: {}/-\n\
+                    Positions: {}/{}\n\
+                    Ships: {}/{}\n\
+                    Velocities: {}/{}",
+                    diagnostics.bodies, game.state.data.bodies.len(),
+                    diagnostics.crafts, game.state.data.crafts.len(),
+                    diagnostics.explosions, game.state.data.explosions.len(),
+                    diagnostics.fuels, game.state.data.fuels.len(),
+                    diagnostics.healths, game.state.data.healths.len(),
+                    diagnostics.planets, game.state.data.planets.len(),
+                    diagnostics.players,
+                    diagnostics.positions, game.state.data.positions.len(),
+                    diagnostics.ships, game.state.data.ships.len(),
+                    diagnostics.velocities, game.state.data.velocities.len(),
+                ),
             )?;
 
             return Ok(

@@ -1,5 +1,3 @@
-use std::fmt::Write as _;
-
 use crate::{
     frontend::{
         drawers::{
@@ -27,26 +25,22 @@ impl Instructions<'_> {
     )
         -> Result<Self, TextPanelRelatedError>
     {
-        let mut text = String::new();
-        write!(
-            text,
-            "Instructions:\n\
-            Turn left - {}\n\
-            Turn right - {}\n\
-            Thrust On - {}\n\
-            Thrust Off - {}\n\
-            Zoom Camera - Mouse Wheel\n\
-            End game - {}",
-            game.input.config.input.left,
-            game.input.config.input.right,
-            game.input.config.input.thrust_on,
-            game.input.config.input.thrust_off,
-            game.input.config.input.quit,
-        )?;
-
         let text_panel = TextPanel::new(
             res,
-            text,
+            format!(
+                "Instructions:\n\
+                Turn left - {}\n\
+                Turn right - {}\n\
+                Thrust On - {}\n\
+                Thrust Off - {}\n\
+                Zoom Camera - Mouse Wheel\n\
+                End game - {}",
+                game.input.config.input.left,
+                game.input.config.input.right,
+                game.input.config.input.thrust_on,
+                game.input.config.input.thrust_off,
+                game.input.config.input.quit,
+            ),
         )?;
 
         Ok(

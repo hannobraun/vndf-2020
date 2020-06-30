@@ -1,5 +1,3 @@
-use std::fmt::Write as _;
-
 use crate::{
     frontend::{
         drawers::{
@@ -41,19 +39,15 @@ impl ShipStatus<'_> {
         }
 
         if let Some((fuel, health)) = components(game) {
-            let mut text = String::new();
-            write!(
-                text,
-                "Ship Status\n\
-                Structural Integrity: {:.2}\n\
-                Fuel: {:.2}",
-                health.value,
-                fuel.0,
-            )?;
-
             let text_panel = TextPanel::new(
                 res,
-                text,
+                format!(
+                    "Ship Status\n\
+                    Structural Integrity: {:.2}\n\
+                    Fuel: {:.2}",
+                    health.value,
+                    fuel.0,
+                ),
             )?;
 
             return Ok(

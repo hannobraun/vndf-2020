@@ -1,5 +1,3 @@
-use std::fmt::Write as _;
-
 use crate::{
     frontend::{
         drawers::{
@@ -33,18 +31,14 @@ impl ViewSize<'_> {
         let width_km  = size.width  / 1000.0;
         let height_km = size.height / 1000.0;
 
-        let mut text = String::new();
-        write!(
-            text,
-            "View Size (km):\n\
-            {:.0} x {:.0}",
-            width_km,
-            height_km,
-        )?;
-
         let text_panel = TextPanel::new(
             res,
-            text,
+            format!(
+                "View Size (km):\n\
+                {:.0} x {:.0}",
+                width_km,
+                height_km,
+            ),
         )?;
 
         Ok(

@@ -1,5 +1,3 @@
-use std::fmt::Write as _;
-
 use crate::{
     frontend::{
         drawers::{
@@ -28,19 +26,16 @@ impl FrameTime<'_> {
         -> Result<Self, TextPanelRelatedError>
     {
         let report = game.state.frame_time.report();
-        let mut text = String::new();
-        write!(
-            text,
-            "Frame time:\n{} ms (avg {}/{}/{})",
-            report.latest.whole_milliseconds(),
-            report.avg_1.whole_milliseconds(),
-            report.avg_2.whole_milliseconds(),
-            report.avg_3.whole_milliseconds(),
-        )?;
 
         let text_panel = TextPanel::new(
             res,
-            text,
+            format!(
+                "Frame time:\n{} ms (avg {}/{}/{})",
+                report.latest.whole_milliseconds(),
+                report.avg_1.whole_milliseconds(),
+                report.avg_2.whole_milliseconds(),
+                report.avg_3.whole_milliseconds(),
+            ),
         )?;
 
         Ok(

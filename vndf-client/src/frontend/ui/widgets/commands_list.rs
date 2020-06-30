@@ -1,5 +1,3 @@
-use std::fmt::Write as _;
-
 use crate::{
     frontend::{
         drawers::{
@@ -25,15 +23,11 @@ impl CommandsList<'_> {
     )
         -> Result<Self, TextPanelRelatedError>
     {
-        let mut text = String::new();
-        write!(
-            text,
-            "Commands",
-        )?;
-
         let text_panel = TextPanel::new(
             res,
-            text,
+            format!(
+                "Commands",
+            ),
         )?;
 
         Ok(

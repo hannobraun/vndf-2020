@@ -1,5 +1,3 @@
-use std::fmt::Write as _;
-
 use crate::{
     frontend::{
         drawers::{
@@ -26,16 +24,12 @@ impl ScaleFactor<'_> {
     )
         -> Result<Self, TextPanelRelatedError>
     {
-        let mut text = String::new();
-        write!(
-            text,
-            "Scale factor: {}",
-            frame.screen.scale_factor,
-        )?;
-
         let text_panel = TextPanel::new(
             res,
-            text,
+            format!(
+                "Scale factor: {}",
+                frame.screen.scale_factor,
+            ),
         )?;
 
         Ok(

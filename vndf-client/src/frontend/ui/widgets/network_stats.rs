@@ -1,5 +1,3 @@
-use std::fmt::Write as _;
-
 use crate::{
     frontend::{
         drawers::{
@@ -27,19 +25,15 @@ impl NetworkStats<'_> {
     )
         -> Result<Self, TextPanelRelatedError>
     {
-        let mut text = String::new();
-        write!(
-            text,
-            "Network:\n\
-            Updates per s: {}\n\
-            Removals per s: {}",
-            game.state.statistics.updates.len(),
-            game.state.statistics.removals.len(),
-        )?;
-
         let text_panel = TextPanel::new(
             res,
-            text,
+            format!(
+                "Network:\n\
+                Updates per s: {}\n\
+                Removals per s: {}",
+                game.state.statistics.updates.len(),
+                game.state.statistics.removals.len(),
+            ),
         )?;
 
         Ok(
