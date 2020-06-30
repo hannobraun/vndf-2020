@@ -10,13 +10,12 @@ use crate::{
 };
 
 
-pub struct Stack<'a> {
+pub struct Stack {
     margin:  f32,
     widgets: Vec<Box<dyn Widget>>,
-    _tmp:    std::marker::PhantomData<&'a ()>,
 }
 
-impl<'a> Stack<'a> {
+impl Stack {
     pub fn new(
         margin: f32,
     )
@@ -25,7 +24,6 @@ impl<'a> Stack<'a> {
         Self {
             margin,
             widgets: Vec::new(),
-            _tmp:    std::marker::PhantomData,
         }
     }
 
@@ -42,7 +40,7 @@ impl<'a> Stack<'a> {
     }
 }
 
-impl Widget for Stack<'_> {
+impl Widget for Stack {
     fn size(&self) -> graphics::Size {
         let mut size = graphics::Size::new(0.0, 0.0);
 

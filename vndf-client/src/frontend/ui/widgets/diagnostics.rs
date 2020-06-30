@@ -21,9 +21,9 @@ use super::{
 };
 
 
-pub struct Diagnostics<'a>(Stack<'a>);
+pub struct Diagnostics(Stack);
 
-impl<'a> Diagnostics<'a> {
+impl Diagnostics {
     pub fn new(
         res:    &mut DrawResources,
         margin: graphics::Scalar,
@@ -67,7 +67,7 @@ impl<'a> Diagnostics<'a> {
     }
 }
 
-impl Widget for Diagnostics<'_> {
+impl Widget for Diagnostics {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }

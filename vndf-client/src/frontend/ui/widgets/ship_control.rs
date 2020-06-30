@@ -18,9 +18,9 @@ use super::{
 };
 
 
-pub struct ShipControl<'a>(Stack<'a>);
+pub struct ShipControl(Stack);
 
-impl<'a> ShipControl<'a> {
+impl ShipControl {
     pub fn new(
         res:    &mut DrawResources,
         margin: graphics::Scalar,
@@ -51,7 +51,7 @@ impl<'a> ShipControl<'a> {
     }
 }
 
-impl Widget for ShipControl<'_> {
+impl Widget for ShipControl {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }
