@@ -85,10 +85,10 @@ impl Ui {
                 .draw(res, frame);
         }
 
-        let other_elements = elements.orbit_info.into_iter()
+        let legacy_elements = elements.orbit_info.into_iter()
             .chain(elements.ship_info);
 
-        for element in other_elements {
+        for element in legacy_elements {
             TextPanel::new(res, element.text)
                 .unwrap()
                 .draw(res, frame, element.pos);
