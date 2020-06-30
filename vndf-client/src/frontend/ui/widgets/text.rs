@@ -33,7 +33,7 @@ impl<'r> Text<'r> {
             text,
             // placeholder; position is supplied in `draw`
             screen_position: (0.0, 0.0),
-            .. wgpu_glyph::Section::default()
+            .. Default::default()
         };
 
         let size = match res.drawables.text.bounds(&section) {
