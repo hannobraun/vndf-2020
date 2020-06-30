@@ -12,12 +12,13 @@ use crate::{
 
 pub struct Stack<'a> {
     margin:  f32,
-    widgets: &'a mut Vec<Box<dyn Widget>>,
+    widgets: Vec<Box<dyn Widget>>,
+    _tmp:    std::marker::PhantomData<&'a ()>,
 }
 
 impl<'a> Stack<'a> {
     pub fn new(
-        buf:    &'a mut Vec<Box<dyn Widget>>,
+        buf:    Vec<Box<dyn Widget>>,
         margin: f32,
     )
         -> Self
@@ -25,6 +26,7 @@ impl<'a> Stack<'a> {
         Self {
             margin,
             widgets: buf,
+            _tmp:    std::marker::PhantomData,
         }
     }
 

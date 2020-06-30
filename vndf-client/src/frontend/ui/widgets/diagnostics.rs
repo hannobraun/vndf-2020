@@ -26,7 +26,7 @@ pub struct Diagnostics<'a>(Stack<'a>);
 impl<'a> Diagnostics<'a> {
     pub fn new(
         res:    &mut DrawResources,
-        stack:  &'a mut Vec<Box<dyn Widget>>,
+        stack:  Vec<Box<dyn Widget>>,
         margin: graphics::Scalar,
         game:   &Game,
         frame:  &Frame,
