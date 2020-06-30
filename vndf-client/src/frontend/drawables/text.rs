@@ -1,3 +1,5 @@
+use std::borrow::Cow;
+
 use wgpu_glyph::{
     GlyphBrush,
     GlyphBrushBuilder,
@@ -32,7 +34,11 @@ impl Text {
         )
     }
 
-    pub fn bounds(&mut self, section: &Section) -> Option<graphics::Size> {
+    pub fn bounds<'a>(&mut self,
+        section: impl Into<Cow<'a, Section<'a, wgpu_glyph::Extra>>>,
+    )
+        -> Option<graphics::Size>
+    {
         self.glyph_brush.glyph_bounds(section)
             .map(|size| {
                 graphics::Size::new(
