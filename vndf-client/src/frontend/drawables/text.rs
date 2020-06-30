@@ -48,7 +48,9 @@ impl Text {
             })
     }
 
-    pub fn queue(&mut self, section: &Section<'_>) {
+    pub fn queue<'a>(&mut self,
+        section: impl Into<Cow<'a, Section<'a>>>,
+    ) {
         self.glyph_brush.queue(section);
     }
 
