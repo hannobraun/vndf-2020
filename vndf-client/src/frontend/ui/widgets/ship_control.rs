@@ -18,12 +18,12 @@ use super::{
 };
 
 
-pub struct ShipControl<'a, 'b>(Stack<'a, 'b>);
+pub struct ShipControl<'a>(Stack<'a>);
 
-impl<'a, 'b> ShipControl<'a, 'b> {
+impl<'a> ShipControl<'a> {
     pub fn new(
         res:    &mut DrawResources,
-        stack:  &'a mut Vec<Box<dyn Widget + 'b>>,
+        stack:  &'a mut Vec<Box<dyn Widget>>,
         margin: graphics::Scalar,
         game:   &Game,
     )
@@ -52,7 +52,7 @@ impl<'a, 'b> ShipControl<'a, 'b> {
     }
 }
 
-impl Widget for ShipControl<'_, '_> {
+impl Widget for ShipControl<'_> {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }

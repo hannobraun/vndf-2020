@@ -10,14 +10,14 @@ use crate::{
 };
 
 
-pub struct Stack<'a, 'b> {
+pub struct Stack<'a> {
     margin:  f32,
-    widgets: &'a mut Vec<Box<dyn Widget + 'b>>,
+    widgets: &'a mut Vec<Box<dyn Widget>>,
 }
 
-impl<'a, 'b> Stack<'a, 'b> {
+impl<'a> Stack<'a> {
     pub fn new(
-        buf:    &'a mut Vec<Box<dyn Widget + 'b>>,
+        buf:    &'a mut Vec<Box<dyn Widget>>,
         margin: f32,
     )
         -> Self
@@ -28,12 +28,12 @@ impl<'a, 'b> Stack<'a, 'b> {
         }
     }
 
-    pub fn add(&mut self, widget: impl Widget + 'b) {
+    pub fn add(&mut self, widget: impl Widget + 'static) {
         self.widgets.push(Box::new(widget));
     }
 
     pub fn add_iter(&mut self,
-        widgets: impl IntoIterator<Item=impl Widget + 'b>,
+        widgets: impl IntoIterator<Item=impl Widget + 'static>,
     ) {
         for widget in widgets {
             self.add(widget)
@@ -41,7 +41,7 @@ impl<'a, 'b> Stack<'a, 'b> {
     }
 }
 
-impl Widget for Stack<'_, '_> {
+impl Widget for Stack<'_> {
     fn size(&self) -> graphics::Size {
         let mut size = graphics::Size::new(0.0, 0.0);
 

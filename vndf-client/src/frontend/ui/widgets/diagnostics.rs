@@ -21,12 +21,12 @@ use super::{
 };
 
 
-pub struct Diagnostics<'a, 'b>(Stack<'a, 'b>);
+pub struct Diagnostics<'a>(Stack<'a>);
 
-impl<'a, 'b> Diagnostics<'a, 'b> {
+impl<'a> Diagnostics<'a> {
     pub fn new(
         res:    &mut DrawResources,
-        stack:  &'a mut Vec<Box<dyn Widget + 'b>>,
+        stack:  &'a mut Vec<Box<dyn Widget>>,
         margin: graphics::Scalar,
         game:   &Game,
         frame:  &Frame,
@@ -68,7 +68,7 @@ impl<'a, 'b> Diagnostics<'a, 'b> {
     }
 }
 
-impl Widget for Diagnostics<'_, '_> {
+impl Widget for Diagnostics<'_> {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }
