@@ -28,9 +28,9 @@ impl Instructions<'_> {
     )
         -> Result<Self, TextPanelRelatedError>
     {
-        let mut buf = buf;
+        let mut text = buf;
         write!(
-            buf,
+            text,
             "Instructions:\n\
             Turn left - {}\n\
             Turn right - {}\n\
@@ -47,7 +47,7 @@ impl Instructions<'_> {
 
         let text_panel = TextPanel::new(
             res,
-            buf,
+            text,
         )?;
 
         Ok(

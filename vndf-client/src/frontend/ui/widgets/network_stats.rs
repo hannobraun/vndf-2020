@@ -28,9 +28,9 @@ impl NetworkStats<'_> {
     )
         -> Result<Self, TextPanelRelatedError>
     {
-        let mut buf = buf;
+        let mut text = buf;
         write!(
-            buf,
+            text,
             "Network:\n\
             Updates per s: {}\n\
             Removals per s: {}",
@@ -40,7 +40,7 @@ impl NetworkStats<'_> {
 
         let text_panel = TextPanel::new(
             res,
-            buf,
+            text,
         )?;
 
         Ok(

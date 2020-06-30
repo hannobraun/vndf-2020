@@ -34,9 +34,9 @@ impl ViewSize<'_> {
         let width_km  = size.width  / 1000.0;
         let height_km = size.height / 1000.0;
 
-        let mut buf = buf;
+        let mut text = buf;
         write!(
-            buf,
+            text,
             "View Size (km):\n\
             {:.0} x {:.0}",
             width_km,
@@ -45,7 +45,7 @@ impl ViewSize<'_> {
 
         let text_panel = TextPanel::new(
             res,
-            buf,
+            text,
         )?;
 
         Ok(

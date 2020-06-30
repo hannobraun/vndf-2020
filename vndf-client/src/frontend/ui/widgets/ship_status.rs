@@ -42,9 +42,9 @@ impl ShipStatus<'_> {
         }
 
         if let Some((fuel, health)) = components(game) {
-            let mut buf = buf;
+            let mut text = buf;
             write!(
-                buf,
+                text,
                 "Ship Status\n\
                 Structural Integrity: {:.2}\n\
                 Fuel: {:.2}",
@@ -54,7 +54,7 @@ impl ShipStatus<'_> {
 
             let text_panel = TextPanel::new(
                 res,
-                buf,
+                text,
             )?;
 
             return Ok(

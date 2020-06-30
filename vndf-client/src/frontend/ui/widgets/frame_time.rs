@@ -29,9 +29,9 @@ impl FrameTime<'_> {
         -> Result<Self, TextPanelRelatedError>
     {
         let report = game.state.frame_time.report();
-        let mut buf = buf;
+        let mut text = buf;
         write!(
-            buf,
+            text,
             "Frame time:\n{} ms (avg {}/{}/{})",
             report.latest.whole_milliseconds(),
             report.avg_1.whole_milliseconds(),
@@ -41,7 +41,7 @@ impl FrameTime<'_> {
 
         let text_panel = TextPanel::new(
             res,
-            buf,
+            text,
         )?;
 
         Ok(

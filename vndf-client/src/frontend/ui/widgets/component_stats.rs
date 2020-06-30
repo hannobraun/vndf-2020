@@ -29,9 +29,9 @@ impl ComponentStats<'_> {
         -> Result<Option<Self>, TextPanelRelatedError>
     {
         if let Some(diagnostics) = game.state.diagnostics {
-            let mut buf = buf;
+            let mut text = buf;
             write!(
-                buf,
+                text,
                 "Components:\n\
                 Bodies: {}/{}\n\
                 Crafts: {}/{}\n\
@@ -57,7 +57,7 @@ impl ComponentStats<'_> {
 
             let text_panel = TextPanel::new(
                 res,
-                buf,
+                text,
             )?;
 
             return Ok(

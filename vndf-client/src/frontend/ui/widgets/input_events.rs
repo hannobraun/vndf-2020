@@ -28,15 +28,15 @@ impl InputEvents<'_> {
     )
         -> Result<Self, TextPanelRelatedError>
     {
-        let mut buf = buf;
-        write!(buf, "Input:\n")?;
+        let mut text = buf;
+        write!(text, "Input:\n")?;
         for event in game.events.iter().rev() {
-            write!(buf, "{}\n", event)?;
+            write!(text, "{}\n", event)?;
         }
 
         let text_panel = TextPanel::new(
             res,
-            buf,
+            text,
         )?;
 
         Ok(

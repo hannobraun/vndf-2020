@@ -26,15 +26,15 @@ impl CommandsList<'_> {
     )
         -> Result<Self, TextPanelRelatedError>
     {
-        let mut buf = buf;
+        let mut text = buf;
         write!(
-            buf,
+            text,
             "Commands",
         )?;
 
         let text_panel = TextPanel::new(
             res,
-            buf,
+            text,
         )?;
 
         Ok(
