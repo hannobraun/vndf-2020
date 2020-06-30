@@ -2019,6 +2019,7 @@ version = "0.1.0"
 dependencies = [
  "euclid",
  "futures",
+ "glyph_brush",
  "log",
  "lyon",
  "serde",
