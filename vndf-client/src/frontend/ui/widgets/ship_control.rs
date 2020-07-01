@@ -34,6 +34,7 @@ impl ShipControl {
         )?;
         let commands = Commands::new(
             res,
+            margin,
         )?;
 
         let mut stack = Stack::new(margin);

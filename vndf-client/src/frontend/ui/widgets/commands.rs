@@ -11,22 +11,26 @@ use crate::{
 
 use super::{
     CommandsList,
+    Stack,
     TextPanelRelatedError,
 };
 
 
-pub struct Commands(CommandsList);
+pub struct Commands(Stack);
 
 impl Commands {
     pub fn new(
-        res: &mut DrawResources,
+        res:    &mut DrawResources,
+        margin: graphics::Scalar,
     )
         -> Result<Self, TextPanelRelatedError>
     {
-        let list = CommandsList::new(res)?;
+        let mut stack = Stack::new(margin);
+
+        stack.add(CommandsList::new(res)?);
 
         Ok(
-            Self(list)
+            Self(stack)
         )
     }
 }
