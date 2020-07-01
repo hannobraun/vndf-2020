@@ -1,3 +1,4 @@
+pub mod add_command;
 pub mod commands;
 pub mod commands_list;
 pub mod component_stats;
@@ -17,6 +18,7 @@ pub mod view_size;
 
 
 pub use self::{
+    add_command::AddCommand,
     commands::Commands,
     commands_list::CommandsList,
     component_stats::ComponentStats,

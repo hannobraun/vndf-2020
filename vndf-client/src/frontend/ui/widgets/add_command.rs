@@ -10,34 +10,33 @@ use crate::{
 };
 
 use super::{
-    AddCommand,
-    CommandsList,
-    Stack,
+    TextPanel,
     TextPanelRelatedError,
 };
 
 
-pub struct Commands(Stack);
+pub struct AddCommand(TextPanel);
 
-impl Commands {
+impl AddCommand {
     pub fn new(
-        res:    &mut DrawResources,
-        margin: graphics::Scalar,
+        res: &mut DrawResources,
     )
         -> Result<Self, TextPanelRelatedError>
     {
-        let mut stack = Stack::new(margin);
-
-        stack.add(CommandsList::new(res)?);
-        stack.add(AddCommand::new(res)?);
+        let text_panel = TextPanel::new(
+            res,
+            format!(
+                "Add command",
+            ),
+        )?;
 
         Ok(
-            Self(stack)
+            Self(text_panel)
         )
     }
 }
 
-impl Widget for Commands {
+impl Widget for AddCommand {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }
