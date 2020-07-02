@@ -8,6 +8,7 @@ edition = "2018"
 [dependencies]
 futures     = "*"
 glyph_brush = "*"
+iced        = "*"
 log         = "*"
 lyon        = "*"
 serde       = "*"
