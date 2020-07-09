@@ -56,7 +56,7 @@ use super::anchor::{
 use self::text::NoBoundsError;
 
 
-pub trait Widget {
+pub trait Widget: Draw {
     fn size(&self) -> graphics::Size;
 
     fn offset(&self, anchor: Anchor, margin: graphics::Scalar)
@@ -80,7 +80,7 @@ pub trait Widget {
         frame:  &Frame,
     )
         -> Positioned
-        where Self: Sized,
+        where Self: Sized + Draw,
     {
         let position = anchor
             .origin(frame)
@@ -91,7 +91,9 @@ pub trait Widget {
             position,
         }
     }
+}
 
+pub trait Draw {
     fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,
@@ -101,7 +103,7 @@ pub trait Widget {
 
 
 pub struct Positioned<'r> {
-    pub widget:   &'r mut dyn Widget,
+    pub widget:   &'r mut dyn Draw,
     pub position: graphics::Pnt2,
 }
 

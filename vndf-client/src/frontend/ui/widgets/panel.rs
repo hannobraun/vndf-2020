@@ -8,7 +8,10 @@ use crate::{
             frag,
             vert,
         },
-        ui::widgets::Widget,
+        ui::widgets::{
+            Draw,
+            Widget,
+        },
     },
     graphics::{
         self,
@@ -25,7 +28,9 @@ impl Widget for Panel {
     fn size(&self) -> graphics::Size {
         self.size
     }
+}
 
+impl Draw for Panel {
     fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,

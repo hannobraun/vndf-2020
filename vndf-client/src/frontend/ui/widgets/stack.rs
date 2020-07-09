@@ -4,7 +4,10 @@ use crate::{
             DrawResources,
             Frame,
         },
-        ui::widgets::Widget,
+        ui::widgets::{
+            Draw,
+            Widget,
+        },
     },
     graphics,
 };
@@ -58,7 +61,9 @@ impl Widget for Stack {
 
         size
     }
+}
 
+impl Draw for Stack {
     fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,

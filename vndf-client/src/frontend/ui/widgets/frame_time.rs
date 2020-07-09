@@ -4,7 +4,10 @@ use crate::{
             DrawResources,
             Frame,
         },
-        ui::widgets::Widget,
+        ui::widgets::{
+            Draw,
+            Widget,
+        },
     },
     game::Game,
     graphics,
@@ -48,7 +51,9 @@ impl Widget for FrameTime {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }
+}
 
+impl Draw for FrameTime {
     fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,

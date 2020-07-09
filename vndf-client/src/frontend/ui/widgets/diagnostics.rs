@@ -4,7 +4,10 @@ use crate::{
             DrawResources,
             Frame,
         },
-        ui::widgets::Widget,
+        ui::widgets::{
+            Draw,
+            Widget,
+        },
     },
     game::Game,
     graphics,
@@ -71,7 +74,9 @@ impl Widget for Diagnostics {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }
+}
 
+impl Draw for Diagnostics {
     fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,
