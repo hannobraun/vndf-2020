@@ -80,6 +80,6 @@ impl DrawAt for Stack {
 }
 
 
-pub trait Element: Widget {}
+pub trait Element: Widget + DrawAt {}
 
-impl<T> Element for T where T: Widget {}
+impl<T> Element for T where T: Widget + DrawAt {}
