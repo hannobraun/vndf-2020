@@ -15,7 +15,7 @@ use crate::{
 
 pub struct Stack {
     margin:  f32,
-    widgets: Vec<Box<dyn Widget>>,
+    widgets: Vec<Box<dyn Element>>,
 }
 
 impl Stack {
@@ -30,12 +30,12 @@ impl Stack {
         }
     }
 
-    pub fn add(&mut self, widget: impl Widget + 'static) {
+    pub fn add(&mut self, widget: impl Element + 'static) {
         self.widgets.push(Box::new(widget));
     }
 
     pub fn add_iter(&mut self,
-        widgets: impl IntoIterator<Item=impl Widget + 'static>,
+        widgets: impl IntoIterator<Item=impl Element + 'static>,
     ) {
         for widget in widgets {
             self.add(widget)
@@ -78,3 +78,8 @@ impl DrawAt for Stack {
         }
     }
 }
+
+
+pub trait Element: Widget {}
+
+impl<T> Element for T where T: Widget {}
