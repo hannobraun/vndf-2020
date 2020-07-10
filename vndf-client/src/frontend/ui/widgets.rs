@@ -56,7 +56,7 @@ use super::anchor::{
 use self::text::NoBoundsError;
 
 
-pub trait Widget: DrawAt {
+pub trait Widget {
     fn size(&self) -> graphics::Size;
 
     fn offset(&self, anchor: Anchor, margin: graphics::Scalar)
