@@ -5,7 +5,7 @@ use crate::{
             Frame,
         },
         ui::widgets::{
-            Draw,
+            DrawAt,
             Widget,
         },
     },
@@ -58,7 +58,7 @@ impl Widget for TextPanel {
     }
 }
 
-impl Draw for TextPanel {
+impl DrawAt for TextPanel {
     fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,

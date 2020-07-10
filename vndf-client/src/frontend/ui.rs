@@ -15,7 +15,7 @@ use self::{
     anchor::Anchor,
     widgets::{
         Diagnostics,
-        Draw as _,
+        DrawAt as _,
         Instructions,
         ShipControl,
         TextPanel,

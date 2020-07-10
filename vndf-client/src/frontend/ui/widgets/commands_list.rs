@@ -5,7 +5,7 @@ use crate::{
             Frame,
         },
         ui::widgets::{
-            Draw,
+            DrawAt,
             Widget,
         },
     },
@@ -45,7 +45,7 @@ impl Widget for CommandsList {
     }
 }
 
-impl Draw for CommandsList {
+impl DrawAt for CommandsList {
     fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,

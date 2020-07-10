@@ -7,7 +7,7 @@ use crate::{
             Frame,
         },
         ui::widgets::{
-            Draw,
+            DrawAt,
             Widget,
         },
     },
@@ -53,7 +53,7 @@ impl Widget for InputEvents {
     }
 }
 
-impl Draw for InputEvents {
+impl DrawAt for InputEvents {
     fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,

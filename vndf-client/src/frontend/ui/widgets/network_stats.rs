@@ -5,7 +5,7 @@ use crate::{
             Frame,
         },
         ui::widgets::{
-            Draw,
+            DrawAt,
             Widget,
         },
     },
@@ -51,7 +51,7 @@ impl Widget for NetworkStats {
     }
 }
 
-impl Draw for NetworkStats {
+impl DrawAt for NetworkStats {
     fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,

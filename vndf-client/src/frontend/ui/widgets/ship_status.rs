@@ -5,7 +5,7 @@ use crate::{
             Frame,
         },
         ui::widgets::{
-            Draw,
+            DrawAt,
             Widget,
         },
     },
@@ -70,7 +70,7 @@ impl Widget for ShipStatus {
     }
 }
 
-impl Draw for ShipStatus {
+impl DrawAt for ShipStatus {
     fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,

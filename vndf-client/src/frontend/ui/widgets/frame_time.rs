@@ -5,7 +5,7 @@ use crate::{
             Frame,
         },
         ui::widgets::{
-            Draw,
+            DrawAt,
             Widget,
         },
     },
@@ -53,7 +53,7 @@ impl Widget for FrameTime {
     }
 }
 
-impl Draw for FrameTime {
+impl DrawAt for FrameTime {
     fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,

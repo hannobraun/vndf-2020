@@ -9,7 +9,7 @@ use crate::{
             vert,
         },
         ui::widgets::{
-            Draw,
+            DrawAt,
             Widget,
         },
     },
@@ -30,7 +30,7 @@ impl Widget for Panel {
     }
 }
 
-impl Draw for Panel {
+impl DrawAt for Panel {
     fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,

@@ -5,7 +5,7 @@ use crate::{
             Frame,
         },
         ui::widgets::{
-            Draw,
+            DrawAt,
             Widget,
         },
     },
@@ -47,7 +47,7 @@ impl Widget for ScaleFactor {
     }
 }
 
-impl Draw for ScaleFactor {
+impl DrawAt for ScaleFactor {
     fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,

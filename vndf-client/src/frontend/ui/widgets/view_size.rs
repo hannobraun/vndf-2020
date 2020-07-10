@@ -5,7 +5,7 @@ use crate::{
             Frame,
         },
         ui::widgets::{
-            Draw,
+            DrawAt,
             Widget,
         },
     },
@@ -56,7 +56,7 @@ impl Widget for ViewSize {
     }
 }
 
-impl Draw for ViewSize {
+impl DrawAt for ViewSize {
     fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,
