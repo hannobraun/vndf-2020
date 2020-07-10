@@ -1359,9 +1359,9 @@ checksum = "237a5ed80e274dbc66f86bd59c1e25edc039660be53194b5fe0a482e0f2612ea"
 
 [[package]]
 name = "proc-macro-crate"
-version = "0.1.4"
+version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e10d4b51f154c8a7fb96fd6dad097cb74b863943ec010ac94b9fd1be8861fe1e"
+checksum = "1d6ea3c4595b96363c13943497db34af4460fb474a95c43f4446ad341b8c9785"
 dependencies = [
  "toml",
 ]
@@ -2225,9 +2225,9 @@ dependencies = [
 
 [[package]]
 name = "wgpu"
-version = "0.5.0"
+version = "0.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dbf715eb8571da470b856ecc67b057221360d9fce16f3e38001b2fb158d04012"
+checksum = "b5dece29f3cd403aabf4056595eabe4b9af56b8bfae12445f097cf8666a41829"
 dependencies = [
  "arrayvec",
  "parking_lot",
@@ -2240,9 +2240,9 @@ dependencies = [
 
 [[package]]
 name = "wgpu-core"
-version = "0.5.5"
+version = "0.5.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b093098e0782b0f46f154fac5c670ba27b7a5bff98dc943422c13852c696a2b0"
+checksum = "f07fd0b6b3b340465bce96286350d34b7661fb623ef24c3c2b8902ea654cd4e0"
 dependencies = [
  "arrayvec",
  "bitflags",
@@ -2266,9 +2266,9 @@ dependencies = [
 
 [[package]]
 name = "wgpu-native"
-version = "0.5.0"
+version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "19a5051a357d071fd69c24671e0ea6d644a83c7418e47eac3511427379007403"
+checksum = "5f1ac9838b0715d7911352db1268e34dfd05ef347fbef0b65ae211268316a432"
 dependencies = [
  "arrayvec",
  "lazy_static",
