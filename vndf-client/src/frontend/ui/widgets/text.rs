@@ -60,7 +60,7 @@ impl Widget for Text {
 }
 
 impl DrawAt for Text {
-    fn draw(&mut self,
+    fn draw_at(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,
         pos:   graphics::Pnt2,

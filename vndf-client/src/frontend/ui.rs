@@ -92,7 +92,7 @@ impl Ui {
         for element in legacy_elements {
             TextPanel::new(res, element.text)
                 .unwrap()
-                .draw(res, frame, element.pos);
+                .draw_at(res, frame, element.pos);
         }
 
         Ok(())

@@ -94,7 +94,7 @@ pub trait Widget: DrawAt {
 }
 
 pub trait DrawAt {
-    fn draw(&mut self,
+    fn draw_at(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,
         pos:   graphics::Pnt2,
@@ -112,7 +112,7 @@ impl Positioned<'_> {
         res:   &mut DrawResources,
         frame: &mut Frame,
     ) {
-        self.widget.draw(res, frame, self.position)
+        self.widget.draw_at(res, frame, self.position)
     }
 }
 

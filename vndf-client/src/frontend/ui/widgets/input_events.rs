@@ -54,11 +54,11 @@ impl Widget for InputEvents {
 }
 
 impl DrawAt for InputEvents {
-    fn draw(&mut self,
+    fn draw_at(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,
         pos:   graphics::Pnt2,
     ) {
-        self.0.draw(res, frame, pos)
+        self.0.draw_at(res, frame, pos)
     }
 }

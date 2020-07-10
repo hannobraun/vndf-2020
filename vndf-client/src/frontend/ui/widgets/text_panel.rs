@@ -59,12 +59,12 @@ impl Widget for TextPanel {
 }
 
 impl DrawAt for TextPanel {
-    fn draw(&mut self,
+    fn draw_at(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,
         pos:   graphics::Pnt2,
     ) {
-        self.panel.draw(res, frame, pos + self.text.size() / 2.0);
-        self.text.draw(res, frame, pos);
+        self.panel.draw_at(res, frame, pos + self.text.size() / 2.0);
+        self.text.draw_at(res, frame, pos);
     }
 }

@@ -31,7 +31,7 @@ impl Widget for Panel {
 }
 
 impl DrawAt for Panel {
-    fn draw(&mut self,
+    fn draw_at(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,
         pos:   graphics::Pnt2,

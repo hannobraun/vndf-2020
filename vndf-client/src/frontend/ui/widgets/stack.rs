@@ -64,7 +64,7 @@ impl Widget for Stack {
 }
 
 impl DrawAt for Stack {
-    fn draw(&mut self,
+    fn draw_at(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,
         pos:   graphics::Pnt2,
@@ -72,7 +72,7 @@ impl DrawAt for Stack {
         let mut next_pos = pos;
 
         for widget in self.widgets.iter_mut() {
-            widget.draw(res, frame, next_pos);
+            widget.draw_at(res, frame, next_pos);
             let offset_y = widget.size().height + self.margin;
             next_pos.y += offset_y;
         }
