@@ -81,7 +81,7 @@ pub trait Widget {
         margin: graphics::Scalar,
         frame:  &Frame,
     )
-        -> Positioned
+        -> Positioned<Self>
         where Self: Sized + DrawAt + 'static,
     {
         let position = anchor
@@ -89,7 +89,7 @@ pub trait Widget {
             .position(&mut self, margin);
 
         Positioned {
-            widget: Box::new(self),
+            widget: self,
             position,
         }
     }
@@ -133,16 +133,18 @@ impl<T> DrawAt for T where T: Position + Draw {
 }
 
 
-pub struct Positioned {
-    pub widget:   Box<dyn DrawAt>,
+pub struct Positioned<T> {
+    pub widget:   T,
     pub position: graphics::Pnt2,
 }
 
-impl Positioned {
+impl<T> Positioned<T> {
     pub fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,
-    ) {
+    )
+        where T: DrawAt
+    {
         self.widget.draw_at(res, frame, self.position)
     }
 }

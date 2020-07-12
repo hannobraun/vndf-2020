@@ -22,7 +22,7 @@ use super::{
 };
 
 
-pub struct ShipInfo(Positioned);
+pub struct ShipInfo(Positioned<TextPanel>);
 
 impl ShipInfo {
     pub fn new(
@@ -43,7 +43,7 @@ impl ShipInfo {
                 Some(
                     Self(
                         Positioned {
-                            widget:   Box::new(text_panel),
+                            widget:   text_panel,
                             position: pos,
                         }
                     )
