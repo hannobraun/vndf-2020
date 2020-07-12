@@ -14,14 +14,14 @@ use crate::{
 };
 
 use super::{
+    Column,
     Commands,
     ShipStatus,
-    Stack,
     TextPanelRelatedError,
 };
 
 
-pub struct ShipControl(Stack);
+pub struct ShipControl(Column);
 
 impl ShipControl {
     pub fn new(
@@ -40,7 +40,7 @@ impl ShipControl {
             margin,
         )?;
 
-        let mut stack = Stack::new(margin);
+        let mut stack = Column::new(margin);
 
         if let Some(ship_status) = ship_status {
             stack.add(ship_status);

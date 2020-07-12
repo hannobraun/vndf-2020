@@ -13,12 +13,12 @@ use crate::{
 };
 
 
-pub struct Stack {
+pub struct Column {
     margin:  f32,
     widgets: Vec<Box<dyn Element>>,
 }
 
-impl Stack {
+impl Column {
     pub fn new(
         margin: f32,
     )
@@ -43,7 +43,7 @@ impl Stack {
     }
 }
 
-impl Widget for Stack {
+impl Widget for Column {
     fn size(&self) -> graphics::Size {
         let mut size = graphics::Size::new(0.0, 0.0);
 
@@ -63,7 +63,7 @@ impl Widget for Stack {
     }
 }
 
-impl DrawAt for Stack {
+impl DrawAt for Column {
     fn draw_at(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,

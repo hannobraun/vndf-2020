@@ -14,13 +14,13 @@ use crate::{
 
 use super::{
     AddCommand,
+    Column,
     CommandsList,
-    Stack,
     TextPanelRelatedError,
 };
 
 
-pub struct Commands(Stack);
+pub struct Commands(Column);
 
 impl Commands {
     pub fn new(
@@ -29,7 +29,7 @@ impl Commands {
     )
         -> Result<Self, TextPanelRelatedError>
     {
-        let mut stack = Stack::new(margin);
+        let mut stack = Column::new(margin);
 
         stack.add(CommandsList::new(res)?);
         stack.add(AddCommand::new(res)?);

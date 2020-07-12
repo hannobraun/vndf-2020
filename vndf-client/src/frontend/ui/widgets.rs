@@ -31,7 +31,7 @@ pub use self::{
     scale_factor::ScaleFactor,
     ship_control::ShipControl,
     ship_status::ShipStatus,
-    stack::Stack,
+    stack::Column,
     text::Text,
     text_panel::TextPanel,
     view_size::ViewSize,

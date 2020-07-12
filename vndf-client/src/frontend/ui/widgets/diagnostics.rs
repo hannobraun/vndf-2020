@@ -14,17 +14,17 @@ use crate::{
 };
 
 use super::{
+    Column,
     ComponentStats,
     FrameTime,
     InputEvents,
     NetworkStats,
     ScaleFactor,
-    Stack,
     TextPanelRelatedError,
 };
 
 
-pub struct Diagnostics(Stack);
+pub struct Diagnostics(Column);
 
 impl Diagnostics {
     pub fn new(
@@ -56,7 +56,7 @@ impl Diagnostics {
             game,
         )?;
 
-        let mut diagnostics = Stack::new(margin);
+        let mut diagnostics = Column::new(margin);
 
         diagnostics.add(frame_time);
         diagnostics.add(scale_factor);
