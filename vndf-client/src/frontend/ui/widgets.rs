@@ -119,6 +119,17 @@ pub trait DrawAt {
     );
 }
 
+impl<T> DrawAt for T where T: Position + Draw {
+    fn draw_at(&mut self,
+        res:   &mut DrawResources,
+        frame: &mut Frame,
+        pos:   graphics::Pnt2,
+    ) {
+        self.set_pos(pos);
+        self.draw(res, frame);
+    }
+}
+
 
 pub struct Positioned<'r> {
     pub widget:   &'r mut dyn DrawAt,
