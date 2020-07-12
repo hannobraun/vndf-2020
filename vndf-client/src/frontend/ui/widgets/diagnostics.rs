@@ -56,16 +56,16 @@ impl Diagnostics {
             game,
         )?;
 
-        let mut diagnostics = Column::new(margin);
+        let mut column = Column::new(margin);
 
-        diagnostics.add(frame_time);
-        diagnostics.add(scale_factor);
-        diagnostics.add_iter(component_stats);
-        diagnostics.add(network_stats);
-        diagnostics.add(input_events);
+        column.add(frame_time);
+        column.add(scale_factor);
+        column.add_iter(component_stats);
+        column.add(network_stats);
+        column.add(input_events);
 
         Ok(
-            Self(diagnostics)
+            Self(column)
         )
     }
 }
