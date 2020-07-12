@@ -154,8 +154,10 @@ impl Renderer {
                 self.scale_factor = *scale_factor as graphics::Scalar;
             }
             Event::RedrawRequested(_) => {
+                let screen = self.screen();
+
                 let mut frame = Frame {
-                    screen: self.screen(),
+                    screen,
                     output: self.swap_chain.get_next_texture()
                         .map_err(|_| Error::TimeOut)?,
                     encoder: self.draw_res.device.create_command_encoder(
