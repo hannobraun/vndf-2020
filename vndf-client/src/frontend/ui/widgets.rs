@@ -82,7 +82,7 @@ pub trait Widget {
         frame:  &Frame,
     )
         -> Positioned<Self>
-        where Self: Sized + DrawAt + 'static,
+        where Self: Sized,
     {
         let position = anchor
             .origin(frame)
