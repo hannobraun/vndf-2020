@@ -40,16 +40,16 @@ impl ShipControl {
             margin,
         )?;
 
-        let mut stack = Column::new(margin);
+        let mut column = Column::new(margin);
 
         if let Some(ship_status) = ship_status {
-            stack.add(ship_status);
+            column.add(ship_status);
         }
-        stack.add(commands);
+        column.add(commands);
 
         Ok(
             Some(
-                Self(stack)
+                Self(column)
             )
         )
     }
