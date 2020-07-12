@@ -29,13 +29,13 @@ impl Commands {
     )
         -> Result<Self, TextPanelRelatedError>
     {
-        let mut stack = Column::new(margin);
+        let mut column = Column::new(margin);
 
-        stack.add(CommandsList::new(res)?);
-        stack.add(AddCommand::new(res)?);
+        column.add(CommandsList::new(res)?);
+        column.add(AddCommand::new(res)?);
 
         Ok(
-            Self(stack)
+            Self(column)
         )
     }
 }
