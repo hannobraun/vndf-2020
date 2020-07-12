@@ -94,6 +94,13 @@ pub trait Widget {
 }
 
 
+/// Widgets that track their own position
+pub trait Position {
+    fn get_pos(&self) -> graphics::Pnt2;
+    fn set_pos(&mut self, pos: graphics::Pnt2);
+}
+
+
 /// Widgets that can be drawn at a specific position
 pub trait DrawAt {
     fn draw_at(&mut self,
