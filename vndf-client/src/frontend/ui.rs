@@ -7,6 +7,7 @@ use crate::{
         DrawResources,
         Frame,
     },
+    graphics::screen::Screen,
     game::Game,
     ui,
 };
@@ -15,9 +16,11 @@ use self::{
     anchor::Anchor,
     widgets::{
         Diagnostics,
+        Draw as _,
         DrawAt as _,
         Instructions,
         ShipControl,
+        ShipInfo,
         TextPanel,
         ViewSize,
         Widget as _,
@@ -36,9 +39,10 @@ impl Ui {
     }
 
     pub fn draw(&mut self,
-        res:   &mut DrawResources,
-        frame: &mut Frame,
-        game:  &Game,
+        res:    &mut DrawResources,
+        frame:  &mut Frame,
+        game:   &Game,
+        screen: &Screen,
     )
         -> Result<(), Error>
     {
@@ -86,13 +90,22 @@ impl Ui {
                 .draw(res, frame);
         }
 
-        let legacy_elements = elements.orbit_info.into_iter()
-            .chain(elements.ship_info);
-
-        for element in legacy_elements {
+        for element in elements.orbit_info {
             TextPanel::new(res, element.text)
                 .unwrap()
                 .draw_at(res, frame, element.pos);
+        }
+
+        for ship in game.state.data.ships.values() {
+            let ship_info = ShipInfo::new(
+                res,
+                ship,
+                game,
+                screen,
+            )?;
+            if let Some(mut ship_info) = ship_info {
+                ship_info.draw(res, frame);
+            }
         }
 
         Ok(())

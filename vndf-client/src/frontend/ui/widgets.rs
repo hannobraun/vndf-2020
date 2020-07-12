@@ -11,6 +11,7 @@ pub mod network_stats;
 pub mod panel;
 pub mod scale_factor;
 pub mod ship_control;
+pub mod ship_info;
 pub mod ship_status;
 pub mod text;
 pub mod text_panel;
@@ -31,6 +32,7 @@ pub use self::{
     panel::Panel,
     scale_factor::ScaleFactor,
     ship_control::ShipControl,
+    ship_info::ShipInfo,
     ship_status::ShipStatus,
     text::Text,
     text_panel::TextPanel,

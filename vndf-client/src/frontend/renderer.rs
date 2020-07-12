@@ -210,6 +210,7 @@ impl Renderer {
                         &mut self.draw_res,
                         &mut frame,
                         game,
+                        &screen,
                     )
                     .map_err(|err| Error::Ui(err))?;
 

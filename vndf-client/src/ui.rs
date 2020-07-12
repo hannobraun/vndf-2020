@@ -2,14 +2,12 @@ use crate::{
     game::Game,
     graphics::{
         self,
-        elements::ScreenElement,
         screen::Screen,
     },
 };
 
 
 pub struct Elements {
-    pub ship_info:  Vec<Element>,
     pub orbit_info: Vec<Element>,
 }
 
@@ -17,7 +15,6 @@ impl Elements {
     pub fn new(game: &Game, screen: &Screen) -> Self {
         Self {
             orbit_info: Element::orbit_info(game, screen),
-            ship_info:  Element::ship_info(game, screen),
         }
     }
 }
@@ -29,41 +26,6 @@ pub struct Element {
 }
 
 impl Element {
-    pub fn ship_info<'r>(game: &'r Game, screen: &'r Screen) -> Vec<Self> {
-        game.state.data.ships.values()
-            .filter_map(move |ship| {
-                let craft = game.state.data.crafts.get(&ship.craft)?;
-                let body  = game.state.data.bodies.get(&craft.body)?;
-                let pos_w = game.state.data.positions.get(&body.pos)?;
-                let vel   = game.state.data.velocities.get(&body.vel)?;
-
-                let pos_km = pos_w.0 / 1000.0;
-                let vel_km = vel.0 / 1000.0;
-
-                let text = format!(
-                    "Pos: {:.0}/{:.0}\n\
-                    Vel: {:.0}/{:.0} ({:.0})",
-                    pos_km.x, pos_km.y,
-                    vel_km.x, vel_km.y, vel_km.length(),
-                );
-
-                let element = ScreenElement::from_ship(
-                    ship,
-                    game,
-                    screen,
-                )?;
-                let pos = element.pos + graphics::Vec2::new(20.0, -20.0);
-
-                Some(
-                    Self {
-                        text,
-                        pos,
-                    }
-                )
-            })
-            .collect()
-    }
-
     pub fn orbit_info<'r>(game: &'r Game, screen: &'r Screen) -> Vec<Self> {
         game.state.active_orbits()
             .into_iter()
