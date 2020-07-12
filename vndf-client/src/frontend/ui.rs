@@ -84,7 +84,7 @@ impl Ui {
             MARGIN,
             game,
         )?;
-        if let Some(mut ship_status) = ship_control {
+        if let Some(ship_status) = ship_control {
             ship_status
                 .position(Anchor::top_right(), MARGIN, frame)
                 .draw(res, frame);

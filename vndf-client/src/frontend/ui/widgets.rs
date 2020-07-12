@@ -76,20 +76,20 @@ pub trait Widget {
         graphics::Vec2::new(x, y)
     }
 
-    fn position(&mut self,
+    fn position(mut self,
         anchor: Anchor,
         margin: graphics::Scalar,
         frame:  &Frame,
     )
         -> Positioned
-        where Self: Sized + DrawAt,
+        where Self: Sized + DrawAt + 'static,
     {
         let position = anchor
             .origin(frame)
-            .position(self, margin);
+            .position(&mut self, margin);
 
         Positioned {
-            widget: self,
+            widget: Box::new(self),
             position,
         }
     }
@@ -133,12 +133,12 @@ impl<T> DrawAt for T where T: Position + Draw {
 }
 
 
-pub struct Positioned<'r> {
-    pub widget:   &'r mut dyn DrawAt,
+pub struct Positioned {
+    pub widget:   Box<dyn DrawAt>,
     pub position: graphics::Pnt2,
 }
 
-impl Positioned<'_> {
+impl Positioned {
     pub fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,
