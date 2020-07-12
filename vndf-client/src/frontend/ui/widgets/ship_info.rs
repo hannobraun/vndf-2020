@@ -7,7 +7,6 @@ use crate::{
         ui::widgets::{
             Draw,
             DrawAt,
-            Widget,
         },
     },
     game::Game,
@@ -88,12 +87,6 @@ impl ShipInfo {
         let pos = element.pos + graphics::Vec2::new(20.0, -20.0);
 
         Some((text, pos))
-    }
-}
-
-impl Widget for ShipInfo {
-    fn size(&self) -> graphics::Size {
-        self.text_panel.size()
     }
 }
 
