@@ -94,6 +94,7 @@ pub trait Widget {
 }
 
 
+/// Widgets that can be drawn at a specific position
 pub trait DrawAt {
     fn draw_at(&mut self,
         res:   &mut DrawResources,
