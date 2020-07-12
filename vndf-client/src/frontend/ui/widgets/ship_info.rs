@@ -4,10 +4,7 @@ use crate::{
             DrawResources,
             Frame,
         },
-        ui::widgets::{
-            Draw,
-            DrawAt,
-        },
+        ui::widgets::Draw,
     },
     game::Game,
     graphics::{
@@ -19,15 +16,13 @@ use crate::{
 };
 
 use super::{
+    Positioned,
     TextPanel,
     TextPanelRelatedError,
 };
 
 
-pub struct ShipInfo {
-    text_panel: TextPanel,
-    pos:        graphics::Pnt2,
-}
+pub struct ShipInfo(Positioned);
 
 impl ShipInfo {
     pub fn new(
@@ -46,10 +41,12 @@ impl ShipInfo {
 
             return Ok(
                 Some(
-                    Self {
-                        text_panel,
-                        pos,
-                    }
+                    Self(
+                        Positioned {
+                            widget:   Box::new(text_panel),
+                            position: pos,
+                        }
+                    )
                 )
             );
         }
@@ -95,6 +92,6 @@ impl Draw for ShipInfo {
         res:   &mut DrawResources,
         frame: &mut Frame,
     ) {
-        self.text_panel.draw_at(res, frame, self.pos)
+        self.0.draw(res, frame)
     }
 }
