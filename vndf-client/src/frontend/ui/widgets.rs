@@ -1,4 +1,5 @@
 pub mod add_command;
+pub mod column;
 pub mod commands;
 pub mod commands_list;
 pub mod component_stats;
@@ -11,7 +12,6 @@ pub mod panel;
 pub mod scale_factor;
 pub mod ship_control;
 pub mod ship_status;
-pub mod stack;
 pub mod text;
 pub mod text_panel;
 pub mod view_size;
@@ -19,6 +19,7 @@ pub mod view_size;
 
 pub use self::{
     add_command::AddCommand,
+    column::Column,
     commands::Commands,
     commands_list::CommandsList,
     component_stats::ComponentStats,
@@ -31,7 +32,6 @@ pub use self::{
     scale_factor::ScaleFactor,
     ship_control::ShipControl,
     ship_status::ShipStatus,
-    stack::Column,
     text::Text,
     text_panel::TextPanel,
     view_size::ViewSize,
