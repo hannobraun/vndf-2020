@@ -101,6 +101,15 @@ pub trait Position {
 }
 
 
+/// Widgets that can be drawn without requiring a specific position
+pub trait Draw {
+    fn draw(&mut self,
+        res:   &mut DrawResources,
+        frame: &mut Frame,
+    );
+}
+
+
 /// Widgets that can be drawn at a specific position
 pub trait DrawAt {
     fn draw_at(&mut self,
