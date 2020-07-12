@@ -1,7 +1,6 @@
 mod game;
 mod frontend;
 mod graphics;
-mod ui;
 
 
 extern crate vndf_shared as shared;

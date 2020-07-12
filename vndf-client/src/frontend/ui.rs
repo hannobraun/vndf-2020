@@ -9,7 +9,6 @@ use crate::{
     },
     graphics::screen::Screen,
     game::Game,
-    ui,
 };
 
 use self::{
@@ -17,11 +16,10 @@ use self::{
     widgets::{
         Diagnostics,
         Draw as _,
-        DrawAt as _,
         Instructions,
+        OrbitInfo,
         ShipControl,
         ShipInfo,
-        TextPanel,
         ViewSize,
         Widget as _,
     },
@@ -46,8 +44,6 @@ impl Ui {
     )
         -> Result<(), Error>
     {
-        let elements = ui::Elements::new(game, &frame.screen);
-
         const MARGIN: f32 = 20.0;
 
         if game.input.config.diagnostics {
@@ -90,10 +86,16 @@ impl Ui {
                 .draw(res, frame);
         }
 
-        for element in elements.orbit_info {
-            TextPanel::new(res, element.text)
-                .unwrap()
-                .draw_at(res, frame, element.pos);
+        for orbit in game.state.active_orbits() {
+            let orbit_info = OrbitInfo::new(
+                res,
+                &orbit,
+                game,
+                screen,
+            )?;
+            if let Some(mut orbit_info) = orbit_info {
+                orbit_info.draw(res, frame);
+            }
         }
 
         for ship in game.state.data.ships.values() {

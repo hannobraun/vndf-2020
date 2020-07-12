@@ -8,6 +8,7 @@ pub mod frame_time;
 pub mod input_events;
 pub mod instructions;
 pub mod network_stats;
+pub mod orbit_info;
 pub mod panel;
 pub mod scale_factor;
 pub mod ship_control;
@@ -29,6 +30,7 @@ pub use self::{
     input_events::InputEvents,
     instructions::Instructions,
     network_stats::NetworkStats,
+    orbit_info::OrbitInfo,
     panel::Panel,
     scale_factor::ScaleFactor,
     ship_control::ShipControl,
