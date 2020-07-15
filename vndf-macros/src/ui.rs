@@ -79,7 +79,7 @@ pub fn derive(
             };
 
             quote!(
-                self.#field.draw_at(res, frame, pos);
+                self.#field.#method(res, frame, pos);
             )
         });
 
