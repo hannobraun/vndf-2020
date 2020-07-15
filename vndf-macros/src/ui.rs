@@ -34,16 +34,14 @@ pub fn derive(
     input:    TokenStream,
     trait_:   proc_macro2::TokenStream,
     method:   proc_macro2::TokenStream,
-    arg_name: impl IntoIterator<Item=proc_macro2::TokenStream>,
-    arg_ty:   impl IntoIterator<Item=proc_macro2::TokenStream>,
+    arg_name: Vec<proc_macro2::TokenStream>,
+    arg_ty:   Vec<proc_macro2::TokenStream>,
 )
     -> TokenStream
 {
     let struct_ = parse_macro_input!(input as ItemStruct);
 
-    let name     = struct_.ident;
-    let arg_name = arg_name.into_iter();
-    let arg_ty   = arg_ty.into_iter();
+    let name = struct_.ident;
 
     let fields = match struct_.fields {
         Fields::Named(FieldsNamed { named, .. }) => {
