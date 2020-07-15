@@ -12,6 +12,33 @@ use syn::{
 
 
 pub fn derive_draw_at(input: TokenStream) -> TokenStream {
+    derive(
+        input,
+        quote!(DrawAt),
+        quote!(draw_at),
+        vec![
+            quote!(res),
+            quote!(frame),
+            quote!(pos),
+        ],
+        vec![
+            quote!(&mut DrawResources),
+            quote!(&mut Frame),
+            quote!(graphics::Pnt2),
+        ],
+    )
+}
+
+
+pub fn derive(
+    input:    TokenStream,
+    trait_:   proc_macro2::TokenStream,
+    method:   proc_macro2::TokenStream,
+    arg_name: impl IntoIterator<Item=proc_macro2::TokenStream>,
+    arg_ty:   impl IntoIterator<Item=proc_macro2::TokenStream>,
+)
+    -> TokenStream
+{
     let struct_ = parse_macro_input!(input as ItemStruct);
 
     let name = struct_.ident;
@@ -58,12 +85,15 @@ pub fn derive_draw_at(input: TokenStream) -> TokenStream {
             )
         });
 
+    let arg_name = arg_name.into_iter();
+    let arg_ty   = arg_ty.into_iter();
+
     let tokens = quote!(
-        impl DrawAt for #name {
-            fn draw_at(&mut self,
-                res:   &mut DrawResources,
-                frame: &mut Frame,
-                pos:   graphics::Pnt2,
+        impl #trait_ for #name {
+            fn #method(&mut self,
+                #(
+                    #arg_name: #arg_ty,
+                )*
             ) {
                 #(#fields)*
             }
