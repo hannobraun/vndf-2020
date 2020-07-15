@@ -81,7 +81,7 @@ pub fn derive(
             };
 
             quote!(
-                self.#field.#method(res, frame, pos);
+                self.#field.#method(#(#arg_name,)*);
             )
         });
 
