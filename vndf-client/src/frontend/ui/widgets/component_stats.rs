@@ -1,3 +1,5 @@
+use vndf_macros::DrawAt;
+
 use crate::{
     frontend::{
         drawers::{
@@ -19,6 +21,7 @@ use super::{
 };
 
 
+#[derive(DrawAt)]
 pub struct ComponentStats(TextPanel);
 
 impl ComponentStats {
@@ -70,15 +73,5 @@ impl ComponentStats {
 impl Widget for ComponentStats {
     fn size(&self) -> graphics::Size {
         self.0.size()
-    }
-}
-
-impl DrawAt for ComponentStats {
-    fn draw_at(&mut self,
-        res:   &mut DrawResources,
-        frame: &mut Frame,
-        pos:   graphics::Pnt2,
-    ) {
-        self.0.draw_at(res, frame, pos)
     }
 }

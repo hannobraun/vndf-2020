@@ -1,3 +1,5 @@
+use vndf_macros::DrawAt;
+
 use crate::{
     frontend::{
         drawers::{
@@ -20,6 +22,7 @@ use super::{
 };
 
 
+#[derive(DrawAt)]
 pub struct Commands(Column);
 
 impl Commands {
@@ -43,15 +46,5 @@ impl Commands {
 impl Widget for Commands {
     fn size(&self) -> graphics::Size {
         self.0.size()
-    }
-}
-
-impl DrawAt for Commands {
-    fn draw_at(&mut self,
-        res:   &mut DrawResources,
-        frame: &mut Frame,
-        pos:   graphics::Pnt2,
-    ) {
-        self.0.draw_at(res, frame, pos)
     }
 }
