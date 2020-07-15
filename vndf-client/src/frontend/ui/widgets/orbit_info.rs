@@ -1,3 +1,5 @@
+use vndf_macros::Draw;
+
 use crate::{
     frontend::{
         drawers::{
@@ -21,6 +23,7 @@ use super::{
 };
 
 
+#[derive(Draw)]
 pub struct OrbitInfo {
     periapsis: Positioned<TextPanel>,
     apoapsis:  Positioned<TextPanel>,
@@ -118,15 +121,5 @@ impl OrbitInfo {
             apocenter_text,
             apocenter_pos,
         ))
-    }
-}
-
-impl Draw for OrbitInfo {
-    fn draw(&mut self,
-        res:   &mut DrawResources,
-        frame: &mut Frame,
-    ) {
-        self.periapsis.draw(res, frame);
-        self.apoapsis.draw(res, frame);
     }
 }

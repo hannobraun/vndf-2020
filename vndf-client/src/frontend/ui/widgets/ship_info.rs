@@ -1,3 +1,5 @@
+use vndf_macros::Draw;
+
 use crate::{
     frontend::{
         drawers::{
@@ -22,6 +24,7 @@ use super::{
 };
 
 
+#[derive(Draw)]
 pub struct ShipInfo(Positioned<TextPanel>);
 
 impl ShipInfo {
@@ -84,14 +87,5 @@ impl ShipInfo {
         let pos = element.pos + graphics::Vec2::new(20.0, -20.0);
 
         Some((text, pos))
-    }
-}
-
-impl Draw for ShipInfo {
-    fn draw(&mut self,
-        res:   &mut DrawResources,
-        frame: &mut Frame,
-    ) {
-        self.0.draw(res, frame)
     }
 }
