@@ -1,3 +1,5 @@
+use vndf_macros::DrawAt;
+
 use crate::{
     frontend::{
         drawers::{
@@ -21,6 +23,7 @@ use super::{
 };
 
 
+#[derive(DrawAt)]
 pub struct ShipControl(Column);
 
 impl ShipControl {
@@ -58,15 +61,5 @@ impl ShipControl {
 impl Widget for ShipControl {
     fn size(&self) -> graphics::Size {
         self.0.size()
-    }
-}
-
-impl DrawAt for ShipControl {
-    fn draw_at(&mut self,
-        res:   &mut DrawResources,
-        frame: &mut Frame,
-        pos:   graphics::Pnt2,
-    ) {
-        self.0.draw_at(res, frame, pos)
     }
 }

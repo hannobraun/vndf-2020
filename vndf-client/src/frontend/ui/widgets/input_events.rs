@@ -1,5 +1,7 @@
 use std::fmt::Write as _;
 
+use vndf_macros::DrawAt;
+
 use crate::{
     frontend::{
         drawers::{
@@ -21,6 +23,7 @@ use super::{
 };
 
 
+#[derive(DrawAt)]
 pub struct InputEvents(TextPanel);
 
 impl InputEvents {
@@ -50,15 +53,5 @@ impl InputEvents {
 impl Widget for InputEvents {
     fn size(&self) -> graphics::Size {
         self.0.size()
-    }
-}
-
-impl DrawAt for InputEvents {
-    fn draw_at(&mut self,
-        res:   &mut DrawResources,
-        frame: &mut Frame,
-        pos:   graphics::Pnt2,
-    ) {
-        self.0.draw_at(res, frame, pos)
     }
 }
