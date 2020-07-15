@@ -41,8 +41,6 @@ pub fn derive(
 {
     let struct_ = parse_macro_input!(input as ItemStruct);
 
-    let name = struct_.ident;
-
     let fields = match struct_.fields {
         Fields::Named(FieldsNamed { named, .. }) => {
             Some(named)
@@ -85,6 +83,7 @@ pub fn derive(
             )
         });
 
+    let name     = struct_.ident;
     let arg_name = arg_name.into_iter();
     let arg_ty   = arg_ty.into_iter();
 
