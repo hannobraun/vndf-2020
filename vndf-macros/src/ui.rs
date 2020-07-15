@@ -11,6 +11,22 @@ use syn::{
 };
 
 
+pub fn derive_draw(input: TokenStream) -> TokenStream {
+    derive(
+        input,
+        quote!(Draw),
+        quote!(draw),
+        vec![
+            quote!(res),
+            quote!(frame),
+        ],
+        vec![
+            quote!(&mut DrawResources),
+            quote!(&mut Frame),
+        ],
+    )
+}
+
 pub fn derive_draw_at(input: TokenStream) -> TokenStream {
     derive(
         input,
