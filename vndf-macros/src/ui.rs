@@ -83,12 +83,12 @@ pub fn derive(
             )
         });
 
-    let struct_  = struct_.ident;
+    let name     = struct_.ident;
     let arg_name = arg_name.into_iter();
     let arg_ty   = arg_ty.into_iter();
 
     let tokens = quote!(
-        impl #trait_ for #struct_ {
+        impl #trait_ for #name {
             fn #method(&mut self,
                 #(
                     #arg_name: #arg_ty,
