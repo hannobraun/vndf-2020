@@ -6,7 +6,7 @@ use crate::{
         },
         ui::widgets::{
             DrawAt,
-            Widget,
+            Size,
         },
     },
     graphics,
@@ -52,7 +52,7 @@ impl TextPanel {
     }
 }
 
-impl Widget for TextPanel {
+impl Size for TextPanel {
     fn size(&self) -> graphics::Size {
         self.panel.size
     }

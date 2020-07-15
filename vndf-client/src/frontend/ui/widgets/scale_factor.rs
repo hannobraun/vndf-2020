@@ -8,7 +8,7 @@ use crate::{
         },
         ui::widgets::{
             DrawAt,
-            Widget,
+            Size,
         },
     },
     graphics,
@@ -44,7 +44,7 @@ impl ScaleFactor {
     }
 }
 
-impl Widget for ScaleFactor {
+impl Size for ScaleFactor {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }

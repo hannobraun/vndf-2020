@@ -8,7 +8,7 @@ use crate::{
         },
         ui::widgets::{
             DrawAt,
-            Widget,
+            Size,
         },
     },
     game::Game,
@@ -67,7 +67,7 @@ impl ShipStatus {
     }
 }
 
-impl Widget for ShipStatus {
+impl Size for ShipStatus {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }

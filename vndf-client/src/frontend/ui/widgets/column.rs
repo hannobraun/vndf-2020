@@ -6,7 +6,7 @@ use crate::{
         },
         ui::widgets::{
             DrawAt,
-            Widget,
+            Size,
         },
     },
     graphics,
@@ -43,7 +43,7 @@ impl Column {
     }
 }
 
-impl Widget for Column {
+impl Size for Column {
     fn size(&self) -> graphics::Size {
         let mut size = graphics::Size::new(0.0, 0.0);
 
@@ -80,6 +80,6 @@ impl DrawAt for Column {
 }
 
 
-pub trait Element: Widget + DrawAt {}
+pub trait Element: Size + DrawAt {}
 
-impl<T> Element for T where T: Widget + DrawAt {}
+impl<T> Element for T where T: Size + DrawAt {}

@@ -10,7 +10,7 @@ use crate::{
         },
         ui::widgets::{
             DrawAt,
-            Widget,
+            Size,
         },
     },
     graphics::{
@@ -24,7 +24,7 @@ pub struct Panel {
     pub size: graphics::Size,
 }
 
-impl Widget for Panel {
+impl Size for Panel {
     fn size(&self) -> graphics::Size {
         self.size
     }

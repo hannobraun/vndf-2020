@@ -20,8 +20,8 @@ use self::{
         OrbitInfo,
         ShipControl,
         ShipInfo,
+        Size as _,
         ViewSize,
-        Widget as _,
     },
 };
 

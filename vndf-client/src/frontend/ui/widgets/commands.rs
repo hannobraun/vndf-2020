@@ -8,7 +8,7 @@ use crate::{
         },
         ui::widgets::{
             DrawAt,
-            Widget,
+            Size,
         },
     },
     graphics,
@@ -43,7 +43,7 @@ impl Commands {
     }
 }
 
-impl Widget for Commands {
+impl Size for Commands {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }

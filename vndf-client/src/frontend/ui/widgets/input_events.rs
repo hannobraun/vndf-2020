@@ -10,7 +10,7 @@ use crate::{
         },
         ui::widgets::{
             DrawAt,
-            Widget,
+            Size,
         },
     },
     game::Game,
@@ -50,7 +50,7 @@ impl InputEvents {
     }
 }
 
-impl Widget for InputEvents {
+impl Size for InputEvents {
     fn size(&self) -> graphics::Size {
         self.0.size()
     }
