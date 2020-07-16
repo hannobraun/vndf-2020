@@ -24,6 +24,14 @@ pub struct Panel {
     pub size: graphics::Size,
 }
 
+impl Panel {
+    pub fn new(size: graphics::Size) -> Self {
+        Self {
+            size
+        }
+    }
+}
+
 impl Size for Panel {
     fn size(&self) -> graphics::Size {
         self.size
