@@ -32,15 +32,15 @@ impl AddCommand {
     )
         -> Result<Self, TextPanelRelatedError>
     {
-        let text_panel = TextPanel::new(
-            res,
-            format!(
-                "Add command",
-            ),
-        )?;
-
         Ok(
-            Self(text_panel)
+            Self(
+                TextPanel::new(
+                    res,
+                    format!(
+                        "Add command",
+                    ),
+                )?
+            )
         )
     }
 }
