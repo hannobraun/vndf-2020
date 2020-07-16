@@ -21,14 +21,21 @@ use crate::{
 
 
 pub struct Panel {
-    size: graphics::Size,
+    size:  graphics::Size,
+    color: Option<[f32; 4]>,
 }
 
 impl Panel {
     pub fn new(size: graphics::Size) -> Self {
         Self {
-            size
+            size,
+            color: None,
         }
+    }
+
+    pub fn color(mut self, color: [f32; 4]) -> Self {
+        self.color = Some(color);
+        self
     }
 }
 
@@ -52,6 +59,7 @@ impl DrawAt for Panel {
         let transform = element
             .transform(&frame.screen)
             .into();
+        let color = self.color.unwrap_or([0.0, 0.0, 0.0, 0.95]);
 
         res.drawables.square.draw(
             &res.device,
@@ -60,7 +68,7 @@ impl DrawAt for Panel {
                 transform,
             },
             frag::simple::Uniforms {
-                color: [0.0, 0.0, 0.0, 0.95].into(),
+                color: color.into(),
             },
         );
     }

@@ -34,12 +34,8 @@ impl AddCommand {
     {
         Ok(
             Self(
-                TextPanel::new(
-                    res,
-                    format!(
-                        "Add command",
-                    ),
-                )?
+                TextPanel::new(res, format!("Add command"))?
+                    .panel_color([0.1, 0.0, 0.0, 0.95])
             )
         )
     }
