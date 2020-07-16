@@ -45,6 +45,32 @@ pub fn derive_draw_at(input: TokenStream) -> TokenStream {
     )
 }
 
+pub fn derive_size(input: TokenStream) -> TokenStream {
+    let struct_ = parse_macro_input!(input as ItemStruct);
+
+    let name     = &struct_.ident;
+    let method   = quote!(size);
+
+    let mut dispatch_calls: Vec<_> = dispatch_calls(&struct_, &method, &[])
+        .collect();
+
+    if dispatch_calls.len() != 1 {
+        panic!("Can only derive `Size`, if struct has exactly one field");
+    }
+
+    let dispatch_call = dispatch_calls.remove(0);
+
+    let tokens = quote!(
+        impl Size for #name {
+            fn size(&self) -> graphics::Size {
+                #dispatch_call
+            }
+        }
+    );
+
+    TokenStream::from(tokens)
+}
+
 
 pub fn dispatch_to_all(
     input:    TokenStream,

@@ -20,3 +20,8 @@ pub fn derive_draw(input: TokenStream) -> TokenStream {
 pub fn derive_draw_at(input: TokenStream) -> TokenStream {
     ui::derive_draw_at(input)
 }
+
+#[proc_macro_derive(Size)]
+pub fn derive_size(input: TokenStream) -> TokenStream {
+    ui::derive_size(input)
+}
