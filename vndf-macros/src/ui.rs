@@ -71,7 +71,7 @@ pub fn dispatch_to_all(
         }
     };
 
-    let fields = fields
+    let method_calls = fields
         .into_iter()
         .map(|punctuated| {
             punctuated
@@ -108,7 +108,7 @@ pub fn dispatch_to_all(
                     #arg_name: #arg_ty,
                 )*
             ) {
-                #(#fields)*
+                #(#method_calls)*
             }
         }
     );
