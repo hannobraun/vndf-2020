@@ -21,7 +21,7 @@ use crate::{
 
 
 pub struct Panel {
-    pub size: graphics::Size,
+    size: graphics::Size,
 }
 
 impl Panel {
