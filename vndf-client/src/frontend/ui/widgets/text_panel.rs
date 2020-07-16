@@ -52,7 +52,7 @@ impl TextPanel {
 
 impl Size for TextPanel {
     fn size(&self) -> graphics::Size {
-        self.panel.size
+        self.panel.size()
     }
 }
 
