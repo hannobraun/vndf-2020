@@ -12,7 +12,7 @@ use syn::{
 
 
 pub fn derive_draw(input: TokenStream) -> TokenStream {
-    derive(
+    dispatch_to_all(
         input,
         quote!(Draw),
         quote!(draw),
@@ -28,7 +28,7 @@ pub fn derive_draw(input: TokenStream) -> TokenStream {
 }
 
 pub fn derive_draw_at(input: TokenStream) -> TokenStream {
-    derive(
+    dispatch_to_all(
         input,
         quote!(DrawAt),
         quote!(draw_at),
@@ -46,7 +46,7 @@ pub fn derive_draw_at(input: TokenStream) -> TokenStream {
 }
 
 
-pub fn derive(
+pub fn dispatch_to_all(
     input:    TokenStream,
     trait_:   proc_macro2::TokenStream,
     method:   proc_macro2::TokenStream,
