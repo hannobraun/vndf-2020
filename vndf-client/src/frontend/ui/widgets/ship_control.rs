@@ -1,4 +1,7 @@
-use vndf_macros::DrawAt;
+use vndf_macros::{
+    DrawAt,
+    Size,
+};
 
 use crate::{
     frontend::{
@@ -23,7 +26,7 @@ use super::{
 };
 
 
-#[derive(DrawAt)]
+#[derive(DrawAt, Size)]
 pub struct ShipControl(Column);
 
 impl ShipControl {
@@ -55,11 +58,5 @@ impl ShipControl {
                 Self(column)
             )
         )
-    }
-}
-
-impl Size for ShipControl {
-    fn size(&self) -> graphics::Size {
-        self.0.size()
     }
 }

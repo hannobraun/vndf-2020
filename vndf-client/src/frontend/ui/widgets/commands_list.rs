@@ -1,4 +1,7 @@
-use vndf_macros::DrawAt;
+use vndf_macros::{
+    DrawAt,
+    Size,
+};
 
 use crate::{
     frontend::{
@@ -20,7 +23,7 @@ use super::{
 };
 
 
-#[derive(DrawAt)]
+#[derive(DrawAt, Size)]
 pub struct CommandsList(TextPanel);
 
 impl CommandsList {
@@ -39,11 +42,5 @@ impl CommandsList {
         Ok(
             Self(text_panel)
         )
-    }
-}
-
-impl Size for CommandsList {
-    fn size(&self) -> graphics::Size {
-        self.0.size()
     }
 }

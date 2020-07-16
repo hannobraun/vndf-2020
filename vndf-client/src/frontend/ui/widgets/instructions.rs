@@ -1,4 +1,7 @@
-use vndf_macros::DrawAt;
+use vndf_macros::{
+    DrawAt,
+    Size,
+};
 
 use crate::{
     frontend::{
@@ -21,7 +24,7 @@ use super::{
 };
 
 
-#[derive(DrawAt)]
+#[derive(DrawAt, Size)]
 pub struct Instructions(TextPanel);
 
 impl Instructions {
@@ -52,11 +55,5 @@ impl Instructions {
         Ok(
             Self(text_panel)
         )
-    }
-}
-
-impl Size for Instructions {
-    fn size(&self) -> graphics::Size {
-        self.0.size()
     }
 }

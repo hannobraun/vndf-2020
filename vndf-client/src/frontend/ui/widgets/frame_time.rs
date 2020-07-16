@@ -1,4 +1,7 @@
-use vndf_macros::DrawAt;
+use vndf_macros::{
+    DrawAt,
+    Size,
+};
 
 use crate::{
     frontend::{
@@ -21,7 +24,7 @@ use super::{
 };
 
 
-#[derive(DrawAt)]
+#[derive(DrawAt, Size)]
 pub struct FrameTime(TextPanel);
 
 impl FrameTime {
@@ -47,11 +50,5 @@ impl FrameTime {
         Ok(
             Self(text_panel)
         )
-    }
-}
-
-impl Size for FrameTime {
-    fn size(&self) -> graphics::Size {
-        self.0.size()
     }
 }

@@ -1,4 +1,7 @@
-use vndf_macros::DrawAt;
+use vndf_macros::{
+    DrawAt,
+    Size,
+};
 
 use crate::{
     frontend::{
@@ -26,7 +29,7 @@ use super::{
 };
 
 
-#[derive(DrawAt)]
+#[derive(DrawAt, Size)]
 pub struct Diagnostics(Column);
 
 impl Diagnostics {
@@ -70,11 +73,5 @@ impl Diagnostics {
         Ok(
             Self(column)
         )
-    }
-}
-
-impl Size for Diagnostics {
-    fn size(&self) -> graphics::Size {
-        self.0.size()
     }
 }

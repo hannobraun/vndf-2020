@@ -1,4 +1,7 @@
-use vndf_macros::DrawAt;
+use vndf_macros::{
+    DrawAt,
+    Size,
+};
 
 use crate::{
     frontend::{
@@ -21,7 +24,7 @@ use super::{
 };
 
 
-#[derive(DrawAt)]
+#[derive(DrawAt, Size)]
 pub struct ViewSize(TextPanel);
 
 impl ViewSize {
@@ -50,11 +53,5 @@ impl ViewSize {
         Ok(
             Self(text_panel)
         )
-    }
-}
-
-impl Size for ViewSize {
-    fn size(&self) -> graphics::Size {
-        self.0.size()
     }
 }
