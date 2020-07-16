@@ -68,7 +68,7 @@ pub fn dispatch_to_all(
                     #arg_name: #arg_ty,
                 )*
             ) {
-                #(#method_calls)*
+                #(#method_calls;)*
             }
         }
     );
@@ -121,7 +121,7 @@ fn dispatch_calls<'a>(
             };
 
             quote!(
-                self.#field.#method(#(#arg_name,)*);
+                self.#field.#method(#(#arg_name,)*)
             )
         })
 }
