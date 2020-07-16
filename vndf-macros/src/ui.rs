@@ -57,49 +57,9 @@ pub fn dispatch_to_all(
 {
     let struct_ = parse_macro_input!(input as ItemStruct);
 
-    let name = struct_.ident;
+    let name = &struct_.ident;
 
-    let fields = match struct_.fields {
-        Fields::Named(FieldsNamed { named, .. }) => {
-            Some(named)
-        }
-        Fields::Unnamed(FieldsUnnamed { unnamed, .. }) => {
-            Some(unnamed)
-        }
-        Fields::Unit => {
-            None
-        }
-    };
-
-    let method_calls = fields
-        .into_iter()
-        .map(|punctuated| {
-            punctuated
-                .into_pairs()
-                .map(|pair| {
-                    match pair {
-                        Pair::Punctuated(field, _) => { field }
-                        Pair::End(field)           => { field }
-                    }
-                })
-        })
-        .flatten()
-        .enumerate()
-        .map(|(i, field)| {
-            let field = match field.ident {
-                Some(ident) => {
-                    quote!(#ident)
-                }
-                None => {
-                    let i = Index::from(i);
-                    quote!(#i)
-                }
-            };
-
-            quote!(
-                self.#field.#method(#(#arg_name,)*);
-            )
-        });
+    let method_calls = dispatch_calls(&struct_, &method, &arg_name);
 
     let tokens = quote!(
         impl #trait_ for #name {
@@ -114,4 +74,54 @@ pub fn dispatch_to_all(
     );
 
     TokenStream::from(tokens)
+}
+
+fn dispatch_calls<'a>(
+    struct_:  &'a ItemStruct,
+    method:   &'a proc_macro2::TokenStream,
+    arg_name: &'a [proc_macro2::TokenStream],
+)
+    -> impl Iterator<Item=proc_macro2::TokenStream> + 'a
+{
+    let fields = match &struct_.fields {
+        Fields::Named(FieldsNamed { named, .. }) => {
+            Some(named)
+        }
+        Fields::Unnamed(FieldsUnnamed { unnamed, .. }) => {
+            Some(unnamed)
+        }
+        Fields::Unit => {
+            None
+        }
+    };
+
+    fields
+        .into_iter()
+        .map(|punctuated| {
+            punctuated
+                .pairs()
+                .map(|pair| {
+                    match pair {
+                        Pair::Punctuated(field, _) => { field }
+                        Pair::End(field)           => { field }
+                    }
+                })
+        })
+        .flatten()
+        .enumerate()
+        .map(move |(i, field)| {
+            let field = match &field.ident {
+                Some(ident) => {
+                    quote!(#ident)
+                }
+                None => {
+                    let i = Index::from(i);
+                    quote!(#i)
+                }
+            };
+
+            quote!(
+                self.#field.#method(#(#arg_name,)*);
+            )
+        })
 }
