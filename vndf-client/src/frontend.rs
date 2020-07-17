@@ -28,6 +28,7 @@ use crate::{
 use self::{
     input_handler::InputHandler,
     renderer::Renderer,
+    ui::Ui,
     window::Window,
 };
 
@@ -41,6 +42,7 @@ pub fn start(mut game: Game, graphics: Graphics)
     let mut renderer = block_on(Renderer::new(&window, graphics))
         .map_err(|err| Error::Renderer(err))?;
     let mut input_handler = InputHandler::new();
+    let mut ui = Ui::new();
 
     let mut time = Instant::now();
 
@@ -64,7 +66,7 @@ pub fn start(mut game: Game, graphics: Graphics)
         }
 
         window.handle_event(&event);
-        if let Err(err) = renderer.handle_event(&event, &game) {
+        if let Err(err) = renderer.handle_event(&event, &game, &mut ui) {
             error!("Renderer error: {:?}", err);
             *control_flow = ControlFlow::Exit;
         }
