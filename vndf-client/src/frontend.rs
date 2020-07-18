@@ -60,6 +60,15 @@ pub fn start(mut game: Game, graphics: Graphics)
             Event::WindowEvent { event: WindowEvent::Resized(size), .. } => {
                 renderer.handle_resize(size);
             }
+            Event::WindowEvent {
+                event: WindowEvent::ScaleFactorChanged {
+                    scale_factor,
+                    ..
+                },
+                ..
+            } => {
+                renderer.handle_scale_factor_change(scale_factor);
+            }
             Event::MainEventsCleared => {
                 let dt = time.elapsed();
                 time = Instant::now();

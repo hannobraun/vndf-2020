@@ -6,10 +6,7 @@ use log::{
 };
 use winit::{
     dpi::PhysicalSize,
-    event::{
-        Event,
-        WindowEvent,
-    },
+    event::Event,
 };
 
 use crate::{
@@ -140,19 +137,14 @@ impl Renderer {
         );
     }
 
+    pub fn handle_scale_factor_change(&mut self, scale_factor: f64) {
+        self.scale_factor = scale_factor as graphics::Scalar;
+    }
+
     pub fn handle_event(&mut self, event: &Event<()>, game: &Game, ui: &mut Ui)
         -> Result<(), Error>
     {
         match event {
-            Event::WindowEvent {
-                event: WindowEvent::ScaleFactorChanged {
-                    scale_factor,
-                    ..
-                },
-                ..
-            } => {
-                self.scale_factor = *scale_factor as graphics::Scalar;
-            }
             Event::RedrawRequested(_) => {
                 let screen = self.screen();
 
