@@ -218,7 +218,7 @@ impl Renderer {
         Ok(())
     }
 
-    fn screen(&self) -> Screen {
+    pub fn screen(&self) -> Screen {
         screen(&self.swap_chain_desc, self.scale_factor)
     }
 }
