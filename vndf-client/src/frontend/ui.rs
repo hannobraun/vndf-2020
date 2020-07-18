@@ -29,11 +29,11 @@ use self::{
 pub use self::widgets::TextPanelRelatedError as Error;
 
 
-pub struct Ui {}
+pub struct Ui;
 
 impl Ui {
     pub fn new() -> Self {
-        Self {}
+        Self
     }
 
     pub fn draw(&mut self,
