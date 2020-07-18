@@ -1,6 +1,5 @@
 use winit::{
     error::OsError,
-    event::Event,
     event_loop::EventLoop,
     window::{
         Window as InnerWindow,
@@ -36,16 +35,6 @@ impl Window {
 
     pub fn scale_factor(&self) -> graphics::Scalar {
         self.0.scale_factor() as graphics::Scalar
-    }
-
-    pub fn handle_event(&self, event: &Event<()>) {
-        match event {
-            Event::MainEventsCleared => {
-                self.0.request_redraw()
-            }
-
-            _ => (),
-        }
     }
 
     pub fn inner(&self) -> &InnerWindow {

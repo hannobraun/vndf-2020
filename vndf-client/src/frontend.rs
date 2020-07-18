@@ -60,9 +60,10 @@ pub fn start(mut game: Game, graphics: Graphics)
             if let Err(()) = game.update(dt) {
                 *control_flow = ControlFlow::Exit;
             }
+
+            window.inner().request_redraw();
         }
 
-        window.handle_event(&event);
         if let Err(err) = renderer.handle_event(&event, &game, &mut ui) {
             error!("Renderer error: {:?}", err);
             *control_flow = ControlFlow::Exit;
