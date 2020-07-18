@@ -4,9 +4,12 @@ use log::{
     debug,
     warn,
 };
-use winit::event::{
-    Event,
-    WindowEvent,
+use winit::{
+    dpi::PhysicalSize,
+    event::{
+        Event,
+        WindowEvent,
+    },
 };
 
 use crate::{
@@ -127,19 +130,20 @@ impl Renderer {
         )
     }
 
+    pub fn handle_resize(&mut self, size: PhysicalSize<u32>) {
+        self.swap_chain_desc.width  = size.width;
+        self.swap_chain_desc.height = size.height;
+
+        self.swap_chain = self.draw_res.device.create_swap_chain(
+            &self.surface,
+            &self.swap_chain_desc,
+        );
+    }
+
     pub fn handle_event(&mut self, event: &Event<()>, game: &Game, ui: &mut Ui)
         -> Result<(), Error>
     {
         match event {
-            Event::WindowEvent { event: WindowEvent::Resized(size), .. } => {
-                self.swap_chain_desc.width  = size.width;
-                self.swap_chain_desc.height = size.height;
-
-                self.swap_chain = self.draw_res.device.create_swap_chain(
-                    &self.surface,
-                    &self.swap_chain_desc,
-                );
-            }
             Event::WindowEvent {
                 event: WindowEvent::ScaleFactorChanged {
                     scale_factor,

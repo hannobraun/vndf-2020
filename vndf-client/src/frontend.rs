@@ -13,7 +13,10 @@ use futures::executor::block_on;
 use log::error;
 use time::Instant;
 use winit::{
-    event::Event,
+    event::{
+        Event,
+        WindowEvent,
+    },
     event_loop::{
         ControlFlow,
         EventLoop,
@@ -54,6 +57,9 @@ pub fn start(mut game: Game, graphics: Graphics)
         );
 
         match event {
+            Event::WindowEvent { event: WindowEvent::Resized(size), .. } => {
+                renderer.handle_resize(size);
+            }
             Event::MainEventsCleared => {
                 let dt = time.elapsed();
                 time = Instant::now();
