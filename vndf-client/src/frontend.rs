@@ -53,15 +53,18 @@ pub fn start(mut game: Game, graphics: Graphics)
             control_flow,
         );
 
-        if let Event::MainEventsCleared = event {
-            let dt = time.elapsed();
-            time = Instant::now();
+        match event {
+            Event::MainEventsCleared => {
+                let dt = time.elapsed();
+                time = Instant::now();
 
-            if let Err(()) = game.update(dt) {
-                *control_flow = ControlFlow::Exit;
+                if let Err(()) = game.update(dt) {
+                    *control_flow = ControlFlow::Exit;
+                }
+
+                window.inner().request_redraw();
             }
-
-            window.inner().request_redraw();
+            _ => {}
         }
 
         if let Err(err) = renderer.handle_event(&event, &game, &mut ui) {
