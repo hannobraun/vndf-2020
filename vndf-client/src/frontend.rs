@@ -79,12 +79,13 @@ pub fn start(mut game: Game, graphics: Graphics)
 
                 window.inner().request_redraw();
             }
+            Event::RedrawRequested(_) => {
+                if let Err(err) = renderer.draw(&game, &mut ui) {
+                    error!("Renderer error: {:?}", err);
+                    *control_flow = ControlFlow::Exit;
+                }
+            }
             _ => {}
-        }
-
-        if let Err(err) = renderer.handle_event(&event, &game, &mut ui) {
-            error!("Renderer error: {:?}", err);
-            *control_flow = ControlFlow::Exit;
         }
     });
 }

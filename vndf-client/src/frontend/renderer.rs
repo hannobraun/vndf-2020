@@ -4,10 +4,7 @@ use log::{
     debug,
     warn,
 };
-use winit::{
-    dpi::PhysicalSize,
-    event::Event,
-};
+use winit::dpi::PhysicalSize;
 
 use crate::{
     Graphics,
@@ -141,75 +138,68 @@ impl Renderer {
         self.scale_factor = scale_factor as graphics::Scalar;
     }
 
-    pub fn handle_event(&mut self, event: &Event<()>, game: &Game, ui: &mut Ui)
-        -> Result<(), Error>
-    {
-        match event {
-            Event::RedrawRequested(_) => {
-                let screen = self.screen();
+    pub fn draw(&mut self, game: &Game, ui: &mut Ui) -> Result<(), Error> {
+        let screen = self.screen();
 
-                let mut frame = Frame {
-                    screen,
-                    output: self.swap_chain.get_next_texture()
-                        .map_err(|_| Error::TimeOut)?,
-                    encoder: self.draw_res.device.create_command_encoder(
-                        &wgpu::CommandEncoderDescriptor { label: None }
-                    ),
-                };
+        let mut frame = Frame {
+            screen,
+            output: self.swap_chain.get_next_texture()
+                .map_err(|_| Error::TimeOut)?,
+            encoder: self.draw_res.device.create_command_encoder(
+                &wgpu::CommandEncoderDescriptor { label: None }
+            ),
+        };
 
-                draw_background(&mut frame);
-                draw_grid(
-                    &mut self.draw_res,
-                    &mut frame,
-                    game,
-                );
+        draw_background(&mut frame);
+        draw_grid(
+            &mut self.draw_res,
+            &mut frame,
+            game,
+        );
 
-                for orbit in game.state.active_orbits() {
-                    draw_orbit(
-                        &mut self.draw_res,
-                        &mut frame,
-                        &orbit,
-                        game,
-                    );
-                }
-                for planet in game.state.data.planets.values() {
-                    draw_planet(
-                        &mut self.draw_res,
-                        &mut frame,
-                        planet,
-                        game,
-                    );
-                }
-                for ship in game.state.data.ships.values() {
-                    draw_ship(
-                        &mut self.draw_res,
-                        &mut frame,
-                        ship,
-                        game,
-                    );
-                }
-                for explosion in game.state.data.explosions.values() {
-                    draw_explosion(
-                        &mut self.draw_res,
-                        &mut frame,
-                        explosion,
-                        game,
-                    );
-                }
-
-                ui
-                    .draw(
-                        &mut self.draw_res,
-                        &mut frame,
-                        game,
-                        &screen,
-                    )
-                    .map_err(|err| Error::Ui(err))?;
-
-                self.queue.submit(&[frame.encoder.finish()]);
-            }
-            _ => {}
+        for orbit in game.state.active_orbits() {
+            draw_orbit(
+                &mut self.draw_res,
+                &mut frame,
+                &orbit,
+                game,
+            );
         }
+        for planet in game.state.data.planets.values() {
+            draw_planet(
+                &mut self.draw_res,
+                &mut frame,
+                planet,
+                game,
+            );
+        }
+        for ship in game.state.data.ships.values() {
+            draw_ship(
+                &mut self.draw_res,
+                &mut frame,
+                ship,
+                game,
+            );
+        }
+        for explosion in game.state.data.explosions.values() {
+            draw_explosion(
+                &mut self.draw_res,
+                &mut frame,
+                explosion,
+                game,
+            );
+        }
+
+        ui
+            .draw(
+                &mut self.draw_res,
+                &mut frame,
+                game,
+                &screen,
+            )
+            .map_err(|err| Error::Ui(err))?;
+
+        self.queue.submit(&[frame.encoder.finish()]);
 
         Ok(())
     }
