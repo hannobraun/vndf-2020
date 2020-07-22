@@ -227,22 +227,22 @@ dependencies = [
  "bitflags",
  "block",
  "core-foundation 0.7.0",
- "core-graphics 0.19.2",
+ "core-graphics",
  "foreign-types",
  "libc",
  "objc",
 ]
 
 [[package]]
-name = "cocoa"
-version = "0.22.0"
+name = "cocoa-foundation"
+version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "667fdc068627a2816b9ff831201dd9864249d6ee8d190b9532357f1fc0f61ea7"
+checksum = "7ade49b65d560ca58c403a479bb396592b155c0185eada742ee323d1d68d6318"
 dependencies = [
  "bitflags",
  "block",
  "core-foundation 0.9.0",
- "core-graphics 0.21.0",
+ "core-graphics-types",
  "foreign-types",
  "libc",
  "objc",
@@ -299,10 +299,10 @@ dependencies = [
 ]
 
 [[package]]
-name = "core-graphics"
-version = "0.21.0"
+name = "core-graphics-types"
+version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "52a67c4378cf203eace8fb6567847eb641fd6ff933c1145a115c6ee820ebb978"
+checksum = "e92f5d519093a4178296707dbaa3880eae85a5ef5386675f361a1cf25376e93c"
 dependencies = [
  "bitflags",
  "core-foundation 0.9.0",
@@ -318,19 +318,19 @@ checksum = "34ecad23610ad9757664d644e369246edde1803fcb43ed72876565098a5d3828"
 dependencies = [
  "cfg-if",
  "core-foundation-sys 0.7.0",
- "core-graphics 0.19.2",
+ "core-graphics",
  "libc",
  "objc",
 ]
 
 [[package]]
 name = "crossbeam-channel"
-version = "0.4.2"
+version = "0.4.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cced8691919c02aac3cb0a1bc2e9b73d89e832bf9a06fc579d4e71b68a2da061"
+checksum = "09ee0cc8804d5393478d743b035099520087a5186f3b93fa58cec08fa62407b6"
 dependencies = [
+ "cfg-if",
  "crossbeam-utils",
- "maybe-uninit",
 ]
 
 [[package]]
@@ -686,14 +686,14 @@ dependencies = [
 
 [[package]]
 name = "gfx-backend-metal"
-version = "0.5.5"
+version = "0.5.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "77fe42f6685bac32650a52de5fd3adc2f72d316bbf85969b307f42abf5fce9b6"
+checksum = "92804d20b194de6c84cb4bec14ec6a6dcae9c51f0a9186817fb412a590131ae6"
 dependencies = [
  "arrayvec",
  "bitflags",
  "block",
- "cocoa 0.22.0",
+ "cocoa-foundation",
  "copyless",
  "foreign-types",
  "gfx-auxil",
@@ -719,7 +719,7 @@ dependencies = [
  "arrayvec",
  "ash",
  "byteorder",
- "core-graphics 0.19.2",
+ "core-graphics",
  "gfx-hal",
  "lazy_static",
  "log",
@@ -1076,13 +1076,13 @@ dependencies = [
 
 [[package]]
 name = "metal"
-version = "0.19.0"
+version = "0.20.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1f7ed263bb25a70ee127f56017cfc0916d1fc643be493a7c1e532700a0e57fda"
+checksum = "5c4e8a431536529327e28c9ba6992f2cb0c15d4222f0602a16e6d7695ff3bccf"
 dependencies = [
  "bitflags",
  "block",
- "cocoa 0.22.0",
+ "cocoa-foundation",
  "foreign-types",
  "log",
  "objc",
@@ -2393,9 +2393,9 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1e4ccbf7ddb6627828eace16cacde80fc6bf4dbb3469f88487262a02cf8e7862"
 dependencies = [
  "bitflags",
- "cocoa 0.20.2",
+ "cocoa",
  "core-foundation 0.7.0",
- "core-graphics 0.19.2",
+ "core-graphics",
  "core-video-sys",
  "dispatch",
  "instant",
