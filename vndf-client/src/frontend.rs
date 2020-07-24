@@ -25,7 +25,10 @@ use winit::{
 
 use crate::{
     Graphics,
-    game::Game,
+    game::{
+        Game,
+        input::Transition,
+    },
 };
 
 use self::{
@@ -50,11 +53,17 @@ pub fn start(mut game: Game, graphics: Graphics)
     let mut time = Instant::now();
 
     event_loop.run(move |event, _, control_flow| {
-        input_handler.handle_event(
+        let input = input_handler.handle_event(
             &event,
-            &mut game,
             control_flow,
         );
+
+        if let Some(input) = input {
+            let trans = game.handle_input(input);
+            if trans == Transition::Quit {
+                *control_flow = ControlFlow::Exit
+            }
+        }
 
         match event {
             Event::WindowEvent { event: WindowEvent::Resized(size), .. } => {

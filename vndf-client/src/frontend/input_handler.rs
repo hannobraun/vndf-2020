@@ -11,12 +11,8 @@ use winit::{
 };
 
 use crate::game::{
-    Game,
     config::Key,
-    input::{
-        Input,
-        Transition,
-    },
+    input::Input,
 };
 
 pub struct InputHandler;
@@ -28,10 +24,11 @@ impl InputHandler {
 
     pub fn handle_event(&mut self,
         event:        &Event<()>,
-        game:         &mut Game,
         control_flow: &mut ControlFlow,
-    ) {
-        let input = match event {
+    )
+        -> Option<Input>
+    {
+        match event {
             Event::WindowEvent {
                 event: WindowEvent::KeyboardInput {
                     input: KeyboardInput {
@@ -46,8 +43,8 @@ impl InputHandler {
                 let key = Key::Keyboard(*key_code);
 
                 match state {
-                    ElementState::Pressed  => Input::KeyDown(key),
-                    ElementState::Released => Input::KeyUp(key),
+                    ElementState::Pressed  => Some(Input::KeyDown(key)),
+                    ElementState::Released => Some(Input::KeyUp(key)),
                 }
             }
             Event::WindowEvent {
@@ -66,20 +63,15 @@ impl InputHandler {
                     }
                 };
 
-                Input::MouseWheel(y)
+                Some(Input::MouseWheel(y))
             }
             Event::WindowEvent { event: WindowEvent::CloseRequested, .. } => {
                 *control_flow = ControlFlow::Exit;
-                return;
+                None
             }
             _ => {
-                return;
+                None
             }
-        };
-
-        let trans = game.handle_input(input);
-        if trans == Transition::Quit {
-            *control_flow = ControlFlow::Exit
         }
     }
 }
