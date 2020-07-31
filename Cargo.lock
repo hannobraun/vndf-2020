@@ -1150,30 +1150,16 @@ dependencies = [
 
 [[package]]
 name = "ndk-glue"
-version = "0.1.1"
+version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cb29f804c94a5f37a80ee19bd2f7db46cf378442b7a5464be59abd3781b1c85d"
+checksum = "d1730ee2e3de41c3321160a6da815f008c4006d71b095880ea50e17cf52332b8"
 dependencies = [
  "android_log-sys",
  "lazy_static",
  "libc",
  "log",
  "ndk",
- "ndk-macro",
  "ndk-sys",
-]
-
-[[package]]
-name = "ndk-macro"
-version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "21ac88f75036cbeadd814cba4b191a72d7d807cdf724b9fb0f700ee299794eac"
-dependencies = [
- "log",
- "proc-macro-crate",
- "proc-macro2 1.0.19",
- "quote 1.0.7",
- "syn",
 ]
 
 [[package]]
