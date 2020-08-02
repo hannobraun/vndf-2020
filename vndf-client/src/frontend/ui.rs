@@ -2,12 +2,20 @@ mod anchor;
 mod widgets;
 
 
+use winit::event::{
+    Event,
+    WindowEvent,
+};
+
 use crate::{
     frontend::drawers::{
         DrawResources,
         Frame,
     },
-    graphics::screen::Screen,
+    graphics::{
+        self,
+        screen::Screen,
+    },
     game::Game,
 };
 
@@ -29,11 +37,35 @@ use self::{
 pub use self::widgets::TextPanelRelatedError as Error;
 
 
-pub struct Ui;
+pub struct Ui {
+    cursor: Option<graphics::Pnt2>,
+}
 
 impl Ui {
     pub fn new() -> Self {
-        Self
+        Self {
+            cursor: None,
+        }
+    }
+
+    pub fn handle_event(&mut self, event: &Event<()>) {
+        match event {
+            Event::WindowEvent {
+                event: WindowEvent::CursorMoved {
+                    position,
+                    ..
+                },
+                ..
+            } => {
+                self.cursor = Some(
+                    graphics::Pnt2::new(
+                        position.x as f32,
+                        position.y as f32,
+                    )
+                );
+            }
+            _ => {}
+        }
     }
 
     pub fn draw(&mut self,
@@ -45,6 +77,8 @@ impl Ui {
         -> Result<(), Error>
     {
         const MARGIN: f32 = 20.0;
+
+        println!("Position: {:?}", self.cursor);
 
         if game.input.config.diagnostics {
             Diagnostics

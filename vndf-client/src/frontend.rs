@@ -57,6 +57,7 @@ pub fn start(mut game: Game, graphics: Graphics)
             &event,
             control_flow,
         );
+        ui.handle_event(&event);
 
         if let Some(input) = input {
             let trans = game.handle_input(input);
