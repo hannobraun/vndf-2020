@@ -19,7 +19,7 @@ winit       = "*"
 zerocopy    = "*"
 
 [dependencies.euclid]
-version  = "0.20.14"
+version  = "*"
 features = ["mint"]
 
 [dependencies.toadster]

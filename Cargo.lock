@@ -451,9 +451,9 @@ dependencies = [
 
 [[package]]
 name = "euclid"
-version = "0.20.14"
+version = "0.22.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2bb7ef65b3777a325d1eeefefab5b6d4959da54747e33bd6258e789640f307ad"
+checksum = "7ab0e07e345fb061928646949fdf5fb888e5d75a57385e7f5856e45be289e745"
 dependencies = [
  "mint",
  "num-traits",
@@ -975,9 +975,9 @@ dependencies = [
 
 [[package]]
 name = "lyon"
-version = "0.15.9"
+version = "0.16.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ed142d912ddc611081d50acd84ce1b8612da909aa4cf369642ba92cf51f09b40"
+checksum = "e70c7d8016c5c3a488b987ce9b90e5276cd0e4f977218b0ca00484518e06bbe7"
 dependencies = [
  "lyon_algorithms",
  "lyon_tessellation",
@@ -985,9 +985,9 @@ dependencies = [
 
 [[package]]
 name = "lyon_algorithms"
-version = "0.15.1"
+version = "0.16.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ef5d79947342462427efed6f49b1361d700c0f5dad97a1bac96a5f84d2d1abb1"
+checksum = "11033936a5e9d7bf35b7ba71a19f8b6bc838f3206304175dc5b3524ca16672a8"
 dependencies = [
  "lyon_path",
  "sid",
@@ -995,9 +995,9 @@ dependencies = [
 
 [[package]]
 name = "lyon_geom"
-version = "0.15.3"
+version = "0.16.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9962a2ba81382716b87d7d358493cb71844c1f9165ddad763cd9f4d3f5474df2"
+checksum = "cf8bab700a69f82616a1377df3c2fc4012fe8518833ae1f6e51a1cf9782cede4"
 dependencies = [
  "arrayvec",
  "euclid",
@@ -1006,18 +1006,18 @@ dependencies = [
 
 [[package]]
 name = "lyon_path"
-version = "0.15.2"
+version = "0.16.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c81a044414965c051b7b4785770820d23146480a2d8573cd825f03a00a5b8dd8"
+checksum = "bf845aab7ec22d588fb82384fab4fecd88f9479cd00637d68166d37de0514f69"
 dependencies = [
  "lyon_geom",
 ]
 
 [[package]]
 name = "lyon_tessellation"
-version = "0.15.9"
+version = "0.16.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "71c45e7eb8cf9cba513aa72efd59894f861a91acabc9a100caeb0fe6e6315b71"
+checksum = "72817e64dc9c161c0785e61626dd76403356614b15a645d95d25b9003e0ba1a0"
 dependencies = [
  "arrayvec",
  "lyon_path",
@@ -1138,14 +1138,13 @@ dependencies = [
 
 [[package]]
 name = "ndk"
-version = "0.1.1"
+version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7800e77d5acfff3c972c3fc06f381160ba03c9525682e769bdb3faa203fa7ae2"
+checksum = "95a356cafe20aee088789830bfea3a61336e84ded9e545e00d3869ce95dcb80c"
 dependencies = [
  "jni-sys",
  "ndk-sys",
  "num_enum",
- "thiserror",
 ]
 
 [[package]]
@@ -1164,9 +1163,9 @@ dependencies = [
 
 [[package]]
 name = "ndk-sys"
-version = "0.1.1"
+version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3d284f647d9212355012a42bdd9f7f2079bfd5d67fc705fe0afacff30974aa0b"
+checksum = "2b2820aca934aba5ed91c79acc72b6a44048ceacc5d36c035ed4e051f12d887d"
 
 [[package]]
 name = "net2"
@@ -1368,9 +1367,9 @@ checksum = "d36492546b6af1463394d46f0c834346f31548646f6ba10849802c9c9a27ac33"
 
 [[package]]
 name = "postcard"
-version = "0.5.0"
+version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d2ba083a6a640a9f09d294c0f504acdd7a2b000c179e80c73d4b7a036bfd8164"
+checksum = "b3e3f5c2e9a91383c6594ec68aa2dfdfe19a3c86f34b088ba7203f2483d2682f"
 dependencies = [
  "heapless",
  "postcard-cobs",
@@ -1870,9 +1869,9 @@ dependencies = [
 
 [[package]]
 name = "syn"
-version = "1.0.36"
+version = "1.0.37"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4cdb98bcb1f9d81d07b536179c269ea15999b5d14ea958196413869445bb5250"
+checksum = "239f255b9e3429350f188c27b807fc9920a15eb9145230ff1a7d054c08fec319"
 dependencies = [
  "proc-macro2 1.0.19",
  "quote 1.0.7",
@@ -1907,26 +1906,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d326610f408c7a4eb6f51c37c330e496b08506c9457c9d34287ecc38809fb060"
 dependencies = [
  "unicode-width",
-]
-
-[[package]]
-name = "thiserror"
-version = "1.0.20"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7dfdd070ccd8ccb78f4ad66bf1982dc37f620ef696c6b5028fe2ed83dd3d0d08"
-dependencies = [
- "thiserror-impl",
-]
-
-[[package]]
-name = "thiserror-impl"
-version = "1.0.20"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bd80fc12f73063ac132ac92aceea36734f04a1d93c1240c6944e23a3b8841793"
-dependencies = [
- "proc-macro2 1.0.19",
- "quote 1.0.7",
- "syn",
 ]
 
 [[package]]

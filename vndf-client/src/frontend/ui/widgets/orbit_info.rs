@@ -95,15 +95,15 @@ impl OrbitInfo {
             "Periapsis:\n\
             from center: {:.0} km\n\
             above surface:{:.0} km",
-            periapsis_km,
-            periapsis_above_surface_km,
+            periapsis_km.0,
+            periapsis_above_surface_km.0,
         );
         let apocenter_text = format!(
             "Apoapsis:\n\
             from center: {:.0} km\n\
             above surface:{:.0} km",
-            apoapsis_km,
-            apoapsis_above_surface_km,
+            apoapsis_km.0,
+            apoapsis_above_surface_km.0,
         );
 
         let pericenter_pos = game.state.camera.world_to_screen(

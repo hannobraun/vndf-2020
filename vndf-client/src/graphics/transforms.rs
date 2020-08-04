@@ -49,13 +49,13 @@ impl<Src, Dst> Transform<Src, Dst> {
     pub fn post_transform<NewDst>(&self, transform: &Transform<Dst, NewDst>)
         -> Transform<Src, NewDst>
     {
-        Transform(self.0.post_transform(&transform.0))
+        Transform(self.0.then(&transform.0))
     }
 
     pub fn to_native(&self) -> NativeTransform {
         self.0
             .to_3d()
-            .to_row_arrays()
+            .to_arrays()
     }
 }
 
@@ -78,20 +78,20 @@ pub fn local_to_world(element: &WorldElement) -> Transform<LocalUnit, Meter> {
     };
 
     graphics::Transform::identity()
-        .post_scale(
+        .then_scale(
             element.size.width  as graphics::Scalar,
             element.size.height as graphics::Scalar,
         )
-        .post_rotate(angle)
-        .post_translate(element.pos.to_vector().cast())
+        .then_rotate(angle)
+        .then_translate(element.pos.to_vector().cast())
         .into()
 }
 
 pub fn local_to_screen(element: &ScreenElement) -> Transform<LocalUnit, Pixel> {
     graphics::Transform::identity()
-        .post_scale(element.size.width, element.size.height)
-        .post_rotate(element.angle)
-        .post_translate(element.pos.to_vector())
+        .then_scale(element.size.width, element.size.height)
+        .then_rotate(element.angle)
+        .then_translate(element.pos.to_vector())
         .into()
 }
 
@@ -103,8 +103,8 @@ pub fn world_to_screen(camera: &Camera, screen: &Screen)
 
     graphics::Transform::identity()
         .pre_translate(-camera.center.to_vector().cast::<graphics::Scalar>())
-        .post_scale(pixels_per_meter, -pixels_per_meter)
-        .post_translate(screen.logical_size().to_vector() / 2.0)
+        .then_scale(pixels_per_meter, -pixels_per_meter)
+        .then_translate(screen.logical_size().to_vector() / 2.0)
         .into()
 }
 
