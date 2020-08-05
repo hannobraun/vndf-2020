@@ -51,10 +51,10 @@ impl Handler {
                         return Transition::Quit;
                     }
                     k if k == self.config.input.left => {
-                        events.push(action::Kind::Rotate(Rotation::Pos))
+                        events.push(action::Kind::Rotate(Rotation::Neg))
                     }
                     k if k == self.config.input.right => {
-                        events.push(action::Kind::Rotate(Rotation::Neg))
+                        events.push(action::Kind::Rotate(Rotation::Pos))
                     }
                     k if k == self.config.input.thrust_on => {
                         events.push(action::Kind::Thrust(true))
