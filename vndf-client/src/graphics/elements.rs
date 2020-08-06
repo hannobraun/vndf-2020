@@ -114,7 +114,7 @@ impl ScreenElement {
             )
             .0
             .transform_point(pos.0.cast());
-        let angle = dir.angle_from_x_axis();
+        let angle = -dir.angle_from_x_axis();
 
         // Can be replaced with `.cast()`, once this PR lands:
         // https://github.com/servo/euclid/pull/440
