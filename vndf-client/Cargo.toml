@@ -6,6 +6,8 @@ edition = "2018"
 
 
 [dependencies]
+conrod_core = "*"
+conrod_wgpu = "*"
 futures     = "*"
 glyph_brush = "*"
 log         = "*"
