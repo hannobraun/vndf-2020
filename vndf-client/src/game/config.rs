@@ -77,7 +77,7 @@ impl Config {
 impl Default for Config {
     fn default() -> Self {
         Self {
-            diagnostics: true,
+            diagnostics: false,
             input: Input {
                 left:       Key::Keyboard(VirtualKeyCode::A),
                 right:      Key::Keyboard(VirtualKeyCode::D),
