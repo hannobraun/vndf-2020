@@ -13,7 +13,10 @@ use crate::{
         self,
         screen::Screen,
     },
-    shared::world::behavior::orbits::Orbit,
+    shared::world::{
+        self,
+        behavior::orbits::Orbit,
+    },
 };
 
 use super::{
@@ -91,19 +94,15 @@ impl OrbitInfo {
         let apoapsis_above_surface_km =
             orbit.apoapsis.from_surface / 1000.0;
 
-        let pericenter_text = format!(
-            "Periapsis:\n\
-            from center: {:.0} km\n\
-            above surface:{:.0} km",
-            periapsis_km.0,
-            periapsis_above_surface_km.0,
+        let pericenter_text = Self::text(
+            "Periapsis",
+            periapsis_km,
+            periapsis_above_surface_km,
         );
-        let apocenter_text = format!(
-            "Apoapsis:\n\
-            from center: {:.0} km\n\
-            above surface:{:.0} km",
-            apoapsis_km.0,
-            apoapsis_above_surface_km.0,
+        let apocenter_text = Self::text(
+            "Apoapsis",
+            apoapsis_km,
+            apoapsis_above_surface_km,
         );
 
         let pericenter_pos = game.state.camera.world_to_screen(
@@ -121,5 +120,22 @@ impl OrbitInfo {
             apocenter_text,
             apocenter_pos,
         ))
+    }
+
+    fn text(
+        name:             &str,
+        from_center_km:   world::Length,
+        above_surface_km: world::Length,
+    )
+        -> String
+    {
+        format!(
+            "{}:\n\
+            from center: {:.0} km\n\
+            above surface:{:.0} km",
+            name,
+            from_center_km.0,
+            above_surface_km.0,
+        )
     }
 }
