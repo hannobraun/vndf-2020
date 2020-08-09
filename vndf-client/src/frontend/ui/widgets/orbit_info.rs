@@ -132,7 +132,7 @@ impl OrbitInfo {
         format!(
             "{}:\n\
             from center: {:.0} km\n\
-            above surface:{:.0} km",
+            above surface: {:.0} km",
             name,
             from_center_km.0,
             above_surface_km.0,
