@@ -1,5 +1,3 @@
-use std::io;
-
 use log::{
     debug,
     warn,
@@ -255,14 +253,7 @@ fn screen(
 pub enum Error {
     AdapterRequest,
     Drawables(drawables::Error),
-    Io(io::Error),
     Meshes(meshes::Error),
     TimeOut,
     Ui(ui::Error),
-}
-
-impl From<io::Error> for Error {
-    fn from(err: io::Error) -> Self {
-        Self::Io(err)
-    }
 }
