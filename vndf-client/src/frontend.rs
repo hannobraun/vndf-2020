@@ -103,6 +103,6 @@ pub fn start(mut game: Game, graphics: Graphics)
 
 #[derive(Debug)]
 pub enum Error {
-    Renderer(renderer::Error),
+    Renderer(renderer::InitError),
     Winit(winit::error::OsError),
 }

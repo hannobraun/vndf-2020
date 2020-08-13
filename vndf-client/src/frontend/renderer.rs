@@ -52,7 +52,7 @@ pub struct Renderer {
 
 impl Renderer {
     pub async fn new(window: &Window, graphics: Graphics)
-        -> Result<Self, Error>
+        -> Result<Self, InitError>
     {
         let size   = window.size();
         let format = wgpu::TextureFormat::Bgra8UnormSrgb;
@@ -71,7 +71,7 @@ impl Renderer {
                 backend,
             )
             .await
-            .ok_or(Error::AdapterRequest)?;
+            .ok_or(InitError::AdapterRequest)?;
 
         let (device, queue) = adapter
             .request_device(
@@ -85,9 +85,9 @@ impl Renderer {
             .await;
 
         let meshes = Meshes::new()
-            .map_err(|err| Error::Meshes(err))?;
+            .map_err(|err| InitError::Meshes(err))?;
         let drawables = Drawables::new(&device, &meshes, format)
-            .map_err(|err| Error::Drawables(err))?;
+            .map_err(|err| InitError::Drawables(err))?;
 
         let swap_chain_desc = wgpu::SwapChainDescriptor {
             usage:        wgpu::TextureUsage::OUTPUT_ATTACHMENT,
@@ -250,10 +250,15 @@ fn screen(
 
 
 #[derive(Debug)]
-pub enum Error {
+pub enum InitError {
     AdapterRequest,
     Drawables(drawables::Error),
     Meshes(meshes::Error),
+}
+
+
+#[derive(Debug)]
+pub enum Error {
     TimeOut,
     Ui(ui::Error),
 }
