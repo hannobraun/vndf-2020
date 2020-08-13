@@ -136,13 +136,13 @@ impl Renderer {
         self.scale_factor = scale_factor as graphics::Scalar;
     }
 
-    pub fn draw(&mut self, game: &Game, ui: &mut Ui) -> Result<(), Error> {
+    pub fn draw(&mut self, game: &Game, ui: &mut Ui) -> Result<(), DrawError> {
         let screen = self.screen();
 
         let mut frame = Frame {
             screen,
             output: self.swap_chain.get_next_texture()
-                .map_err(|_| Error::TimeOut)?,
+                .map_err(|_| DrawError::TimeOut)?,
             encoder: self.draw_res.device.create_command_encoder(
                 &wgpu::CommandEncoderDescriptor { label: None }
             ),
@@ -195,7 +195,7 @@ impl Renderer {
                 game,
                 &screen,
             )
-            .map_err(|err| Error::Ui(err))?;
+            .map_err(|err| DrawError::Ui(err))?;
 
         self.queue.submit(&[frame.encoder.finish()]);
 
@@ -258,7 +258,7 @@ pub enum InitError {
 
 
 #[derive(Debug)]
-pub enum Error {
+pub enum DrawError {
     TimeOut,
     Ui(ui::Error),
 }
