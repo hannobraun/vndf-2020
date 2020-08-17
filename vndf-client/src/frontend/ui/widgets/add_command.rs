@@ -28,8 +28,8 @@ impl AddCommand {
     )
         -> Result<Self, TextPanelRelatedError>
     {
-        let text_panel = TextPanel::new(res, format!("Add command"))?
-            .panel_color([0.1, 0.0, 0.0, 0.95]);
+        let mut text_panel = TextPanel::new(res, format!("Add command"))?;
+        text_panel.panel_color([0.1, 0.0, 0.0, 0.95]);
 
         Ok(
             Self {

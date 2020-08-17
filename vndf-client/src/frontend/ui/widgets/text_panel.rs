@@ -49,9 +49,8 @@ impl TextPanel {
         )
     }
 
-    pub fn panel_color(mut self, color: [f32; 4]) -> Self {
+    pub fn panel_color(&mut self, color: [f32; 4]) {
         self.panel.color(color);
-        self
     }
 }
 
