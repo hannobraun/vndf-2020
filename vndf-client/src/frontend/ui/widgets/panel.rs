@@ -33,9 +33,8 @@ impl Panel {
         }
     }
 
-    pub fn color(mut self, color: [f32; 4]) -> Self {
+    pub fn color(&mut self, color: [f32; 4]) {
         self.color = Some(color);
-        self
     }
 }
 

@@ -50,7 +50,7 @@ impl TextPanel {
     }
 
     pub fn panel_color(mut self, color: [f32; 4]) -> Self {
-        self.panel = self.panel.color(color);
+        self.panel.color(color);
         self
     }
 }
