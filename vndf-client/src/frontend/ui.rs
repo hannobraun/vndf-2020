@@ -38,7 +38,7 @@ pub use self::widgets::TextPanelRelatedError as Error;
 
 
 pub struct Ui {
-    pointer: Option<graphics::Pnt2>,
+    pointer: Pointer,
 }
 
 impl Ui {
@@ -147,3 +147,6 @@ impl Ui {
         Ok(())
     }
 }
+
+
+pub type Pointer = Option<graphics::Pnt2>;
