@@ -52,7 +52,15 @@ impl DrawAt for AddCommand {
     ) {
         println!("Position: {:?}", self.pointer);
 
-        self.text_panel.panel_color([0.1, 0.0, 0.0, 0.95]);
+        let rect = graphics::Rect::new(pos, self.size());
+
+        self.text_panel.panel_color([0.1, 0.0, 0.0, 0.95]); // default color
+        if let Some(pointer) = self.pointer {
+            if rect.contains(pointer) {
+                self.text_panel.panel_color([0.5, 0.0, 0.0, 0.95]);
+            }
+        }
+
         self.text_panel.draw_at(res, frame, pos)
     }
 }
