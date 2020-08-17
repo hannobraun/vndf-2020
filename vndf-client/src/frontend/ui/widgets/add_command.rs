@@ -28,8 +28,7 @@ impl AddCommand {
     )
         -> Result<Self, TextPanelRelatedError>
     {
-        let mut text_panel = TextPanel::new(res, format!("Add command"))?;
-        text_panel.panel_color([0.1, 0.0, 0.0, 0.95]);
+        let text_panel = TextPanel::new(res, format!("Add command"))?;
 
         Ok(
             Self {
@@ -45,6 +44,7 @@ impl DrawAt for AddCommand {
         frame: &mut Frame,
         pos:   graphics::Pnt2,
     ) {
+        self.text_panel.panel_color([0.1, 0.0, 0.0, 0.95]);
         self.text_panel.draw_at(res, frame, pos)
     }
 }
