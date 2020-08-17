@@ -1,8 +1,3 @@
-use vndf_macros::{
-    DrawAt,
-    Size,
-};
-
 use crate::{
     frontend::{
         drawers::{
@@ -23,7 +18,6 @@ use super::{
 };
 
 
-#[derive(DrawAt, Size)]
 pub struct AddCommand{
     text_panel: TextPanel,
 }
@@ -42,5 +36,21 @@ impl AddCommand {
                 text_panel
             }
         )
+    }
+}
+
+impl DrawAt for AddCommand {
+    fn draw_at(&mut self,
+        res:   &mut DrawResources,
+        frame: &mut Frame,
+        pos:   graphics::Pnt2,
+    ) {
+        self.text_panel.draw_at(res, frame, pos)
+    }
+}
+
+impl Size for AddCommand {
+    fn size(&self) -> graphics::Size {
+        self.text_panel.size()
     }
 }
