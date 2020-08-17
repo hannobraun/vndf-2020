@@ -48,7 +48,7 @@ pub fn start(mut game: Game, graphics: Graphics)
     let mut renderer = block_on(Renderer::new(&window, graphics))
         .map_err(|err| Error::Renderer(err))?;
     let mut input_handler = InputHandler::new();
-    let mut ui = Ui::new();
+    let mut ui = Ui::new(&window);
 
     let mut time = Instant::now();
 
@@ -86,6 +86,7 @@ pub fn start(mut game: Game, graphics: Graphics)
                 ..
             } => {
                 renderer.handle_scale_factor_change(scale_factor);
+                ui.handle_scale_factor_change(scale_factor);
             }
             Event::MainEventsCleared => {
                 let dt = time.elapsed();

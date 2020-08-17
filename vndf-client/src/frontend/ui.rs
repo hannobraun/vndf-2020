@@ -5,9 +5,12 @@ mod widgets;
 use winit::dpi::PhysicalPosition;
 
 use crate::{
-    frontend::drawers::{
-        DrawResources,
-        Frame,
+    frontend::{
+        drawers::{
+            DrawResources,
+            Frame,
+        },
+        window::Window,
     },
     graphics::{
         self,
@@ -35,23 +38,29 @@ pub use self::widgets::TextPanelRelatedError as Error;
 
 
 pub struct Ui {
-    pointer: Pointer,
+    pointer:      Pointer,
+    scale_factor: graphics::Scalar,
 }
 
 impl Ui {
-    pub fn new() -> Self {
+    pub fn new(window: &Window) -> Self {
         Self {
-            pointer: None,
+            pointer:      None,
+            scale_factor: window.scale_factor(),
         }
     }
 
     pub fn handle_cursor_move(&mut self, position: PhysicalPosition<f64>) {
         self.pointer = Some(
             graphics::Pnt2::new(
-                position.x as f32,
-                position.y as f32,
+                position.x as f32 / self.scale_factor,
+                position.y as f32 / self.scale_factor,
             )
         );
+    }
+
+    pub fn handle_scale_factor_change(&mut self, scale_factor: f64) {
+        self.scale_factor = scale_factor as graphics::Scalar;
     }
 
     pub fn draw(&mut self,
