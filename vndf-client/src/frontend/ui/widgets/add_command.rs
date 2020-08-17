@@ -50,8 +50,6 @@ impl DrawAt for AddCommand {
         frame: &mut Frame,
         pos:   graphics::Pnt2,
     ) {
-        println!("Position: {:?}", self.pointer);
-
         let rect = graphics::Rect::new(pos, self.size());
 
         self.text_panel.panel_color([0.1, 0.0, 0.0, 0.95]); // default color
