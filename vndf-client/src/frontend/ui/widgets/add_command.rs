@@ -24,7 +24,9 @@ use super::{
 
 
 #[derive(DrawAt, Size)]
-pub struct AddCommand(TextPanel);
+pub struct AddCommand{
+    text_panel: TextPanel,
+}
 
 impl AddCommand {
     pub fn new(
@@ -32,11 +34,13 @@ impl AddCommand {
     )
         -> Result<Self, TextPanelRelatedError>
     {
+        let text_panel = TextPanel::new(res, format!("Add command"))?
+            .panel_color([0.1, 0.0, 0.0, 0.95]);
+
         Ok(
-            Self(
-                TextPanel::new(res, format!("Add command"))?
-                    .panel_color([0.1, 0.0, 0.0, 0.95])
-            )
+            Self {
+                text_panel
+            }
         )
     }
 }
