@@ -9,9 +9,12 @@ use crate::{
             DrawResources,
             Frame,
         },
-        ui::widgets::{
-            DrawAt,
-            Size,
+        ui::{
+            Pointer,
+            widgets::{
+                DrawAt,
+                Size,
+            },
         },
     },
     graphics,
@@ -30,15 +33,16 @@ pub struct Commands(Column);
 
 impl Commands {
     pub fn new(
-        res:    &mut DrawResources,
-        margin: graphics::Scalar,
+        res:     &mut DrawResources,
+        margin:  graphics::Scalar,
+        pointer: Pointer,
     )
         -> Result<Self, TextPanelRelatedError>
     {
         let mut column = Column::new(margin);
 
         column.add(CommandsList::new(res)?);
-        column.add(AddCommand::new(res)?);
+        column.add(AddCommand::new(res, pointer)?);
 
         Ok(
             Self(column)

@@ -78,8 +78,6 @@ impl Ui {
     {
         const MARGIN: f32 = 20.0;
 
-        println!("Position: {:?}", self.pointer);
-
         if game.input.config.diagnostics {
             Diagnostics
                 ::new(
@@ -112,6 +110,7 @@ impl Ui {
         let ship_control = ShipControl::new(
             res,
             MARGIN,
+            self.pointer,
             game,
         )?;
         if let Some(ship_control) = ship_control {

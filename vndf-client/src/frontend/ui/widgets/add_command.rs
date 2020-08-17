@@ -4,9 +4,12 @@ use crate::{
             DrawResources,
             Frame,
         },
-        ui::widgets::{
-            DrawAt,
-            Size,
+        ui::{
+            Pointer,
+            widgets::{
+                DrawAt,
+                Size,
+            },
         },
     },
     graphics,
@@ -20,11 +23,13 @@ use super::{
 
 pub struct AddCommand{
     text_panel: TextPanel,
+    pointer:    Pointer,
 }
 
 impl AddCommand {
     pub fn new(
-        res: &mut DrawResources,
+        res:     &mut DrawResources,
+        pointer: Pointer,
     )
         -> Result<Self, TextPanelRelatedError>
     {
@@ -32,7 +37,8 @@ impl AddCommand {
 
         Ok(
             Self {
-                text_panel
+                text_panel,
+                pointer,
             }
         )
     }
@@ -44,6 +50,8 @@ impl DrawAt for AddCommand {
         frame: &mut Frame,
         pos:   graphics::Pnt2,
     ) {
+        println!("Position: {:?}", self.pointer);
+
         self.text_panel.panel_color([0.1, 0.0, 0.0, 0.95]);
         self.text_panel.draw_at(res, frame, pos)
     }

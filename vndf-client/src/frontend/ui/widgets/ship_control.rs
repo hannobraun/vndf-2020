@@ -9,9 +9,12 @@ use crate::{
             DrawResources,
             Frame,
         },
-        ui::widgets::{
-            DrawAt,
-            Size,
+        ui::{
+            Pointer,
+            widgets::{
+                DrawAt,
+                Size,
+            },
         },
     },
     game::Game,
@@ -31,9 +34,10 @@ pub struct ShipControl(Column);
 
 impl ShipControl {
     pub fn new(
-        res:    &mut DrawResources,
-        margin: graphics::Scalar,
-        game:   &Game,
+        res:     &mut DrawResources,
+        margin:  graphics::Scalar,
+        pointer: Pointer,
+        game:    &Game,
     )
         -> Result<Option<Self>, TextPanelRelatedError>
     {
@@ -44,6 +48,7 @@ impl ShipControl {
         let commands = Commands::new(
             res,
             margin,
+            pointer,
         )?;
 
         let mut column = Column::new(margin);
