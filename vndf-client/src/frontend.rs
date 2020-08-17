@@ -57,7 +57,6 @@ pub fn start(mut game: Game, graphics: Graphics)
             &event,
             control_flow,
         );
-        ui.handle_event(&event);
 
         if let Some(input) = input {
             let trans = game.handle_input(input);
@@ -67,6 +66,15 @@ pub fn start(mut game: Game, graphics: Graphics)
         }
 
         match event {
+            Event::WindowEvent {
+                event: WindowEvent::CursorMoved {
+                    position,
+                    ..
+                },
+                ..
+            } => {
+                ui.handle_cursor_move(position);
+            }
             Event::WindowEvent { event: WindowEvent::Resized(size), .. } => {
                 renderer.handle_resize(size);
             }

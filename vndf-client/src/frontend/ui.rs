@@ -2,10 +2,7 @@ mod anchor;
 mod widgets;
 
 
-use winit::event::{
-    Event,
-    WindowEvent,
-};
+use winit::dpi::PhysicalPosition;
 
 use crate::{
     frontend::drawers::{
@@ -48,24 +45,13 @@ impl Ui {
         }
     }
 
-    pub fn handle_event(&mut self, event: &Event<()>) {
-        match event {
-            Event::WindowEvent {
-                event: WindowEvent::CursorMoved {
-                    position,
-                    ..
-                },
-                ..
-            } => {
-                self.pointer = Some(
-                    graphics::Pnt2::new(
-                        position.x as f32,
-                        position.y as f32,
-                    )
-                );
-            }
-            _ => {}
-        }
+    pub fn handle_cursor_move(&mut self, position: PhysicalPosition<f64>) {
+        self.pointer = Some(
+            graphics::Pnt2::new(
+                position.x as f32,
+                position.y as f32,
+            )
+        );
     }
 
     pub fn draw(&mut self,
