@@ -50,8 +50,8 @@ impl ShipControl {
 
         if let Some(ship_status) = ship_status {
             column.add(ship_status);
+            column.add(commands);
         }
-        column.add(commands);
 
         Ok(
             Some(
