@@ -38,13 +38,13 @@ pub use self::widgets::TextPanelRelatedError as Error;
 
 
 pub struct Ui {
-    cursor: Option<graphics::Pnt2>,
+    pointer: Option<graphics::Pnt2>,
 }
 
 impl Ui {
     pub fn new() -> Self {
         Self {
-            cursor: None,
+            pointer: None,
         }
     }
 
@@ -57,7 +57,7 @@ impl Ui {
                 },
                 ..
             } => {
-                self.cursor = Some(
+                self.pointer = Some(
                     graphics::Pnt2::new(
                         position.x as f32,
                         position.y as f32,
@@ -78,7 +78,7 @@ impl Ui {
     {
         const MARGIN: f32 = 20.0;
 
-        println!("Position: {:?}", self.cursor);
+        println!("Position: {:?}", self.pointer);
 
         if game.input.config.diagnostics {
             Diagnostics
