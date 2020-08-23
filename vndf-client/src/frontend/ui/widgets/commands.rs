@@ -10,7 +10,7 @@ use crate::{
             Frame,
         },
         ui::{
-            Pointer,
+            input::Pointer,
             widgets::{
                 DrawAt,
                 Size,

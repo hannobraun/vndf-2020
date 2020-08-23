@@ -1,4 +1,5 @@
 mod anchor;
+mod input;
 mod widgets;
 
 
@@ -21,6 +22,7 @@ use crate::{
 
 use self::{
     anchor::Anchor,
+    input::Pointer,
     widgets::{
         Diagnostics,
         Draw as _,
@@ -141,6 +143,3 @@ impl Ui {
         Ok(())
     }
 }
-
-
-pub type Pointer = Option<graphics::Pnt2>;
