@@ -2,7 +2,7 @@ use crate::graphics;
 
 
 pub struct Input {
-    pub cursor: Pointer,
+    pub cursor: Cursor,
 }
 
 impl Input {
@@ -14,4 +14,4 @@ impl Input {
 }
 
 
-pub type Pointer = Option<graphics::Pnt2>;
+pub type Cursor = Option<graphics::Pnt2>;

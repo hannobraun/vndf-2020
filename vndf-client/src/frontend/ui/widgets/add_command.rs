@@ -7,7 +7,7 @@ use crate::{
         ui::{
             input::{
                 Input,
-                Pointer,
+                Cursor,
             },
             widgets::{
                 DrawAt,
@@ -26,7 +26,7 @@ use super::{
 
 pub struct AddCommand{
     text_panel: TextPanel,
-    pointer:    Pointer,
+    pointer:    Cursor,
 }
 
 impl AddCommand {
