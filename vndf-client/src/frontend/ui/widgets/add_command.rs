@@ -56,8 +56,8 @@ impl DrawAt for AddCommand {
         let rect = graphics::Rect::new(pos, self.size());
 
         self.text_panel.panel_color([0.1, 0.0, 0.0, 0.95]); // default color
-        if let Some(pointer) = self.cursor {
-            if rect.contains(pointer) {
+        if let Some(cursor) = self.cursor {
+            if rect.contains(cursor) {
                 self.text_panel.panel_color([0.5, 0.0, 0.0, 0.95]);
             }
         }
