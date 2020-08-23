@@ -107,7 +107,7 @@ impl Ui {
         let ship_control = ShipControl::new(
             res,
             MARGIN,
-            self.input.cursor,
+            &self.input,
             game,
         )?;
         if let Some(ship_control) = ship_control {

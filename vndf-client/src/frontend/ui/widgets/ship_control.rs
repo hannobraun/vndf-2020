@@ -10,7 +10,7 @@ use crate::{
             Frame,
         },
         ui::{
-            input::Pointer,
+            input::Input,
             widgets::{
                 DrawAt,
                 Size,
@@ -34,10 +34,10 @@ pub struct ShipControl(Column);
 
 impl ShipControl {
     pub fn new(
-        res:     &mut DrawResources,
-        margin:  graphics::Scalar,
-        pointer: Pointer,
-        game:    &Game,
+        res:    &mut DrawResources,
+        margin: graphics::Scalar,
+        input:  &Input,
+        game:   &Game,
     )
         -> Result<Option<Self>, TextPanelRelatedError>
     {
@@ -48,7 +48,7 @@ impl ShipControl {
         let commands = Commands::new(
             res,
             margin,
-            pointer,
+            input,
         )?;
 
         let mut column = Column::new(margin);

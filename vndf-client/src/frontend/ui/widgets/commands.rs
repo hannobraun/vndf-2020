@@ -10,7 +10,7 @@ use crate::{
             Frame,
         },
         ui::{
-            input::Pointer,
+            input::Input,
             widgets::{
                 DrawAt,
                 Size,
@@ -33,16 +33,16 @@ pub struct Commands(Column);
 
 impl Commands {
     pub fn new(
-        res:     &mut DrawResources,
-        margin:  graphics::Scalar,
-        pointer: Pointer,
+        res:    &mut DrawResources,
+        margin: graphics::Scalar,
+        input:  &Input,
     )
         -> Result<Self, TextPanelRelatedError>
     {
         let mut column = Column::new(margin);
 
         column.add(CommandsList::new(res)?);
-        column.add(AddCommand::new(res, pointer)?);
+        column.add(AddCommand::new(res, input)?);
 
         Ok(
             Self(column)

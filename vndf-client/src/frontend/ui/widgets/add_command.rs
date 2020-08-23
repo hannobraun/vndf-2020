@@ -5,7 +5,10 @@ use crate::{
             Frame,
         },
         ui::{
-            input::Pointer,
+            input::{
+                Input,
+                Pointer,
+            },
             widgets::{
                 DrawAt,
                 Size,
@@ -28,8 +31,8 @@ pub struct AddCommand{
 
 impl AddCommand {
     pub fn new(
-        res:     &mut DrawResources,
-        pointer: Pointer,
+        res:   &mut DrawResources,
+        input: &Input,
     )
         -> Result<Self, TextPanelRelatedError>
     {
@@ -38,7 +41,7 @@ impl AddCommand {
         Ok(
             Self {
                 text_panel,
-                pointer,
+                pointer: input.cursor,
             }
         )
     }
