@@ -22,7 +22,7 @@ use crate::{
 
 use self::{
     anchor::Anchor,
-    input::Pointer,
+    input::Input,
     widgets::{
         Diagnostics,
         Draw as _,
@@ -40,20 +40,20 @@ pub use self::widgets::TextPanelRelatedError as Error;
 
 
 pub struct Ui {
-    pointer:      Pointer,
+    input:        Input,
     scale_factor: graphics::Scalar,
 }
 
 impl Ui {
     pub fn new(window: &Window) -> Self {
         Self {
-            pointer:      None,
+            input:        Input::new(),
             scale_factor: window.scale_factor(),
         }
     }
 
     pub fn handle_cursor_move(&mut self, position: PhysicalPosition<f64>) {
-        self.pointer = Some(
+        self.input.cursor = Some(
             graphics::Pnt2::new(
                 position.x as f32 / self.scale_factor,
                 position.y as f32 / self.scale_factor,
@@ -107,7 +107,7 @@ impl Ui {
         let ship_control = ShipControl::new(
             res,
             MARGIN,
-            self.pointer,
+            self.input.cursor,
             game,
         )?;
         if let Some(ship_control) = ship_control {
