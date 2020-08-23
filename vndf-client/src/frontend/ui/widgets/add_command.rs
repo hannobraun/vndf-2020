@@ -26,7 +26,7 @@ use super::{
 
 pub struct AddCommand{
     text_panel: TextPanel,
-    pointer:    Cursor,
+    cursor:     Cursor,
 }
 
 impl AddCommand {
@@ -41,7 +41,7 @@ impl AddCommand {
         Ok(
             Self {
                 text_panel,
-                pointer: input.cursor,
+                cursor: input.cursor,
             }
         )
     }
@@ -56,7 +56,7 @@ impl DrawAt for AddCommand {
         let rect = graphics::Rect::new(pos, self.size());
 
         self.text_panel.panel_color([0.1, 0.0, 0.0, 0.95]); // default color
-        if let Some(pointer) = self.pointer {
+        if let Some(pointer) = self.cursor {
             if rect.contains(pointer) {
                 self.text_panel.panel_color([0.5, 0.0, 0.0, 0.95]);
             }
