@@ -143,7 +143,7 @@ impl Renderer {
         let mut frame = Frame {
             screen,
             output: self.swap_chain.get_current_frame()
-                .map_err(|_| DrawError::TimeOut)?
+                .map_err(|err| DrawError::SwapChain(err))?
                 .output,
             encoder: self.draw_res.device.create_command_encoder(
                 &wgpu::CommandEncoderDescriptor { label: None }
@@ -262,6 +262,6 @@ pub enum InitError {
 
 #[derive(Debug)]
 pub enum DrawError {
-    TimeOut,
+    SwapChain(wgpu::SwapChainError),
     Ui(ui::Error),
 }
