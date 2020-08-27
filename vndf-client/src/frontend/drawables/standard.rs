@@ -8,6 +8,7 @@ use std::{
     },
 };
 
+use wgpu::util::DeviceExt as _;
 use zerocopy::AsBytes as _;
 
 use crate::frontend::{
@@ -47,60 +48,80 @@ impl<Vert, Frag> Standard<Vert, Frag>
     )
         -> Result<Self, io::Error>
     {
-        let vert_uniforms = device.create_buffer_with_data(
-            Vert::Uniforms::default()
-                .as_bytes(),
-            wgpu::BufferUsage::UNIFORM | wgpu::BufferUsage::COPY_DST,
+        let vert_uniforms = device.create_buffer_init(
+            &wgpu::util::BufferInitDescriptor {
+                label: None,
+                contents: Vert::Uniforms::default().as_bytes(),
+                usage: wgpu::BufferUsage::UNIFORM | wgpu::BufferUsage::COPY_DST,
+            },
         );
-        let frag_uniforms = device.create_buffer_with_data(
-            Frag::Uniforms::default()
-                .as_bytes(),
-            wgpu::BufferUsage::UNIFORM | wgpu::BufferUsage::COPY_DST,
+        let frag_uniforms = device.create_buffer_init(
+            &wgpu::util::BufferInitDescriptor {
+                label: None,
+                contents: Frag::Uniforms::default().as_bytes(),
+                usage: wgpu::BufferUsage::UNIFORM | wgpu::BufferUsage::COPY_DST,
+            },
         );
 
-        let vertex_buffer = device.create_buffer_with_data(
-            mesh.vertices.as_bytes(),
-            wgpu::BufferUsage::VERTEX,
+        let vertex_buffer = device.create_buffer_init(
+            &wgpu::util::BufferInitDescriptor {
+                label: None,
+                contents: mesh.vertices.as_bytes(),
+                usage: wgpu::BufferUsage::VERTEX,
+            },
         );
-        let index_buffer = device.create_buffer_with_data(
-            mesh.indices.as_bytes(),
-            wgpu::BufferUsage::INDEX,
+        let index_buffer = device.create_buffer_init(
+            &wgpu::util::BufferInitDescriptor {
+                label: None,
+                contents: mesh.indices.as_bytes(),
+                usage: wgpu::BufferUsage::INDEX,
+            },
         );
 
         let bind_group_layout = device.create_bind_group_layout(
             &wgpu::BindGroupLayoutDescriptor {
-                bindings: &[
+                label: None,
+                entries: &[
                     wgpu::BindGroupLayoutEntry {
                         binding: 0,
                         visibility: wgpu::ShaderStage::VERTEX,
-                        ty: wgpu::BindingType::UniformBuffer { dynamic: false },
+                        ty: wgpu::BindingType::UniformBuffer {
+                            dynamic: false,
+                            min_binding_size: wgpu::BufferSize::new(
+                                size_of::<Vert::Uniforms>() as u64
+                            ),
+                        },
+                        count: None,
                     },
                     wgpu::BindGroupLayoutEntry {
                         binding: 1,
                         visibility: wgpu::ShaderStage::FRAGMENT,
-                        ty: wgpu::BindingType::UniformBuffer { dynamic: false },
+                        ty: wgpu::BindingType::UniformBuffer {
+                            dynamic: false,
+                            min_binding_size: wgpu::BufferSize::new(
+                                size_of::<Frag::Uniforms>() as u64
+                            ),
+                        },
+                        count: None,
                     },
                 ],
-                label: None,
             },
         );
         let bind_group = device.create_bind_group(
             &wgpu::BindGroupDescriptor {
                 layout:   &bind_group_layout,
-                bindings: &[
-                    wgpu::Binding {
+                entries: &[
+                    wgpu::BindGroupEntry {
                         binding: 0,
-                        resource: wgpu::BindingResource::Buffer {
-                            buffer: &vert_uniforms,
-                            range: 0 .. size_of::<Vert::Uniforms>() as u64,
-                        },
+                        resource: wgpu::BindingResource::Buffer(
+                            vert_uniforms.slice(..)
+                        ),
                     },
-                    wgpu::Binding {
+                    wgpu::BindGroupEntry {
                         binding: 1,
-                        resource: wgpu::BindingResource::Buffer {
-                            buffer: &frag_uniforms,
-                            range: 0 .. size_of::<Frag::Uniforms>() as u64,
-                        },
+                        resource: wgpu::BindingResource::Buffer(
+                            frag_uniforms.slice(..)
+                        ),
                     },
                 ],
                 label: None,
@@ -108,13 +129,16 @@ impl<Vert, Frag> Standard<Vert, Frag>
         );
         let pipeline_layout = device.create_pipeline_layout(
             &wgpu::PipelineLayoutDescriptor {
+                label: None,
                 bind_group_layouts: &[&bind_group_layout],
+                push_constant_ranges: &[],
             },
         );
 
         let render_pipeline = device.create_render_pipeline(
             &wgpu::RenderPipelineDescriptor {
-                layout: &pipeline_layout,
+                label: None,
+                layout: Some(&pipeline_layout),
                 vertex_stage: wgpu::ProgrammableStageDescriptor {
                     module:      &Vert::load(device)?,
                     entry_point: "main",
@@ -126,13 +150,7 @@ impl<Vert, Frag> Standard<Vert, Frag>
                     }
                 ),
                 rasterization_state: Some(
-                    wgpu::RasterizationStateDescriptor {
-                        front_face:             wgpu::FrontFace::Ccw,
-                        cull_mode:              wgpu::CullMode::None,
-                        depth_bias:             0,
-                        depth_bias_slope_scale: 0.0,
-                        depth_bias_clamp:       0.0,
-                    }
+                    wgpu::RasterizationStateDescriptor::default()
                 ),
                 primitive_topology: wgpu::PrimitiveTopology::TriangleList,
                 color_states: &[
@@ -201,9 +219,12 @@ impl<Vert, Frag> Standard<Vert, Frag>
         vert_args: Vert::Uniforms,
         frag_args: Frag::Uniforms,
     ) {
-        let buffer = device.create_buffer_with_data(
-            vert_args.as_bytes(),
-            wgpu::BufferUsage::COPY_SRC,
+        let buffer = device.create_buffer_init(
+            &wgpu::util::BufferInitDescriptor {
+                label: None,
+                contents: vert_args.as_bytes(),
+                usage: wgpu::BufferUsage::COPY_SRC,
+            },
         );
         frame.encoder.copy_buffer_to_buffer(
             &buffer, 0,
@@ -211,9 +232,12 @@ impl<Vert, Frag> Standard<Vert, Frag>
             size_of_val(&vert_args) as u64,
         );
 
-        let buffer = device.create_buffer_with_data(
-            frag_args.as_bytes(),
-            wgpu::BufferUsage::COPY_SRC,
+        let buffer = device.create_buffer_init(
+            &wgpu::util::BufferInitDescriptor {
+                label: None,
+                contents: frag_args.as_bytes(),
+                usage: wgpu::BufferUsage::COPY_SRC,
+            },
         );
         frame.encoder.copy_buffer_to_buffer(
             &buffer, 0,
@@ -227,9 +251,10 @@ impl<Vert, Frag> Standard<Vert, Frag>
                     wgpu::RenderPassColorAttachmentDescriptor {
                         attachment:     &frame.output.view,
                         resolve_target: None,
-                        load_op:        wgpu::LoadOp::Load,
-                        store_op:       wgpu::StoreOp::Store,
-                        clear_color:    wgpu::Color::TRANSPARENT,
+                        ops: wgpu::Operations {
+                            load: wgpu::LoadOp::Load,
+                            store: true,
+                        },
                     },
                 ],
                 depth_stencil_attachment: None,
@@ -237,8 +262,8 @@ impl<Vert, Frag> Standard<Vert, Frag>
         );
         render_pass.set_pipeline(&self.render_pipeline);
         render_pass.set_bind_group(0, &self.bind_group, &[]);
-        render_pass.set_vertex_buffer(0, &self.vertex_buffer, 0, 0);
-        render_pass.set_index_buffer(&self.index_buffer, 0, 0);
+        render_pass.set_vertex_buffer(0, self.vertex_buffer.slice(..));
+        render_pass.set_index_buffer(self.index_buffer.slice(..));
         render_pass.draw_indexed(
             0 .. self.num_indices,
             0,

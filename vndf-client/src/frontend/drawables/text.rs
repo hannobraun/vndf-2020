@@ -61,6 +61,7 @@ impl Text {
         self.glyph_brush
             .draw_queued(
                 &device,
+                &mut wgpu::util::StagingBelt::new(256),
                 &mut frame.encoder,
                 &frame.output.view,
                 frame.screen.logical_size().width as u32,

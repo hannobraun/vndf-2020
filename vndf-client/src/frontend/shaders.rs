@@ -1,7 +1,4 @@
-use std::io::{
-    self,
-    Cursor,
-};
+use std::io;
 
 use zerocopy::AsBytes;
 
@@ -18,7 +15,7 @@ pub trait Shader {
         let code = Self::code();
 
         let module = device.create_shader_module(
-            &wgpu::read_spirv(Cursor::new(code))?,
+            wgpu::util::make_spirv(code),
         );
 
         Ok(module)

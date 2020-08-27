@@ -29,6 +29,6 @@ pub struct DrawResources {
 
 pub struct Frame {
     pub screen:  Screen,
-    pub output:  wgpu::SwapChainOutput,
+    pub output:  wgpu::SwapChainTexture,
     pub encoder: wgpu::CommandEncoder,
 }

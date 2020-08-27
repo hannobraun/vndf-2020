@@ -60,29 +60,30 @@ impl Renderer {
         let backend = select_backend(graphics);
         debug!("Backend selected: {:?}", backend);
 
-        let surface = wgpu::Surface::create(window.inner());
+        let instance = wgpu::Instance::new(backend);
 
-        let adapter =
-            wgpu::Adapter::request(
-                &wgpu::RequestAdapterOptions {
-                    power_preference:   wgpu::PowerPreference::Default,
-                    compatible_surface: Some(&surface),
-                },
-                backend,
-            )
+        // This is sound, as `window` is an object to create a surface upon.
+        let surface = unsafe { instance.create_surface(window.inner()) };
+
+        let adapter = instance
+            .request_adapter(&wgpu::RequestAdapterOptions {
+                power_preference: wgpu::PowerPreference::Default,
+                compatible_surface: Some(&surface),
+            })
             .await
             .ok_or(InitError::RequestAdapter)?;
 
         let (device, queue) = adapter
             .request_device(
                 &wgpu::DeviceDescriptor {
-                    extensions: wgpu::Extensions {
-                        anisotropic_filtering: false,
-                    },
+                    features: wgpu::Features::empty(),
                     limits: wgpu::Limits::default(),
+                    shader_validation: true,
                 },
+                None,
             )
-            .await;
+            .await
+            .map_err(|err| InitError::RequestDevice(err))?;
 
         let meshes = Meshes::new()
             .map_err(|err| InitError::Meshes(err))?;
@@ -141,8 +142,9 @@ impl Renderer {
 
         let mut frame = Frame {
             screen,
-            output: self.swap_chain.get_next_texture()
-                .map_err(|_| DrawError::TimeOut)?,
+            output: self.swap_chain.get_current_frame()
+                .map_err(|_| DrawError::TimeOut)?
+                .output,
             encoder: self.draw_res.device.create_command_encoder(
                 &wgpu::CommandEncoderDescriptor { label: None }
             ),
@@ -197,7 +199,7 @@ impl Renderer {
             )
             .map_err(|err| DrawError::Ui(err))?;
 
-        self.queue.submit(&[frame.encoder.finish()]);
+        self.queue.submit(Some(frame.encoder.finish()));
 
         Ok(())
     }
@@ -252,6 +254,7 @@ fn screen(
 #[derive(Debug)]
 pub enum InitError {
     RequestAdapter,
+    RequestDevice(wgpu::RequestDeviceError),
     Drawables(drawables::Error),
     Meshes(meshes::Error),
 }

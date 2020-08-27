@@ -10,9 +10,10 @@ pub fn draw_background(frame: &mut Frame) {
                 wgpu::RenderPassColorAttachmentDescriptor {
                     attachment:     &frame.output.view,
                     resolve_target: None,
-                    load_op:        wgpu::LoadOp::Clear,
-                    store_op:       wgpu::StoreOp::Store,
-                    clear_color:    graphics::BACKGROUND_COLOR,
+                    ops: wgpu::Operations {
+                        load: wgpu::LoadOp::Clear(graphics::BACKGROUND_COLOR),
+                        store: true,
+                    },
                 },
             ],
             depth_stencil_attachment: None,
