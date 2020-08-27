@@ -55,8 +55,8 @@ impl Text {
     }
 
     pub fn draw<'r>(&mut self,
-        device:   &wgpu::Device,
-        frame:    &mut Frame,
+        device: &wgpu::Device,
+        frame:  &mut Frame,
     ) {
         self.glyph_brush
             .draw_queued(
