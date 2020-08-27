@@ -71,7 +71,7 @@ impl Renderer {
                 backend,
             )
             .await
-            .ok_or(InitError::AdapterRequest)?;
+            .ok_or(InitError::RequestAdapter)?;
 
         let (device, queue) = adapter
             .request_device(
@@ -251,7 +251,7 @@ fn screen(
 
 #[derive(Debug)]
 pub enum InitError {
-    AdapterRequest,
+    RequestAdapter,
     Drawables(drawables::Error),
     Meshes(meshes::Error),
 }
