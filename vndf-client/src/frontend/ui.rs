@@ -31,12 +31,10 @@ use self::{
         ShipControl,
         ShipInfo,
         Size as _,
+        TextPanelRelatedError,
         ViewSize,
     },
 };
-
-
-pub use self::widgets::TextPanelRelatedError as Error;
 
 
 pub struct Ui {
@@ -141,5 +139,17 @@ impl Ui {
         }
 
         Ok(())
+    }
+}
+
+
+#[derive(Debug)]
+pub enum Error {
+    TextPanelRelated(TextPanelRelatedError),
+}
+
+impl From<TextPanelRelatedError> for Error {
+    fn from(err: TextPanelRelatedError) -> Self {
+        Self::TextPanelRelated(err)
     }
 }
