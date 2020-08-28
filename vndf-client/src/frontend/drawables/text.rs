@@ -57,7 +57,9 @@ impl Text {
     pub fn draw<'r>(&mut self,
         device: &wgpu::Device,
         frame:  &mut Frame,
-    ) {
+    )
+        -> Result<(), Error>
+    {
         self.glyph_brush
             .draw_queued(
                 &device,
@@ -67,8 +69,10 @@ impl Text {
                 frame.screen.logical_size().width as u32,
                 frame.screen.logical_size().height as u32,
             )
-            // I've checked the code, and it doesn't look like this
-            // actually returns any errors.
-            .unwrap();
+            .map_err(|err| Error(err))
     }
 }
+
+
+#[derive(Debug)]
+pub struct Error(String);

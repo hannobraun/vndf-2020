@@ -68,10 +68,12 @@ impl DrawAt for Text {
         self.section.screen_position = (pos.x, pos.y);
 
         res.drawables.text.queue(&self.section);
-        res.drawables.text.draw(
-            &res.device,
-            frame,
-        );
+        res.drawables.text
+            .draw(
+                &res.device,
+                frame,
+            )
+            .unwrap();
     }
 }
 
