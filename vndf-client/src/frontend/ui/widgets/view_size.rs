@@ -28,7 +28,7 @@ use super::{
 pub struct ViewSize(TextPanel);
 
 impl ViewSize {
-    pub fn new(
+    pub fn create(
         res:   &mut DrawResources,
         frame: &Frame,
         game:  &Game,

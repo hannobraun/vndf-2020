@@ -86,7 +86,7 @@ impl Ui {
         }
 
         ViewSize
-            ::new(
+            ::create(
                 res,
                 frame,
                 game,
