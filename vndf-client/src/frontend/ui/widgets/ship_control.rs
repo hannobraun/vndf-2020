@@ -45,7 +45,7 @@ impl ShipControl {
             res,
             game,
         )?;
-        let commands = Commands::new(
+        let commands = Commands::create(
             res,
             margin,
             input,

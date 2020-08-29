@@ -32,7 +32,7 @@ use super::{
 pub struct Commands(Column);
 
 impl Commands {
-    pub fn new(
+    pub fn create(
         res:    &mut DrawResources,
         margin: graphics::Scalar,
         input:  &Input,
