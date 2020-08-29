@@ -45,7 +45,7 @@ impl Diagnostics {
             res,
             game,
         )?;
-        let scale_factor = ScaleFactor::new(
+        let scale_factor = ScaleFactor::create(
             res,
             frame,
         )?;

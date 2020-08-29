@@ -27,7 +27,7 @@ use super::{
 pub struct ScaleFactor(TextPanel);
 
 impl ScaleFactor {
-    pub fn new(
+    pub fn create(
         res:   &mut DrawResources,
         frame: &Frame,
     )
