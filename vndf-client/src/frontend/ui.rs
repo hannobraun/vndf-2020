@@ -102,7 +102,7 @@ impl Ui {
             .position(Anchor::bottom_right(), MARGIN, frame)
             .draw(res, frame);
 
-        let ship_control = ShipControl::new(
+        let ship_control = ShipControl::create(
             res,
             MARGIN,
             &self.input,

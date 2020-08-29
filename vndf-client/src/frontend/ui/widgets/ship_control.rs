@@ -33,7 +33,7 @@ use super::{
 pub struct ShipControl(Column);
 
 impl ShipControl {
-    pub fn new(
+    pub fn create(
         res:    &mut DrawResources,
         margin: graphics::Scalar,
         input:  &Input,
