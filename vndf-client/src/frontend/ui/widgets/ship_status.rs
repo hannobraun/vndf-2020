@@ -32,7 +32,7 @@ use super::{
 pub struct ShipStatus(TextPanel);
 
 impl ShipStatus {
-    pub fn new(
+    pub fn create(
         res:  &mut DrawResources,
         game: &Game,
     )

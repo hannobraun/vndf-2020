@@ -41,7 +41,7 @@ impl ShipControl {
     )
         -> Result<Option<Self>, text::CreateError>
     {
-        let ship_status = ShipStatus::new(
+        let ship_status = ShipStatus::create(
             res,
             game,
         )?;
