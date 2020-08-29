@@ -26,7 +26,7 @@ pub struct Panel {
 }
 
 impl Panel {
-    pub fn new(size: graphics::Size) -> Self {
+    pub fn create(size: graphics::Size) -> Self {
         Self {
             size,
             color: None,

@@ -39,7 +39,7 @@ impl TextPanel {
 
         let text = Text::create(res, text)?;
 
-        let panel = Panel::new(text.size() + padding);
+        let panel = Panel::create(text.size() + padding);
 
         Ok(
             Self {
