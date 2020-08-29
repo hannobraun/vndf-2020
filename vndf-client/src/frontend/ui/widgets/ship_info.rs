@@ -20,7 +20,7 @@ use crate::{
 use super::{
     Positioned,
     TextPanel,
-    TextPanelRelatedError,
+    text,
 };
 
 
@@ -34,7 +34,7 @@ impl ShipInfo {
         game:   &Game,
         screen: &Screen,
     )
-        -> Result<Option<Self>, TextPanelRelatedError>
+        -> Result<Option<Self>, text::CreateError>
     {
         if let Some((text, pos)) = Self::text_and_pos(ship, game, screen) {
             let text_panel = TextPanel::new(

@@ -24,7 +24,7 @@ use super::{
     AddCommand,
     Column,
     CommandsList,
-    TextPanelRelatedError,
+    text,
 };
 
 
@@ -37,7 +37,7 @@ impl Commands {
         margin: graphics::Scalar,
         input:  &Input,
     )
-        -> Result<Self, TextPanelRelatedError>
+        -> Result<Self, text::CreateError>
     {
         let mut column = Column::new(margin);
 

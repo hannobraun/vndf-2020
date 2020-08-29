@@ -22,7 +22,7 @@ use crate::{
 
 use super::{
     TextPanel,
-    TextPanelRelatedError,
+    text,
 };
 
 
@@ -34,7 +34,7 @@ impl InputEvents {
         res:  &mut DrawResources,
         game: &Game,
     )
-        -> Result<Self, TextPanelRelatedError>
+        -> Result<Self, text::CreateError>
     {
         let mut text = String::new();
         write!(text, "Input:\n")?;

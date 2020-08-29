@@ -19,7 +19,7 @@ use crate::{
 
 use super::{
     TextPanel,
-    TextPanelRelatedError,
+    text,
 };
 
 
@@ -31,7 +31,7 @@ impl ScaleFactor {
         res:   &mut DrawResources,
         frame: &Frame,
     )
-        -> Result<Self, TextPanelRelatedError>
+        -> Result<Self, text::CreateError>
     {
         let text_panel = TextPanel::new(
             res,

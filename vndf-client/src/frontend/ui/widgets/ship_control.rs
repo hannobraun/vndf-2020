@@ -25,7 +25,7 @@ use super::{
     Column,
     Commands,
     ShipStatus,
-    TextPanelRelatedError,
+    text,
 };
 
 
@@ -39,7 +39,7 @@ impl ShipControl {
         input:  &Input,
         game:   &Game,
     )
-        -> Result<Option<Self>, TextPanelRelatedError>
+        -> Result<Option<Self>, text::CreateError>
     {
         let ship_status = ShipStatus::new(
             res,

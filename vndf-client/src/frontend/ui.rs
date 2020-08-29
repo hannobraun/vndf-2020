@@ -31,8 +31,8 @@ use self::{
         ShipControl,
         ShipInfo,
         Size as _,
-        TextPanelRelatedError,
         ViewSize,
+        text,
     },
 };
 
@@ -145,11 +145,11 @@ impl Ui {
 
 #[derive(Debug)]
 pub enum Error {
-    TextPanelRelated(TextPanelRelatedError),
+    TextPanelRelated(text::CreateError),
 }
 
-impl From<TextPanelRelatedError> for Error {
-    fn from(err: TextPanelRelatedError) -> Self {
+impl From<text::CreateError> for Error {
+    fn from(err: text::CreateError) -> Self {
         Self::TextPanelRelated(err)
     }
 }

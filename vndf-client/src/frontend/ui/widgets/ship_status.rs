@@ -24,7 +24,7 @@ use crate::{
 
 use super::{
     TextPanel,
-    TextPanelRelatedError,
+    text
 };
 
 
@@ -36,7 +36,7 @@ impl ShipStatus {
         res:  &mut DrawResources,
         game: &Game,
     )
-        -> Result<Option<Self>, TextPanelRelatedError>
+        -> Result<Option<Self>, text::CreateError>
     {
         fn components(game: &Game) -> Option<(&Fuel, &Health)> {
             let ship   = game.state.own_ship()?;

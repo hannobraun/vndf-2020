@@ -15,7 +15,7 @@ use crate::{
 use super::{
     Panel,
     Text,
-    text::NoBoundsError,
+    text,
 };
 
 
@@ -29,7 +29,7 @@ impl TextPanel {
         res:  &mut DrawResources,
         text: String,
     )
-        -> Result<Self, NoBoundsError>
+        -> Result<Self, text::CreateError>
     {
         const PADDING: graphics::Scalar = 3.0;
         let padding = graphics::Size::new(

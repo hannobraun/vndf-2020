@@ -22,7 +22,7 @@ use crate::{
 use super::{
     Positioned,
     TextPanel,
-    TextPanelRelatedError,
+    text,
 };
 
 
@@ -39,7 +39,7 @@ impl OrbitInfo {
         game:   &Game,
         screen: &Screen,
     )
-        -> Result<Option<Self>, TextPanelRelatedError>
+        -> Result<Option<Self>, text::CreateError>
     {
         if let Some((peri_text, peri_pos, apo_text, apo_pos)) =
             Self::text_and_pos(orbit, game, screen)

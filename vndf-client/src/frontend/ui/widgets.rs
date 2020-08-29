@@ -42,8 +42,6 @@ pub use self::{
 };
 
 
-use std::fmt;
-
 use crate::{
     frontend::drawers::{
         DrawResources,
@@ -56,8 +54,6 @@ use super::anchor::{
     self,
     Anchor,
 };
-
-use self::text::NoBoundsError;
 
 
 pub trait Size {
@@ -148,24 +144,5 @@ impl<T> Positioned<T> {
         where T: DrawAt
     {
         self.widget.draw_at(res, frame, self.position)
-    }
-}
-
-
-#[derive(Debug)]
-pub enum TextPanelRelatedError {
-    Fmt(fmt::Error),
-    NoBounds(NoBoundsError),
-}
-
-impl From<fmt::Error> for TextPanelRelatedError {
-    fn from(err: fmt::Error) -> Self {
-        Self::Fmt(err)
-    }
-}
-
-impl From<NoBoundsError> for TextPanelRelatedError {
-    fn from(err: NoBoundsError) -> Self {
-        Self::NoBounds(err)
     }
 }

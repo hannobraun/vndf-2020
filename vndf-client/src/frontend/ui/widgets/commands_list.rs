@@ -19,7 +19,7 @@ use crate::{
 
 use super::{
     TextPanel,
-    TextPanelRelatedError,
+    text,
 };
 
 
@@ -30,7 +30,7 @@ impl CommandsList {
     pub fn new(
         res: &mut DrawResources,
     )
-        -> Result<Self, TextPanelRelatedError>
+        -> Result<Self, text::CreateError>
     {
         let text_panel = TextPanel::new(
             res,

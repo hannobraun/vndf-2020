@@ -20,7 +20,7 @@ use crate::{
 
 use super::{
     TextPanel,
-    TextPanelRelatedError,
+    text,
 };
 
 
@@ -33,7 +33,7 @@ impl ViewSize {
         frame: &Frame,
         game:  &Game,
     )
-        -> Result<Self, TextPanelRelatedError>
+        -> Result<Self, text::CreateError>
     {
         let size = game.state.camera.world_size_on_screen(&frame.screen);
 

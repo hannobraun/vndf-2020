@@ -20,7 +20,7 @@ use crate::{
 
 use super::{
     TextPanel,
-    TextPanelRelatedError,
+    text,
 };
 
 
@@ -34,7 +34,7 @@ impl AddCommand {
         res:   &mut DrawResources,
         input: &Input,
     )
-        -> Result<Self, TextPanelRelatedError>
+        -> Result<Self, text::CreateError>
     {
         let text_panel = TextPanel::new(res, format!("Add command"))?;
 

@@ -1,3 +1,5 @@
+use std::fmt;
+
 use crate::{
     frontend::{
         drawers::{
@@ -23,7 +25,7 @@ impl Text {
         res:  &mut DrawResources,
         text: String,
     )
-        -> Result<Self, NoBoundsError>
+        -> Result<Self, CreateError>
     {
         let text = vec![
             glyph_brush::OwnedText::default()
@@ -41,7 +43,7 @@ impl Text {
 
         let size = match res.drawables.text.bounds(&section) {
             Some(size) => size,
-            None       => return Err(NoBoundsError),
+            None       => return Err(CreateError::NoBounds),
         };
 
         Ok(
@@ -79,4 +81,13 @@ impl DrawAt for Text {
 
 
 #[derive(Debug)]
-pub struct NoBoundsError;
+pub enum CreateError {
+    Fmt(fmt::Error),
+    NoBounds,
+}
+
+impl From<fmt::Error> for CreateError {
+    fn from(err: fmt::Error) -> Self {
+        Self::Fmt(err)
+    }
+}

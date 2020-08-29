@@ -20,7 +20,7 @@ use crate::{
 
 use super::{
     TextPanel,
-    TextPanelRelatedError,
+    text,
 };
 
 
@@ -32,7 +32,7 @@ impl ComponentStats {
         res:  &mut DrawResources,
         game: &Game,
     )
-        -> Result<Option<Self>, TextPanelRelatedError>
+        -> Result<Option<Self>, text::CreateError>
     {
         if let Some(diagnostics) = game.state.diagnostics {
             let text_panel = TextPanel::new(

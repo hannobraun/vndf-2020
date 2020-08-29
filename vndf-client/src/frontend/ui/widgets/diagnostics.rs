@@ -25,7 +25,7 @@ use super::{
     InputEvents,
     NetworkStats,
     ScaleFactor,
-    TextPanelRelatedError,
+    text,
 };
 
 
@@ -39,7 +39,7 @@ impl Diagnostics {
         game:   &Game,
         frame:  &Frame,
     )
-        -> Result<Self, TextPanelRelatedError>
+        -> Result<Self, text::CreateError>
     {
         let frame_time = FrameTime::new(
             res,
