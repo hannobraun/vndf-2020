@@ -28,7 +28,7 @@ use super::{
 pub struct Instructions(TextPanel);
 
 impl Instructions {
-    pub fn new(
+    pub fn create(
         res:  &mut DrawResources,
         game: &Game,
     )

@@ -95,7 +95,7 @@ impl Ui {
             .draw(res, frame);
 
         Instructions
-            ::new(
+            ::create(
                 res,
                 game,
             )?
