@@ -28,7 +28,7 @@ use super::{
 pub struct ComponentStats(TextPanel);
 
 impl ComponentStats {
-    pub fn new(
+    pub fn create(
         res:  &mut DrawResources,
         game: &Game,
     )

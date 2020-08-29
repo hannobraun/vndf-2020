@@ -49,7 +49,7 @@ impl Diagnostics {
             res,
             frame,
         )?;
-        let component_stats = ComponentStats::new(
+        let component_stats = ComponentStats::create(
             res,
             game,
         )?;
