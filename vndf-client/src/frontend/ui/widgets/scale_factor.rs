@@ -9,10 +9,6 @@ use crate::{
             DrawResources,
             Frame,
         },
-        ui::widgets::{
-            DrawAt,
-            Size,
-        },
     },
     graphics,
 };

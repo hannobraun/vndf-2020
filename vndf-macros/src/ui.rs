@@ -14,15 +14,15 @@ use syn::{
 pub fn derive_draw(input: TokenStream) -> TokenStream {
     dispatch_to_all(
         input,
-        quote!(Draw),
+        quote!(crate::frontend::ui::widgets::Draw),
         quote!(draw),
         vec![
             quote!(res),
             quote!(frame),
         ],
         vec![
-            quote!(&mut DrawResources),
-            quote!(&mut Frame),
+            quote!(&mut crate::frontend::drawers::DrawResources),
+            quote!(&mut crate::frontend::drawers::Frame),
         ],
     )
 }
@@ -30,7 +30,7 @@ pub fn derive_draw(input: TokenStream) -> TokenStream {
 pub fn derive_draw_at(input: TokenStream) -> TokenStream {
     dispatch_to_all(
         input,
-        quote!(DrawAt),
+        quote!(crate::frontend::ui::widgets::DrawAt),
         quote!(draw_at),
         vec![
             quote!(res),
@@ -38,9 +38,9 @@ pub fn derive_draw_at(input: TokenStream) -> TokenStream {
             quote!(pos),
         ],
         vec![
-            quote!(&mut DrawResources),
-            quote!(&mut Frame),
-            quote!(graphics::Pnt2),
+            quote!(&mut crate::frontend::drawers::DrawResources),
+            quote!(&mut crate::frontend::drawers::Frame),
+            quote!(crate::graphics::Pnt2),
         ],
     )
 }
@@ -61,7 +61,7 @@ pub fn derive_size(input: TokenStream) -> TokenStream {
     let dispatch_call = dispatch_calls.remove(0);
 
     let tokens = quote!(
-        impl Size for #name {
+        impl crate::frontend::ui::widgets::Size for #name {
             fn size(&self) -> graphics::Size {
                 #dispatch_call
             }

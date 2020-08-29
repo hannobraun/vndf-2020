@@ -1,13 +1,7 @@
 use vndf_macros::Draw;
 
 use crate::{
-    frontend::{
-        drawers::{
-            DrawResources,
-            Frame,
-        },
-        ui::widgets::Draw,
-    },
+    frontend::drawers::DrawResources,
     game::Game,
     graphics::{
         self,

@@ -4,16 +4,7 @@ use vndf_macros::{
 };
 
 use crate::{
-    frontend::{
-        drawers::{
-            DrawResources,
-            Frame,
-        },
-        ui::widgets::{
-            DrawAt,
-            Size,
-        },
-    },
+    frontend::drawers::DrawResources,
     game::Game,
     graphics,
     shared::world::behavior::{
