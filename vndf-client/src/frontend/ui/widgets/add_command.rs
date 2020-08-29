@@ -9,7 +9,7 @@ use crate::{
                 Input,
                 Cursor,
             },
-            widgets::{
+            traits::{
                 DrawAt,
                 Size,
             },

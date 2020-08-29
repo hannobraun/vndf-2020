@@ -4,7 +4,7 @@ use crate::{
             DrawResources,
             Frame,
         },
-        ui::widgets::{
+        ui::traits::{
             DrawAt,
             Size,
         },

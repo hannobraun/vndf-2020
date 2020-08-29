@@ -1,7 +1,10 @@
 use vndf_macros::Draw;
 
 use crate::{
-    frontend::drawers::DrawResources,
+    frontend::{
+        drawers::DrawResources,
+        ui::traits::Positioned,
+    },
     game::Game,
     graphics::{
         self,
@@ -12,7 +15,6 @@ use crate::{
 };
 
 use super::{
-    Positioned,
     TextPanel,
     text,
 };

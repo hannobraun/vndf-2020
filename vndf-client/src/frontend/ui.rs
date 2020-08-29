@@ -1,5 +1,6 @@
 mod anchor;
 mod input;
+mod traits;
 mod widgets;
 
 
@@ -23,14 +24,16 @@ use crate::{
 use self::{
     anchor::Anchor,
     input::Input,
+    traits::{
+        Draw as _,
+        Size as _,
+    },
     widgets::{
         Diagnostics,
-        Draw as _,
         Instructions,
         OrbitInfo,
         ShipControl,
         ShipInfo,
-        Size as _,
         ViewSize,
         text,
     },
