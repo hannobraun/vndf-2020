@@ -145,11 +145,11 @@ impl Ui {
 
 #[derive(Debug)]
 pub enum Error {
-    TextPanelRelated(text::CreateError),
+    Text(text::CreateError),
 }
 
 impl From<text::CreateError> for Error {
     fn from(err: text::CreateError) -> Self {
-        Self::TextPanelRelated(err)
+        Self::Text(err)
     }
 }
