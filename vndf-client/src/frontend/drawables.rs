@@ -1,5 +1,5 @@
-mod standard;
-mod text;
+pub mod standard;
+pub mod text;
 
 
 pub use self::{
