@@ -127,7 +127,7 @@ impl Ui {
         }
 
         for ship in game.state.data.ships.values() {
-            let ship_info = ShipInfo::new(
+            let ship_info = ShipInfo::create(
                 res,
                 ship,
                 game,

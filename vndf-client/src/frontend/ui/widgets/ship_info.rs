@@ -28,7 +28,7 @@ use super::{
 pub struct ShipInfo(Positioned<TextPanel>);
 
 impl ShipInfo {
-    pub fn new(
+    pub fn create(
         res:    &mut DrawResources,
         ship:   &Ship,
         game:   &Game,
