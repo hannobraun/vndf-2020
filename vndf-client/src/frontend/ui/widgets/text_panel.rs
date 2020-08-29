@@ -37,7 +37,7 @@ impl TextPanel {
             PADDING * 2.0,
         );
 
-        let text = Text::new(res, text)?;
+        let text = Text::create(res, text)?;
 
         let panel = Panel::new(text.size() + padding);
 

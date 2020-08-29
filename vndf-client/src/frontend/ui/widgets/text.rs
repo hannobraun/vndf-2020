@@ -21,7 +21,7 @@ pub struct Text {
 }
 
 impl Text {
-    pub fn new(
+    pub fn create(
         res:  &mut DrawResources,
         text: String,
     )
