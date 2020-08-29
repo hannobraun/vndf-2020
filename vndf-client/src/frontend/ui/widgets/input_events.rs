@@ -30,7 +30,7 @@ use super::{
 pub struct InputEvents(TextPanel);
 
 impl InputEvents {
-    pub fn new(
+    pub fn create(
         res:  &mut DrawResources,
         game: &Game,
     )

@@ -57,7 +57,7 @@ impl Diagnostics {
             res,
             game,
         )?;
-        let input_events = InputEvents::new(
+        let input_events = InputEvents::create(
             res,
             game,
         )?;
