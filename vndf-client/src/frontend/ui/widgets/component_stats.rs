@@ -35,7 +35,7 @@ impl ComponentStats {
         -> Result<Option<Self>, text::CreateError>
     {
         if let Some(diagnostics) = game.state.diagnostics {
-            let text_panel = TextPanel::new(
+            let text_panel = TextPanel::create(
                 res,
                 format!(
                     "Components:\n\

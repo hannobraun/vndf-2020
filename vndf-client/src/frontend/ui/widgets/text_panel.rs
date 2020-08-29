@@ -25,7 +25,7 @@ pub struct TextPanel {
 }
 
 impl TextPanel {
-    pub fn new(
+    pub fn create(
         res:  &mut DrawResources,
         text: String,
     )

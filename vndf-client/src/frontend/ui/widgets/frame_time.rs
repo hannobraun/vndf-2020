@@ -36,7 +36,7 @@ impl FrameTime {
     {
         let report = game.state.frame_time.report();
 
-        let text_panel = TextPanel::new(
+        let text_panel = TextPanel::create(
             res,
             format!(
                 "Frame time:\n{} ms (avg {}/{}/{})",

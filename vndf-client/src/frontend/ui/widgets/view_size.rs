@@ -40,7 +40,7 @@ impl ViewSize {
         let width_km  = size.width  / 1000.0;
         let height_km = size.height / 1000.0;
 
-        let text_panel = TextPanel::new(
+        let text_panel = TextPanel::create(
             res,
             format!(
                 "View Size (km):\n\

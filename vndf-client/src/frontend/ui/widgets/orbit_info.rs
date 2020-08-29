@@ -45,14 +45,14 @@ impl OrbitInfo {
             Self::text_and_pos(orbit, game, screen)
         {
             let periapsis = Positioned {
-                widget: TextPanel::new(
+                widget: TextPanel::create(
                     res,
                     peri_text,
                 )?,
                 position: peri_pos,
             };
             let apoapsis = Positioned {
-                widget: TextPanel::new(
+                widget: TextPanel::create(
                     res,
                     apo_text,
                 )?,

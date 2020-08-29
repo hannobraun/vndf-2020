@@ -48,7 +48,7 @@ impl ShipStatus {
         }
 
         if let Some((fuel, health)) = components(game) {
-            let text_panel = TextPanel::new(
+            let text_panel = TextPanel::create(
                 res,
                 format!(
                     "Ship Status\n\

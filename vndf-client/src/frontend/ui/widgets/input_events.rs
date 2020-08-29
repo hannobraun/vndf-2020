@@ -42,7 +42,7 @@ impl InputEvents {
             write!(text, "{}\n", event)?;
         }
 
-        let text_panel = TextPanel::new(
+        let text_panel = TextPanel::create(
             res,
             text,
         )?;

@@ -36,7 +36,7 @@ impl AddCommand {
     )
         -> Result<Self, text::CreateError>
     {
-        let text_panel = TextPanel::new(res, format!("Add command"))?;
+        let text_panel = TextPanel::create(res, format!("Add command"))?;
 
         Ok(
             Self {
