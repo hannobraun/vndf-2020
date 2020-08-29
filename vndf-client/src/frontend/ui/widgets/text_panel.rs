@@ -38,7 +38,6 @@ impl TextPanel {
         );
 
         let text = Text::create(res, text)?;
-
         let panel = Panel::create(text.size() + padding);
 
         Ok(
