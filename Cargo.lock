@@ -2377,9 +2377,9 @@ dependencies = [
 
 [[package]]
 name = "wgpu-core"
-version = "0.6.0"
+version = "0.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3a5558a9607100816a033b0d06a2d6d06e8bf6fb294803d1dea871e9a479eec0"
+checksum = "0087ab26d366d286f20193a801e10dfb5943c7aecd617944cf88731820a55453"
 dependencies = [
  "arrayvec",
  "bitflags",
