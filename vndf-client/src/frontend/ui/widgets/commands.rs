@@ -42,7 +42,7 @@ impl Commands {
         let mut column = Column::create(margin);
 
         column.add(CommandsList::create(res)?);
-        column.add(AddCommand::new(res, input)?);
+        column.add(AddCommand::create(res, input)?);
 
         Ok(
             Self(column)

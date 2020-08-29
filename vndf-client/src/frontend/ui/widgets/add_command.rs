@@ -30,7 +30,7 @@ pub struct AddCommand{
 }
 
 impl AddCommand {
-    pub fn new(
+    pub fn create(
         res:   &mut DrawResources,
         input: &Input,
     )
