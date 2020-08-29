@@ -27,7 +27,7 @@ use super::{
 pub struct CommandsList(TextPanel);
 
 impl CommandsList {
-    pub fn new(
+    pub fn create(
         res: &mut DrawResources,
     )
         -> Result<Self, text::CreateError>

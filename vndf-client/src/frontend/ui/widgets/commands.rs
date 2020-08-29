@@ -41,7 +41,7 @@ impl Commands {
     {
         let mut column = Column::new(margin);
 
-        column.add(CommandsList::new(res)?);
+        column.add(CommandsList::create(res)?);
         column.add(AddCommand::new(res, input)?);
 
         Ok(
