@@ -41,7 +41,7 @@ impl Diagnostics {
     )
         -> Result<Self, text::CreateError>
     {
-        let frame_time = FrameTime::new(
+        let frame_time = FrameTime::create(
             res,
             game,
         )?;

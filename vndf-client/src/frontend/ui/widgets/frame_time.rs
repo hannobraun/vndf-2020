@@ -28,7 +28,7 @@ use super::{
 pub struct FrameTime(TextPanel);
 
 impl FrameTime {
-    pub fn new(
+    pub fn create(
         res:  &mut DrawResources,
         game: &Game,
     )
