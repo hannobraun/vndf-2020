@@ -6,6 +6,7 @@ use crate::{
         },
         ui::traits::{
             DrawAt,
+            DrawError,
             Size,
         },
     },
@@ -68,14 +69,18 @@ impl DrawAt for Column {
         res:   &mut DrawResources,
         frame: &mut Frame,
         pos:   graphics::Pnt2,
-    ) {
+    )
+        -> Result<(), DrawError>
+    {
         let mut next_pos = pos;
 
         for widget in self.widgets.iter_mut() {
-            widget.draw_at(res, frame, next_pos);
+            widget.draw_at(res, frame, next_pos)?;
             let offset_y = widget.size().height + self.margin;
             next_pos.y += offset_y;
         }
+
+        Ok(())
     }
 }
 

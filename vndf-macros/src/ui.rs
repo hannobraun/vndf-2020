@@ -93,8 +93,12 @@ pub fn dispatch_to_all(
                 #(
                     #arg_name: #arg_ty,
                 )*
-            ) {
-                #(#method_calls;)*
+            )
+                -> Result<(), crate::frontend::ui::traits::DrawError>
+            {
+                #(#method_calls?;)*
+
+                Ok(())
             }
         }
     );

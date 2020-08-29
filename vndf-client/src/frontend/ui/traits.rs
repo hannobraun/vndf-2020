@@ -1,7 +1,10 @@
 use crate::{
-    frontend::drawers::{
-        DrawResources,
-        Frame,
+    frontend::{
+        drawables,
+        drawers::{
+            DrawResources,
+            Frame,
+        },
     },
     graphics,
 };
@@ -62,7 +65,8 @@ pub trait Draw {
     fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,
-    );
+    )
+        -> Result<(), DrawError>;
 }
 
 
@@ -72,7 +76,8 @@ pub trait DrawAt {
         res:   &mut DrawResources,
         frame: &mut Frame,
         pos:   graphics::Pnt2,
-    );
+    )
+        -> Result<(), DrawError>;
 }
 
 impl<T> DrawAt for T where T: Position + Draw {
@@ -80,9 +85,23 @@ impl<T> DrawAt for T where T: Position + Draw {
         res:   &mut DrawResources,
         frame: &mut Frame,
         pos:   graphics::Pnt2,
-    ) {
+    )
+        -> Result<(), DrawError>
+    {
         self.set_pos(pos);
-        self.draw(res, frame);
+        self.draw(res, frame)?;
+
+        Ok(())
+    }
+}
+
+
+#[derive(Debug)]
+pub struct DrawError(drawables::text::Error);
+
+impl From<drawables::text::Error> for DrawError {
+    fn from(err: drawables::text::Error) -> Self {
+        Self(err)
     }
 }
 
@@ -97,6 +116,7 @@ impl<T> Positioned<T> {
         res:   &mut DrawResources,
         frame: &mut Frame,
     )
+        -> Result<(), DrawError>
         where T: DrawAt
     {
         self.widget.draw_at(res, frame, self.position)

@@ -8,6 +8,7 @@ use crate::{
         },
         ui::traits::{
             DrawAt,
+            DrawError,
             Size,
         },
     },
@@ -66,7 +67,9 @@ impl DrawAt for Text {
         res:   &mut DrawResources,
         frame: &mut Frame,
         pos:   graphics::Pnt2,
-    ) {
+    )
+        -> Result<(), DrawError>
+    {
         self.section.screen_position = (pos.x, pos.y);
 
         res.drawables.text.queue(&self.section);
@@ -76,6 +79,8 @@ impl DrawAt for Text {
                 frame,
             )
             .unwrap();
+
+        Ok(())
     }
 }
 

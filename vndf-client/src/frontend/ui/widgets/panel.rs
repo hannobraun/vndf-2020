@@ -10,6 +10,7 @@ use crate::{
         },
         ui::traits::{
             DrawAt,
+            DrawError,
             Size,
         },
     },
@@ -49,7 +50,9 @@ impl DrawAt for Panel {
         res:   &mut DrawResources,
         frame: &mut Frame,
         pos:   graphics::Pnt2,
-    ) {
+    )
+        -> Result<(), DrawError>
+    {
         let element = ScreenElement {
             size: self.size,
             pos,
@@ -70,5 +73,7 @@ impl DrawAt for Panel {
                 color: color.into(),
             },
         );
+
+        Ok(())
     }
 }

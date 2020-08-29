@@ -6,6 +6,7 @@ use crate::{
         },
         ui::traits::{
             DrawAt,
+            DrawError,
             Size,
         },
     },
@@ -64,8 +65,12 @@ impl DrawAt for TextPanel {
         res:   &mut DrawResources,
         frame: &mut Frame,
         pos:   graphics::Pnt2,
-    ) {
-        self.panel.draw_at(res, frame, pos + self.text.size() / 2.0);
-        self.text.draw_at(res, frame, pos);
+    )
+        -> Result<(), DrawError>
+    {
+        self.panel.draw_at(res, frame, pos + self.text.size() / 2.0)?;
+        self.text.draw_at(res, frame, pos)?;
+
+        Ok(())
     }
 }

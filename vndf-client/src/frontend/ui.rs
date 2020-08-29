@@ -27,6 +27,7 @@ use self::{
     traits::{
         Draw as _,
         Size as _,
+        DrawError,
     },
     widgets::{
         Diagnostics,
@@ -85,7 +86,7 @@ impl Ui {
                     frame,
                 )?
                 .position(Anchor::top_left(), MARGIN, frame)
-                .draw(res, frame);
+                .draw(res, frame)?;
         }
 
         ViewSize
@@ -95,7 +96,7 @@ impl Ui {
                 game,
             )?
             .position(Anchor::bottom_left(), MARGIN, frame)
-            .draw(res, frame);
+            .draw(res, frame)?;
 
         Instructions
             ::create(
@@ -103,7 +104,7 @@ impl Ui {
                 game,
             )?
             .position(Anchor::bottom_right(), MARGIN, frame)
-            .draw(res, frame);
+            .draw(res, frame)?;
 
         let ship_control = ShipControl::create(
             res,
@@ -114,7 +115,7 @@ impl Ui {
         if let Some(ship_control) = ship_control {
             ship_control
                 .position(Anchor::top_right(), MARGIN, frame)
-                .draw(res, frame);
+                .draw(res, frame)?;
         }
 
         for orbit in game.state.active_orbits() {
@@ -125,7 +126,7 @@ impl Ui {
                 screen,
             )?;
             if let Some(mut orbit_info) = orbit_info {
-                orbit_info.draw(res, frame);
+                orbit_info.draw(res, frame)?;
             }
         }
 
@@ -137,7 +138,7 @@ impl Ui {
                 screen,
             )?;
             if let Some(mut ship_info) = ship_info {
-                ship_info.draw(res, frame);
+                ship_info.draw(res, frame)?;
             }
         }
 
@@ -149,10 +150,17 @@ impl Ui {
 #[derive(Debug)]
 pub enum Error {
     Text(text::CreateError),
+    Draw(DrawError),
 }
 
 impl From<text::CreateError> for Error {
     fn from(err: text::CreateError) -> Self {
         Self::Text(err)
+    }
+}
+
+impl From<DrawError> for Error {
+    fn from(err: DrawError) -> Self {
+        Self::Draw(err)
     }
 }

@@ -11,6 +11,7 @@ use crate::{
             },
             traits::{
                 DrawAt,
+                DrawError,
                 Size,
             },
         },
@@ -52,7 +53,9 @@ impl DrawAt for AddCommand {
         res:   &mut DrawResources,
         frame: &mut Frame,
         pos:   graphics::Pnt2,
-    ) {
+    )
+        -> Result<(), DrawError>
+    {
         let rect = graphics::Rect::new(pos, self.size());
 
         self.text_panel.panel_color([0.1, 0.0, 0.0, 0.95]); // default color
