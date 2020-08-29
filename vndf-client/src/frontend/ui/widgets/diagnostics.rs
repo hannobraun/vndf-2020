@@ -62,7 +62,7 @@ impl Diagnostics {
             game,
         )?;
 
-        let mut column = Column::new(margin);
+        let mut column = Column::create(margin);
 
         column.add(frame_time);
         column.add(scale_factor);

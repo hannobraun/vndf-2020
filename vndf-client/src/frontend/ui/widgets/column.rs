@@ -19,7 +19,7 @@ pub struct Column {
 }
 
 impl Column {
-    pub fn new(
+    pub fn create(
         margin: f32,
     )
         -> Self

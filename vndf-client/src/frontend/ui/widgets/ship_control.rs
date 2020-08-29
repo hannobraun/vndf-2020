@@ -51,7 +51,7 @@ impl ShipControl {
             input,
         )?;
 
-        let mut column = Column::new(margin);
+        let mut column = Column::create(margin);
 
         if let Some(ship_status) = ship_status {
             column.add(ship_status);

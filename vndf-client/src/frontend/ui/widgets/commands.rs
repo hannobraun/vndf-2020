@@ -39,7 +39,7 @@ impl Commands {
     )
         -> Result<Self, text::CreateError>
     {
-        let mut column = Column::new(margin);
+        let mut column = Column::create(margin);
 
         column.add(CommandsList::create(res)?);
         column.add(AddCommand::new(res, input)?);
