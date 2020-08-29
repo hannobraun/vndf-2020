@@ -33,7 +33,7 @@ pub struct OrbitInfo {
 }
 
 impl OrbitInfo {
-    pub fn new(
+    pub fn create(
         res:    &mut DrawResources,
         orbit:  &Orbit,
         game:   &Game,

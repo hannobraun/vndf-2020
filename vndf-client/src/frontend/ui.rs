@@ -115,7 +115,7 @@ impl Ui {
         }
 
         for orbit in game.state.active_orbits() {
-            let orbit_info = OrbitInfo::new(
+            let orbit_info = OrbitInfo::create(
                 res,
                 &orbit,
                 game,
