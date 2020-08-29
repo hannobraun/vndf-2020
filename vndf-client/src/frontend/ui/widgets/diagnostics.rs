@@ -33,7 +33,7 @@ use super::{
 pub struct Diagnostics(Column);
 
 impl Diagnostics {
-    pub fn new(
+    pub fn create(
         res:    &mut DrawResources,
         margin: graphics::Scalar,
         game:   &Game,

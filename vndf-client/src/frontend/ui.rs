@@ -75,7 +75,7 @@ impl Ui {
 
         if game.input.config.diagnostics {
             Diagnostics
-                ::new(
+                ::create(
                     res,
                     MARGIN,
                     game,
