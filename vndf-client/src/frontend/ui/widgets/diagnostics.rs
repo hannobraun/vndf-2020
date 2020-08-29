@@ -53,7 +53,7 @@ impl Diagnostics {
             res,
             game,
         )?;
-        let network_stats = NetworkStats::new(
+        let network_stats = NetworkStats::create(
             res,
             game,
         )?;

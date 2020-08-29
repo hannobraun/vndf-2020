@@ -28,7 +28,7 @@ use super::{
 pub struct NetworkStats(TextPanel);
 
 impl NetworkStats {
-    pub fn new(
+    pub fn create(
         res:  &mut DrawResources,
         game: &Game,
     )
