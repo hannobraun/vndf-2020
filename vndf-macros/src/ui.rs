@@ -26,6 +26,7 @@ pub fn derive_draw(input: TokenStream) -> TokenStream {
         ],
         quote!(Result<(), crate::frontend::ui::traits::DrawError>),
         quote!(Ok(())),
+        true,
     )
 }
 
@@ -46,6 +47,7 @@ pub fn derive_draw_at(input: TokenStream) -> TokenStream {
         ],
         quote!(Result<(), crate::frontend::ui::traits::DrawError>),
         quote!(Ok(())),
+        true,
     )
 }
 
@@ -85,6 +87,7 @@ pub fn dispatch_to_all(
     arg_ty:   Vec<proc_macro2::TokenStream>,
     return_:  proc_macro2::TokenStream,
     result:   proc_macro2::TokenStream,
+    try_:     bool,
 )
     -> TokenStream
 {
@@ -92,7 +95,7 @@ pub fn dispatch_to_all(
 
     let name = &struct_.ident;
 
-    let method_calls = dispatch_calls(&struct_, &method, &arg_name, true);
+    let method_calls = dispatch_calls(&struct_, &method, &arg_name, try_);
 
     let tokens = quote!(
         impl #trait_ for #name {
