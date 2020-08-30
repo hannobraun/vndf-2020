@@ -6,10 +6,14 @@ use crate::{
             DrawResources,
             Frame,
         },
-        ui::traits::{
-            DrawAt,
-            DrawError,
-            Size,
+        ui::{
+            input::Input,
+            traits::{
+                DrawAt,
+                DrawError,
+                ProcessInputAt,
+                Size,
+            },
         },
     },
     graphics,
@@ -60,6 +64,10 @@ impl Size for Text {
     fn size(&self) -> graphics::Size {
         self.size
     }
+}
+
+impl ProcessInputAt for Text {
+    fn process_input_at(&mut self, _: graphics::Pnt2, _: &mut Input) {}
 }
 
 impl DrawAt for Text {
