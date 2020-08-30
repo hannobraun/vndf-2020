@@ -51,6 +51,25 @@ pub fn derive_draw_at(input: TokenStream) -> TokenStream {
     )
 }
 
+pub fn derive_process_input_at(input: TokenStream) -> TokenStream {
+    dispatch_to_all(
+        input,
+        quote!(crate::frontend::ui::traits::ProcessInputAt),
+        quote!(process_input_at),
+        vec![
+            quote!(pos),
+            quote!(input),
+        ],
+        vec![
+            quote!(crate::graphics::Pnt2),
+            quote!(&mut crate::frontend::ui::input::Input),
+        ],
+        quote!(()),
+        quote!(()),
+        CallKind::Unit,
+    )
+}
+
 pub fn derive_size(input: TokenStream) -> TokenStream {
     let struct_ = parse_macro_input!(input as ItemStruct);
 
@@ -176,6 +195,11 @@ fn dispatch_calls<'a>(
                         self.#field.#method(#(#arg_name,)*)?;
                     )
                 }
+                CallKind::Unit => {
+                    quote!(
+                        self.#field.#method(#(#arg_name,)*);
+                    )
+                }
             }
         })
 }
@@ -184,4 +208,5 @@ fn dispatch_calls<'a>(
 pub enum CallKind {
     Expression,
     Result,
+    Unit,
 }
