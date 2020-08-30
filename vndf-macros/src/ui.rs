@@ -25,6 +25,7 @@ pub fn derive_draw(input: TokenStream) -> TokenStream {
             quote!(&mut crate::frontend::drawers::Frame),
         ],
         quote!(Result<(), crate::frontend::ui::traits::DrawError>),
+        quote!(Ok(())),
     )
 }
 
@@ -44,6 +45,7 @@ pub fn derive_draw_at(input: TokenStream) -> TokenStream {
             quote!(crate::graphics::Pnt2),
         ],
         quote!(Result<(), crate::frontend::ui::traits::DrawError>),
+        quote!(Ok(())),
     )
 }
 
@@ -82,6 +84,7 @@ pub fn dispatch_to_all(
     arg_name: Vec<proc_macro2::TokenStream>,
     arg_ty:   Vec<proc_macro2::TokenStream>,
     return_:  proc_macro2::TokenStream,
+    result:   proc_macro2::TokenStream,
 )
     -> TokenStream
 {
@@ -101,8 +104,7 @@ pub fn dispatch_to_all(
                 -> #return_
             {
                 #(#method_calls)*
-
-                Ok(())
+                #result
             }
         }
     );
