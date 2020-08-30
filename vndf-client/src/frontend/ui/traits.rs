@@ -9,9 +9,12 @@ use crate::{
     graphics,
 };
 
-use super::anchor::{
-    self,
-    Anchor,
+use super::{
+    anchor::{
+        self,
+        Anchor,
+    },
+    input::Input,
 };
 
 
@@ -57,6 +60,12 @@ pub trait Size {
 pub trait Position {
     fn get_pos(&self) -> graphics::Pnt2;
     fn set_pos(&mut self, pos: graphics::Pnt2);
+}
+
+
+/// Widgets that process input
+pub trait ProcessInputAt {
+    fn process_input_at(&mut self, pos: graphics::Pnt2, input: &mut Input);
 }
 
 
