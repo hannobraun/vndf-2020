@@ -53,8 +53,9 @@ pub fn derive_size(input: TokenStream) -> TokenStream {
     let name     = &struct_.ident;
     let method   = quote!(size);
 
-    let mut dispatch_calls: Vec<_> = dispatch_calls(&struct_, &method, &[])
-        .collect();
+    let mut dispatch_calls: Vec<_> =
+        dispatch_calls(&struct_, &method, &[], false)
+            .collect();
 
     if dispatch_calls.len() != 1 {
         panic!("Can only derive `Size`, if struct has exactly one field");
@@ -88,7 +89,7 @@ pub fn dispatch_to_all(
 
     let name = &struct_.ident;
 
-    let method_calls = dispatch_calls(&struct_, &method, &arg_name);
+    let method_calls = dispatch_calls(&struct_, &method, &arg_name, true);
 
     let tokens = quote!(
         impl #trait_ for #name {
@@ -99,7 +100,7 @@ pub fn dispatch_to_all(
             )
                 -> #return_
             {
-                #(#method_calls?;)*
+                #(#method_calls)*
 
                 Ok(())
             }
@@ -113,6 +114,7 @@ fn dispatch_calls<'a>(
     struct_:  &'a ItemStruct,
     method:   &'a proc_macro2::TokenStream,
     arg_name: &'a [proc_macro2::TokenStream],
+    try_:     bool,
 )
     -> impl Iterator<Item=proc_macro2::TokenStream> + 'a
 {
@@ -153,8 +155,15 @@ fn dispatch_calls<'a>(
                 }
             };
 
-            quote!(
-                self.#field.#method(#(#arg_name,)*)
-            )
+            if try_ {
+                quote!(
+                    self.#field.#method(#(#arg_name,)*)?;
+                )
+            }
+            else {
+                quote!(
+                    self.#field.#method(#(#arg_name,)*)
+                )
+            }
         })
 }
