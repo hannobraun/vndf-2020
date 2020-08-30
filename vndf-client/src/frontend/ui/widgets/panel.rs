@@ -8,10 +8,14 @@ use crate::{
             frag,
             vert,
         },
-        ui::traits::{
-            DrawAt,
-            DrawError,
-            Size,
+        ui::{
+            input::Input,
+            traits::{
+                DrawAt,
+                DrawError,
+                ProcessInputAt,
+                Size,
+            },
         },
     },
     graphics::{
@@ -43,6 +47,10 @@ impl Size for Panel {
     fn size(&self) -> graphics::Size {
         self.size
     }
+}
+
+impl ProcessInputAt for Panel {
+    fn process_input_at(&mut self, _: graphics::Pnt2, _: &mut Input) {}
 }
 
 impl DrawAt for Panel {
