@@ -26,7 +26,7 @@ pub fn derive_draw(input: TokenStream) -> TokenStream {
         ],
         quote!(Result<(), crate::frontend::ui::traits::DrawError>),
         quote!(Ok(())),
-        true,
+        CallKind::Result,
     )
 }
 
@@ -47,7 +47,7 @@ pub fn derive_draw_at(input: TokenStream) -> TokenStream {
         ],
         quote!(Result<(), crate::frontend::ui::traits::DrawError>),
         quote!(Ok(())),
-        true,
+        CallKind::Result,
     )
 }
 
@@ -58,7 +58,7 @@ pub fn derive_size(input: TokenStream) -> TokenStream {
     let method   = quote!(size);
 
     let mut dispatch_calls: Vec<_> =
-        dispatch_calls(&struct_, &method, &[], false)
+        dispatch_calls(&struct_, &method, &[], CallKind::Expression)
             .collect();
 
     if dispatch_calls.len() != 1 {
@@ -87,7 +87,7 @@ pub fn dispatch_to_all(
     arg_ty:   Vec<proc_macro2::TokenStream>,
     return_:  proc_macro2::TokenStream,
     result:   proc_macro2::TokenStream,
-    try_:     bool,
+    kind:     CallKind,
 )
     -> TokenStream
 {
@@ -95,7 +95,12 @@ pub fn dispatch_to_all(
 
     let name = &struct_.ident;
 
-    let method_calls = dispatch_calls(&struct_, &method, &arg_name, try_);
+    let method_calls = dispatch_calls(
+        &struct_,
+        &method,
+        &arg_name,
+        kind,
+    );
 
     let tokens = quote!(
         impl #trait_ for #name {
@@ -119,7 +124,7 @@ fn dispatch_calls<'a>(
     struct_:  &'a ItemStruct,
     method:   &'a proc_macro2::TokenStream,
     arg_name: &'a [proc_macro2::TokenStream],
-    try_:     bool,
+    kind:     CallKind,
 )
     -> impl Iterator<Item=proc_macro2::TokenStream> + 'a
 {
@@ -160,15 +165,23 @@ fn dispatch_calls<'a>(
                 }
             };
 
-            if try_ {
-                quote!(
-                    self.#field.#method(#(#arg_name,)*)?;
-                )
-            }
-            else {
-                quote!(
-                    self.#field.#method(#(#arg_name,)*)
-                )
+            match kind {
+                CallKind::Expression => {
+                    quote!(
+                        self.#field.#method(#(#arg_name,)*)
+                    )
+                }
+                CallKind::Result => {
+                    quote!(
+                        self.#field.#method(#(#arg_name,)*)?;
+                    )
+                }
             }
         })
+}
+
+
+pub enum CallKind {
+    Expression,
+    Result,
 }
