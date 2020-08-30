@@ -1,3 +1,5 @@
+use vndf_macros::ProcessInputAt;
+
 use crate::{
     frontend::{
         drawers::{
@@ -20,6 +22,7 @@ use super::{
 };
 
 
+#[derive(ProcessInputAt)]
 pub struct TextPanel {
     text:  Text,
     panel: Panel,
