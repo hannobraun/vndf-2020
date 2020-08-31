@@ -12,6 +12,7 @@ use crate::{
             traits::{
                 DrawAt,
                 DrawError,
+                ProcessInputAt,
                 Size,
             },
         },
@@ -45,6 +46,12 @@ impl AddCommand {
                 cursor: input.cursor,
             }
         )
+    }
+}
+
+impl ProcessInputAt for AddCommand {
+    fn process_input_at(&mut self, _pos: graphics::Pnt2, _input: &mut Input) {
+        // input is handled via other mechanisms right now
     }
 }
 
