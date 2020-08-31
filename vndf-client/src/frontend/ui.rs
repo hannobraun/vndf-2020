@@ -115,6 +115,7 @@ impl Ui {
         if let Some(ship_control) = ship_control {
             ship_control
                 .position(Anchor::top_right(), MARGIN, frame)
+                .process_input(&mut self.input)
                 .draw(res, frame)?;
         }
 

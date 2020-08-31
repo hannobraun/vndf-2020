@@ -121,6 +121,14 @@ pub struct Positioned<T> {
 }
 
 impl<T> Positioned<T> {
+    pub fn process_input(&mut self, input: &mut Input)
+        -> &mut Self
+        where T: ProcessInputAt
+    {
+        self.widget.process_input_at(input, self.position);
+        self
+    }
+
     pub fn draw(&mut self,
         res:   &mut DrawResources,
         frame: &mut Frame,

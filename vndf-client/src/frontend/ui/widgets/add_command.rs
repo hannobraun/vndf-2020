@@ -38,7 +38,8 @@ impl AddCommand {
     )
         -> Result<Self, text::CreateError>
     {
-        let text_panel = TextPanel::create(res, format!("Add command"))?;
+        let mut text_panel = TextPanel::create(res, format!("Add command"))?;
+        text_panel.panel_color([0.1, 0.0, 0.0, 0.95]); // default color
 
         Ok(
             Self {
@@ -50,8 +51,14 @@ impl AddCommand {
 }
 
 impl ProcessInputAt for AddCommand {
-    fn process_input_at(&mut self, _input: &mut Input, _pos: graphics::Pnt2) {
-        // input is handled via other mechanisms right now
+    fn process_input_at(&mut self, _: &mut Input, pos: graphics::Pnt2) {
+        let rect = graphics::Rect::new(pos, self.size());
+
+        if let Some(cursor) = self.cursor {
+            if rect.contains(cursor) {
+                self.text_panel.panel_color([0.5, 0.0, 0.0, 0.95]);
+            }
+        }
     }
 }
 
@@ -63,15 +70,6 @@ impl DrawAt for AddCommand {
     )
         -> Result<(), DrawError>
     {
-        let rect = graphics::Rect::new(pos, self.size());
-
-        self.text_panel.panel_color([0.1, 0.0, 0.0, 0.95]); // default color
-        if let Some(cursor) = self.cursor {
-            if rect.contains(cursor) {
-                self.text_panel.panel_color([0.5, 0.0, 0.0, 0.95]);
-            }
-        }
-
         self.text_panel.draw_at(res, frame, pos)
     }
 }
