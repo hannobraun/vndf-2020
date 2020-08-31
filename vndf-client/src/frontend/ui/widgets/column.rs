@@ -69,9 +69,9 @@ impl Size for Column {
 }
 
 impl ProcessInputAt for Column {
-    fn process_input_at(&mut self, pos: graphics::Pnt2, input: &mut Input) {
+    fn process_input_at(&mut self, input: &mut Input, pos: graphics::Pnt2) {
         for widget in self.widgets.iter_mut() {
-            widget.process_input_at(pos, input);
+            widget.process_input_at(input, pos);
         }
     }
 }

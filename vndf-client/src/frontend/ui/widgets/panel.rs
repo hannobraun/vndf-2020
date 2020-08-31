@@ -50,7 +50,7 @@ impl Size for Panel {
 }
 
 impl ProcessInputAt for Panel {
-    fn process_input_at(&mut self, _: graphics::Pnt2, _: &mut Input) {}
+    fn process_input_at(&mut self, _: &mut Input, _: graphics::Pnt2) {}
 }
 
 impl DrawAt for Panel {

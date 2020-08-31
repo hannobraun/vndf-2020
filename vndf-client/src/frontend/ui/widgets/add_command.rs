@@ -50,7 +50,7 @@ impl AddCommand {
 }
 
 impl ProcessInputAt for AddCommand {
-    fn process_input_at(&mut self, _pos: graphics::Pnt2, _input: &mut Input) {
+    fn process_input_at(&mut self, _input: &mut Input, _pos: graphics::Pnt2) {
         // input is handled via other mechanisms right now
     }
 }

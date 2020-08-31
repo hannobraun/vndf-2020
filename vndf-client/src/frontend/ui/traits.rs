@@ -65,7 +65,7 @@ pub trait Position {
 
 /// Widgets that process input
 pub trait ProcessInputAt {
-    fn process_input_at(&mut self, pos: graphics::Pnt2, input: &mut Input);
+    fn process_input_at(&mut self, input: &mut Input, pos: graphics::Pnt2);
 }
 
 

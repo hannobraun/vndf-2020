@@ -57,12 +57,12 @@ pub fn derive_process_input_at(input: TokenStream) -> TokenStream {
         quote!(crate::frontend::ui::traits::ProcessInputAt),
         quote!(process_input_at),
         vec![
-            quote!(pos),
             quote!(input),
+            quote!(pos),
         ],
         vec![
-            quote!(crate::graphics::Pnt2),
             quote!(&mut crate::frontend::ui::input::Input),
+            quote!(crate::graphics::Pnt2),
         ],
         quote!(()),
         quote!(()),
