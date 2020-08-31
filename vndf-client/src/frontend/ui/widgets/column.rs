@@ -4,10 +4,14 @@ use crate::{
             DrawResources,
             Frame,
         },
-        ui::traits::{
-            DrawAt,
-            DrawError,
-            Size,
+        ui::{
+            input::Input,
+            traits::{
+                DrawAt,
+                DrawError,
+                ProcessInputAt,
+                Size,
+            },
         },
     },
     graphics,
@@ -64,6 +68,14 @@ impl Size for Column {
     }
 }
 
+impl ProcessInputAt for Column {
+    fn process_input_at(&mut self, pos: graphics::Pnt2, input: &mut Input) {
+        for widget in self.widgets.iter_mut() {
+            widget.process_input_at(pos, input);
+        }
+    }
+}
+
 impl DrawAt for Column {
     fn draw_at(&mut self,
         res:   &mut DrawResources,
@@ -85,6 +97,6 @@ impl DrawAt for Column {
 }
 
 
-pub trait Element: Size + DrawAt {}
+pub trait Element: Size + ProcessInputAt + DrawAt {}
 
-impl<T> Element for T where T: Size + DrawAt {}
+impl<T> Element for T where T: Size + ProcessInputAt + DrawAt {}
