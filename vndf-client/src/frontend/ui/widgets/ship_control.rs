@@ -1,5 +1,6 @@
 use vndf_macros::{
     DrawAt,
+    ProcessInputAt,
     Size,
 };
 
@@ -20,7 +21,7 @@ use super::{
 };
 
 
-#[derive(DrawAt, Size)]
+#[derive(DrawAt, ProcessInputAt, Size)]
 pub struct ShipControl(Column);
 
 impl ShipControl {
