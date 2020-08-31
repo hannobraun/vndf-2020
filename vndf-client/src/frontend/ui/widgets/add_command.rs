@@ -1,14 +1,14 @@
+use vndf_macros::{
+    DrawAt,
+    Size,
+};
+
 use crate::{
     frontend::{
-        drawers::{
-            DrawResources,
-            Frame,
-        },
+        drawers::DrawResources,
         ui::{
             input::Input,
             traits::{
-                DrawAt,
-                DrawError,
                 ProcessInputAt,
                 Size,
             },
@@ -23,6 +23,7 @@ use super::{
 };
 
 
+#[derive(DrawAt, Size)]
 pub struct AddCommand(TextPanel);
 
 impl AddCommand {
@@ -49,23 +50,5 @@ impl ProcessInputAt for AddCommand {
                 self.0.panel_color([0.5, 0.0, 0.0, 0.95]);
             }
         }
-    }
-}
-
-impl DrawAt for AddCommand {
-    fn draw_at(&mut self,
-        res:   &mut DrawResources,
-        frame: &mut Frame,
-        pos:   graphics::Pnt2,
-    )
-        -> Result<(), DrawError>
-    {
-        self.0.draw_at(res, frame, pos)
-    }
-}
-
-impl Size for AddCommand {
-    fn size(&self) -> graphics::Size {
-        self.0.size()
     }
 }
