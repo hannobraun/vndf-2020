@@ -1,3 +1,5 @@
+use std::convert::Infallible;
+
 use crate::{
     frontend::{
         drawers::{
@@ -85,9 +87,11 @@ impl Size for Column {
 
 impl ProcessInputAt for Column {
     fn process_input_at(&mut self, input: &mut Input, pos: graphics::Pnt2) {
-        for widget in self.widgets.iter_mut() {
-            widget.process_input_at(input, pos);
-        }
+        self
+            .widgets_at_mut::<_, Infallible>(pos, |widget, pos|
+                Ok(widget.process_input_at(input, pos))
+            )
+            .unwrap(); // infallible
     }
 }
 
