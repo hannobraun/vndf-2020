@@ -23,9 +23,7 @@ use super::{
 };
 
 
-pub struct AddCommand{
-    text_panel: TextPanel,
-}
+pub struct AddCommand(TextPanel);
 
 impl AddCommand {
     pub fn create(
@@ -37,9 +35,7 @@ impl AddCommand {
         text_panel.panel_color([0.1, 0.0, 0.0, 0.95]); // default color
 
         Ok(
-            Self {
-                text_panel,
-            }
+            Self(text_panel)
         )
     }
 }
@@ -50,7 +46,7 @@ impl ProcessInputAt for AddCommand {
 
         if let Some(cursor) = input.cursor {
             if rect.contains(cursor) {
-                self.text_panel.panel_color([0.5, 0.0, 0.0, 0.95]);
+                self.0.panel_color([0.5, 0.0, 0.0, 0.95]);
             }
         }
     }
@@ -64,12 +60,12 @@ impl DrawAt for AddCommand {
     )
         -> Result<(), DrawError>
     {
-        self.text_panel.draw_at(res, frame, pos)
+        self.0.draw_at(res, frame, pos)
     }
 }
 
 impl Size for AddCommand {
     fn size(&self) -> graphics::Size {
-        self.text_panel.size()
+        self.0.size()
     }
 }
