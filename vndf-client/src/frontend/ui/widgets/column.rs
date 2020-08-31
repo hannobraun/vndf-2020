@@ -46,6 +46,21 @@ impl Column {
             self.add(widget)
         }
     }
+
+    pub fn widgets_at_mut<F, E>(&mut self, pos: graphics::Pnt2, mut f: F)
+        -> Result<(), E>
+        where F: FnMut(&mut dyn Element, graphics::Pnt2) -> Result<(), E>
+    {
+        let mut next_pos = pos;
+
+        for widget in self.widgets.iter_mut() {
+            f(widget.as_mut(), next_pos)?;
+            let offset_y = widget.size().height + self.margin;
+            next_pos.y += offset_y;
+        }
+
+        Ok(())
+    }
 }
 
 impl Size for Column {
@@ -84,15 +99,9 @@ impl DrawAt for Column {
     )
         -> Result<(), DrawError>
     {
-        let mut next_pos = pos;
-
-        for widget in self.widgets.iter_mut() {
-            widget.draw_at(res, frame, next_pos)?;
-            let offset_y = widget.size().height + self.margin;
-            next_pos.y += offset_y;
-        }
-
-        Ok(())
+        self.widgets_at_mut(pos, |widget, pos|
+            widget.draw_at(res, frame, pos)
+        )
     }
 }
 
