@@ -109,7 +109,6 @@ impl Ui {
         let ship_control = ShipControl::create(
             res,
             MARGIN,
-            &self.input,
             game,
         )?;
         if let Some(ship_control) = ship_control {

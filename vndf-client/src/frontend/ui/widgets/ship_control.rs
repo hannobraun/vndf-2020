@@ -5,10 +5,7 @@ use vndf_macros::{
 };
 
 use crate::{
-    frontend::{
-        drawers::DrawResources,
-        ui::input::Input,
-    },
+    frontend::drawers::DrawResources,
     game::Game,
     graphics,
 };
@@ -28,7 +25,6 @@ impl ShipControl {
     pub fn create(
         res:    &mut DrawResources,
         margin: graphics::Scalar,
-        input:  &Input,
         game:   &Game,
     )
         -> Result<Option<Self>, text::CreateError>
@@ -40,7 +36,6 @@ impl ShipControl {
         let commands = Commands::create(
             res,
             margin,
-            input,
         )?;
 
         let mut column = Column::create(margin);

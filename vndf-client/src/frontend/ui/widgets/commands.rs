@@ -5,10 +5,7 @@ use vndf_macros::{
 };
 
 use crate::{
-    frontend::{
-        drawers::DrawResources,
-        ui::input::Input,
-    },
+    frontend::drawers::DrawResources,
     graphics,
 };
 
@@ -27,14 +24,13 @@ impl Commands {
     pub fn create(
         res:    &mut DrawResources,
         margin: graphics::Scalar,
-        input:  &Input,
     )
         -> Result<Self, text::CreateError>
     {
         let mut column = Column::create(margin);
 
         column.add(CommandsList::create(res)?);
-        column.add(AddCommand::create(res, input)?);
+        column.add(AddCommand::create(res)?);
 
         Ok(
             Self(column)

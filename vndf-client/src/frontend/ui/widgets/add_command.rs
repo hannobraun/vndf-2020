@@ -5,10 +5,7 @@ use crate::{
             Frame,
         },
         ui::{
-            input::{
-                Input,
-                Cursor,
-            },
+            input::Input,
             traits::{
                 DrawAt,
                 DrawError,
@@ -28,13 +25,11 @@ use super::{
 
 pub struct AddCommand{
     text_panel: TextPanel,
-    cursor:     Cursor,
 }
 
 impl AddCommand {
     pub fn create(
-        res:   &mut DrawResources,
-        input: &Input,
+        res: &mut DrawResources,
     )
         -> Result<Self, text::CreateError>
     {
@@ -44,17 +39,16 @@ impl AddCommand {
         Ok(
             Self {
                 text_panel,
-                cursor: input.cursor,
             }
         )
     }
 }
 
 impl ProcessInputAt for AddCommand {
-    fn process_input_at(&mut self, _: &mut Input, pos: graphics::Pnt2) {
+    fn process_input_at(&mut self, input: &mut Input, pos: graphics::Pnt2) {
         let rect = graphics::Rect::new(pos, self.size());
 
-        if let Some(cursor) = self.cursor {
+        if let Some(cursor) = input.cursor {
             if rect.contains(cursor) {
                 self.text_panel.panel_color([0.5, 0.0, 0.0, 0.95]);
             }
