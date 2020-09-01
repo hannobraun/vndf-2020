@@ -157,6 +157,10 @@ impl Ui {
             }
         }
 
+        for action in self.input.actions.drain(..) {
+            println!("{:?}", action);
+        }
+
         self.input.reset();
 
         Ok(())

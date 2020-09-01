@@ -7,7 +7,10 @@ use crate::{
     frontend::{
         drawers::DrawResources,
         ui::{
-            input::Input,
+            input::{
+                Action,
+                Input,
+            },
             traits::{
                 ProcessInputAt,
                 Size,
@@ -48,6 +51,10 @@ impl ProcessInputAt for AddCommand {
         if let Some(cursor) = input.cursor {
             if rect.contains(cursor) {
                 self.0.panel_color([0.5, 0.0, 0.0, 0.95]);
+
+                if input.click {
+                    input.actions.push(Action::AddCommand);
+                }
             }
         }
     }

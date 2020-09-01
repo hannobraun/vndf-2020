@@ -4,6 +4,8 @@ use crate::graphics;
 pub struct Input {
     pub cursor: Cursor,
     pub click:  bool,
+
+    pub actions: Vec<Action>,
 }
 
 impl Input {
@@ -11,6 +13,8 @@ impl Input {
         Self {
             cursor: None,
             click:  false,
+
+            actions: Vec::new(),
         }
     }
 
@@ -21,3 +25,9 @@ impl Input {
 
 
 pub type Cursor = Option<graphics::Pnt2>;
+
+
+#[derive(Debug)]
+pub enum Action {
+    AddCommand,
+}
