@@ -75,6 +75,16 @@ pub fn start(mut game: Game, graphics: Graphics)
             } => {
                 ui.handle_cursor_move(position);
             }
+            Event::WindowEvent {
+                event: WindowEvent::MouseInput {
+                    state,
+                    button,
+                    ..
+                },
+                ..
+            } => {
+                ui.handle_mouse_input(state, button);
+            }
             Event::WindowEvent { event: WindowEvent::Resized(size), .. } => {
                 renderer.handle_resize(size);
             }

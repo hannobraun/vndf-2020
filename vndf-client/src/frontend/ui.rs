@@ -4,7 +4,13 @@ mod traits;
 mod widgets;
 
 
-use winit::dpi::PhysicalPosition;
+use winit::{
+    dpi::PhysicalPosition,
+    event::{
+        ElementState,
+        MouseButton,
+    },
+};
 
 use crate::{
     frontend::{
@@ -61,6 +67,15 @@ impl Ui {
                 position.y as f32 / self.scale_factor,
             )
         );
+    }
+
+    pub fn handle_mouse_input(&mut self,
+        state:  ElementState,
+        button: MouseButton,
+    ) {
+        if let (MouseButton::Left, ElementState::Pressed) = (button, state) {
+            self.input.click = true;
+        }
     }
 
     pub fn handle_scale_factor_change(&mut self, scale_factor: f64) {
@@ -141,6 +156,8 @@ impl Ui {
                 ship_info.draw(res, frame)?;
             }
         }
+
+        self.input.reset();
 
         Ok(())
     }
