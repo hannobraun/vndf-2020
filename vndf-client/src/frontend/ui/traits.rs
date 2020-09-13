@@ -18,6 +18,11 @@ use super::{
 };
 
 
+pub trait Widget: Size + ProcessInputAt + DrawAt {}
+
+impl<T> Widget for T where T: Size + ProcessInputAt + DrawAt {}
+
+
 pub trait Size {
     fn size(&self) -> graphics::Size;
 

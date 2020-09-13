@@ -13,6 +13,7 @@ use crate::{
                 DrawError,
                 ProcessInputAt,
                 Size,
+                Widget,
             },
         },
     },
@@ -108,8 +109,3 @@ impl DrawAt for Column {
         )
     }
 }
-
-
-pub trait Widget: Size + ProcessInputAt + DrawAt {}
-
-impl<T> Widget for T where T: Size + ProcessInputAt + DrawAt {}
