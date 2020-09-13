@@ -22,7 +22,7 @@ use crate::{
 
 pub struct Column {
     margin:  f32,
-    widgets: Vec<Box<dyn Element>>,
+    widgets: Vec<Box<dyn Widget>>,
 }
 
 impl Column {
@@ -37,12 +37,12 @@ impl Column {
         }
     }
 
-    pub fn add(&mut self, widget: impl Element + 'static) {
+    pub fn add(&mut self, widget: impl Widget + 'static) {
         self.widgets.push(Box::new(widget));
     }
 
     pub fn add_iter(&mut self,
-        widgets: impl IntoIterator<Item=impl Element + 'static>,
+        widgets: impl IntoIterator<Item=impl Widget + 'static>,
     ) {
         for widget in widgets {
             self.add(widget)
@@ -51,7 +51,7 @@ impl Column {
 
     pub fn widgets_at_mut<F, E>(&mut self, pos: graphics::Pnt2, mut f: F)
         -> Result<(), E>
-        where F: FnMut(&mut dyn Element, graphics::Pnt2) -> Result<(), E>
+        where F: FnMut(&mut dyn Widget, graphics::Pnt2) -> Result<(), E>
     {
         let mut next_pos = pos;
 
@@ -110,6 +110,6 @@ impl DrawAt for Column {
 }
 
 
-pub trait Element: Size + ProcessInputAt + DrawAt {}
+pub trait Widget: Size + ProcessInputAt + DrawAt {}
 
-impl<T> Element for T where T: Size + ProcessInputAt + DrawAt {}
+impl<T> Widget for T where T: Size + ProcessInputAt + DrawAt {}
