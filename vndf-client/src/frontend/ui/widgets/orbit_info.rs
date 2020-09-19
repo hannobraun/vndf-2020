@@ -3,7 +3,7 @@ use vndf_macros::Draw;
 use crate::{
     frontend::{
         drawers::DrawResources,
-        ui::traits::Positioned,
+        ui::widgets::Canvas,
     },
     game::Game,
     graphics::{
@@ -23,10 +23,7 @@ use super::{
 
 
 #[derive(Draw)]
-pub struct OrbitInfo {
-    periapsis: Positioned<TextPanel>,
-    apoapsis:  Positioned<TextPanel>,
-}
+pub struct OrbitInfo(Canvas);
 
 impl OrbitInfo {
     pub fn create(
@@ -40,27 +37,30 @@ impl OrbitInfo {
         if let Some((peri_text, peri_pos, apo_text, apo_pos)) =
             Self::text_and_pos(orbit, game, screen)
         {
-            let periapsis = Positioned {
-                widget: TextPanel::create(
-                    res,
-                    peri_text,
-                )?,
-                position: peri_pos,
-            };
-            let apoapsis = Positioned {
-                widget: TextPanel::create(
-                    res,
-                    apo_text,
-                )?,
-                position: apo_pos,
-            };
+            let mut canvas = Canvas::create();
+
+            canvas.add(
+                peri_pos,
+                Box::new(
+                    TextPanel::create(
+                        res,
+                        peri_text,
+                    )?,
+                ),
+            );
+            canvas.add(
+                apo_pos,
+                Box::new(
+                    TextPanel::create(
+                        res,
+                        apo_text,
+                    )?,
+                ),
+            );
 
             return Ok(
                 Some(
-                    Self {
-                        periapsis,
-                        apoapsis,
-                    }
+                    Self(canvas)
                 )
             );
         }
