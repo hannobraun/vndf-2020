@@ -3,7 +3,7 @@ use vndf_macros::Draw;
 use crate::{
     frontend::{
         drawers::DrawResources,
-        ui::traits::Positioned,
+        ui::widgets::Canvas,
     },
     game::Game,
     graphics::{
@@ -21,7 +21,7 @@ use super::{
 
 
 #[derive(Draw)]
-pub struct ShipInfo(Positioned<TextPanel>);
+pub struct ShipInfo(Canvas);
 
 impl ShipInfo {
     pub fn create(
@@ -33,19 +33,18 @@ impl ShipInfo {
         -> Result<Option<Self>, text::CreateError>
     {
         if let Some((text, pos)) = Self::text_and_pos(ship, game, screen) {
+            let mut canvas = Canvas::create();
+
             let text_panel = TextPanel::create(
                 res,
                 text,
             )?;
 
+            canvas.add(pos, Box::new(text_panel));
+
             return Ok(
                 Some(
-                    Self(
-                        Positioned {
-                            widget:   text_panel,
-                            position: pos,
-                        }
-                    )
+                    Self(canvas)
                 )
             );
         }

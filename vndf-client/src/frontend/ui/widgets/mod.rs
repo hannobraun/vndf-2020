@@ -1,4 +1,5 @@
 pub mod add_command;
+pub mod canvas;
 pub mod column;
 pub mod commands;
 pub mod commands_list;
@@ -21,6 +22,7 @@ pub mod view_size;
 
 pub use self::{
     add_command::AddCommand,
+    canvas::Canvas,
     column::Column,
     commands::Commands,
     commands_list::CommandsList,
