@@ -39,7 +39,7 @@ impl OrbitInfo {
         {
             let mut canvas = Canvas::create();
 
-            canvas.add(
+            canvas.add_at(
                 peri_pos,
                 Box::new(
                     TextPanel::create(
@@ -48,7 +48,7 @@ impl OrbitInfo {
                     )?,
                 ),
             );
-            canvas.add(
+            canvas.add_at(
                 apo_pos,
                 Box::new(
                     TextPanel::create(
