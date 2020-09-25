@@ -26,8 +26,8 @@ impl Canvas {
     }
 
     pub fn add_at(&mut self,
-        position: graphics::Pnt2,
         widget:   Box<dyn Widget>,
+        position: graphics::Pnt2,
     ) {
         self.widgets.push((position, widget));
     }

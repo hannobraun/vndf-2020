@@ -40,7 +40,7 @@ impl ShipInfo {
                 text,
             )?;
 
-            canvas.add_at(pos, Box::new(text_panel));
+            canvas.add_at(Box::new(text_panel), pos);
 
             return Ok(
                 Some(
