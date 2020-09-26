@@ -4,10 +4,14 @@ use crate::{
             DrawResources,
             Frame,
         },
-        ui::traits::{
-            Draw,
-            DrawAt,
-            DrawError,
+        ui::{
+            input::Input,
+            traits::{
+                Draw,
+                DrawAt,
+                DrawError,
+                ProcessInputAt,
+            },
         },
     },
     graphics,
@@ -48,7 +52,16 @@ impl Draw for Canvas {
     }
 }
 
+impl ProcessInputAt for Canvas {
+    fn process_input_at(&mut self, input: &mut Input, pos: graphics::Pnt2) {
+        for (widget_pos, widget) in &mut self.widgets {
+            let pos = pos + widget_pos.to_vector();
+            widget.process_input_at(input, pos);
+        }
+    }
+}
 
-pub trait AddAtWidget: DrawAt {}
 
-impl<T> AddAtWidget for T where T: DrawAt {}
+pub trait AddAtWidget: DrawAt + ProcessInputAt {}
+
+impl<T> AddAtWidget for T where T: DrawAt + ProcessInputAt {}
