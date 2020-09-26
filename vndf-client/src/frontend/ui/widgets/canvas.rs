@@ -19,7 +19,7 @@ use crate::{
 
 
 pub struct Canvas {
-    widgets: Vec<(graphics::Pnt2, Box<dyn AddAtWidget>)>,
+    widgets: Vec<(graphics::Pnt2, Box<dyn Element>)>,
 }
 
 impl Canvas {
@@ -30,7 +30,7 @@ impl Canvas {
     }
 
     pub fn add_at(&mut self,
-        widget:   Box<dyn AddAtWidget>,
+        widget:   Box<dyn Element>,
         position: graphics::Pnt2,
     ) {
         self.widgets.push((position, widget));
@@ -62,6 +62,6 @@ impl ProcessInputAt for Canvas {
 }
 
 
-pub trait AddAtWidget: DrawAt + ProcessInputAt {}
+pub trait Element: DrawAt + ProcessInputAt {}
 
-impl<T> AddAtWidget for T where T: DrawAt + ProcessInputAt {}
+impl<T> Element for T where T: DrawAt + ProcessInputAt {}
