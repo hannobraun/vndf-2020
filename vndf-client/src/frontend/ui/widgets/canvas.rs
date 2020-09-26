@@ -44,8 +44,21 @@ impl Draw for Canvas {
     )
         -> Result<(), DrawError>
     {
+        self.draw_at(res, frame, graphics::Pnt2::zero())
+    }
+}
+
+impl DrawAt for Canvas {
+    fn draw_at(&mut self,
+        res:   &mut DrawResources,
+        frame: &mut Frame,
+        pos:   graphics::Pnt2,
+    )
+        -> Result<(), DrawError>
+    {
         for (widget_pos, widget) in &mut self.widgets {
-            widget.draw_at(res, frame, *widget_pos)?;
+            let pos = pos + widget_pos.to_vector();
+            widget.draw_at(res, frame, pos)?;
         }
 
         Ok(())
