@@ -6,8 +6,8 @@ use crate::{
         },
         ui::traits::{
             Draw,
+            DrawAt,
             DrawError,
-            Widget,
         },
     },
     graphics,
@@ -15,7 +15,7 @@ use crate::{
 
 
 pub struct Canvas {
-    widgets: Vec<(graphics::Pnt2, Box<dyn Widget>)>,
+    widgets: Vec<(graphics::Pnt2, Box<dyn AddAtWidget>)>,
 }
 
 impl Canvas {
@@ -26,7 +26,7 @@ impl Canvas {
     }
 
     pub fn add_at(&mut self,
-        widget:   Box<dyn Widget>,
+        widget:   Box<dyn AddAtWidget>,
         position: graphics::Pnt2,
     ) {
         self.widgets.push((position, widget));
@@ -47,3 +47,8 @@ impl Draw for Canvas {
         Ok(())
     }
 }
+
+
+pub trait AddAtWidget: DrawAt {}
+
+impl<T> AddAtWidget for T where T: DrawAt {}
