@@ -30,12 +30,12 @@ impl Canvas {
     }
 
     pub fn add_at<E>(&mut self,
-        widget:   E,
+        element:  E,
         position: graphics::Pnt2,
     )
         where E: Element + 'static
     {
-        self.elements.push((position, Box::new(widget)));
+        self.elements.push((position, Box::new(element)));
     }
 }
 
