@@ -1,4 +1,8 @@
-use vndf_macros::Draw;
+use vndf_macros::{
+    Draw,
+    DrawAt,
+    ProcessInputAt,
+};
 
 use crate::{
     frontend::{
@@ -20,7 +24,7 @@ use super::{
 };
 
 
-#[derive(Draw)]
+#[derive(Draw, DrawAt, ProcessInputAt)]
 pub struct ShipInfo(Canvas);
 
 impl ShipInfo {
