@@ -19,13 +19,13 @@ use crate::{
 
 
 pub struct Canvas {
-    widgets: Vec<(graphics::Pnt2, Box<dyn Element>)>,
+    elements: Vec<(graphics::Pnt2, Box<dyn Element>)>,
 }
 
 impl Canvas {
     pub fn create() -> Self {
         Self {
-            widgets: Vec::new(),
+            elements: Vec::new(),
         }
     }
 
@@ -35,7 +35,7 @@ impl Canvas {
     )
         where E: Element + 'static
     {
-        self.widgets.push((position, Box::new(widget)));
+        self.elements.push((position, Box::new(widget)));
     }
 }
 
@@ -58,7 +58,7 @@ impl DrawAt for Canvas {
     )
         -> Result<(), DrawError>
     {
-        for (widget_pos, widget) in &mut self.widgets {
+        for (widget_pos, widget) in &mut self.elements {
             let pos = pos + widget_pos.to_vector();
             widget.draw_at(res, frame, pos)?;
         }
@@ -69,7 +69,7 @@ impl DrawAt for Canvas {
 
 impl ProcessInputAt for Canvas {
     fn process_input_at(&mut self, input: &mut Input, pos: graphics::Pnt2) {
-        for (widget_pos, widget) in &mut self.widgets {
+        for (widget_pos, widget) in &mut self.elements {
             let pos = pos + widget_pos.to_vector();
             widget.process_input_at(input, pos);
         }
