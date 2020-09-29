@@ -5,12 +5,18 @@ use crate::{
             Frame,
         },
         ui::{
+            anchor::{
+                Anchor,
+                Horizontal,
+                Vertical,
+            },
             input::Input,
             traits::{
                 Draw,
                 DrawAt,
                 DrawError,
                 ProcessInputAt,
+                Size,
             },
         },
     },
@@ -20,12 +26,14 @@ use crate::{
 
 pub struct Canvas {
     elements: Vec<(graphics::Pnt2, Box<dyn Element>)>,
+    margin:  f32,
 }
 
 impl Canvas {
-    pub fn create() -> Self {
+    pub fn create(margin: f32) -> Self {
         Self {
             elements: Vec::new(),
+            margin,
         }
     }
 
@@ -35,6 +43,38 @@ impl Canvas {
     )
         where E: Element + 'static
     {
+        self.elements.push((position, Box::new(element)));
+    }
+
+    pub fn add_anchored<E>(&mut self,
+        element: E,
+        anchor:  Anchor,
+        frame:   &Frame,
+    )
+        where E: Element + Size + 'static
+    {
+        let size = frame.screen.logical_size();
+
+        let x = match anchor.horizontal {
+            Horizontal::Left  => 0.0,
+            Horizontal::Right => size.width,
+        };
+        let y = match anchor.vertical {
+            Vertical::Top    => 0.0,
+            Vertical::Bottom => size.height,
+        };
+
+        let offset_x = match anchor.horizontal {
+            Horizontal::Left  => self.margin,
+            Horizontal::Right => -element.size().width - self.margin
+        };
+        let offset_y = match anchor.vertical {
+            Vertical::Top    => self.margin,
+            Vertical::Bottom => -element.size().height - self.margin
+        };
+
+        let position = graphics::Pnt2::new(x + offset_x, y + offset_y);
+
         self.elements.push((position, Box::new(element)));
     }
 }

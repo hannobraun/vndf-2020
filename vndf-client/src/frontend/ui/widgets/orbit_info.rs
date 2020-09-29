@@ -41,7 +41,7 @@ impl OrbitInfo {
         if let Some((peri_text, peri_pos, apo_text, apo_pos)) =
             Self::text_and_pos(orbit, game, screen)
         {
-            let mut canvas = Canvas::create();
+            let mut canvas = Canvas::create(0.0);
 
             canvas.add_at(
                 TextPanel::create(

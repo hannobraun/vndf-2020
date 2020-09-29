@@ -40,24 +40,6 @@ pub trait Size {
 
         graphics::Vec2::new(x, y)
     }
-
-    fn position(mut self,
-        anchor: Anchor,
-        margin: graphics::Scalar,
-        frame:  &Frame,
-    )
-        -> Positioned<Self>
-        where Self: Sized,
-    {
-        let position = anchor
-            .origin(frame)
-            .position(&mut self, margin);
-
-        Positioned {
-            widget: self,
-            position,
-        }
-    }
 }
 
 
@@ -116,31 +98,5 @@ pub struct DrawError(drawables::text::Error);
 impl From<drawables::text::Error> for DrawError {
     fn from(err: drawables::text::Error) -> Self {
         Self(err)
-    }
-}
-
-
-pub struct Positioned<T> {
-    pub widget:   T,
-    pub position: graphics::Pnt2,
-}
-
-impl<T> Positioned<T> {
-    pub fn process_input(&mut self, input: &mut Input)
-        -> &mut Self
-        where T: ProcessInputAt
-    {
-        self.widget.process_input_at(input, self.position);
-        self
-    }
-
-    pub fn draw(&mut self,
-        res:   &mut DrawResources,
-        frame: &mut Frame,
-    )
-        -> Result<(), DrawError>
-        where T: DrawAt
-    {
-        self.widget.draw_at(res, frame, self.position)
     }
 }

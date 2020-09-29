@@ -37,7 +37,7 @@ impl ShipInfo {
         -> Result<Option<Self>, text::CreateError>
     {
         if let Some((text, pos)) = Self::text_and_pos(ship, game, screen) {
-            let mut canvas = Canvas::create();
+            let mut canvas = Canvas::create(0.0);
 
             let text_panel = TextPanel::create(
                 res,

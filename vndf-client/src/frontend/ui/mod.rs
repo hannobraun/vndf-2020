@@ -32,10 +32,11 @@ use self::{
     input::Input,
     traits::{
         Draw as _,
-        Size as _,
         DrawError,
+        ProcessInputAt as _,
     },
     widgets::{
+        Canvas,
         Diagnostics,
         Instructions,
         OrbitInfo,
@@ -92,34 +93,39 @@ impl Ui {
     {
         const MARGIN: f32 = 20.0;
 
+        let mut canvas = Canvas::create(MARGIN);
+
         if game.input.config.diagnostics {
-            Diagnostics
-                ::create(
+            canvas.add_anchored(
+                Diagnostics::create(
                     res,
                     MARGIN,
                     game,
                     frame,
-                )?
-                .position(Anchor::top_left(), MARGIN, frame)
-                .draw(res, frame)?;
+                )?,
+                Anchor::top_left(),
+                frame,
+            );
         }
 
-        ViewSize
-            ::create(
+        canvas.add_anchored(
+            ViewSize::create(
                 res,
                 frame,
                 game,
-            )?
-            .position(Anchor::bottom_left(), MARGIN, frame)
-            .draw(res, frame)?;
+            )?,
+            Anchor::bottom_left(),
+            frame,
+        );
 
-        Instructions
-            ::create(
+        canvas.add_anchored(
+            Instructions::create(
                 res,
                 game,
-            )?
-            .position(Anchor::bottom_right(), MARGIN, frame)
-            .draw(res, frame)?;
+            )?,
+            Anchor::bottom_right(),
+            frame,
+        );
 
         let ship_control = ShipControl::create(
             res,
@@ -127,10 +133,11 @@ impl Ui {
             game,
         )?;
         if let Some(ship_control) = ship_control {
-            ship_control
-                .position(Anchor::top_right(), MARGIN, frame)
-                .process_input(&mut self.input)
-                .draw(res, frame)?;
+            canvas.add_anchored(
+                ship_control,
+                Anchor::top_right(),
+                frame,
+            );
         }
 
         for orbit in game.state.active_orbits() {
@@ -140,8 +147,11 @@ impl Ui {
                 game,
                 screen,
             )?;
-            if let Some(mut orbit_info) = orbit_info {
-                orbit_info.draw(res, frame)?;
+            if let Some(orbit_info) = orbit_info {
+                canvas.add_at(
+                    orbit_info,
+                    graphics::Pnt2::zero(),
+                );
             }
         }
 
@@ -152,10 +162,16 @@ impl Ui {
                 game,
                 screen,
             )?;
-            if let Some(mut ship_info) = ship_info {
-                ship_info.draw(res, frame)?;
+            if let Some(ship_info) = ship_info {
+                canvas.add_at(
+                    ship_info,
+                    graphics::Pnt2::zero(),
+                );
             }
         }
+
+        canvas.draw(res, frame)?;
+        canvas.process_input_at(&mut self.input, graphics::Pnt2::zero());
 
         for action in self.input.actions.drain(..) {
             println!("{:?}", action);

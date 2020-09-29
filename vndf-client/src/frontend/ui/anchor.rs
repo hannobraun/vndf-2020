@@ -1,12 +1,3 @@
-use crate::{
-    frontend::{
-        drawers::Frame,
-        ui::traits::Size,
-    },
-    graphics,
-};
-
-
 pub struct Anchor {
     pub horizontal: Horizontal,
     pub vertical:   Vertical,
@@ -40,26 +31,6 @@ impl Anchor {
             vertical:   Vertical::Bottom,
         }
     }
-
-    pub fn origin(self, frame: &Frame) -> Origin {
-        let size = frame.screen.logical_size();
-
-        let x = match self.horizontal {
-            Horizontal::Left  => 0.0,
-            Horizontal::Right => size.width,
-        };
-        let y = match self.vertical {
-            Vertical::Top    => 0.0,
-            Vertical::Bottom => size.height,
-        };
-
-        let pos = graphics::Pnt2::new(x, y);
-
-        Origin {
-            anchor: self,
-            pos,
-        }
-    }
 }
 
 
@@ -71,21 +42,4 @@ pub enum Horizontal {
 pub enum Vertical {
     Top,
     Bottom,
-}
-
-
-pub struct Origin {
-    anchor: Anchor,
-    pos:    graphics::Pnt2,
-}
-
-impl Origin {
-    pub fn position(self,
-        widget: &dyn Size,
-        margin: graphics::Scalar,
-    )
-        -> graphics::Pnt2
-    {
-        self.pos + widget.offset(self.anchor, margin)
-    }
 }
