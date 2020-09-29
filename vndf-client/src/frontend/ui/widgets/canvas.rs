@@ -58,8 +58,8 @@ impl DrawAt for Canvas {
     )
         -> Result<(), DrawError>
     {
-        for (widget_pos, element) in &mut self.elements {
-            let pos = pos + widget_pos.to_vector();
+        for (element_pos, element) in &mut self.elements {
+            let pos = pos + element_pos.to_vector();
             element.draw_at(res, frame, pos)?;
         }
 
