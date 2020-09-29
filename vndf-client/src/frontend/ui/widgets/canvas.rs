@@ -69,9 +69,9 @@ impl DrawAt for Canvas {
 
 impl ProcessInputAt for Canvas {
     fn process_input_at(&mut self, input: &mut Input, pos: graphics::Pnt2) {
-        for (widget_pos, widget) in &mut self.elements {
+        for (widget_pos, element) in &mut self.elements {
             let pos = pos + widget_pos.to_vector();
-            widget.process_input_at(input, pos);
+            element.process_input_at(input, pos);
         }
     }
 }
