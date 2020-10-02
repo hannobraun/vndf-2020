@@ -1,5 +1,5 @@
 use winit::{
-    dpi::LogicalPosition,
+    dpi::PhysicalPosition,
     event::{
         ElementState,
         Event,
@@ -58,7 +58,7 @@ impl InputHandler {
                     MouseScrollDelta::LineDelta(_, y) => {
                         *y
                     }
-                    MouseScrollDelta::PixelDelta(LogicalPosition { y, ..}) => {
+                    MouseScrollDelta::PixelDelta(PhysicalPosition { y, ..}) => {
                         *y as f32 * 0.1
                     }
                 };

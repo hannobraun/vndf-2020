@@ -193,9 +193,13 @@ keys!(
     "Numpad7",          Keyboard, Numpad7;
     "Numpad8",          Keyboard, Numpad8;
     "Numpad9",          Keyboard, Numpad9;
+    "NumpadAdd",        Keyboard, NumpadAdd;
+    "NumpadDecimal",    Keyboard, NumpadDecimal;
+    "NumpadDivide",     Keyboard, NumpadDivide;
+    "NumpadMultiply",   Keyboard, NumpadMultiply;
+    "NumpadSubtract",   Keyboard, NumpadSubtract;
     "AbntC1",           Keyboard, AbntC1;
     "AbntC2",           Keyboard, AbntC2;
-    "Add",              Keyboard, Add;
     "Apostrophe",       Keyboard, Apostrophe;
     "Apps",             Keyboard, Apps;
     "At",               Keyboard, At;
@@ -206,8 +210,6 @@ keys!(
     "Colon",            Keyboard, Colon;
     "Comma",            Keyboard, Comma;
     "Convert",          Keyboard, Convert;
-    "Decimal",          Keyboard, Decimal;
-    "Divide",           Keyboard, Divide;
     "Equals",           Keyboard, Equals;
     "Grave",            Keyboard, Grave;
     "Kana",             Keyboard, Kana;
@@ -221,7 +223,6 @@ keys!(
     "MediaSelect",      Keyboard, MediaSelect;
     "MediaStop",        Keyboard, MediaStop;
     "Minus",            Keyboard, Minus;
-    "Multiply",         Keyboard, Multiply;
     "Mute",             Keyboard, Mute;
     "MyComputer",       Keyboard, MyComputer;
     "NavigateForward",  Keyboard, NavigateForward;
@@ -245,7 +246,6 @@ keys!(
     "Slash",            Keyboard, Slash;
     "Sleep",            Keyboard, Sleep;
     "Stop",             Keyboard, Stop;
-    "Subtract",         Keyboard, Subtract;
     "Sysrq",            Keyboard, Sysrq;
     "Tab",              Keyboard, Tab;
     "Underline",        Keyboard, Underline;
