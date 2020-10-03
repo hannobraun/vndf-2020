@@ -845,9 +845,9 @@ dependencies = [
 
 [[package]]
 name = "glyph_brush_draw_cache"
-version = "0.1.1"
+version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e5f15abf9569e0b4440797efc0d565c8f30c4a1ca8b0b0c10c0fb7fb2a343c82"
+checksum = "356cb2555f0f2ada0e4437f0f7dce3d4b261a8f6bbe77efd5e23c10405e6a9eb"
 dependencies = [
  "ab_glyph",
  "crossbeam-channel",
