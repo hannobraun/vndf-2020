@@ -1,6 +1,7 @@
 use crate::graphics;
 
 
+#[derive(Debug)]
 pub struct Input {
     pub cursor: Cursor,
     pub click:  bool,
