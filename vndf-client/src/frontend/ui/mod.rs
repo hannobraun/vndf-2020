@@ -170,8 +170,8 @@ impl Ui {
             }
         }
 
-        canvas.draw(res, frame)?;
         canvas.process_input_at(&mut self.input, graphics::Pnt2::zero());
+        canvas.draw(res, frame)?;
 
         for action in self.input.actions.drain(..) {
             println!("{:?}", action);
