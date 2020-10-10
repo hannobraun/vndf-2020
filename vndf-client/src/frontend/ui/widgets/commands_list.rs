@@ -24,7 +24,7 @@ impl CommandsList {
     )
         -> Result<Self, text::CreateError>
     {
-        let text_panel = TextPanel::create(
+        let title = TextPanel::create(
             res,
             format!(
                 "Commands",
@@ -32,7 +32,7 @@ impl CommandsList {
         )?;
 
         Ok(
-            Self(text_panel)
+            Self(title)
         )
     }
 }
