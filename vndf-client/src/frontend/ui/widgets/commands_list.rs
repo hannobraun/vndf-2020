@@ -26,7 +26,7 @@ impl CommandsList {
     )
         -> Result<Self, text::CreateError>
     {
-        let mut column = Column::create(margin);
+        let mut column = Column::create(margin / 3.0);
         column.add(TextPanel::create(res, format!("Commands"))?);
         column.add(TextPanel::create(res, format!("Command 1"))?);
         column.add(TextPanel::create(res, format!("Command 2"))?);
