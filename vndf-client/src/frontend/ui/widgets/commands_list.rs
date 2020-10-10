@@ -10,17 +10,19 @@ use crate::{
 };
 
 use super::{
+    Column,
     TextPanel,
     text,
 };
 
 
 #[derive(DrawAt, ProcessInputAt, Size)]
-pub struct CommandsList(TextPanel);
+pub struct CommandsList(Column);
 
 impl CommandsList {
     pub fn create(
-        res: &mut DrawResources,
+        res:    &mut DrawResources,
+        margin: graphics::Scalar,
     )
         -> Result<Self, text::CreateError>
     {
@@ -31,8 +33,11 @@ impl CommandsList {
             ),
         )?;
 
+        let mut column = Column::create(margin);
+        column.add(title);
+
         Ok(
-            Self(title)
+            Self(column)
         )
     }
 }
