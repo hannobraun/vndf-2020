@@ -28,6 +28,8 @@ impl CommandsList {
     {
         let mut column = Column::create(margin);
         column.add(TextPanel::create(res, format!("Commands"))?);
+        column.add(TextPanel::create(res, format!("Command 1"))?);
+        column.add(TextPanel::create(res, format!("Command 2"))?);
 
         Ok(
             Self(column)
