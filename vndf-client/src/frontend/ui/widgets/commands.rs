@@ -6,6 +6,7 @@ use vndf_macros::{
 
 use crate::{
     frontend::drawers::DrawResources,
+    game::Game,
     graphics,
 };
 
@@ -24,12 +25,13 @@ impl Commands {
     pub fn create(
         res:    &mut DrawResources,
         margin: graphics::Scalar,
+        game:   &Game,
     )
         -> Result<Self, text::CreateError>
     {
         let mut column = Column::create(margin);
 
-        column.add(CommandsList::create(res, margin)?);
+        column.add(CommandsList::create(res, margin, game)?);
         column.add(AddCommand::create(res)?);
 
         Ok(

@@ -36,6 +36,7 @@ impl ShipControl {
         let commands = Commands::create(
             res,
             margin,
+            game,
         )?;
 
         let mut column = Column::create(margin);
