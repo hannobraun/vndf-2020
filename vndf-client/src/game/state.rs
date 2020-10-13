@@ -35,7 +35,7 @@ pub struct State {
     pub data:        data::client::Components,
     pub frame_time:  FrameTime,
     pub camera:      Camera,
-    pub commands:    Vec<&'static str>,
+    pub commands:    Vec<String>,
 }
 
 impl State {
@@ -47,7 +47,7 @@ impl State {
             data:        data::client::Components::new(),
             frame_time:  FrameTime::new(),
             camera:      Camera::new(),
-            commands:    vec!["Command 1", "Command 2"],
+            commands:    vec!["Command 1".into(), "Command 2".into()],
         }
     }
 
