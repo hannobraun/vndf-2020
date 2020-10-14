@@ -135,6 +135,10 @@ impl State {
                 Some(orbit)
             })
     }
+
+    pub fn add_command(&mut self) {
+        self.commands.push(format!("Command {}", self.commands.len() + 1));
+    }
 }
 
 

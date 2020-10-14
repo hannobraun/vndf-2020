@@ -29,7 +29,10 @@ use crate::{
 
 use self::{
     anchor::Anchor,
-    input::Input,
+    input::{
+        Action,
+        Input,
+    },
     traits::{
         Draw as _,
         DrawError,
@@ -174,7 +177,11 @@ impl Ui {
         canvas.draw(res, frame)?;
 
         for action in self.input.actions.drain(..) {
-            println!("{:?}", action);
+            match action {
+                Action::AddCommand => {
+                    game.state.add_command();
+                }
+            }
         }
 
         self.input.reset();
