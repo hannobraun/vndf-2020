@@ -137,7 +137,9 @@ impl Renderer {
         self.scale_factor = scale_factor as graphics::Scalar;
     }
 
-    pub fn draw(&mut self, game: &Game, ui: &mut Ui) -> Result<(), DrawError> {
+    pub fn draw(&mut self, game: &mut Game, ui: &mut Ui)
+        -> Result<(), DrawError>
+    {
         let screen = self.screen();
 
         let mut frame = Frame {

@@ -86,7 +86,7 @@ impl Ui {
     pub fn draw(&mut self,
         res:    &mut DrawResources,
         frame:  &mut Frame,
-        game:   &Game,
+        game:   &mut Game,
         screen: &Screen,
     )
         -> Result<(), Error>

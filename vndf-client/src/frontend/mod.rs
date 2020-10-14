@@ -109,7 +109,7 @@ pub fn start(mut game: Game, graphics: Graphics)
                 window.inner().request_redraw();
             }
             Event::RedrawRequested(_) => {
-                if let Err(err) = renderer.draw(&game, &mut ui) {
+                if let Err(err) = renderer.draw(&mut game, &mut ui) {
                     error!("Renderer error: {:?}", err);
                     *control_flow = ControlFlow::Exit;
                 }
