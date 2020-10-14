@@ -47,7 +47,7 @@ impl State {
             data:        data::client::Components::new(),
             frame_time:  FrameTime::new(),
             camera:      Camera::new(),
-            commands:    vec!["Command 1".into(), "Command 2".into()],
+            commands:    Vec::new(),
         }
     }
 
