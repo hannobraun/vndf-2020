@@ -1,23 +1,11 @@
 use std::{
     fmt,
-    hash::{
-        Hash,
-        Hasher,
-    },
+    hash::{Hash, Hasher},
 };
 
-use serde::{
-    Deserialize,
-    Deserializer,
-    Serialize,
-    Serializer,
-};
+use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
-use crate::handle::{
-    Strong,
-    Weak,
-};
-
+use crate::handle::{Strong, Weak};
 
 /// A handle that can be either strong or weak
 ///
@@ -65,34 +53,34 @@ impl<T> Handle<T> {
     pub fn is_strong(&self) -> bool {
         match self {
             Self::Strong(_) => true,
-            Self::Weak(_)   => false,
+            Self::Weak(_) => false,
         }
     }
 
     pub fn strong(self) -> Strong<T> {
         match self {
             Self::Strong(handle) => handle,
-            Self::Weak(_)        => panic!("Expected strong handle; was weak"),
+            Self::Weak(_) => panic!("Expected strong handle; was weak"),
         }
     }
     pub fn weak(&self) -> Weak<T> {
         match self {
             Self::Strong(handle) => handle.into(),
-            Self::Weak(handle)   => *handle,
+            Self::Weak(handle) => *handle,
         }
     }
 
     pub fn as_weak(&self) -> Self {
         match self {
             Self::Strong(handle) => Self::Weak(handle.into()),
-            Self::Weak(handle)   => Self::Weak(*handle),
+            Self::Weak(handle) => Self::Weak(*handle),
         }
     }
 
     pub fn into_weak(self) -> Self {
         match self {
             Self::Strong(handle) => Self::Weak(handle.into()),
-            Self::Weak(handle)   => Self::Weak(handle),
+            Self::Weak(handle) => Self::Weak(handle),
         }
     }
 }
@@ -125,7 +113,7 @@ impl<T> Clone for Handle<T> {
     fn clone(&self) -> Self {
         match self {
             Self::Strong(handle) => Self::Strong(handle.clone()),
-            Self::Weak(handle)   => Self::Weak(*handle),
+            Self::Weak(handle) => Self::Weak(*handle),
         }
     }
 }
@@ -155,7 +143,7 @@ impl<T> PartialEq for Handle<T> {
     fn eq(&self, other: &Self) -> bool {
         match (self, other) {
             (Self::Strong(a), Self::Strong(b)) => a.eq(b),
-            (Self::Weak(a), Self::Weak(b))     => a.eq(b),
+            (Self::Weak(a), Self::Weak(b)) => a.eq(b),
 
             _ => false,
         }
@@ -163,17 +151,21 @@ impl<T> PartialEq for Handle<T> {
 }
 
 impl<T> Hash for Handle<T> {
-    fn hash<H>(&self, state: &mut H) where H: Hasher {
+    fn hash<H>(&self, state: &mut H)
+    where
+        H: Hasher,
+    {
         match self {
             Self::Strong(handle) => handle.hash(state),
-            Self::Weak(handle)   => handle.hash(state),
+            Self::Weak(handle) => handle.hash(state),
         }
     }
 }
 
 impl<T> Serialize for Handle<T> {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-        where S: Serializer
+    where
+        S: Serializer,
     {
         self.weak().serialize(serializer)
     }
@@ -181,7 +173,8 @@ impl<T> Serialize for Handle<T> {
 
 impl<'de, T> Deserialize<'de> for Handle<T> {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-        where D: Deserializer<'de>
+    where
+        D: Deserializer<'de>,
     {
         let handle = Weak::deserialize(deserializer)?;
         Ok(Self::Weak(handle))

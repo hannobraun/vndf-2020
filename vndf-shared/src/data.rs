@@ -1,22 +1,14 @@
 use toadster::handle;
 
 use crate::world::features::{
-    crafts::{
-        Craft,
-        Fuel,
-    },
+    crafts::{Craft, Fuel},
     explosions::Explosion,
     health::Health,
-    physics::{
-        Body,
-        Position,
-        Velocity,
-    },
+    physics::{Body, Position, Velocity},
     planets::Planet,
     players::Player,
     ships::Ship,
 };
-
 
 /// Update component of a specific type from a collection of component stores
 pub trait Update<T> {
@@ -27,7 +19,6 @@ pub trait Update<T> {
 pub trait Remove<T> {
     fn remove(&mut self, handle: impl Into<handle::Weak<T>>);
 }
-
 
 macro_rules! components {
     (

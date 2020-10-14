@@ -1,30 +1,18 @@
 use std::{
     any::TypeId,
     fmt,
-    hash::{
-        Hash,
-        Hasher,
-    },
+    hash::{Hash, Hasher},
     marker::PhantomData,
 };
 
-use serde::{
-    Deserialize,
-    Deserializer,
-    Serialize,
-    Serializer,
-};
+use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use slotmap::DefaultKey;
 
-use crate::handle::{
-    self,
-    Untyped,
-};
-
+use crate::handle::{self, Untyped};
 
 pub struct Weak<T> {
     inner: DefaultKey,
-    kind:  Option<TypeId>,
+    kind: Option<TypeId>,
     _data: PhantomData<T>,
 }
 
@@ -32,7 +20,7 @@ impl<T> Weak<T> {
     pub(crate) fn new(key: DefaultKey) -> Self {
         Self {
             inner: key,
-            kind:  None,
+            kind: None,
             _data: PhantomData,
         }
     }
@@ -41,7 +29,10 @@ impl<T> Weak<T> {
         self.inner
     }
 
-    pub fn into_untyped(self) -> Weak<Untyped> where T: 'static {
+    pub fn into_untyped(self) -> Weak<Untyped>
+    where
+        T: 'static,
+    {
         let mut handle = Weak::new(self.key());
 
         // Let's make sure there's something to distinguish handles of different
@@ -101,7 +92,10 @@ impl<T> PartialEq for Weak<T> {
 }
 
 impl<T> Hash for Weak<T> {
-    fn hash<H>(&self, state: &mut H) where H: Hasher {
+    fn hash<H>(&self, state: &mut H)
+    where
+        H: Hasher,
+    {
         self.key().hash(state);
         self.kind.hash(state);
     }
@@ -109,7 +103,8 @@ impl<T> Hash for Weak<T> {
 
 impl<T> Serialize for Weak<T> {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-        where S: Serializer
+    where
+        S: Serializer,
     {
         self.key().serialize(serializer)
     }
@@ -117,7 +112,8 @@ impl<T> Serialize for Weak<T> {
 
 impl<'de, T> Deserialize<'de> for Weak<T> {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-        where D: Deserializer<'de>
+    where
+        D: Deserializer<'de>,
     {
         let key = DefaultKey::deserialize(deserializer)?;
         Ok(Self::new(key))

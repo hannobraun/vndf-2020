@@ -1,50 +1,33 @@
 use std::{
     collections::HashMap,
     net::SocketAddr,
-    time::{
-        Duration,
-        Instant,
-    },
+    time::{Duration, Instant},
 };
 
-use log::{
-    debug,
-    info,
-};
+use log::{debug, info};
 
 use crate::{
     client::Client,
-    net::{
-        Event,
-        Network,
-    },
+    net::{Event, Network},
     shared::{
-        net::{
-            self,
-            msg,
-        },
+        net::{self, msg},
         world::{
             self,
-            FRAME_TIME,
             features::{
                 base::Update,
-                players::{
-                    PlayerConnected,
-                    PlayerDisconnected,
-                    PlayerInput,
-                },
+                players::{PlayerConnected, PlayerDisconnected, PlayerInput},
             },
+            FRAME_TIME,
         },
     },
 };
 
-
 pub struct Server {
-    network:     Network,
-    events:      Vec<Event>,
-    state:       world::State,
+    network: Network,
+    events: Vec<Event>,
+    state: world::State,
     last_update: Instant,
-    clients:     HashMap<SocketAddr, Client>,
+    clients: HashMap<SocketAddr, Client>,
 }
 
 impl Server {
@@ -59,10 +42,10 @@ impl Server {
     fn new(network: Network) -> Self {
         Self {
             network,
-            events:      Vec::new(),
-            state:       world::State::new(),
+            events: Vec::new(),
+            state: world::State::new(),
             last_update: Instant::now(),
-            clients:     HashMap::new(),
+            clients: HashMap::new(),
         }
     }
 
@@ -87,26 +70,27 @@ impl Server {
                     // Yes, it's a bad idea to just trust the client to provide
                     // a color that is not the same as the background color.
                     // It's good enough for now though.
-                    self.state.player_connected()
+                    self.state
+                        .player_connected()
                         .push(PlayerConnected { addr, color });
                 }
                 Event::Message(addr, msg::FromClient::Action(action)) => {
                     debug!("Input from {}: {:?}", addr, action);
-                    self.state.player_input()
-                        .push(PlayerInput { addr, action });
+                    self.state.player_input().push(PlayerInput { addr, action });
                 }
                 Event::Error(addr, _) => {
                     info!("Disconnected: {}", addr);
 
                     self.clients.remove(&addr);
 
-                    self.state.player_disconnected()
+                    self.state
+                        .player_disconnected()
                         .push(PlayerDisconnected { addr });
                 }
             }
         }
 
-        let now        = Instant::now();
+        let now = Instant::now();
         let frame_time = Duration::from_millis((FRAME_TIME * 1000.0) as u64);
 
         while now.duration_since(self.last_update) > frame_time {
@@ -116,10 +100,8 @@ impl Server {
         }
 
         for player in self.state.player_created().ready() {
-            self.network.send(
-                player.addr,
-                msg::FromServer::Welcome(player.id),
-            );
+            self.network
+                .send(player.addr, msg::FromServer::Welcome(player.id));
         }
 
         for event in self.state.removals().ready() {
@@ -127,10 +109,8 @@ impl Server {
 
             for (&addr, client) in &mut self.clients {
                 client.remove(&handle);
-                self.network.send(
-                    addr,
-                    msg::FromServer::RemoveComponent(handle.clone()),
-                );
+                self.network
+                    .send(addr, msg::FromServer::RemoveComponent(handle.clone()));
             }
         }
 
@@ -141,26 +121,20 @@ impl Server {
                 if should_update {
                     self.network.send(
                         addr,
-                        msg::FromServer::UpdateComponent(
-                            component.clone().into()
-                        ),
+                        msg::FromServer::UpdateComponent(component.clone().into()),
                     );
                 }
             }
         }
 
         for event in self.state.input_handled().ready() {
-            self.network.send(
-                event.addr,
-                msg::FromServer::InputHandled { seq: event.seq },
-            );
+            self.network
+                .send(event.addr, msg::FromServer::InputHandled { seq: event.seq });
         }
 
         for (&addr, _) in &self.clients {
-            self.network.send(
-                addr,
-                msg::FromServer::Diagnostics(self.state.diagnostics()),
-            );
+            self.network
+                .send(addr, msg::FromServer::Diagnostics(self.state.diagnostics()));
         }
     }
 }

@@ -1,13 +1,8 @@
 use crate::{
     game::input,
-    graphics::{
-        self,
-        screen::Screen,
-        transforms,
-    },
+    graphics::{self, screen::Screen, transforms},
     shared::world,
 };
-
 
 pub struct Camera {
     /// The point in the world where the camera is centered
@@ -26,15 +21,16 @@ impl Camera {
     pub fn new() -> Self {
         Self {
             center: world::Pnt2::new(0.0, 0.0),
-            view:   100_000_000.0, // m
-            speed:  1.0,
+            view: 100_000_000.0, // m
+            speed: 1.0,
         }
     }
 
-    pub fn update(&mut self,
-        dt:      world::Scalar,
+    pub fn update(
+        &mut self,
+        dt: world::Scalar,
         own_pos: Option<world::Pnt2>,
-        input:   &mut input::Handler,
+        input: &mut input::Handler,
     ) {
         self.update_speed(dt, input);
 
@@ -45,10 +41,7 @@ impl Camera {
         }
     }
 
-    fn update_speed(&mut self,
-        dt:    world::Scalar,
-        input: &mut input::Handler,
-    ) {
+    fn update_speed(&mut self, dt: world::Scalar, input: &mut input::Handler) {
         // Before we do anything, let's slow the speed down a bit. If the user
         // does nothing, we want the camera to slowly stop.
         self.speed = 1.0 + (self.speed - 1.0) * 0.95;
@@ -60,8 +53,7 @@ impl Camera {
             // Current speed and input go into the same direction. Add input to
             // speed.
             self.speed += input * 0.01;
-        }
-        else {
+        } else {
             // Input goes into other direction. Stop completely.
             self.speed = 1.0;
         }
@@ -89,33 +81,21 @@ impl Camera {
         self.speed = world::Scalar::max(self.speed, min_factor);
     }
 
-    pub fn world_to_screen(&self,
-        screen:      &Screen,
-        point_world: world::Pnt2,
-    )
-        -> graphics::Pnt2
-    {
-        transforms::world_to_screen(self, screen).0
+    pub fn world_to_screen(&self, screen: &Screen, point_world: world::Pnt2) -> graphics::Pnt2 {
+        transforms::world_to_screen(self, screen)
+            .0
             .transform_point(point_world.cast())
     }
 
-    pub fn pixels_per_meter(&self, screen: &Screen)
-        -> graphics::Scalar
-    {
+    pub fn pixels_per_meter(&self, screen: &Screen) -> graphics::Scalar {
         let world_size_on_screen = self.world_size_on_screen(screen);
-        screen.logical_size().width
-            / world_size_on_screen.width as graphics::Scalar
+        screen.logical_size().width / world_size_on_screen.width as graphics::Scalar
     }
 
-    pub fn world_size_on_screen(&self, screen: &Screen)
-        -> world::Size
-    {
-        let screen_size  = screen.logical_size();
+    pub fn world_size_on_screen(&self, screen: &Screen) -> world::Size {
+        let screen_size = screen.logical_size();
         let aspect_ratio = screen_size.width / screen_size.height;
 
-        world::Size::new(
-            self.view * aspect_ratio as world::Scalar,
-            self.view,
-        )
+        world::Size::new(self.view * aspect_ratio as world::Scalar, self.view)
     }
 }

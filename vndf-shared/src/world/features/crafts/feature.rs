@@ -1,16 +1,8 @@
 use toadster::store;
 
-use crate::world::{
-    base::Update,
-    physics::Body,
-};
+use crate::world::{base::Update, physics::Body};
 
-use super::{
-    Craft,
-    Fuel,
-    update_crafts,
-};
-
+use super::{update_crafts, Craft, Fuel};
 
 pub struct Feature;
 
@@ -19,17 +11,13 @@ impl Feature {
         Self
     }
 
-    pub fn on_update(&mut self,
-        event:  &Update,
+    pub fn on_update(
+        &mut self,
+        event: &Update,
         bodies: &mut store::Strong<Body>,
         crafts: &mut store::Strong<Craft>,
-        fuels:  &mut store::Strong<Fuel>,
+        fuels: &mut store::Strong<Fuel>,
     ) {
-        update_crafts(
-            bodies,
-            crafts,
-            fuels,
-            event.dt,
-        );
+        update_crafts(bodies, crafts, fuels, event.dt);
     }
 }

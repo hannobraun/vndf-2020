@@ -1,25 +1,15 @@
 use proc_macro::TokenStream;
 use quote::quote;
 use syn::{
-    parse_macro_input,
-    Fields,
-    FieldsNamed,
-    FieldsUnnamed,
-    Index,
-    ItemStruct,
-    punctuated::Pair,
+    parse_macro_input, punctuated::Pair, Fields, FieldsNamed, FieldsUnnamed, Index, ItemStruct,
 };
-
 
 pub fn derive_draw(input: TokenStream) -> TokenStream {
     dispatch_to_all(
         input,
         quote!(crate::frontend::ui::traits::Draw),
         quote!(draw),
-        vec![
-            quote!(res),
-            quote!(frame),
-        ],
+        vec![quote!(res), quote!(frame)],
         vec![
             quote!(&mut crate::frontend::drawers::DrawResources),
             quote!(&mut crate::frontend::drawers::Frame),
@@ -35,11 +25,7 @@ pub fn derive_draw_at(input: TokenStream) -> TokenStream {
         input,
         quote!(crate::frontend::ui::traits::DrawAt),
         quote!(draw_at),
-        vec![
-            quote!(res),
-            quote!(frame),
-            quote!(pos),
-        ],
+        vec![quote!(res), quote!(frame), quote!(pos)],
         vec![
             quote!(&mut crate::frontend::drawers::DrawResources),
             quote!(&mut crate::frontend::drawers::Frame),
@@ -56,10 +42,7 @@ pub fn derive_process_input_at(input: TokenStream) -> TokenStream {
         input,
         quote!(crate::frontend::ui::traits::ProcessInputAt),
         quote!(process_input_at),
-        vec![
-            quote!(input),
-            quote!(pos),
-        ],
+        vec![quote!(input), quote!(pos)],
         vec![
             quote!(&mut crate::frontend::ui::input::Input),
             quote!(crate::graphics::Pnt2),
@@ -73,12 +56,11 @@ pub fn derive_process_input_at(input: TokenStream) -> TokenStream {
 pub fn derive_size(input: TokenStream) -> TokenStream {
     let struct_ = parse_macro_input!(input as ItemStruct);
 
-    let name     = &struct_.ident;
-    let method   = quote!(size);
+    let name = &struct_.ident;
+    let method = quote!(size);
 
     let mut dispatch_calls: Vec<_> =
-        dispatch_calls(&struct_, &method, &[], CallKind::Expression)
-            .collect();
+        dispatch_calls(&struct_, &method, &[], CallKind::Expression).collect();
 
     if dispatch_calls.len() != 1 {
         panic!("Can only derive `Size`, if struct has exactly one field");
@@ -97,29 +79,21 @@ pub fn derive_size(input: TokenStream) -> TokenStream {
     TokenStream::from(tokens)
 }
 
-
 pub fn dispatch_to_all(
-    input:    TokenStream,
-    trait_:   proc_macro2::TokenStream,
-    method:   proc_macro2::TokenStream,
+    input: TokenStream,
+    trait_: proc_macro2::TokenStream,
+    method: proc_macro2::TokenStream,
     arg_name: Vec<proc_macro2::TokenStream>,
-    arg_ty:   Vec<proc_macro2::TokenStream>,
-    return_:  proc_macro2::TokenStream,
-    result:   proc_macro2::TokenStream,
-    kind:     CallKind,
-)
-    -> TokenStream
-{
+    arg_ty: Vec<proc_macro2::TokenStream>,
+    return_: proc_macro2::TokenStream,
+    result: proc_macro2::TokenStream,
+    kind: CallKind,
+) -> TokenStream {
     let struct_ = parse_macro_input!(input as ItemStruct);
 
     let name = &struct_.ident;
 
-    let method_calls = dispatch_calls(
-        &struct_,
-        &method,
-        &arg_name,
-        kind,
-    );
+    let method_calls = dispatch_calls(&struct_, &method, &arg_name, kind);
 
     let tokens = quote!(
         impl #trait_ for #name {
@@ -140,44 +114,30 @@ pub fn dispatch_to_all(
 }
 
 fn dispatch_calls<'a>(
-    struct_:  &'a ItemStruct,
-    method:   &'a proc_macro2::TokenStream,
+    struct_: &'a ItemStruct,
+    method: &'a proc_macro2::TokenStream,
     arg_name: &'a [proc_macro2::TokenStream],
-    kind:     CallKind,
-)
-    -> impl Iterator<Item=proc_macro2::TokenStream> + 'a
-{
+    kind: CallKind,
+) -> impl Iterator<Item = proc_macro2::TokenStream> + 'a {
     let fields = match &struct_.fields {
-        Fields::Named(FieldsNamed { named, .. }) => {
-            Some(named)
-        }
-        Fields::Unnamed(FieldsUnnamed { unnamed, .. }) => {
-            Some(unnamed)
-        }
-        Fields::Unit => {
-            None
-        }
+        Fields::Named(FieldsNamed { named, .. }) => Some(named),
+        Fields::Unnamed(FieldsUnnamed { unnamed, .. }) => Some(unnamed),
+        Fields::Unit => None,
     };
 
     fields
         .into_iter()
         .map(|punctuated| {
-            punctuated
-                .pairs()
-                .map(|pair| {
-                    match pair {
-                        Pair::Punctuated(field, _) => { field }
-                        Pair::End(field)           => { field }
-                    }
-                })
+            punctuated.pairs().map(|pair| match pair {
+                Pair::Punctuated(field, _) => field,
+                Pair::End(field) => field,
+            })
         })
         .flatten()
         .enumerate()
         .map(move |(i, field)| {
             let field = match &field.ident {
-                Some(ident) => {
-                    quote!(#ident)
-                }
+                Some(ident) => quote!(#ident),
                 None => {
                     let i = Index::from(i);
                     quote!(#i)
@@ -185,25 +145,18 @@ fn dispatch_calls<'a>(
             };
 
             match kind {
-                CallKind::Expression => {
-                    quote!(
-                        self.#field.#method(#(#arg_name,)*)
-                    )
-                }
-                CallKind::Result => {
-                    quote!(
-                        self.#field.#method(#(#arg_name,)*)?;
-                    )
-                }
-                CallKind::Unit => {
-                    quote!(
-                        self.#field.#method(#(#arg_name,)*);
-                    )
-                }
+                CallKind::Expression => quote!(
+                    self.#field.#method(#(#arg_name,)*)
+                ),
+                CallKind::Result => quote!(
+                    self.#field.#method(#(#arg_name,)*)?;
+                ),
+                CallKind::Unit => quote!(
+                    self.#field.#method(#(#arg_name,)*);
+                ),
             }
         })
 }
-
 
 pub enum CallKind {
     Expression,

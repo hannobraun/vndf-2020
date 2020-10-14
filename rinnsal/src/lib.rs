@@ -1,6 +1,5 @@
 use std::collections::VecDeque;
 
-
 #[derive(Debug)]
 pub struct EventBuf<T>(VecDeque<T>);
 
@@ -18,7 +17,6 @@ impl<T> EventBuf<T> {
     }
 }
 
-
 #[derive(Debug)]
 pub struct EventSink<'r, T>(&'r mut EventBuf<T>);
 
@@ -28,7 +26,6 @@ impl<T> EventSink<'_, T> {
     }
 }
 
-
 #[derive(Debug)]
 pub struct EventSource<'r, T>(&'r mut EventBuf<T>);
 
@@ -37,7 +34,7 @@ impl<T> EventSource<'_, T> {
         (self.0).0.pop_front()
     }
 
-    pub fn ready(&mut self) -> impl Iterator<Item=T> + '_ {
+    pub fn ready(&mut self) -> impl Iterator<Item = T> + '_ {
         (self.0).0.drain(..)
     }
 }

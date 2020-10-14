@@ -1,28 +1,14 @@
-use std::sync::{
-    Arc,
-    Mutex,
-};
+use std::sync::{Arc, Mutex};
 
 use log::debug;
-use rinnsal::{
-    EventBuf,
-    EventSource,
-};
-use slotmap::{
-    DefaultKey,
-    DenseSlotMap,
-    dense,
-};
+use rinnsal::{EventBuf, EventSource};
+use slotmap::{dense, DefaultKey, DenseSlotMap};
 
-use crate::{
-    handle,
-    store,
-};
-
+use crate::{handle, store};
 
 #[derive(Debug)]
 pub struct Strong<T> {
-    inner:   DenseSlotMap<DefaultKey, Entry<T>>,
+    inner: DenseSlotMap<DefaultKey, Entry<T>>,
     changes: Arc<Mutex<Changes>>,
     removed: EventBuf<handle::Weak<T>>,
 }
@@ -30,7 +16,7 @@ pub struct Strong<T> {
 impl<T> Strong<T> {
     pub fn new() -> Self {
         Self {
-            inner:   DenseSlotMap::new(),
+            inner: DenseSlotMap::new(),
             changes: Arc::new(Mutex::new(Changes::new())),
             removed: EventBuf::new(),
         }
@@ -48,30 +34,28 @@ impl<T> Strong<T> {
         )
     }
 
-    pub fn get(&self, handle: impl Into<handle::Weak<T>>)
-        -> Option<&T>
-    {
-        self.inner.get(handle.into().key())
+    pub fn get(&self, handle: impl Into<handle::Weak<T>>) -> Option<&T> {
+        self.inner
+            .get(handle.into().key())
             .map(|entry| &entry.value)
     }
 
-    pub fn get_mut(&mut self, handle: impl Into<handle::Weak<T>>)
-        -> Option<&mut T>
-    {
-        self.inner.get_mut(handle.into().key())
+    pub fn get_mut(&mut self, handle: impl Into<handle::Weak<T>>) -> Option<&mut T> {
+        self.inner
+            .get_mut(handle.into().key())
             .map(|entry| &mut entry.value)
     }
 
     pub fn iter(&self) -> Iter<T> {
         Iter {
-            inner:   self.inner.iter(),
+            inner: self.inner.iter(),
             changes: self.changes.clone(),
         }
     }
 
     pub fn iter_mut(&mut self) -> IterMut<T> {
         IterMut {
-            inner:   self.inner.iter_mut(),
+            inner: self.inner.iter_mut(),
             changes: self.changes.clone(),
         }
     }
@@ -131,9 +115,7 @@ impl<T> store::Get<T> for Strong<T> {
 }
 
 impl<T> store::GetMut<T> for Strong<T> {
-    fn get_mut(&mut self, handle: impl Into<handle::Weak<T>>)
-        -> Option<&mut T>
-    {
+    fn get_mut(&mut self, handle: impl Into<handle::Weak<T>>) -> Option<&mut T> {
         self.get_mut(handle)
     }
 }
@@ -155,7 +137,7 @@ impl<'r, T: 'r> store::ValuesMut<'r, T> for Strong<T> {
 }
 
 impl<'a, T> IntoIterator for &'a Strong<T> {
-    type Item     = (handle::Weak<T>, &'a T);
+    type Item = (handle::Weak<T>, &'a T);
     type IntoIter = Iter<'a, T>;
 
     fn into_iter(self) -> Self::IntoIter {
@@ -164,14 +146,13 @@ impl<'a, T> IntoIterator for &'a Strong<T> {
 }
 
 impl<'a, T> IntoIterator for &'a mut Strong<T> {
-    type Item     = (handle::Weak<T>, &'a mut T);
+    type Item = (handle::Weak<T>, &'a mut T);
     type IntoIter = IterMut<'a, T>;
 
     fn into_iter(self) -> Self::IntoIter {
         self.iter_mut()
     }
 }
-
 
 #[derive(Debug)]
 struct Entry<T> {
@@ -190,12 +171,11 @@ impl<T> Entry<T> {
     }
 }
 
-
 #[derive(Debug)]
 pub(crate) struct Changes {
     pub(crate) inc_count: Vec<DefaultKey>,
     pub(crate) dec_count: Vec<DefaultKey>,
-    pub(crate) track:     Vec<DefaultKey>,
+    pub(crate) track: Vec<DefaultKey>,
 }
 
 impl Changes {
@@ -203,22 +183,19 @@ impl Changes {
         Self {
             inc_count: Vec::new(),
             dec_count: Vec::new(),
-            track:     Vec::new(),
+            track: Vec::new(),
         }
     }
 }
 
-
 pub struct Iter<'a, T> {
-    inner:   dense::Iter<'a, DefaultKey, Entry<T>>,
+    inner: dense::Iter<'a, DefaultKey, Entry<T>>,
     changes: Arc<Mutex<Changes>>,
 }
 
 impl<'a, T> Iter<'a, T> {
     pub fn strong(self) -> IterStrong<'a, T> {
-        IterStrong {
-            inner: self,
-        }
+        IterStrong { inner: self }
     }
 }
 
@@ -226,13 +203,11 @@ impl<'a, T> Iterator for Iter<'a, T> {
     type Item = (handle::Weak<T>, &'a T);
 
     fn next(&mut self) -> Option<Self::Item> {
-        self.inner.next()
-            .map(|(key, entry)| {
-                (handle::Weak::new(key), &entry.value)
-            })
+        self.inner
+            .next()
+            .map(|(key, entry)| (handle::Weak::new(key), &entry.value))
     }
 }
-
 
 pub struct IterStrong<'a, T> {
     inner: Iter<'a, T>,
@@ -242,29 +217,21 @@ impl<'a, T> Iterator for IterStrong<'a, T> {
     type Item = (handle::Strong<T>, &'a T);
 
     fn next(&mut self) -> Option<Self::Item> {
-        self.inner.next()
-            .map(|(handle, value)| {
-                let handle = handle::Strong::from_handle(
-                    handle,
-                    self.inner.changes.clone(),
-                    false,
-                );
-                (handle, value)
-            })
+        self.inner.next().map(|(handle, value)| {
+            let handle = handle::Strong::from_handle(handle, self.inner.changes.clone(), false);
+            (handle, value)
+        })
     }
 }
 
-
 pub struct IterMut<'a, T> {
-    inner:   dense::IterMut<'a, DefaultKey, Entry<T>>,
+    inner: dense::IterMut<'a, DefaultKey, Entry<T>>,
     changes: Arc<Mutex<Changes>>,
 }
 
 impl<'a, T> IterMut<'a, T> {
     pub fn strong(self) -> IterMutStrong<'a, T> {
-        IterMutStrong {
-            inner: self,
-        }
+        IterMutStrong { inner: self }
     }
 }
 
@@ -272,13 +239,11 @@ impl<'a, T> Iterator for IterMut<'a, T> {
     type Item = (handle::Weak<T>, &'a mut T);
 
     fn next(&mut self) -> Option<Self::Item> {
-        self.inner.next()
-            .map(|(key, entry)| {
-                (handle::Weak::new(key), &mut entry.value)
-            })
+        self.inner
+            .next()
+            .map(|(key, entry)| (handle::Weak::new(key), &mut entry.value))
     }
 }
-
 
 pub struct IterMutStrong<'a, T> {
     inner: IterMut<'a, T>,
@@ -288,18 +253,12 @@ impl<'a, T> Iterator for IterMutStrong<'a, T> {
     type Item = (handle::Strong<T>, &'a mut T);
 
     fn next(&mut self) -> Option<Self::Item> {
-        self.inner.next()
-            .map(|(handle, value)| {
-                let handle = handle::Strong::from_handle(
-                    handle,
-                    self.inner.changes.clone(),
-                    false,
-                );
-                (handle, value)
-            })
+        self.inner.next().map(|(handle, value)| {
+            let handle = handle::Strong::from_handle(handle, self.inner.changes.clone(), false);
+            (handle, value)
+        })
     }
 }
-
 
 pub struct Values<'a, T>(dense::Values<'a, DefaultKey, Entry<T>>);
 
@@ -307,11 +266,9 @@ impl<'a, T> Iterator for Values<'a, T> {
     type Item = &'a T;
 
     fn next(&mut self) -> Option<Self::Item> {
-        self.0.next()
-            .map(|entry| &entry.value)
+        self.0.next().map(|entry| &entry.value)
     }
 }
-
 
 pub struct ValuesMut<'a, T>(dense::ValuesMut<'a, DefaultKey, Entry<T>>);
 
@@ -319,19 +276,13 @@ impl<'a, T> Iterator for ValuesMut<'a, T> {
     type Item = &'a mut T;
 
     fn next(&mut self) -> Option<Self::Item> {
-        self.0.next()
-            .map(|entry| &mut entry.value)
+        self.0.next().map(|entry| &mut entry.value)
     }
 }
 
-
 #[cfg(test)]
 mod tests {
-    use crate::{
-        handle,
-        store,
-    };
-
+    use crate::{handle, store};
 
     #[test]
     fn it_should_remove_component_when_all_handles_are_dropped() {

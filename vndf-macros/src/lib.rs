@@ -1,15 +1,12 @@
 mod keys;
 mod ui;
 
-
 use proc_macro::TokenStream;
-
 
 #[proc_macro]
 pub fn keys(input: TokenStream) -> TokenStream {
     keys::keys(input)
 }
-
 
 #[proc_macro_derive(Draw)]
 pub fn derive_draw(input: TokenStream) -> TokenStream {

@@ -1,24 +1,15 @@
 use std::collections::VecDeque;
 
-use time::{
-    Duration,
-    Instant,
-};
+use time::{Duration, Instant};
 
 use crate::{
-    game::{
-        camera::Camera,
-        input,
-    },
+    game::{camera::Camera, input},
     shared::{
         data,
         world::{
             self,
             features::{
-                orbits::{
-                    Orbit,
-                    Orbiter,
-                },
+                orbits::{Orbit, Orbiter},
                 planets::Planets,
                 players::PlayerId,
                 ships::Ship,
@@ -27,38 +18,33 @@ use crate::{
     },
 };
 
-
 pub struct State {
-    pub own_id:      Option<PlayerId>,
+    pub own_id: Option<PlayerId>,
     pub diagnostics: Option<data::server::Diagnostics>,
-    pub statistics:  Statistics,
-    pub data:        data::client::Components,
-    pub frame_time:  FrameTime,
-    pub camera:      Camera,
-    pub commands:    Vec<String>,
+    pub statistics: Statistics,
+    pub data: data::client::Components,
+    pub frame_time: FrameTime,
+    pub camera: Camera,
+    pub commands: Vec<String>,
 }
 
 impl State {
     pub fn new() -> Self {
         Self {
-            own_id:      None,
+            own_id: None,
             diagnostics: None,
-            statistics:  Statistics::new(),
-            data:        data::client::Components::new(),
-            frame_time:  FrameTime::new(),
-            camera:      Camera::new(),
-            commands:    Vec::new(),
+            statistics: Statistics::new(),
+            data: data::client::Components::new(),
+            frame_time: FrameTime::new(),
+            camera: Camera::new(),
+            commands: Vec::new(),
         }
     }
 
     pub fn update(&mut self, dt: world::Scalar, input: &mut input::Handler) {
         self.statistics.update();
 
-        self.camera.update(
-            dt,
-            self.own_pos(),
-            input,
-        );
+        self.camera.update(dt, self.own_pos(), input);
 
         for body in self.data.bodies.values_mut() {
             body.update(
@@ -69,11 +55,7 @@ impl State {
             );
         }
         for craft in self.data.crafts.values_mut() {
-            craft.apply_thrust(
-                dt,
-                &mut self.data.bodies,
-                &mut self.data.fuels,
-            );
+            craft.apply_thrust(dt, &mut self.data.bodies, &mut self.data.fuels);
         }
         for explosion in self.data.explosions.values_mut() {
             explosion.update(dt);
@@ -103,54 +85,49 @@ impl State {
     }
 
     pub fn own_pos(&self) -> Option<world::Pnt2> {
-        self.own_ship()
-            .and_then(|ship| {
-                let craft = self.data.crafts.get(&ship.craft)?;
-                let body  = self.data.bodies.get(&craft.body)?;
-                let pos   = self.data.positions.get(&body.pos)?;
+        self.own_ship().and_then(|ship| {
+            let craft = self.data.crafts.get(&ship.craft)?;
+            let body = self.data.bodies.get(&craft.body)?;
+            let pos = self.data.positions.get(&body.pos)?;
 
-                Some(pos.0)
-            })
+            Some(pos.0)
+        })
     }
 
-    pub fn active_orbits(&self) -> impl IntoIterator<Item=Orbit> + '_ {
-        self.own_ship()
-            .and_then(move |ship| {
-                let craft = self.data.crafts.get(&ship.craft)?;
-                let body  = self.data.bodies.get(&craft.body)?;
-                let pos   = self.data.positions.get(&body.pos)?;
-                let vel   = self.data.velocities.get(&body.vel)?;
+    pub fn active_orbits(&self) -> impl IntoIterator<Item = Orbit> + '_ {
+        self.own_ship().and_then(move |ship| {
+            let craft = self.data.crafts.get(&ship.craft)?;
+            let body = self.data.bodies.get(&craft.body)?;
+            let pos = self.data.positions.get(&body.pos)?;
+            let vel = self.data.velocities.get(&body.vel)?;
 
-                let orbiter = Orbiter {
-                    pos: pos.0,
-                    vel: vel.0,
-                };
-                let planets = Planets(&self.data.planets);
+            let orbiter = Orbiter {
+                pos: pos.0,
+                vel: vel.0,
+            };
+            let planets = Planets(&self.data.planets);
 
-                let orbit = Orbit::new(
-                    orbiter,
-                    &planets,
-                )?;
+            let orbit = Orbit::new(orbiter, &planets)?;
 
-                Some(orbit)
-            })
+            Some(orbit)
+        })
     }
 
     pub fn add_command(&mut self) {
-        self.commands.push(format!("Command {}", self.commands.len() + 1));
+        self.commands
+            .push(format!("Command {}", self.commands.len() + 1));
     }
 }
 
-
 pub struct Statistics {
-    pub updates:  VecDeque<Instant>,
+    pub updates: VecDeque<Instant>,
     pub removals: VecDeque<Instant>,
 }
 
 impl Statistics {
     pub fn new() -> Self {
         Self {
-            updates:  VecDeque::new(),
+            updates: VecDeque::new(),
             removals: VecDeque::new(),
         }
     }
@@ -159,22 +136,19 @@ impl Statistics {
         while let Some(instant) = self.updates.front() {
             if instant.elapsed() > Duration::seconds(1) {
                 self.updates.pop_front();
-            }
-            else {
+            } else {
                 break;
             }
         }
         while let Some(instant) = self.removals.front() {
             if instant.elapsed() > Duration::seconds(1) {
                 self.removals.pop_front();
-            }
-            else {
+            } else {
                 break;
             }
         }
     }
 }
-
 
 pub struct FrameTime(VecDeque<Duration>);
 
@@ -195,9 +169,9 @@ impl FrameTime {
     pub fn report(&self) -> Report {
         let mut report = Report {
             latest: Duration::zero(),
-            avg_1:  Duration::zero(),
-            avg_2:  Duration::zero(),
-            avg_3:  Duration::zero(),
+            avg_1: Duration::zero(),
+            avg_2: Duration::zero(),
+            avg_3: Duration::zero(),
         };
 
         let mut sum = Duration::zero();
@@ -221,10 +195,9 @@ impl FrameTime {
     }
 }
 
-
 pub struct Report {
     pub latest: Duration,
-    pub avg_1:  Duration,
-    pub avg_2:  Duration,
-    pub avg_3:  Duration,
+    pub avg_1: Duration,
+    pub avg_2: Duration,
+    pub avg_3: Duration,
 }

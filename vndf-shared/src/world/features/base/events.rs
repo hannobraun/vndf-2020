@@ -1,8 +1,4 @@
-use crate::{
-    data,
-    world::math::Scalar,
-};
-
+use crate::{data, world::math::Scalar};
 
 pub struct ComponentRemoved {
     pub handle: data::client::Handle,

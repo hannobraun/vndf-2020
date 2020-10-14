@@ -1,35 +1,23 @@
 use std::{
-    collections::{
-        BTreeMap,
-        VecDeque,
-        btree_map,
-        vec_deque,
-    },
+    collections::{btree_map, vec_deque, BTreeMap, VecDeque},
     fmt,
 };
 
-use time::{
-    OffsetDateTime,
-    Time,
-};
+use time::{OffsetDateTime, Time};
 
-use crate::shared::action::{
-    self,
-    Action,
-};
-
+use crate::shared::action::{self, Action};
 
 pub struct Events {
-    unsent:   VecDeque<Event>,
-    sent:     BTreeMap<u64, Event>,
+    unsent: VecDeque<Event>,
+    sent: BTreeMap<u64, Event>,
     next_seq: u64,
 }
 
 impl Events {
     pub fn new() -> Self {
         Self {
-            unsent:   VecDeque::new(),
-            sent:     BTreeMap::new(),
+            unsent: VecDeque::new(),
+            sent: BTreeMap::new(),
             next_seq: 0,
         }
     }
@@ -41,7 +29,7 @@ impl Events {
                 kind,
             },
             entered: OffsetDateTime::now_utc().time(),
-            sent:    None,
+            sent: None,
             handled: None,
         };
 
@@ -53,14 +41,14 @@ impl Events {
     pub fn iter(&self) -> Iter {
         Iter {
             unsent: self.unsent.iter(),
-            sent:   self.sent.values(),
+            sent: self.sent.values(),
         }
     }
 
-    pub fn unsent(&mut self) -> impl Iterator<Item=Action> + '_ {
+    pub fn unsent(&mut self) -> impl Iterator<Item = Action> + '_ {
         Unsent {
             inner: self.unsent.drain(..),
-            sent:  &mut self.sent,
+            sent: &mut self.sent,
         }
     }
 
@@ -69,8 +57,7 @@ impl Events {
             let first = self.sent.keys().copied().next();
             if let Some(first) = first {
                 self.sent.remove(&first);
-            }
-            else {
+            } else {
                 break;
             }
         }
@@ -85,38 +72,36 @@ impl Events {
 
 impl<'r> IntoIterator for &'r Events {
     type IntoIter = Iter<'r>;
-    type Item     = &'r Event;
+    type Item = &'r Event;
 
     fn into_iter(self) -> Self::IntoIter {
         self.iter()
     }
 }
 
-
 #[derive(Clone, Copy, Debug)]
 pub struct Event {
-    pub inner:   Action,
+    pub inner: Action,
     pub entered: Time,
-    pub sent:    Option<Time>,
+    pub sent: Option<Time>,
     pub handled: Option<Time>,
 }
 
 impl fmt::Display for Event {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f,
+        write!(
+            f,
             "{}: {:?} ({}",
             self.inner.seq,
             self.inner.kind,
             self.entered.format("%H:%M:%S"),
         )?;
         if let Some(sent) = self.sent {
-            let entered_to_sent_ms = (sent - self.entered)
-                .whole_milliseconds();
+            let entered_to_sent_ms = (sent - self.entered).whole_milliseconds();
             write!(f, ", sent: +{}ms", entered_to_sent_ms)?;
         }
         if let Some(handled) = self.handled {
-            let entered_to_handled_ms = (handled - self.entered)
-                .whole_milliseconds();
+            let entered_to_handled_ms = (handled - self.entered).whole_milliseconds();
             write!(f, ", handled: +{}ms", entered_to_handled_ms)?;
         }
         write!(f, ")")?;
@@ -125,43 +110,38 @@ impl fmt::Display for Event {
     }
 }
 
-
 pub struct Iter<'r> {
     unsent: vec_deque::Iter<'r, Event>,
-    sent:   btree_map::Values<'r, u64, Event>,
+    sent: btree_map::Values<'r, u64, Event>,
 }
 
 impl<'r> Iterator for Iter<'r> {
     type Item = &'r Event;
 
     fn next(&mut self) -> Option<Self::Item> {
-        self.unsent.next()
-            .or_else(|| self.sent.next())
+        self.unsent.next().or_else(|| self.sent.next())
     }
 }
 
 impl DoubleEndedIterator for Iter<'_> {
     fn next_back(&mut self) -> Option<Self::Item> {
-        self.sent.next_back()
-            .or_else(|| self.unsent.next_back())
+        self.sent.next_back().or_else(|| self.unsent.next_back())
     }
 }
 
-
 pub struct Unsent<'r> {
     inner: vec_deque::Drain<'r, Event>,
-    sent:  &'r mut BTreeMap<u64, Event>,
+    sent: &'r mut BTreeMap<u64, Event>,
 }
 
 impl<'r> Iterator for Unsent<'r> {
     type Item = Action;
 
     fn next(&mut self) -> Option<Self::Item> {
-        self.inner.next()
-            .map(|mut event| {
-                event.sent = Some(OffsetDateTime::now_utc().time());
-                self.sent.insert(event.inner.seq, event);
-                event.inner
-            })
+        self.inner.next().map(|mut event| {
+            event.sent = Some(OffsetDateTime::now_utc().time());
+            self.sent.insert(event.inner.seq, event);
+            event.inner
+        })
     }
 }

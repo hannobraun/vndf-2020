@@ -1,15 +1,10 @@
-use serde::{
-    Deserialize,
-    Serialize,
-};
-
+use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Copy, Debug, Deserialize, Serialize, PartialEq)]
 pub struct Action {
-    pub seq:  u64,
+    pub seq: u64,
     pub kind: Kind,
 }
-
 
 #[derive(Clone, Copy, Debug, Deserialize, Serialize, PartialEq)]
 pub enum Kind {
@@ -19,7 +14,7 @@ pub enum Kind {
 
 #[derive(Clone, Copy, Debug, Deserialize, Serialize, Eq, PartialEq)]
 pub enum Rotation {
-    Pos  =  1,
-    Neg  = -1,
-    None =  0,
+    Pos = 1,
+    Neg = -1,
+    None = 0,
 }

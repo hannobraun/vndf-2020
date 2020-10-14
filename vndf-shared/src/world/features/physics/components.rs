@@ -1,25 +1,9 @@
-use serde::{
-    Deserialize,
-    Serialize,
-};
-use toadster::{
-    Handle,
-    store,
-};
+use serde::{Deserialize, Serialize};
+use toadster::{store, Handle};
 
 use crate::world::{
-    math::{
-        self,
-        Angle,
-        Pnt2,
-        Scalar,
-        Vec2,
-        rotate,
-    },
-    planets::{
-        Planet,
-        Planets,
-    },
+    math::{self, rotate, Angle, Pnt2, Scalar, Vec2},
+    planets::{Planet, Planets},
 };
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
@@ -35,7 +19,6 @@ impl Position {
     }
 }
 
-
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Velocity(pub Vec2);
 
@@ -48,7 +31,6 @@ impl Velocity {
         Self(self.0.clone())
     }
 }
-
 
 /// A physical body
 ///
@@ -69,12 +51,7 @@ pub struct Body {
 }
 
 impl Body {
-    pub fn new(
-        pos: impl Into<Handle<Position>>,
-        vel: impl Into<Handle<Velocity>>,
-    )
-        -> Self
-    {
+    pub fn new(pos: impl Into<Handle<Position>>, vel: impl Into<Handle<Velocity>>) -> Self {
         Self {
             pos: pos.into(),
             vel: vel.into(),
@@ -89,34 +66,30 @@ impl Body {
 
     pub fn to_weak(&self) -> Self {
         Self {
-            pos:  self.pos.as_weak(),
-            vel:  self.vel.as_weak(),
-            acc:  self.acc.clone(),
-            dir:  self.dir.clone(),
-            rot:  self.rot.clone(),
+            pos: self.pos.as_weak(),
+            vel: self.vel.as_weak(),
+            acc: self.acc.clone(),
+            dir: self.dir.clone(),
+            rot: self.rot.clone(),
             mass: self.mass.clone(),
         }
     }
 
-    pub fn update(&mut self,
-            dt:         Scalar,
-            planets:    &Planets<impl for<'r> store::Values<'r, Planet>>,
-        mut positions:  impl store::GetMut<Position>,
+    pub fn update(
+        &mut self,
+        dt: Scalar,
+        planets: &Planets<impl for<'r> store::Values<'r, Planet>>,
+        mut positions: impl store::GetMut<Position>,
         mut velocities: impl store::GetMut<Velocity>,
-    )
-        -> Option<()>
-    {
+    ) -> Option<()> {
         let vel = velocities.get_mut(&self.vel)?;
         let pos = positions.get_mut(&self.pos)?;
 
         self.dir = rotate(self.dir, self.rot * dt);
 
-        math::integrate(
-            dt,
-            &mut pos.0,
-            &mut vel.0,
-            |pos| self.acc + planets.acceleration_at(pos),
-        );
+        math::integrate(dt, &mut pos.0, &mut vel.0, |pos| {
+            self.acc + planets.acceleration_at(pos)
+        });
         self.acc = Vec2::zero();
 
         Some(())

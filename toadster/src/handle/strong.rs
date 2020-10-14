@@ -1,15 +1,9 @@
 use std::{
     borrow::Borrow,
     fmt,
-    hash::{
-        Hash,
-        Hasher,
-    },
+    hash::{Hash, Hasher},
     marker::PhantomData,
-    sync::{
-        Arc,
-        Mutex,
-    },
+    sync::{Arc, Mutex},
 };
 
 use backtrace::Backtrace;
@@ -17,39 +11,23 @@ use log::trace;
 use slotmap::DefaultKey;
 
 use crate::{
-    handle::{
-        Untyped,
-        Weak,
-    },
+    handle::{Untyped, Weak},
     store::strong::Changes,
 };
 
-
 pub struct Strong<T> {
-    inner:   Weak<T>,
+    inner: Weak<T>,
     changes: Arc<Mutex<Changes>>,
-    track:   bool,
-    _data:   PhantomData<T>,
+    track: bool,
+    _data: PhantomData<T>,
 }
 
 impl<T> Strong<T> {
-    pub(crate) fn from_key(
-        key:     DefaultKey,
-        changes: Arc<Mutex<Changes>>,
-        track:   bool,
-    )
-        -> Self
-    {
+    pub(crate) fn from_key(key: DefaultKey, changes: Arc<Mutex<Changes>>, track: bool) -> Self {
         Self::from_handle(Weak::new(key), changes, track)
     }
 
-    pub(crate) fn from_handle(
-        inner:   Weak<T>,
-        changes: Arc<Mutex<Changes>>,
-        track:   bool,
-    )
-        -> Self
-    {
+    pub(crate) fn from_handle(inner: Weak<T>, changes: Arc<Mutex<Changes>>, track: bool) -> Self {
         if track {
             trace!("inc: {:?} {:?}", inner.key(), Backtrace::new());
         }
@@ -79,22 +57,17 @@ impl<T> Strong<T> {
         self.inner.into()
     }
 
-    pub fn into_untyped(self) -> Strong<Untyped> where T: 'static {
-        Strong::from_handle(
-            self.inner.into_untyped(),
-            self.changes.clone(),
-            self.track,
-        )
+    pub fn into_untyped(self) -> Strong<Untyped>
+    where
+        T: 'static,
+    {
+        Strong::from_handle(self.inner.into_untyped(), self.changes.clone(), self.track)
     }
 }
 
 impl<T> Clone for Strong<T> {
     fn clone(&self) -> Self {
-        Self::from_handle(
-            self.inner,
-            self.changes.clone(),
-            self.track,
-        )
+        Self::from_handle(self.inner, self.changes.clone(), self.track)
     }
 }
 
@@ -132,7 +105,10 @@ impl<T> PartialEq for Strong<T> {
 // Most only rely on the inner `Weak`, to make sure the `Hash` and `Borrow`
 // implementations interact well with collections.
 impl<T> Hash for Strong<T> {
-    fn hash<H>(&self, state: &mut H) where H: Hasher {
+    fn hash<H>(&self, state: &mut H)
+    where
+        H: Hasher,
+    {
         self.inner.hash(state)
     }
 }

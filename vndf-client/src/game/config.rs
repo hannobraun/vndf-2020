@@ -1,45 +1,32 @@
 use std::{
-    io::{
-        self,
-        prelude::*,
-    },
     fmt,
     fs::File,
+    io::{self, prelude::*},
     path::Path,
 };
 
 use serde::{
-    Deserialize,
-    Deserializer,
-    Serialize,
-    Serializer,
-    de::{
-        self,
-        Visitor,
-    },
+    de::{self, Visitor},
+    Deserialize, Deserializer, Serialize, Serializer,
 };
-use winit::event::{
-    MouseButton,
-    VirtualKeyCode,
-};
+use winit::event::{MouseButton, VirtualKeyCode};
 
 use vndf_macros::keys;
-
 
 #[derive(Clone, Copy, Debug, Deserialize, Serialize)]
 pub struct Config {
     pub diagnostics: bool,
-    pub input:       Input,
-    pub color:       Color,
+    pub input: Input,
+    pub color: Color,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Serialize)]
 pub struct Input {
-    pub left:       Key,
-    pub right:      Key,
-    pub thrust_on:  Key,
+    pub left: Key,
+    pub right: Key,
+    pub thrust_on: Key,
     pub thrust_off: Key,
-    pub quit:       Key,
+    pub quit: Key,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Serialize)]
@@ -55,19 +42,16 @@ impl Config {
 
         if path.exists() {
             let mut s = String::new();
-            File::open(path)?
-                .read_to_string(&mut s)?;
+            File::open(path)?.read_to_string(&mut s)?;
 
             let config = toml::from_str(&s)?;
 
             Ok(config)
-        }
-        else {
+        } else {
             let config = Self::default();
 
             let s = toml::to_string(&config)?;
-            File::create(path)?
-                .write_all(s.as_bytes())?;
+            File::create(path)?.write_all(s.as_bytes())?;
 
             Ok(config)
         }
@@ -79,11 +63,11 @@ impl Default for Config {
         Self {
             diagnostics: false,
             input: Input {
-                left:       Key::Keyboard(VirtualKeyCode::A),
-                right:      Key::Keyboard(VirtualKeyCode::D),
-                thrust_on:  Key::Keyboard(VirtualKeyCode::W),
+                left: Key::Keyboard(VirtualKeyCode::A),
+                right: Key::Keyboard(VirtualKeyCode::D),
+                thrust_on: Key::Keyboard(VirtualKeyCode::W),
                 thrust_off: Key::Keyboard(VirtualKeyCode::S),
-                quit:       Key::Keyboard(VirtualKeyCode::Escape),
+                quit: Key::Keyboard(VirtualKeyCode::Escape),
             },
             color: Color {
                 r: 1.0,
@@ -94,13 +78,11 @@ impl Default for Config {
     }
 }
 
-
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Key {
     Keyboard(VirtualKeyCode),
     Mouse(MouseButton),
 }
-
 
 keys!(
     "Key1",             Keyboard, Key1;
@@ -269,7 +251,6 @@ keys!(
     "MouseRight",  Mouse, Right;
     "MouseMiddle", Mouse, Middle;
 );
-
 
 #[derive(Debug)]
 pub enum Error {

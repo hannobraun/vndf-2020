@@ -18,26 +18,16 @@
 ///   - Positive x is right.
 ///   - Positive y is up.
 ///   - Positive angles rotate counter-clockwise.
-
-
 use crate::{
     game::camera::Camera,
     graphics::{
         self,
-        elements::{
-            ScreenElement,
-            WorldElement,
-        },
-        math::{
-            ClipUnit,
-            LocalUnit,
-            Pixel,
-        },
+        elements::{ScreenElement, WorldElement},
+        math::{ClipUnit, LocalUnit, Pixel},
         screen::Screen,
     },
     shared::world::math::Meter,
 };
-
 
 pub struct Transform<Src, Dst>(pub graphics::Transform<Src, Dst>);
 
@@ -46,16 +36,15 @@ impl<Src, Dst> Transform<Src, Dst> {
         Self(graphics::Transform::identity())
     }
 
-    pub fn post_transform<NewDst>(&self, transform: &Transform<Dst, NewDst>)
-        -> Transform<Src, NewDst>
-    {
+    pub fn post_transform<NewDst>(
+        &self,
+        transform: &Transform<Dst, NewDst>,
+    ) -> Transform<Src, NewDst> {
         Transform(self.0.then(&transform.0))
     }
 
     pub fn to_native(&self) -> NativeTransform {
-        self.0
-            .to_3d()
-            .to_arrays()
+        self.0.to_3d().to_arrays()
     }
 }
 
@@ -65,9 +54,7 @@ impl<Src, Dst> From<graphics::Transform<Src, Dst>> for Transform<Src, Dst> {
     }
 }
 
-
 pub type NativeTransform = [[f32; 4]; 4];
-
 
 /// Returns what is commonly known as the model matrix
 pub fn local_to_world(element: &WorldElement) -> Transform<LocalUnit, Meter> {
@@ -79,7 +66,7 @@ pub fn local_to_world(element: &WorldElement) -> Transform<LocalUnit, Meter> {
 
     graphics::Transform::identity()
         .then_scale(
-            element.size.width  as graphics::Scalar,
+            element.size.width as graphics::Scalar,
             element.size.height as graphics::Scalar,
         )
         .then_rotate(angle)
@@ -96,9 +83,7 @@ pub fn local_to_screen(element: &ScreenElement) -> Transform<LocalUnit, Pixel> {
 }
 
 /// Returns what is commonly known as the view matrix
-pub fn world_to_screen(camera: &Camera, screen: &Screen)
-    -> Transform<Meter, Pixel>
-{
+pub fn world_to_screen(camera: &Camera, screen: &Screen) -> Transform<Meter, Pixel> {
     let pixels_per_meter = camera.pixels_per_meter(screen);
 
     graphics::Transform::identity()
@@ -109,9 +94,7 @@ pub fn world_to_screen(camera: &Camera, screen: &Screen)
 }
 
 /// Returns what is commonly known as the projection matrix
-pub fn screen_to_homogeneous(screen: &Screen)
-    -> Transform<Pixel, ClipUnit>
-{
+pub fn screen_to_homogeneous(screen: &Screen) -> Transform<Pixel, ClipUnit> {
     let clip_units_per_pixel = graphics::Vec2::new(
         2.0 / screen.logical_size().width,
         2.0 / screen.logical_size().height,

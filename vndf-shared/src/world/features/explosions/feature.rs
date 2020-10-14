@@ -1,37 +1,21 @@
 use std::collections::HashSet;
 
 use rinnsal::EventBuf;
-use toadster::{
-    handle,
-    store,
-};
+use toadster::{handle, store};
 
 use crate::world::{
     base::Update,
-    health::{
-        Death,
-        Health,
-    },
-    physics::{
-        Body,
-        Position,
-        Velocity,
-    },
+    health::{Death, Health},
+    physics::{Body, Position, Velocity},
 };
 
 use super::{
-    Explosion,
-    ExplosionFaded,
+    create_explosion, damage_nearby, explode_entity, update_explosions, Explosion, ExplosionFaded,
     ExplosionImminent,
-    create_explosion,
-    damage_nearby,
-    explode_entity,
-    update_explosions,
 };
 
-
 pub struct Feature {
-    pub explosion_faded:    EventBuf<ExplosionFaded>,
+    pub explosion_faded: EventBuf<ExplosionFaded>,
     pub explosion_imminent: EventBuf<ExplosionImminent>,
 
     pub index: HashSet<handle::Strong<Explosion>>,
@@ -40,37 +24,27 @@ pub struct Feature {
 impl Feature {
     pub fn new() -> Self {
         Self {
-            explosion_faded:    EventBuf::new(),
+            explosion_faded: EventBuf::new(),
             explosion_imminent: EventBuf::new(),
 
             index: HashSet::new(),
         }
     }
 
-    pub fn on_update(&mut self,
-        event:      &Update,
-        explosions: &mut store::Strong<Explosion>,
-    ) {
-        update_explosions(
-            explosions,
-            event.dt,
-            &mut self.explosion_faded.sink(),
-        );
+    pub fn on_update(&mut self, event: &Update, explosions: &mut store::Strong<Explosion>) {
+        update_explosions(explosions, event.dt, &mut self.explosion_faded.sink());
     }
 
-    pub fn on_death(&mut self,
-        event:      &Death,
-        bodies:     &mut store::Strong<Body>,
+    pub fn on_death(
+        &mut self,
+        event: &Death,
+        bodies: &mut store::Strong<Body>,
         explosions: &mut store::Strong<Explosion>,
-        healths:    &store::Strong<Health>,
-        positions:  &mut store::Strong<Position>,
+        healths: &store::Strong<Health>,
+        positions: &mut store::Strong<Position>,
         velocities: &mut store::Strong<Velocity>,
     ) {
-        let explosion = explode_entity(
-            &event.handle,
-            bodies,
-            healths,
-        );
+        let explosion = explode_entity(&event.handle, bodies, healths);
         if let Some(explosion) = explosion {
             create_explosion(
                 explosion,
@@ -83,20 +57,15 @@ impl Feature {
         }
     }
 
-    pub fn on_explosion_imminent(&self,
-        event:      &ExplosionImminent,
-        bodies:     &store::Strong<Body>,
+    pub fn on_explosion_imminent(
+        &self,
+        event: &ExplosionImminent,
+        bodies: &store::Strong<Body>,
         explosions: &store::Strong<Explosion>,
-        healths:    &mut store::Strong<Health>,
-        positions:  &store::Strong<Position>,
+        healths: &mut store::Strong<Health>,
+        positions: &store::Strong<Position>,
     ) {
-        damage_nearby(
-            &event.handle,
-            &bodies,
-            explosions,
-            healths,
-            positions,
-        );
+        damage_nearby(&event.handle, &bodies, explosions, healths, positions);
     }
 
     pub fn on_explosion_faded(&mut self, event: &ExplosionFaded) {

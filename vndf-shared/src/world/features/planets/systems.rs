@@ -2,32 +2,25 @@ use toadster::store;
 
 use crate::world::{
     health::Health,
-    math::{
-        Pnt2,
-        Vec2,
-    },
-    physics::components::{
-        Body,
-        Position,
-    },
+    math::{Pnt2, Vec2},
+    physics::components::{Body, Position},
 };
 
 use super::Planet;
 
-
 pub struct Systems<B, H, Pl, Po> {
-    pub bodies:    B,
-    pub healths:   H,
-    pub planets:   Planets<Pl>,
+    pub bodies: B,
+    pub healths: H,
+    pub planets: Planets<Pl>,
     pub positions: Po,
 }
 
 impl<B, H, Pl, Po> Systems<B, H, Pl, Po>
-    where
-        B:  store::Get<Body> + for<'r> store::ValuesMut<'r, Body>,
-        H:  for<'r> store::ValuesMut<'r, Health>,
-        Pl: for<'r> store::Values<'r, Planet>,
-        Po: store::Get<Position>,
+where
+    B: store::Get<Body> + for<'r> store::ValuesMut<'r, Body>,
+    H: for<'r> store::ValuesMut<'r, Health>,
+    Pl: for<'r> store::Values<'r, Planet>,
+    Po: store::Get<Position>,
 {
     pub fn on_update(&mut self) {
         self.check_collisions();
@@ -49,7 +42,7 @@ impl<B, H, Pl, Po> Systems<B, H, Pl, Po>
     pub fn check_collisions(&mut self) -> Option<()> {
         for health in self.healths.values_mut() {
             let body = self.bodies.get(&health.body)?;
-            let pos  = self.positions.get(&body.pos)?;
+            let pos = self.positions.get(&body.pos)?;
 
             if self.planets.check_collision(pos.0) {
                 health.value = 0.0;
@@ -60,11 +53,11 @@ impl<B, H, Pl, Po> Systems<B, H, Pl, Po>
     }
 }
 
-
 pub struct Planets<S>(pub S);
 
 impl<S> Planets<S>
-    where S: for<'r> store::Values<'r, Planet>
+where
+    S: for<'r> store::Values<'r, Planet>,
 {
     pub fn acceleration_at(&self, pos: Pnt2) -> Vec2 {
         let mut acc = Vec2::zero();

@@ -1,23 +1,14 @@
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 
-use crate::world::math::{
-    Length,
-    Pnt2,
-    Scalar,
-    Vec2,
-};
+use crate::world::math::{Length, Pnt2, Scalar, Vec2};
 
 use super::G;
 
-
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Planet {
-    pub pos:    Pnt2,
+    pub pos: Pnt2,
     pub radius: Length,
-    pub mass:   Scalar,
+    pub mass: Scalar,
 }
 
 impl Planet {
@@ -28,7 +19,7 @@ impl Planet {
     /// Acceleration of a body at the given position, due to gravity
     pub fn acceleration_at(&self, pos: Pnt2) -> Vec2 {
         let dist = (pos - self.pos).length();
-        let acc  = G * self.mass / dist.powi(2);
+        let acc = G * self.mass / dist.powi(2);
 
         (self.pos - pos).normalize() * acc
     }

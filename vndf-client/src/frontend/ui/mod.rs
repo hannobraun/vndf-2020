@@ -3,80 +3,50 @@ mod input;
 mod traits;
 mod widgets;
 
-
 use winit::{
     dpi::PhysicalPosition,
-    event::{
-        ElementState,
-        MouseButton,
-    },
+    event::{ElementState, MouseButton},
 };
 
 use crate::{
     frontend::{
-        drawers::{
-            DrawResources,
-            Frame,
-        },
+        drawers::{DrawResources, Frame},
         window::Window,
     },
-    graphics::{
-        self,
-        screen::Screen,
-    },
     game::Game,
+    graphics::{self, screen::Screen},
 };
 
 use self::{
     anchor::Anchor,
-    input::{
-        Action,
-        Input,
-    },
-    traits::{
-        Draw as _,
-        DrawError,
-        ProcessInputAt as _,
-    },
+    input::{Action, Input},
+    traits::{Draw as _, DrawError, ProcessInputAt as _},
     widgets::{
-        Canvas,
-        Diagnostics,
-        Instructions,
-        OrbitInfo,
-        ShipControl,
-        ShipInfo,
-        ViewSize,
-        text,
+        text, Canvas, Diagnostics, Instructions, OrbitInfo, ShipControl, ShipInfo, ViewSize,
     },
 };
 
-
 pub struct Ui {
-    input:        Input,
+    input: Input,
     scale_factor: graphics::Scalar,
 }
 
 impl Ui {
     pub fn new(window: &Window) -> Self {
         Self {
-            input:        Input::new(),
+            input: Input::new(),
             scale_factor: window.scale_factor(),
         }
     }
 
     pub fn handle_cursor_move(&mut self, position: PhysicalPosition<f64>) {
-        self.input.cursor = Some(
-            graphics::Pnt2::new(
-                position.x as f32 / self.scale_factor,
-                position.y as f32 / self.scale_factor,
-            )
-        );
+        self.input.cursor = Some(graphics::Pnt2::new(
+            position.x as f32 / self.scale_factor,
+            position.y as f32 / self.scale_factor,
+        ));
     }
 
-    pub fn handle_mouse_input(&mut self,
-        state:  ElementState,
-        button: MouseButton,
-    ) {
+    pub fn handle_mouse_input(&mut self, state: ElementState, button: MouseButton) {
         if let (MouseButton::Left, ElementState::Pressed) = (button, state) {
             self.input.click = true;
         }
@@ -86,90 +56,53 @@ impl Ui {
         self.scale_factor = scale_factor as graphics::Scalar;
     }
 
-    pub fn draw(&mut self,
-        res:    &mut DrawResources,
-        frame:  &mut Frame,
-        game:   &mut Game,
+    pub fn draw(
+        &mut self,
+        res: &mut DrawResources,
+        frame: &mut Frame,
+        game: &mut Game,
         screen: &Screen,
-    )
-        -> Result<(), Error>
-    {
+    ) -> Result<(), Error> {
         const MARGIN: f32 = 20.0;
 
         let mut canvas = Canvas::create(MARGIN);
 
         if game.input.config.diagnostics {
             canvas.add_anchored(
-                Diagnostics::create(
-                    res,
-                    MARGIN,
-                    game,
-                    frame,
-                )?,
+                Diagnostics::create(res, MARGIN, game, frame)?,
                 Anchor::top_left(),
                 frame,
             );
         }
 
         canvas.add_anchored(
-            ViewSize::create(
-                res,
-                frame,
-                game,
-            )?,
+            ViewSize::create(res, frame, game)?,
             Anchor::bottom_left(),
             frame,
         );
 
         canvas.add_anchored(
-            Instructions::create(
-                res,
-                game,
-            )?,
+            Instructions::create(res, game)?,
             Anchor::bottom_right(),
             frame,
         );
 
-        let ship_control = ShipControl::create(
-            res,
-            MARGIN,
-            game,
-        )?;
+        let ship_control = ShipControl::create(res, MARGIN, game)?;
         if let Some(ship_control) = ship_control {
-            canvas.add_anchored(
-                ship_control,
-                Anchor::top_right(),
-                frame,
-            );
+            canvas.add_anchored(ship_control, Anchor::top_right(), frame);
         }
 
         for orbit in game.state.active_orbits() {
-            let orbit_info = OrbitInfo::create(
-                res,
-                &orbit,
-                game,
-                screen,
-            )?;
+            let orbit_info = OrbitInfo::create(res, &orbit, game, screen)?;
             if let Some(orbit_info) = orbit_info {
-                canvas.add_at(
-                    orbit_info,
-                    graphics::Pnt2::zero(),
-                );
+                canvas.add_at(orbit_info, graphics::Pnt2::zero());
             }
         }
 
         for ship in game.state.data.ships.values() {
-            let ship_info = ShipInfo::create(
-                res,
-                ship,
-                game,
-                screen,
-            )?;
+            let ship_info = ShipInfo::create(res, ship, game, screen)?;
             if let Some(ship_info) = ship_info {
-                canvas.add_at(
-                    ship_info,
-                    graphics::Pnt2::zero(),
-                );
+                canvas.add_at(ship_info, graphics::Pnt2::zero());
             }
         }
 
@@ -189,7 +122,6 @@ impl Ui {
         Ok(())
     }
 }
-
 
 #[derive(Debug)]
 pub enum Error {

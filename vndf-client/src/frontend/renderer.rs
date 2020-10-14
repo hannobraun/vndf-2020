@@ -1,60 +1,36 @@
-use log::{
-    debug,
-    warn,
-};
+use log::{debug, warn};
 use winit::dpi::PhysicalSize;
 
 use crate::{
-    Graphics,
     game::Game,
-    graphics::{
-        self,
-        screen::Screen,
-    },
+    graphics::{self, screen::Screen},
+    Graphics,
 };
 
 use super::{
-    drawables::{
-        self,
-        Drawables,
-    },
+    drawables::{self, Drawables},
     drawers::{
-        DrawResources,
-        Frame,
-        draw_background,
-        draw_explosion,
-        draw_grid,
-        draw_orbit,
-        draw_planet,
-        draw_ship,
+        draw_background, draw_explosion, draw_grid, draw_orbit, draw_planet, draw_ship,
+        DrawResources, Frame,
     },
-    meshes::{
-        self,
-        Meshes,
-    },
-    ui::{
-        self,
-        Ui,
-    },
+    meshes::{self, Meshes},
+    ui::{self, Ui},
     window::Window,
 };
 
-
 pub struct Renderer {
-    surface:         wgpu::Surface,
-    queue:           wgpu::Queue,
+    surface: wgpu::Surface,
+    queue: wgpu::Queue,
     swap_chain_desc: wgpu::SwapChainDescriptor,
-    swap_chain:      wgpu::SwapChain,
-    draw_res:        DrawResources,
+    swap_chain: wgpu::SwapChain,
+    draw_res: DrawResources,
 
     scale_factor: graphics::Scalar,
 }
 
 impl Renderer {
-    pub async fn new(window: &Window, graphics: Graphics)
-        -> Result<Self, InitError>
-    {
-        let size   = window.size();
+    pub async fn new(window: &Window, graphics: Graphics) -> Result<Self, InitError> {
+        let size = window.size();
         let format = wgpu::TextureFormat::Bgra8UnormSrgb;
 
         let backend = select_backend(graphics);
@@ -85,120 +61,82 @@ impl Renderer {
             .await
             .map_err(|err| InitError::RequestDevice(err))?;
 
-        let meshes = Meshes::new()
-            .map_err(|err| InitError::Meshes(err))?;
-        let drawables = Drawables::new(&device, &meshes, format)
-            .map_err(|err| InitError::Drawables(err))?;
+        let meshes = Meshes::new().map_err(|err| InitError::Meshes(err))?;
+        let drawables =
+            Drawables::new(&device, &meshes, format).map_err(|err| InitError::Drawables(err))?;
 
         let swap_chain_desc = wgpu::SwapChainDescriptor {
-            usage:        wgpu::TextureUsage::OUTPUT_ATTACHMENT,
+            usage: wgpu::TextureUsage::OUTPUT_ATTACHMENT,
             format,
-            width:        size.width  as u32,
-            height:       size.height as u32,
+            width: size.width as u32,
+            height: size.height as u32,
             present_mode: wgpu::PresentMode::Fifo,
         };
 
-        let swap_chain = device.create_swap_chain(
-            &surface,
-            &swap_chain_desc,
-        );
+        let swap_chain = device.create_swap_chain(&surface, &swap_chain_desc);
 
         let scale_factor = window.scale_factor();
 
-        let draw_res = DrawResources {
-            device,
-            drawables,
-        };
+        let draw_res = DrawResources { device, drawables };
 
-        Ok(
-            Self {
-                surface,
-                queue,
-                swap_chain_desc,
-                swap_chain,
-                draw_res,
+        Ok(Self {
+            surface,
+            queue,
+            swap_chain_desc,
+            swap_chain,
+            draw_res,
 
-                scale_factor,
-            }
-        )
+            scale_factor,
+        })
     }
 
     pub fn handle_resize(&mut self, size: PhysicalSize<u32>) {
-        self.swap_chain_desc.width  = size.width;
+        self.swap_chain_desc.width = size.width;
         self.swap_chain_desc.height = size.height;
 
-        self.swap_chain = self.draw_res.device.create_swap_chain(
-            &self.surface,
-            &self.swap_chain_desc,
-        );
+        self.swap_chain = self
+            .draw_res
+            .device
+            .create_swap_chain(&self.surface, &self.swap_chain_desc);
     }
 
     pub fn handle_scale_factor_change(&mut self, scale_factor: f64) {
         self.scale_factor = scale_factor as graphics::Scalar;
     }
 
-    pub fn draw(&mut self, game: &mut Game, ui: &mut Ui)
-        -> Result<(), DrawError>
-    {
+    pub fn draw(&mut self, game: &mut Game, ui: &mut Ui) -> Result<(), DrawError> {
         let screen = self.screen();
 
         let mut frame = Frame {
             screen,
-            output: self.swap_chain.get_current_frame()
+            output: self
+                .swap_chain
+                .get_current_frame()
                 .map_err(|err| DrawError::SwapChain(err))?
                 .output,
-            encoder: self.draw_res.device.create_command_encoder(
-                &wgpu::CommandEncoderDescriptor { label: None }
-            ),
+            encoder: self
+                .draw_res
+                .device
+                .create_command_encoder(&wgpu::CommandEncoderDescriptor { label: None }),
         };
 
         draw_background(&mut frame);
-        draw_grid(
-            &mut self.draw_res,
-            &mut frame,
-            game,
-        );
+        draw_grid(&mut self.draw_res, &mut frame, game);
 
         for orbit in game.state.active_orbits() {
-            draw_orbit(
-                &mut self.draw_res,
-                &mut frame,
-                &orbit,
-                game,
-            );
+            draw_orbit(&mut self.draw_res, &mut frame, &orbit, game);
         }
         for planet in game.state.data.planets.values() {
-            draw_planet(
-                &mut self.draw_res,
-                &mut frame,
-                planet,
-                game,
-            );
+            draw_planet(&mut self.draw_res, &mut frame, planet, game);
         }
         for ship in game.state.data.ships.values() {
-            draw_ship(
-                &mut self.draw_res,
-                &mut frame,
-                ship,
-                game,
-            );
+            draw_ship(&mut self.draw_res, &mut frame, ship, game);
         }
         for explosion in game.state.data.explosions.values() {
-            draw_explosion(
-                &mut self.draw_res,
-                &mut frame,
-                explosion,
-                game,
-            );
+            draw_explosion(&mut self.draw_res, &mut frame, explosion, game);
         }
 
-        ui
-            .draw(
-                &mut self.draw_res,
-                &mut frame,
-                game,
-                &screen,
-            )
+        ui.draw(&mut self.draw_res, &mut frame, game, &screen)
             .map_err(|err| DrawError::Ui(err))?;
 
         self.queue.submit(Some(frame.encoder.finish()));
@@ -210,7 +148,6 @@ impl Renderer {
         screen(&self.swap_chain_desc, self.scale_factor)
     }
 }
-
 
 fn select_backend(graphics: Graphics) -> wgpu::BackendBit {
     match graphics {
@@ -230,28 +167,22 @@ fn select_backend(graphics: Graphics) -> wgpu::BackendBit {
 
         Graphics::DirectX11 => wgpu::BackendBit::DX11,
         Graphics::DirectX12 => wgpu::BackendBit::DX12,
-        Graphics::Metal     => wgpu::BackendBit::METAL,
-        Graphics::OpenGl    => wgpu::BackendBit::GL,
-        Graphics::Vulkan    => wgpu::BackendBit::VULKAN,
-        Graphics::WebGpu    => wgpu::BackendBit::BROWSER_WEBGPU,
+        Graphics::Metal => wgpu::BackendBit::METAL,
+        Graphics::OpenGl => wgpu::BackendBit::GL,
+        Graphics::Vulkan => wgpu::BackendBit::VULKAN,
+        Graphics::WebGpu => wgpu::BackendBit::BROWSER_WEBGPU,
     }
 }
 
-fn screen(
-    swap_chain_desc: &wgpu::SwapChainDescriptor,
-    scale_factor:    graphics::Scalar,
-)
-    -> Screen
-{
+fn screen(swap_chain_desc: &wgpu::SwapChainDescriptor, scale_factor: graphics::Scalar) -> Screen {
     Screen::new(
         graphics::Size::new(
-            swap_chain_desc.width  as graphics::Scalar,
+            swap_chain_desc.width as graphics::Scalar,
             swap_chain_desc.height as graphics::Scalar,
         ),
         scale_factor,
     )
 }
-
 
 #[derive(Debug)]
 pub enum InitError {
@@ -260,7 +191,6 @@ pub enum InitError {
     Drawables(drawables::Error),
     Meshes(meshes::Error),
 }
-
 
 #[derive(Debug)]
 pub enum DrawError {

@@ -1,19 +1,10 @@
-use vndf_server::net::{
-    Error,
-    Event,
-    Network,
-};
-use vndf_shared::net::{
-    self,
-    client::Conn,
-    msg,
-};
-
+use vndf_server::net::{Error, Event, Network};
+use vndf_shared::net::{self, client::Conn, msg};
 
 #[test]
 fn network_should_emit_receive_events() -> net::Result {
     let mut server = Network::start_local()?;
-    let mut conn   = Conn::connect(server.addr())?;
+    let mut conn = Conn::connect(server.addr())?;
 
     let sent = msg::FromClient::Ping;
     conn.send(sent)?;
@@ -36,8 +27,8 @@ fn network_should_emit_receive_events() -> net::Result {
 #[test]
 fn network_should_report_client_errors() -> net::Result {
     let mut server = Network::start_local()?;
-    let     client = Conn::connect(server.addr())?;
-    let     addr   = client.local_addr;
+    let client = Conn::connect(server.addr())?;
+    let addr = client.local_addr;
 
     client.disconnect();
 

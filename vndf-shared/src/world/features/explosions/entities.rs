@@ -1,36 +1,27 @@
 use std::collections::HashSet;
 
-use toadster::{
-    handle,
-    store,
-};
+use toadster::{handle, store};
 
 use crate::world::{
     math::Scalar,
-    physics::{
-        Body,
-        Position,
-        Velocity,
-    },
+    physics::{Body, Position, Velocity},
 };
 
 use super::Explosion;
 
-
 pub struct ExplosionEntity {
     pub exploding: Body,
-    pub strength:  Scalar,
+    pub strength: Scalar,
 }
 
 impl ExplosionEntity {
-    pub fn create(&self,
+    pub fn create(
+        &self,
         explosions: &mut store::Strong<Explosion>,
-        positions:  &mut store::Strong<Position>,
+        positions: &mut store::Strong<Position>,
         velocities: &mut store::Strong<Velocity>,
-        index:      &mut HashSet<handle::Strong<Explosion>>,
-    )
-        -> Option<handle::Strong<Explosion>>
-    {
+        index: &mut HashSet<handle::Strong<Explosion>>,
+    ) -> Option<handle::Strong<Explosion>> {
         let pos = *positions.get(&self.exploding.pos)?;
         let pos = positions.insert(pos);
 

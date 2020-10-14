@@ -2,61 +2,40 @@ use std::fmt;
 
 use crate::{
     frontend::{
-        drawers::{
-            DrawResources,
-            Frame,
-        },
+        drawers::{DrawResources, Frame},
         ui::{
             input::Input,
-            traits::{
-                DrawAt,
-                DrawError,
-                ProcessInputAt,
-                Size,
-            },
+            traits::{DrawAt, DrawError, ProcessInputAt, Size},
         },
     },
     graphics,
 };
 
-
 pub struct Text {
     section: glyph_brush::OwnedSection,
-    size:    graphics::Size,
+    size: graphics::Size,
 }
 
 impl Text {
-    pub fn create(
-        res:  &mut DrawResources,
-        text: String,
-    )
-        -> Result<Self, CreateError>
-    {
-        let text = vec![
-            glyph_brush::OwnedText::default()
-                .with_text(text)
-                .with_scale(16.0)
-                .with_color([1.0, 1.0, 1.0, 1.0]),
-        ];
+    pub fn create(res: &mut DrawResources, text: String) -> Result<Self, CreateError> {
+        let text = vec![glyph_brush::OwnedText::default()
+            .with_text(text)
+            .with_scale(16.0)
+            .with_color([1.0, 1.0, 1.0, 1.0])];
 
         let section = glyph_brush::OwnedSection {
             text,
             // placeholder; position is supplied in `draw`
             screen_position: (0.0, 0.0),
-            .. Default::default()
+            ..Default::default()
         };
 
         let size = match res.drawables.text.bounds(&section) {
             Some(size) => size,
-            None       => return Err(CreateError::NoBounds),
+            None => return Err(CreateError::NoBounds),
         };
 
-        Ok(
-            Self {
-                section,
-                size,
-            }
-        )
+        Ok(Self { section, size })
     }
 }
 
@@ -71,25 +50,20 @@ impl ProcessInputAt for Text {
 }
 
 impl DrawAt for Text {
-    fn draw_at(&mut self,
-        res:   &mut DrawResources,
+    fn draw_at(
+        &mut self,
+        res: &mut DrawResources,
         frame: &mut Frame,
-        pos:   graphics::Pnt2,
-    )
-        -> Result<(), DrawError>
-    {
+        pos: graphics::Pnt2,
+    ) -> Result<(), DrawError> {
         self.section.screen_position = (pos.x, pos.y);
 
         res.drawables.text.queue(&self.section);
-        res.drawables.text.draw(
-            &res.device,
-            frame,
-        )?;
+        res.drawables.text.draw(&res.device, frame)?;
 
         Ok(())
     }
 }
-
 
 #[derive(Debug)]
 pub enum CreateError {

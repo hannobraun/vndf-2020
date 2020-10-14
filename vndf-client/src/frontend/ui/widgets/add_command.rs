@@ -1,46 +1,27 @@
-use vndf_macros::{
-    DrawAt,
-    Size,
-};
+use vndf_macros::{DrawAt, Size};
 
 use crate::{
     frontend::{
         drawers::DrawResources,
         ui::{
-            input::{
-                Action,
-                Input,
-            },
-            traits::{
-                ProcessInputAt,
-                Size,
-            },
+            input::{Action, Input},
+            traits::{ProcessInputAt, Size},
         },
     },
     graphics,
 };
 
-use super::{
-    TextPanel,
-    text,
-};
-
+use super::{text, TextPanel};
 
 #[derive(DrawAt, Size)]
 pub struct AddCommand(TextPanel);
 
 impl AddCommand {
-    pub fn create(
-        res: &mut DrawResources,
-    )
-        -> Result<Self, text::CreateError>
-    {
+    pub fn create(res: &mut DrawResources) -> Result<Self, text::CreateError> {
         let mut text_panel = TextPanel::create(res, format!("Add command"))?;
         text_panel.panel_color([0.1, 0.0, 0.0, 0.95]); // default color
 
-        Ok(
-            Self(text_panel)
-        )
+        Ok(Self(text_panel))
     }
 }
 

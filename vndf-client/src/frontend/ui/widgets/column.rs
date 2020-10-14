@@ -2,36 +2,22 @@ use std::convert::Infallible;
 
 use crate::{
     frontend::{
-        drawers::{
-            DrawResources,
-            Frame,
-        },
+        drawers::{DrawResources, Frame},
         ui::{
             input::Input,
-            traits::{
-                DrawAt,
-                DrawError,
-                ProcessInputAt,
-                Size,
-                Widget,
-            },
+            traits::{DrawAt, DrawError, ProcessInputAt, Size, Widget},
         },
     },
     graphics,
 };
 
-
 pub struct Column {
-    margin:  f32,
+    margin: f32,
     widgets: Vec<Box<dyn Widget>>,
 }
 
 impl Column {
-    pub fn create(
-        margin: f32,
-    )
-        -> Self
-    {
+    pub fn create(margin: f32) -> Self {
         Self {
             margin,
             widgets: Vec::new(),
@@ -42,17 +28,15 @@ impl Column {
         self.widgets.push(Box::new(widget));
     }
 
-    pub fn add_iter(&mut self,
-        widgets: impl IntoIterator<Item=impl Widget + 'static>,
-    ) {
+    pub fn add_iter(&mut self, widgets: impl IntoIterator<Item = impl Widget + 'static>) {
         for widget in widgets {
             self.add(widget)
         }
     }
 
-    pub fn widgets_at_mut<F, E>(&mut self, pos: graphics::Pnt2, mut f: F)
-        -> Result<(), E>
-        where F: FnMut(&mut dyn Widget, graphics::Pnt2) -> Result<(), E>
+    pub fn widgets_at_mut<F, E>(&mut self, pos: graphics::Pnt2, mut f: F) -> Result<(), E>
+    where
+        F: FnMut(&mut dyn Widget, graphics::Pnt2) -> Result<(), E>,
     {
         let mut next_pos = pos;
 
@@ -71,10 +55,7 @@ impl Size for Column {
         let mut size = graphics::Size::new(0.0, 0.0);
 
         for (i, widget) in self.widgets.iter().enumerate() {
-            size.width = graphics::Scalar::max(
-                size.width,
-                widget.size().width,
-            );
+            size.width = graphics::Scalar::max(size.width, widget.size().width);
 
             size.height += widget.size().height;
             if i < self.widgets.len() - 1 {
@@ -88,24 +69,20 @@ impl Size for Column {
 
 impl ProcessInputAt for Column {
     fn process_input_at(&mut self, input: &mut Input, pos: graphics::Pnt2) {
-        self
-            .widgets_at_mut::<_, Infallible>(pos, |widget, pos|
-                Ok(widget.process_input_at(input, pos))
-            )
-            .unwrap(); // infallible
+        self.widgets_at_mut::<_, Infallible>(pos, |widget, pos| {
+            Ok(widget.process_input_at(input, pos))
+        })
+        .unwrap(); // infallible
     }
 }
 
 impl DrawAt for Column {
-    fn draw_at(&mut self,
-        res:   &mut DrawResources,
+    fn draw_at(
+        &mut self,
+        res: &mut DrawResources,
         frame: &mut Frame,
-        pos:   graphics::Pnt2,
-    )
-        -> Result<(), DrawError>
-    {
-        self.widgets_at_mut(pos, |widget, pos|
-            widget.draw_at(res, frame, pos)
-        )
+        pos: graphics::Pnt2,
+    ) -> Result<(), DrawError> {
+        self.widgets_at_mut(pos, |widget, pos| widget.draw_at(res, frame, pos))
     }
 }

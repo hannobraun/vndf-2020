@@ -2,18 +2,11 @@ use proc_macro::TokenStream;
 use proc_macro2;
 use quote::quote;
 use syn::{
+    parse::{Parse, ParseStream},
     parse_macro_input,
-    Ident,
-    LitStr,
-    Result,
-    Token,
-    parse::{
-        Parse,
-        ParseStream,
-    },
     punctuated::Punctuated,
+    Ident, LitStr, Result, Token,
 };
-
 
 pub fn keys(input: TokenStream) -> TokenStream {
     let Keys { keys } = parse_macro_input!(input as Keys);
@@ -108,7 +101,6 @@ pub fn keys(input: TokenStream) -> TokenStream {
     TokenStream::from(tokens)
 }
 
-
 struct Keys {
     pub keys: Punctuated<Key, Token![;]>,
 }
@@ -116,17 +108,14 @@ struct Keys {
 impl Parse for Keys {
     fn parse(input: ParseStream) -> Result<Self> {
         let keys = input.parse_terminated::<_, Token![;]>(Key::parse)?;
-        Ok(
-            Self { keys }
-        )
+        Ok(Self { keys })
     }
 }
-
 
 struct Key {
     pub name: LitStr,
     pub kind: Ident,
-    pub key:  Ident,
+    pub key: Ident,
 }
 
 impl Parse for Key {
@@ -139,21 +128,14 @@ impl Parse for Key {
 
         let key = input.parse()?;
 
-        Ok(
-            Self {
-                name,
-                kind,
-                key,
-            }
-        )
+        Ok(Self { name, kind, key })
     }
 }
-
 
 fn keyboard_or_mousebutton(kind: &Ident) -> proc_macro2::TokenStream {
     match kind.to_string().as_str() {
         "Keyboard" => quote!(VirtualKeyCode),
-        "Mouse"    => quote!(MouseButton),
-        kind       => panic!("Unexpected key kind `{}`", kind),
+        "Mouse" => quote!(MouseButton),
+        kind => panic!("Unexpected key kind `{}`", kind),
     }
 }

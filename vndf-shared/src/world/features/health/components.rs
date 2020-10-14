@@ -1,45 +1,36 @@
 use std::collections::HashSet;
 
-use serde::{
-    Deserialize,
-    Serialize,
-};
+use serde::{Deserialize, Serialize};
 use toadster::{
+    handle::{self, Untyped},
     Handle,
-    handle::{
-        self,
-        Untyped,
-    },
 };
 
 use crate::{
     data,
-    world::{
-        math::Scalar,
-        physics::Body,
-    },
+    world::{math::Scalar, physics::Body},
 };
-
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 pub struct Health {
     parent: Option<data::client::Handle>,
 
-    pub body:   Handle<Body>,
-    pub value:  Scalar,
+    pub body: Handle<Body>,
+    pub value: Scalar,
 }
 
 impl Health {
     pub fn new(body: impl Into<Handle<Body>>, value: Scalar) -> Self {
         Health {
             parent: None,
-            body:   body.into(),
-            value
+            body: body.into(),
+            value,
         }
     }
 
-    pub fn finalize(&mut self,
-        parent:   data::client::Handle,
+    pub fn finalize(
+        &mut self,
+        parent: data::client::Handle,
         entities: &mut HashSet<handle::Strong<Untyped>>,
     ) {
         self.parent = Some(parent.as_weak());
@@ -49,8 +40,8 @@ impl Health {
     pub fn to_weak(&self) -> Self {
         Self {
             parent: self.parent.clone(),
-            body:   self.body.as_weak(),
-            value:  self.value.clone(),
+            body: self.body.as_weak(),
+            value: self.value.clone(),
         }
     }
 

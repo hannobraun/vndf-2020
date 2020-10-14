@@ -1,13 +1,8 @@
-use std::{
-    io,
-    sync::mpsc,
-};
+use std::{io, sync::mpsc};
 
 use crate::net::msg;
 
-
 pub type Result<T = ()> = std::result::Result<T, Error>;
-
 
 #[derive(Debug)]
 pub enum Error {
@@ -27,9 +22,9 @@ impl Eq for Error {}
 impl PartialEq for Error {
     fn eq(&self, rhs: &Self) -> bool {
         match (self, rhs) {
-            (Error::Io(s), Error::Io(o))   => s.kind() == o.kind(),
+            (Error::Io(s), Error::Io(o)) => s.kind() == o.kind(),
             (Error::Msg(s), Error::Msg(o)) => s == o,
-            _                              => false,
+            _ => false,
         }
     }
 }

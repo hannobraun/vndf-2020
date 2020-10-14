@@ -1,41 +1,23 @@
 use crate::{
     frontend::{
-        drawers::{
-            DrawResources,
-            Frame,
-        },
-        shaders::{
-            frag,
-            vert,
-        },
+        drawers::{DrawResources, Frame},
+        shaders::{frag, vert},
         ui::{
             input::Input,
-            traits::{
-                DrawAt,
-                DrawError,
-                ProcessInputAt,
-                Size,
-            },
+            traits::{DrawAt, DrawError, ProcessInputAt, Size},
         },
     },
-    graphics::{
-        self,
-        elements::ScreenElement,
-    },
+    graphics::{self, elements::ScreenElement},
 };
 
-
 pub struct Panel {
-    size:  graphics::Size,
+    size: graphics::Size,
     color: Option<[f32; 4]>,
 }
 
 impl Panel {
     pub fn create(size: graphics::Size) -> Self {
-        Self {
-            size,
-            color: None,
-        }
+        Self { size, color: None }
     }
 
     pub fn color(&mut self, color: [f32; 4]) {
@@ -54,29 +36,24 @@ impl ProcessInputAt for Panel {
 }
 
 impl DrawAt for Panel {
-    fn draw_at(&mut self,
-        res:   &mut DrawResources,
+    fn draw_at(
+        &mut self,
+        res: &mut DrawResources,
         frame: &mut Frame,
-        pos:   graphics::Pnt2,
-    )
-        -> Result<(), DrawError>
-    {
+        pos: graphics::Pnt2,
+    ) -> Result<(), DrawError> {
         let element = ScreenElement {
             size: self.size,
             pos,
             angle: graphics::Angle::zero(),
         };
-        let transform = element
-            .transform(&frame.screen)
-            .into();
+        let transform = element.transform(&frame.screen).into();
         let color = self.color.unwrap_or([0.0, 0.0, 0.0, 0.95]);
 
         res.drawables.square.draw(
             &res.device,
             frame,
-            vert::simple::Uniforms {
-                transform,
-            },
+            vert::simple::Uniforms { transform },
             frag::simple::Uniforms {
                 color: color.into(),
             },

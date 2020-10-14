@@ -1,43 +1,22 @@
 use std::{
-    collections::{
-        HashMap,
-        VecDeque,
-    },
-    io,
-    iter,
-    net::{
-        Ipv6Addr,
-        SocketAddr,
-        TcpListener,
-        TcpStream,
-    },
-    sync::mpsc::{
-        Receiver,
-        Sender,
-        SendError,
-        TryRecvError,
-        channel,
-    },
+    collections::{HashMap, VecDeque},
+    io, iter,
+    net::{Ipv6Addr, SocketAddr, TcpListener, TcpStream},
+    sync::mpsc::{channel, Receiver, SendError, Sender, TryRecvError},
     thread,
 };
 
 use log::error;
 
-use crate::shared::net::{
-    self,
-    conn,
-    msg,
-};
-
+use crate::shared::net::{self, conn, msg};
 
 pub const PORT: u16 = 34480;
 
-
 pub struct Network {
-    addr:    SocketAddr,
-    accept:  Receiver<Conn>,
+    addr: SocketAddr,
+    accept: Receiver<Conn>,
     clients: HashMap<SocketAddr, Conn>,
-    remove:  VecDeque<(SocketAddr, net::Error)>,
+    remove: VecDeque<(SocketAddr, net::Error)>,
 }
 
 impl Network {
@@ -61,14 +40,12 @@ impl Network {
 
         thread::spawn(|| accept(listener, accept_tx));
 
-        Ok(
-            Self {
-                addr,
-                accept:  accept_rx,
-                clients: HashMap::new(),
-                remove:  VecDeque::new(),
-            }
-        )
+        Ok(Self {
+            addr,
+            accept: accept_rx,
+            clients: HashMap::new(),
+            remove: VecDeque::new(),
+        })
     }
 
     pub fn addr(&self) -> SocketAddr {
@@ -101,7 +78,7 @@ impl Network {
         }
     }
 
-    pub fn events<'s>(&'s mut self) -> impl Iterator<Item=Event> + 's {
+    pub fn events<'s>(&'s mut self) -> impl Iterator<Item = Event> + 's {
         iter::from_fn(move || {
             if let Some((id, err)) = self.remove.pop_front() {
                 self.clients.remove(&id);
@@ -127,13 +104,9 @@ impl Network {
                 Ok(conn) => {
                     self.clients.insert(conn.peer_addr, conn);
                 }
-                Err(TryRecvError::Empty) => {
-                    ()
-                }
+                Err(TryRecvError::Empty) => (),
                 Err(TryRecvError::Disconnected) => {
-                    unreachable!(
-                        "`accept` thread does not end while receiver exists"
-                    );
+                    unreachable!("`accept` thread does not end while receiver exists");
                 }
             }
 
@@ -144,16 +117,10 @@ impl Network {
     }
 }
 
-
-fn accept(
-    listener: TcpListener,
-    accept:   Sender<Conn>,
-) {
+fn accept(listener: TcpListener, accept: Sender<Conn>) {
     for stream in listener.incoming() {
         let conn = match accept_conn(stream) {
-            Ok(conn) => {
-                conn
-            }
+            Ok(conn) => conn,
             Err(err) => {
                 error!("Error accepting connection: {:?}", err);
                 continue;
@@ -175,16 +142,13 @@ fn accept_conn(stream: io::Result<TcpStream>) -> io::Result<Conn> {
     Conn::from_stream(stream, true)
 }
 
-
 pub type Conn = conn::Conn<msg::FromClient, msg::FromServer>;
-
 
 #[derive(Debug, PartialEq)]
 pub enum Event {
     Message(SocketAddr, msg::FromClient),
     Error(SocketAddr, net::Error),
 }
-
 
 #[derive(Debug)]
 pub enum Error {

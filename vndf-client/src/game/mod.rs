@@ -4,80 +4,55 @@ pub mod input;
 pub mod net;
 pub mod state;
 
+use std::{io, net::ToSocketAddrs};
 
-use std::{
-    io,
-    net::ToSocketAddrs,
-};
-
-use log::{
-    debug,
-    error,
-};
+use log::{debug, error};
 use time::Duration;
 
-use crate::shared::net::{
-    Error as NetError,
-    client::Conn,
-    msg,
-};
+use crate::shared::net::{client::Conn, msg, Error as NetError};
 
 use self::{
     config::Config,
-    input::{
-        Input,
-        Transition,
-    },
+    input::{Input, Transition},
     net::input::Events,
     state::State,
 };
 
-
 pub struct Game {
     pub config: Config,
-    pub conn:   Conn,
+    pub conn: Conn,
     pub events: Events,
-    pub input:  input::Handler,
-    pub state:  State,
+    pub input: input::Handler,
+    pub state: State,
 }
 
 impl Game {
     pub fn init<A: ToSocketAddrs>(addr: A) -> Result<Self, Error> {
-        let config = Config::load()
-            .map_err(|err| Error::Config(err))?;
-        let mut conn = Conn::connect(addr)
-            .map_err(|err| Error::Io(err))?;
+        let config = Config::load().map_err(|err| Error::Config(err))?;
+        let mut conn = Conn::connect(addr).map_err(|err| Error::Io(err))?;
         let events = Events::new();
         let input = input::Handler::new(config);
         let state = State::new();
 
-        let color = [
-            config.color.r,
-            config.color.g,
-            config.color.b,
-        ];
+        let color = [config.color.r, config.color.g, config.color.b];
         conn.send(msg::FromClient::Hello { color })
             .map_err(|err| Error::Net(err))?;
 
-        Ok(
-            Self {
-                config,
-                conn,
-                events,
-                input,
-                state,
-            }
-        )
+        Ok(Self {
+            config,
+            conn,
+            events,
+            input,
+            state,
+        })
     }
 
     pub fn handle_input(&mut self, input: Input) -> Transition {
-        let trans = self.input.handle(
-            input,
-            &mut self.events,
-        );
+        let trans = self.input.handle(input, &mut self.events);
 
         for event in self.events.unsent() {
-            self.conn.send(msg::FromClient::Action(event))
+            self.conn
+                .send(msg::FromClient::Action(event))
                 .expect("Failed to send input event");
         }
 
@@ -117,15 +92,11 @@ impl Game {
         self.state.frame_time.push(dt);
         self.events.limit();
 
-        self.state.update(
-            dt.as_seconds_f64(),
-            &mut self.input,
-        );
+        self.state.update(dt.as_seconds_f64(), &mut self.input);
 
         Ok(())
     }
 }
-
 
 #[derive(Debug)]
 pub enum Error {

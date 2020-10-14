@@ -2,7 +2,6 @@ use zerocopy::AsBytes;
 
 use crate::graphics::transforms::Transform;
 
-
 #[derive(AsBytes)]
 #[repr(packed)]
 pub struct Color(pub [f32; 4]);
@@ -25,9 +24,7 @@ impl From<[f32; 4]> for Color {
     }
 }
 
-
 pub type Float = f32;
-
 
 #[derive(AsBytes)]
 #[repr(packed)]
@@ -44,7 +41,6 @@ impl<A, B> From<Transform<A, B>> for Mat4 {
         Mat4(transform.to_native())
     }
 }
-
 
 #[derive(AsBytes)]
 #[repr(packed)]

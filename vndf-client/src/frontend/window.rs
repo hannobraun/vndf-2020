@@ -1,14 +1,10 @@
 use winit::{
     error::OsError,
     event_loop::EventLoop,
-    window::{
-        Window as InnerWindow,
-        WindowBuilder,
-    },
+    window::{Window as InnerWindow, WindowBuilder},
 };
 
 use crate::graphics;
-
 
 pub struct Window(InnerWindow);
 
@@ -28,7 +24,7 @@ impl Window {
         let size = self.0.inner_size();
 
         graphics::Size::new(
-            size.width  as graphics::Scalar,
+            size.width as graphics::Scalar,
             size.height as graphics::Scalar,
         )
     }
