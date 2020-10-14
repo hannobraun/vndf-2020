@@ -105,15 +105,19 @@ macro_rules! fragment_shader {
     };
 }
 
+#[rustfmt::skip]
 pub mod vert {
     vertex_shader!(
         Simple,
         simple,
         "shaders/spv/simple.vert.spv",
-        Uniforms { transform: Mat4 },
+        Uniforms {
+            transform: Mat4,
+        },
     );
 }
 
+#[rustfmt::skip]
 pub mod frag {
     fragment_shader!(
         Explosion,
@@ -139,12 +143,16 @@ pub mod frag {
         Planet,
         planet,
         "shaders/spv/planet.frag.spv",
-        Uniforms { color: Color },
+        Uniforms {
+            color: Color,
+        },
     );
     fragment_shader!(
         Simple,
         simple,
         "shaders/spv/simple.frag.spv",
-        Uniforms { color: Color },
+        Uniforms {
+            color: Color,
+        },
     );
 }
