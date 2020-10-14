@@ -5,7 +5,7 @@ use crate::{
     },
     game::Game,
     graphics::elements::WorldElement,
-    shared::world::behavior::planets::Planet,
+    shared::world::features::planets::Planet,
 };
 
 use super::{

@@ -11,7 +11,7 @@ use crate::{
         self,
         elements::WorldElement,
     },
-    shared::world::behavior::orbits::Orbit,
+    shared::world::features::orbits::Orbit,
 };
 
 use super::{

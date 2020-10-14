@@ -26,7 +26,7 @@ use crate::{
         world::{
             self,
             FRAME_TIME,
-            behavior::{
+            features::{
                 base::Update,
                 players::{
                     PlayerConnected,

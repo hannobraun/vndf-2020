@@ -16,7 +16,7 @@ use crate::{
     },
     shared::world::{
         self,
-        behavior::orbits::Orbit,
+        features::orbits::Orbit,
     },
 };
 

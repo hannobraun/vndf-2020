@@ -17,7 +17,7 @@ use crate::{
     },
     shared::world::{
         self,
-        behavior::{
+        features::{
             crafts::Craft,
             explosions::Explosion,
             orbits::Orbit,

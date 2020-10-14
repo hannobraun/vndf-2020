@@ -1,4 +1,4 @@
-pub mod behavior;
+pub mod features;
 pub mod math;
 
 
@@ -19,7 +19,7 @@ use rinnsal::{
 
 use crate::data;
 
-use self::behavior::{
+use self::features::{
     base::{
         self,
         ComponentRemoved,

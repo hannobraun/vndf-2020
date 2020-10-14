@@ -8,7 +8,7 @@ use crate::{
     frontend::drawers::DrawResources,
     game::Game,
     graphics,
-    shared::world::behavior::{
+    shared::world::features::{
         crafts::Fuel,
         health::Health,
     }

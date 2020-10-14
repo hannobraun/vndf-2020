@@ -14,7 +14,7 @@ use crate::{
         data,
         world::{
             self,
-            behavior::{
+            features::{
                 orbits::{
                     Orbit,
                     Orbiter,

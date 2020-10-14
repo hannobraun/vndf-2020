@@ -15,7 +15,7 @@ use crate::{
         elements::ScreenElement,
         screen::Screen,
     },
-    shared::world::behavior::ships::Ship,
+    shared::world::features::ships::Ship,
 };
 
 use super::{

@@ -5,7 +5,7 @@ use crate::{
     },
     game::Game,
     graphics::elements::ScreenElement,
-    shared::world::behavior::ships::Ship,
+    shared::world::features::ships::Ship,
 };
 
 use super::{

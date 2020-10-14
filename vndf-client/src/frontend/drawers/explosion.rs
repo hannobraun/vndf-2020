@@ -8,7 +8,7 @@ use crate::{
     },
     game::Game,
     graphics::elements::ScreenElement,
-    shared::world::behavior::explosions::Explosion,
+    shared::world::features::explosions::Explosion,
 };
 
 use super::{
