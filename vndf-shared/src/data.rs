@@ -62,6 +62,10 @@ macro_rules! components {
                 }
             }
 
+            components!(@gen_specific, $store_type,
+                $($store_name,)*
+            );
+
             $(
                 components!(@gen_update_remove, $store_type,
                     $store_name,
@@ -238,6 +242,25 @@ macro_rules! components {
         // The `Update` and `Remove` traits are used to sync changes from strong
         // stores to weak stores, so no need to generate them for the strong
         // stores.
+    };
+
+    (@gen_specific, Weak,
+        $($store_name:ident,)*
+    ) => {
+        // Aside from `Update`/`Remove`, which is handled elsewhere, there is no
+        // code that needs to be generated only for weak stores.
+    };
+
+    (@gen_specific, Strong,
+        $($store_name:ident,)*
+    ) => {
+        // Generate code only needed for strong stores.
+
+        impl Components {
+            pub fn apply_changes(&mut self) {
+                $(self.$store_name.apply_changes();)*
+            }
+        }
     };
 }
 

@@ -79,7 +79,7 @@ impl State {
     }
 
     pub fn dispatch(&mut self) {
-        self.apply_changes();
+        self.data.apply_changes();
         for event in self.base.update.source().ready() {
             self.crafts.on_update(
                 &event,
@@ -111,7 +111,7 @@ impl State {
                 &mut self.data.ships,
             );
         }
-        self.apply_changes();
+        self.data.apply_changes();
         while let Some(event) = self.players.player_connected.source().next() {
             // We only have one planet right now.
             let planet = self.data.planets.iter().next().unwrap().1;
@@ -130,11 +130,11 @@ impl State {
                 &mut self.health.index,
             );
         }
-        self.apply_changes();
+        self.data.apply_changes();
         while let Some(event) = self.players.player_disconnected.source().next() {
             self.players.on_player_disconnected(&event);
         }
-        self.apply_changes();
+        self.data.apply_changes();
         while let Some(event) = self.players.player_input.source().next() {
             self.players.on_player_input(
                 &event,
@@ -143,7 +143,7 @@ impl State {
                 &mut self.data.ships,
             );
         }
-        self.apply_changes();
+        self.data.apply_changes();
         while let Some(event) = self.health.death.source().next() {
             self.explosions.on_death(
                 &event,
@@ -154,7 +154,7 @@ impl State {
                 &mut self.data.velocities,
             );
         }
-        self.apply_changes();
+        self.data.apply_changes();
         while let Some(event) = self.explosions.explosion_imminent.source().next() {
             self.explosions.on_explosion_imminent(
                 &event,
@@ -164,22 +164,10 @@ impl State {
                 &self.data.positions,
             )
         }
-        self.apply_changes();
+        self.data.apply_changes();
         while let Some(event) = self.explosions.explosion_faded.source().next() {
             self.explosions.on_explosion_faded(&event);
         }
-    }
-
-    fn apply_changes(&mut self) {
-        self.data.crafts.apply_changes();
-        self.data.fuels.apply_changes();
-        self.data.explosions.apply_changes();
-        self.data.healths.apply_changes();
-        self.data.bodies.apply_changes();
-        self.data.positions.apply_changes();
-        self.data.velocities.apply_changes();
-        self.data.players.apply_changes();
-        self.data.ships.apply_changes();
     }
 
     pub fn updates(&mut self) -> impl Iterator<Item = data::client::Component> + '_ {
