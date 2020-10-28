@@ -235,7 +235,9 @@ macro_rules! components {
         $component_ty:ident,
         $store_name:ident,
     ) => {
-        // Don't need to generate those for strong stores.
+        // The `Update` and `Remove` traits are used to sync changes from strong
+        // stores to weak stores, so no need to generate them for the strong
+        // stores.
     };
 }
 
