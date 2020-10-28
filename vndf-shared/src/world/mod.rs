@@ -4,6 +4,7 @@ pub mod math;
 pub use self::math::{Angle, Length, Pnt2, Scalar, Size, Vec2};
 
 use rinnsal::{EventSink, EventSource};
+use toadster::handle;
 
 use crate::data;
 
@@ -31,13 +32,16 @@ pub struct State {
     physics: physics::Feature,
     players: players::Feature,
     ships: ships::Feature,
+
+    // Need to keep this handle, otherwise planet will get garbage-collected.
+    _planet: handle::Strong<Planet>,
 }
 
 impl State {
     pub fn new() -> Self {
         let mut data = data::server::Components::new();
 
-        data.planets.insert(Planet {
+        let planet = data.planets.insert(Planet {
             pos: Pnt2::new(0.0, 0.0),
             radius: Length::new(60_268_000.0), // size of Saturn (in m)
             mass: 5.6834e26,                   // mass of Saturn (in kg)
@@ -53,6 +57,8 @@ impl State {
             physics: physics::Feature::new(),
             players: players::Feature::new(),
             ships: ships::Feature::new(),
+
+            _planet: planet,
         }
     }
 
