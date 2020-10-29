@@ -9,8 +9,8 @@ use crate::{
     shared::world::{
         self,
         features::{
-            crafts::Craft, explosions::Explosion, orbits::Orbit, physics::Position,
-            planets::Planet, ships::Ship,
+            crafts::Craft, explosions::Explosion, orbits::Orbit,
+            physics::Position, planets::Planet, ships::Ship,
         },
     },
 };
@@ -22,7 +22,11 @@ pub struct ScreenElement {
 }
 
 impl ScreenElement {
-    pub fn from_ship(ship: &Ship, game: &Game, screen: &Screen) -> Option<Self> {
+    pub fn from_ship(
+        ship: &Ship,
+        game: &Game,
+        screen: &Screen,
+    ) -> Option<Self> {
         let craft = game.state.data.crafts.get(&ship.craft)?;
 
         Self::from_craft(craft, graphics::Size::new(30.0, 30.0), game, screen)
@@ -40,7 +44,11 @@ impl ScreenElement {
         Some(Self::from_pos(pos, body.dir, size, game, screen))
     }
 
-    pub fn from_explosion(explosion: &Explosion, game: &Game, screen: &Screen) -> Option<Self> {
+    pub fn from_explosion(
+        explosion: &Explosion,
+        game: &Game,
+        screen: &Screen,
+    ) -> Option<Self> {
         let pos = game.state.data.positions.get(&explosion.pos)?;
 
         let size = explosion.strength_total * 2.0;
@@ -77,7 +85,8 @@ impl ScreenElement {
     }
 
     pub fn transform(&self, screen: &Screen) -> Transform<LocalUnit, ClipUnit> {
-        transforms::local_to_screen(self).post_transform(&transforms::screen_to_homogeneous(screen))
+        transforms::local_to_screen(self)
+            .post_transform(&transforms::screen_to_homogeneous(screen))
     }
 }
 
@@ -98,7 +107,11 @@ pub struct WorldElement {
 }
 
 impl WorldElement {
-    pub fn transform(&self, camera: &Camera, screen: &Screen) -> Transform<LocalUnit, ClipUnit> {
+    pub fn transform(
+        &self,
+        camera: &Camera,
+        screen: &Screen,
+    ) -> Transform<LocalUnit, ClipUnit> {
         transforms::local_to_world(self)
             .post_transform(&transforms::world_to_screen(camera, screen))
             .post_transform(&transforms::screen_to_homogeneous(screen))
@@ -107,8 +120,10 @@ impl WorldElement {
 
 impl From<&Orbit> for WorldElement {
     fn from(orbit: &Orbit) -> Self {
-        let size =
-            world::Size::from_lengths(orbit.semi_major_axis * 2.0, orbit.semi_minor_axis * 2.0);
+        let size = world::Size::from_lengths(
+            orbit.semi_major_axis * 2.0,
+            orbit.semi_minor_axis * 2.0,
+        );
         let pos = orbit.ellipse_pos;
         let angle = orbit.arg_of_periapsis;
 

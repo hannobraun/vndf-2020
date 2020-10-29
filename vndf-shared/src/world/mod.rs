@@ -13,8 +13,8 @@ use self::features::{
     crafts, explosions, health, physics,
     planets::{self, Planet, Planets},
     players::{
-        self, InputHandled, PlayerConnected, PlayerCreated, PlayerDisconnected, PlayerId,
-        PlayerInput,
+        self, InputHandled, PlayerConnected, PlayerCreated, PlayerDisconnected,
+        PlayerId, PlayerInput,
     },
     ships,
 };
@@ -131,7 +131,8 @@ impl State {
             );
         }
         self.data.apply_changes();
-        while let Some(event) = self.players.player_disconnected.source().next() {
+        while let Some(event) = self.players.player_disconnected.source().next()
+        {
             self.players.on_player_disconnected(&event);
         }
         self.data.apply_changes();
@@ -155,7 +156,9 @@ impl State {
             );
         }
         self.data.apply_changes();
-        while let Some(event) = self.explosions.explosion_imminent.source().next() {
+        while let Some(event) =
+            self.explosions.explosion_imminent.source().next()
+        {
             self.explosions.on_explosion_imminent(
                 &event,
                 &self.data.bodies,
@@ -165,57 +168,42 @@ impl State {
             )
         }
         self.data.apply_changes();
-        while let Some(event) = self.explosions.explosion_faded.source().next() {
+        while let Some(event) = self.explosions.explosion_faded.source().next()
+        {
             self.explosions.on_explosion_faded(&event);
         }
     }
 
-    pub fn updates(&mut self) -> impl Iterator<Item = data::client::Component> + '_ {
-        let bodies = self
-            .data
-            .bodies
-            .iter()
-            .map(|(handle, c)| data::client::Component::Body(handle.into(), c.to_weak()));
-        let crafts = self
-            .data
-            .crafts
-            .iter()
-            .map(|(handle, c)| data::client::Component::Craft(handle.into(), c.to_weak()));
-        let explosions = self
-            .data
-            .explosions
-            .iter()
-            .map(|(handle, c)| data::client::Component::Explosion(handle.into(), c.to_weak()));
-        let fuels = self
-            .data
-            .fuels
-            .iter()
-            .map(|(handle, c)| data::client::Component::Fuel(handle.into(), c.to_weak()));
-        let healths = self
-            .data
-            .healths
-            .iter()
-            .map(|(handle, c)| data::client::Component::Health(handle.into(), c.to_weak()));
-        let planets = self
-            .data
-            .planets
-            .iter()
-            .map(|(handle, c)| data::client::Component::Planet(handle.into(), c.to_weak()));
-        let positions = self
-            .data
-            .positions
-            .iter()
-            .map(|(handle, c)| data::client::Component::Position(handle.into(), c.to_weak()));
-        let ships = self
-            .data
-            .ships
-            .iter()
-            .map(|(handle, c)| data::client::Component::Ship(handle.into(), c.to_weak()));
-        let velocities = self
-            .data
-            .velocities
-            .iter()
-            .map(|(handle, c)| data::client::Component::Velocity(handle.into(), c.to_weak()));
+    pub fn updates(
+        &mut self,
+    ) -> impl Iterator<Item = data::client::Component> + '_ {
+        let bodies = self.data.bodies.iter().map(|(handle, c)| {
+            data::client::Component::Body(handle.into(), c.to_weak())
+        });
+        let crafts = self.data.crafts.iter().map(|(handle, c)| {
+            data::client::Component::Craft(handle.into(), c.to_weak())
+        });
+        let explosions = self.data.explosions.iter().map(|(handle, c)| {
+            data::client::Component::Explosion(handle.into(), c.to_weak())
+        });
+        let fuels = self.data.fuels.iter().map(|(handle, c)| {
+            data::client::Component::Fuel(handle.into(), c.to_weak())
+        });
+        let healths = self.data.healths.iter().map(|(handle, c)| {
+            data::client::Component::Health(handle.into(), c.to_weak())
+        });
+        let planets = self.data.planets.iter().map(|(handle, c)| {
+            data::client::Component::Planet(handle.into(), c.to_weak())
+        });
+        let positions = self.data.positions.iter().map(|(handle, c)| {
+            data::client::Component::Position(handle.into(), c.to_weak())
+        });
+        let ships = self.data.ships.iter().map(|(handle, c)| {
+            data::client::Component::Ship(handle.into(), c.to_weak())
+        });
+        let velocities = self.data.velocities.iter().map(|(handle, c)| {
+            data::client::Component::Velocity(handle.into(), c.to_weak())
+        });
 
         bodies
             .chain(crafts)

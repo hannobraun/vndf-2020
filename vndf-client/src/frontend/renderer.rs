@@ -10,8 +10,8 @@ use crate::{
 use super::{
     drawables::{self, Drawables},
     drawers::{
-        draw_background, draw_explosion, draw_grid, draw_orbit, draw_planet, draw_ship,
-        DrawResources, Frame,
+        draw_background, draw_explosion, draw_grid, draw_orbit, draw_planet,
+        draw_ship, DrawResources, Frame,
     },
     meshes::{self, Meshes},
     ui::{self, Ui},
@@ -29,7 +29,10 @@ pub struct Renderer {
 }
 
 impl Renderer {
-    pub async fn new(window: &Window, graphics: Graphics) -> Result<Self, InitError> {
+    pub async fn new(
+        window: &Window,
+        graphics: Graphics,
+    ) -> Result<Self, InitError> {
         let size = window.size();
         let format = wgpu::TextureFormat::Bgra8UnormSrgb;
 
@@ -62,8 +65,8 @@ impl Renderer {
             .map_err(|err| InitError::RequestDevice(err))?;
 
         let meshes = Meshes::new().map_err(|err| InitError::Meshes(err))?;
-        let drawables =
-            Drawables::new(&device, &meshes, format).map_err(|err| InitError::Drawables(err))?;
+        let drawables = Drawables::new(&device, &meshes, format)
+            .map_err(|err| InitError::Drawables(err))?;
 
         let swap_chain_desc = wgpu::SwapChainDescriptor {
             usage: wgpu::TextureUsage::OUTPUT_ATTACHMENT,
@@ -104,7 +107,11 @@ impl Renderer {
         self.scale_factor = scale_factor as graphics::Scalar;
     }
 
-    pub fn draw(&mut self, game: &mut Game, ui: &mut Ui) -> Result<(), DrawError> {
+    pub fn draw(
+        &mut self,
+        game: &mut Game,
+        ui: &mut Ui,
+    ) -> Result<(), DrawError> {
         let screen = self.screen();
 
         let mut frame = Frame {
@@ -114,10 +121,9 @@ impl Renderer {
                 .get_current_frame()
                 .map_err(|err| DrawError::SwapChain(err))?
                 .output,
-            encoder: self
-                .draw_res
-                .device
-                .create_command_encoder(&wgpu::CommandEncoderDescriptor { label: None }),
+            encoder: self.draw_res.device.create_command_encoder(
+                &wgpu::CommandEncoderDescriptor { label: None },
+            ),
         };
 
         draw_background(&mut frame);
@@ -174,7 +180,10 @@ fn select_backend(graphics: Graphics) -> wgpu::BackendBit {
     }
 }
 
-fn screen(swap_chain_desc: &wgpu::SwapChainDescriptor, scale_factor: graphics::Scalar) -> Screen {
+fn screen(
+    swap_chain_desc: &wgpu::SwapChainDescriptor,
+    scale_factor: graphics::Scalar,
+) -> Screen {
     Screen::new(
         graphics::Size::new(
             swap_chain_desc.width as graphics::Scalar,

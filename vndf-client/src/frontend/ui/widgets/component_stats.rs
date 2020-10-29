@@ -8,7 +8,10 @@ use super::{text, TextPanel};
 pub struct ComponentStats(TextPanel);
 
 impl ComponentStats {
-    pub fn create(res: &mut DrawResources, game: &Game) -> Result<Option<Self>, text::CreateError> {
+    pub fn create(
+        res: &mut DrawResources,
+        game: &Game,
+    ) -> Result<Option<Self>, text::CreateError> {
         if let Some(diagnostics) = game.state.diagnostics {
             let text_panel = TextPanel::create(
                 res,

@@ -43,9 +43,12 @@ impl ShipEntity {
         const HEALTH: Scalar = 10.0;
 
         let distance = planet.radius * 1.5;
-        let angle = Angle::radians(thread_rng().gen_range(0.0, Angle::two_pi().radians));
+        let angle = Angle::radians(
+            thread_rng().gen_range(0.0, Angle::two_pi().radians),
+        );
         let (sin, cos) = angle.sin_cos();
-        let position = planet.pos + Vec2::new(sin * distance.0, cos * distance.0);
+        let position =
+            planet.pos + Vec2::new(sin * distance.0, cos * distance.0);
 
         // Compute velocity for circular orbit at the given distance.
         let speed = (G * planet.mass / distance.0).sqrt();

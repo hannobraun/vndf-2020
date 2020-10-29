@@ -8,7 +8,10 @@ use std::{net::ToSocketAddrs, str::FromStr};
 
 use crate::game::Game;
 
-pub fn start<A: ToSocketAddrs>(addr: A, graphics: Graphics) -> Result<(), Error> {
+pub fn start<A: ToSocketAddrs>(
+    addr: A,
+    graphics: Graphics,
+) -> Result<(), Error> {
     let game = Game::init(addr).map_err(Error::Game)?;
 
     frontend::start(game, graphics).map_err(Error::Frontend)

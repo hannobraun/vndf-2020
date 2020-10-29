@@ -13,7 +13,8 @@ pub fn draw_ship(
     ship: &Ship,
     game: &Game,
 ) -> Option<()> {
-    let transform = ScreenElement::from_ship(ship, game, &frame.screen)?.transform(&frame.screen);
+    let transform = ScreenElement::from_ship(ship, game, &frame.screen)?
+        .transform(&frame.screen);
 
     res.drawables.ship.draw(
         &res.device,

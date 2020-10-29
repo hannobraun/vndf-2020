@@ -6,7 +6,10 @@ use crate::{
     graphics,
 };
 
-use super::{text, Column, ComponentStats, FrameTime, InputEvents, NetworkStats, ScaleFactor};
+use super::{
+    text, Column, ComponentStats, FrameTime, InputEvents, NetworkStats,
+    ScaleFactor,
+};
 
 #[derive(DrawAt, ProcessInputAt, Size)]
 pub struct Diagnostics(Column);

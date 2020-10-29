@@ -101,7 +101,8 @@ impl fmt::Display for Event {
             write!(f, ", sent: +{}ms", entered_to_sent_ms)?;
         }
         if let Some(handled) = self.handled {
-            let entered_to_handled_ms = (handled - self.entered).whole_milliseconds();
+            let entered_to_handled_ms =
+                (handled - self.entered).whole_milliseconds();
             write!(f, ", handled: +{}ms", entered_to_handled_ms)?;
         }
         write!(f, ")")?;

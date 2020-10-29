@@ -51,8 +51,10 @@ impl OrbitInfo {
         let periapsis_above_surface_km = orbit.periapsis.from_surface / 1000.0;
         let apoapsis_above_surface_km = orbit.apoapsis.from_surface / 1000.0;
 
-        let pericenter_text = Self::text("Periapsis", periapsis_km, periapsis_above_surface_km);
-        let apocenter_text = Self::text("Apoapsis", apoapsis_km, apoapsis_above_surface_km);
+        let pericenter_text =
+            Self::text("Periapsis", periapsis_km, periapsis_above_surface_km);
+        let apocenter_text =
+            Self::text("Apoapsis", apoapsis_km, apoapsis_above_surface_km);
 
         let pericenter_pos = game
             .state
@@ -71,7 +73,11 @@ impl OrbitInfo {
         ))
     }
 
-    fn text(name: &str, from_center_km: world::Length, above_surface_km: world::Length) -> String {
+    fn text(
+        name: &str,
+        from_center_km: world::Length,
+        above_surface_km: world::Length,
+    ) -> String {
         format!(
             "{}:\n\
             from center: {:.0} km\n\

@@ -14,7 +14,8 @@ pub fn check_health(
 ) {
     for (handle, health) in healths.iter().strong() {
         if health.is_dead() {
-            let parent = health.parent_ref().unwrap().clone().into_weak_untyped();
+            let parent =
+                health.parent_ref().unwrap().clone().into_weak_untyped();
             index.remove(&parent);
 
             death.push(Death { handle });

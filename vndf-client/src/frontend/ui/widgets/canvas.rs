@@ -61,7 +61,11 @@ impl Canvas {
 }
 
 impl Draw for Canvas {
-    fn draw(&mut self, res: &mut DrawResources, frame: &mut Frame) -> Result<(), DrawError> {
+    fn draw(
+        &mut self,
+        res: &mut DrawResources,
+        frame: &mut Frame,
+    ) -> Result<(), DrawError> {
         self.draw_at(res, frame, graphics::Pnt2::zero())
     }
 }

@@ -28,14 +28,18 @@ where
 }
 
 pub trait GetMut<T> {
-    fn get_mut(&mut self, handle: impl Into<handle::Weak<T>>) -> Option<&mut T>;
+    fn get_mut(&mut self, handle: impl Into<handle::Weak<T>>)
+        -> Option<&mut T>;
 }
 
 impl<G, T> GetMut<T> for &'_ mut G
 where
     G: GetMut<T>,
 {
-    fn get_mut(&mut self, handle: impl Into<handle::Weak<T>>) -> Option<&mut T> {
+    fn get_mut(
+        &mut self,
+        handle: impl Into<handle::Weak<T>>,
+    ) -> Option<&mut T> {
         G::get_mut(self, handle)
     }
 }

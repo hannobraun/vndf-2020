@@ -34,7 +34,8 @@ impl Orbit {
         // Orbital eccentricity
         //
         // The eccentricity vector points from apocenter to pericenter.
-        let e = r * (v.length().powi(2) / mu - 1.0 / r.length()) - v * r.dot(v) / mu;
+        let e = r * (v.length().powi(2) / mu - 1.0 / r.length())
+            - v * r.dot(v) / mu;
 
         // What we computed here is the eccentricity vector. It's magnitude is
         // the eccentricity. The eccentricity tells us what kind of orbit we're

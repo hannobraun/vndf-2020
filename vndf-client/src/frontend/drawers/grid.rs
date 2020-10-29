@@ -16,13 +16,16 @@ const B: f32 = 1.0;
 pub fn draw_grid(res: &mut DrawResources, frame: &mut Frame, game: &Game) {
     let camera = &game.state.camera;
 
-    let world_size_on_screen = camera.world_size_on_screen(&frame.screen).to_vector();
+    let world_size_on_screen =
+        camera.world_size_on_screen(&frame.screen).to_vector();
 
     let start = camera.center - world_size_on_screen / 2.0;
     let end = start + world_size_on_screen;
 
-    let max_screen_len = world::Scalar::max(world_size_on_screen.x, world_size_on_screen.y);
-    let mut cell_size = (2.0 as world::Scalar).powf(max_screen_len.log2().ceil());
+    let max_screen_len =
+        world::Scalar::max(world_size_on_screen.x, world_size_on_screen.y);
+    let mut cell_size =
+        (2.0 as world::Scalar).powf(max_screen_len.log2().ceil());
     let mut alpha = 1.0;
 
     loop {
@@ -37,7 +40,8 @@ pub fn draw_grid(res: &mut DrawResources, frame: &mut Frame, game: &Game) {
         const LOWER_LIMIT: f32 = 8.0;
 
         if screen_to_cell > ALPHA_LIMIT {
-            alpha = 1.0 - (screen_to_cell - ALPHA_LIMIT) / (LOWER_LIMIT - ALPHA_LIMIT);
+            alpha = 1.0
+                - (screen_to_cell - ALPHA_LIMIT) / (LOWER_LIMIT - ALPHA_LIMIT);
         }
         if screen_to_cell > LOWER_LIMIT {
             break;

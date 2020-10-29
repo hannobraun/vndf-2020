@@ -6,8 +6,8 @@ pub mod planet;
 pub mod ship;
 
 pub use self::{
-    background::draw_background, explosion::draw_explosion, grid::draw_grid, orbit::draw_orbit,
-    planet::draw_planet, ship::draw_ship,
+    background::draw_background, explosion::draw_explosion, grid::draw_grid,
+    orbit::draw_orbit, planet::draw_planet, ship::draw_ship,
 };
 
 use crate::graphics::screen::Screen;

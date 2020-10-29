@@ -5,7 +5,12 @@
 /// integrators are useful.
 use crate::world::math::{Pnt2, Scalar, Vec2};
 
-pub fn integrate(dt: Scalar, pos: &mut Pnt2, vel: &mut Vec2, acc: impl Fn(Pnt2) -> Vec2) {
+pub fn integrate(
+    dt: Scalar,
+    pos: &mut Pnt2,
+    vel: &mut Vec2,
+    acc: impl Fn(Pnt2) -> Vec2,
+) {
     // semi_implicit_euler(dt, pos, vel, acc)
     velocity_verlet(dt, pos, vel, acc)
 }
@@ -16,7 +21,12 @@ pub fn integrate(dt: Scalar, pos: &mut Pnt2, vel: &mut Vec2, acc: impl Fn(Pnt2) 
 /// with a bigger time step, as is done when computing the projected path. As a
 /// result, the projected path is inaccurate, and varies according to the
 /// current position in the orbit.
-pub fn semi_implicit_euler(dt: Scalar, pos: &mut Pnt2, vel: &mut Vec2, acc: impl Fn(Pnt2) -> Vec2) {
+pub fn semi_implicit_euler(
+    dt: Scalar,
+    pos: &mut Pnt2,
+    vel: &mut Vec2,
+    acc: impl Fn(Pnt2) -> Vec2,
+) {
     *vel += acc(*pos) * dt;
     *pos += *vel * dt;
 }
@@ -30,7 +40,12 @@ pub fn semi_implicit_euler(dt: Scalar, pos: &mut Pnt2, vel: &mut Vec2, acc: impl
 /// In principle, it shows the same problems as semi-implicit Euler in regards
 /// to the path projection (as can be expected), but the improved accuracy makes
 /// it good enough for now.
-pub fn velocity_verlet(dt: Scalar, pos: &mut Pnt2, vel: &mut Vec2, acc: impl Fn(Pnt2) -> Vec2) {
+pub fn velocity_verlet(
+    dt: Scalar,
+    pos: &mut Pnt2,
+    vel: &mut Vec2,
+    acc: impl Fn(Pnt2) -> Vec2,
+) {
     let acc_t = acc(*pos);
     *pos += *vel * dt + acc_t * 0.5 * dt * dt;
     let acc_t_plus_dt = acc(*pos);

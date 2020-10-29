@@ -13,7 +13,11 @@ impl<T> Weak<T> {
         self.0.len()
     }
 
-    pub fn insert(&mut self, handle: impl Into<handle::Weak<T>>, value: T) -> Option<T> {
+    pub fn insert(
+        &mut self,
+        handle: impl Into<handle::Weak<T>>,
+        value: T,
+    ) -> Option<T> {
         self.0.insert(handle.into().key(), value)
     }
 
@@ -25,7 +29,10 @@ impl<T> Weak<T> {
         self.0.get(handle.into().key())
     }
 
-    pub fn get_mut(&mut self, handle: impl Into<handle::Weak<T>>) -> Option<&mut T> {
+    pub fn get_mut(
+        &mut self,
+        handle: impl Into<handle::Weak<T>>,
+    ) -> Option<&mut T> {
         self.0.get_mut(handle.into().key())
     }
 
@@ -49,7 +56,10 @@ impl<T> store::Get<T> for Weak<T> {
 }
 
 impl<T> store::GetMut<T> for Weak<T> {
-    fn get_mut(&mut self, handle: impl Into<handle::Weak<T>>) -> Option<&mut T> {
+    fn get_mut(
+        &mut self,
+        handle: impl Into<handle::Weak<T>>,
+    ) -> Option<&mut T> {
         self.get_mut(handle)
     }
 }

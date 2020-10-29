@@ -21,13 +21,15 @@ use crate::{
     Graphics,
 };
 
-use self::{input_handler::InputHandler, renderer::Renderer, ui::Ui, window::Window};
+use self::{
+    input_handler::InputHandler, renderer::Renderer, ui::Ui, window::Window,
+};
 
 pub fn start(mut game: Game, graphics: Graphics) -> Result<(), Error> {
     let event_loop = EventLoop::new();
     let window = Window::new(&event_loop).map_err(|err| Error::Winit(err))?;
-    let mut renderer =
-        block_on(Renderer::new(&window, graphics)).map_err(|err| Error::Renderer(err))?;
+    let mut renderer = block_on(Renderer::new(&window, graphics))
+        .map_err(|err| Error::Renderer(err))?;
     let mut input_handler = InputHandler::new();
     let mut ui = Ui::new(&window);
 

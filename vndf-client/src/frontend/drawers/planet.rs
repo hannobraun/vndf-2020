@@ -7,8 +7,14 @@ use crate::{
 
 use super::{DrawResources, Frame};
 
-pub fn draw_planet(res: &mut DrawResources, frame: &mut Frame, planet: &Planet, game: &Game) {
-    let transform = WorldElement::from(planet).transform(&game.state.camera, &frame.screen);
+pub fn draw_planet(
+    res: &mut DrawResources,
+    frame: &mut Frame,
+    planet: &Planet,
+    game: &Game,
+) {
+    let transform =
+        WorldElement::from(planet).transform(&game.state.camera, &frame.screen);
 
     res.drawables.planet.draw(
         &res.device,

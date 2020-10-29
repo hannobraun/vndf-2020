@@ -18,7 +18,11 @@ impl<T> Widget for T where T: Size + ProcessInputAt + DrawAt {}
 pub trait Size {
     fn size(&self) -> graphics::Size;
 
-    fn offset(&self, anchor: Anchor, margin: graphics::Scalar) -> graphics::Vec2 {
+    fn offset(
+        &self,
+        anchor: Anchor,
+        margin: graphics::Scalar,
+    ) -> graphics::Vec2 {
         let x = match anchor.horizontal {
             anchor::Horizontal::Left => margin,
             anchor::Horizontal::Right => -self.size().width - margin,
@@ -45,7 +49,11 @@ pub trait ProcessInputAt {
 
 /// Widgets that can be drawn without requiring a specific position
 pub trait Draw {
-    fn draw(&mut self, res: &mut DrawResources, frame: &mut Frame) -> Result<(), DrawError>;
+    fn draw(
+        &mut self,
+        res: &mut DrawResources,
+        frame: &mut Frame,
+    ) -> Result<(), DrawError>;
 }
 
 /// Widgets that can be drawn at a specific position

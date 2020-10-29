@@ -17,7 +17,10 @@ pub struct TextPanel {
 }
 
 impl TextPanel {
-    pub fn create(res: &mut DrawResources, text: String) -> Result<Self, text::CreateError> {
+    pub fn create(
+        res: &mut DrawResources,
+        text: String,
+    ) -> Result<Self, text::CreateError> {
         const PADDING: graphics::Scalar = 3.0;
         let padding = graphics::Size::new(PADDING * 2.0, PADDING * 2.0);
 

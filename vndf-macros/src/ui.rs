@@ -1,7 +1,8 @@
 use proc_macro::TokenStream;
 use quote::quote;
 use syn::{
-    parse_macro_input, punctuated::Pair, Fields, FieldsNamed, FieldsUnnamed, Index, ItemStruct,
+    parse_macro_input, punctuated::Pair, Fields, FieldsNamed, FieldsUnnamed,
+    Index, ItemStruct,
 };
 
 pub fn derive_draw(input: TokenStream) -> TokenStream {

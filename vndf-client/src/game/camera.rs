@@ -81,7 +81,11 @@ impl Camera {
         self.speed = world::Scalar::max(self.speed, min_factor);
     }
 
-    pub fn world_to_screen(&self, screen: &Screen, point_world: world::Pnt2) -> graphics::Pnt2 {
+    pub fn world_to_screen(
+        &self,
+        screen: &Screen,
+        point_world: world::Pnt2,
+    ) -> graphics::Pnt2 {
         transforms::world_to_screen(self, screen)
             .0
             .transform_point(point_world.cast())
@@ -89,7 +93,8 @@ impl Camera {
 
     pub fn pixels_per_meter(&self, screen: &Screen) -> graphics::Scalar {
         let world_size_on_screen = self.world_size_on_screen(screen);
-        screen.logical_size().width / world_size_on_screen.width as graphics::Scalar
+        screen.logical_size().width
+            / world_size_on_screen.width as graphics::Scalar
     }
 
     pub fn world_size_on_screen(&self, screen: &Screen) -> world::Size {

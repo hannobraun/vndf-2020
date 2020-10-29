@@ -13,7 +13,10 @@ use super::{text, TextPanel};
 pub struct ShipStatus(TextPanel);
 
 impl ShipStatus {
-    pub fn create(res: &mut DrawResources, game: &Game) -> Result<Option<Self>, text::CreateError> {
+    pub fn create(
+        res: &mut DrawResources,
+        game: &Game,
+    ) -> Result<Option<Self>, text::CreateError> {
         fn components(game: &Game) -> Option<(&Fuel, &Health)> {
             let ship = game.state.own_ship()?;
             let craft = game.state.data.crafts.get(&ship.craft)?;

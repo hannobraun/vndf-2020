@@ -15,7 +15,8 @@ where
     loop {
         let now = Instant::now();
 
-        let sleep_time = frame_time.checked_sub(now.duration_since(last_update));
+        let sleep_time =
+            frame_time.checked_sub(now.duration_since(last_update));
         if let Some(sleep_time) = sleep_time {
             thread::sleep(sleep_time);
         }

@@ -19,8 +19,8 @@ use crate::world::{
 };
 
 use super::{
-    connect_player, disconnect_player, handle_input, InputHandled, Player, PlayerConnected,
-    PlayerCreated, PlayerDisconnected, PlayerInput,
+    connect_player, disconnect_player, handle_input, InputHandled, Player,
+    PlayerConnected, PlayerCreated, PlayerDisconnected, PlayerInput,
 };
 
 pub struct Feature {

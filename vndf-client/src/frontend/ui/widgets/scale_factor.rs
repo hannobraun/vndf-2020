@@ -11,9 +11,14 @@ use super::{text, TextPanel};
 pub struct ScaleFactor(TextPanel);
 
 impl ScaleFactor {
-    pub fn create(res: &mut DrawResources, frame: &Frame) -> Result<Self, text::CreateError> {
-        let text_panel =
-            TextPanel::create(res, format!("Scale factor: {}", frame.screen.scale_factor,))?;
+    pub fn create(
+        res: &mut DrawResources,
+        frame: &Frame,
+    ) -> Result<Self, text::CreateError> {
+        let text_panel = TextPanel::create(
+            res,
+            format!("Scale factor: {}", frame.screen.scale_factor,),
+        )?;
 
         Ok(Self(text_panel))
     }

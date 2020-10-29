@@ -8,7 +8,10 @@ use super::{text, TextPanel};
 pub struct NetworkStats(TextPanel);
 
 impl NetworkStats {
-    pub fn create(res: &mut DrawResources, game: &Game) -> Result<Self, text::CreateError> {
+    pub fn create(
+        res: &mut DrawResources,
+        game: &Game,
+    ) -> Result<Self, text::CreateError> {
         let text_panel = TextPanel::create(
             res,
             format!(

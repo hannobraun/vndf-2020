@@ -2,7 +2,9 @@ use std::{
     io::{self, prelude::*},
     iter,
     net::{SocketAddr, TcpStream, ToSocketAddrs},
-    sync::mpsc::{channel, Receiver, RecvError, SendError, Sender, TryRecvError},
+    sync::mpsc::{
+        channel, Receiver, RecvError, SendError, Sender, TryRecvError,
+    },
     thread,
 };
 
@@ -69,7 +71,9 @@ where
         })
     }
 
-    pub fn incoming<'s>(&'s mut self) -> impl Iterator<Item = net::Result<In>> + 's {
+    pub fn incoming<'s>(
+        &'s mut self,
+    ) -> impl Iterator<Item = net::Result<In>> + 's {
         iter::from_fn(move || {
             loop {
                 match self.rx.try_recv() {

@@ -17,7 +17,8 @@ pub fn draw_explosion(
     game: &Game,
 ) -> Option<()> {
     let transform =
-        ScreenElement::from_explosion(explosion, game, &frame.screen)?.transform(&frame.screen);
+        ScreenElement::from_explosion(explosion, game, &frame.screen)?
+            .transform(&frame.screen);
 
     res.drawables.explosion.draw(
         &res.device,

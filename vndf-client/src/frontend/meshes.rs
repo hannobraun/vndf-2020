@@ -1,8 +1,8 @@
 use lyon::{
     path,
     tessellation::{
-        BuffersBuilder, FillAttributes, FillOptions, FillTessellator, TessellationError,
-        VertexBuffers,
+        BuffersBuilder, FillAttributes, FillOptions, FillTessellator,
+        TessellationError, VertexBuffers,
     },
 };
 

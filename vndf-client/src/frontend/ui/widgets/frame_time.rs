@@ -8,7 +8,10 @@ use super::{text, TextPanel};
 pub struct FrameTime(TextPanel);
 
 impl FrameTime {
-    pub fn create(res: &mut DrawResources, game: &Game) -> Result<Self, text::CreateError> {
+    pub fn create(
+        res: &mut DrawResources,
+        game: &Game,
+    ) -> Result<Self, text::CreateError> {
         let report = game.state.frame_time.report();
 
         let text_panel = TextPanel::create(

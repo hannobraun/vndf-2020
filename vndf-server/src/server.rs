@@ -76,7 +76,9 @@ impl Server {
                 }
                 Event::Message(addr, msg::FromClient::Action(action)) => {
                     debug!("Input from {}: {:?}", addr, action);
-                    self.state.player_input().push(PlayerInput { addr, action });
+                    self.state
+                        .player_input()
+                        .push(PlayerInput { addr, action });
                 }
                 Event::Error(addr, _) => {
                     info!("Disconnected: {}", addr);
@@ -109,8 +111,10 @@ impl Server {
 
             for (&addr, client) in &mut self.clients {
                 client.remove(&handle);
-                self.network
-                    .send(addr, msg::FromServer::RemoveComponent(handle.clone()));
+                self.network.send(
+                    addr,
+                    msg::FromServer::RemoveComponent(handle.clone()),
+                );
             }
         }
 
@@ -121,20 +125,26 @@ impl Server {
                 if should_update {
                     self.network.send(
                         addr,
-                        msg::FromServer::UpdateComponent(component.clone().into()),
+                        msg::FromServer::UpdateComponent(
+                            component.clone().into(),
+                        ),
                     );
                 }
             }
         }
 
         for event in self.state.input_handled().ready() {
-            self.network
-                .send(event.addr, msg::FromServer::InputHandled { seq: event.seq });
+            self.network.send(
+                event.addr,
+                msg::FromServer::InputHandled { seq: event.seq },
+            );
         }
 
         for (&addr, _) in &self.clients {
-            self.network
-                .send(addr, msg::FromServer::Diagnostics(self.state.diagnostics()));
+            self.network.send(
+                addr,
+                msg::FromServer::Diagnostics(self.state.diagnostics()),
+            );
         }
     }
 }

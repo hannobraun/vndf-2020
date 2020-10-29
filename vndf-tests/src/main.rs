@@ -14,7 +14,8 @@ struct Options {
 
 fn main() -> Result<(), Error> {
     env_logger::init_from_env(
-        env_logger::Env::new().default_filter_or("vndf_shared=info,vndf_client=info"),
+        env_logger::Env::new()
+            .default_filter_or("vndf_shared=info,vndf_client=info"),
     );
 
     let options = Options::from_args();

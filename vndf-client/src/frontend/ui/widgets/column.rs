@@ -28,13 +28,20 @@ impl Column {
         self.widgets.push(Box::new(widget));
     }
 
-    pub fn add_iter(&mut self, widgets: impl IntoIterator<Item = impl Widget + 'static>) {
+    pub fn add_iter(
+        &mut self,
+        widgets: impl IntoIterator<Item = impl Widget + 'static>,
+    ) {
         for widget in widgets {
             self.add(widget)
         }
     }
 
-    pub fn widgets_at_mut<F, E>(&mut self, pos: graphics::Pnt2, mut f: F) -> Result<(), E>
+    pub fn widgets_at_mut<F, E>(
+        &mut self,
+        pos: graphics::Pnt2,
+        mut f: F,
+    ) -> Result<(), E>
     where
         F: FnMut(&mut dyn Widget, graphics::Pnt2) -> Result<(), E>,
     {

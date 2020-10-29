@@ -10,8 +10,8 @@ use crate::world::{
 };
 
 use super::{
-    create_explosion, damage_nearby, explode_entity, update_explosions, Explosion, ExplosionFaded,
-    ExplosionImminent,
+    create_explosion, damage_nearby, explode_entity, update_explosions,
+    Explosion, ExplosionFaded, ExplosionImminent,
 };
 
 pub struct Feature {
@@ -31,8 +31,16 @@ impl Feature {
         }
     }
 
-    pub fn on_update(&mut self, event: &Update, explosions: &mut store::Strong<Explosion>) {
-        update_explosions(explosions, event.dt, &mut self.explosion_faded.sink());
+    pub fn on_update(
+        &mut self,
+        event: &Update,
+        explosions: &mut store::Strong<Explosion>,
+    ) {
+        update_explosions(
+            explosions,
+            event.dt,
+            &mut self.explosion_faded.sink(),
+        );
     }
 
     pub fn on_death(

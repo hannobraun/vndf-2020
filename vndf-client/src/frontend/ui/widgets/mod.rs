@@ -20,10 +20,12 @@ pub mod text_panel;
 pub mod view_size;
 
 pub use self::{
-    add_command::AddCommand, canvas::Canvas, column::Column, commands::Commands,
-    commands_list::CommandsList, component_stats::ComponentStats, diagnostics::Diagnostics,
-    frame_time::FrameTime, input_events::InputEvents, instructions::Instructions,
-    network_stats::NetworkStats, orbit_info::OrbitInfo, panel::Panel, scale_factor::ScaleFactor,
-    ship_control::ShipControl, ship_info::ShipInfo, ship_status::ShipStatus, text::Text,
-    text_panel::TextPanel, view_size::ViewSize,
+    add_command::AddCommand, canvas::Canvas, column::Column,
+    commands::Commands, commands_list::CommandsList,
+    component_stats::ComponentStats, diagnostics::Diagnostics,
+    frame_time::FrameTime, input_events::InputEvents,
+    instructions::Instructions, network_stats::NetworkStats,
+    orbit_info::OrbitInfo, panel::Panel, scale_factor::ScaleFactor,
+    ship_control::ShipControl, ship_info::ShipInfo, ship_status::ShipStatus,
+    text::Text, text_panel::TextPanel, view_size::ViewSize,
 };

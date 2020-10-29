@@ -32,7 +32,11 @@ impl ShipInfo {
         Ok(None)
     }
 
-    fn text_and_pos(ship: &Ship, game: &Game, screen: &Screen) -> Option<(String, graphics::Pnt2)> {
+    fn text_and_pos(
+        ship: &Ship,
+        game: &Game,
+        screen: &Screen,
+    ) -> Option<(String, graphics::Pnt2)> {
         let craft = game.state.data.crafts.get(&ship.craft)?;
         let body = game.state.data.bodies.get(&craft.body)?;
         let pos = game.state.data.positions.get(&body.pos)?;

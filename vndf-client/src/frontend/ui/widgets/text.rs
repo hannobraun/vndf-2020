@@ -17,7 +17,10 @@ pub struct Text {
 }
 
 impl Text {
-    pub fn create(res: &mut DrawResources, text: String) -> Result<Self, CreateError> {
+    pub fn create(
+        res: &mut DrawResources,
+        text: String,
+    ) -> Result<Self, CreateError> {
         let text = vec![glyph_brush::OwnedText::default()
             .with_text(text)
             .with_scale(16.0)

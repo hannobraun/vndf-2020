@@ -28,7 +28,8 @@ pub fn draw_orbit(
     let u_per_pixel = [1.0 / pixel_per_u[0], 1.0 / pixel_per_u[1]];
 
     let orbiter_angle_abs = orbit.orbiter.pos.to_vector().angle_from_x_axis();
-    let orbiter_angle_to_orbit = (orbiter_angle_abs - orbit.arg_of_periapsis).signed();
+    let orbiter_angle_to_orbit =
+        (orbiter_angle_abs - orbit.arg_of_periapsis).signed();
 
     let orbiter_dir = orbit
         .orbiter

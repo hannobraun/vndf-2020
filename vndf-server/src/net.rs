@@ -106,7 +106,9 @@ impl Network {
                 }
                 Err(TryRecvError::Empty) => (),
                 Err(TryRecvError::Disconnected) => {
-                    unreachable!("`accept` thread does not end while receiver exists");
+                    unreachable!(
+                        "`accept` thread does not end while receiver exists"
+                    );
                 }
             }
 

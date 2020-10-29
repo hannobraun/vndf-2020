@@ -42,8 +42,11 @@ impl Explosion {
         }
     }
 
-    pub fn damage_nearby<'r, P, H>(&self, pos: &Position, nearby: impl IntoIterator<Item = (P, H)>)
-    where
+    pub fn damage_nearby<'r, P, H>(
+        &self,
+        pos: &Position,
+        nearby: impl IntoIterator<Item = (P, H)>,
+    ) where
         P: Deref<Target = Position>,
         H: DerefMut<Target = Health>,
     {

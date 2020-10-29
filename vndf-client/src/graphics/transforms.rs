@@ -83,7 +83,10 @@ pub fn local_to_screen(element: &ScreenElement) -> Transform<LocalUnit, Pixel> {
 }
 
 /// Returns what is commonly known as the view matrix
-pub fn world_to_screen(camera: &Camera, screen: &Screen) -> Transform<Meter, Pixel> {
+pub fn world_to_screen(
+    camera: &Camera,
+    screen: &Screen,
+) -> Transform<Meter, Pixel> {
     let pixels_per_meter = camera.pixels_per_meter(screen);
 
     graphics::Transform::identity()

@@ -45,7 +45,8 @@ pub fn connect_player(
     index.insert(addr, handle);
 
     ShipEntity { owner: id, color }.create(
-        planet, bodies, crafts, fuels, healths, positions, ships, velocities, entities,
+        planet, bodies, crafts, fuels, healths, positions, ships, velocities,
+        entities,
     );
     player_created.push(PlayerCreated { id, addr });
 }

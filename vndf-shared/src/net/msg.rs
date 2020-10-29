@@ -80,8 +80,10 @@ mod tests {
             .write(&mut buf)
             .expect("Failed to serialize message");
 
-        let deserialized_1 = Ping::read(&mut buf).expect("Failed to deserialize message");
-        let deserialized_2 = Ping::read(&mut buf).expect("Failed to deserialize message");
+        let deserialized_1 =
+            Ping::read(&mut buf).expect("Failed to deserialize message");
+        let deserialized_2 =
+            Ping::read(&mut buf).expect("Failed to deserialize message");
 
         assert_eq!(deserialized_1, Some(original_1));
         assert_eq!(deserialized_2, Some(original_2));
@@ -91,7 +93,8 @@ mod tests {
     #[test]
     fn it_should_return_none_if_buffer_is_empty() {
         let mut buf = Vec::new();
-        let deserialized = Ping::read(&mut buf).expect("Failed to deserialize message");
+        let deserialized =
+            Ping::read(&mut buf).expect("Failed to deserialize message");
         assert_eq!(deserialized, None);
     }
 }

@@ -40,7 +40,10 @@ impl<T> Strong<T> {
             .map(|entry| &entry.value)
     }
 
-    pub fn get_mut(&mut self, handle: impl Into<handle::Weak<T>>) -> Option<&mut T> {
+    pub fn get_mut(
+        &mut self,
+        handle: impl Into<handle::Weak<T>>,
+    ) -> Option<&mut T> {
         self.inner
             .get_mut(handle.into().key())
             .map(|entry| &mut entry.value)
@@ -115,7 +118,10 @@ impl<T> store::Get<T> for Strong<T> {
 }
 
 impl<T> store::GetMut<T> for Strong<T> {
-    fn get_mut(&mut self, handle: impl Into<handle::Weak<T>>) -> Option<&mut T> {
+    fn get_mut(
+        &mut self,
+        handle: impl Into<handle::Weak<T>>,
+    ) -> Option<&mut T> {
         self.get_mut(handle)
     }
 }
@@ -218,7 +224,11 @@ impl<'a, T> Iterator for IterStrong<'a, T> {
 
     fn next(&mut self) -> Option<Self::Item> {
         self.inner.next().map(|(handle, value)| {
-            let handle = handle::Strong::from_handle(handle, self.inner.changes.clone(), false);
+            let handle = handle::Strong::from_handle(
+                handle,
+                self.inner.changes.clone(),
+                false,
+            );
             (handle, value)
         })
     }
@@ -254,7 +264,11 @@ impl<'a, T> Iterator for IterMutStrong<'a, T> {
 
     fn next(&mut self) -> Option<Self::Item> {
         self.inner.next().map(|(handle, value)| {
-            let handle = handle::Strong::from_handle(handle, self.inner.changes.clone(), false);
+            let handle = handle::Strong::from_handle(
+                handle,
+                self.inner.changes.clone(),
+                false,
+            );
             (handle, value)
         })
     }

@@ -22,7 +22,8 @@ use self::{
     input::{Action, Input},
     traits::{Draw as _, DrawError, ProcessInputAt as _},
     widgets::{
-        text, Canvas, Diagnostics, Instructions, OrbitInfo, ShipControl, ShipInfo, ViewSize,
+        text, Canvas, Diagnostics, Instructions, OrbitInfo, ShipControl,
+        ShipInfo, ViewSize,
     },
 };
 
@@ -46,7 +47,11 @@ impl Ui {
         ));
     }
 
-    pub fn handle_mouse_input(&mut self, state: ElementState, button: MouseButton) {
+    pub fn handle_mouse_input(
+        &mut self,
+        state: ElementState,
+        button: MouseButton,
+    ) {
         if let (MouseButton::Left, ElementState::Pressed) = (button, state) {
             self.input.click = true;
         }

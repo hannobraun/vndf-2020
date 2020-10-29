@@ -1,6 +1,9 @@
 use std::borrow::Cow;
 
-use wgpu_glyph::{ab_glyph::FontRef, GlyphBrush, GlyphBrushBuilder, GlyphCruncher as _, Section};
+use wgpu_glyph::{
+    ab_glyph::FontRef, GlyphBrush, GlyphBrushBuilder, GlyphCruncher as _,
+    Section,
+};
 
 use crate::{frontend::drawers::Frame, graphics};
 
@@ -15,7 +18,8 @@ impl Text {
     ) -> Result<Self, wgpu_glyph::ab_glyph::InvalidFont> {
         let font = include_bytes!("../fonts/Tuffy_Bold.ttf");
         let font = FontRef::try_from_slice(&font[..])?;
-        let glyph_brush = GlyphBrushBuilder::using_font(font).build(&device, format);
+        let glyph_brush =
+            GlyphBrushBuilder::using_font(font).build(&device, format);
 
         Ok(Self { glyph_brush })
     }
@@ -33,7 +37,11 @@ impl Text {
         self.glyph_brush.queue(section);
     }
 
-    pub fn draw<'r>(&mut self, device: &wgpu::Device, frame: &mut Frame) -> Result<(), Error> {
+    pub fn draw<'r>(
+        &mut self,
+        device: &wgpu::Device,
+        frame: &mut Frame,
+    ) -> Result<(), Error> {
         self.glyph_brush
             .draw_queued(
                 &device,

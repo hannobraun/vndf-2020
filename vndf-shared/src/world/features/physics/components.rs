@@ -51,7 +51,10 @@ pub struct Body {
 }
 
 impl Body {
-    pub fn new(pos: impl Into<Handle<Position>>, vel: impl Into<Handle<Velocity>>) -> Self {
+    pub fn new(
+        pos: impl Into<Handle<Position>>,
+        vel: impl Into<Handle<Velocity>>,
+    ) -> Self {
         Self {
             pos: pos.into(),
             vel: vel.into(),

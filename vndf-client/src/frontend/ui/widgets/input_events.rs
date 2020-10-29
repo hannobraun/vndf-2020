@@ -10,7 +10,10 @@ use super::{text, TextPanel};
 pub struct InputEvents(TextPanel);
 
 impl InputEvents {
-    pub fn create(res: &mut DrawResources, game: &Game) -> Result<Self, text::CreateError> {
+    pub fn create(
+        res: &mut DrawResources,
+        game: &Game,
+    ) -> Result<Self, text::CreateError> {
         let mut text = String::new();
         write!(text, "Input:\n")?;
         for event in game.events.iter().rev() {

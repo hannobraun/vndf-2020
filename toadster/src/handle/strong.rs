@@ -23,11 +23,19 @@ pub struct Strong<T> {
 }
 
 impl<T> Strong<T> {
-    pub(crate) fn from_key(key: DefaultKey, changes: Arc<Mutex<Changes>>, track: bool) -> Self {
+    pub(crate) fn from_key(
+        key: DefaultKey,
+        changes: Arc<Mutex<Changes>>,
+        track: bool,
+    ) -> Self {
         Self::from_handle(Weak::new(key), changes, track)
     }
 
-    pub(crate) fn from_handle(inner: Weak<T>, changes: Arc<Mutex<Changes>>, track: bool) -> Self {
+    pub(crate) fn from_handle(
+        inner: Weak<T>,
+        changes: Arc<Mutex<Changes>>,
+        track: bool,
+    ) -> Self {
         if track {
             trace!("inc: {:?} {:?}", inner.key(), Backtrace::new());
         }
@@ -61,7 +69,11 @@ impl<T> Strong<T> {
     where
         T: 'static,
     {
-        Strong::from_handle(self.inner.into_untyped(), self.changes.clone(), self.track)
+        Strong::from_handle(
+            self.inner.into_untyped(),
+            self.changes.clone(),
+            self.track,
+        )
     }
 }
 
