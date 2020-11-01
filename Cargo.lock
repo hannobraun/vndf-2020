@@ -708,9 +708,9 @@ dependencies = [
 
 [[package]]
 name = "gfx-backend-dx11"
-version = "0.6.12"
+version = "0.6.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7b44558bb57c3301eff5b4c55f00d6965c98167ff5f0d90e3c4107f7a0968d49"
+checksum = "50c1b65f49f0765b82557d4967c74512049d089ddc655d25eba88ed31df0692c"
 dependencies = [
  "arrayvec",
  "bitflags",
