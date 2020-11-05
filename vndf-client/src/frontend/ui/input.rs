@@ -25,7 +25,7 @@ impl Input {
 
 pub type Cursor = Option<graphics::Pnt2>;
 
-#[derive(Debug)]
+#[derive(Clone, Copy, Debug)]
 pub enum Action {
     AddCommand,
 }
