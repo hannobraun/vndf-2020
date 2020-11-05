@@ -1,4 +1,5 @@
 pub mod add_command;
+pub mod button;
 pub mod canvas;
 pub mod column;
 pub mod commands;
@@ -20,7 +21,7 @@ pub mod text_panel;
 pub mod view_size;
 
 pub use self::{
-    add_command::AddCommand, canvas::Canvas, column::Column,
+    add_command::AddCommand, button::Button, canvas::Canvas, column::Column,
     commands::Commands, commands_list::CommandsList,
     component_stats::ComponentStats, diagnostics::Diagnostics,
     frame_time::FrameTime, input_events::InputEvents,

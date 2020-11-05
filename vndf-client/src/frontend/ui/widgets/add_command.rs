@@ -1,42 +1,25 @@
-use vndf_macros::{DrawAt, Size};
+use vndf_macros::{DrawAt, ProcessInputAt, Size};
 
 use crate::{
-    frontend::{
-        drawers::DrawResources,
-        ui::{
-            input::{Action, Input},
-            traits::{ProcessInputAt, Size},
-        },
-    },
+    frontend::{drawers::DrawResources, ui::input::Action},
     graphics,
 };
 
-use super::{text, TextPanel};
+use super::{text, Button};
 
-#[derive(DrawAt, Size)]
-pub struct AddCommand(TextPanel);
+#[derive(DrawAt, Size, ProcessInputAt)]
+pub struct AddCommand(Button);
 
 impl AddCommand {
     pub fn create(res: &mut DrawResources) -> Result<Self, text::CreateError> {
-        let mut text_panel = TextPanel::create(res, format!("Add command"))?;
-        text_panel.panel_color([0.1, 0.0, 0.0, 0.95]); // default color
+        let button = Button::create(
+            res,
+            format!("Add command"),
+            Action::AddCommand,
+            [0.1, 0.0, 0.0, 0.95],
+            [0.5, 0.0, 0.0, 0.95],
+        )?;
 
-        Ok(Self(text_panel))
-    }
-}
-
-impl ProcessInputAt for AddCommand {
-    fn process_input_at(&mut self, input: &mut Input, pos: graphics::Pnt2) {
-        let rect = graphics::Rect::new(pos, self.size());
-
-        if let Some(cursor) = input.cursor {
-            if rect.contains(cursor) {
-                self.0.panel_color([0.5, 0.0, 0.0, 0.95]);
-
-                if input.click {
-                    input.actions.push(Action::AddCommand);
-                }
-            }
-        }
+        Ok(Self(button))
     }
 }
