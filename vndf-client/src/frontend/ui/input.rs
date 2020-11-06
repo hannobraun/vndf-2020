@@ -28,4 +28,5 @@ pub type Cursor = Option<graphics::Pnt2>;
 #[derive(Clone, Copy, Debug)]
 pub enum Action {
     AddCommand,
+    FtlJump,
 }

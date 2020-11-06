@@ -2,7 +2,7 @@ use vndf_macros::{DrawAt, ProcessInputAt, Size};
 
 use crate::{frontend::drawers::DrawResources, game::Game, graphics};
 
-use super::{text, Column, Commands, ShipStatus};
+use super::{text, Column, Commands, FtlJump, ShipStatus};
 
 #[derive(DrawAt, ProcessInputAt, Size)]
 pub struct ShipControl(Column);
@@ -21,6 +21,7 @@ impl ShipControl {
         if let Some(ship_status) = ship_status {
             column.add(ship_status);
             column.add(commands);
+            column.add(FtlJump::create(res)?);
         }
 
         Ok(Some(Self(column)))

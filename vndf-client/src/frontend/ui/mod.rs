@@ -119,6 +119,9 @@ impl Ui {
                 Action::AddCommand => {
                     game.state.add_command();
                 }
+                Action::FtlJump => {
+                    println!("FTL Jump!");
+                }
             }
         }
 

@@ -7,6 +7,7 @@ pub mod commands_list;
 pub mod component_stats;
 pub mod diagnostics;
 pub mod frame_time;
+pub mod ftl_jump;
 pub mod input_events;
 pub mod instructions;
 pub mod network_stats;
@@ -24,7 +25,7 @@ pub use self::{
     add_command::AddCommand, button::Button, canvas::Canvas, column::Column,
     commands::Commands, commands_list::CommandsList,
     component_stats::ComponentStats, diagnostics::Diagnostics,
-    frame_time::FrameTime, input_events::InputEvents,
+    frame_time::FrameTime, ftl_jump::FtlJump, input_events::InputEvents,
     instructions::Instructions, network_stats::NetworkStats,
     orbit_info::OrbitInfo, panel::Panel, scale_factor::ScaleFactor,
     ship_control::ShipControl, ship_info::ShipInfo, ship_status::ShipStatus,
