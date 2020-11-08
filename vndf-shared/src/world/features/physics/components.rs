@@ -48,6 +48,7 @@ pub struct Body {
     pub rot: Angle,
 
     pub mass: Scalar,
+    pub time_factor: Scalar,
 }
 
 impl Body {
@@ -64,6 +65,7 @@ impl Body {
             rot: Angle::zero(),
 
             mass: 1.0,
+            time_factor: 1.0,
         }
     }
 
@@ -75,6 +77,7 @@ impl Body {
             dir: self.dir.clone(),
             rot: self.rot.clone(),
             mass: self.mass.clone(),
+            time_factor: self.time_factor.clone(),
         }
     }
 
@@ -87,6 +90,8 @@ impl Body {
     ) -> Option<()> {
         let vel = velocities.get_mut(&self.vel)?;
         let pos = positions.get_mut(&self.pos)?;
+
+        let dt = dt * self.time_factor;
 
         self.dir = rotate(self.dir, self.rot * dt);
 
