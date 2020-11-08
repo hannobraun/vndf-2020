@@ -4,6 +4,8 @@ pub mod input;
 pub mod net;
 pub mod state;
 
+pub use self::input::Input;
+
 use std::{io, net::ToSocketAddrs};
 
 use log::{debug, error};
@@ -12,10 +14,7 @@ use time::Duration;
 use crate::shared::net::{client::Conn, msg, Error as NetError};
 
 use self::{
-    config::Config,
-    input::{Input, Transition},
-    net::input::Events,
-    state::State,
+    config::Config, input::Transition, net::input::Events, state::State,
 };
 
 pub struct Game {
