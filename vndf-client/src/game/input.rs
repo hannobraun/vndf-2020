@@ -71,6 +71,7 @@ impl Handler {
             Input::MouseWheel(y) => {
                 self.scroll_acc += y;
             }
+            Input::FtlJump => events.push(action::Kind::FtlJump),
         }
 
         Transition::None
@@ -88,6 +89,7 @@ pub enum Input {
     KeyDown(Key),
     KeyUp(Key),
     MouseWheel(f32),
+    FtlJump,
 }
 
 #[must_use]

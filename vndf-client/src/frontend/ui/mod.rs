@@ -13,9 +13,8 @@ use crate::{
         drawers::{DrawResources, Frame},
         window::Window,
     },
-    game::Game,
+    game::{self, Game},
     graphics::{self, screen::Screen},
-    shared::action,
 };
 
 use self::{
@@ -121,7 +120,7 @@ impl Ui {
                     game.state.add_command();
                 }
                 Action::FtlJump => {
-                    game.events.push(action::Kind::FtlJump);
+                    let _ = game.handle_input(game::Input::FtlJump);
                 }
             }
         }
