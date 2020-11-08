@@ -38,6 +38,7 @@ impl Ship {
 
     pub fn apply_input(
         &mut self,
+        bodies: &mut store::Strong<Body>,
         crafts: &mut store::Strong<Craft>,
         player: &Player,
         action: Action,
@@ -51,12 +52,17 @@ impl Ship {
             return None;
         }
 
+        let mut body = bodies.get_mut(&craft.body)?;
+
         match action.kind {
             action::Kind::Rotate(rotation) => {
                 self.rotation = rotation;
             }
             action::Kind::Thrust(thrust) => {
                 craft.engine_on = thrust;
+            }
+            action::Kind::FtlJump => {
+                body.time_factor = 10_000.0;
             }
         }
 

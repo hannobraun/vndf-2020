@@ -10,6 +10,7 @@ pub struct Action {
 pub enum Kind {
     Rotate(Rotation),
     Thrust(bool),
+    FtlJump,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Serialize, Eq, PartialEq)]

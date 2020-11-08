@@ -61,6 +61,7 @@ pub fn disconnect_player(
 pub fn handle_input(
     addr: SocketAddr,
     action: Action,
+    bodies: &mut store::Strong<Body>,
     crafts: &mut store::Strong<Craft>,
     players: &store::Strong<Player>,
     ships: &mut store::Strong<Ship>,
@@ -77,7 +78,7 @@ pub fn handle_input(
     })?;
 
     for ship in ships.values_mut() {
-        ship.apply_input(crafts, player, action);
+        ship.apply_input(bodies, crafts, player, action);
     }
 
     input_handled.push(InputHandled {

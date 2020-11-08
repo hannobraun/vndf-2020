@@ -88,6 +88,7 @@ impl Feature {
     pub fn on_player_input(
         &mut self,
         event: &PlayerInput,
+        bodies: &mut store::Strong<Body>,
         crafts: &mut store::Strong<Craft>,
         players: &store::Strong<Player>,
         ships: &mut store::Strong<Ship>,
@@ -95,6 +96,7 @@ impl Feature {
         handle_input(
             event.addr,
             event.action,
+            bodies,
             crafts,
             players,
             ships,

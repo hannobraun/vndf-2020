@@ -15,6 +15,7 @@ use crate::{
     },
     game::Game,
     graphics::{self, screen::Screen},
+    shared::action,
 };
 
 use self::{
@@ -120,7 +121,7 @@ impl Ui {
                     game.state.add_command();
                 }
                 Action::FtlJump => {
-                    println!("FTL Jump!");
+                    game.events.push(action::Kind::FtlJump);
                 }
             }
         }

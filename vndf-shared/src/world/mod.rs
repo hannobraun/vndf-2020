@@ -139,6 +139,7 @@ impl State {
         while let Some(event) = self.players.player_input.source().next() {
             self.players.on_player_input(
                 &event,
+                &mut self.data.bodies,
                 &mut self.data.crafts,
                 &self.data.players,
                 &mut self.data.ships,
