@@ -9,7 +9,7 @@ pub fn update_ships(
     crafts: &store::Strong<Craft>,
     ships: &mut store::Strong<Ship>,
 ) {
-    for ship in ships.values() {
+    for ship in ships.values_mut() {
         ship.update(bodies, crafts);
     }
 }

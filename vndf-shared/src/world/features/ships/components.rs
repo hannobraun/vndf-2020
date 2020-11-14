@@ -70,7 +70,7 @@ impl Ship {
     }
 
     pub fn update(
-        &self,
+        &mut self,
         bodies: &mut store::Strong<Body>,
         crafts: &store::Strong<Craft>,
     ) -> Option<()> {
