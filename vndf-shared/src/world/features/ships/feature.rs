@@ -1,6 +1,6 @@
 use toadster::store;
 
-use crate::world::{crafts::Craft, physics::Body};
+use crate::world::{crafts::Craft, features::base::Update, physics::Body};
 
 use super::{update_ships, Ship};
 
@@ -13,10 +13,11 @@ impl Feature {
 
     pub fn on_update(
         &mut self,
+        event: &Update,
         bodies: &mut store::Strong<Body>,
         crafts: &store::Strong<Craft>,
         ships: &mut store::Strong<Ship>,
     ) {
-        update_ships(bodies, crafts, ships);
+        update_ships(event.dt, bodies, crafts, ships);
     }
 }

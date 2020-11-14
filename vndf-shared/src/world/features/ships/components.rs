@@ -17,6 +17,7 @@ pub struct Ship {
     pub craft: Handle<Craft>,
     pub rotation: Rotation,
     pub color: [f32; 3],
+    pub ftl_timer: Scalar,
 }
 
 impl Ship {
@@ -25,6 +26,7 @@ impl Ship {
             craft: craft.into(),
             rotation: Rotation::None,
             color,
+            ftl_timer: 0.0,
         }
     }
 
@@ -33,6 +35,7 @@ impl Ship {
             craft: self.craft.as_weak(),
             rotation: self.rotation.clone(),
             color: self.color.clone(),
+            ftl_timer: self.ftl_timer.clone(),
         }
     }
 
@@ -63,6 +66,7 @@ impl Ship {
             }
             action::Kind::FtlJump => {
                 body.time_factor = 10_000.0;
+                self.ftl_timer = 30.0 * 60.0; // 30 minutes
             }
         }
 
@@ -71,6 +75,7 @@ impl Ship {
 
     pub fn update(
         &mut self,
+        dt: Scalar,
         bodies: &mut store::Strong<Body>,
         crafts: &store::Strong<Craft>,
     ) -> Option<()> {
@@ -79,6 +84,11 @@ impl Ship {
 
         let rotation = self.rotation as i32 as Scalar;
         body.rot = Angle::two_pi() * 0.6 * rotation;
+
+        self.ftl_timer -= dt * body.time_factor;
+        if self.ftl_timer <= 0.0 {
+            body.time_factor = 1.0;
+        }
 
         Some(())
     }

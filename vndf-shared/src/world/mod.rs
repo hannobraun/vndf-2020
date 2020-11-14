@@ -106,6 +106,7 @@ impl State {
             );
             self.health.on_update(&self.data.healths);
             self.ships.on_update(
+                &event,
                 &mut self.data.bodies,
                 &self.data.crafts,
                 &mut self.data.ships,
