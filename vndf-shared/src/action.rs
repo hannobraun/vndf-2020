@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 
+use crate::world::Scalar;
+
 #[derive(Clone, Copy, Debug, Deserialize, Serialize, PartialEq)]
 pub struct Action {
     pub seq: u64,
@@ -10,7 +12,7 @@ pub struct Action {
 pub enum Kind {
     Rotate(Rotation),
     Thrust(bool),
-    FtlJump,
+    FtlJump(Scalar),
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Serialize, Eq, PartialEq)]

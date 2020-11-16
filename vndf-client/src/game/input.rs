@@ -71,7 +71,10 @@ impl Handler {
             Input::MouseWheel(y) => {
                 self.scroll_acc += y;
             }
-            Input::FtlJump => events.push(action::Kind::FtlJump),
+            Input::FtlJump => {
+                let time = 30.0 * 60.0; // 30 minutes
+                events.push(action::Kind::FtlJump(time));
+            }
         }
 
         Transition::None

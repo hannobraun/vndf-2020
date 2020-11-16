@@ -64,9 +64,9 @@ impl Ship {
             action::Kind::Thrust(thrust) => {
                 craft.engine_on = thrust;
             }
-            action::Kind::FtlJump => {
+            action::Kind::FtlJump(time) => {
                 body.time_factor = 10_000.0;
-                self.ftl_timer = 30.0 * 60.0; // 30 minutes
+                self.ftl_timer = time;
             }
         }
 
