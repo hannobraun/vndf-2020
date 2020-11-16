@@ -71,8 +71,7 @@ impl Handler {
             Input::MouseWheel(y) => {
                 self.scroll_acc += y;
             }
-            Input::FtlJump => {
-                let time = 30.0 * 60.0; // 30 minutes
+            Input::FtlJump(time) => {
                 events.push(action::Kind::FtlJump(time));
             }
         }
@@ -92,7 +91,7 @@ pub enum Input {
     KeyDown(Key),
     KeyUp(Key),
     MouseWheel(f32),
-    FtlJump,
+    FtlJump(world::Scalar),
 }
 
 #[must_use]

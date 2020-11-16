@@ -120,7 +120,8 @@ impl Ui {
                     game.state.add_command();
                 }
                 Action::FtlJump => {
-                    let _ = game.handle_input(game::Input::FtlJump);
+                    let time = 30.0 * 60.0; // 30 minutes
+                    let _ = game.handle_input(game::Input::FtlJump(time));
                 }
             }
         }
