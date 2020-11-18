@@ -127,6 +127,12 @@ impl Ui {
                     let time = self.jump_time_min as world::Scalar * 60.0;
                     let _ = game.handle_input(game::Input::FtlJump(time));
                 }
+                Action::FtlTimeDown => {
+                    self.jump_time_min = self.jump_time_min.saturating_sub(15);
+                }
+                Action::FtlTimeUp => {
+                    self.jump_time_min = self.jump_time_min.saturating_add(15);
+                }
             }
         }
 

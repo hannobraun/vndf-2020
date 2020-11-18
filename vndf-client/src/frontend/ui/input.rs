@@ -29,4 +29,6 @@ pub type Cursor = Option<graphics::Pnt2>;
 pub enum Action {
     AddCommand,
     FtlJump,
+    FtlTimeDown,
+    FtlTimeUp,
 }
