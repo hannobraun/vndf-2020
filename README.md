@@ -6,15 +6,15 @@ Von Neumann Defense Force is a game about spaceships. It is the continuation of 
 
 ![a screenshot from the game](screenshots/2020-07-04.png)
 
-The project is in development, and might well stay there forever. As the next section details, a lot of things are in a rough state. Pull requests are still very welcome, however.
+This project is, as far as I'm concerned, done. I did some of the things I wanted to do, others I either don't want anymore, or I've figured out that this is the wrong approach of doing them. This never turned into a coherent game (see *Status*), but it's time to move on to other things.
 
 ## Status
 
-This is a hobby project with no clear goal in mind. As such, I only work on whatever interests me, while leaving other things in half-done or broken states.
+This was a hobby project with no clear goal in mind. As such, I only worked on whatever interested me, while leaving other things in half-done or broken states.
 
 From a gameplay perspective, there's not a lot there. We have working multiplayer, and there are game mechanics, but they don't form a coherent whole.
 
-From a technical perspective, the code is in a constant state of transition. Most of the gameplay code is basically an experiment in how to structure code such as this, so far without any satisfactory results. Little of that has been documented.
+From a technical perspective, the code was in a constant state of transition. Most of the gameplay code is basically an experiment in how to structure code such as this, only partially with satisfactory results. Little of that has been documented.
 
 ## Instructions
 
@@ -49,11 +49,7 @@ cd vndf-launcher
 cargo run
 ```
 
-Please note that this will most likely result in a crash and a cryptic error message. If not, it might result in weird and unpredictable gameplay behavior.
-
-The reason for that is, that only clients and servers running with the same version are compatible. No version check is implemented, so even if the protocol happens to be compatible, client and server might be running with different game code.
-
-The official server is updated in a manual and haphazard manner, so you never quite know which version it is currently running.
+Please note that, as per above, this game is no longer developed. I deployed the latest server version when I updated this text, so it should work for the time being. However, I don't intend to go into any effort to keep the server up and running, should that turn into an inconvenience.
 
 ## License
 
