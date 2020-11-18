@@ -95,7 +95,8 @@ impl Ui {
             frame,
         );
 
-        let ship_control = ShipControl::create(res, MARGIN, game)?;
+        let ship_control =
+            ShipControl::create(res, MARGIN, game, self.jump_time_min)?;
         if let Some(ship_control) = ship_control {
             canvas.add_anchored(ship_control, Anchor::top_right(), frame);
         }
