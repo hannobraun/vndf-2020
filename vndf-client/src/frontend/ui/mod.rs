@@ -15,6 +15,7 @@ use crate::{
     },
     game::{self, Game},
     graphics::{self, screen::Screen},
+    shared::world,
 };
 
 use self::{
@@ -30,6 +31,7 @@ use self::{
 pub struct Ui {
     input: Input,
     scale_factor: graphics::Scalar,
+    jump_time_min: u32,
 }
 
 impl Ui {
@@ -37,6 +39,7 @@ impl Ui {
         Self {
             input: Input::new(),
             scale_factor: window.scale_factor(),
+            jump_time_min: 30,
         }
     }
 
@@ -120,7 +123,7 @@ impl Ui {
                     game.state.add_command();
                 }
                 Action::FtlJump => {
-                    let time = 30.0 * 60.0; // 30 minutes
+                    let time = self.jump_time_min as world::Scalar * 60.0;
                     let _ = game.handle_input(game::Input::FtlJump(time));
                 }
             }
